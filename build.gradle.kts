@@ -42,7 +42,7 @@ publishing {
 
         maven {
             name = "GitHubPackages"
-            url = uri("https://github.com/TheFruxz/QUAD")
+            url = uri("https://maven.pkg.github.com/TheFruxz/QUAD")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
