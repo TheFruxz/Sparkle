@@ -1,0 +1,10 @@
+name: QUAD
+version: ${version}
+main: io.quad.app.QuadApp
+load: STARTUP
+authors:
+  - TheFruxz (Fruxz)
+  - JaLuMu (JanLuca)
+api-version: 1.17
+prefix: QUAD
+website: _github_
