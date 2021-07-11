@@ -30,7 +30,11 @@ dependencies {
 
     // PaperMC
 
-    implementation("io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT")
+
+    // External
+
+    implementation("org.ktorm:ktorm-core:[3.4.1,)") // KTorm
 
 }
 
