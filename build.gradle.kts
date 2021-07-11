@@ -56,6 +56,7 @@ publishing {
         from(components["kotlin"])
         artifactId = "quad"
         version = version.toLowerCase()
+
     }
 
 }
