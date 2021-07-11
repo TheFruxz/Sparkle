@@ -54,7 +54,8 @@ publishing {
     publications.create("QUAD", MavenPublication::class) {
 
         from(components["kotlin"])
-
+        artifactId = "quad"
+        version = version.toLowerCase()
     }
 
 }
