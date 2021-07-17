@@ -2,6 +2,10 @@
 [![forthebadge](https://forthebadge.com/images/badges/built-by-developers.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com)
+<br>
+![example workflow](https://github.com/TheFruxz/QUAD/actions/workflows/build-QUAD.yml/badge.svg)
+![example workflow](https://github.com/TheFruxz/QUAD/actions/workflows/test-QUAD.yml/badge.svg)
+![example workflow](https://github.com/TheFruxz/QUAD/actions/workflows/publish-QUAD.yml/badge.svg)
 
 <br>
 
