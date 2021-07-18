@@ -9,8 +9,20 @@ class QuadApp : App() {
 	override val companion = Companion
 
 	override val appIdentity = "QUAD"
-	override val appBrand = "QUAD"
+	override val appLabel = "QUAD"
 	override val appCache = QuadCache
+
+	override fun login() {
+		TODO("Not yet implemented")
+	}
+
+	override fun boot() {
+		TODO("Not yet implemented")
+	}
+
+	override fun logout() {
+		TODO("Not yet implemented")
+	}
 
 	companion object : AppCompanion<QuadApp> {
 		override lateinit var instance: QuadApp
