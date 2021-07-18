@@ -9,6 +9,6 @@ interface EventListener : Listener {
 	val listenerIdentity: String
 		get() = this::class.simpleName ?: "${UUID.randomUUID()}"
 
-	val host: App
+	val vendor: App
 
 }
