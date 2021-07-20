@@ -1,16 +1,16 @@
 @file:Suppress("LeakingThis")
 
-package io.quad.library.structure.app
+package de.jet.library.structure.app
 
 import com.destroystokyo.paper.utils.PaperPluginLogger
-import io.quad.app.QuadCache
-import io.quad.library.extension.catchException
-import io.quad.library.extension.quadTry
-import io.quad.library.runtime.app.RunStatus
-import io.quad.library.runtime.app.RunStatus.*
-import io.quad.library.runtime.sandbox.SandBox
-import io.quad.library.structure.app.event.EventListener
-import io.quad.library.structure.command.Interchange
+import de.jet.app.JetCache
+import de.jet.library.extension.catchException
+import de.jet.library.extension.jetTry
+import de.jet.library.runtime.app.RunStatus
+import de.jet.library.runtime.app.RunStatus.*
+import de.jet.library.runtime.sandbox.SandBox
+import de.jet.library.structure.app.event.EventListener
+import de.jet.library.structure.command.Interchange
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.InputStreamReader
@@ -19,7 +19,7 @@ import java.util.logging.Level
 abstract class App : JavaPlugin() {
 
 	init {
-		QuadCache.registeredApplications.add(this)
+		JetCache.registeredApplications.add(this)
 	}
 
 	// parameters
@@ -70,7 +70,7 @@ abstract class App : JavaPlugin() {
 	}
 
 	fun add(sandBox: SandBox) {
-		QuadCache.registeredSandBoxes.put(
+		JetCache.registeredSandBoxes.put(
 			"${sandBox.sandBoxVendor.appIdentity}//${sandBox.sandBoxIdentity}",
 			sandBox
 		)
@@ -104,7 +104,7 @@ abstract class App : JavaPlugin() {
 	 * ***DO NOT OVERRIDE!***
 	 */
 	override fun onLoad() {
-		quadTry {
+		jetTry {
 
 			runStatus = PRE_LOAD
 			classLoader.getResourceAsStream("plugin.yml")?.let { resource ->
@@ -120,7 +120,7 @@ abstract class App : JavaPlugin() {
 	 * ***DO NOT OVERRIDE!***
 	 */
 	override fun onEnable() {
-		quadTry {
+		jetTry {
 
 			runStatus = PRE_ENABLE
 			boot()
@@ -133,7 +133,7 @@ abstract class App : JavaPlugin() {
 	 * ***DO NOT OVERRIDE!***
 	 */
 	override fun onDisable() {
-		quadTry {
+		jetTry {
 
 			runStatus = SHUTDOWN
 			logout()

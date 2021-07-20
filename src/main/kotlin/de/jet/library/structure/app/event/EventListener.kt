@@ -1,6 +1,6 @@
-package io.quad.library.structure.app.event
+package de.jet.library.structure.app.event
 
-import io.quad.library.structure.app.App
+import de.jet.library.structure.app.App
 import org.bukkit.event.Listener
 import java.util.*
 
