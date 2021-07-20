@@ -4,9 +4,9 @@
 ![Built with love](https://forthebadge.com/images/badges/built-with-love.svg)
 ![Open Source](https://forthebadge.com/images/badges/open-source.svg)
 <br>
-[![JETBuild](https://github.com/TheFruxz/QUAD/actions/workflows/build-QUAD.yml/badge.svg)](https://github.com/TheFruxz/QUAD/actions/workflows/build-QUAD.yml)
-[![JETTest](https://github.com/TheFruxz/QUAD/actions/workflows/test-QUAD.yml/badge.svg)](https://github.com/TheFruxz/QUAD/actions/workflows/test-QUAD.yml)
-[![JETPublish](https://github.com/TheFruxz/QUAD/actions/workflows/publish-QUAD.yml/badge.svg)](https://github.com/TheFruxz/QUAD/actions/workflows/publish-QUAD.yml)
+[![JETBuild](https://github.com/TheFruxz/JET/actions/workflows/build-JET.yml/badge.svg)](https://github.com/TheFruxz/QUAD/actions/workflows/build-QUAD.yml)
+[![JETTest](https://github.com/TheFruxz/JET/actions/workflows/test-JET.yml/badge.svg)](https://github.com/TheFruxz/QUAD/actions/workflows/test-QUAD.yml)
+[![JETPublish](https://github.com/TheFruxz/JET/actions/workflows/publish-JET.yml/badge.svg)](https://github.com/TheFruxz/QUAD/actions/workflows/publish-QUAD.yml)
 
 <br>
 
