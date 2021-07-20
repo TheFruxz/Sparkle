@@ -1,10 +1,10 @@
-package io.quad.library.extension
+package de.jet.library.extension
 
-import io.quad.app.QuadApp
+import de.jet.app.JetApp
 import java.util.logging.Level
 
 fun debugLog(message: String) {
 	if (/*TODO developerMode*/ false) {
-		QuadApp.instance.log.log(Level.INFO, message)
+		JetApp.instance.log.log(Level.INFO, message)
 	}
 }
