@@ -1,6 +1,6 @@
-package io.quad.library.structure.app
+package de.jet.library.structure.app
 
-import io.quad.library.structure.app.cache.CacheDepthLevel
+import de.jet.library.structure.app.cache.CacheDepthLevel
 import java.util.*
 
 interface AppCache {

@@ -1,3 +1,3 @@
 
-rootProject.name = "QUAD"
+rootProject.name = "JET"
 

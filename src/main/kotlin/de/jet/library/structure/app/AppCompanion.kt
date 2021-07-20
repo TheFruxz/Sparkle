@@ -1,4 +1,4 @@
-package io.quad.library.structure.app
+package de.jet.library.structure.app
 
 import org.jetbrains.annotations.NotNull
 

@@ -1,10 +1,10 @@
-name: QUAD
+name: JET
 version: ${version}
-main: io.quad.app.QuadApp
+main: de.jet.app.JetApp
 load: STARTUP
 authors:
   - TheFruxz (Fruxz)
   - JaLuMu (JanLuca)
 api-version: 1.17
-prefix: QUAD
+prefix: JET
 website: _github_

@@ -8,7 +8,7 @@ plugins {
     id("maven-publish")
 }
 
-group = "io.quad"
+group = "de.jet"
 version = "1.0-BETA-1"
 
 repositories {
@@ -46,7 +46,7 @@ publishing {
 
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/TheFruxz/QUAD")
+            url = uri("https://maven.pkg.github.com/TheFruxz/JET")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
@@ -55,10 +55,10 @@ publishing {
 
     }
 
-    publications.create("QUAD", MavenPublication::class) {
+    publications.create("JET", MavenPublication::class) {
 
         from(components["kotlin"])
-        artifactId = "quad"
+        artifactId = "jet"
         version = version.toLowerCase()
 
     }
@@ -66,7 +66,7 @@ publishing {
 }
 
 tasks.shadowJar {
-    archiveBaseName.set("QUAD")
+    archiveBaseName.set("JET")
     archiveClassifier.set("COMPLETE")
 }
 

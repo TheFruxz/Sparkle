@@ -1,4 +1,4 @@
-name: Test QUAD
+name: JetTest
 
 on: [push, pull_request]
 

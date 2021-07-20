@@ -1,12 +1,12 @@
-package io.quad.app
+package de.jet.app
 
-import io.quad.library.runtime.sandbox.SandBox
-import io.quad.library.structure.app.App
-import io.quad.library.structure.app.AppCache
-import io.quad.library.structure.app.cache.CacheDepthLevel
+import de.jet.library.runtime.sandbox.SandBox
+import de.jet.library.structure.app.App
+import de.jet.library.structure.app.AppCache
+import de.jet.library.structure.app.cache.CacheDepthLevel
 import java.util.*
 
-object QuadCache : AppCache {
+object JetCache : AppCache {
 
 	val registeredApplications = mutableSetOf<App>()
 

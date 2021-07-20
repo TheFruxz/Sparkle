@@ -1,4 +1,4 @@
-package io.quad.library.runtime.sandbox
+package de.jet.library.runtime.sandbox
 
 import org.bukkit.command.CommandSender
 

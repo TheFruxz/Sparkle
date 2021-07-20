@@ -1,4 +1,4 @@
-package io.quad.library.structure.app.cache
+package de.jet.library.structure.app.cache
 
 enum class CacheDepthLevel {
 
