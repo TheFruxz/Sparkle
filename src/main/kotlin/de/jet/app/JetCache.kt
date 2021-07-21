@@ -12,6 +12,8 @@ object JetCache : AppCache {
 
 	val registeredSandBoxes = mutableMapOf<String, SandBox>()
 
+	val registeredCompletionVariables = mutableMapOf<String, Set<String>>()
+
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
 		TODO("Not yet implemented")
 	}

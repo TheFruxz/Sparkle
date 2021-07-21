@@ -90,7 +90,7 @@ abstract class App : JavaPlugin() {
 
 	var appRegistrationFile = YamlConfiguration()
 
-	val log = PaperPluginLogger.getLogger("QUAD/$appIdentity ($appLabel)")
+	val log = createLog(appIdentity)
 
 	protected val pluginManager = server.pluginManager
 
@@ -140,6 +140,13 @@ abstract class App : JavaPlugin() {
 			runStatus = OFFLINE
 
 		}
+	}
+
+	companion object {
+
+		fun createLog(app: String, section: String = "main") =
+			PaperPluginLogger.getLogger("JET/$app <$section>")
+
 	}
 
 }
