@@ -11,6 +11,8 @@ plugins {
 group = "de.jet"
 version = "1.0-BETA-1"
 
+var host = "github.com/TheFruxz/JET"
+
 repositories {
 
     mavenCentral()
@@ -46,7 +48,7 @@ publishing {
 
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/TheFruxz/JET")
+            url = uri("https://maven.pkg.$host")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
@@ -79,5 +81,5 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.processResources {
-    expand("version" to project.version)
+    expand("version" to project.version, "name" to project.name, "website" to "https://$host")
 }

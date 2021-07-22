@@ -2,6 +2,11 @@ package de.jet.app
 
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.AppCompanion
+import de.jet.library.structure.command.Completion
+import de.jet.library.structure.command.Interchange
+import de.jet.library.structure.command.InterchangeAuthorizationCheck.JETCHECK
+import de.jet.library.structure.command.InterchangeExecutorType.PLAYER
+import de.jet.library.structure.command.emptyCompletion
 
 class JetApp : App() {
 

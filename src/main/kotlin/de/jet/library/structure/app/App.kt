@@ -11,12 +11,13 @@ import de.jet.library.runtime.app.RunStatus.*
 import de.jet.library.runtime.sandbox.SandBox
 import de.jet.library.structure.app.event.EventListener
 import de.jet.library.structure.command.Interchange
+import de.jet.library.structure.smart.Identifiable
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.InputStreamReader
 import java.util.logging.Level
 
-abstract class App : JavaPlugin() {
+abstract class App : JavaPlugin(), Identifiable<App> {
 
 	init {
 		JetCache.registeredApplications.add(this)
@@ -40,6 +41,8 @@ abstract class App : JavaPlugin() {
 	 * The cache of the application
 	 */
 	abstract val appCache: AppCache
+
+	override val id = appIdentity
 
 	// api
 

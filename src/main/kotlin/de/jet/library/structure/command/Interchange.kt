@@ -4,18 +4,22 @@ import de.jet.app.JetApp
 import de.jet.library.structure.app.App
 import de.jet.library.structure.command.InterchangeAuthorizationCheck.JETCHECK
 import de.jet.library.structure.command.InterchangeExecutorType.BOTH
+import de.jet.library.structure.smart.Identifiable
 import org.bukkit.command.CommandSender
 import java.util.logging.Level
 import kotlin.Exception
 
-class Interchange(
-	val vendor: App,
+data class Interchange(
+	val vendor: Identifiable<App>,
+	val label: String,
 	val requiresAuthorization: Boolean = false,
 	val requiredExecutorType: InterchangeExecutorType = BOTH,
 	val authorizationCheck: InterchangeAuthorizationCheck = JETCHECK,
 	val hiddenFromRecommendation: Boolean = false,
 	val completion: Completion,
-) {
+) : Identifiable<Interchange> {
+
+	override val id = "$vendor:$label"
 
 	val log = App.createLog(JetApp.instance.appIdentity, "Interchange")
 
