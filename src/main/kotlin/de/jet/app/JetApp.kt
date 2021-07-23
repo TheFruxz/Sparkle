@@ -1,5 +1,7 @@
 package de.jet.app
 
+import de.jet.library.extension.data.div
+import de.jet.library.extension.data.jetPath
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.AppCompanion
 import de.jet.library.structure.command.Completion
@@ -7,6 +9,11 @@ import de.jet.library.structure.command.Interchange
 import de.jet.library.structure.command.InterchangeAuthorizationCheck.JETCHECK
 import de.jet.library.structure.command.InterchangeExecutorType.PLAYER
 import de.jet.library.structure.command.emptyCompletion
+import de.jet.library.tool.data.DataTransformer
+import de.jet.library.tool.data.JetFile
+import de.jet.library.tool.data.JetFile.Companion
+import de.jet.library.tool.data.Preference
+import org.bukkit.scheduler.BukkitRunnable
 
 class JetApp : App() {
 
@@ -17,11 +24,34 @@ class JetApp : App() {
 	override val appCache = JetCache
 
 	override fun login() {
-		TODO("Not yet implemented")
+		instance = this
 	}
 
 	override fun boot() {
-		TODO("Not yet implemented")
+
+		object : BukkitRunnable() {
+			override fun run() {
+				Preference(
+					file = JetFile.appFile(instance, "hey"),
+					path = jetPath("this") / "is" / "the" / "internal" / "path",
+					default = 2,
+					useCache = false
+				).transformer(DataTransformer.empty())
+					.let { preference ->
+
+					println("writing preference...")
+					preference.content = 2
+
+					Thread.sleep(3000)
+					println("read saved content...")
+
+					println("${preference.content} is stored!")
+
+				}
+			}
+
+		}.runTaskLater(this, 20L*15)
+
 	}
 
 	override fun logout() {

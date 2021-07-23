@@ -14,6 +14,10 @@ object JetCache : AppCache {
 
 	val registeredCompletionVariables = mutableMapOf<String, Set<String>>()
 
+	val registeredCachedMutables = mutableMapOf<String, Any?>()
+
+	val registeredPreferenceCache = mutableMapOf<String, Any>()
+
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
 		TODO("Not yet implemented")
 	}

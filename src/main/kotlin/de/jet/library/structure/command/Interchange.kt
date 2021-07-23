@@ -26,7 +26,7 @@ data class Interchange(
 	// runtime-functions
 
 	fun interchangeException(exception: Exception, sender: CommandSender, executorType: InterchangeExecutorType) {
-		log.log(
+		log?.log(
 			Level.WARNING,
 			"Executor ${sender.name} as ${executorType.name} caused an error at execution of "
 		)

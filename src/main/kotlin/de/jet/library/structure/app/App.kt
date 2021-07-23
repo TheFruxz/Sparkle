@@ -6,6 +6,7 @@ import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.jet.app.JetCache
 import de.jet.library.extension.catchException
 import de.jet.library.extension.jetTry
+import de.jet.library.extension.mainLog
 import de.jet.library.runtime.app.RunStatus
 import de.jet.library.runtime.app.RunStatus.*
 import de.jet.library.runtime.sandbox.SandBox
@@ -16,6 +17,7 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.InputStreamReader
 import java.util.logging.Level
+import java.util.logging.Logger
 
 abstract class App : JavaPlugin(), Identifiable<App> {
 
@@ -42,7 +44,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 */
 	abstract val appCache: AppCache
 
-	override val id = appIdentity
+	override val id: String
+		get() = appIdentity
 
 	// api
 
@@ -59,17 +62,17 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			try {
 
 				pluginManager.registerEvents(eventListener, this)
-				log.log(Level.INFO, "registered '${eventListener.listenerIdentity}' listener!")
+				mainLog(Level.INFO, "registered '${eventListener.listenerIdentity}' listener!")
 
 			} catch (e: Exception) {
 
-				log.log(Level.WARNING, "Error during adding handler")
+				mainLog(Level.WARNING, "Error during adding handler")
 				catchException(e)
 
 			}
 
 		} else
-			log.log(Level.WARNING, "skipped registering '${eventListener.listenerIdentity}' listener, app disabled!")
+			mainLog(Level.WARNING, "skipped registering '${eventListener.listenerIdentity}' listener, app disabled!")
 	}
 
 	fun add(sandBox: SandBox) {
@@ -77,7 +80,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			"${sandBox.sandBoxVendor.appIdentity}//${sandBox.sandBoxIdentity}",
 			sandBox
 		)
-		log.log(
+		mainLog(
 			Level.INFO,
 			"registered FUSION sandbox '${sandBox.sandBoxIdentity}'!"
 		)
@@ -93,7 +96,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	var appRegistrationFile = YamlConfiguration()
 
-	val log = createLog(appIdentity)
+	val log by lazy { createLog(appIdentity) }
 
 	protected val pluginManager = server.pluginManager
 
@@ -147,8 +150,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	companion object {
 
-		fun createLog(app: String, section: String = "main") =
-			PaperPluginLogger.getLogger("JET/$app <$section>")
+		fun createLog(app: String, section: String = "main"): Logger? =
+			PaperPluginLogger.getLogger("JET/$app <$section>") ?: Logger.getLogger("[!] JET/$app <$section>")
 
 	}
 
