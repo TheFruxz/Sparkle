@@ -56,7 +56,7 @@ class Preference<SHELL : Any>(
 			transformer.toCore(value).let { coreObject ->
 				if (useCache)
 					registeredPreferenceCache[id] = coreObject
-				file.set(path.id, transformer.toCore(coreObject as SHELL))
+				file.set(path.id, coreObject)
 			}
 
 			if (readAndWrite)

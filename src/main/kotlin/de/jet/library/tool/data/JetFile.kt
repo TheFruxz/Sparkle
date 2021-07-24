@@ -11,6 +11,7 @@ import kotlin.io.path.Path
 import kotlin.io.path.createDirectories
 import kotlin.io.path.createFile
 import kotlin.io.path.div
+import kotlin.io.path.exists
 
 interface JetFile {
 
@@ -31,14 +32,13 @@ interface JetFile {
 		private fun generate(path: Path) =
 			object : JetFile {
 
-				override val file = try {
+				override val file =
 					path.apply {
-						parent.createDirectories()
-						createFile()
+						if (!parent.exists())
+							parent.createDirectories()
+						if (!exists())
+							createFile()
 					}
-				} catch (ignore: FileAlreadyExistsException) {
-					path
-				}
 
 				val noPath = file.toFile()
 				val yaml = YamlConfiguration.loadConfiguration(noPath)
@@ -77,17 +77,18 @@ interface JetFile {
 			extension: String = "yml"
 		) =
 			generate(
-				Path("JET-DATA", vendor.id, "$fileName.$extension")
+				Path("_JetData", "#${vendor.id}", "$fileName.$extension")
 			)
 
 		fun rootFile(fileName: String, extension: String = "yml") =
-			generate(Path("JET-DATA") / "_ROOT" / "$fileName.$extension")
+			generate(Path("_JetData") / "ROOT" / "$fileName.$extension")
 
 		/*TODO If components exists, here instead of *!*/
 		fun componentFile(component: Identifiable<*>): Nothing = throw IllegalStateException("Components currently not available!")
+		// TODO: 24.07.2021 #app@<component> 
 
 		fun versionFile(fileName: String, extension: String = "yml") =
-			generate(Path("JET-DATA") / "_VERSION@${Bukkit.getBukkitVersion()}")
+			generate(Path("_JetData") / Bukkit.getBukkitVersion())
 
 	}
 

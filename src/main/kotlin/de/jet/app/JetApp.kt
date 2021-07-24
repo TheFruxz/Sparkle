@@ -33,10 +33,14 @@ class JetApp : App() {
 			override fun run() {
 				Preference(
 					file = JetFile.appFile(instance, "hey"),
-					path = jetPath("this") / "is" / "the" / "internal" / "path",
+					path = jetPath("this") / "is" / "the" / "path",
 					default = 2,
 					useCache = false
-				).transformer(DataTransformer.empty())
+				).transformer(DataTransformer({
+					"Thisisthenumber$this"
+				}, {
+					removePrefix("Thisisthenumber").toInt()
+				}))
 					.let { preference ->
 
 					println("writing preference...")
