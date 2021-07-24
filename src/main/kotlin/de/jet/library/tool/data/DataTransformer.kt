@@ -10,6 +10,9 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 		fun <BOTH : Any> empty() =
 			DataTransformer<BOTH, BOTH>({ this }, { this })
 
+		fun simpleColorCode() =
+			DataTransformer<String, String>({ replace("§", "COLOR>") }, { replace("COLOR>", "§") })
+
 	}
 
 }
