@@ -1,11 +1,9 @@
 package de.jet.library.tool.data
 
-import de.jet.library.extension.jetTry
 import de.jet.library.structure.app.App
 import de.jet.library.structure.smart.Identifiable
 import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
-import java.lang.Exception
 import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.io.path.createDirectories
@@ -85,7 +83,7 @@ interface JetFile {
 
 		/*TODO If components exists, here instead of *!*/
 		fun componentFile(component: Identifiable<*>): Nothing = throw IllegalStateException("Components currently not available!")
-		// TODO: 24.07.2021 #app@<component> 
+		// TODO: 24.07.2021 #app@<component>
 
 		fun versionFile(fileName: String, extension: String = "yml") =
 			generate(Path("_JetData") / Bukkit.getBukkitVersion())

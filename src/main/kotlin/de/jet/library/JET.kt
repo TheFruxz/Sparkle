@@ -4,9 +4,7 @@ import de.jet.app.JetApp
 
 object JET {
 
-	val pluginInstance: JetApp
+	val appInstance: JetApp
 		get() = JetApp.instance
-
-	fun demo(): Any? = null
-
+	
 }
