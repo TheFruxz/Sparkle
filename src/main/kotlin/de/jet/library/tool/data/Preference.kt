@@ -15,32 +15,35 @@ class Preference<SHELL : Any>(
 ) : Identifiable<Preference<SHELL>> {
 
 	override val id = "${file.file.pathString}:${path.id}"
+	val inFilePath = "${path.id}"
 
 	@Suppress("UNCHECKED_CAST")
 	var content: SHELL
 		get() {
-			val currentCacheValue = registeredPreferenceCache[id]
+			val currentCacheValue = registeredPreferenceCache[inFilePath]
 
 			if (!useCache && currentCacheValue != null) {
 				return try {
 					currentCacheValue as SHELL
 				} catch (e: ClassCastException) {
-					debugLog("Reset property $id to default \n${e.stackTrace}")
+					debugLog("Reset property $inFilePath to default \n${e.stackTrace}")
 					content = default
 					default
 				}
 			} else {
+				file.load()
 				fun toShellTransformer() = transformer.toShell as Any.() -> SHELL
-				val currentFileValue = file.get<SHELL>(id)?.let { toShellTransformer()(it) }
-				val newContent = if (file.loader.contains(id) && currentFileValue != null) {
+				val currentFileValue = file.get<SHELL>(inFilePath)?.let { toShellTransformer()(it) }
+				val newContent = if (file.loader.contains(inFilePath) && currentFileValue != null) {
 					currentFileValue
 				} else default
 
 				return newContent.let {
 					if (useCache)
-						registeredPreferenceCache[id] = it
+						registeredPreferenceCache[inFilePath] = it
 					if (it == default)
-						file.set(id, transformer.toCore(default))
+						file.set(inFilePath, transformer.toCore(default))
+						file.save()
 					it
 				}
 

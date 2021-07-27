@@ -4,9 +4,11 @@ package de.jet.library.structure.app
 
 import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.jet.app.JetCache
+import de.jet.app.JetData
 import de.jet.library.extension.catchException
 import de.jet.library.extension.jetTry
 import de.jet.library.extension.mainLog
+import de.jet.library.runtime.app.LanguageSpeaker
 import de.jet.library.runtime.app.RunStatus
 import de.jet.library.runtime.app.RunStatus.*
 import de.jet.library.runtime.sandbox.SandBox
@@ -98,6 +100,11 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	val log by lazy { createLog(appIdentity) }
 
+	internal fun getResourceFile(path: String) =
+		classLoader.getResourceAsStream(path)?.reader()?.readText()
+
+	val languageSpeaker by lazy { LanguageSpeaker(JetData.systemLanguage.content) }
+
 	protected val pluginManager = server.pluginManager
 
 	// override base-mechanics
@@ -150,7 +157,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	companion object {
 
-		fun createLog(app: String, section: String = "main"): Logger? =
+		fun createLog(app: String, section: String = "main"): Logger =
 			PaperPluginLogger.getLogger("JET/$app <$section>") ?: Logger.getLogger("[!] JET/$app <$section>")
 
 	}

@@ -75,18 +75,18 @@ interface JetFile {
 			extension: String = "yml"
 		) =
 			generate(
-				Path("_JetData", "#${vendor.id}", "$fileName.$extension")
+				Path("JETData", "#${vendor.id}", "$fileName.$extension")
 			)
 
 		fun rootFile(fileName: String, extension: String = "yml") =
-			generate(Path("_JetData") / "ROOT" / "$fileName.$extension")
+			generate(Path("JETData") / "ROOT" / "$fileName.$extension")
 
 		/*TODO If components exists, here instead of *!*/
 		fun componentFile(component: Identifiable<*>): Nothing = throw IllegalStateException("Components currently not available!")
 		// TODO: 24.07.2021 #app@<component>
 
 		fun versionFile(fileName: String, extension: String = "yml") =
-			generate(Path("_JetData") / Bukkit.getBukkitVersion())
+			generate(Path("JETData") / Bukkit.getBukkitVersion())
 
 	}
 
