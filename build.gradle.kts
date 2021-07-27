@@ -27,7 +27,7 @@ dependencies {
 
     // Kotlin
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.20")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.21")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
     // PaperMC
@@ -36,7 +36,7 @@ dependencies {
 
     // External
 
-    implementation("org.ktorm:ktorm-core:3.4.0") // KTorm
+    implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
 
 }
 
