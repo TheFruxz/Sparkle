@@ -45,7 +45,7 @@ data class Transmission(
 					DISPLAY_SUBTITLE -> participant.showTitle(Title.title(Component.empty(), content.build()))
 				}
 
-				// TODO: 26.07.2021 Here SoundMelody-Sound 
+				// TODO: 26.07.2021 Here SoundMelody-Sound
 
 			}
 
