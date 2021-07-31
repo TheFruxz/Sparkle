@@ -4,6 +4,7 @@ import de.jet.library.runtime.sandbox.SandBox
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.AppCache
 import de.jet.library.structure.app.cache.CacheDepthLevel
+import de.jet.library.structure.component.Component
 import de.jet.library.tool.display.item.action.ItemClickAction
 import de.jet.library.tool.display.item.action.ItemInteractAction
 import java.util.*
@@ -23,6 +24,8 @@ object JetCache : AppCache {
 	val registeredItemClickActions = mutableMapOf<String, ItemClickAction>()
 
 	val registeredItemInteractActions = mutableMapOf<String, ItemInteractAction>()
+
+	val registeredComponents = mutableSetOf<Component>()
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
 		TODO("Not yet implemented")

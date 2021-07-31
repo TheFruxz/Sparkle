@@ -1,16 +1,14 @@
 package de.jet.app
 
+import de.jet.app.component.chat.JetChatComponent
+import de.jet.app.component.events.JetEventsComponent
 import de.jet.library.extension.data.div
 import de.jet.library.extension.data.jetPath
-import de.jet.library.runtime.app.LanguageSpeaker.LanguageContainer
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.AppCompanion
 import de.jet.library.tool.data.DataTransformer
 import de.jet.library.tool.data.JetFile
 import de.jet.library.tool.data.Preference
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonPrimitive
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.logging.Level
 
@@ -65,20 +63,24 @@ class JetApp : App() {
 					Version: ${this.languageVersion};
 					Vendor: ${this.languageVendor};
 					Website: ${this.languageVendorWebsite};
+					Test: ${languageSpeaker.message("system.hello")};
 				""".trimIndent().lines().forEach {
 					log.log(Level.INFO, it)
 				}
 			}
-			log.log(Level.INFO, """
-				Testing Language-System:
-				${languageSpeaker.message("system.hello")}
-			""".trimIndent())
 		}
+
+		regRun(JetEventsComponent(this))
+		regRun(JetChatComponent(this))
 
 	}
 
 	override fun logout() {
-		TODO("Not yet implemented")
+
+		JetCache.registeredComponents.forEach {
+			it.stop()
+		}
+
 	}
 
 	companion object : AppCompanion<JetApp> {

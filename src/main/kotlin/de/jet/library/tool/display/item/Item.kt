@@ -39,7 +39,6 @@ import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
 import org.checkerframework.checker.nullness.qual.NonNull
 import org.jetbrains.annotations.NotNull
-import sun.jvm.hotspot.oops.CellTypeState.value
 import java.util.*
 import java.util.function.UnaryOperator
 

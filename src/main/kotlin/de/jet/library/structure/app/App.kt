@@ -14,8 +14,10 @@ import de.jet.library.runtime.app.RunStatus.*
 import de.jet.library.runtime.sandbox.SandBox
 import de.jet.library.structure.app.event.EventListener
 import de.jet.library.structure.command.Interchange
+import de.jet.library.structure.component.Component
 import de.jet.library.structure.smart.Identifiable
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.InputStreamReader
 import java.util.logging.Level
@@ -78,14 +80,55 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	}
 
 	fun add(sandBox: SandBox) {
-		JetCache.registeredSandBoxes.put(
-			"${sandBox.sandBoxVendor.appIdentity}//${sandBox.sandBoxIdentity}",
-			sandBox
-		)
+		JetCache.registeredSandBoxes["${sandBox.sandBoxVendor.appIdentity}//${sandBox.sandBoxIdentity}"] = sandBox
 		mainLog(
 			Level.INFO,
 			"registered FUSION sandbox '${sandBox.sandBoxIdentity}'!"
 		)
+	}
+
+	fun remove(sandBox: SandBox) {
+		JetCache.registeredSandBoxes.remove("${sandBox.sandBoxVendor.appIdentity}//${sandBox.sandBoxIdentity}", sandBox)
+		mainLog(
+			Level.INFO,
+			"unregistered FUSION sandbox '${sandBox.sandBoxIdentity}'!"
+		)
+	}
+
+	fun remove(eventListener: EventListener) {
+		if (isEnabled) {
+
+			try {
+
+				HandlerList.unregisterAll(eventListener)
+				mainLog(Level.INFO, "unregistered '${eventListener.listenerIdentity}' listener!")
+
+			} catch (e: Exception) {
+
+				mainLog(Level.WARNING, "Error during removing handler")
+				catchException(e)
+
+			}
+
+		} else
+			mainLog(Level.WARNING, "skipped unregistering '${eventListener.listenerIdentity}' listener, app disabled!")
+	}
+
+	fun add(component: Component) {
+		JetCache.registeredComponents.add(component)
+	}
+
+	fun start(component: Identifiable<Component>) {
+		jetTry { JetCache.registeredComponents.first { it.equals(component) }.start() }
+	}
+
+	fun stop(component: Identifiable<Component>) {
+		jetTry { JetCache.registeredComponents.first { it.equals(component) }.stop() }
+	}
+
+	fun regRun(component: Component) {
+		add(component)
+		start(component)
 	}
 
 	// runtime
