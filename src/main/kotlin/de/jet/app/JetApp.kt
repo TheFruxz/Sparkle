@@ -12,6 +12,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import org.bukkit.scheduler.BukkitRunnable
+import java.util.logging.Level
 
 class JetApp : App() {
 
@@ -55,19 +56,23 @@ class JetApp : App() {
 		}.runTaskLater(this, 20L*15)
 
 		languageSpeaker.let { languageSpeaker ->
-			println("Speaking language: ${languageSpeaker.languageId}")
-			println("")
-			JetFile.appFile(this, "language-demo", "json").apply {
-				load()
-				set("data", Json.encodeToString(LanguageContainer(languageSpeaker.cachedLanguageData.toMutableMap().apply {
-					put("name", "Fruxz")
-					put("colors", "§a§lHallo§7 dies ist ein§e Test§7!")
-					put("numbers", "2000")
-				}.map { it.key to JsonPrimitive(it.value) }.toMap())))
-				save()
+			log.log(Level.INFO, "Speaking langauge: ${languageSpeaker.languageId}")
+			with(languageSpeaker.languageContainer) {
+				"""
+					Display-Language detected:
+					ID: ${this.languageId};
+					JET: ${this.jetVersion};
+					Version: ${this.languageVersion};
+					Vendor: ${this.languageVendor};
+					Website: ${this.languageVendorWebsite};
+				""".trimIndent().lines().forEach {
+					log.log(Level.INFO, it)
+				}
 			}
-			println(languageSpeaker.message("system.hello"))
-			println(languageSpeaker.message("system.missing"))
+			log.log(Level.INFO, """
+				Testing Language-System:
+				${languageSpeaker.message("system.hello")}
+			""".trimIndent())
 		}
 
 	}

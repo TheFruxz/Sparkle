@@ -96,6 +96,46 @@ data class Completion(
 		return this
 	}
 
+	fun buildDisplay() = buildString {
+
+		sections.forEach {
+			val multiComponent = it.components.size > 1
+			val display = if (it.label != null) {
+				"<${it.label}>"
+			} else
+				buildString {
+					append("<")
+					it.components.forEach { internalComponent ->
+
+						append(internalComponent.label)
+
+						if (multiComponent)
+							append("|")
+
+					}
+					if (multiComponent)
+						removeSuffix("|")
+					append(">")
+				}
+
+			if (!it.isRequired)
+				append("(")
+
+			if (it.mustMatchOutput)
+				append(":")
+
+			append(display)
+
+			if (it.mustMatchOutput)
+				append(":")
+
+			if (!it.isRequired)
+				append(")")
+
+		}
+
+	}
+
 }
 
 // Next-Section blocks

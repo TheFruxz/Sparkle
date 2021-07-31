@@ -15,18 +15,34 @@ class LanguageSpeaker(
 
 	@Serializable
 	data class LanguageContainer(
-		val map: Map<String, JsonElement> = mapOf("generator" to JsonPrimitive("v${JetApp.instance.description.version}")),
+		val languageId: String,
+		val languageVersion: String,
+		val languageVendor: String,
+		val languageVendorWebsite: String,
+		val jetVersion: String,
+		val languageData: Map<String, JsonElement> = mapOf("generator" to JsonPrimitive("v${JetApp.instance.description.version}")),
 	)
 
-	val cachedLanguageData: Map<String, String> by lazy {
+	val languageContainer: LanguageContainer by lazy {
 		JetApp.instance.getResourceFile("lang/$languageId.json").let { data ->
 
 			if (data != null) {
-				Json.decodeFromString<LanguageContainer>(data).map.map { it.key to it.value.jsonPrimitive.content }.toMap()
+				Json.decodeFromString(data)
 			} else
-				mapOf("error" to "yes")
+				LanguageContainer(
+					languageId = "backup",
+					languageVersion = "0",
+					languageVendor = "system",
+					languageVendorWebsite = "/",
+					jetVersion = "/",
+					languageData = mapOf("error" to JsonPrimitive("yes"))
+				)
 
 		}
+	}
+
+	val cachedLanguageData: Map<String, String> by lazy {
+		languageContainer.languageData.map { it.key to it.value.jsonPrimitive.content }.toMap()
 	}
 
 	fun dataToJson() = JsonObject(cachedLanguageData.map { it.key to JsonPrimitive(it.value) }.toMap())
@@ -34,10 +50,15 @@ class LanguageSpeaker(
 	val error: Boolean
 		get() = cachedLanguageData["error"] == "yes"
 
-	fun message(id: String): String {
+	fun message(id: String, smartColor: Boolean = true): String {
 		return if (!error) {
 
-			cachedLanguageData[id] ?: "UNKNOWN"
+			(cachedLanguageData[id] ?: "LANGUAGE-DATA '$id' UNKNOWN ($languageId)").let { output ->
+				if (smartColor) {
+					output
+				} else
+					output
+			}
 
 		} else "LANGUAGE FILE $languageId NOT CORRECT"
 	}

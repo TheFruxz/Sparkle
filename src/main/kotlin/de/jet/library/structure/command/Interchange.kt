@@ -1,6 +1,8 @@
 package de.jet.library.structure.command
 
 import de.jet.app.JetApp
+import de.jet.library.extension.display.message
+import de.jet.library.extension.lang
 import de.jet.library.structure.app.App
 import de.jet.library.structure.command.InterchangeAuthorizationCheck.JETCHECK
 import de.jet.library.structure.command.InterchangeExecutorType.*
@@ -17,7 +19,7 @@ import java.util.logging.Level
 import kotlin.Exception
 
 abstract class Interchange(
-	val vendor: Identifiable<App>,
+	val vendor: App,
 	val label: String,
 	val aliases: Set<String> = emptySet(),
 	val requiresAuthorization: Boolean = false,
@@ -63,10 +65,20 @@ abstract class Interchange(
 		receiver: CommandSender,
 		approval: Approval? = requiredApproval,
 	) {
-
+		lang("interchange.run.issue.wrongApproval")
+			.replace("[approval]", "$approval")
+			.message(receiver).display() // TODO: 29.07.2021 Fail notification
 	}
 
-	private fun wrongUsageFeedback() {}
+	private fun wrongUsageFeedback() {
+		lang("interchange.run.issue.wrongUsage")
+			.replace("[usage]", "/$label${completion.buildDisplay().let { completion -> 
+				if (completion.isNotBlank() && completion.isNotEmpty()) {
+					" $completion"
+				} else
+					""
+			}}")
+	}
 
 	private fun wrongClientFeedback() {}
 

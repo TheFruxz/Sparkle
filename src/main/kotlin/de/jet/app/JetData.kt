@@ -16,7 +16,7 @@ object JetData {
 	val systemLanguage = Preference(
 		file = CONFIG,
 		path = jetPath("language"),
-		default = "en_system",
+		default = "en_general",
 	)
 
 	object File {

@@ -1,0 +1,12 @@
+{
+  "languageId": "en_general",
+  "languageVersion": "1.0.0",
+  "languageVendor": "JET",
+  "languageVendorWebsite": "${website}",
+  "jetVersion": "${version}",
+  "languageData": {
+    "system.hello": "Welcome to JET! - Welcome to this Language!",
+    "interchange.run.issue.wrongApproval": "§7This action§c requires§7 the approval §e'[approval]'§7, to be executed!",
+    "interchange.run.issue.wrongUsage": ""
+  }
+}
