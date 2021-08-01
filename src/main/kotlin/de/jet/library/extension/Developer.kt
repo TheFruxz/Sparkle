@@ -22,7 +22,7 @@ internal fun mainLog(level: Level = Level.INFO, message: String) = JetApp.instan
 internal val lang: LanguageSpeaker
 	get() = JET.languageSpeaker
 
-internal fun lang(id: String, smartColor: Boolean = true) = lang.message(id)
+internal fun lang(id: String, smartColor: Boolean = true) = lang.message(id, smartColor)
 
 val Any.asString: String
 	get() = toString()

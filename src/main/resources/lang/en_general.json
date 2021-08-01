@@ -6,7 +6,9 @@
   "jetVersion": "${version}",
   "languageData": {
     "system.hello": "Welcome to JET! - Welcome to this Language!",
-    "interchange.run.issue.wrongApproval": "§7This action§c requires§7 the approval §e'[approval]'§7, to be executed!",
-    "interchange.run.issue.wrongUsage": ""
+    "interchange.run.issue.wrongApproval": "[GRAY]This action[RED] requires[GRAY] the approval [YELLOW]'[approval]'[GRAY], to be executed!",
+    "interchange.run.issue.wrongUsage": "[GRAY]The input[RED] must[GRAY] follow the instruction '[YELLOW][usage][GRAY]' to be executed!",
+    "interchange.run.issue.wrongClient": "[GRAY]This action[RED] needs[GRAY] you as a '[YELLOW][client][GRAY]' to be executed!",
+    "interchange.run.issue.issue": "[RED][BOLD]Oops![GRAY] A[RED] critical error[GRAY] occurred unexpectedly while executing the '[YELLOW][interchange][GRAY]' action!"
   }
 }

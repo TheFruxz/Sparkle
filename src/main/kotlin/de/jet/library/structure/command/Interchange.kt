@@ -1,6 +1,8 @@
 package de.jet.library.structure.command
 
 import de.jet.app.JetApp
+import de.jet.library.extension.catchException
+import de.jet.library.extension.debugLog
 import de.jet.library.extension.display.message
 import de.jet.library.extension.lang
 import de.jet.library.structure.app.App
@@ -16,6 +18,8 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 import java.util.logging.Level
+import java.util.logging.Level.FINE
+import java.util.logging.Level.WARNING
 import kotlin.Exception
 
 abstract class Interchange(
@@ -63,14 +67,15 @@ abstract class Interchange(
 
 	private fun wrongApprovalFeedback(
 		receiver: CommandSender,
-		approval: Approval? = requiredApproval,
 	) {
 		lang("interchange.run.issue.wrongApproval")
-			.replace("[approval]", "$approval")
+			.replace("[approval]", "$requiredApproval")
 			.message(receiver).display() // TODO: 29.07.2021 Fail notification
 	}
 
-	private fun wrongUsageFeedback() {
+	private fun wrongUsageFeedback(
+		receiver: CommandSender,
+	) {
 		lang("interchange.run.issue.wrongUsage")
 			.replace("[usage]", "/$label${completion.buildDisplay().let { completion -> 
 				if (completion.isNotBlank() && completion.isNotEmpty()) {
@@ -78,11 +83,24 @@ abstract class Interchange(
 				} else
 					""
 			}}")
+			.message(receiver).display() // TODO: 01.08.2021 FAIL notification
 	}
 
-	private fun wrongClientFeedback() {}
+	private fun wrongClientFeedback(
+		receiver: CommandSender,
+	) {
+		lang("interchange.run.issue.wrongClient")
+			.replace("[client]", requiredExecutorType.name)
+			.message(receiver).display() // TODO: 01.08.2021 FAIL notification
+	}
 
-	private fun issueFeedback() {}
+	private fun issueFeedback(
+		receiver: CommandSender
+	) {
+		lang("interchange.run.issue.issue")
+			.replace("[interchange]", "Interchange/$label")
+			.message(receiver).display() // TODO: 01.08.2021 ISSUE notification
+	}
 
 	// logic
 
@@ -101,36 +119,44 @@ abstract class Interchange(
 				if (true /*todo smart USAGE-CHECK */) {
 					val clientType = if (sender is Player) PLAYER else CONSOLE
 
+					fun exception(exception: Exception) {
+						log.log(WARNING, "Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!")
+						issueFeedback(sender)
+						catchException(exception)
+					}
+
 					try {
 
 						when (executionProcess()(InterchangeAccess(vendor, clientType, sender, this, label, parameters))) {
 
-							NOT_PERMITTED -> null;
-							WRONG_CLIENT -> null;
-							WRONG_USAGE -> null;
-							UNEXPECTED -> null;
-							SUCCESS -> null;
+							NOT_PERMITTED -> wrongApprovalFeedback(sender)
+							WRONG_CLIENT -> wrongClientFeedback(sender)
+							WRONG_USAGE -> wrongUsageFeedback(sender)
+							UNEXPECTED -> issueFeedback(sender)
+							SUCCESS -> debugLog(
+								"Executor ${sender.name} as ${clientType.name} successfully executed $label-interchange!"
+							)
 
 						}
 
 					} catch (e: Exception) {
-
+						exception(e)
 					} catch (e: java.lang.Exception) {
-
+						exception(e)
 					} catch (e: NullPointerException) {
-
+						exception(e)
 					} catch (e: NoSuchElementException) {
-
+						exception(e)
 					}
 
 				} else
-					TODO("wrong usage")
+					wrongUsageFeedback(sender)
 
 			} else
-				TODO("wrong client")
+				wrongClientFeedback(sender)
 
 		} else
-			TODO("cannot execute base plate!")
+			wrongApprovalFeedback(sender)
 
 		return true
 	}

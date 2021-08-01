@@ -1,6 +1,9 @@
 package de.jet.library.runtime.app
 
 import de.jet.app.JetApp
+import de.jet.library.extension.app
+import de.jet.library.extension.collection.replace
+import de.jet.library.tool.display.ide.API
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -8,6 +11,8 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
+import org.bukkit.ChatColor
+import kotlin.text.RegexOption.IGNORE_CASE
 
 class LanguageSpeaker(
 	val languageId: String
@@ -47,15 +52,20 @@ class LanguageSpeaker(
 
 	fun dataToJson() = JsonObject(cachedLanguageData.map { it.key to JsonPrimitive(it.value) }.toMap())
 
+	@API
 	val error: Boolean
 		get() = cachedLanguageData["error"] == "yes"
+
+	private val smartColors = ChatColor.values().associateBy {
+		"[${it.name}]"
+	}
 
 	fun message(id: String, smartColor: Boolean = true): String {
 		return if (!error) {
 
 			(cachedLanguageData[id] ?: "LANGUAGE-DATA '$id' UNKNOWN ($languageId)").let { output ->
 				if (smartColor) {
-					output
+					output.replace(smartColors)
 				} else
 					output
 			}
