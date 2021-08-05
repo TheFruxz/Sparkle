@@ -1,6 +1,7 @@
-package de.jet.library.tool.sound
+package de.jet.library.tool.effect.sound
 
 import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.effect.Effect
 import kotlinx.serialization.Serializable
 import org.bukkit.Sound
 import org.bukkit.SoundCategory
@@ -9,12 +10,12 @@ import org.bukkit.SoundCategory.MASTER
 @Serializable
 data class SoundData(
 	var type: Sound,
-	var volume: Double,
-	var pitch: Double,
+	var volume: Float,
+	var pitch: Float,
 	var category: SoundCategory,
-) : Identifiable<SoundData> {
+) : Identifiable<SoundData>, Effect {
 
-	constructor(type: Sound, volume: Number, pitch: Number, soundCategory: SoundCategory = MASTER) : this(type, volume.toDouble(), pitch.toDouble(), soundCategory)
+	constructor(type: Sound, volume: Number, pitch: Number, soundCategory: SoundCategory = MASTER) : this(type, volume.toFloat(), pitch.toFloat(), soundCategory)
 
 	override val id: String
 		get() = "${type.name}:${category.name}:($pitch/$volume)"
