@@ -1,10 +1,18 @@
 package de.jet.library.structure.command
 
+import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent.Completion.completion
 import de.jet.app.JetCache
+import de.jet.library.extension.collection.replace
+import de.jet.library.extension.display.notification
+import de.jet.library.extension.lang
+import de.jet.library.extension.paper.hasApproval
 import de.jet.library.structure.app.App
 import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.display.message.Transmission.Level.FAIL
 import de.jet.library.tool.permission.Approval
+import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.command.TabCompleter
 
 // Variables
 
@@ -28,6 +36,10 @@ data class CompletionVariable(
 
 			}
 		}
+
+	companion object {
+		// TODO: 06.08.2021 Completion variable templates
+	}
 
 }
 
@@ -96,7 +108,31 @@ data class Completion(
 		return this
 	}
 
-	fun buildDisplay() = buildString {
+	internal fun buildCompletion() = TabCompleter { executor, command, label, parameters ->
+		val layer = parameters.lastIndex
+		val output = mutableListOf<String>()
+
+		if (sections.lastIndex >= layer) {
+			val currentSection = sections[layer]
+
+			currentSection.components.forEach { component ->
+				val accessApproval = component.accessApproval
+				val displayRequirement = component.displayRequirement
+				if (accessApproval == null || executor.hasApproval(accessApproval)) {
+					if (displayRequirement == null || displayRequirement(executor, parameters, output.toSet())) {
+						output.addAll(component.completion())
+					}
+				}
+			}
+
+			return@TabCompleter output.let { out -> if (out.isEmpty()) listOf(" ") else out }
+
+		} else
+			return@TabCompleter listOf(" ")
+
+	}
+
+	internal fun buildDisplay() = buildString {
 
 		sections.forEach {
 			val multiComponent = it.components.size > 1
@@ -104,34 +140,90 @@ data class Completion(
 				"<${it.label}>"
 			} else
 				buildString {
-					append("<")
+					append("{")
 					it.components.forEach { internalComponent ->
 
 						append(internalComponent.label)
 
 						if (multiComponent)
-							append("|")
+							append("/")
 
 					}
 					if (multiComponent)
-						removeSuffix("|")
-					append(">")
+						removeSuffix("/")
+					append("}")
 				}
 
 			if (!it.isRequired)
 				append("(")
 
 			if (it.mustMatchOutput)
-				append(":")
+				append("^")
 
 			append(display)
-
-			if (it.mustMatchOutput)
-				append(":")
 
 			if (!it.isRequired)
 				append(")")
 
+			append(" ")
+
+		}
+
+		removeSuffix(" ")
+
+	}
+
+	internal fun buildCheck(): (executor: CommandSender, interchange: Interchange, parameters: List<String>) -> Boolean = check@{ executor, interchange, parameters ->
+		val minimumParameters = sections.indexOfLast { it.isRequired }
+		val maximumParameters = if (infinite) -1 else sections.lastIndex
+
+		if (parameters.lastIndex >= minimumParameters) {
+
+			if (maximumParameters == -1 || parameters.lastIndex <= maximumParameters) {
+
+				this.sections.withIndex().forEach { (index, value) ->
+
+					if (index <= parameters.size) {
+
+						if (value.mustMatchOutput && !value.components.flatMap { it.completion() }.contains(parameters[index])) {
+
+							lang("interchange.run.check.noMatch")
+								.replace(
+									"[input]" to parameters[index],
+									"[usage]" to (value.components.joinToString("; ") { it.completion().joinToString("/")}).let { out ->
+										if (out.length <= 40) {
+											out
+										} else
+											"${out.take(40).dropLast(3)}..."
+									},
+								)
+								.notification(FAIL, executor)
+								.display()
+
+							return@check false
+
+						}
+
+					}
+
+				}
+
+				return@check true
+
+			} else {
+				lang("interchange.run.check.tooLarge")
+					.replace("[maximumParameters]" to maximumParameters+1)
+					.notification(FAIL, executor)
+					.display()
+				return@check false
+			}
+
+		} else {
+			lang("interchange.run.check.tooShort")
+				.replace("[minimumParameters]" to minimumParameters+1)
+				.notification(FAIL, executor)
+				.display()
+			return@check false
 		}
 
 	}

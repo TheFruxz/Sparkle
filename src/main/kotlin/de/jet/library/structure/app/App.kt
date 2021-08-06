@@ -6,6 +6,7 @@ import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.jet.app.JetCache
 import de.jet.app.JetData
 import de.jet.library.extension.catchException
+import de.jet.library.extension.collection.mutableReplaceWith
 import de.jet.library.extension.jetTry
 import de.jet.library.extension.mainLog
 import de.jet.library.runtime.app.LanguageSpeaker
@@ -13,6 +14,7 @@ import de.jet.library.runtime.app.RunStatus
 import de.jet.library.runtime.app.RunStatus.*
 import de.jet.library.runtime.sandbox.SandBox
 import de.jet.library.structure.app.event.EventListener
+import de.jet.library.structure.app.interchange.IssuedInterchange
 import de.jet.library.structure.command.Interchange
 import de.jet.library.structure.component.Component
 import de.jet.library.structure.smart.Identifiable
@@ -57,6 +59,56 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * Add Interchange
 	 */
 	fun add(interchange: Interchange) {
+		val failFreeLabel = interchange::class.simpleName
+
+		mainLog(Level.INFO, "Starting register of interchange '$failFreeLabel'!")
+
+		fun failed() {
+			val label = interchange.label
+			val aliases = try { interchange.aliases } catch (e: Exception) { emptySet() }
+			val command = getCommand(interchange.label)
+
+			mainLog(Level.WARNING, "FAILED! try to register fail-interchange '$label' instead...")
+
+			if (command != null) {
+				val replace = IssuedInterchange(this, label, aliases)
+
+				command.setExecutor(replace)
+				command.tabCompleter = replace.completionEngine
+				command.usage = replace.completionDisplay
+
+			} else
+				mainLog(Level.WARNING, "FAILED! failed to register fail-interchange for '$label'")
+
+		}
+
+		if (isEnabled) {
+
+			try {
+				val label = interchange.label
+				val aliases = interchange.aliases
+				val command = getCommand(interchange.label)
+
+				if (command != null) {
+
+					command.setExecutor(interchange)
+					command.tabCompleter = interchange.completionEngine
+					command.usage = interchange.completionDisplay
+					command.aliases.mutableReplaceWith(aliases)
+
+					mainLog(Level.INFO, "Register of interchange '$label' succeed!")
+
+				} else
+					throw IllegalArgumentException("Cannot find interchange (command) with name '$label' in plugin.yml!")
+
+			} catch (exception: Exception) {
+				catchException(exception)
+				failed()
+			}
+
+		} else
+			mainLog(Level.WARNING, "skipped registering '$failFreeLabel' interchange, app disabled!")
+
 		// TODO: 11.07.2021 Add Interchanges
 	}
 

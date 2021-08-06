@@ -4,8 +4,10 @@ import de.jet.library.JET
 import de.jet.library.extension.effect.playSoundEffect
 import de.jet.library.extension.tasky.task
 import de.jet.library.tool.tasky.TemporalAdvice
+import kotlinx.serialization.Serializable
 import org.bukkit.entity.Entity
 
+@Serializable
 class SoundMelody(
 	var insideDelay: Long,
 	var wholeRepeats: Int,
@@ -28,7 +30,7 @@ class SoundMelody(
 		var innerRound = 0
 
 		task(JET.appInstance, TemporalAdvice.ticking(0, insideDelay, !sync)) {
-			val currentSounds = content[innerRound]
+			val currentSounds = content[innerRound].toMutableSet()
 
 			currentSounds.forEach(execution)
 

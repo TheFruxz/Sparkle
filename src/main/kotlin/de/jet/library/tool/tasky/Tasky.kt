@@ -29,45 +29,47 @@ interface Tasky {
 		): Task {
 			val currentTask = Task(temporalAdvice, true, process)
 
-			object : BukkitRunnable() {
+			temporalAdvice.run(
+				object : BukkitRunnable() {
 
-				val controller = object : Tasky {
-					override fun shutdown() = cancel()
-					override val taskId: Int
-						get() = getTaskId()
-					override var attempt = 0L
-					override val dieOnError = killAtError
-					override val vendor = vendor
-					override val temporalAdvice = temporalAdvice
-				}
-
-				override fun run() {
-
-					controller.attempt++
-
-					if ((Long.MAX_VALUE * .95) < controller.attempt)
-						System.err.println("WARNING! Task #$taskId is running out of attempts, please restart!")
-
-					try {
-
-						currentTask.process(controller)
-
-					} catch (e: Exception) {
-						catchException(e)
-
-						if (controller.dieOnError)
-							controller.shutdown()
-
-					} catch (e: java.lang.Exception) {
-						catchException(e)
-
-						if (controller.dieOnError)
-							controller.shutdown()
-
+					val controller = object : Tasky {
+						override fun shutdown() = cancel()
+						override val taskId: Int
+							get() = getTaskId()
+						override var attempt = 0L
+						override val dieOnError = killAtError
+						override val vendor = vendor
+						override val temporalAdvice = temporalAdvice
 					}
-				}
 
-			}
+					override fun run() {
+
+						controller.attempt++
+
+						if ((Long.MAX_VALUE * .95) < controller.attempt)
+							System.err.println("WARNING! Task #$taskId is running out of attempts, please restart!")
+
+						try {
+
+							currentTask.process(controller)
+
+						} catch (e: Exception) {
+							catchException(e)
+
+							if (controller.dieOnError)
+								controller.shutdown()
+
+						} catch (e: java.lang.Exception) {
+							catchException(e)
+
+							if (controller.dieOnError)
+								controller.shutdown()
+
+						}
+					}
+
+				}
+			)
 
 			return currentTask
 		}

@@ -27,6 +27,10 @@ internal fun lang(id: String, smartColor: Boolean = true) = lang.message(id, sma
 val Any.asString: String
 	get() = toString()
 
+fun <T> checkAllObjects(vararg objects: T, check: T.() -> Boolean): Boolean {
+	return objects.all(check)
+}
+
 @Throws(NoSuchElementException::class)
 fun app(id: String) = JetCache.registeredApplications.first { it.appIdentity.equals(it) }
 

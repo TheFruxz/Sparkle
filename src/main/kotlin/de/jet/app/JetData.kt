@@ -9,6 +9,7 @@ object JetData {
 
 	val systemPrefix = Preference(
 		file = CONFIG,
+		useCache = true,
 		path = jetPath("prefix"),
 		default = "§6JET §8» ",
 	)

@@ -1,6 +1,7 @@
 package de.jet.library.tool.data
 
 import de.jet.library.structure.app.App
+import de.jet.library.structure.component.Component
 import de.jet.library.structure.smart.Identifiable
 import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
@@ -81,12 +82,11 @@ interface JetFile {
 		fun rootFile(fileName: String, extension: String = "yml") =
 			generate(Path("JETData") / "ROOT" / "$fileName.$extension")
 
-		/*TODO If components exists, here instead of *!*/
-		fun componentFile(component: Identifiable<*>): Nothing = throw IllegalStateException("Components currently not available!")
-		// TODO: 24.07.2021 #app@<component>
+		fun componentFile(component: Component, fileName: String, extension: String = "yml"): JetFile =
+			generate(Path("JETData") / "#${component.id}@${component.vendor.id}" / "$fileName.$extension")
 
 		fun versionFile(fileName: String, extension: String = "yml") =
-			generate(Path("JETData") / Bukkit.getBukkitVersion())
+			generate(Path("JETData") / Bukkit.getBukkitVersion() / "$fileName.$extension")
 
 	}
 

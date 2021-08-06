@@ -4,6 +4,7 @@ import de.jet.app.JetApp
 import de.jet.library.extension.catchException
 import de.jet.library.extension.debugLog
 import de.jet.library.extension.display.message
+import de.jet.library.extension.display.notification
 import de.jet.library.extension.lang
 import de.jet.library.structure.app.App
 import de.jet.library.structure.command.InterchangeAuthorizationCheck.JETCHECK
@@ -11,11 +12,15 @@ import de.jet.library.structure.command.InterchangeExecutorType.*
 import de.jet.library.structure.command.InterchangeResult.*
 import de.jet.library.structure.command.live.InterchangeAccess
 import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.display.message.Transmission.Level.ERROR
+import de.jet.library.tool.display.message.Transmission.Level.FAIL
+import de.jet.library.tool.effect.sound.SoundLibrary
 import de.jet.library.tool.permission.Approval
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
+import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import java.util.logging.Level
 import java.util.logging.Level.FINE
@@ -70,7 +75,7 @@ abstract class Interchange(
 	) {
 		lang("interchange.run.issue.wrongApproval")
 			.replace("[approval]", "$requiredApproval")
-			.message(receiver).display() // TODO: 29.07.2021 Fail notification
+			.notification(FAIL, receiver).display()
 	}
 
 	private fun wrongUsageFeedback(
@@ -83,7 +88,7 @@ abstract class Interchange(
 				} else
 					""
 			}}")
-			.message(receiver).display() // TODO: 01.08.2021 FAIL notification
+			.notification(FAIL, receiver).display()
 	}
 
 	private fun wrongClientFeedback(
@@ -91,7 +96,7 @@ abstract class Interchange(
 	) {
 		lang("interchange.run.issue.wrongClient")
 			.replace("[client]", requiredExecutorType.name)
-			.message(receiver).display() // TODO: 01.08.2021 FAIL notification
+			.notification(FAIL, receiver).display()
 	}
 
 	private fun issueFeedback(
@@ -99,7 +104,7 @@ abstract class Interchange(
 	) {
 		lang("interchange.run.issue.issue")
 			.replace("[interchange]", "Interchange/$label")
-			.message(receiver).display() // TODO: 01.08.2021 ISSUE notification
+			.notification(ERROR, receiver).display()
 	}
 
 	// logic
@@ -116,7 +121,7 @@ abstract class Interchange(
 				|| (sender is ConsoleCommandSender && requiredExecutorType == CONSOLE)
 			) {
 
-				if (true /*todo smart USAGE-CHECK */) {
+				if (completionCheck(sender, this, parameters)) {
 					val clientType = if (sender is Player) PLAYER else CONSOLE
 
 					fun exception(exception: Exception) {
@@ -149,8 +154,7 @@ abstract class Interchange(
 						exception(e)
 					}
 
-				} else
-					wrongUsageFeedback(sender)
+				}
 
 			} else
 				wrongClientFeedback(sender)
@@ -160,6 +164,12 @@ abstract class Interchange(
 
 		return true
 	}
+
+	val completionEngine = completion.buildCompletion()
+
+	val completionDisplay = completion.buildDisplay()
+
+	val completionCheck = completion.buildCheck()
 
 }
 

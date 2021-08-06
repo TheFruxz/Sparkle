@@ -1,23 +1,31 @@
 package de.jet.library.tool.display.message
 
 import de.jet.app.JetData
+import de.jet.library.extension.effect.playSoundEffect
 import de.jet.library.extension.paper.consoleSender
 import de.jet.library.extension.paper.onlinePlayers
 import de.jet.library.tool.display.message.DisplayType.*
+import de.jet.library.tool.display.message.Transmission.Level.GENERAL
+import de.jet.library.tool.effect.sound.SoundLibrary
+import de.jet.library.tool.effect.sound.SoundMelody
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
+import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.title.Title
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Entity
+import javax.swing.text.html.parser.DTDConstants.GENERAL
 
 @Serializable
 data class Transmission(
 	var prefix: Component = Component.text(JetData.systemPrefix.content),
-	// TODO: 24.07.2021 SoundMelody
 	var content: TextComponent.Builder = Component.text(),
 	var participants: MutableList<CommandSender> = mutableListOf(),
 	var withoutPrefix: Boolean = false,
 	var displayType: DisplayType = DISPLAY_CHAT,
+	var promptSound: SoundMelody? = null,
+	var level: Level = Level.GENERAL
 ) {
 
 	infix fun edit(action: Transmission.() -> Unit) = apply(action)
@@ -34,20 +42,29 @@ data class Transmission(
 
 	infix fun displayType(displayType: DisplayType) = edit { this.displayType = displayType }
 
+	infix fun promptSound(soundMelody: SoundMelody?) = edit { this.promptSound = soundMelody }
+
 	fun display(): Transmission {
+		val nextRound = mutableSetOf<Entity>()
+		val displayObject = prefix
+			.append(content)
+
 		participants
 			.forEach { participant ->
 
 				when (displayType) {
-					DISPLAY_CHAT -> participant.sendMessage(content)
-					DISPLAY_ACTIONBAR -> participant.sendActionBar(content)
-					DISPLAY_TITLE -> participant.showTitle(Title.title(content.build(), Component.empty()))
-					DISPLAY_SUBTITLE -> participant.showTitle(Title.title(Component.empty(), content.build()))
+					DISPLAY_CHAT -> participant.sendMessage(displayObject)
+					DISPLAY_ACTIONBAR -> participant.sendActionBar(displayObject)
+					DISPLAY_TITLE -> participant.showTitle(Title.title(displayObject, Component.empty()))
+					DISPLAY_SUBTITLE -> participant.showTitle(Title.title(Component.empty(), displayObject))
 				}
 
-				// TODO: 26.07.2021 Here SoundMelody-Sound
+				if (participant is Entity)
+					nextRound.add(participant)
 
 			}
+
+		promptSound?.play(nextRound)
 
 		return this
 	}
@@ -58,5 +75,19 @@ data class Transmission(
 		.display()
 
 	override fun toString() = content.content()
+
+	enum class Level(
+		val promptSound: SoundMelody?,
+	) {
+
+		GENERAL(SoundLibrary.NOTIFICATION_GENERAL),
+		INFO(SoundLibrary.NOTIFICATION_INFO),
+		FAIL(SoundLibrary.NOTIFICATION_FAIL),
+		ERROR(SoundLibrary.NOTIFICATION_ERROR),
+		LEVEL(SoundLibrary.NOTIFICATION_LEVEL),
+		WARNING(SoundLibrary.NOTIFICATION_WARNING),
+		ATTENTION(SoundLibrary.NOTIFICATION_ATTENTION),
+
+	}
 
 }

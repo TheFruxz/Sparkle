@@ -5,7 +5,7 @@ import de.jet.library.structure.smart.Identifiable
 import de.jet.library.structure.smart.Logging
 
 abstract class Component(
-	override val vendor: App
+	override val vendor: App,
 ) : Identifiable<Component>, Logging {
 
 	override val logSection: String
