@@ -20,6 +20,7 @@ class PlayerDamageByPlayerEvent(
 	override fun getHandlers() = handlerList
 
 	companion object {
+
 		private val handlerList = HandlerList()
 
 		@JvmStatic

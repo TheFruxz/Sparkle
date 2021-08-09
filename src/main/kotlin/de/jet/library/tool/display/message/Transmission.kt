@@ -4,6 +4,7 @@ import de.jet.app.JetData
 import de.jet.library.extension.effect.playSoundEffect
 import de.jet.library.extension.paper.consoleSender
 import de.jet.library.extension.paper.onlinePlayers
+import de.jet.library.runtime.event.PlayerReceiveInterchangeEvent
 import de.jet.library.tool.display.message.DisplayType.*
 import de.jet.library.tool.display.message.Transmission.Level.GENERAL
 import de.jet.library.tool.effect.sound.SoundLibrary
@@ -15,6 +16,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.title.Title
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Entity
+import org.bukkit.entity.Player
 import javax.swing.text.html.parser.DTDConstants.GENERAL
 
 @Serializable
@@ -49,20 +51,26 @@ data class Transmission(
 		val displayObject = prefix
 			.append(content)
 
-		participants
-			.forEach { participant ->
+		for (participant in participants) {
 
-				when (displayType) {
-					DISPLAY_CHAT -> participant.sendMessage(displayObject)
-					DISPLAY_ACTIONBAR -> participant.sendActionBar(displayObject)
-					DISPLAY_TITLE -> participant.showTitle(Title.title(displayObject, Component.empty()))
-					DISPLAY_SUBTITLE -> participant.showTitle(Title.title(Component.empty(), displayObject))
-				}
+			if (participant is Player) {
+				val internal = PlayerReceiveInterchangeEvent(participant, this, false)
 
-				if (participant is Entity)
-					nextRound.add(participant)
-
+				if (internal.callEvent())
+					if (internal.isCancelled)
+						continue
 			}
+
+			when (displayType) {
+				DISPLAY_CHAT -> participant.sendMessage(displayObject)
+				DISPLAY_ACTIONBAR -> participant.sendActionBar(displayObject)
+				DISPLAY_TITLE -> participant.showTitle(Title.title(displayObject, Component.empty()))
+				DISPLAY_SUBTITLE -> participant.showTitle(Title.title(Component.empty(), displayObject))
+			}
+
+			if (participant is Entity)
+				nextRound.add(participant)
+		}
 
 		promptSound?.play(nextRound)
 
