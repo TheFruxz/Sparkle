@@ -34,4 +34,4 @@ fun buildMelody(
 	wholeRepeats: Int,
 	sync: Boolean = true,
 	block: SoundMelody.Builder.() -> Unit,
-) = SoundMelody(insideDelay, wholeRepeats, sync).builder.apply(block)
+) = SoundMelody(insideDelay, wholeRepeats, sync).builder.apply(block).produce()
