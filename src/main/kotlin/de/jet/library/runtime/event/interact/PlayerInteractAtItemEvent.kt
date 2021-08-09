@@ -4,18 +4,22 @@ import de.jet.library.tool.display.item.Item
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
+import org.bukkit.event.Event.Result.DEFAULT
 import org.bukkit.event.HandlerList
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerEvent
+import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 
-// TODO: 31.07.2021 build and run via component-task
 data class PlayerInteractAtItemEvent(
 	val whoInteract: Player,
-	val itemStack: ItemStack,
+	val item: Item,
 	val material: Material,
 	val action: Action,
-	private var isCancelled: Boolean = false
+	override val origin: PlayerInteractEvent,
+	private var isCancelled: Boolean = false,
+	override var interactedBlock: Result = DEFAULT,
+	override var interactedItem: Result = DEFAULT,
 ) : JetPlayerInteractEvent, PlayerEvent(whoInteract, false), Cancellable {
 
 	override fun isCancelled() = isCancelled
@@ -24,11 +28,7 @@ data class PlayerInteractAtItemEvent(
 		isCancelled = cancel
 	}
 
-	override var isDenied: Boolean? = null
-
 	override fun getHandlers() = handlerList
-
-	val item = Item(itemStack)
 
 	companion object {
 
@@ -36,6 +36,7 @@ data class PlayerInteractAtItemEvent(
 
 		@JvmStatic
 		fun getHandlerList() = handlerList
+
 	}
 
 }

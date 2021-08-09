@@ -15,7 +15,7 @@ class Preference<SHELL : Any>(
 ) : Identifiable<Preference<SHELL>> {
 
 	override val id = "${file.file.pathString}:${path.id}"
-	val inFilePath = "${path.id}"
+	val inFilePath = path.id
 
 	@Suppress("UNCHECKED_CAST")
 	var content: SHELL

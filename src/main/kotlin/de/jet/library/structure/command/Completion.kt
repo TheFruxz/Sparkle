@@ -93,7 +93,7 @@ data class CompletionComponentSection(
 // Completion-Structure
 
 data class Completion(
-	val sections: MutableList<CompletionComponentSection>,
+	var sections: MutableList<CompletionComponentSection>,
 	var infinite: Boolean
 ) {
 
