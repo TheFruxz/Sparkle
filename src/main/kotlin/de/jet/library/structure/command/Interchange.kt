@@ -1,9 +1,7 @@
 package de.jet.library.structure.command
 
-import de.jet.app.JetApp
 import de.jet.library.extension.catchException
 import de.jet.library.extension.debugLog
-import de.jet.library.extension.display.message
 import de.jet.library.extension.display.notification
 import de.jet.library.extension.lang
 import de.jet.library.structure.app.App
@@ -12,23 +10,20 @@ import de.jet.library.structure.command.InterchangeExecutorType.*
 import de.jet.library.structure.command.InterchangeResult.*
 import de.jet.library.structure.command.live.InterchangeAccess
 import de.jet.library.structure.smart.Identifiable
+import de.jet.library.structure.smart.Logging
 import de.jet.library.tool.display.message.Transmission.Level.ERROR
 import de.jet.library.tool.display.message.Transmission.Level.FAIL
-import de.jet.library.tool.effect.sound.SoundLibrary
 import de.jet.library.tool.permission.Approval
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
-import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
-import java.util.logging.Level
-import java.util.logging.Level.FINE
 import java.util.logging.Level.WARNING
 import kotlin.Exception
 
 abstract class Interchange(
-	val vendor: App,
+	final override val vendor: App,
 	val label: String,
 	val aliases: Set<String> = emptySet(),
 	val requiresAuthorization: Boolean = false,
@@ -36,13 +31,13 @@ abstract class Interchange(
 	val authorizationCheck: InterchangeAuthorizationCheck = JETCHECK,
 	val hiddenFromRecommendation: Boolean = false,
 	val completion: Completion,
-) : CommandExecutor, Identifiable<Interchange> {
+) : CommandExecutor, Identifiable<Interchange>, Logging {
+
+	override val sectionLabel = "InterchangeEngine"
 
 	override val id = "$vendor:$label"
 
 	val requiredApproval = if (requiresAuthorization) Approval.fromApp(vendor, "interchange.$label") else null
-
-	val log = App.createLog(JetApp.instance.appIdentity, "Interchange")
 
 	// parameters
 
@@ -51,8 +46,8 @@ abstract class Interchange(
 	// runtime-functions
 
 	fun interchangeException(exception: Exception, executor: CommandSender, executorType: InterchangeExecutorType) {
-		log.log(
-			Level.WARNING,
+		sectionLog.log(
+			WARNING,
 			"Executor ${executor.name} as ${executorType.name} caused an error at execution of "
 		)
 	}
@@ -125,7 +120,7 @@ abstract class Interchange(
 					val clientType = if (sender is Player) PLAYER else CONSOLE
 
 					fun exception(exception: Exception) {
-						log.log(WARNING, "Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!")
+						sectionLog.log(WARNING, "Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!")
 						issueFeedback(sender)
 						catchException(exception)
 					}

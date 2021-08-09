@@ -7,9 +7,9 @@ interface Logging {
 
 	val vendor: Identifiable<App>
 
-	val logSection: String
+	val sectionLabel: String
 
-	val log: Logger
-		get() = App.createLog(vendor.id, logSection)
+	val sectionLog: Logger
+		get() = App.createLog(vendor.id, sectionLabel)
 
 }

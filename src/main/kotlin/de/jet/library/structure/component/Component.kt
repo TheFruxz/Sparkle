@@ -8,7 +8,7 @@ abstract class Component(
 	override val vendor: App,
 ) : Identifiable<Component>, Logging {
 
-	override val logSection: String
+	override val sectionLabel: String
 		get() = "component/$id"
 
 	abstract fun start()

@@ -3,6 +3,7 @@ package de.jet.library.tool.effect.sound
 import de.jet.library.JET
 import de.jet.library.extension.effect.playSoundEffect
 import de.jet.library.extension.tasky.task
+import de.jet.library.structure.smart.Producible
 import de.jet.library.tool.tasky.TemporalAdvice
 import kotlinx.serialization.Serializable
 import org.bukkit.entity.Entity
@@ -50,11 +51,11 @@ class SoundMelody(
 
 	class Builder internal constructor(
 		base: SoundMelody,
-	) {
+	) : Producible<SoundMelody> {
 
 		private var currentState: SoundMelody = base
 
-		fun produce() = currentState
+		override fun produce() = currentState
 
 		fun addToBeat(soundData: SoundData) {
 			currentState.content = currentState.content.apply {

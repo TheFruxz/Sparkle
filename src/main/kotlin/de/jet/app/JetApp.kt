@@ -5,6 +5,7 @@ import de.jet.app.component.events.JetEventsComponent
 import de.jet.app.interchange.JETInterchange
 import de.jet.library.extension.data.div
 import de.jet.library.extension.data.jetPath
+import de.jet.library.extension.mainLog
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.AppCompanion
 import de.jet.library.tool.data.DataTransformer
@@ -55,7 +56,7 @@ class JetApp : App() {
 		}.runTaskLater(this, 20L*15)
 
 		languageSpeaker.let { languageSpeaker ->
-			log.log(Level.INFO, "Speaking langauge: ${languageSpeaker.languageId}")
+			mainLog(Level.INFO, "Speaking langauge: ${languageSpeaker.languageId}")
 			with(languageSpeaker.languageContainer) {
 				"""
 					Display-Language detected:
@@ -66,7 +67,7 @@ class JetApp : App() {
 					Website: ${this.languageVendorWebsite};
 					Test: ${languageSpeaker.message("system.hello")};
 				""".trimIndent().lines().forEach {
-					log.log(Level.INFO, it)
+					mainLog(Level.INFO, it)
 				}
 			}
 		}
