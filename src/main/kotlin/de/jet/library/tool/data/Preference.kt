@@ -1,8 +1,12 @@
 package de.jet.library.tool.data
 
 import de.jet.app.JetCache.registeredPreferenceCache
+import de.jet.library.JET
 import de.jet.library.extension.debugLog
+import de.jet.library.extension.tasky.task
 import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.tasky.TemporalAdvice
+import de.jet.library.tool.tasky.TemporalAdvice.Companion
 import kotlin.io.path.pathString
 
 class Preference<SHELL : Any>(
@@ -12,6 +16,7 @@ class Preference<SHELL : Any>(
 	val useCache: Boolean = false,
 	val readAndWrite: Boolean = true,
 	var transformer: DataTransformer<SHELL, out Any> = DataTransformer.empty(),
+	var async: Boolean = false,
 ) : Identifiable<Preference<SHELL>> {
 
 	override val id = "${file.file.pathString}:${path.id}"
@@ -20,51 +25,54 @@ class Preference<SHELL : Any>(
 	@Suppress("UNCHECKED_CAST")
 	var content: SHELL
 		get() {
-			val currentCacheValue = registeredPreferenceCache[inFilePath]
+			var out: SHELL = default
+			task(JET.appInstance, TemporalAdvice.instant(async = async)) {
+				val currentCacheValue = registeredPreferenceCache[inFilePath]
 
-			if (!useCache && currentCacheValue != null) {
-				return try {
-					currentCacheValue as SHELL
-				} catch (e: ClassCastException) {
-					debugLog("Reset property $inFilePath to default \n${e.stackTrace}")
-					content = default
-					default
-				}
-			} else {
-				file.load()
-				fun toShellTransformer() = transformer.toShell as Any.() -> SHELL
-				val currentFileValue = file.get<SHELL>(inFilePath)?.let { toShellTransformer()(it) }
-				val newContent = if (file.loader.contains(inFilePath) && currentFileValue != null) {
-					currentFileValue
-				} else default
+				if (!useCache && currentCacheValue != null) {
+					out = try {
+						currentCacheValue as SHELL
+					} catch (e: ClassCastException) {
+						debugLog("Reset property $inFilePath to default \n${e.stackTrace}")
+						content = default
+						default
+					}
+				} else {
+					file.load()
+					fun toShellTransformer() = transformer.toShell as Any.() -> SHELL
+					val currentFileValue = file.get<SHELL>(inFilePath)?.let { toShellTransformer()(it) }
+					val newContent = if (file.loader.contains(inFilePath) && currentFileValue != null) {
+						currentFileValue
+					} else default
 
-				return newContent.let {
-					if (useCache)
-						registeredPreferenceCache[inFilePath] = it
-					if (it == default)
-						file.set(inFilePath, transformer.toCore(default))
+					out = newContent.let {
+						if (useCache)
+							registeredPreferenceCache[inFilePath] = it
+						if (it == default)
+							file.set(inFilePath, transformer.toCore(default))
 						file.save()
-					it
+						it
+					}
+
 				}
-
 			}
-
+			return out
 		}
 		set(value) {
+			task(JET.appInstance, Companion.instant(async = async)) {
+				if (readAndWrite) {
+					file.load() // TODO: 23.07.2021 SUS? (overriding cache?)
+				}
 
-			if (readAndWrite) {
-				file.load() // TODO: 23.07.2021 SUS? (overriding cache?)
+				transformer.toCore(value).let { coreObject ->
+					if (useCache)
+						registeredPreferenceCache[id] = coreObject
+					file.set(path.id, coreObject)
+				}
+
+				if (readAndWrite)
+					file.save()
 			}
-
-			transformer.toCore(value).let { coreObject ->
-				if (useCache)
-					registeredPreferenceCache[id] = coreObject
-				file.set(path.id, coreObject)
-			}
-
-			if (readAndWrite)
-				file.save()
-
 		}
 
 	fun <CORE : Any> transformer(
