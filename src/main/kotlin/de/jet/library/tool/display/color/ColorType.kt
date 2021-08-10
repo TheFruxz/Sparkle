@@ -1,12 +1,12 @@
 package de.jet.library.tool.display.color
 
+import de.jet.library.extension.asString
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.util.RGBLike
+import net.md_5.bungee.api.ChatColor
 import org.bukkit.Color
 import org.bukkit.DyeColor
 import org.bukkit.Material
-import org.bukkit.entity.Item
-import org.bukkit.inventory.ItemStack
 
 enum class ColorType : RGBLike {
 
@@ -46,6 +46,10 @@ enum class ColorType : RGBLike {
 			RED -> DyeColor.RED
 			BLACK -> DyeColor.BLACK
 		}
+	}
+
+	val chatColor by lazy {
+		ChatColor.of(textColor.asHexString())
 	}
 
 	val rawColor: Color by lazy {
@@ -113,6 +117,8 @@ enum class ColorType : RGBLike {
 	override fun green() = rawColor.green
 
 	override fun blue() = rawColor.blue
+
+	override fun toString() = chatColor.toString()
 
 	companion object {
 

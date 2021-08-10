@@ -1,23 +1,18 @@
 package de.jet.library.tool.display.message
 
 import de.jet.app.JetData
-import de.jet.library.extension.effect.playSoundEffect
 import de.jet.library.extension.paper.consoleSender
 import de.jet.library.extension.paper.onlinePlayers
-import de.jet.library.runtime.event.PlayerReceiveInterchangeEvent
 import de.jet.library.tool.display.message.DisplayType.*
-import de.jet.library.tool.display.message.Transmission.Level.GENERAL
 import de.jet.library.tool.effect.sound.SoundLibrary
 import de.jet.library.tool.effect.sound.SoundMelody
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
-import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.title.Title
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
-import javax.swing.text.html.parser.DTDConstants.GENERAL
 
 @Serializable
 data class Transmission(
@@ -52,14 +47,6 @@ data class Transmission(
 			.append(content)
 
 		for (participant in participants) {
-
-			if (participant is Player) {
-				val internal = PlayerReceiveInterchangeEvent(participant, this, false)
-
-				if (internal.callEvent())
-					if (internal.isCancelled)
-						continue
-			}
 
 			when (displayType) {
 				DISPLAY_CHAT -> participant.sendMessage(displayObject)

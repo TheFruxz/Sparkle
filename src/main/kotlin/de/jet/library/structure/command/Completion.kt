@@ -185,22 +185,29 @@ data class Completion(
 
 					if (index <= parameters.size) {
 
-						if (value.mustMatchOutput && !value.components.flatMap { it.completion() }.contains(parameters[index])) {
+						if (value.isRequired || (!value.isRequired && parameters.lastIndex >= index)) {
 
-							lang("interchange.run.check.noMatch")
-								.replace(
-									"[input]" to parameters[index],
-									"[usage]" to (value.components.joinToString("; ") { it.completion().joinToString("/")}).let { out ->
-										if (out.length <= 40) {
-											out
-										} else
-											"${out.take(40).dropLast(3)}..."
-									},
-								)
-								.notification(FAIL, executor)
-								.display()
+							if (value.mustMatchOutput && !value.components.flatMap { it.completion() }
+									.contains(parameters[index])) {
 
-							return@check false
+								lang("interchange.run.check.noMatch")
+									.replace(
+										"[input]" to parameters[index],
+										"[usage]" to (value.components.joinToString("; ") {
+											it.completion().joinToString("/")
+										}).let { out ->
+											if (out.length <= 40) {
+												out
+											} else
+												"${out.take(40).dropLast(3)}..."
+										},
+									)
+									.notification(FAIL, executor)
+									.display()
+
+								return@check false
+
+							}
 
 						}
 
