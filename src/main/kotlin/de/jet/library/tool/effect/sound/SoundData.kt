@@ -1,6 +1,6 @@
 package de.jet.library.tool.effect.sound
 
-import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.smart.Identifiable
 import de.jet.library.tool.effect.Effect
 import kotlinx.serialization.Serializable
 import org.bukkit.Sound

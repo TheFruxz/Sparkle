@@ -1,4 +1,4 @@
-package de.jet.library.structure.smart
+package de.jet.library.tool.smart
 
 interface Producible<T : Any> {
 

@@ -9,14 +9,13 @@ import de.jet.library.extension.forceCast
 import de.jet.library.extension.paper.legacyString
 import de.jet.library.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.library.structure.app.App
-import de.jet.library.structure.smart.Identifiable
-import de.jet.library.structure.smart.Producible
+import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.Producible
 import de.jet.library.tool.display.color.ColorType
 import de.jet.library.tool.display.item.PostProperty.*
 import de.jet.library.tool.display.item.action.ItemClickAction
 import de.jet.library.tool.display.item.action.ItemInteractAction
 import de.jet.library.tool.display.item.quirk.Quirk
-import de.jet.library.tool.display.item.quirk.Quirk.Companion
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
 import net.kyori.adventure.text.event.HoverEventSource
@@ -456,6 +455,71 @@ data class Item(
 	// base functions
 
 	override fun asHoverEvent(op: UnaryOperator<ShowItem>) = produce().asHoverEvent(op)
+
+	fun isSame(
+		other: Item,
+		ignoreIdentity: Boolean = false,
+		ignoreMaterial: Boolean = false,
+		ignoreLabel: Boolean = false,
+		ignoreSize: Boolean = false,
+		ignoreDamage: Boolean = false,
+		ignoreLore: Boolean = false,
+		ignoreModifications: Boolean = false,
+		ignoreFlags: Boolean = false,
+
+		): Boolean {
+		var isOtherItem = false
+
+		if (!ignoreIdentity) {
+			if (this.id != other.id) {
+				isOtherItem = true
+			}
+		}
+
+		if (!ignoreMaterial) {
+			if (this.material != other.material) {
+				isOtherItem = true
+			}
+		}
+
+		if (!ignoreLabel) {
+			if (this.label != other.label) {
+				isOtherItem = true
+			}
+		}
+
+		if (!ignoreSize) {
+			if (this.size != other.size) {
+				isOtherItem = true
+			}
+		}
+
+		if (!ignoreDamage) {
+			if (this.damage != other.damage) {
+				isOtherItem = true
+			}
+		}
+
+		if (!ignoreLore) {
+			if (this.lore != other.lore) {
+				isOtherItem = true
+			}
+		}
+
+		if (!ignoreModifications) {
+			if (this.modifications != other.modifications) {
+				isOtherItem = true
+			}
+		}
+
+		if (!ignoreFlags) {
+			if (this.flags != other.flags) {
+				isOtherItem = true
+			}
+		}
+
+		return !isOtherItem
+	}
 
 	companion object {
 

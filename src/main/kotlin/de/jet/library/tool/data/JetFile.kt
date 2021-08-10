@@ -2,7 +2,7 @@ package de.jet.library.tool.data
 
 import de.jet.library.structure.app.App
 import de.jet.library.structure.component.Component
-import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.smart.Identifiable
 import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
 import java.nio.file.Path

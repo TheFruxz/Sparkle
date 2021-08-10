@@ -5,8 +5,7 @@ import de.jet.app.JetCache
 import de.jet.library.JET
 import de.jet.library.runtime.app.LanguageSpeaker
 import de.jet.library.structure.app.App
-import de.jet.library.structure.smart.Identifiable
-import kotlinx.serialization.Serializable
+import de.jet.library.tool.smart.Identifiable
 import java.util.logging.Level
 
 fun <T : Any?> T.debugLog(message: String) = this.also {

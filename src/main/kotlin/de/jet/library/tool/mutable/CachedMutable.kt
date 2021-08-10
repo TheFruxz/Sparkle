@@ -1,7 +1,7 @@
 package de.jet.library.tool.mutable
 
 import de.jet.app.JetCache
-import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.smart.Identifiable
 
 class CachedMutable<T>(
 	val cacheId: String,

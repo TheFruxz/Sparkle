@@ -4,7 +4,7 @@ import de.jet.app.JetCache.registeredPreferenceCache
 import de.jet.library.JET
 import de.jet.library.extension.debugLog
 import de.jet.library.extension.tasky.task
-import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.smart.Identifiable
 import de.jet.library.tool.tasky.TemporalAdvice
 import de.jet.library.tool.tasky.TemporalAdvice.Companion
 import kotlin.io.path.pathString

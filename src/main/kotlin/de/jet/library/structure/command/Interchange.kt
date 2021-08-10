@@ -9,8 +9,8 @@ import de.jet.library.structure.command.InterchangeAuthorizationCheck.JETCHECK
 import de.jet.library.structure.command.InterchangeExecutorType.*
 import de.jet.library.structure.command.InterchangeResult.*
 import de.jet.library.structure.command.live.InterchangeAccess
-import de.jet.library.structure.smart.Identifiable
-import de.jet.library.structure.smart.Logging
+import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.Logging
 import de.jet.library.tool.display.message.Transmission.Level.ERROR
 import de.jet.library.tool.display.message.Transmission.Level.FAIL
 import de.jet.library.tool.permission.Approval

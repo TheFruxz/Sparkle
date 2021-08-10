@@ -17,7 +17,7 @@ import de.jet.library.structure.app.event.EventListener
 import de.jet.library.structure.app.interchange.IssuedInterchange
 import de.jet.library.structure.command.Interchange
 import de.jet.library.structure.component.Component
-import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.smart.Identifiable
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin

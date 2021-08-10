@@ -1,13 +1,9 @@
 import de.jet.library.extension.collection.mapToString
 import de.jet.library.structure.command.CompletionVariable
 import de.jet.library.structure.command.buildCompletion
-import de.jet.library.structure.command.infinite
-import de.jet.library.structure.command.isRequired
-import de.jet.library.structure.command.label
-import de.jet.library.structure.command.mustMatchOutput
 import de.jet.library.structure.command.next
 import de.jet.library.structure.command.plus
-import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.smart.Identifiable
 import org.junit.jupiter.api.Test
 
 internal class InterchangeTest {

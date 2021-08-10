@@ -1,10 +1,8 @@
 package de.jet.library.tool.permission
 
 import de.jet.library.structure.app.App
-import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.smart.Identifiable
 import kotlinx.serialization.Serializable
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
 import org.bukkit.permissions.Permissible
 
 @Serializable

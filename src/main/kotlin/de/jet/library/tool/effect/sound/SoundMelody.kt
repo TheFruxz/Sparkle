@@ -3,7 +3,7 @@ package de.jet.library.tool.effect.sound
 import de.jet.library.JET
 import de.jet.library.extension.effect.playSoundEffect
 import de.jet.library.extension.tasky.task
-import de.jet.library.structure.smart.Producible
+import de.jet.library.tool.smart.Producible
 import de.jet.library.tool.tasky.TemporalAdvice
 import kotlinx.serialization.Serializable
 import org.bukkit.entity.Entity

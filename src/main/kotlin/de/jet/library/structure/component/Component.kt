@@ -1,8 +1,8 @@
 package de.jet.library.structure.component
 
 import de.jet.library.structure.app.App
-import de.jet.library.structure.smart.Identifiable
-import de.jet.library.structure.smart.Logging
+import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.Logging
 
 abstract class Component(
 	override val vendor: App,

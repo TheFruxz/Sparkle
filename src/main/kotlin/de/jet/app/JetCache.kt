@@ -7,6 +7,7 @@ import de.jet.library.structure.app.cache.CacheDepthLevel
 import de.jet.library.structure.component.Component
 import de.jet.library.tool.display.item.action.ItemClickAction
 import de.jet.library.tool.display.item.action.ItemInteractAction
+import de.jet.library.tool.display.ui.panel.PanelFlag
 import java.util.*
 
 object JetCache : AppCache {
@@ -26,6 +27,8 @@ object JetCache : AppCache {
 	val registeredItemInteractActions = mutableMapOf<String, ItemInteractAction>()
 
 	val registeredComponents = mutableSetOf<Component>()
+
+	val registeredPanelFlags = mutableMapOf<String, Set<PanelFlag>>()
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
 		TODO("Not yet implemented")

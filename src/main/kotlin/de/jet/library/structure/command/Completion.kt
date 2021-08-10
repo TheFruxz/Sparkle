@@ -1,16 +1,13 @@
 package de.jet.library.structure.command
 
-import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent.Completion.completion
 import de.jet.app.JetCache
 import de.jet.library.extension.collection.replace
 import de.jet.library.extension.display.notification
 import de.jet.library.extension.lang
 import de.jet.library.extension.paper.hasApproval
-import de.jet.library.structure.app.App
-import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.smart.Identifiable
 import de.jet.library.tool.display.message.Transmission.Level.FAIL
 import de.jet.library.tool.permission.Approval
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 

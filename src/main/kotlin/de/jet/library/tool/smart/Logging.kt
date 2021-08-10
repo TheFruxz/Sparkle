@@ -1,4 +1,4 @@
-package de.jet.library.structure.smart
+package de.jet.library.tool.smart
 
 import de.jet.library.structure.app.App
 import java.util.logging.Logger

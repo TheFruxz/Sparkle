@@ -1,7 +1,7 @@
 package de.jet.library.structure.app.event
 
 import de.jet.library.structure.app.App
-import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.smart.Identifiable
 import org.bukkit.event.Listener
 import java.util.*
 

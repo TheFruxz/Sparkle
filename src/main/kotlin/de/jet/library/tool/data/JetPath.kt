@@ -1,6 +1,6 @@
 package de.jet.library.tool.data
 
-import de.jet.library.structure.smart.Identifiable
+import de.jet.library.tool.smart.Identifiable
 
 /**
  * The path used inside yaml files

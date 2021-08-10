@@ -3,8 +3,8 @@ package de.jet.library.structure.command.live
 import de.jet.library.structure.app.App
 import de.jet.library.structure.command.Interchange
 import de.jet.library.structure.command.InterchangeExecutorType
-import de.jet.library.structure.smart.Identifiable
-import de.jet.library.structure.smart.Logging
+import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.Logging
 import org.bukkit.command.CommandSender
 import java.util.logging.Level
 
