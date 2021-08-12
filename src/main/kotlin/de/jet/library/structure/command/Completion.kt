@@ -238,7 +238,7 @@ data class Completion(
 
 infix fun Completion.next(completionComponent: CompletionComponent) =
 	apply {
-		sections.add(CompletionComponentSection(mutableListOf(completionComponent)))
+		sections.add(CompletionComponentSection(mutableListOf(completionComponent), isRequired = sections.none { !it.isRequired }))
 	}
 
 infix fun Completion.next(completionVariable: CompletionVariable) =

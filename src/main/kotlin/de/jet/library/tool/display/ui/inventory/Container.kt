@@ -1,9 +1,8 @@
 package de.jet.library.tool.display.ui.inventory
 
-import de.jet.library.extension.display.LIGHT_GRAY
+import de.jet.library.extension.display.GRAY
 import de.jet.library.extension.display.ui.item
 import de.jet.library.tool.display.color.ColorType
-import de.jet.library.tool.display.color.ColorType.GRAY
 import de.jet.library.tool.display.item.Item
 import de.jet.library.tool.display.ui.UI
 import de.jet.library.tool.effect.sound.SoundMelody
@@ -19,9 +18,9 @@ import kotlin.math.roundToInt
 
 open class Container(
 	var content: MutableMap<Int, Item> = mutableMapOf(),
-	var label: Component = Component.text("${LIGHT_GRAY}Container"),
+	var label: Component = Component.text("${GRAY}Container"),
 	var size: Int = 9*3,
-	var theme: ColorType = GRAY,
+	var theme: ColorType = ColorType.GRAY,
 	var openSound: SoundMelody? = null,
 	override var id: String = "${UUID.randomUUID()}"
 ) : UI, Cloneable {
@@ -257,12 +256,10 @@ open class Container(
 
 	operator fun get(vararg i: Int) = get(i.toTypedArray())
 
-	override fun display(receiver: Player) {
-		TODO("Not yet implemented")
-	}
+	override fun display(receiver: Player) = display(humanEntity = receiver)
 
 	override fun display(humanEntity: HumanEntity) {
-		TODO("Not yet implemented")
+		humanEntity.openInventory(rawInventory)
 	}
 
 }

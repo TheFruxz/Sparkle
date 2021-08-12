@@ -4,9 +4,12 @@ import de.jet.app.JetCache
 import de.jet.library.JET
 import de.jet.library.extension.asString
 import de.jet.library.extension.debugLog
+import de.jet.library.extension.display.GRAY
+import de.jet.library.extension.display.WHITE
 import de.jet.library.extension.display.ui.changeColor
 import de.jet.library.extension.forceCast
 import de.jet.library.extension.paper.legacyString
+import de.jet.library.extension.system
 import de.jet.library.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.library.structure.app.App
 import de.jet.library.tool.smart.Identifiable
@@ -95,7 +98,7 @@ data class Item(
 
 	override val id = identity
 
-	val identityNamespace = NamespacedKey(JET.appInstance, "itemIdentity")
+	val identityNamespace = NamespacedKey(system, "itemIdentity")
 
 	var clickAction: ItemClickAction?
 		get() = JetCache.registeredItemClickActions[id]
@@ -139,9 +142,9 @@ data class Item(
 			}
 
 			if (this@Item.lore.isNotBlank() && this@Item.lore.isNotEmpty())
-				lore(this@Item.lore.lines().map(fun String.(): @NonNull Component {
-					return Component.text(this).asComponent()
-				}).toList())
+				lore(this@Item.lore.lines().map {
+					Component.text("$WHITE$it").asComponent()
+				}.toList())
 
 			if (flags.isNotEmpty())
 				addItemFlags(*flags.toTypedArray())
@@ -170,6 +173,8 @@ data class Item(
 				itemMeta.persistentDataContainer.apply { itemStoreApplier() }
 
 			if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
+
+			itemStack.itemMeta = itemMeta
 
 		}
 

@@ -1,6 +1,6 @@
 package de.jet.library.tool.tasky
 
-import de.jet.library.JET
+import de.jet.library.extension.system
 import org.bukkit.scheduler.BukkitRunnable
 
 interface TemporalAdvice {
@@ -12,27 +12,27 @@ interface TemporalAdvice {
 		fun instant(async: Boolean = false) = object : TemporalAdvice {
 			override fun run(runnable: BukkitRunnable) {
 				if (async) {
-					runnable.runTaskAsynchronously(JET.appInstance)
+					runnable.runTaskAsynchronously(system)
 				} else
-					runnable.runTask(JET.appInstance)
+					runnable.runTask(system)
 			}
 		}
 
 		fun delayed(delay: Long, async: Boolean = false) = object : TemporalAdvice {
 			override fun run(runnable: BukkitRunnable) {
 				if (async) {
-					runnable.runTaskLaterAsynchronously(JET.appInstance, delay)
+					runnable.runTaskLaterAsynchronously(system, delay)
 				} else
-					runnable.runTaskLater(JET.appInstance, delay)
+					runnable.runTaskLater(system, delay)
 			}
 		}
 
 		fun ticking(delay: Long, distance: Long, async: Boolean = false) = object : TemporalAdvice {
 			override fun run(runnable: BukkitRunnable) {
 				if (async) {
-					runnable.runTaskTimerAsynchronously(JET.appInstance, delay, distance)
+					runnable.runTaskTimerAsynchronously(system, delay, distance)
 				} else
-					runnable.runTaskTimer(JET.appInstance, delay, distance)
+					runnable.runTaskTimer(system, delay, distance)
 			}
 		}
 

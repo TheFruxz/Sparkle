@@ -3,6 +3,7 @@ package de.jet.library.tool.data
 import de.jet.app.JetCache.registeredPreferenceCache
 import de.jet.library.JET
 import de.jet.library.extension.debugLog
+import de.jet.library.extension.system
 import de.jet.library.extension.tasky.task
 import de.jet.library.tool.smart.Identifiable
 import de.jet.library.tool.tasky.TemporalAdvice
@@ -26,7 +27,7 @@ class Preference<SHELL : Any>(
 	var content: SHELL
 		get() {
 			var out: SHELL = default
-			task(JET.appInstance, TemporalAdvice.instant(async = async)) {
+			task(system, TemporalAdvice.instant(async = async)) {
 				val currentCacheValue = registeredPreferenceCache[inFilePath]
 
 				if (!useCache && currentCacheValue != null) {
@@ -59,7 +60,7 @@ class Preference<SHELL : Any>(
 			return out
 		}
 		set(value) {
-			task(JET.appInstance, Companion.instant(async = async)) {
+			task(system, Companion.instant(async = async)) {
 				if (readAndWrite) {
 					file.load() // TODO: 23.07.2021 SUS? (overriding cache?)
 				}

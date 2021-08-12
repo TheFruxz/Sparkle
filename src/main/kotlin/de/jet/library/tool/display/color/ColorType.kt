@@ -1,9 +1,8 @@
 package de.jet.library.tool.display.color
 
-import de.jet.library.extension.asString
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.util.RGBLike
-import net.md_5.bungee.api.ChatColor
+import org.bukkit.ChatColor
 import org.bukkit.Color
 import org.bukkit.DyeColor
 import org.bukkit.Material
@@ -49,7 +48,24 @@ enum class ColorType : RGBLike {
 	}
 
 	val chatColor by lazy {
-		ChatColor.of(textColor.asHexString())
+		when (this) {
+			WHITE -> ChatColor.WHITE
+			ORANGE -> ChatColor.GOLD
+			MAGENTA -> ChatColor.LIGHT_PURPLE
+			LIGHT_BLUE -> ChatColor.BLUE
+			YELLOW -> ChatColor.YELLOW
+			LIME -> ChatColor.GREEN
+			PINK -> ChatColor.DARK_PURPLE
+			GRAY -> ChatColor.GRAY
+			LIGHT_GRAY -> ChatColor.GRAY
+			CYAN -> ChatColor.AQUA
+			PURPLE -> ChatColor.DARK_PURPLE
+			BLUE -> ChatColor.BLUE
+			BROWN -> ChatColor.BLACK
+			GREEN -> ChatColor.GREEN
+			RED -> ChatColor.RED
+			BLACK -> ChatColor.BLACK
+		}
 	}
 
 	val rawColor: Color by lazy {

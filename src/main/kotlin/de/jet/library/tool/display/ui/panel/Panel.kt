@@ -1,8 +1,12 @@
 package de.jet.library.tool.display.ui.panel
 
 import de.jet.app.JetCache
-import de.jet.library.JET
-import de.jet.library.extension.display.LIGHT_GRAY
+import de.jet.library.extension.display.BOLD
+import de.jet.library.extension.display.YELLOW
+import de.jet.library.extension.display.ui.item
+import de.jet.library.extension.system
+import de.jet.library.extension.paper.createKey
+import de.jet.library.extension.paper.legacyString
 import de.jet.library.structure.app.App
 import de.jet.library.tool.display.color.ColorType
 import de.jet.library.tool.display.item.Item
@@ -12,17 +16,35 @@ import de.jet.library.tool.smart.Identifiable
 import de.jet.library.tool.smart.Logging
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
+import org.bukkit.entity.HumanEntity
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
 class Panel(
-	label: Component = Component.text("${LIGHT_GRAY}Panel"),
+	label: Component = Component.text("${YELLOW}${BOLD}Panel"),
 	val lines: Int = 3,
 	theme: ColorType = ColorType.GRAY,
 	openSound: SoundMelody? = null,
 	override var id: String = "${UUID.randomUUID()}",
-	override var vendor: Identifiable<App> = JET.appInstance
-) : Logging, Container(label = label, size = lines*9, theme = theme, openSound = openSound) {
+	override var vendor: Identifiable<App> = system,
+	var playerSpecificUI: Panel.(player: Player) -> Panel = { this },
+	var icon: Item = theme.wool.item.apply {
+		lore = """
+			
+			This panel has no icon, override
+			this example by replacing the
+			icon variable at your panel.
+			   
+		""".trimIndent()
+	},
+) : Logging, Container(label = label, size = lines * 9, theme = theme, openSound = openSound) {
+
+	init {
+		content = content.apply {
+			border(theme.stainedGlassPane.item.blankLabel())
+		}
+	}
 
 	override val sectionLabel = "Panel/$id"
 
@@ -32,10 +54,10 @@ class Panel(
 			JetCache.registeredPanelFlags[id] = value
 		}
 
-	val computedInnerSlots: List<Int> by lazy {
+	private val computedInnerSlots: List<Int> by lazy {
 		mutableListOf<Int>().apply {
 			for (x in 1..(lines - 2)) {
-				for (x2 in ((1 + (x*9))..(7 + (x*9))))
+				for (x2 in ((1 + (x * 9))..(7 + (x * 9))))
 					add(x2)
 			}
 		}
@@ -96,5 +118,21 @@ class Panel(
 	fun placeInner(map: Map<Int, Item>) = map.forEach { (key, value) ->
 		placeInner(key, value)
 	}
+
+	override fun display(humanEntity: HumanEntity) {
+		content = content.apply {
+			set(4, icon.apply {
+				label = this@Panel.label.legacyString
+				dataPut(system.createKey("panelId"), this@Panel.id, true)
+			})
+		}
+		if (humanEntity is Player) {
+			humanEntity.openInventory(playerSpecificUI(this, humanEntity).rawInventory)
+		} else
+			super.display(humanEntity)
+	}
+
+	override fun display(receiver: Player) =
+		display(humanEntity = receiver)
 
 }

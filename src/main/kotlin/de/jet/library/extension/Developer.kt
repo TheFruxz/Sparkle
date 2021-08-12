@@ -23,6 +23,9 @@ internal val lang: LanguageSpeaker
 
 internal fun lang(id: String, smartColor: Boolean = true) = lang.message(id, smartColor)
 
+internal val system: JetApp
+	get() = JET.appInstance
+
 val Any.asString: String
 	get() = toString()
 
