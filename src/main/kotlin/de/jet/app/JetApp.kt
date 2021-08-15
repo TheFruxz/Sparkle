@@ -35,7 +35,8 @@ class JetApp : App() {
 					file = JetFile.appFile(instance, "hey"),
 					path = jetPath("this") / "is" / "the" / "path",
 					default = 2,
-					useCache = false
+					useCache = false,
+					async = true,
 				).transformer(DataTransformer({
 					"Thisisthenumber$this"
 				}, {
