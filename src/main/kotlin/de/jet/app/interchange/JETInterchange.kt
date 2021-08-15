@@ -6,6 +6,8 @@ import de.jet.library.extension.display.GOLD
 import de.jet.library.extension.display.GRAY
 import de.jet.library.extension.display.YELLOW
 import de.jet.library.extension.display.notification
+import de.jet.library.extension.display.ui.buildClickAction
+import de.jet.library.extension.display.ui.buildInteractAction
 import de.jet.library.extension.display.ui.buildPanel
 import de.jet.library.extension.display.ui.item
 import de.jet.library.extension.lang
@@ -94,6 +96,18 @@ class JETInterchange(vendor: App) : Interchange(
 								lore = """
 									This is on inner slot 5!
 								""".trimIndent()
+							})
+							placeInner(6, Material.COBBLED_DEEPSLATE.item.apply {
+								label = "interact"
+								lore = """
+									Click me!
+								""".trimIndent()
+								putClickAction(buildClickAction {
+									whoClicked.sendMessage("clicked item: ${whoClicked.name}")
+								})
+								putInteractAction(buildInteractAction {
+									player.sendMessage("interacted item: ${player.name}")
+								})
 							})
 						}.display(executor as Player)
 

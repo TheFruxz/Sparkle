@@ -20,6 +20,7 @@ import de.jet.library.structure.component.Component
 import de.jet.library.tool.smart.Identifiable
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.HandlerList
+import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.InputStreamReader
 import java.util.logging.Level
@@ -117,7 +118,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 			try {
 
-				pluginManager.registerEvents(eventListener, this)
+				pluginManager.registerEvents(eventListener as Listener, this)
 				mainLog(Level.INFO, "registered '${eventListener.listenerIdentity}' listener!")
 
 			} catch (e: Exception) {
@@ -167,15 +168,26 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	}
 
 	fun add(component: Component) {
-		JetCache.registeredComponents.add(component)
+		jetTry {
+			if (JetCache.registeredComponents.any { it.id == component.id })
+				throw IllegalStateException("Component '${component.id}' (${component::class.simpleName}) cannot be saved, because the component id '${component.id}' is already in use!")
+			JetCache.registeredComponents.add(component)
+			mainLog(Level.INFO, "registered '${component.id}' component!")
+		}
 	}
 
 	fun start(component: Identifiable<Component>) {
-		jetTry { JetCache.registeredComponents.first { it.equals(component) }.start() }
+		jetTry {
+			JetCache.registeredComponents.first { it.equals(component) }.start()
+			mainLog(Level.INFO, "started '${component.id}' component!")
+		}
 	}
 
 	fun stop(component: Identifiable<Component>) {
-		jetTry { JetCache.registeredComponents.first { it.equals(component) }.stop() }
+		jetTry {
+			JetCache.registeredComponents.first { it.equals(component) }.stop()
+			mainLog(Level.INFO, "stopped '${component.id}' component!")
+		}
 	}
 
 	fun regRun(component: Component) {

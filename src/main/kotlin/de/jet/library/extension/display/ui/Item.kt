@@ -1,13 +1,17 @@
 package de.jet.library.extension.display.ui
 
 import de.jet.library.extension.paper.getOfflinePlayer
+import de.jet.library.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.library.tool.display.color.ColorType
 import de.jet.library.tool.display.color.DyeableMaterial
 import de.jet.library.tool.display.item.Item
+import de.jet.library.tool.display.item.action.ItemClickAction
+import de.jet.library.tool.display.item.action.ItemInteractAction
 import de.jet.library.tool.display.item.quirk.Quirk
 import de.jet.library.tool.display.item.quirk.Quirk.Companion
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
@@ -59,6 +63,12 @@ fun skull(owner: String) = Material.PLAYER_HEAD.item.putQuirk(Quirk.skull { owni
 fun skull(owner: UUID) = Material.PLAYER_HEAD.item.putQuirk(Quirk.skull { owningPlayer = getOfflinePlayer(owner) })
 
 fun skull(owner: OfflinePlayer) = Material.PLAYER_HEAD.item.putQuirk(Quirk.skull { owningPlayer = owner })
+
+fun buildClickAction(async: Boolean = true, stop: Boolean = true, action: InventoryClickEvent.() -> Unit) =
+	ItemClickAction(action, async, stop)
+
+fun buildInteractAction(async: Boolean = true, stop: Boolean = true, action: PlayerInteractAtItemEvent.() -> Unit) =
+	ItemInteractAction(action, async, stop)
 
 /**
  * WORK IN PROGRESS; NOT WORKING!

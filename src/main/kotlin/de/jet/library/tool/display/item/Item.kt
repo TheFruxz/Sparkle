@@ -63,7 +63,7 @@ data class Item(
 
 	constructor(itemStack: ItemStack) : this() {
 		material = itemStack.type
-		label = itemStack.itemMeta.displayName()?.legacyString ?: ""
+		label = try { itemStack.itemMeta.displayName()?.legacyString ?: "" } catch (e: NullPointerException) { "" }
 		size = itemStack.amount
 		lore = itemStack.lore()?.joinToString("\n") { it.legacyString } ?: ""
 		damage = if (itemStack.itemMeta is Damageable) {
@@ -96,7 +96,8 @@ data class Item(
 			quirk = Quirk.empty
 	}
 
-	override val id = identity
+	override val id: String
+		get() = identity
 
 	val identityNamespace = NamespacedKey(system, "itemIdentity")
 

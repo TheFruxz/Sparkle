@@ -1,11 +1,9 @@
 package de.jet.library.extension.tasky
 
-import de.jet.library.JET
 import de.jet.library.extension.system
 import de.jet.library.structure.app.App
 import de.jet.library.tool.tasky.Tasky
 import de.jet.library.tool.tasky.TemporalAdvice
-import de.jet.library.tool.tasky.TemporalAdvice.Companion
 
 fun task(
 	vendor: App,
