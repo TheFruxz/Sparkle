@@ -10,6 +10,7 @@ import de.jet.library.structure.component.Component
 import de.jet.library.tool.display.item.Item
 import de.jet.library.tool.tasky.TemporalAdvice
 import de.jet.library.tool.tasky.TemporalAdvice.Companion
+import org.bukkit.event.Event.Result.DENY
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -34,7 +35,7 @@ class JetActionComponent(vendor: App) : Component(vendor) {
 		@EventHandler
 		fun onInventoryClick(event: InventoryClickEvent) {
 			event.currentItem?.item?.clickAction?.let { action ->
-				if (!action.stop)
+				if (action.stop)
 					event.isCancelled = true
 				task(vendor, TemporalAdvice.instant(async = action.async)) {
 					action.action(event)
@@ -46,8 +47,10 @@ class JetActionComponent(vendor: App) : Component(vendor) {
 		fun playerInteractAtItem(event: PlayerInteractAtItemEvent) {
 			with(event) {
 				item.interactAction?.let { action ->
-					if (!action.stop)
-						event.isCancelled = true
+					if (action.stop) {
+						event.interactedItem = DENY
+						event.interactedBlock = DENY
+					}
 					task(vendor, TemporalAdvice.instant(async = action.async)) {
 						action.action(event)
 					}
