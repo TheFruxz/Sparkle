@@ -10,7 +10,7 @@ import de.jet.library.tool.tasky.TemporalAdvice
 import de.jet.library.tool.tasky.TemporalAdvice.Companion
 import kotlin.io.path.pathString
 
-class Preference<SHELL : Any>(
+data class Preference<SHELL : Any>(
 	val file: JetFile,
 	val path: Identifiable<JetPath>,
 	val default: SHELL,
