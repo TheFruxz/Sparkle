@@ -9,6 +9,7 @@ import de.jet.library.extension.catchException
 import de.jet.library.extension.collection.mutableReplaceWith
 import de.jet.library.extension.jetTry
 import de.jet.library.extension.mainLog
+import de.jet.library.extension.tasky.task
 import de.jet.library.runtime.app.LanguageSpeaker
 import de.jet.library.runtime.app.RunStatus
 import de.jet.library.runtime.app.RunStatus.*
@@ -17,6 +18,7 @@ import de.jet.library.structure.app.event.EventListener
 import de.jet.library.structure.app.interchange.IssuedInterchange
 import de.jet.library.structure.command.Interchange
 import de.jet.library.structure.component.Component
+import de.jet.library.structure.service.Service
 import de.jet.library.tool.smart.Identifiable
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.HandlerList
@@ -136,7 +138,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 		JetCache.registeredSandBoxes["${sandBox.sandBoxVendor.appIdentity}//${sandBox.sandBoxIdentity}"] = sandBox
 		mainLog(
 			Level.INFO,
-			"registered FUSION sandbox '${sandBox.sandBoxIdentity}'!"
+			"registered sandbox '${sandBox.sandBoxIdentity}'!"
 		)
 	}
 
@@ -144,8 +146,15 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 		JetCache.registeredSandBoxes.remove("${sandBox.sandBoxVendor.appIdentity}//${sandBox.sandBoxIdentity}", sandBox)
 		mainLog(
 			Level.INFO,
-			"unregistered FUSION sandbox '${sandBox.sandBoxIdentity}'!"
+			"unregistered sandbox '${sandBox.sandBoxIdentity}'!"
 		)
+	}
+
+	fun add(service: Service) {
+		jetTry {
+			task(this, service.temporalAdvice, process = service.process)
+			mainLog(Level.INFO, "Register & boot of service '${service.id}' succeed!")
+		}
 	}
 
 	fun remove(eventListener: EventListener) {
