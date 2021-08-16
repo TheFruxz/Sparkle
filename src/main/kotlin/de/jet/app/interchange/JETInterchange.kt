@@ -21,6 +21,8 @@ import de.jet.library.structure.command.isRequired
 import de.jet.library.structure.command.live.InterchangeAccess
 import de.jet.library.structure.command.next
 import de.jet.library.structure.command.plus
+import de.jet.library.tool.display.item.action.ActionCooldown
+import de.jet.library.tool.display.item.action.ActionCooldownType.JET_INFO
 import de.jet.library.tool.display.message.Transmission.Level.GENERAL
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -102,10 +104,10 @@ class JETInterchange(vendor: App) : Interchange(
 								lore = """
 									Click me!
 								""".trimIndent()
-								putClickAction(buildClickAction {
+								putClickAction(buildClickAction(stop = false, cooldown = ActionCooldown(20*5)) {
 									whoClicked.sendMessage("clicked item: ${whoClicked.name}")
 								})
-								putInteractAction(buildInteractAction {
+								putInteractAction(buildInteractAction(stop = false, cooldown = ActionCooldown(20*3, JET_INFO)) {
 									player.sendMessage("interacted item: ${player.name}")
 								})
 							})

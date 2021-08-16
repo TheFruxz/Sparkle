@@ -5,6 +5,7 @@ import de.jet.library.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.library.tool.display.color.ColorType
 import de.jet.library.tool.display.color.DyeableMaterial
 import de.jet.library.tool.display.item.Item
+import de.jet.library.tool.display.item.action.ActionCooldown
 import de.jet.library.tool.display.item.action.ItemClickAction
 import de.jet.library.tool.display.item.action.ItemInteractAction
 import de.jet.library.tool.display.item.quirk.Quirk
@@ -64,11 +65,11 @@ fun skull(owner: UUID) = Material.PLAYER_HEAD.item.putQuirk(Quirk.skull { owning
 
 fun skull(owner: OfflinePlayer) = Material.PLAYER_HEAD.item.putQuirk(Quirk.skull { owningPlayer = owner })
 
-fun buildClickAction(async: Boolean = true, stop: Boolean = true, action: InventoryClickEvent.() -> Unit) =
-	ItemClickAction(action, async, stop)
+fun buildClickAction(async: Boolean = true, stop: Boolean = true, cooldown: ActionCooldown? = null, action: InventoryClickEvent.() -> Unit) =
+	ItemClickAction(action, async, stop, cooldown)
 
-fun buildInteractAction(async: Boolean = true, stop: Boolean = true, action: PlayerInteractAtItemEvent.() -> Unit) =
-	ItemInteractAction(action, async, stop)
+fun buildInteractAction(async: Boolean = true, stop: Boolean = true, cooldown: ActionCooldown? = null, action: PlayerInteractAtItemEvent.() -> Unit) =
+	ItemInteractAction(action, async, stop, cooldown)
 
 /**
  * WORK IN PROGRESS; NOT WORKING!

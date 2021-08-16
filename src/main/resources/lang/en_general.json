@@ -19,6 +19,8 @@
 
     "interchange.internal.jet.version": "[GOLD]JET[GRAY] is running with the version [YELLOW][version][GRAY]!",
     "interchange.internal.jet.host": "[GRAY]Visit the repository of [GOLD]JET[GRAY] here: [YELLOW][website]",
-    "interchange.internal.jet.ping": "[GOLD][BOLD][ITALIC]PONG!"
+    "interchange.internal.jet.ping": "[GOLD][BOLD][ITALIC]PONG!",
+
+    "component.jetAction.item.cooldown.jetInfo": "[GRAY]Please wait [YELLOW][remaining][GRAY] until you can perform this action again!"
   }
 }

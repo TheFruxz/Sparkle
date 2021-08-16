@@ -6,6 +6,9 @@ interface Identifiable<T> {
 
 	fun equals(identifiable: Identifiable<*>) = identifiable.id == id
 
+	val identityObject: Identity<T>
+		get() = Identity(id)
+
 	companion object {
 
 		fun dummy() = object : Identifiable<Any> {
