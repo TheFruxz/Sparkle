@@ -182,26 +182,32 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 				throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
 			JetCache.registeredComponents.add(component)
 			mainLog(Level.INFO, "registered '${component.identity}' component!")
+
+			if (component.autoEnable || JetData.autoStartComponents.content.contains(component.identity)) {
+
+				mainLog(Level.INFO, "### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
+
+				start(component)
+
+			}
+
 		}
 	}
 
 	fun start(component: Identifiable<Component>) {
 		jetTry {
-			JetCache.registeredComponents.first { it.equals(component) }.start()
+			JetCache.registeredComponents.first { it == component }.start()
+			JetCache.runningComponents.add(component.identityObject)
 			mainLog(Level.INFO, "started '${component.identity}' component!")
 		}
 	}
 
 	fun stop(component: Identifiable<Component>) {
 		jetTry {
-			JetCache.registeredComponents.first { it.equals(component) }.stop()
+			JetCache.registeredComponents.first { it == component }.stop()
+			JetCache.runningComponents.remove(component.identityObject)
 			mainLog(Level.INFO, "stopped '${component.identity}' component!")
 		}
-	}
-
-	fun regRun(component: Component) {
-		add(component)
-		start(component)
 	}
 
 	// runtime

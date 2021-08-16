@@ -1,15 +1,14 @@
 package de.jet.app.component.chat
 
-import de.jet.library.extension.display.ui.buildContainer
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.event.EventListener
 import de.jet.library.structure.component.Component
 import io.papermc.paper.event.player.AsyncChatEvent
 import org.bukkit.event.EventHandler
 
-class JetChatComponent(vendor: App) : Component(vendor) {
+internal class JetChatComponent(vendor: App) : Component(vendor, true) {
 
-	override val identity = "JETChat"
+	override val thisIdentity = "Chat"
 
 	private val handler by lazy {
 		Handler(vendor)

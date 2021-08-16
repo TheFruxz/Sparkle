@@ -3,6 +3,7 @@ package de.jet.app
 import de.jet.app.component.chat.JetChatComponent
 import de.jet.app.component.events.JetEventsComponent
 import de.jet.app.component.item.JetActionComponent
+import de.jet.app.interchange.ComponentInterchange
 import de.jet.app.interchange.JETInterchange
 import de.jet.library.extension.data.div
 import de.jet.library.extension.data.jetPath
@@ -74,11 +75,12 @@ class JetApp : App() {
 			}
 		}
 
-		regRun(JetEventsComponent(this))
-		regRun(JetChatComponent(this))
-		regRun(JetActionComponent(this))
+		add(JetEventsComponent(this))
+		add(JetChatComponent(this))
+		add(JetActionComponent(this))
 
 		add(JETInterchange(this))
+		add(ComponentInterchange(this))
 
 	}
 

@@ -33,6 +33,8 @@ object JetCache : AppCache {
 
 	val registeredComponents = mutableSetOf<Component>()
 
+	val runningComponents = mutableSetOf<Identity<Component>>()
+
 	val registeredPanelFlags = mutableMapOf<String, Set<PanelFlag>>()
 
 	val runningCooldowns = mutableMapOf<Player, MutableSet<Identity<Item>>>()

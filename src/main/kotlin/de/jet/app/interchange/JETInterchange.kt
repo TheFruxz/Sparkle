@@ -38,7 +38,9 @@ class JETInterchange(vendor: App) : Interchange(
 ) {
 	override val execution: InterchangeAccess.() -> InterchangeResult = {
 
-		when  {
+		var success = true
+
+		when {
 
 			parameters.isEmpty() -> {
 
@@ -74,7 +76,9 @@ class JETInterchange(vendor: App) : Interchange(
 
 					}
 
-					else -> WRONG_USAGE
+					else -> {
+						success = false
+					}
 
 				}
 
@@ -119,11 +123,18 @@ class JETInterchange(vendor: App) : Interchange(
 
 			}
 
-			else -> WRONG_USAGE
+			else -> {
+
+				success = false
+
+			}
 
 		}
 
-		SUCCESS
+		if (success)
+			SUCCESS
+		else
+			WRONG_USAGE
 
 	}
 }

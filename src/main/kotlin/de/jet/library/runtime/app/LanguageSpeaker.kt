@@ -58,7 +58,11 @@ class LanguageSpeaker(
 
 	private val smartColors = ChatColor.values().associateBy {
 		"[${it.name}]"
-	}
+	} + mapOf(
+		"[LIME]" to ChatColor.GREEN,
+		"[ORANGE]" to ChatColor.GOLD,
+		"[NONE]" to ChatColor.RESET,
+	)
 
 	fun message(id: String, smartColor: Boolean = true): String {
 		return if (!error) {

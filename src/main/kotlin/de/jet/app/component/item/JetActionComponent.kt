@@ -4,11 +4,15 @@ import de.jet.app.JetCache
 import de.jet.library.JET
 import de.jet.library.extension.collection.replace
 import de.jet.library.extension.display.notification
+import de.jet.library.extension.display.ui.get
 import de.jet.library.extension.display.ui.item
 import de.jet.library.extension.lang
+import de.jet.library.extension.paper.createKey
+import de.jet.library.extension.system
 import de.jet.library.extension.tasky.async
 import de.jet.library.extension.tasky.sync
 import de.jet.library.extension.tasky.task
+import de.jet.library.extension.tasky.wait
 import de.jet.library.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.event.EventListener
@@ -17,6 +21,8 @@ import de.jet.library.tool.display.item.Item
 import de.jet.library.tool.display.item.action.ActionCooldownType.*
 import de.jet.library.tool.display.item.action.ItemAction
 import de.jet.library.tool.display.message.Transmission.Level.FAIL
+import de.jet.library.tool.display.ui.panel.PanelFlag
+import de.jet.library.tool.display.ui.panel.PanelFlag.*
 import de.jet.library.tool.tasky.TemporalAdvice
 import de.jet.library.tool.tasky.TemporalAdvice.Companion
 import org.bukkit.entity.Player
@@ -24,15 +30,19 @@ import org.bukkit.event.Event.Result.DENY
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryCloseEvent
+import org.bukkit.event.inventory.InventoryDragEvent
+import org.bukkit.event.inventory.InventoryMoveItemEvent
+import org.bukkit.event.inventory.InventoryOpenEvent
 import java.util.*
 import java.util.concurrent.TimeUnit.SECONDS
 import kotlin.NoSuchElementException
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
-class JetActionComponent(vendor: App) : Component(vendor) {
+internal class JetActionComponent(vendor: App) : Component(vendor, true) {
 
-	override val identity = "JETActions"
+	override val thisIdentity = "Actions"
 
 	private val handler = Handler(vendor)
 
@@ -79,6 +89,12 @@ class JetActionComponent(vendor: App) : Component(vendor) {
 			}
 
 		}
+
+		private fun getFlags(item: Item?): Set<PanelFlag> {
+			val panelIdentity = item?.identityObject
+			return JetCache.registeredPanelFlags[panelIdentity?.id] ?: emptySet()
+		}
+
 		@ExperimentalTime
 		private fun reactToActionCooldown(item: Item, player: Player, action: ItemAction<*>) {
 			try {
@@ -108,6 +124,10 @@ class JetActionComponent(vendor: App) : Component(vendor) {
 		fun inventoryClick(event: InventoryClickEvent) {
 			val item = event.currentItem?.item
 			val player = event.whoClicked as Player
+			val inventory = event.clickedInventory
+
+			// item action
+
 			item?.clickAction?.let { action ->
 
 				if (hasNoCooldown(player, item)) {
@@ -127,6 +147,48 @@ class JetActionComponent(vendor: App) : Component(vendor) {
 				}
 
 			}
+
+			// inventory stuff
+
+			if (inventory == event.view.topInventory) {
+
+				if (getFlags(inventory[4]?.item).contains(NOT_CLICK_ABLE)) {
+					event.isCancelled = true
+				}
+
+				if (event.currentItem?.let { it.item.dataGet(system.createKey("panelBorder")) == 1 } == true) {
+
+					// everytime when the panelBorder property is set, it wants to be protected!
+					event.isCancelled = true
+
+				}
+
+			}
+
+		}
+
+		@EventHandler
+		fun inventoryOpen(event: InventoryOpenEvent) {
+			if (getFlags(event.inventory[4]?.item).contains(NOT_OPEN_ABLE))
+				event.isCancelled = true
+		}
+
+		@EventHandler
+		fun inventoryClose(event: InventoryCloseEvent) {
+			if (getFlags(event.inventory[4]?.item).contains(NOT_CLOSE_ABLE))
+				event.player.openInventory(event.inventory)
+		}
+
+		@EventHandler
+		fun inventoryDrag(event: InventoryDragEvent) {
+			if (getFlags(event.inventory[4]?.item).contains(NOT_DRAG_ABLE))
+				event.isCancelled = true
+		}
+
+		@EventHandler
+		fun inventoryMove(event: InventoryMoveItemEvent) {
+			if ((getFlags(event.destination[4]?.item) + getFlags(event.initiator[4]?.item)).contains(NOT_MOVE_ABLE))
+				event.isCancelled = true
 		}
 
 		@ExperimentalTime

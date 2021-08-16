@@ -38,11 +38,15 @@ class Panel(
 			   
 		""".trimIndent()
 	},
+	var borderProtection: Boolean = true,
 ) : Logging, Container(label = label, size = lines * 9, theme = theme, openSound = openSound) {
 
 	init {
 		content = content.apply {
-			border(theme.stainedGlassPane.item.blankLabel())
+			border(theme.stainedGlassPane.item.blankLabel().apply {
+				if (borderProtection)
+					dataPut(system.createKey("panelBorder"), 1)
+			})
 		}
 	}
 
@@ -124,6 +128,8 @@ class Panel(
 			set(4, icon.apply {
 				label = this@Panel.label.legacyString
 				dataPut(system.createKey("panelId"), this@Panel.identity, true)
+				if (borderProtection)
+					dataPut(system.createKey("panelBorder"), 1)
 			})
 		}
 		if (humanEntity is Player) {

@@ -7,3 +7,24 @@ fun <T> MutableCollection<T>.mutableReplaceWith(collection: Collection<T>) {
 			add(c)
 	}
 }
+
+fun <T> MutableCollection<T>.toggle(o: T) {
+	if (contains(o))
+		remove(o)
+	else
+		add(o)
+}
+
+fun <T> MutableSet<T>.toggle(o: T) {
+	if (contains(o))
+		remove(o)
+	else
+		add(o)
+}
+
+fun <T> MutableList<T>.toggle(o: T) {
+	if (contains(o))
+		remove(o)
+	else
+		add(o)
+}

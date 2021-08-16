@@ -14,9 +14,9 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 
-class JetEventsComponent(vendor: App) : Component(vendor) {
+internal class JetEventsComponent(vendor: App) : Component(vendor, true) {
 
-	override val identity = "JETEvents"
+	override val thisIdentity = "Events"
 
 	private val handler by lazy {
 		Handler(vendor)

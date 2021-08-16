@@ -4,6 +4,7 @@ import de.jet.library.extension.system
 import de.jet.library.structure.app.App
 import de.jet.library.tool.tasky.Tasky
 import de.jet.library.tool.tasky.TemporalAdvice
+import de.jet.library.tool.tasky.TemporalAdvice.Companion
 
 fun task(
 	vendor: App,
@@ -25,3 +26,8 @@ fun async(
 	killAtError: Boolean = true,
 	process: Tasky.() -> Unit,
 ) = Tasky.task(vendor, temporalAdvice, killAtError, process)
+
+fun <T> T.wait(ticks: Long, code: T.() -> Unit): T  {
+	sync(temporalAdvice = TemporalAdvice.delayed(ticks)) { code(this@wait) }
+	return this
+}

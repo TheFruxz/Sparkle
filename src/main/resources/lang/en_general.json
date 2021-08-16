@@ -21,6 +21,16 @@
     "interchange.internal.jet.host": "[GRAY]Visit the repository of [GOLD]JET[GRAY] here: [YELLOW][website]",
     "interchange.internal.jet.ping": "[GOLD][BOLD][ITALIC]PONG!",
 
+    "interchange.internal.component.alreadyRunning": "[GRAY]The component '[YELLOW][component][GRAY]' is [RED]already[GRAY] running!",
+    "interchange.internal.component.nowRunning": "[GRAY]The component '[YELLOW][component][GRAY]' got [LIME]successfully[GRAY] started!",
+    "interchange.internal.component.missingRunning": "[GRAY]The component '[YELLOW][component][GRAY]' is [RED]not[GRAY] running!",
+    "interchange.internal.component.nowStopped": "[GRAY]The component '[YELLOW][component][GRAY]' got [LIME]successfully[GRAY] stopped!",
+    "interchange.internal.component.autoStartRemoved": "[GRAY]The component '[YELLOW][component][GRAY]' is [RED]no longer[GRAY] on the AutoStart list!",
+    "interchange.internal.component.autoStartAdded": "[GRAY]The component '[YELLOW][component][GRAY]' is [GREEN]now[GRAY] on the AutoStart list!",
+    "interchange.internal.component.autoStartStatic": "[GRAY]The component '[YELLOW][component][GRAY]' is [RED]programmed[GRAY] to stay on the AutoStart list!",
+    "interchange.internal.component.list.header": "[GRAY]List of all registered components:",
+    "interchange.internal.component.list.line": "[YELLOW][component][GRAY] -> [autoStart][GRAY] / [status]",
+
     "component.jetAction.item.cooldown.jetInfo": "[GRAY]Please wait [YELLOW][remaining][GRAY] until you can perform this action again!"
   }
 }

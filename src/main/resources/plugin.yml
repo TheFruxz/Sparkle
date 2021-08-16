@@ -11,3 +11,5 @@ website: ${website}
 commands:
   jet:
     description: Discover more info about JET!
+  component:
+    description: Manages your components!

@@ -20,6 +20,12 @@ object JetData {
 		default = "en_general",
 	)
 
+	val autoStartComponents = Preference(
+		file = CONFIG,
+		path = jetPath("autoStartComponents"),
+		default = setOf<String>(),
+	)
+
 	object File {
 
 		val CONFIG = JetFile.rootFile("system-config")
