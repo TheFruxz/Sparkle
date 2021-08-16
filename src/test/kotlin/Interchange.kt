@@ -14,7 +14,7 @@ internal class InterchangeTest {
 		val randoms = (0..200).shuffled().take(5)
 
 		val completionVariable = CompletionVariable(
-			vendor = Identifiable.dummy(),
+			vendor = Identifiable.empty(),
 			label = "demo",
 			refreshing = false,
 			generator = { randoms.mapToString() }
