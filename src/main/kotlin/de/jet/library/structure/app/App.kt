@@ -53,7 +53,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 */
 	abstract val appCache: AppCache
 
-	override val id: String
+	override val identity: String
 		get() = appIdentity
 
 	// api
@@ -153,7 +153,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	fun add(service: Service) {
 		jetTry {
 			task(this, service.temporalAdvice, process = service.process)
-			mainLog(Level.INFO, "Register & boot of service '${service.id}' succeed!")
+			mainLog(Level.INFO, "Register & boot of service '${service.identity}' succeed!")
 		}
 	}
 
@@ -178,24 +178,24 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	fun add(component: Component) {
 		jetTry {
-			if (JetCache.registeredComponents.any { it.id == component.id })
-				throw IllegalStateException("Component '${component.id}' (${component::class.simpleName}) cannot be saved, because the component id '${component.id}' is already in use!")
+			if (JetCache.registeredComponents.any { it.identity == component.identity })
+				throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
 			JetCache.registeredComponents.add(component)
-			mainLog(Level.INFO, "registered '${component.id}' component!")
+			mainLog(Level.INFO, "registered '${component.identity}' component!")
 		}
 	}
 
 	fun start(component: Identifiable<Component>) {
 		jetTry {
 			JetCache.registeredComponents.first { it.equals(component) }.start()
-			mainLog(Level.INFO, "started '${component.id}' component!")
+			mainLog(Level.INFO, "started '${component.identity}' component!")
 		}
 	}
 
 	fun stop(component: Identifiable<Component>) {
 		jetTry {
 			JetCache.registeredComponents.first { it.equals(component) }.stop()
-			mainLog(Level.INFO, "stopped '${component.id}' component!")
+			mainLog(Level.INFO, "stopped '${component.identity}' component!")
 		}
 	}
 

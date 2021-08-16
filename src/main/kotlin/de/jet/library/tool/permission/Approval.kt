@@ -7,16 +7,16 @@ import org.bukkit.permissions.Permissible
 
 @Serializable
 data class Approval(
-	override val id: String
+	override val identity: String
 ) : Identifiable<Approval> {
 
 	fun hasApproval(permissible: Permissible) =
-		permissible.hasPermission(id)
+		permissible.hasPermission(identity)
 
 	companion object {
 
 		fun fromApp(vendor: Identifiable<App>, subPermission: String) =
-			Approval("${vendor.id}.$subPermission")
+			Approval("${vendor.identity}.$subPermission")
 
 	}
 

@@ -9,7 +9,7 @@ import org.bukkit.event.EventHandler
 
 class JetChatComponent(vendor: App) : Component(vendor) {
 
-	override val id = "JETChat"
+	override val identity = "JETChat"
 
 	private val handler by lazy {
 		Handler(vendor)

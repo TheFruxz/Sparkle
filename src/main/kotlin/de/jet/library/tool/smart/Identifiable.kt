@@ -2,21 +2,19 @@ package de.jet.library.tool.smart
 
 interface Identifiable<T> {
 
-	val id: String
-
-	fun equals(identifiable: Identifiable<*>) = identifiable.id == id
+	val identity: String
 
 	val identityObject: Identity<T>
-		get() = Identity(id)
+		get() = Identity(identity)
 
 	companion object {
 
-		fun dummy() = object : Identifiable<Any> {
-			override val id = "dummy"
+		fun empty() = object : Identifiable<Any> {
+			override val identity = ""
 		}
 
 		fun <T> custom(id: String) = object : Identifiable<T> {
-			override val id = id
+			override val identity = id
 		}
 
 	}

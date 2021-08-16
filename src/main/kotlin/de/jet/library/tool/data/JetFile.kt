@@ -76,14 +76,14 @@ interface JetFile {
 			extension: String = "yml"
 		) =
 			generate(
-				Path("JETData", "#${vendor.id}", "$fileName.$extension")
+				Path("JETData", "#${vendor.identity}", "$fileName.$extension")
 			)
 
 		fun rootFile(fileName: String, extension: String = "yml") =
 			generate(Path("JETData") / "ROOT" / "$fileName.$extension")
 
 		fun componentFile(component: Component, fileName: String, extension: String = "yml"): JetFile =
-			generate(Path("JETData") / "#${component.id}@${component.vendor.id}" / "$fileName.$extension")
+			generate(Path("JETData") / "#${component.identity}@${component.vendor.identity}" / "$fileName.$extension")
 
 		fun versionFile(fileName: String, extension: String = "yml") =
 			generate(Path("JETData") / Bukkit.getBukkitVersion() / "$fileName.$extension")

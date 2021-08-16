@@ -24,6 +24,6 @@ class CachedMutable<T>(
 			JetCache.registeredCachedMutables[cacheId] = value
 		}
 
-	override val id = cacheId
+	override val identity = cacheId
 
 }

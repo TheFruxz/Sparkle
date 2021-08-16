@@ -35,7 +35,7 @@ abstract class Interchange(
 
 	override val sectionLabel = "InterchangeEngine"
 
-	override val id = "$vendor:$label"
+	override val identity = "$vendor:$label"
 
 	val requiredApproval = if (requiresAuthorization) Approval.fromApp(vendor, "interchange.$label") else null
 
@@ -60,8 +60,8 @@ abstract class Interchange(
 	fun canExecuteBasePlate(executor: CommandSender) = listOf(
 		authorizationCheck != JETCHECK,
 		requiredApproval == null,
-		requiredApproval?.let { approval -> executor.hasPermission(approval.id) } ?: true,
-		executor.hasPermission("${vendor.id}.*"),
+		requiredApproval?.let { approval -> executor.hasPermission(approval.identity) } ?: true,
+		executor.hasPermission("${vendor.identity}.*"),
 		executor.hasPermission("*"),
 	).any()
 

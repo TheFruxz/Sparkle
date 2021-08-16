@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent
 
 class JetEventsComponent(vendor: App) : Component(vendor) {
 
-	override val id = "JETEvents"
+	override val identity = "JETEvents"
 
 	private val handler by lazy {
 		Handler(vendor)

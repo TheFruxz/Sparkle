@@ -7,7 +7,7 @@ interface AppCompanion<T : @NotNull App> : Identifiable<App> {
 
 	var instance: T
 
-	override val id: String
-		get() = instance.id
+	override val identity: String
+		get() = instance.identity
 
 }

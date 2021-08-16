@@ -20,7 +20,6 @@ import de.jet.library.tool.display.message.Transmission.Level.FAIL
 import de.jet.library.tool.tasky.TemporalAdvice
 import de.jet.library.tool.tasky.TemporalAdvice.Companion
 import org.bukkit.entity.Player
-import org.bukkit.event.Cancellable
 import org.bukkit.event.Event.Result.DENY
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -29,12 +28,11 @@ import java.util.*
 import java.util.concurrent.TimeUnit.SECONDS
 import kotlin.NoSuchElementException
 import kotlin.time.Duration
-import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
 
 class JetActionComponent(vendor: App) : Component(vendor) {
 
-	override val id = "JETActions"
+	override val identity = "JETActions"
 
 	private val handler = Handler(vendor)
 
@@ -49,7 +47,7 @@ class JetActionComponent(vendor: App) : Component(vendor) {
 	private class Handler(override val vendor: App) : EventListener, Listener {
 
 		private fun hasNoCooldown(player: Player, item: Item): Boolean {
-			return JetCache.runningCooldowns[player]?.none { it.id == item.id } ?: true
+			return JetCache.runningCooldowns[player]?.none { it.id == item.identity } ?: true
 		}
 
 		private fun produceActionCooldown(item: Item, player: Player, action: ItemAction<*>) {
@@ -85,7 +83,7 @@ class JetActionComponent(vendor: App) : Component(vendor) {
 		private fun reactToActionCooldown(item: Item, player: Player, action: ItemAction<*>) {
 			try {
 
-				JetCache.runningCooldowns[player]?.first { it.id == item.id }?.let {
+				JetCache.runningCooldowns[player]?.first { it.id == item.identity }?.let {
 					val cooldown = action.cooldown
 					val remaining =
 						Duration.milliseconds((JetCache.runningCooldownDestinations[player to it] ?: Calendar.getInstance()).timeInMillis - Calendar.getInstance().timeInMillis).toString(SECONDS)

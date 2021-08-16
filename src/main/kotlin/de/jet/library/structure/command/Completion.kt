@@ -20,7 +20,7 @@ data class CompletionVariable(
 	val generator: CompletionVariable.() -> Collection<String>,
 ) {
 
-	val storagePath = "${vendor.id}:$label"
+	val storagePath = "${vendor.identity}:$label"
 
 	fun computeContent() =
 		if (!refreshing && JetCache.registeredCompletionVariables.containsKey(storagePath)) {

@@ -26,7 +26,7 @@ class Panel(
 	val lines: Int = 3,
 	theme: ColorType = ColorType.GRAY,
 	openSound: SoundMelody? = null,
-	override var id: String = "${UUID.randomUUID()}",
+	override var identity: String = "${UUID.randomUUID()}",
 	override var vendor: Identifiable<App> = system,
 	var playerSpecificUI: Panel.(player: Player) -> Panel = { this },
 	var icon: Item = theme.wool.item.apply {
@@ -46,12 +46,12 @@ class Panel(
 		}
 	}
 
-	override val sectionLabel = "Panel/$id"
+	override val sectionLabel = "Panel/$identity"
 
 	var panelFlags: Set<PanelFlag>
-		get() = JetCache.registeredPanelFlags[id] ?: emptySet()
+		get() = JetCache.registeredPanelFlags[identity] ?: emptySet()
 		set(value) {
-			JetCache.registeredPanelFlags[id] = value
+			JetCache.registeredPanelFlags[identity] = value
 		}
 
 	private val computedInnerSlots: List<Int> by lazy {
@@ -123,7 +123,7 @@ class Panel(
 		content = content.apply {
 			set(4, icon.apply {
 				label = this@Panel.label.legacyString
-				dataPut(system.createKey("panelId"), this@Panel.id, true)
+				dataPut(system.createKey("panelId"), this@Panel.identity, true)
 			})
 		}
 		if (humanEntity is Player) {

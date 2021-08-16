@@ -1,10 +1,8 @@
 package de.jet.library.tool.display.item
 
 import de.jet.app.JetCache
-import de.jet.library.JET
 import de.jet.library.extension.asString
 import de.jet.library.extension.debugLog
-import de.jet.library.extension.display.GRAY
 import de.jet.library.extension.display.WHITE
 import de.jet.library.extension.display.ui.changeColor
 import de.jet.library.extension.forceCast
@@ -39,7 +37,6 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
-import org.checkerframework.checker.nullness.qual.NonNull
 import org.jetbrains.annotations.NotNull
 import java.util.*
 import java.util.function.UnaryOperator
@@ -54,7 +51,7 @@ data class Item(
 	var flags: MutableSet<ItemFlag> = mutableSetOf(),
 	var quirk: Quirk = Quirk.empty,
 	var postProperties: MutableSet<PostProperty> = mutableSetOf(),
-	var identity: String = "${UUID.randomUUID()}",
+	override var identity: String = "${UUID.randomUUID()}",
 	private var data: MutableMap<String, Any> = mutableMapOf(),
 	var itemMetaBase: ItemMeta? = null,
 ) : Identifiable<Item>, Producible<ItemStack>, HoverEventSource<ShowItem> {
@@ -74,7 +71,7 @@ data class Item(
 		quirk = Quirk.empty // using itemMetaBase instead of quirks
 		data = readItemDataStorage(itemStack).toMutableMap()
 		itemMetaBase = itemStack.itemMeta
-		identity =
+		this.identity =
 			("${itemStack.itemMeta.persistentDataContainer.get(identityNamespace, PersistentDataType.STRING)}").let {
 				if (it.isNotBlank()) {
 					return@let it
@@ -96,27 +93,24 @@ data class Item(
 			quirk = Quirk.empty
 	}
 
-	override val id: String
-		get() = identity
-
 	val identityNamespace = NamespacedKey(system, "itemIdentity")
 
 	var clickAction: ItemClickAction?
-		get() = JetCache.registeredItemClickActions[id]
+		get() = JetCache.registeredItemClickActions[this.identity]
 		set(value) {
 			if (value != null) {
-				JetCache.registeredItemClickActions[id] = value
+				JetCache.registeredItemClickActions[this.identity] = value
 			} else
-				JetCache.registeredItemClickActions.remove(id)
+				JetCache.registeredItemClickActions.remove(this.identity)
 		}
 
 	var interactAction: ItemInteractAction?
-		get() = JetCache.registeredItemInteractActions[id]
+		get() = JetCache.registeredItemInteractActions[this.identity]
 		set(value) {
 			if (value != null) {
-				JetCache.registeredItemInteractActions[id] = value
+				JetCache.registeredItemInteractActions[this.identity] = value
 			} else
-				JetCache.registeredItemInteractActions.remove(id)
+				JetCache.registeredItemInteractActions.remove(this.identity)
 		}
 
 	val displayObject: Component
@@ -168,7 +162,7 @@ data class Item(
 			itemMeta.addItemFlags(*flags.toTypedArray())
 
 			if (!postProperties.contains(NO_IDENTITY))
-				itemMeta.persistentDataContainer.set(identityNamespace, PersistentDataType.STRING, id)
+				itemMeta.persistentDataContainer.set(identityNamespace, PersistentDataType.STRING, this.identity)
 
 			if (!postProperties.contains(NO_DATA) && data.isNotEmpty())
 				itemMeta.persistentDataContainer.apply { itemStoreApplier() }
@@ -244,7 +238,7 @@ data class Item(
 
 			this.data[path.toString()] = data!!
 
-			debugLog("saved data '$data' under '$path' in item '$id'!")
+			debugLog("saved data '$data' under '$path' in item '${this.identity}'!")
 
 		} else
 			throw IllegalArgumentException("The data '$transformedData' is not compatible with the data-cache")
@@ -265,7 +259,7 @@ data class Item(
 
 	val itemStoreApplier: PersistentDataContainer.() -> Unit = {
 
-		debugLog("producing persistentDataContainer for item '$id' started... ")
+		debugLog("producing persistentDataContainer for item '${this@Item.identity}' started... ")
 
 		data.forEach { (key, value) ->
 
@@ -276,7 +270,7 @@ data class Item(
 						valueData.first.forceCast<PersistentDataType<T, T>>(),
 						valueData.second.forceCast()
 					)
-					debugLog("|> produced $value into items-data container '$id'")
+					debugLog("|> produced $value into items-data container '${this@Item.identity}'")
 				}
 			}
 
@@ -284,7 +278,7 @@ data class Item(
 
 		}
 
-		debugLog("producing persistentDataContainer for item '$id' succeed!")
+		debugLog("producing persistentDataContainer for item '${this@Item.identity}' succeed!")
 
 	}
 
@@ -477,7 +471,7 @@ data class Item(
 		var isOtherItem = false
 
 		if (!ignoreIdentity) {
-			if (this.id != other.id) {
+			if (this.identity != other.identity) {
 				isOtherItem = true
 			}
 		}

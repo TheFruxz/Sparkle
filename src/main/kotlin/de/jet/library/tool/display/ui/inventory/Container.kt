@@ -22,7 +22,7 @@ open class Container(
 	var size: Int = 9*3,
 	var theme: ColorType = ColorType.GRAY,
 	var openSound: SoundMelody? = null,
-	override var id: String = "${UUID.randomUUID()}"
+	override var identity: String = "${UUID.randomUUID()}"
 ) : UI, Cloneable {
 
 	fun replace(that: Material, withThat: Material) {

@@ -1,7 +1,6 @@
 package de.jet.library.tool.data
 
 import de.jet.app.JetCache.registeredPreferenceCache
-import de.jet.library.JET
 import de.jet.library.extension.debugLog
 import de.jet.library.extension.system
 import de.jet.library.extension.tasky.task
@@ -20,8 +19,8 @@ data class Preference<SHELL : Any>(
 	var async: Boolean = false,
 ) : Identifiable<Preference<SHELL>> {
 
-	override val id = "${file.file.pathString}:${path.id}"
-	val inFilePath = path.id
+	override val identity = "${file.file.pathString}:${path.identity}"
+	val inFilePath = path.identity
 
 	@Suppress("UNCHECKED_CAST")
 	var content: SHELL
@@ -67,8 +66,8 @@ data class Preference<SHELL : Any>(
 
 				transformer.toCore(value).let { coreObject ->
 					if (useCache)
-						registeredPreferenceCache[id] = coreObject
-					file.set(path.id, coreObject)
+						registeredPreferenceCache[identity] = coreObject
+					file.set(path.identity, coreObject)
 				}
 
 				if (readAndWrite)

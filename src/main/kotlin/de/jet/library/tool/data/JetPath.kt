@@ -11,7 +11,7 @@ data class JetPath(
 
 	var fullPath: String = base
 
-	override val id: String
+	override val identity: String
 		get() = fullPath
 
 }

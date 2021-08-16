@@ -17,7 +17,7 @@ data class SoundData(
 
 	constructor(type: Sound, volume: Number, pitch: Number, soundCategory: SoundCategory = MASTER) : this(type, volume.toFloat(), pitch.toFloat(), soundCategory)
 
-	override val id: String
+	override val identity: String
 		get() = "${type.name}:${category.name}:($pitch/$volume)"
 
 }

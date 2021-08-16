@@ -9,7 +9,7 @@ abstract class Component(
 ) : Identifiable<Component>, Logging {
 
 	override val sectionLabel: String
-		get() = "component/$id"
+		get() = "component/$identity"
 
 	abstract fun start()
 

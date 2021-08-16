@@ -37,4 +37,4 @@ fun <T> checkAllObjects(vararg objects: T, check: T.() -> Boolean): Boolean {
 fun app(id: String) = JetCache.registeredApplications.first { it.appIdentity.equals(it) }
 
 @Throws(NoSuchElementException::class)
-fun Identifiable<App>.getApp() = app(id)
+fun Identifiable<App>.getApp() = app(identity)

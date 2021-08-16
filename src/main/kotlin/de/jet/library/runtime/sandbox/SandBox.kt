@@ -8,5 +8,5 @@ data class SandBox(
     val sandBoxVendor: App,
     val sandBoxAction: SandBoxInteraction.() -> Unit,
 ) : Identifiable<SandBox> {
-    override val id = sandBoxIdentity
+    override val identity = sandBoxIdentity
 }

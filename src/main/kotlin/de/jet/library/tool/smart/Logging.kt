@@ -10,6 +10,6 @@ interface Logging {
 	val sectionLabel: String
 
 	val sectionLog: Logger
-		get() = App.createLog(vendor.id, sectionLabel)
+		get() = App.createLog(vendor.identity, sectionLabel)
 
 }

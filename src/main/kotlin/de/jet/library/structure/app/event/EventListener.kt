@@ -12,7 +12,7 @@ interface EventListener : Listener, Identifiable<EventListener> {
 
 	val vendor: App
 
-	override val id: String
+	override val identity: String
 		get() = listenerIdentity
 
 }
