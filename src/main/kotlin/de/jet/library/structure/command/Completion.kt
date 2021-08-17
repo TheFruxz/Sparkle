@@ -1,10 +1,12 @@
 package de.jet.library.structure.command
 
 import de.jet.app.JetCache
+import de.jet.library.extension.collection.mapToString
 import de.jet.library.extension.collection.replace
 import de.jet.library.extension.display.notification
 import de.jet.library.extension.lang
 import de.jet.library.extension.paper.hasApproval
+import de.jet.library.extension.system
 import de.jet.library.tool.smart.Identifiable
 import de.jet.library.tool.display.message.Transmission.Level.FAIL
 import de.jet.library.tool.permission.Approval
@@ -35,6 +37,11 @@ data class CompletionVariable(
 		}
 
 	companion object {
+
+		val INT = CompletionVariable(system, "INT", false) {
+			(0..99).mapToString()
+		}
+
 		// TODO: 06.08.2021 Completion variable templates
 	}
 
