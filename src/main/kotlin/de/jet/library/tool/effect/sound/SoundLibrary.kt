@@ -42,4 +42,10 @@ object SoundLibrary {
 		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_PLING, pitch = 2))
 	}
 
+	val NOTIFICATION_PAYMENT = buildMelody(3, 0) {
+		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_PLING))
+		addToBeat(soundOf(ITEM_ARMOR_EQUIP_CHAIN))
+		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_PLING, pitch = 2))
+	}
+
 }

@@ -82,6 +82,7 @@ data class Transmission(
 		LEVEL(SoundLibrary.NOTIFICATION_LEVEL),
 		WARNING(SoundLibrary.NOTIFICATION_WARNING),
 		ATTENTION(SoundLibrary.NOTIFICATION_ATTENTION),
+		PAYMENT(SoundLibrary.NOTIFICATION_PAYMENT),
 
 	}
 
