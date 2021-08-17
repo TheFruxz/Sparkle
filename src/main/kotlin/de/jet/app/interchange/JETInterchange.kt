@@ -12,6 +12,7 @@ import de.jet.library.extension.display.ui.buildPanel
 import de.jet.library.extension.display.ui.item
 import de.jet.library.extension.lang
 import de.jet.library.structure.app.App
+import de.jet.library.structure.command.CompletionVariable
 import de.jet.library.structure.command.Interchange
 import de.jet.library.structure.command.InterchangeResult
 import de.jet.library.structure.command.InterchangeResult.SUCCESS
@@ -23,7 +24,9 @@ import de.jet.library.structure.command.next
 import de.jet.library.structure.command.plus
 import de.jet.library.tool.display.item.action.ActionCooldown
 import de.jet.library.tool.display.item.action.ActionCooldownType.JET_INFO
+import de.jet.library.tool.display.message.Transmission
 import de.jet.library.tool.display.message.Transmission.Level.GENERAL
+import de.jet.library.tool.display.message.Transmission.Level.valueOf
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
@@ -33,7 +36,9 @@ class JETInterchange(vendor: App) : Interchange(
 	requiresAuthorization = false,
 	completion = buildCompletion {
 		next("version") + "website" + "repository" + "ping" + "test" isRequired false
-		next("demo-panel")
+		next("demo-panel") + CompletionVariable(vendor, "message-level", false) {
+			Transmission.Level.values().map { it.name }
+		}
 	}
 ) {
 	override val execution: InterchangeAccess.() -> InterchangeResult = {
@@ -85,6 +90,7 @@ class JETInterchange(vendor: App) : Interchange(
 			}
 
 			parameters.size == 2 && parameters.first().equals("test", true) -> {
+				val levels = Transmission.Level.values()
 
 				when (parameters.last().lowercase()) {
 
@@ -118,6 +124,13 @@ class JETInterchange(vendor: App) : Interchange(
 						}.display(executor as Player)
 
 					}
+
+				}
+
+				if (levels.any { it.name == parameters.last().uppercase() }) {
+
+					"This is the notification!"
+						.notification(valueOf(parameters.last().uppercase()), executor).display()
 
 				}
 
