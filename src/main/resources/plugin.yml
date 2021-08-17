@@ -5,6 +5,8 @@ load: STARTUP
 authors:
   - TheFruxz (Fruxz)
   - JaLuMu (JanLuca)
+softdepend:
+  - HeadDatabase
 api-version: 1.17
 prefix: ${name}
 website: ${website}

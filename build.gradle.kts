@@ -21,6 +21,8 @@ repositories {
 
     maven("https://papermc.io/repo/repository/maven-public/")
 
+    maven("https://mvn.intellectualsites.com/content/repositories/thirdparty/")
+
 }
 
 dependencies {
@@ -37,6 +39,8 @@ dependencies {
     // External
 
     implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
+
+    compileOnly("me.arcaniax:HeadDatabase-API:[1.0.0,)") // Head-Database
 
 }
 
