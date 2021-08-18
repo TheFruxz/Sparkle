@@ -11,6 +11,8 @@ plugins {
 group = "de.jet"
 version = "1.0-BETA-1"
 
+var host = "github.com/TheFruxz/JET"
+
 repositories {
 
     mavenCentral()
@@ -19,13 +21,15 @@ repositories {
 
     maven("https://papermc.io/repo/repository/maven-public/")
 
+    maven("https://mvn.intellectualsites.com/content/repositories/thirdparty/")
+
 }
 
 dependencies {
 
     // Kotlin
 
-    testImplementation(kotlin("test"))
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.21")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
     // PaperMC
@@ -34,7 +38,9 @@ dependencies {
 
     // External
 
-    implementation("org.ktorm:ktorm-core:[3.4.1,)") // KTorm
+    implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
+
+    compileOnly("me.arcaniax:HeadDatabase-API:[1.0.0,)") // Head-Database
 
 }
 
@@ -46,7 +52,7 @@ publishing {
 
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/TheFruxz/JET")
+            url = uri("https://maven.pkg.$host")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
@@ -79,5 +85,5 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.processResources {
-    expand("version" to project.version)
+    expand("version" to project.version, "name" to project.name, "website" to "https://$host")
 }

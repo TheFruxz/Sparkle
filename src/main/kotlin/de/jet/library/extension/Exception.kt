@@ -7,11 +7,12 @@ fun catchException(exception: Exception) {
 
 	val exceptionIdentity = Random.nextInt(10000, 99999)
 	val exceptionTag = "#$exceptionIdentity"
+	val exceptionShort = exception.stackTrace.first().className
 
-	debugLog("[$exceptionTag] caught exception: '${exception.localizedMessage}'")
-	println(" > $exceptionTag - ${exception.localizedMessage}")
+	debugLog("[$exceptionTag] caught exception: '$exceptionShort'")
+	println(" > $exceptionTag - $exceptionShort")
 	exception.printStackTrace()
-	println(" < $exceptionTag - ${exception.localizedMessage}")
+	println(" < $exceptionTag - $exceptionShort")
 
 	// TODO: 11.07.2021 Nice error message
 

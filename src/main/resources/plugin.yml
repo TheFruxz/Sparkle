@@ -5,6 +5,13 @@ load: STARTUP
 authors:
   - TheFruxz (Fruxz)
   - JaLuMu (JanLuca)
+softdepend:
+  - HeadDatabase
 api-version: 1.17
-prefix: JET
-website: _github_
+prefix: ${name}
+website: ${website}
+commands:
+  jet:
+    description: Discover more info about JET!
+  component:
+    description: Manages your components!

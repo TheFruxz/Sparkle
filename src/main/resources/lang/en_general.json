@@ -1,0 +1,36 @@
+{
+  "languageId": "en_general",
+  "languageVersion": "1.0.0",
+  "languageVendor": "JET",
+  "languageVendorWebsite": "${website}",
+  "jetVersion": "${version}",
+  "languageData": {
+    "system.hello": "Welcome to JET! - Welcome to this Language!",
+
+    "interchange.run.issue.wrongApproval": "[GRAY]This action[RED] requires[GRAY] the approval [YELLOW]'[approval]'[GRAY], to be executed!",
+    "interchange.run.issue.wrongUsage": "[GRAY]The input[RED] must[GRAY] follow the instruction '[YELLOW][usage][GRAY]' to be executed!",
+    "interchange.run.issue.wrongClient": "[GRAY]This action[RED] needs[GRAY] you as a '[YELLOW][client][GRAY]' to be executed!",
+    "interchange.run.issue.issue": "[RED][BOLD]Oops![GRAY] A[RED] critical error[GRAY] occurred unexpectedly while executing the '[YELLOW][interchange][GRAY]' action! Please report this to a technician!",
+    "interchange.run.check.tooShort": "[GRAY]The input [RED]must[GRAY] contain at least [YELLOW][minimumParameters][GRAY] parameters!",
+    "interchange.run.check.tooLarge": "[GRAY]The input should contain a [RED]maximum[GRAY] of [YELLOW][maximumParameters][GRAY] parameters!",
+    "interchange.run.check.noMatch": "[GRAY]The input '[RED][input][GRAY]' is not matching the requirements! Please use '[YELLOW][usage][GRAY]'!",
+
+    "interchange.structure.issue.register": "[RED][BOLD]Oops![GRAY] This interchange [RED]crashed [GRAY]during the [YELLOW]registration[GRAY] process, please report this to a technician!",
+
+    "interchange.internal.jet.version": "[GOLD]JET[GRAY] is running with the version [YELLOW][version][GRAY]!",
+    "interchange.internal.jet.host": "[GRAY]Visit the repository of [GOLD]JET[GRAY] here: [YELLOW][website]",
+    "interchange.internal.jet.ping": "[GOLD][BOLD][ITALIC]PONG!",
+
+    "interchange.internal.component.alreadyRunning": "[GRAY]The component '[YELLOW][component][GRAY]' is [RED]already[GRAY] running!",
+    "interchange.internal.component.nowRunning": "[GRAY]The component '[YELLOW][component][GRAY]' got [LIME]successfully[GRAY] started!",
+    "interchange.internal.component.missingRunning": "[GRAY]The component '[YELLOW][component][GRAY]' is [RED]not[GRAY] running!",
+    "interchange.internal.component.nowStopped": "[GRAY]The component '[YELLOW][component][GRAY]' got [LIME]successfully[GRAY] stopped!",
+    "interchange.internal.component.autoStartRemoved": "[GRAY]The component '[YELLOW][component][GRAY]' is [RED]no longer[GRAY] on the AutoStart list!",
+    "interchange.internal.component.autoStartAdded": "[GRAY]The component '[YELLOW][component][GRAY]' is [GREEN]now[GRAY] on the AutoStart list!",
+    "interchange.internal.component.autoStartStatic": "[GRAY]The component '[YELLOW][component][GRAY]' is [RED]programmed[GRAY] to stay on the AutoStart list!",
+    "interchange.internal.component.list.header": "[GRAY]List of all registered components:",
+    "interchange.internal.component.list.line": "[YELLOW][component][GRAY] -> [autoStart][GRAY] / [status]",
+
+    "component.jetAction.item.cooldown.jetInfo": "[GRAY]Please wait [YELLOW][remaining][GRAY] until you can perform this action again!"
+  }
+}

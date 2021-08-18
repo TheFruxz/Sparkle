@@ -1,7 +1,14 @@
 package de.jet.library
 
-class JET {
+import de.jet.app.JetApp
+import de.jet.library.runtime.app.LanguageSpeaker
 
-	fun demo(): Any? = null
+object JET {
 
+	val appInstance: JetApp
+		get() = JetApp.instance
+
+	val languageSpeaker: LanguageSpeaker
+		get() = appInstance.languageSpeaker
+	
 }

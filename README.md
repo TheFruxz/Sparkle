@@ -13,11 +13,11 @@
 ## JET
 
 JET is a Kotlin based framework developed for the Paper platform, which is based on Bukkit & Spigot.
-JET is designed to simplify development with both simple and complex steps, and provide various technologies for securing and structuring so that the final product is secure, stable, and of simpler quality.
+JET is designed to simplify development with both simple and complex steps, and provide various technologies for higher securing and structuring so that the final product is safer, stable, and of simpler quality.
 
 ## Version Policy
 
-JET is about security, quality and stability. That's why we always use the latest Minecraft version to offer all this as soon as possible. We always use the latest paper version so that patches and fixes contribute to these factors.
+JET is about more security, quality and stability. That's why we always use the latest Minecraft version to offer all this as soon as possible. We always use the latest paper version so that patches and fixes contribute to these factors.
 
 ## Setup
 
