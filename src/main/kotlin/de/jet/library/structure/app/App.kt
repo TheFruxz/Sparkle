@@ -24,6 +24,7 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
+import org.jetbrains.annotations.ApiStatus.Experimental
 import java.io.InputStreamReader
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -152,7 +153,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	fun add(service: Service) {
 		jetTry {
-			task(this, service.temporalAdvice, process = service.process)
+			task(service.temporalAdvice, process = service.process, vendor = this)
 			mainLog(Level.INFO, "Register & boot of service '${service.identity}' succeed!")
 		}
 	}
@@ -231,9 +232,9 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	// override base-mechanics
 
-	abstract fun login()
-	abstract fun boot()
-	abstract fun logout()
+	abstract fun register()
+	abstract fun hello()
+	abstract fun bye()
 
 	/**
 	 * ***DO NOT OVERRIDE!***
@@ -245,7 +246,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			classLoader.getResourceAsStream("plugin.yml")?.let { resource ->
 				appRegistrationFile.load(InputStreamReader(resource))
 			}
-			login()
+			register()
 			runStatus = LOAD
 
 		}
@@ -258,7 +259,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 		jetTry {
 
 			runStatus = PRE_ENABLE
-			boot()
+			hello()
 			runStatus = ENABLE
 
 		}
@@ -271,7 +272,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 		jetTry {
 
 			runStatus = SHUTDOWN
-			logout()
+			bye()
 			runStatus = OFFLINE
 
 		}

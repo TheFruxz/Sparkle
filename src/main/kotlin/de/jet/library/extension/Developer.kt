@@ -38,3 +38,9 @@ fun app(id: String) = JetCache.registeredApplications.first { it.appIdentity.equ
 
 @Throws(NoSuchElementException::class)
 fun Identifiable<App>.getApp() = app(identity)
+
+val Any?.isNull: Boolean
+	get() = this != null
+
+val Any?.isNotNull: Boolean
+	get() = !isNull

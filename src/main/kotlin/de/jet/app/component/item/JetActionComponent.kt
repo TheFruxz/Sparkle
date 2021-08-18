@@ -1,7 +1,6 @@
 package de.jet.app.component.item
 
 import de.jet.app.JetCache
-import de.jet.library.JET
 import de.jet.library.extension.collection.replace
 import de.jet.library.extension.display.notification
 import de.jet.library.extension.display.ui.get
@@ -12,7 +11,6 @@ import de.jet.library.extension.system
 import de.jet.library.extension.tasky.async
 import de.jet.library.extension.tasky.sync
 import de.jet.library.extension.tasky.task
-import de.jet.library.extension.tasky.wait
 import de.jet.library.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.event.EventListener
@@ -23,8 +21,8 @@ import de.jet.library.tool.display.item.action.ItemAction
 import de.jet.library.tool.display.message.Transmission.Level.FAIL
 import de.jet.library.tool.display.ui.panel.PanelFlag
 import de.jet.library.tool.display.ui.panel.PanelFlag.*
-import de.jet.library.tool.tasky.TemporalAdvice
-import de.jet.library.tool.tasky.TemporalAdvice.Companion
+import de.jet.library.tool.timing.tasky.TemporalAdvice.Companion.delayed
+import de.jet.library.tool.timing.tasky.TemporalAdvice.Companion.instant
 import org.bukkit.entity.Player
 import org.bukkit.event.Event.Result.DENY
 import org.bukkit.event.EventHandler
@@ -75,8 +73,8 @@ internal class JetActionComponent(vendor: App) : Component(vendor, true) {
 						add(Calendar.MILLISECOND, 50*cooldown.ticks.toInt())
 					}
 
-					async(JET.appInstance, Companion.delayed(cooldown.ticks.toLong())) {
-						sync {
+					async(delayed(cooldown.ticks.toLong()), vendor = vendor) {
+						sync(vendor = vendor) {
 							JetCache.runningCooldowns[player] = JetCache.runningCooldowns[player]?.apply {
 								remove(item.identityObject)
 							} ?: mutableSetOf()
@@ -137,7 +135,7 @@ internal class JetActionComponent(vendor: App) : Component(vendor, true) {
 
 					produceActionCooldown(item, player, action)
 
-					task(vendor, TemporalAdvice.instant(async = action.async)) {
+					task(instant(async = action.async)) {
 						action.action(event)
 					}
 
@@ -206,7 +204,7 @@ internal class JetActionComponent(vendor: App) : Component(vendor, true) {
 
 						produceActionCooldown(item, player, action)
 
-						task(vendor, TemporalAdvice.instant(async = action.async)) {
+						task(instant(async = action.async), vendor = vendor) {
 							action.action(event)
 						}
 

@@ -17,6 +17,12 @@ fun generateRAWSoundEffect(soundData: SoundData) = with(soundData) {
 	Sound.sound(type, category, volume, pitch)
 }
 
+@JvmName("playSoundEffectSmartly")
+fun playSoundEffect(
+	location: Location,
+	soundData: SoundData,
+) = location.playSoundEffect(soundData)
+
 fun Entity.playSoundEffect(
 	soundData: SoundData,
 ) = playSound(generateRAWSoundEffect(soundData))

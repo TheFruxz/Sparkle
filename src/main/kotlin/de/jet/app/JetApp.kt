@@ -24,11 +24,11 @@ class JetApp : App() {
 	override val appLabel = "JET"
 	override val appCache = JetCache
 
-	override fun login() {
+	override fun register() {
 		instance = this
 	}
 
-	override fun boot() {
+	override fun hello() {
 
 		object : BukkitRunnable() {
 			override fun run() {
@@ -84,7 +84,7 @@ class JetApp : App() {
 
 	}
 
-	override fun logout() {
+	override fun bye() {
 
 		JetCache.registeredComponents.forEach {
 			it.stop()

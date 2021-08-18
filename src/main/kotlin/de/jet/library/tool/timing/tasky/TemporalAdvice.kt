@@ -1,4 +1,4 @@
-package de.jet.library.tool.tasky
+package de.jet.library.tool.timing.tasky
 
 import de.jet.library.extension.system
 import org.bukkit.scheduler.BukkitRunnable

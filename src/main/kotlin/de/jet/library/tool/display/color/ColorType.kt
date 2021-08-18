@@ -1,11 +1,15 @@
 package de.jet.library.tool.display.color
 
+import de.jet.library.tool.smart.annotation.NotPerfect
+import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.util.RGBLike
 import org.bukkit.ChatColor
 import org.bukkit.Color
 import org.bukkit.DyeColor
 import org.bukkit.Material
+import org.bukkit.boss.BarColor
+import org.jetbrains.annotations.ApiStatus.Experimental
 
 enum class ColorType : RGBLike {
 
@@ -47,6 +51,7 @@ enum class ColorType : RGBLike {
 		}
 	}
 
+	@NotPerfect
 	val chatColor by lazy {
 		when (this) {
 			WHITE -> ChatColor.WHITE
@@ -68,8 +73,48 @@ enum class ColorType : RGBLike {
 		}
 	}
 
+	@NotPerfect
+	@Experimental
+	val dyedChatColor: net.md_5.bungee.api.ChatColor = net.md_5.bungee.api.ChatColor.of(
+		with(java.awt.Color.RGBtoHSB(dyeColor.color.red, dyeColor.color.green, dyeColor.color.blue, null)) {
+			java.awt.Color.getHSBColor(get(0), get(1), get(2))
+		}
+	)
+
 	val rawColor: Color by lazy {
 		dyeColor.color
+	}
+
+	@NotPerfect
+	val barColor: BarColor by lazy {
+		when (this) {
+			WHITE -> BarColor.WHITE
+			PURPLE -> BarColor.PURPLE
+			YELLOW -> BarColor.YELLOW
+			GREEN -> BarColor.GREEN
+			LIME -> BarColor.GREEN
+			RED -> BarColor.RED
+			BLUE -> BarColor.BLUE
+			LIGHT_BLUE -> BarColor.BLUE
+			PINK -> BarColor.PINK
+			else -> BarColor.WHITE
+		}
+	}
+
+	@NotPerfect
+	val adventureBarColor: BossBar.Color by lazy {
+		when (this) {
+			WHITE -> BossBar.Color.WHITE
+			PURPLE -> BossBar.Color.PURPLE
+			YELLOW -> BossBar.Color.YELLOW
+			GREEN -> BossBar.Color.GREEN
+			LIME -> BossBar.Color.GREEN
+			RED -> BossBar.Color.RED
+			BLUE -> BossBar.Color.BLUE
+			LIGHT_BLUE -> BossBar.Color.BLUE
+			PINK -> BossBar.Color.PINK
+			else -> BossBar.Color.WHITE
+		}
 	}
 
 	val textColor: TextColor by lazy {

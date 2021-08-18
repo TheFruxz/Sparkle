@@ -48,4 +48,11 @@ object SoundLibrary {
 		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_PLING, pitch = 2))
 	}
 
+	val NOTIFICATION_APPLIED = buildMelody(2, 0) {
+		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_BASS))
+		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_BASS))
+		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_BASS, pitch = 2))
+		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_BASS))
+	}
+
 }
