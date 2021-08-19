@@ -1,8 +1,8 @@
 # ![JET - The Kotlin-Based Framework for Next-Gen Paper Plugins - Just everything tweaked](https://user-images.githubusercontent.com/28064149/126283274-71633d1c-95ec-407d-ab71-c7db9e96a3d5.gif)
 
-![Built by developers](https://forthebadge.com/images/badges/built-by-developers.svg)
-![Built with love](https://forthebadge.com/images/badges/built-with-love.svg)
-![Open Source](https://forthebadge.com/images/badges/open-source.svg)
+[![Open Source](https://forthebadge.com/images/badges/open-source.svg)](https://github.com/TheFruxz/JET/blob/main/LICENSE)
+[![Built by developers](https://forthebadge.com/images/badges/built-by-developers.svg)](https://github.com/TheFruxz/JET/graphs/contributors)
+[![Written in Kotlin](https://forthebadge.com/images/badges/makes-people-smile.svg)](https://github.com/JetBrains/kotlin)
 <br>
 [![JETBuild](https://github.com/TheFruxz/JET/actions/workflows/build-JET.yml/badge.svg)](https://github.com/TheFruxz/QUAD/actions/workflows/build-QUAD.yml)
 [![JETTest](https://github.com/TheFruxz/JET/actions/workflows/test-JET.yml/badge.svg)](https://github.com/TheFruxz/QUAD/actions/workflows/test-QUAD.yml)
