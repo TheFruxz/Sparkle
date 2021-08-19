@@ -5,15 +5,15 @@ import de.jet.library.structure.app.App
 import de.jet.library.structure.app.AppCache
 import de.jet.library.structure.app.cache.CacheDepthLevel
 import de.jet.library.structure.component.Component
+import de.jet.library.structure.service.Service
 import de.jet.library.tool.display.item.Item
 import de.jet.library.tool.display.item.action.ItemClickAction
 import de.jet.library.tool.display.item.action.ItemInteractAction
 import de.jet.library.tool.display.ui.panel.PanelFlag
-import de.jet.library.tool.smart.Identifiable
 import de.jet.library.tool.smart.Identity
+import de.jet.library.tool.timing.tasky.Tasky
 import org.bukkit.entity.Player
 import java.util.*
-import kotlin.time.Duration
 
 object JetCache : AppCache {
 
@@ -33,6 +33,8 @@ object JetCache : AppCache {
 
 	val registeredComponents = mutableSetOf<Component>()
 
+	val registeredServices = mutableSetOf<Service>()
+
 	val runningComponents = mutableSetOf<Identity<Component>>()
 
 	val registeredPanelFlags = mutableMapOf<String, Set<PanelFlag>>()
@@ -40,6 +42,11 @@ object JetCache : AppCache {
 	val runningCooldowns = mutableMapOf<Player, MutableSet<Identity<Item>>>()
 
 	val runningCooldownDestinations = mutableMapOf<Pair<Player, Identity<Item>>, Calendar>()
+
+	var runningServiceTaskController = mutableMapOf<Identity<Service>, Tasky>()
+		internal set
+
+	val runningTasks = mutableListOf<Int>()
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
 		TODO("Not yet implemented")

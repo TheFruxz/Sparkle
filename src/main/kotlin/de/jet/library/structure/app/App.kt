@@ -10,6 +10,7 @@ import de.jet.library.extension.collection.mutableReplaceWith
 import de.jet.library.extension.jetTry
 import de.jet.library.extension.mainLog
 import de.jet.library.extension.tasky.task
+import de.jet.library.extension.tasky.wait
 import de.jet.library.runtime.app.LanguageSpeaker
 import de.jet.library.runtime.app.RunStatus
 import de.jet.library.runtime.app.RunStatus.*
@@ -24,7 +25,6 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
-import org.jetbrains.annotations.ApiStatus.Experimental
 import java.io.InputStreamReader
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -151,11 +151,72 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 		)
 	}
 
-	fun add(service: Service) {
-		jetTry {
-			task(service.temporalAdvice, process = service.process, vendor = this)
-			mainLog(Level.INFO, "Register & boot of service '${service.identity}' succeed!")
+	fun register(service: Service) {
+		if (JetCache.registeredServices.none { it.identity == service.identity }) {
+			JetCache.registeredServices.add(service)
+			mainLog(Level.INFO, "Register of service '${service.identity}' succeed!")
+		} else
+			throw IllegalStateException("The service '${service.identity}' is already registered!")
+	}
+
+	fun unregister(service: Service) {
+		if (JetCache.registeredServices.any { it.identity == service.identity }) {
+			stop(service)
+			JetCache.registeredServices.remove(service)
+			mainLog(Level.INFO, "Unregister of service '${service.identity}' succeed!")
+		} else
+			throw IllegalStateException("The service '${service.identity}' is not registered!")
+	}
+
+	fun reset(service: Service) {
+		if (JetCache.registeredServices.any { it.identity == service.identity }) {
+			service.controller?.attempt = 0
+			mainLog(Level.INFO, "Reset of service '${service.identity}' succeed!")
+		} else
+			throw IllegalStateException("The service '${service.identity}' is not registered!")
+	}
+
+	fun start(service: Service) {
+		if (JetCache.registeredServices.any { it.identity == service.identity }) {
+			if (!service.isRunning) {
+				task(
+					service.temporalAdvice,
+					process = service.process,
+					vendor = this,
+					onStart = service.onStart,
+					onStop = service.onStop,
+					onCrash = service.onCrash,
+					serviceVendor = service.identityObject
+				)
+				mainLog(Level.INFO, "Starting of service '${service.identity}' succeed!")
+			} else
+				throw IllegalStateException("The service '${service.identity}' is already running!")
+		} else
+			throw IllegalStateException("The service '${service.identity}' is not registered!")
+	}
+
+	fun stop(service: Service) {
+		if (service.isRunning) {
+			service.shutdown()
+			mainLog(Level.INFO, "Stopping of service '${service.identity}' succeed!")
+		} else
+			throw IllegalStateException("The service '${service.identity}' is not running!")
+	}
+
+	fun restart(service: Service) {
+		mainLog(Level.INFO, "--- --- --- --- --- --- --- --- --- --- --- ---")
+		mainLog(Level.INFO, "Attempting restart of service '${service.identity}'...")
+		try {
+			stop(service)
+		} catch (exception: IllegalStateException) {
+			mainLog(Level.WARNING, "skipped stop of service '${service.identity}', was already offline!")
 		}
+		mainLog(Level.INFO, "Waiting one second, let the service stop...")
+		wait(20*1) {
+			start(service)
+		}
+		mainLog(Level.INFO, "Restart of service '${service.identity}' succeed!")
+		mainLog(Level.INFO, "--- --- --- --- --- --- --- --- --- --- --- ---")
 	}
 
 	fun remove(eventListener: EventListener) {

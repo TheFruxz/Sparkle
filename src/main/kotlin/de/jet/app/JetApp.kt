@@ -5,15 +5,10 @@ import de.jet.app.component.events.JetEventsComponent
 import de.jet.app.component.item.JetActionComponent
 import de.jet.app.interchange.ComponentInterchange
 import de.jet.app.interchange.JETInterchange
-import de.jet.library.extension.data.div
-import de.jet.library.extension.data.jetPath
+import de.jet.app.interchange.ServiceInterchange
 import de.jet.library.extension.mainLog
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.AppCompanion
-import de.jet.library.tool.data.DataTransformer
-import de.jet.library.tool.data.JetFile
-import de.jet.library.tool.data.Preference
-import org.bukkit.scheduler.BukkitRunnable
 import java.util.logging.Level
 
 class JetApp : App() {
@@ -29,34 +24,6 @@ class JetApp : App() {
 	}
 
 	override fun hello() {
-
-		object : BukkitRunnable() {
-			override fun run() {
-				Preference(
-					file = JetFile.appFile(instance, "hey"),
-					path = jetPath("this") / "is" / "the" / "path",
-					default = 2,
-					useCache = false,
-					async = true,
-				).transformer(DataTransformer({
-					"Thisisthenumber$this"
-				}, {
-					removePrefix("Thisisthenumber").toInt()
-				}))
-					.let { preference ->
-
-					println("writing preference...")
-					preference.content = 2
-
-					Thread.sleep(3000)
-					println("read saved content...")
-
-					println("${preference.content} is stored!")
-
-				}
-			}
-
-		}.runTaskLater(this, 20L*15)
 
 		languageSpeaker.let { languageSpeaker ->
 			mainLog(Level.INFO, "Speaking langauge: ${languageSpeaker.languageId}")
@@ -75,12 +42,13 @@ class JetApp : App() {
 			}
 		}
 
-		add(JetEventsComponent(this))
-		add(JetChatComponent(this))
-		add(JetActionComponent(this))
+		add(JetEventsComponent())
+		add(JetChatComponent())
+		add(JetActionComponent())
 
-		add(JETInterchange(this))
-		add(ComponentInterchange(this))
+		add(JETInterchange())
+		add(ComponentInterchange())
+		add(ServiceInterchange())
 
 	}
 

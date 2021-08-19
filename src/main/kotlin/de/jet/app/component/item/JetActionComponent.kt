@@ -38,7 +38,7 @@ import kotlin.NoSuchElementException
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
-internal class JetActionComponent(vendor: App) : Component(vendor, true) {
+internal class JetActionComponent(vendor: App = system) : Component(vendor, true) {
 
 	override val thisIdentity = "Actions"
 

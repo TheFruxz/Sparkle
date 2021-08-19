@@ -1,8 +1,13 @@
 package de.jet.library.tool.timing.tasky
 
+import de.jet.app.JetCache
 import de.jet.library.extension.catchException
 import de.jet.library.structure.app.App
+import de.jet.library.structure.service.Service
 import de.jet.library.tool.display.ide.API
+import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.Identity
+import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
 
 interface Tasky {
@@ -25,9 +30,14 @@ interface Tasky {
 			vendor: App,
 			temporalAdvice: TemporalAdvice,
 			killAtError: Boolean = true,
+			onStart: Tasky.() -> Unit = {},
+			onStop: Tasky.() -> Unit = {},
+			onCrash: Tasky.() -> Unit = {},
+			serviceVendor: Identity<Service> = Identifiable.custom<Service>("dummy").identityObject,
 			process: Tasky.() -> Unit,
-		): Task {
+		): Tasky {
 			val currentTask = Task(temporalAdvice, true, process)
+			lateinit var output: Tasky
 
 			temporalAdvice.run(
 				object : BukkitRunnable() {
@@ -51,27 +61,71 @@ interface Tasky {
 
 						try {
 
+							if (controller.attempt == 1L) {
+								JetCache.runningTasks.add(element = taskId)
+								onStart(controller)
+								output = controller
+							}
+
 							currentTask.process(controller)
 
 						} catch (e: Exception) {
 							catchException(e)
 
-							if (controller.dieOnError)
+							if (controller.dieOnError) {
+								onCrash(controller)
+								JetCache.runningTasks.removeAll { check -> check == controller.taskId }
+								JetCache.runningServiceTaskController = JetCache.runningServiceTaskController.filterNot { check -> check.value.taskId == controller.taskId }.toMutableMap()
 								controller.shutdown()
+							}
 
 						} catch (e: java.lang.Exception) {
 							catchException(e)
 
-							if (controller.dieOnError)
+							if (controller.dieOnError) {
+								onCrash(controller)
+								JetCache.runningTasks.removeAll { check -> check == controller.taskId }
+								JetCache.runningServiceTaskController = JetCache.runningServiceTaskController.filterNot { check -> check.value.taskId == controller.taskId }.toMutableMap()
 								controller.shutdown()
+							}
 
 						}
 					}
 
+				}.let {
+					output = object : Tasky {
+						override fun shutdown() {
+							JetCache.runningTasks.removeAll { check -> check == it.taskId }
+							JetCache.runningServiceTaskController = JetCache.runningServiceTaskController.filterNot { check -> check.value.taskId == it.taskId }.toMutableMap()
+							onStop(this)
+							Bukkit.getScheduler().cancelTask(it.taskId)
+							it.cancel()
+						}
+
+						override val taskId: Int
+							get() = it.taskId
+
+						override var attempt: Long
+							get() = it.controller.attempt
+							set(value) {
+								it.controller.attempt = value
+							}
+						override val dieOnError = killAtError
+
+						override val vendor = vendor
+
+						override val temporalAdvice = temporalAdvice
+
+					}
+					return@let it
 				}
+
 			)
 
-			return currentTask
+			if (serviceVendor.id != "dummy")
+				JetCache.runningServiceTaskController[serviceVendor] = output
+
+			return output
 		}
 
 	}
