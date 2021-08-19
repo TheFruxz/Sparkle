@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.21"
+    kotlin("jvm") version "1.5.30-RC"
     kotlin("plugin.serialization") version "1.5.21"
     id("com.github.johnrengelman.shadow") version "7.0.0"
     id("org.jetbrains.dokka") version "1.5.0"
@@ -29,7 +29,7 @@ dependencies {
 
     // Kotlin
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.21")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.30-RC")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
     // PaperMC

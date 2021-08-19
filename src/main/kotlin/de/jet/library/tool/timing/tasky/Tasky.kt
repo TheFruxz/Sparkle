@@ -9,6 +9,7 @@ import de.jet.library.tool.smart.Identifiable
 import de.jet.library.tool.smart.Identity
 import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
+import java.util.*
 
 interface Tasky {
 
@@ -23,6 +24,8 @@ interface Tasky {
 	val vendor: App
 
 	val temporalAdvice: TemporalAdvice
+
+	val startTime: Calendar
 
 	companion object {
 
@@ -50,6 +53,7 @@ interface Tasky {
 						override val dieOnError = killAtError
 						override val vendor = vendor
 						override val temporalAdvice = temporalAdvice
+						override val startTime = Calendar.getInstance()
 					}
 
 					override fun run() {
@@ -115,6 +119,8 @@ interface Tasky {
 						override val vendor = vendor
 
 						override val temporalAdvice = temporalAdvice
+
+						override val startTime = Calendar.getInstance()
 
 					}
 					return@let it

@@ -40,7 +40,7 @@
     "interchange.internal.service.serviceReset": "[GRAY]The service '[YELLOW][id][GRAY]' got a reset [LIME]successfully[GRAY]!",
     "interchange.internal.service.serviceNotFound": "[GRAY]There are [RED]no[GRAY] services with the group or id '[YELLOW][id][GRAY]' registered!",
     "interchange.internal.service.list.header": "[GRAY]List of all registered services:",
-    "interchange.internal.service.list.line": "[YELLOW][service][GRAY] -> [enabled][GRAY],",
+    "interchange.internal.service.list.line": "[YELLOW][service][GRAY] -> [enabled][GRAY] ([activeSince]),",
 
     "component.jetAction.item.cooldown.jetInfo": "[GRAY]Please wait [YELLOW][remaining][GRAY] until you can perform this action again!"
   }
