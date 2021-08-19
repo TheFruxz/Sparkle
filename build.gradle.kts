@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "de.jet"
-version = "1.0-BETA-1"
+version = "1.0-BETA-2"
 
 var host = "github.com/TheFruxz/JET"
 
