@@ -9,7 +9,6 @@ import org.bukkit.Color
 import org.bukkit.DyeColor
 import org.bukkit.Material
 import org.bukkit.boss.BarColor
-import org.jetbrains.annotations.ApiStatus.Experimental
 
 enum class ColorType : RGBLike {
 
@@ -74,12 +73,17 @@ enum class ColorType : RGBLike {
 	}
 
 	@NotPerfect
-	@Experimental
-	val dyedChatColor: net.md_5.bungee.api.ChatColor = net.md_5.bungee.api.ChatColor.of(
-		with(java.awt.Color.RGBtoHSB(dyeColor.color.red, dyeColor.color.green, dyeColor.color.blue, null)) {
-			java.awt.Color.getHSBColor(get(0), get(1), get(2))
+	val dyedChatColor: net.md_5.bungee.api.ChatColor by lazy {
+		try {
+			net.md_5.bungee.api.ChatColor.of(
+				with(java.awt.Color.RGBtoHSB(dyeColor.color.red, dyeColor.color.green, dyeColor.color.blue, null)) {
+					java.awt.Color.getHSBColor(get(0), get(1), get(2))
+				}
+			)
+		} catch (ignore: Exception) {
+			net.md_5.bungee.api.ChatColor.BLACK
 		}
-	)
+	}
 
 	val rawColor: Color by lazy {
 		dyeColor.color

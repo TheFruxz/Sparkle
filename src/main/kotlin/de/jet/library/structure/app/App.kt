@@ -31,10 +31,6 @@ import java.util.logging.Logger
 
 abstract class App : JavaPlugin(), Identifiable<App> {
 
-	init {
-		JetCache.registeredApplications.add(this)
-	}
-
 	// parameters
 
 	abstract val companion: AppCompanion<*>
@@ -153,25 +149,31 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	fun register(service: Service) {
 		if (JetCache.registeredServices.none { it.identity == service.identity }) {
-			JetCache.registeredServices.add(service)
-			mainLog(Level.INFO, "Register of service '${service.identity}' succeed!")
+			jetTry {
+				JetCache.registeredServices.add(service)
+				mainLog(Level.INFO, "Register of service '${service.identity}' succeed!")
+			}
 		} else
 			throw IllegalStateException("The service '${service.identity}' is already registered!")
 	}
 
 	fun unregister(service: Service) {
 		if (JetCache.registeredServices.any { it.identity == service.identity }) {
-			stop(service)
-			JetCache.registeredServices.remove(service)
-			mainLog(Level.INFO, "Unregister of service '${service.identity}' succeed!")
+			jetTry {
+				stop(service)
+				JetCache.registeredServices.remove(service)
+				mainLog(Level.INFO, "Unregister of service '${service.identity}' succeed!")
+			}
 		} else
 			throw IllegalStateException("The service '${service.identity}' is not registered!")
 	}
 
 	fun reset(service: Service) {
 		if (JetCache.registeredServices.any { it.identity == service.identity }) {
-			service.controller?.attempt = 0
-			mainLog(Level.INFO, "Reset of service '${service.identity}' succeed!")
+			jetTry {
+				service.controller?.attempt = 0
+				mainLog(Level.INFO, "Reset of service '${service.identity}' succeed!")
+			}
 		} else
 			throw IllegalStateException("The service '${service.identity}' is not registered!")
 	}
@@ -179,16 +181,18 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	fun start(service: Service) {
 		if (JetCache.registeredServices.any { it.identity == service.identity }) {
 			if (!service.isRunning) {
-				task(
-					service.temporalAdvice,
-					process = service.process,
-					vendor = this,
-					onStart = service.onStart,
-					onStop = service.onStop,
-					onCrash = service.onCrash,
-					serviceVendor = service.identityObject
-				)
-				mainLog(Level.INFO, "Starting of service '${service.identity}' succeed!")
+				jetTry {
+					task(
+						service.temporalAdvice,
+						process = service.process,
+						vendor = this,
+						onStart = service.onStart,
+						onStop = service.onStop,
+						onCrash = service.onCrash,
+						serviceVendor = service.identityObject
+					)
+					mainLog(Level.INFO, "Starting of service '${service.identity}' succeed!")
+				}
 			} else
 				throw IllegalStateException("The service '${service.identity}' is already running!")
 		} else
@@ -197,8 +201,10 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	fun stop(service: Service) {
 		if (service.isRunning) {
-			service.shutdown()
-			mainLog(Level.INFO, "Stopping of service '${service.identity}' succeed!")
+			jetTry {
+				service.shutdown()
+				mainLog(Level.INFO, "Stopping of service '${service.identity}' succeed!")
+			}
 		} else
 			throw IllegalStateException("The service '${service.identity}' is not running!")
 	}
@@ -302,6 +308,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 */
 	override fun onLoad() {
 		jetTry {
+			JetCache.registeredApplications.add(this)
 
 			runStatus = PRE_LOAD
 			classLoader.getResourceAsStream("plugin.yml")?.let { resource ->
