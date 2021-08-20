@@ -4,9 +4,10 @@ import de.jet.app.JetCache
 import de.jet.library.extension.display.BOLD
 import de.jet.library.extension.display.YELLOW
 import de.jet.library.extension.display.ui.item
-import de.jet.library.extension.system
 import de.jet.library.extension.paper.createKey
 import de.jet.library.extension.paper.legacyString
+import de.jet.library.extension.system
+import de.jet.library.extension.tasky.sync
 import de.jet.library.structure.app.App
 import de.jet.library.tool.display.color.ColorType
 import de.jet.library.tool.display.item.Item
@@ -132,10 +133,12 @@ class Panel(
 					dataPut(system.createKey("panelBorder"), 1)
 			})
 		}
-		if (humanEntity is Player) {
-			humanEntity.openInventory(playerSpecificUI(this, humanEntity).rawInventory)
-		} else
-			super.display(humanEntity)
+		sync {
+			if (humanEntity is Player) {
+				humanEntity.openInventory(playerSpecificUI(this@Panel, humanEntity).rawInventory)
+			} else
+				super.display(humanEntity)
+		}
 	}
 
 	override fun display(receiver: Player) =

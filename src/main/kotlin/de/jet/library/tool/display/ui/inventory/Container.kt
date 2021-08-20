@@ -2,6 +2,7 @@ package de.jet.library.tool.display.ui.inventory
 
 import de.jet.library.extension.display.GRAY
 import de.jet.library.extension.display.ui.item
+import de.jet.library.extension.tasky.sync
 import de.jet.library.tool.display.color.ColorType
 import de.jet.library.tool.display.item.Item
 import de.jet.library.tool.display.ui.UI
@@ -259,7 +260,9 @@ open class Container(
 	override fun display(receiver: Player) = display(humanEntity = receiver)
 
 	override fun display(humanEntity: HumanEntity) {
-		humanEntity.openInventory(rawInventory)
+		sync {
+			humanEntity.openInventory(rawInventory)
+		}
 	}
 
 }

@@ -9,6 +9,8 @@ import de.jet.app.interchange.ServiceInterchange
 import de.jet.library.extension.mainLog
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.AppCompanion
+import de.jet.library.tool.display.world.SimpleLocation
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.util.logging.Level
 
 class JetApp : App() {
@@ -21,6 +23,7 @@ class JetApp : App() {
 
 	override fun register() {
 		instance = this
+		ConfigurationSerialization.registerClass(SimpleLocation::class.java)
 	}
 
 	override fun hello() {
