@@ -2,12 +2,12 @@ package de.jet.library.tool.timing.tasky
 
 import de.jet.app.JetCache
 import de.jet.library.extension.catchException
+import de.jet.library.extension.paper.scheduler
 import de.jet.library.structure.app.App
 import de.jet.library.structure.service.Service
 import de.jet.library.tool.display.ide.API
 import de.jet.library.tool.smart.Identifiable
 import de.jet.library.tool.smart.Identity
-import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
 
@@ -102,7 +102,7 @@ interface Tasky {
 							JetCache.runningTasks.removeAll { check -> check == it.taskId }
 							JetCache.runningServiceTaskController = JetCache.runningServiceTaskController.filterNot { check -> check.value.taskId == it.taskId }.toMutableMap()
 							onStop(this)
-							Bukkit.getScheduler().cancelTask(it.taskId)
+							scheduler.cancelTask(it.taskId)
 							it.cancel()
 						}
 

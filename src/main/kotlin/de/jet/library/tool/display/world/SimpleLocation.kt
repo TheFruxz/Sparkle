@@ -1,7 +1,7 @@
 package de.jet.library.tool.display.world
 
+import de.jet.library.extension.paper.getWorld
 import kotlinx.serialization.Serializable
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
@@ -24,7 +24,7 @@ data class SimpleLocation(
 	constructor(map: Map<String, Any>) : this("" + map["world"], ("" + map["x"]).toDouble(), ("" + map["y"]).toDouble(), ("" + map["z"]).toDouble())
 
 	val bukkit: Location
-		get() = Location(Bukkit.getWorld(world), x, y, z)
+		get() = Location(getWorld(world), x, y, z)
 
 	override fun serialize() = mapOf(
 		"world" to world,

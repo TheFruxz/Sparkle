@@ -11,6 +11,7 @@ import de.jet.library.tool.display.item.action.ItemClickAction
 import de.jet.library.tool.display.item.action.ItemInteractAction
 import de.jet.library.tool.display.ui.panel.PanelFlag
 import de.jet.library.tool.smart.Identity
+import de.jet.library.tool.timing.cooldown.Cooldown
 import de.jet.library.tool.timing.tasky.Tasky
 import org.bukkit.entity.Player
 import java.util.*
@@ -39,9 +40,11 @@ object JetCache : AppCache {
 
 	val registeredPanelFlags = mutableMapOf<String, Set<PanelFlag>>()
 
-	val runningCooldowns = mutableMapOf<Player, MutableSet<Identity<Item>>>()
+	val cooldowns = mutableMapOf<String, Cooldown>()
 
-	val runningCooldownDestinations = mutableMapOf<Pair<Player, Identity<Item>>, Calendar>()
+	val runningActionCooldowns = mutableMapOf<Player, MutableSet<Identity<Item>>>()
+
+	val runningActionCooldownDestinations = mutableMapOf<Pair<Player, Identity<Item>>, Calendar>()
 
 	var runningServiceTaskController = mutableMapOf<Identity<Service>, Tasky>()
 		internal set

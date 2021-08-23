@@ -4,7 +4,6 @@ import de.jet.library.structure.command.buildCompletion
 import de.jet.library.structure.command.next
 import de.jet.library.structure.command.plus
 import de.jet.library.tool.smart.Identifiable
-import org.junit.jupiter.api.Test
 
 internal class InterchangeTest {
 

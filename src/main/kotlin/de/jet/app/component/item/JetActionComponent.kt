@@ -16,7 +16,8 @@ import de.jet.library.structure.app.App
 import de.jet.library.structure.app.event.EventListener
 import de.jet.library.structure.component.Component
 import de.jet.library.tool.display.item.Item
-import de.jet.library.tool.display.item.action.ActionCooldownType.*
+import de.jet.library.tool.display.item.action.ActionCooldownType.BUKKIT_MATERIAL
+import de.jet.library.tool.display.item.action.ActionCooldownType.JET_INFO
 import de.jet.library.tool.display.item.action.ItemAction
 import de.jet.library.tool.display.message.Transmission.Level.FAIL
 import de.jet.library.tool.display.ui.panel.PanelFlag
@@ -34,7 +35,6 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 import java.util.*
 import java.util.concurrent.TimeUnit.SECONDS
-import kotlin.NoSuchElementException
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
@@ -55,7 +55,7 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, true
 	private class Handler(override val vendor: App) : EventListener, Listener {
 
 		private fun hasNoCooldown(player: Player, item: Item): Boolean {
-			return JetCache.runningCooldowns[player]?.none { it.id == item.identity } ?: true
+			return JetCache.runningActionCooldowns[player]?.none { it.id == item.identity } ?: true
 		}
 
 		private fun produceActionCooldown(item: Item, player: Player, action: ItemAction<*>) {
@@ -65,17 +65,17 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, true
 
 				if (cooldown.type != BUKKIT_MATERIAL) {
 
-					JetCache.runningCooldowns[player] = JetCache.runningCooldowns[player]?.apply {
+					JetCache.runningActionCooldowns[player] = JetCache.runningActionCooldowns[player]?.apply {
 						add(item.identityObject)
 					} ?: mutableSetOf()
 
-					JetCache.runningCooldownDestinations[player to item.identityObject] = Calendar.getInstance().apply {
+					JetCache.runningActionCooldownDestinations[player to item.identityObject] = Calendar.getInstance().apply {
 						add(Calendar.MILLISECOND, 50*cooldown.ticks.toInt())
 					}
 
 					async(delayed(cooldown.ticks.toLong()), vendor = vendor) {
 						sync(vendor = vendor) {
-							JetCache.runningCooldowns[player] = JetCache.runningCooldowns[player]?.apply {
+							JetCache.runningActionCooldowns[player] = JetCache.runningActionCooldowns[player]?.apply {
 								remove(item.identityObject)
 							} ?: mutableSetOf()
 						}
@@ -97,10 +97,10 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, true
 		private fun reactToActionCooldown(item: Item, player: Player, action: ItemAction<*>) {
 			try {
 
-				JetCache.runningCooldowns[player]?.first { it.id == item.identity }?.let {
+				JetCache.runningActionCooldowns[player]?.first { it.id == item.identity }?.let {
 					val cooldown = action.cooldown
 					val remaining =
-						Duration.milliseconds((JetCache.runningCooldownDestinations[player to it] ?: Calendar.getInstance()).timeInMillis - Calendar.getInstance().timeInMillis).toString(SECONDS)
+						Duration.milliseconds((JetCache.runningActionCooldownDestinations[player to it] ?: Calendar.getInstance()).timeInMillis - Calendar.getInstance().timeInMillis).toString(SECONDS)
 
 					if (cooldown != null) {
 
