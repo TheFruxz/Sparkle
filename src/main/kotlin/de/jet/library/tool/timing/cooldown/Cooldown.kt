@@ -1,12 +1,13 @@
 package de.jet.library.tool.timing.cooldown
 
-import de.jet.app.JetCache.cooldowns
+import de.jet.app.JetCache.livingCooldowns
 import de.jet.library.tool.smart.Identifiable
 import de.jet.library.tool.timing.calendar.Calendar
 import de.jet.library.tool.timing.calendar.Calendar.TimeField.MILLISECOND
 import org.bukkit.Server
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
+import kotlin.time.Duration
 
 data class Cooldown(
 	override val identity: String,
@@ -18,31 +19,33 @@ data class Cooldown(
 	val destination = Calendar.now().add(MILLISECOND, 50 * ticks)
 
 	fun startCooldown() {
-		cooldowns[identity] = this
+		livingCooldowns[identity] = this
 	}
 
 	fun stopCooldown() {
-		cooldowns.remove(identity)
+		livingCooldowns.remove(identity)
 	}
 
-	val isOver: Boolean
-		get() = Calendar.now().after(destination)
+	val remainingCooldown: Duration
+		get() = Calendar.now().durationTo(destination)
 
 	companion object {
 
-		private fun sectioning(section: String) =
+		internal fun sectioning(section: String) =
 			if (section.isBlank()) "" else "$section:"
 
-		fun isCooldownRunning(identity: String, section:  String = CooldownSection.general()) = cooldowns.any {
+		fun isCooldownRunning(identity: String, section:  String = CooldownSection.general()) = livingCooldowns.any {
 			it.key == "${sectioning(section)}:$identity" && it.value.destination.before(Calendar.now())
 		}
 
-		fun launchCooldown(identity: String, ticks: Int, section: String = CooldownSection.general()) {
+		fun launchCooldown(identity: String, ticks: Int, section: String = CooldownSection.general()): Cooldown {
 
 			if (isCooldownRunning(identity, section))
-				cooldowns.remove("$section:$identity")
+				livingCooldowns.remove("$section:$identity")
 
-			Cooldown("${sectioning(section)}:$identity", ticks).startCooldown()
+			return Cooldown("${sectioning(section)}:$identity", ticks).apply {
+				startCooldown()
+			}
 
 		}
 

@@ -4,16 +4,15 @@ import de.jet.library.runtime.sandbox.SandBox
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.AppCache
 import de.jet.library.structure.app.cache.CacheDepthLevel
+import de.jet.library.structure.command.Interchange
 import de.jet.library.structure.component.Component
 import de.jet.library.structure.service.Service
-import de.jet.library.tool.display.item.Item
 import de.jet.library.tool.display.item.action.ItemClickAction
 import de.jet.library.tool.display.item.action.ItemInteractAction
 import de.jet.library.tool.display.ui.panel.PanelFlag
 import de.jet.library.tool.smart.Identity
 import de.jet.library.tool.timing.cooldown.Cooldown
 import de.jet.library.tool.timing.tasky.Tasky
-import org.bukkit.entity.Player
 import java.util.*
 
 object JetCache : AppCache {
@@ -32,6 +31,8 @@ object JetCache : AppCache {
 
 	val registeredItemInteractActions = mutableMapOf<String, ItemInteractAction>()
 
+	val registeredInterchanges = mutableSetOf<Interchange>()
+
 	val registeredComponents = mutableSetOf<Component>()
 
 	val registeredServices = mutableSetOf<Service>()
@@ -40,11 +41,7 @@ object JetCache : AppCache {
 
 	val registeredPanelFlags = mutableMapOf<String, Set<PanelFlag>>()
 
-	val cooldowns = mutableMapOf<String, Cooldown>()
-
-	val runningActionCooldowns = mutableMapOf<Player, MutableSet<Identity<Item>>>()
-
-	val runningActionCooldownDestinations = mutableMapOf<Pair<Player, Identity<Item>>, Calendar>()
+	val livingCooldowns = mutableMapOf<String, Cooldown>()
 
 	var runningServiceTaskController = mutableMapOf<Identity<Service>, Tasky>()
 		internal set

@@ -3,7 +3,6 @@ package de.jet.library.tool.timing.calendar
 import kotlin.math.floor
 import kotlin.math.roundToInt
 import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 
 data class DisplayTime(
 	var ticks: Double
@@ -11,7 +10,6 @@ data class DisplayTime(
 
 	constructor(format: Format, timeValue: Double) : this(format.ticks(timeValue))
 
-	@ExperimentalTime
 	constructor(duration: Duration) : this(duration.inWholeSeconds.toDouble() * 20)
 
 	fun getClockDisplay(vararg views: Format): String {

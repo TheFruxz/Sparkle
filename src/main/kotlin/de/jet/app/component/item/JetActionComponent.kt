@@ -8,9 +8,10 @@ import de.jet.library.extension.display.ui.item
 import de.jet.library.extension.lang
 import de.jet.library.extension.paper.createKey
 import de.jet.library.extension.system
-import de.jet.library.extension.tasky.async
-import de.jet.library.extension.tasky.sync
 import de.jet.library.extension.tasky.task
+import de.jet.library.extension.timing.getCooldown
+import de.jet.library.extension.timing.isCooldownDecaying
+import de.jet.library.extension.timing.setCooldown
 import de.jet.library.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.event.EventListener
@@ -22,7 +23,6 @@ import de.jet.library.tool.display.item.action.ItemAction
 import de.jet.library.tool.display.message.Transmission.Level.FAIL
 import de.jet.library.tool.display.ui.panel.PanelFlag
 import de.jet.library.tool.display.ui.panel.PanelFlag.*
-import de.jet.library.tool.timing.tasky.TemporalAdvice.Companion.delayed
 import de.jet.library.tool.timing.tasky.TemporalAdvice.Companion.instant
 import org.bukkit.entity.Player
 import org.bukkit.event.Event.Result.DENY
@@ -33,10 +33,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
-import java.util.*
-import java.util.concurrent.TimeUnit.SECONDS
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 
 internal class JetActionComponent(vendor: App = system) : Component(vendor, true) {
 
@@ -54,8 +50,8 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, true
 
 	private class Handler(override val vendor: App) : EventListener, Listener {
 
-		private fun hasNoCooldown(player: Player, item: Item): Boolean {
-			return JetCache.runningActionCooldowns[player]?.none { it.id == item.identity } ?: true
+		private fun hasNoCooldown(player: Player, action: ItemAction<*>, item: Item): Boolean {
+			return player.isCooldownDecaying("item:${item.identity}:${action.eventClass.simpleName}")
 		}
 
 		private fun produceActionCooldown(item: Item, player: Player, action: ItemAction<*>) {
@@ -65,21 +61,7 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, true
 
 				if (cooldown.type != BUKKIT_MATERIAL) {
 
-					JetCache.runningActionCooldowns[player] = JetCache.runningActionCooldowns[player]?.apply {
-						add(item.identityObject)
-					} ?: mutableSetOf()
-
-					JetCache.runningActionCooldownDestinations[player to item.identityObject] = Calendar.getInstance().apply {
-						add(Calendar.MILLISECOND, 50*cooldown.ticks.toInt())
-					}
-
-					async(delayed(cooldown.ticks.toLong()), vendor = vendor) {
-						sync(vendor = vendor) {
-							JetCache.runningActionCooldowns[player] = JetCache.runningActionCooldowns[player]?.apply {
-								remove(item.identityObject)
-							} ?: mutableSetOf()
-						}
-					}
+					player.setCooldown("item:${item.identity}:${action.eventClass.simpleName}", cooldown.ticks.toInt())
 
 				} else
 					player.setCooldown(item.material, cooldown.ticks.toInt())
@@ -93,18 +75,16 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, true
 			return JetCache.registeredPanelFlags[panelIdentity?.id] ?: emptySet()
 		}
 
-		@ExperimentalTime
 		private fun reactToActionCooldown(item: Item, player: Player, action: ItemAction<*>) {
 			try {
 
-				JetCache.runningActionCooldowns[player]?.first { it.id == item.identity }?.let {
-					val cooldown = action.cooldown
-					val remaining =
-						Duration.milliseconds((JetCache.runningActionCooldownDestinations[player to it] ?: Calendar.getInstance()).timeInMillis - Calendar.getInstance().timeInMillis).toString(SECONDS)
+				player.getCooldown("item:${item.identity}:${action.eventClass.simpleName}")?.let { cooldown ->
+					val cancelType = action.cooldown?.type
+					val remaining = cooldown.remainingCooldown
 
-					if (cooldown != null) {
+					if (cancelType != null) {
 
-						if (cooldown.type == JET_INFO) {
+						if (cancelType == JET_INFO) {
 							lang("component.jetAction.item.cooldown.jetInfo")
 								.replace("[remaining]" to remaining)
 								.notification(FAIL, player).display()
@@ -117,8 +97,6 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, true
 			} catch (exception: NoSuchElementException) { }
 		}
 
-		@ExperimentalTime
-		@EventHandler
 		fun inventoryClick(event: InventoryClickEvent) {
 			val item = event.currentItem?.item
 			val player = event.whoClicked as Player
@@ -128,7 +106,7 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, true
 
 			item?.clickAction?.let { action ->
 
-				if (hasNoCooldown(player, item)) {
+				if (hasNoCooldown(player, action, item)) {
 
 					if (action.stop)
 						event.isCancelled = true
@@ -189,13 +167,12 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, true
 				event.isCancelled = true
 		}
 
-		@ExperimentalTime
 		@EventHandler
 		fun playerInteractAtItem(event: PlayerInteractAtItemEvent) {
 			with(event) {
 				item.interactAction?.let { action ->
 
-					if (hasNoCooldown(player, item)) {
+					if (hasNoCooldown(player, action, item)) {
 
 						if (action.stop) {
 							event.interactedItem = DENY

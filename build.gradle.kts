@@ -82,6 +82,9 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "16"
+    kotlinOptions.freeCompilerArgs += "-Xunrestricted-builder-inference"
+    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
+    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.ExperimentalStdlibApi"
 }
 
 tasks.processResources {

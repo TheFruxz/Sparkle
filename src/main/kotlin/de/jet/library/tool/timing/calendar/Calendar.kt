@@ -55,30 +55,24 @@ class Calendar private constructor(
 		origin = origin.apply(action)
 	}
 
-	@ExperimentalTime
 	fun durationTo(javaCalendar: JavaUtilCalendar) = Duration.milliseconds(javaCalendar.timeInMillis-origin.timeInMillis)
 
-	@ExperimentalTime
 	fun durationTo(jetCalendar: Calendar) = durationTo(jetCalendar.origin)
 
-	@ExperimentalTime
 	@NotPerfect
 	operator fun plus(duration: Duration) = clone().apply {
 		add(MILLISECOND, duration.inWholeMilliseconds.toInt())
 	}
 
-	@ExperimentalTime
 	operator fun plusAssign(duration: Duration) {
 		add(MILLISECOND, duration.inWholeMilliseconds.toInt())
 	}
 
-	@ExperimentalTime
 	@NotPerfect
 	operator fun minus(duration: Duration) = clone().apply {
 		take(MILLISECOND, duration.inWholeMilliseconds.toInt())
 	}
 
-	@ExperimentalTime
 	operator fun minusAssign(duration: Duration) {
 		take(MILLISECOND, duration.inWholeMilliseconds.toInt())
 	}

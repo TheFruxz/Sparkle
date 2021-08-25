@@ -1,5 +1,7 @@
 package de.jet.library.tool.display.color
 
+import de.jet.library.extension.paper.createKey
+import de.jet.library.extension.system
 import org.bukkit.Material
 
 enum class DyeableMaterial(
@@ -21,6 +23,8 @@ enum class DyeableMaterial(
 	DYE(ColorType::dyeMaterial);
 
 	fun withColor(color: ColorType) = produceMaterialProcess(color)
+
+	val key = system.createKey(name)
 
 	companion object {
 

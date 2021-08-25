@@ -2,12 +2,14 @@ package de.jet.library.structure.service
 
 import de.jet.app.JetCache
 import de.jet.library.extension.app
+import de.jet.library.extension.paper.createKey
 import de.jet.library.structure.app.App
 import de.jet.library.tool.smart.Identity
 import de.jet.library.tool.smart.Logging
 import de.jet.library.tool.smart.VendorsIdentifiable
 import de.jet.library.tool.timing.tasky.Tasky
 import de.jet.library.tool.timing.tasky.TemporalAdvice
+import org.bukkit.NamespacedKey
 
 interface Service : VendorsIdentifiable<Service>, Logging {
 
@@ -41,6 +43,9 @@ interface Service : VendorsIdentifiable<Service>, Logging {
 
 	val isRunning: Boolean
 		get() = controller != null && JetCache.runningTasks.contains(controller!!.taskId)
+
+	val key: NamespacedKey
+		get() = app(vendor).createKey(thisIdentity)
 
 	fun boot() {
 		app(vendor).start(this)

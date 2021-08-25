@@ -28,7 +28,6 @@ import de.jet.library.tool.display.message.Transmission.Level.INFO
 import de.jet.library.tool.smart.Identity
 import java.util.*
 import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 
 class ServiceInterchange(vendor: App = system) : Interchange(vendor, "service", requiresAuthorization = true, completion = buildCompletion {
 	next(setOf("start", "stop", "restart", "list", "unregister", "reset")) isRequired true mustMatchOutput true
@@ -39,7 +38,6 @@ class ServiceInterchange(vendor: App = system) : Interchange(vendor, "service", 
 	} mustMatchOutput true isRequired false
 }) {
 
-	@ExperimentalTime
 	override val execution: InterchangeAccess.() -> InterchangeResult = interchange@{
 
 		if (parameters.size == 1 && parameters.first().equals("list", true)) {

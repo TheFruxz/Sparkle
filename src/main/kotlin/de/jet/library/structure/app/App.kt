@@ -22,12 +22,15 @@ import de.jet.library.structure.component.Component
 import de.jet.library.structure.service.Service
 import de.jet.library.tool.smart.Identifiable
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.InputStreamReader
 import java.util.logging.Level
 import java.util.logging.Logger
+import kotlin.reflect.KClass
 
 abstract class App : JavaPlugin(), Identifiable<App> {
 
@@ -95,6 +98,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 					command.tabCompleter = interchange.completionEngine
 					command.usage = interchange.completionDisplay
 					command.aliases.mutableReplaceWith(aliases)
+
+					JetCache.registeredInterchanges.add(interchange)
 
 					mainLog(Level.INFO, "Register of interchange '$label' succeed!")
 
@@ -277,6 +282,16 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			mainLog(Level.INFO, "stopped '${component.identity}' component!")
 		}
 	}
+
+	fun register(serializable: Class<out ConfigurationSerializable>) {
+		jetTry {
+			ConfigurationSerialization.registerClass(serializable)
+			mainLog(Level.INFO, "successfully registered '${serializable.simpleName}' as serializable!")
+		}
+	}
+
+	fun register(serializable: KClass<out ConfigurationSerializable>) =
+		register(serializable.java)
 
 	// runtime
 
