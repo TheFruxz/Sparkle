@@ -206,7 +206,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			mainLog(Level.WARNING, "skipped stop of service '${service.identity}', was already offline!")
 		}
 		mainLog(Level.INFO, "Waiting one second, let the service stop...")
-		wait(20*1) {
+		wait(20L*1) {
 			start(service)
 		}
 		mainLog(Level.INFO, "Restart of service '${service.identity}' succeed!")
