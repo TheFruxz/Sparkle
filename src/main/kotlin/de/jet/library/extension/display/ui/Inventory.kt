@@ -13,7 +13,7 @@ fun buildContainer(lines: Int = 3, action: Container.() -> Unit) = Container(siz
 
 fun buildPanel(lines: Int = 3, action: Panel.() -> Unit) = Panel(lines = lines).apply(action)
 
-fun Inventory.copyRaw(title: Component) = createInventory(this.holder, this.size).apply {
+fun Inventory.copyRaw(title: Component) = createInventory(this.holder, this.size, title).apply {
 	contents = this.contents
 	storageContents = this.storageContents
 }
