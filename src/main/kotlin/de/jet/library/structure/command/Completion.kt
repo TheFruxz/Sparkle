@@ -173,7 +173,7 @@ data class Completion(
 		return this
 	}
 
-	internal fun buildCompletion() = TabCompleter { executor, command, label, parameters ->
+	internal fun buildCompletion() = TabCompleter { executor, _, _, parameters ->
 		val layer = parameters.lastIndex
 		val output = mutableListOf<String>()
 
