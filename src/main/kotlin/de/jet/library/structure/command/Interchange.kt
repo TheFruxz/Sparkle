@@ -49,7 +49,7 @@ abstract class Interchange(
 	fun interchangeException(exception: Exception, executor: CommandSender, executorType: InterchangeExecutorType) {
 		sectionLog.log(
 			WARNING,
-			"Executor ${executor.name} as ${executorType.name} caused an error at execution of "
+			"Executor ${executor.name} as ${executorType.name} caused an error at execution at ${with(exception.stackTrace[0]) { "$className:$methodName" }}!"
 		)
 	}
 
