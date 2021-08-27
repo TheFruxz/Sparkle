@@ -31,7 +31,7 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.30")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
-    compileOnly("org.jetbrains.kotlin:kotlin-reflect:1.5.30")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.30")
 
     // PaperMC
 
