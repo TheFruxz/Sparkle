@@ -27,7 +27,7 @@ internal class JetChatComponent(vendor: App = system) : Component(vendor, true) 
 
 		@EventHandler
 		fun onChat(event: AsyncChatEvent) {
-
+			TODO("$event would be used in the future!")
 		}
 
 	}
