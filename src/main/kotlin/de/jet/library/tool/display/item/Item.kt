@@ -121,7 +121,7 @@ data class Item(
 				(if (label.isNotBlank()) {
 					Component.text(label, NamedTextColor.WHITE)
 				} else
-					Component.translatable(material.translationKey, NamedTextColor.WHITE))
+					Component.translatable(material.translationKey(), NamedTextColor.WHITE))
 					.hoverEvent(this)
 			)
 			.append(Component.text("]", NamedTextColor.WHITE))
