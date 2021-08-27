@@ -56,7 +56,5 @@ body:
       options:
         - label: I agree to have checked, that this is no duplicated issue
           required: true
-        - label: I agree to have checked, that this is caused completely or partially by JET 
-
 
 
