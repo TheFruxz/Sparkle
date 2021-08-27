@@ -6,6 +6,7 @@ import de.jet.library.JET
 import de.jet.library.runtime.app.LanguageSpeaker
 import de.jet.library.structure.app.App
 import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.Identity
 import java.util.logging.Level
 
 fun <T : Any?> T.debugLog(message: String) = this.also {
@@ -34,7 +35,13 @@ fun <T> checkAllObjects(vararg objects: T, check: T.() -> Boolean): Boolean {
 }
 
 @Throws(NoSuchElementException::class)
-fun app(id: String) = JetCache.registeredApplications.first { it.appIdentity.equals(it) }
+fun app(id: String) = JetCache.registeredApplications.first { it.appIdentity == id }
+
+@Throws(NoSuchElementException::class)
+fun app(vendor: Identifiable<App>) = JetCache.registeredApplications.first { it.appIdentity == vendor.identity }
+
+@Throws(NoSuchElementException::class)
+fun app(vendorIdentity: Identity<App>) = JetCache.registeredApplications.first { it.appIdentity == vendorIdentity.id }
 
 @Throws(NoSuchElementException::class)
 fun Identifiable<App>.getApp() = app(identity)

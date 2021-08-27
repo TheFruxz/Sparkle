@@ -2,7 +2,6 @@ package de.jet.library.extension.paper
 
 import com.destroystokyo.paper.ParticleBuilder
 import de.jet.library.tool.position.LocationBox
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.block.Block
@@ -43,10 +42,6 @@ fun BoundingBox.contains(block: Block) = this.contains(block.location)
 fun box(location1: Location, location2: Location) = BoundingBox.of(location1, location2)
 
 fun directionVectorVelocity(from: Location, to: Location) = to.toVector().subtract(from.toVector())
-
-val globalBaseLocation: Location by lazy {
-	Bukkit.getWorlds()[0].spawnLocation
-}
 
 val Block.safeBoundingBox: BoundingBox
 	get() = BoundingBox.of(location, location.clone().add(Vector(1.0, 1.0, 1.0)))

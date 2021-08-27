@@ -9,18 +9,17 @@ import de.jet.library.structure.command.InterchangeAuthorizationCheck.JETCHECK
 import de.jet.library.structure.command.InterchangeExecutorType.*
 import de.jet.library.structure.command.InterchangeResult.*
 import de.jet.library.structure.command.live.InterchangeAccess
-import de.jet.library.tool.smart.Identifiable
-import de.jet.library.tool.smart.Logging
 import de.jet.library.tool.display.message.Transmission.Level.ERROR
 import de.jet.library.tool.display.message.Transmission.Level.FAIL
 import de.jet.library.tool.permission.Approval
+import de.jet.library.tool.smart.Logging
+import de.jet.library.tool.smart.VendorsIdentifiable
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 import java.util.logging.Level.WARNING
-import kotlin.Exception
 
 abstract class Interchange(
 	final override val vendor: App,
@@ -31,11 +30,13 @@ abstract class Interchange(
 	val authorizationCheck: InterchangeAuthorizationCheck = JETCHECK,
 	val hiddenFromRecommendation: Boolean = false,
 	val completion: Completion,
-) : CommandExecutor, Identifiable<Interchange>, Logging {
+) : CommandExecutor, VendorsIdentifiable<Interchange>, Logging {
 
 	override val sectionLabel = "InterchangeEngine"
 
-	override val identity = "$vendor:$label"
+	override val thisIdentity = label
+
+	override val vendorIdentity = vendor.identityObject
 
 	val requiredApproval = if (requiresAuthorization) Approval.fromApp(vendor, "interchange.$label") else null
 
@@ -48,7 +49,7 @@ abstract class Interchange(
 	fun interchangeException(exception: Exception, executor: CommandSender, executorType: InterchangeExecutorType) {
 		sectionLog.log(
 			WARNING,
-			"Executor ${executor.name} as ${executorType.name} caused an error at execution of "
+			"Executor ${executor.name} as ${executorType.name} caused an error at execution at ${with(exception.stackTrace[0]) { "$className:$methodName" }}!"
 		)
 	}
 

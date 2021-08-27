@@ -11,6 +11,7 @@ import de.jet.library.extension.display.ui.buildInteractAction
 import de.jet.library.extension.display.ui.buildPanel
 import de.jet.library.extension.display.ui.item
 import de.jet.library.extension.lang
+import de.jet.library.extension.system
 import de.jet.library.structure.app.App
 import de.jet.library.structure.command.CompletionVariable
 import de.jet.library.structure.command.Interchange
@@ -30,7 +31,7 @@ import de.jet.library.tool.display.message.Transmission.Level.valueOf
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
-class JETInterchange(vendor: App) : Interchange(
+class JETInterchange(vendor: App = system) : Interchange(
 	vendor = vendor,
 	label = "jet",
 	requiresAuthorization = false,

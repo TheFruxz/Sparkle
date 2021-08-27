@@ -6,6 +6,7 @@ import de.jet.library.extension.collection.replace
 import de.jet.library.extension.display.message
 import de.jet.library.extension.display.notification
 import de.jet.library.extension.lang
+import de.jet.library.extension.system
 import de.jet.library.structure.app.App
 import de.jet.library.structure.command.CompletionVariable
 import de.jet.library.structure.command.Interchange
@@ -20,7 +21,7 @@ import de.jet.library.structure.command.plus
 import de.jet.library.tool.display.message.Transmission.Level.FAIL
 import de.jet.library.tool.display.message.Transmission.Level.INFO
 
-class ComponentInterchange(vendor: App) : Interchange(vendor, "component", completion = buildCompletion {
+class ComponentInterchange(vendor: App = system) : Interchange(vendor, "component", completion = buildCompletion {
 	next("start") + "stop" + "list" + "autostart" isRequired true mustMatchOutput true
 	next(CompletionVariable(vendor, "Component", true) {
 		JetCache.registeredComponents.map { it.identity }

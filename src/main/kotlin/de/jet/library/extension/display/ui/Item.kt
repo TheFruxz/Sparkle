@@ -9,7 +9,7 @@ import de.jet.library.tool.display.item.action.ActionCooldown
 import de.jet.library.tool.display.item.action.ItemClickAction
 import de.jet.library.tool.display.item.action.ItemInteractAction
 import de.jet.library.tool.display.item.quirk.Quirk
-import de.jet.library.tool.display.item.quirk.Quirk.Companion
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -55,6 +55,10 @@ val Material.itemStack: ItemStack
 val ItemStack.item: Item
 	get() = Item(this)
 
+fun Material.spawnEntity(location: Location, amount: Int = 1) = item.putSize(amount).spawn(location)
+
+fun ItemStack.spawnEntity(location: Location, amount: Int = 1) = item.putSize(amount).spawn(location)
+
 fun item(material: Material) = material.item
 
 fun item(itemStack: ItemStack) = itemStack.item
@@ -70,11 +74,3 @@ fun buildClickAction(async: Boolean = true, stop: Boolean = true, cooldown: Acti
 
 fun buildInteractAction(async: Boolean = true, stop: Boolean = true, cooldown: ActionCooldown? = null, action: PlayerInteractAtItemEvent.() -> Unit) =
 	ItemInteractAction(action, async, stop, cooldown)
-
-/**
- * WORK IN PROGRESS; NOT WORKING!
- */
-@Throws(NotImplementedError::class)
-fun skull(headDataBaseId: Number): Item {
-	TODO("HeadDataBase Integration pls.")
-}

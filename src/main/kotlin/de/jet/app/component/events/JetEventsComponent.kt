@@ -3,6 +3,7 @@ package de.jet.app.component.events
 import de.jet.library.extension.checkAllObjects
 import de.jet.library.extension.display.ui.item
 import de.jet.library.extension.forceCast
+import de.jet.library.extension.system
 import de.jet.library.runtime.event.PlayerDamageByPlayerEvent
 import de.jet.library.runtime.event.interact.PlayerInteractAtBlockEvent
 import de.jet.library.runtime.event.interact.PlayerInteractAtItemEvent
@@ -14,7 +15,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 
-internal class JetEventsComponent(vendor: App) : Component(vendor, true) {
+internal class JetEventsComponent(vendor: App = system) : Component(vendor, true) {
 
 	override val thisIdentity = "Events"
 

@@ -6,22 +6,23 @@ import de.jet.library.extension.debugLog
 import de.jet.library.extension.display.WHITE
 import de.jet.library.extension.display.ui.changeColor
 import de.jet.library.extension.forceCast
+import de.jet.library.extension.paper.createBlockData
+import de.jet.library.extension.paper.itemFactory
 import de.jet.library.extension.paper.legacyString
 import de.jet.library.extension.system
 import de.jet.library.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.library.structure.app.App
-import de.jet.library.tool.smart.Identifiable
-import de.jet.library.tool.smart.Producible
 import de.jet.library.tool.display.color.ColorType
 import de.jet.library.tool.display.item.PostProperty.*
 import de.jet.library.tool.display.item.action.ItemClickAction
 import de.jet.library.tool.display.item.action.ItemInteractAction
 import de.jet.library.tool.display.item.quirk.Quirk
+import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.Producible
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
 import net.kyori.adventure.text.event.HoverEventSource
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Material.STONE
@@ -37,7 +38,6 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
-import org.jetbrains.annotations.NotNull
 import java.util.*
 import java.util.function.UnaryOperator
 
@@ -120,14 +120,14 @@ data class Item(
 				(if (label.isNotBlank()) {
 					Component.text(label, NamedTextColor.WHITE)
 				} else
-					Component.translatable(material.translationKey, NamedTextColor.WHITE))
+					Component.translatable(material.translationKey(), NamedTextColor.WHITE))
 					.hoverEvent(this)
 			)
 			.append(Component.text("]", NamedTextColor.WHITE))
 			.build()
 
 	fun produceItemMeta() = if (!material.isAir) {
-		(itemMetaBase ?: Bukkit.getItemFactory().getItemMeta(material)).apply {
+		(itemMetaBase ?: itemFactory.getItemMeta(material)).apply {
 
 			label.let {
 				if (it.isNotEmpty()) {
@@ -263,7 +263,7 @@ data class Item(
 
 		data.forEach { (key, value) ->
 
-			fun <T : @NotNull Any> run() {
+			fun <T : Any> run() {
 				(dataContentType(value) to value).let { valueData ->
 					set(
 						NamespacedKey.fromString(key)!!,
@@ -446,7 +446,7 @@ data class Item(
 	// computation
 
 	val computedBlockData: BlockData
-		get() = Bukkit.createBlockData(material)
+		get() = createBlockData(material)
 
 	// compare
 

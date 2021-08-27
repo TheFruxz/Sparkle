@@ -10,10 +10,10 @@ import de.jet.library.extension.collection.mutableReplaceWith
 import de.jet.library.extension.jetTry
 import de.jet.library.extension.mainLog
 import de.jet.library.extension.tasky.task
+import de.jet.library.extension.tasky.wait
 import de.jet.library.runtime.app.LanguageSpeaker
 import de.jet.library.runtime.app.RunStatus
 import de.jet.library.runtime.app.RunStatus.*
-import de.jet.library.runtime.sandbox.SandBox
 import de.jet.library.structure.app.event.EventListener
 import de.jet.library.structure.app.interchange.IssuedInterchange
 import de.jet.library.structure.command.Interchange
@@ -21,19 +21,17 @@ import de.jet.library.structure.component.Component
 import de.jet.library.structure.service.Service
 import de.jet.library.tool.smart.Identifiable
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
-import org.jetbrains.annotations.ApiStatus.Experimental
 import java.io.InputStreamReader
 import java.util.logging.Level
 import java.util.logging.Logger
+import kotlin.reflect.KClass
 
 abstract class App : JavaPlugin(), Identifiable<App> {
-
-	init {
-		JetCache.registeredApplications.add(this)
-	}
 
 	// parameters
 
@@ -100,6 +98,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 					command.usage = interchange.completionDisplay
 					command.aliases.mutableReplaceWith(aliases)
 
+					JetCache.registeredInterchanges.add(interchange)
+
 					mainLog(Level.INFO, "Register of interchange '$label' succeed!")
 
 				} else
@@ -135,27 +135,82 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			mainLog(Level.WARNING, "skipped registering '${eventListener.listenerIdentity}' listener, app disabled!")
 	}
 
-	fun add(sandBox: SandBox) {
-		JetCache.registeredSandBoxes["${sandBox.sandBoxVendor.appIdentity}//${sandBox.sandBoxIdentity}"] = sandBox
-		mainLog(
-			Level.INFO,
-			"registered sandbox '${sandBox.sandBoxIdentity}'!"
-		)
+	fun register(service: Service) {
+		if (JetCache.registeredServices.none { it.identity == service.identity }) {
+			jetTry {
+				JetCache.registeredServices.add(service)
+				mainLog(Level.INFO, "Register of service '${service.identity}' succeed!")
+			}
+		} else
+			throw IllegalStateException("The service '${service.identity}' is already registered!")
 	}
 
-	fun remove(sandBox: SandBox) {
-		JetCache.registeredSandBoxes.remove("${sandBox.sandBoxVendor.appIdentity}//${sandBox.sandBoxIdentity}", sandBox)
-		mainLog(
-			Level.INFO,
-			"unregistered sandbox '${sandBox.sandBoxIdentity}'!"
-		)
+	fun unregister(service: Service) {
+		if (JetCache.registeredServices.any { it.identity == service.identity }) {
+			jetTry {
+				stop(service)
+				JetCache.registeredServices.remove(service)
+				mainLog(Level.INFO, "Unregister of service '${service.identity}' succeed!")
+			}
+		} else
+			throw IllegalStateException("The service '${service.identity}' is not registered!")
 	}
 
-	fun add(service: Service) {
-		jetTry {
-			task(service.temporalAdvice, process = service.process, vendor = this)
-			mainLog(Level.INFO, "Register & boot of service '${service.identity}' succeed!")
+	fun reset(service: Service) {
+		if (JetCache.registeredServices.any { it.identity == service.identity }) {
+			jetTry {
+				service.controller?.attempt = 0
+				mainLog(Level.INFO, "Reset of service '${service.identity}' succeed!")
+			}
+		} else
+			throw IllegalStateException("The service '${service.identity}' is not registered!")
+	}
+
+	fun start(service: Service) {
+		if (JetCache.registeredServices.any { it.identity == service.identity }) {
+			if (!service.isRunning) {
+				jetTry {
+					task(
+						service.temporalAdvice,
+						process = service.process,
+						vendor = this,
+						onStart = service.onStart,
+						onStop = service.onStop,
+						onCrash = service.onCrash,
+						serviceVendor = service.identityObject
+					)
+					mainLog(Level.INFO, "Starting of service '${service.identity}' succeed!")
+				}
+			} else
+				throw IllegalStateException("The service '${service.identity}' is already running!")
+		} else
+			throw IllegalStateException("The service '${service.identity}' is not registered!")
+	}
+
+	fun stop(service: Service) {
+		if (service.isRunning) {
+			jetTry {
+				service.shutdown()
+				mainLog(Level.INFO, "Stopping of service '${service.identity}' succeed!")
+			}
+		} else
+			throw IllegalStateException("The service '${service.identity}' is not running!")
+	}
+
+	fun restart(service: Service) {
+		mainLog(Level.INFO, "--- --- --- --- --- --- --- --- --- --- --- ---")
+		mainLog(Level.INFO, "Attempting restart of service '${service.identity}'...")
+		try {
+			stop(service)
+		} catch (exception: IllegalStateException) {
+			mainLog(Level.WARNING, "skipped stop of service '${service.identity}', was already offline!")
 		}
+		mainLog(Level.INFO, "Waiting one second, let the service stop...")
+		wait(20L*1) {
+			start(service)
+		}
+		mainLog(Level.INFO, "Restart of service '${service.identity}' succeed!")
+		mainLog(Level.INFO, "--- --- --- --- --- --- --- --- --- --- --- ---")
 	}
 
 	fun remove(eventListener: EventListener) {
@@ -211,6 +266,16 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 		}
 	}
 
+	fun register(serializable: Class<out ConfigurationSerializable>) {
+		jetTry {
+			ConfigurationSerialization.registerClass(serializable)
+			mainLog(Level.INFO, "successfully registered '${serializable.simpleName}' as serializable!")
+		}
+	}
+
+	fun register(serializable: KClass<out ConfigurationSerializable>) =
+		register(serializable.java)
+
 	// runtime
 
 	/**
@@ -241,6 +306,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 */
 	override fun onLoad() {
 		jetTry {
+			JetCache.registeredApplications.add(this)
 
 			runStatus = PRE_LOAD
 			classLoader.getResourceAsStream("plugin.yml")?.let { resource ->

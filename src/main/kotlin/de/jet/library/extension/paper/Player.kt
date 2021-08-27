@@ -2,9 +2,7 @@ package de.jet.library.extension.paper
 
 import de.jet.library.tool.permission.Approval
 import org.bukkit.attribute.Attribute
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Player
 import org.bukkit.permissions.Permissible
 
 fun Permissible.hasApproval(approval: Approval) =
@@ -20,3 +18,5 @@ var LivingEntity.quickMaxHealth: Double
 fun LivingEntity.maxOutHealth() {
 	health = quickMaxHealth
 }
+
+// TODO: 22.08.2021 Cooldowns here

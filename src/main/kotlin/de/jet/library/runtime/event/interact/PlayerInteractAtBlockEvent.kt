@@ -1,6 +1,5 @@
 package de.jet.library.runtime.event.interact
 
-import de.jet.library.tool.display.item.Item
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player

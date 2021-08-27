@@ -3,17 +3,17 @@ package de.jet.app
 import de.jet.app.component.chat.JetChatComponent
 import de.jet.app.component.events.JetEventsComponent
 import de.jet.app.component.item.JetActionComponent
+import de.jet.app.component.system.JetKeeperComponent
 import de.jet.app.interchange.ComponentInterchange
 import de.jet.app.interchange.JETInterchange
-import de.jet.library.extension.data.div
-import de.jet.library.extension.data.jetPath
+import de.jet.app.interchange.SandboxInterchange
+import de.jet.app.interchange.ServiceInterchange
 import de.jet.library.extension.mainLog
+import de.jet.library.extension.obj.buildSandBox
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.AppCompanion
-import de.jet.library.tool.data.DataTransformer
-import de.jet.library.tool.data.JetFile
-import de.jet.library.tool.data.Preference
-import org.bukkit.scheduler.BukkitRunnable
+import de.jet.library.tool.display.world.SimpleLocation
+import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.util.logging.Level
 
 class JetApp : App() {
@@ -26,40 +26,13 @@ class JetApp : App() {
 
 	override fun register() {
 		instance = this
+		ConfigurationSerialization.registerClass(SimpleLocation::class.java)
 	}
 
 	override fun hello() {
 
-		object : BukkitRunnable() {
-			override fun run() {
-				Preference(
-					file = JetFile.appFile(instance, "hey"),
-					path = jetPath("this") / "is" / "the" / "path",
-					default = 2,
-					useCache = false,
-					async = true,
-				).transformer(DataTransformer({
-					"Thisisthenumber$this"
-				}, {
-					removePrefix("Thisisthenumber").toInt()
-				}))
-					.let { preference ->
-
-					println("writing preference...")
-					preference.content = 2
-
-					Thread.sleep(3000)
-					println("read saved content...")
-
-					println("${preference.content} is stored!")
-
-				}
-			}
-
-		}.runTaskLater(this, 20L*15)
-
 		languageSpeaker.let { languageSpeaker ->
-			mainLog(Level.INFO, "Speaking langauge: ${languageSpeaker.languageId}")
+			mainLog(Level.INFO, "Speaking langauge: ${languageSpeaker.baseLang}")
 			with(languageSpeaker.languageContainer) {
 				"""
 					Display-Language detected:
@@ -75,12 +48,19 @@ class JetApp : App() {
 			}
 		}
 
-		add(JetEventsComponent(this))
-		add(JetChatComponent(this))
-		add(JetActionComponent(this))
+		add(JetEventsComponent())
+		add(JetChatComponent())
+		add(JetActionComponent())
+		add(JetKeeperComponent())
 
-		add(JETInterchange(this))
-		add(ComponentInterchange(this))
+		add(JETInterchange())
+		add(ComponentInterchange())
+		add(ServiceInterchange())
+		add(SandboxInterchange())
+
+		buildSandBox(this, "worky") {
+			executor.sendMessage("worky is receiving: '${parameters.joinToString(" ")}'! NICE!")
+		}
 
 	}
 

@@ -31,6 +31,29 @@
     "interchange.internal.component.list.header": "[GRAY]List of all registered components:",
     "interchange.internal.component.list.line": "[YELLOW][component][GRAY] -> [autoStart][GRAY] / [status]",
 
+    "interchange.internal.service.serviceStarted": "[GRAY]The service '[YELLOW][id][GRAY]' was started [LIME]successfully[GRAY]!",
+    "interchange.internal.service.serviceAlreadyOnline": "[GRAY]The service '[YELLOW][id][GRAY]' is [RED]already[GRAY] active!",
+    "interchange.internal.service.serviceStopped": "[GRAY]The service '[YELLOW][id][GRAY]' was stopped [LIME]successfully[GRAY]!",
+    "interchange.internal.service.serviceAlreadyOffline": "[GRAY]The service '[YELLOW][id][GRAY]' is [RED]already[GRAY] inactive!",
+    "interchange.internal.service.serviceRestarted": "[GRAY]The service '[YELLOW][id][GRAY]' was restarted [LIME]successfully[GRAY]!",
+    "interchange.internal.service.serviceUnregistered": "[GRAY]The service '[YELLOW][id][GRAY]' was unregistered [LIME]successfully[GRAY]!",
+    "interchange.internal.service.serviceReset": "[GRAY]The service '[YELLOW][id][GRAY]' got a reset [LIME]successfully[GRAY]!",
+    "interchange.internal.service.serviceNotFound": "[GRAY]There are [RED]no[GRAY] services with the group or id '[YELLOW][id][GRAY]' registered!",
+    "interchange.internal.service.list.header": "[GRAY]List of all registered services:",
+    "interchange.internal.service.list.line": "[YELLOW][service][GRAY] -> [enabled][GRAY] ([activeSince]),",
+
+    "interchange.internal.sandbox.list.header": "[GRAY]List of all registered SandBoxes:",
+    "interchange.internal.sandbox.list.line": "[YELLOW][sandbox][GRAY] (from: [vendor])",
+    "interchange.internal.sandbox.dropAll": "[LIME]Successfully[GRAY] removed[LIME] [amount][GRAY] SandBoxes!",
+    "interchange.internal.sandbox.runAll": "[LIME]Successfully[GRAY] started[LIME] [amount][GRAY] SandBoxes!",
+    "interchange.internal.sandbox.noFound": "[GRAY]There are[RED] no[GRAY] registered SandBoxes!",
+    "interchange.internal.sandbox.notFound": "[GRAY]There is [RED]no[GRAY] SandBox called '[YELLOW][sandbox][GRAY]' registered!",
+    "interchange.internal.sandbox.run": "[GRAY]You're now running the SandBox '[GOLD][sandbox][GRAY]'!",
+    "interchange.internal.sandbox.failed": "[GRAY]You're SandBox '[YELLOW][sandbox][GRAY]' failed due an [RED]exception[GRAY], StackTrace available in the console & logs!",
+    "interchange.internal.sandbox.drop": "[GRAY]Successfully[GRAY] dropped the SandBox '[GOLD][sandbox][GRAY]'!",
+    "interchange.internal.sandbox.info.header": "[GRAY]Info of registered SandBox:",
+    "interchange.internal.sandbox.info.line": "[GRAY]Key: [GOLD][key][GRAY]; value: '[YELLOW][value][GRAY]'",
+
     "component.jetAction.item.cooldown.jetInfo": "[GRAY]Please wait [YELLOW][remaining][GRAY] until you can perform this action again!"
   }
 }

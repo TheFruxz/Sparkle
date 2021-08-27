@@ -3,15 +3,23 @@ package de.jet.library.structure.command
 import de.jet.app.JetCache
 import de.jet.library.extension.collection.mapToString
 import de.jet.library.extension.collection.replace
+import de.jet.library.extension.collection.withMap
 import de.jet.library.extension.display.notification
 import de.jet.library.extension.lang
 import de.jet.library.extension.paper.hasApproval
+import de.jet.library.extension.paper.onlinePlayers
+import de.jet.library.extension.paper.worlds
 import de.jet.library.extension.system
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.structure.app.cache.CacheDepthLevel
+import de.jet.library.tool.display.color.ColorType
+import de.jet.library.tool.display.color.DyeableMaterial
 import de.jet.library.tool.display.message.Transmission.Level.FAIL
 import de.jet.library.tool.permission.Approval
+import de.jet.library.tool.smart.Identifiable
+import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
+import org.bukkit.entity.EntityType
 
 // Variables
 
@@ -42,7 +50,60 @@ data class CompletionVariable(
 			(0..99).mapToString()
 		}
 
-		// TODO: 06.08.2021 Completion variable templates
+		val DOUBLE = CompletionVariable(system, "DOUBLE", false) {
+			setOf(.0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0).mapToString()
+		}
+
+		val PLAYER_NAME = CompletionVariable(system, "PLAYER-NAME", true) {
+			onlinePlayers.withMap { name }
+		}
+
+		val PLAYER_IDENTITY = CompletionVariable(system, "PLAYER-ID", true) {
+			onlinePlayers.withMap { "$uniqueId" }
+		}
+
+		val MATERIAL = CompletionVariable(system, "MATERIAL", false) {
+			Material.values().withMap { name }
+		}
+
+		val MATERIAL_VARIANT = CompletionVariable(system, "MATERIAL-VARIANT", false) {
+			buildSet {
+				DyeableMaterial.values().forEach { flex ->
+					val key = flex.key.toString()
+					add(key)
+					addAll(ColorType.values().withMap { "$key#$name" })
+				}
+			}
+		}
+
+		val ENTITY_TYPE = CompletionVariable(system, "ENTITY-TYPE", false) {
+			EntityType.values().withMap { name }
+		}
+
+		val WORLD_NAME = CompletionVariable(system, "WORLD-NAME", true) {
+			worlds.withMap { name }
+		}
+
+		val APP = CompletionVariable(system, "APP", true) {
+			JetCache.registeredApplications.withMap { identity }
+		}
+
+		val INTERCHANGE = CompletionVariable(system, "INTERCHANGE", true) {
+			JetCache.registeredInterchanges.withMap { identity }
+		}
+
+		val SERVICE = CompletionVariable(system, "SERVICE", true) {
+			JetCache.registeredServices.withMap { "$key" }
+		}
+
+		val SANDBOX = CompletionVariable(system, "SANDBOX", true) {
+			JetCache.registeredSandBoxes.withMap { identity }
+		}
+
+		val CACHE_DEPTH_LEVEL = CompletionVariable(system, "CACHE-DEPTH-LEVEL", false) {
+			CacheDepthLevel.values().withMap { name }
+		}
+
 	}
 
 }
@@ -112,7 +173,7 @@ data class Completion(
 		return this
 	}
 
-	internal fun buildCompletion() = TabCompleter { executor, command, label, parameters ->
+	internal fun buildCompletion() = TabCompleter { executor, _, _, parameters ->
 		val layer = parameters.lastIndex
 		val output = mutableListOf<String>()
 
@@ -177,7 +238,7 @@ data class Completion(
 
 	}
 
-	internal fun buildCheck(): (executor: CommandSender, interchange: Interchange, parameters: List<String>) -> Boolean = check@{ executor, interchange, parameters ->
+	internal fun buildCheck(): (executor: CommandSender, interchange: Interchange, parameters: List<String>) -> Boolean = check@{ executor, _, parameters ->
 		val minimumParameters = sections.indexOfLast { it.isRequired }
 		val maximumParameters = if (infinite) -1 else sections.lastIndex
 

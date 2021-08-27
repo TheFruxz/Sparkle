@@ -1,9 +1,9 @@
 package de.jet.library.tool.data
 
+import de.jet.library.extension.paper.bukkitVersion
 import de.jet.library.structure.app.App
 import de.jet.library.structure.component.Component
 import de.jet.library.tool.smart.Identifiable
-import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
 import java.nio.file.Path
 import kotlin.io.path.Path
@@ -86,7 +86,7 @@ interface JetFile {
 			generate(Path("JETData") / "#${component.identity}@${component.vendor.identity}" / "$fileName.$extension")
 
 		fun versionFile(fileName: String, extension: String = "yml") =
-			generate(Path("JETData") / Bukkit.getBukkitVersion() / "$fileName.$extension")
+			generate(Path("JETData") / bukkitVersion / "$fileName.$extension")
 
 	}
 

@@ -1,21 +1,17 @@
 package de.jet.library.extension.effect
 
 import com.destroystokyo.paper.ParticleBuilder
-import de.jet.library.extension.checkAllObjects
-import de.jet.library.extension.isNotNull
-import kotlin.jvm.Throws
 
 @Throws(IllegalStateException::class)
-fun ParticleBuilder.playParticleEffect(reach: Double = .0, onlySavedReceivers: Boolean = true) {
+fun ParticleBuilder.playParticleEffect(reach: Double = .0) {
 	val location = location()
-	val receivers = if (onlySavedReceivers) receivers() else location?.world?.players
+	val internalReceivers = receivers()?.toList() ?: location?.world?.players
 
-	if (checkAllObjects(location, receivers) { isNotNull }) {
-		receivers!!
-		location!!
+	if (location != null) {
+		internalReceivers!!
 
 		if (reach > 0) {
-			val participants = location.getNearbyPlayers(reach).filter { receivers.contains(it) }
+			val participants = location.getNearbyPlayers(reach).filter { internalReceivers.contains(it) }
 			val computedParticleBuilder = receivers(participants)
 
 			computedParticleBuilder.spawn()
@@ -24,12 +20,12 @@ fun ParticleBuilder.playParticleEffect(reach: Double = .0, onlySavedReceivers: B
 			spawn()
 
 	} else
-		throw IllegalStateException("Both values 'location'[bukkit.Location] ${if (onlySavedReceivers) "and 'receivers'[bukkit.Player[]] " else ""}of ParticleBuilder cannot be null!")
+		throw IllegalStateException("'location'[bukkit.Location] of ParticleBuilder cannot be null!")
 }
 
 @Throws(IllegalStateException::class)
-fun ParticleBuilder.playParticleEffect(reach: Number = .0, onlySavedReceivers: Boolean = true) =
-	playParticleEffect(reach.toDouble(), onlySavedReceivers)
+fun ParticleBuilder.playParticleEffect(reach: Number = .0) =
+	playParticleEffect(reach.toDouble())
 
 fun ParticleBuilder.playParticleEffect() =
 	playParticleEffect(.0)
