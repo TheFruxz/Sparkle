@@ -52,7 +52,7 @@ body:
     id: terms
     attributes:
       label: Check & Safe
-      description: By submitting this issue, you agree to have checked the different individual things below:
+      description: By submitting this issue, you agree to have checked the different individual things below
       options:
         - label: I agree to have checked, that this is no duplicated issue
           required: true
