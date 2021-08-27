@@ -38,7 +38,6 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
-import org.jetbrains.annotations.NotNull
 import java.util.*
 import java.util.function.UnaryOperator
 
@@ -264,7 +263,7 @@ data class Item(
 
 		data.forEach { (key, value) ->
 
-			fun <T : @NotNull Any> run() {
+			fun <T : Any> run() {
 				(dataContentType(value) to value).let { valueData ->
 					set(
 						NamespacedKey.fromString(key)!!,
