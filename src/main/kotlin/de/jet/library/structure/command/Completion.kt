@@ -238,7 +238,7 @@ data class Completion(
 
 	}
 
-	internal fun buildCheck(): (executor: CommandSender, interchange: Interchange, parameters: List<String>) -> Boolean = check@{ executor, interchange, parameters ->
+	internal fun buildCheck(): (executor: CommandSender, interchange: Interchange, parameters: List<String>) -> Boolean = check@{ executor, _, parameters ->
 		val minimumParameters = sections.indexOfLast { it.isRequired }
 		val maximumParameters = if (infinite) -1 else sections.lastIndex
 
