@@ -96,6 +96,10 @@ data class CompletionVariable(
 			JetCache.registeredServices.withMap { "$key" }
 		}
 
+		val SANDBOX = CompletionVariable(system, "SANDBOX", true) {
+			JetCache.registeredSandBoxes.withMap { identity }
+		}
+
 		val CACHE_DEPTH_LEVEL = CompletionVariable(system, "CACHE-DEPTH-LEVEL", false) {
 			CacheDepthLevel.values().withMap { name }
 		}

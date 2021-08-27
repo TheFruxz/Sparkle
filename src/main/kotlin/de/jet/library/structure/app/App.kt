@@ -14,7 +14,6 @@ import de.jet.library.extension.tasky.wait
 import de.jet.library.runtime.app.LanguageSpeaker
 import de.jet.library.runtime.app.RunStatus
 import de.jet.library.runtime.app.RunStatus.*
-import de.jet.library.runtime.sandbox.SandBox
 import de.jet.library.structure.app.event.EventListener
 import de.jet.library.structure.app.interchange.IssuedInterchange
 import de.jet.library.structure.command.Interchange
@@ -134,22 +133,6 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 		} else
 			mainLog(Level.WARNING, "skipped registering '${eventListener.listenerIdentity}' listener, app disabled!")
-	}
-
-	fun add(sandBox: SandBox) {
-		JetCache.registeredSandBoxes["${sandBox.sandBoxVendor.appIdentity}//${sandBox.sandBoxIdentity}"] = sandBox
-		mainLog(
-			Level.INFO,
-			"registered sandbox '${sandBox.sandBoxIdentity}'!"
-		)
-	}
-
-	fun remove(sandBox: SandBox) {
-		JetCache.registeredSandBoxes.remove("${sandBox.sandBoxVendor.appIdentity}//${sandBox.sandBoxIdentity}", sandBox)
-		mainLog(
-			Level.INFO,
-			"unregistered sandbox '${sandBox.sandBoxIdentity}'!"
-		)
 	}
 
 	fun register(service: Service) {

@@ -24,7 +24,8 @@ object SoundLibrary {
 	}
 
 	val NOTIFICATION_GENERAL = buildMelody(0, 0) {
-		addNextBeat(soundOf(UI_TOAST_IN, pitch = 1.5))
+		addNextBeat(soundOf(ENTITY_PUFFER_FISH_FLOP, pitch = 1.5))
+		addToBeat(soundOf(UI_TOAST_IN, pitch = 1.5))
 	}
 
 	val NOTIFICATION_LEVEL = buildMelody(3, 0) {

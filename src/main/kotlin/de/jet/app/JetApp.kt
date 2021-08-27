@@ -6,8 +6,10 @@ import de.jet.app.component.item.JetActionComponent
 import de.jet.app.component.system.JetKeeperComponent
 import de.jet.app.interchange.ComponentInterchange
 import de.jet.app.interchange.JETInterchange
+import de.jet.app.interchange.SandboxInterchange
 import de.jet.app.interchange.ServiceInterchange
 import de.jet.library.extension.mainLog
+import de.jet.library.extension.obj.buildSandBox
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.AppCompanion
 import de.jet.library.tool.display.world.SimpleLocation
@@ -30,7 +32,7 @@ class JetApp : App() {
 	override fun hello() {
 
 		languageSpeaker.let { languageSpeaker ->
-			mainLog(Level.INFO, "Speaking langauge: ${languageSpeaker.languageId}")
+			mainLog(Level.INFO, "Speaking langauge: ${languageSpeaker.baseLang}")
 			with(languageSpeaker.languageContainer) {
 				"""
 					Display-Language detected:
@@ -54,6 +56,11 @@ class JetApp : App() {
 		add(JETInterchange())
 		add(ComponentInterchange())
 		add(ServiceInterchange())
+		add(SandboxInterchange())
+
+		buildSandBox(this, "worky") {
+			executor.sendMessage("worky is receiving: '${parameters.joinToString(" ")}'! NICE!")
+		}
 
 	}
 

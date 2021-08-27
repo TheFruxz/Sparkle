@@ -1,7 +1,6 @@
 package de.jet.library.runtime.app
 
 import de.jet.app.JetApp
-import de.jet.library.extension.app
 import de.jet.library.extension.collection.replace
 import de.jet.library.tool.display.ide.API
 import kotlinx.serialization.Serializable
@@ -12,10 +11,9 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import org.bukkit.ChatColor
-import kotlin.text.RegexOption.IGNORE_CASE
 
 class LanguageSpeaker(
-	val languageId: String
+	val baseLang: String
 ) {
 
 	@Serializable
@@ -29,7 +27,7 @@ class LanguageSpeaker(
 	)
 
 	val languageContainer: LanguageContainer by lazy {
-		JetApp.instance.getResourceFile("lang/$languageId.json").let { data ->
+		JetApp.instance.getResourceFile("lang/$baseLang.json").let { data ->
 
 			if (data != null) {
 				Json.decodeFromString(data)
@@ -67,14 +65,14 @@ class LanguageSpeaker(
 	fun message(id: String, smartColor: Boolean = true): String {
 		return if (!error) {
 
-			(cachedLanguageData[id] ?: "LANGUAGE-DATA '$id' UNKNOWN ($languageId)").let { output ->
+			(cachedLanguageData[id] ?: "LANGUAGE-DATA '$id' UNKNOWN ($baseLang)").let { output ->
 				if (smartColor) {
 					output.replace(smartColors)
 				} else
 					output
 			}
 
-		} else "LANGUAGE FILE $languageId NOT CORRECT"
+		} else "LANGUAGE FILE $baseLang NOT CORRECT"
 	}
 
 }

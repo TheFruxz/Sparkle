@@ -19,7 +19,9 @@ object JetCache : AppCache {
 
 	val registeredApplications = mutableSetOf<App>()
 
-	val registeredSandBoxes = mutableMapOf<String, SandBox>()
+	val registeredSandBoxes = mutableSetOf<SandBox>()
+
+	val registeredSandBoxCalls = mutableMapOf<Identity<SandBox>, Int>()
 
 	val registeredCompletionVariables = mutableMapOf<String, Set<String>>()
 
