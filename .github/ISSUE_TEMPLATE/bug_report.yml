@@ -2,7 +2,7 @@ name: Bug report
 description: Report a bug
 title: "[BUG]: "
 labels: 'State: unverified, Type: bug'
-assignees: ''
+assignees: []
 body:
   - type: markdown
     attributes:
