@@ -5,8 +5,8 @@
 
 version: 2
 updates:
-  - target-branch: "develop"
   - package-ecosystem: "gradle"
+    target-branch: "develop"
     directory: "/"
     labels:
       - dependencies
