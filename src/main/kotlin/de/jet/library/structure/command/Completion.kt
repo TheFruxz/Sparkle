@@ -76,6 +76,20 @@ data class CompletionVariable(
 			}
 		}
 
+		val MATERIAL_CODE = CompletionVariable(system, "MATERIAL-CODE", false) {
+			buildSet {
+
+				addAll(Material.values().withMap { "minecraft:$name" })
+
+				DyeableMaterial.values().forEach { flex ->
+					val key = flex.key.toString()
+					add("jet:$key")
+					addAll(ColorType.values().withMap { "jet:$key#$name" })
+				}
+
+			}
+		}
+
 		val ENTITY_TYPE = CompletionVariable(system, "ENTITY-TYPE", false) {
 			EntityType.values().withMap { name }
 		}
