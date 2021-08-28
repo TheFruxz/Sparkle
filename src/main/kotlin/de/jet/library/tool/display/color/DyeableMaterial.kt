@@ -37,15 +37,15 @@ enum class DyeableMaterial(
 
 		// WOOL#WHITE
 		fun materialFromMaterialCode(materialCode: String): Material? {
-			val code = materialCode.removePrefix("minecraft:").removePrefix("jet:")
+			val code = materialCode.lowercase().removePrefix("minecraft:").removePrefix("jet:").uppercase()
 			val output = if (code.contains('#')) {
 				val split = code.split('#')
 
 				if (split.size == 2) {
 
 					try {
-						val material = valueOf(split.first().uppercase())
-						val colorType = ColorType.valueOf(split.last().uppercase())
+						val material = valueOf(split.first())
+						val colorType = ColorType.valueOf(split.last())
 
 						material.withColor(colorType)
 
@@ -58,7 +58,7 @@ enum class DyeableMaterial(
 
 			} else
 				try {
-					valueOf(code.uppercase()).withColor(WHITE)
+					valueOf(code).withColor(WHITE)
 				} catch (exception: NoSuchElementException) {
 					null
 				}
