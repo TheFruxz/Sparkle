@@ -2,6 +2,7 @@ package de.jet.library.tool.display.color
 
 import de.jet.library.extension.paper.createKey
 import de.jet.library.extension.system
+import de.jet.library.tool.display.color.ColorType.WHITE
 import org.bukkit.Material
 
 enum class DyeableMaterial(
@@ -32,6 +33,34 @@ enum class DyeableMaterial(
 			valueOf(material.name.substringAfter('_'))
 		} catch (exception: IllegalArgumentException) {
 			null
+		}
+
+		// WOOL#WHITE
+		fun materialFromMaterialCode(materialCode: String): Material? {
+			if (materialCode.contains('#')) {
+				val split = materialCode.split('#')
+
+				return if (split.size == 2) {
+
+					try {
+						val material = valueOf(split.first().uppercase())
+						val colorType = ColorType.valueOf(split.last().uppercase())
+
+						material.withColor(colorType)
+
+					} catch (exception: NoSuchElementException) {
+						null
+					}
+
+				} else
+					null
+
+			} else
+				try {
+					return valueOf(materialCode.uppercase()).withColor(WHITE)
+				} catch (exception: NoSuchElementException) {
+					return null
+				}
 		}
 
 	}

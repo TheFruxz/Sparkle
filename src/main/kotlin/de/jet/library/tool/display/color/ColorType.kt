@@ -193,6 +193,9 @@ enum class ColorType : RGBLike {
 			null
 		}
 
+		fun materialFromMaterialCode(materialCode: String) =
+			DyeableMaterial.materialFromMaterialCode(materialCode)
+
 
 	}
 
