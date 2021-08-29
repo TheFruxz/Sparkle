@@ -29,7 +29,7 @@ class Panel(
 	openSound: SoundMelody? = null,
 	override var identity: String = "${UUID.randomUUID()}",
 	override var vendor: Identifiable<App> = system,
-	var playerSpecificUI: Panel.(player: Player, additionalParameters: List<Any>) -> Panel = { _, _ -> this },
+	var playerSpecificUI: Panel.(player: Player, additionalParameters: Map<String, Any>) -> Panel = { _, _ -> this },
 	var icon: Item = theme.wool.item.apply {
 		lore = """
 			
@@ -131,7 +131,7 @@ class Panel(
 	override fun display(receiver: Player) =
 		display(humanEntity = receiver)
 
-	override fun display(humanEntity: HumanEntity, specificParameters: List<Any>) {
+	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>) {
 		content = content.apply {
 			set(4, icon.apply {
 				label = this@Panel.label.legacyString
@@ -148,7 +148,7 @@ class Panel(
 		}
 	}
 
-	override fun display(receiver: Player, specificParameters: List<Any>) =
+	override fun display(receiver: Player, specificParameters: Map<String, Any>) =
 		display(humanEntity = receiver, specificParameters)
 
 }

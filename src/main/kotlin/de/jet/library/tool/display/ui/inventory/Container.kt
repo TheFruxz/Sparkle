@@ -265,10 +265,10 @@ open class Container(
 		}
 	}
 
-	override fun display(receiver: Player, specificParameters: List<Any>) =
+	override fun display(receiver: Player, specificParameters: Map<String, Any>) =
 		display(receiver)
 
-	override fun display(humanEntity: HumanEntity, specificParameters: List<Any>) =
+	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>) =
 		display(humanEntity)
 
 }

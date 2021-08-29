@@ -10,8 +10,8 @@ interface UI : Identifiable<UI> {
 
 	fun display(humanEntity: HumanEntity)
 
-	fun display(receiver: Player, specificParameters: List<Any> = emptyList())
+	fun display(receiver: Player, specificParameters: Map<String, Any>)
 
-	fun display(humanEntity: HumanEntity, specificParameters: List<Any> = emptyList())
+	fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>)
 
 }
