@@ -9,7 +9,6 @@ import de.jet.library.tool.display.item.Item
 import de.jet.library.tool.display.ui.UI
 import de.jet.library.tool.effect.sound.SoundMelody
 import net.kyori.adventure.text.Component
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
@@ -265,5 +264,11 @@ open class Container(
 			humanEntity.openInventory(rawInventory)
 		}
 	}
+
+	override fun display(receiver: Player, specificParameters: List<Any>) =
+		display(receiver)
+
+	override fun display(humanEntity: HumanEntity, specificParameters: List<Any>) =
+		display(humanEntity)
 
 }
