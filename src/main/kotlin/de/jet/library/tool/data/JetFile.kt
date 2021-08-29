@@ -22,9 +22,9 @@ interface JetFile {
 
 	fun save()
 
-	fun set(path: String, value: Any?)
+	operator fun set(path: String, value: Any?)
 
-	fun <T> get(path: String): T?
+	operator fun <T> get(path: String): T?
 
 	companion object {
 
