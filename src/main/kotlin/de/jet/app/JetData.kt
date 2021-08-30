@@ -2,7 +2,6 @@ package de.jet.app
 
 import de.jet.app.JetData.File.BRAIN
 import de.jet.app.JetData.File.CONFIG
-import de.jet.library.extension.data.div
 import de.jet.library.extension.data.jetPath
 import de.jet.library.tool.data.DataTransformer
 import de.jet.library.tool.data.JetFile
@@ -52,12 +51,6 @@ object JetData {
 		file = CONFIG,
 		path = jetPath("profileDataSecond"),
 		default = "EyQ2RAc5F4J6IIzjPc0s1OhVOEtw3aRMPP3lurYdJ7Hyn0AiDtJG5AmFMzErKZAUyIIoedftWEdDSP0h9+WRJ9EZ86i8imCgG8M/3tKNqhs3MRrEk75mehOa8fXGQh5GF3TSW7r1WRA/CpP9BCyRaLq+Ijr359jq+fL7gDygmTbwgte2FEr6WHHiH+9YH6ShtdVJyJ/6LcsuI2BJbheK2CWkG2GECvWj8Vg87kyLdpCsQpCQHWZh62eGskDVazG/gZynm9DP3o0u7G3p4d2uO6A/NRUQG1/7Y3RcZJi6Y+QY804SPTekutxmgh4HKYpg+kThRogx7TyuuSBqvEPYaaUatoDf1E4VdUyJIuJ4hodg2r+gqeznFGdVOrNxrwbYoWasg1X7E9YV0OvKTHHTLJRqQFxb6rUPMiTsnh3JfniGXCmZh2vSJ3QsfbOZNAN73aKIGB+jNZHDrjgkTZoMnLosfelonV/YS0skM7mHEdoC8z+WqvKUb7pUnZ2s9yfsC7ELBg4OE11uZ9tnyTRRMpmDtDIwajZ3qniwFYWel2rY8UUDMk0qCtRQa7aPSsgUfyoDUQyV1tWDcrBwAjiySd/wGLOBzmboHoQfYvf2cly9hQydPDThFo6WGstGLKSjxxHtuOwy4+mHy/C5VOkFtMAeconpz702ta3yoTEWZfI="
-	)
-
-	val notUsed = Preference(
-		file = CONFIG,
-		path = jetPath("not") / "used",
-		default = 2021,
 	)
 
 	object File {
