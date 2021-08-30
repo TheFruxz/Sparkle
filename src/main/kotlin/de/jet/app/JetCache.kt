@@ -7,6 +7,7 @@ import de.jet.library.structure.app.cache.CacheDepthLevel
 import de.jet.library.structure.command.Interchange
 import de.jet.library.structure.component.Component
 import de.jet.library.structure.service.Service
+import de.jet.library.tool.data.Preference
 import de.jet.library.tool.display.item.action.ItemClickAction
 import de.jet.library.tool.display.item.action.ItemInteractAction
 import de.jet.library.tool.display.ui.panel.PanelFlag
@@ -49,6 +50,8 @@ object JetCache : AppCache {
 		internal set
 
 	val runningTasks = mutableListOf<Int>()
+
+	internal val tmp_initSetupPreferences = mutableSetOf<Preference<*>>()
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
 		TODO("Not yet implemented")

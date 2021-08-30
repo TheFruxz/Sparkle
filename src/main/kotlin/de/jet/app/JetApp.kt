@@ -9,10 +9,12 @@ import de.jet.app.interchange.JETInterchange
 import de.jet.app.interchange.SandboxInterchange
 import de.jet.app.interchange.ServiceInterchange
 import de.jet.library.extension.debugLog
+import de.jet.library.extension.forceCast
 import de.jet.library.extension.mainLog
 import de.jet.library.extension.obj.buildSandBox
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.AppCompanion
+import de.jet.library.tool.data.Preference
 import de.jet.library.tool.display.world.SimpleLocation
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.util.logging.Level
@@ -37,6 +39,17 @@ class JetApp : App() {
 	}
 
 	override fun hello() {
+
+		JetCache.tmp_initSetupPreferences.forEach {
+			fun <T : Any> proceed(default: T) {
+				val preference = it.forceCast<Preference<T>>()
+				preference.content = default
+				mainLog(Level.INFO, "Init-Setup '${preference.identity}' with '$default'(${default::class.simpleName})")
+			}
+			proceed(it.default)
+		}
+
+		JetCache.tmp_initSetupPreferences.clear()
 
 		languageSpeaker.let { languageSpeaker ->
 			mainLog(Level.INFO, "Speaking langauge: ${languageSpeaker.baseLang}")

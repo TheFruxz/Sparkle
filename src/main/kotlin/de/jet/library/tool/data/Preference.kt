@@ -1,5 +1,6 @@
 package de.jet.library.tool.data
 
+import de.jet.app.JetCache
 import de.jet.app.JetCache.registeredPreferenceCache
 import de.jet.library.extension.debugLog
 import de.jet.library.extension.tasky.task
@@ -16,11 +17,23 @@ data class Preference<SHELL : Any>(
 	var transformer: DataTransformer<SHELL, out Any> = DataTransformer.empty(),
 	var async: Boolean = false,
 	var forceUseOfTasks: Boolean = false,
-	var initTriggerSetup: Boolean = true, /* TODO coming soon */
+	var initTriggerSetup: Boolean = true,
 ) : Identifiable<Preference<SHELL>> {
 
 	override val identity = "${file.file.pathString}:${path.identity}"
-	val inFilePath = path.identity
+	private val inFilePath = path.identity
+
+	init {
+		if (initTriggerSetup && !isSavedInFile) {
+			JetCache.tmp_initSetupPreferences.add(this)
+		}
+	}
+
+	val isSavedInFile: Boolean
+		get() = file.let { jetFile ->
+			jetFile.load()
+			return@let jetFile.loader.contains(inFilePath)
+		}
 
 	@Suppress("UNCHECKED_CAST")
 	var content: SHELL
