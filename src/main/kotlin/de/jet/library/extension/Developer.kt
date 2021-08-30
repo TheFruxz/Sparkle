@@ -10,8 +10,8 @@ import de.jet.library.tool.smart.Identity
 import java.util.logging.Level
 
 fun <T : Any?> T.debugLog(message: String) = this.also {
-	if (/*TODO developerMode*/ false) {
-		mainLog(Level.INFO, message)
+	if (JetApp.debugMode) {
+		mainLog(Level.WARNING, message)
 	}
 }
 
@@ -41,7 +41,7 @@ fun app(id: String) = JetCache.registeredApplications.first { it.appIdentity == 
 fun app(vendor: Identifiable<App>) = JetCache.registeredApplications.first { it.appIdentity == vendor.identity }
 
 @Throws(NoSuchElementException::class)
-fun app(vendorIdentity: Identity<App>) = JetCache.registeredApplications.first { it.appIdentity == vendorIdentity.id }
+fun app(vendorIdentity: Identity<App>) = JetCache.registeredApplications.first { it.appIdentity == vendorIdentity.identity }
 
 @Throws(NoSuchElementException::class)
 fun Identifiable<App>.getApp() = app(identity)

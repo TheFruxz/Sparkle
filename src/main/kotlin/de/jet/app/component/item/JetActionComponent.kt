@@ -16,6 +16,7 @@ import de.jet.library.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.event.EventListener
 import de.jet.library.structure.component.Component
+import de.jet.library.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.jet.library.tool.display.item.Item
 import de.jet.library.tool.display.item.action.ActionCooldownType.BUKKIT_MATERIAL
 import de.jet.library.tool.display.item.action.ActionCooldownType.JET_INFO
@@ -34,7 +35,7 @@ import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 
-internal class JetActionComponent(vendor: App = system) : Component(vendor, true) {
+internal class JetActionComponent(vendor: App = system) : Component(vendor, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "Actions"
 
@@ -72,7 +73,7 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, true
 
 		private fun getFlags(item: Item?): Set<PanelFlag> {
 			val panelIdentity = item?.identityObject
-			return JetCache.registeredPanelFlags[panelIdentity?.id] ?: emptySet()
+			return JetCache.registeredPanelFlags[panelIdentity?.identity] ?: emptySet()
 		}
 
 		private fun reactToActionCooldown(item: Item, player: Player, action: ItemAction<*>) {

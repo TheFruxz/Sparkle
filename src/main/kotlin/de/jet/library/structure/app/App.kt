@@ -14,12 +14,14 @@ import de.jet.library.extension.tasky.wait
 import de.jet.library.runtime.app.LanguageSpeaker
 import de.jet.library.runtime.app.RunStatus
 import de.jet.library.runtime.app.RunStatus.*
+import de.jet.library.runtime.exception.IllegalActionException
 import de.jet.library.structure.app.event.EventListener
 import de.jet.library.structure.app.interchange.IssuedInterchange
 import de.jet.library.structure.command.Interchange
 import de.jet.library.structure.component.Component
 import de.jet.library.structure.service.Service
 import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.Identity
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.ConfigurationSerialization
@@ -234,47 +236,103 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	fun add(component: Component) {
 		jetTry {
+
 			if (JetCache.registeredComponents.any { it.identity == component.identity })
 				throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
+
 			JetCache.registeredComponents.add(component)
+
 			mainLog(Level.INFO, "registered '${component.identity}' component!")
 
-			if (component.autoEnable || JetData.autoStartComponents.content.contains(component.identity)) {
+			if (component.isAutoStarted) {
 
 				mainLog(Level.INFO, "### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
 
-				start(component)
+				start(component.identityObject)
 
 			}
 
 		}
 	}
 
-	fun start(component: Identifiable<Component>) {
+	fun start(componentIdentity: Identity<Component>) = jetTry {
+		val component = JetCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
+
+		if (component != null) {
+
+			if (!JetCache.runningComponents.contains(componentIdentity)) {
+
+				component.start()
+
+				JetCache.runningComponents.add(componentIdentity)
+
+				mainLog(Level.INFO, "started '${componentIdentity.identity}' component!")
+
+			} else
+				throw IllegalStateException("The component '$componentIdentity' is already running!")
+
+		} else
+			throw NoSuchElementException("The component '$componentIdentity' is currently not registered! ADD IT!")
+
+	}
+
+	fun stop(componentIdentity: Identity<Component>, unregisterComponent: Boolean = false) = jetTry {
+		val component = JetCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
+
+		if (component != null) {
+
+			if (component.canBeStopped) {
+
+				if (JetCache.runningComponents.contains(componentIdentity)) {
+
+					component.stop()
+
+					JetCache.runningComponents.remove(componentIdentity)
+
+					if (unregisterComponent)
+						unregister(componentIdentity)
+
+					mainLog(Level.INFO, "stopped '${component.identity}' component!")
+
+				} else
+					throw IllegalStateException("The component '$componentIdentity' is already not running!")
+
+			} else
+				throw IllegalActionException("The component '$componentIdentity' can't be stopped, due to its behavior '${component.behaviour}'!")
+
+		} else
+			throw NoSuchElementException("The component '$componentIdentity' is currently not registered! ADD IT!")
+
+	}
+
+	fun unregister(componentIdentity: Identity<Component>) {
 		jetTry {
-			JetCache.registeredComponents.first { it == component }.start()
-			JetCache.runningComponents.add(component.identityObject)
-			mainLog(Level.INFO, "started '${component.identity}' component!")
+			val component = JetCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
+
+			if (component != null) {
+
+				JetCache.registeredComponents.remove(component)
+
+			} else
+				throw NoSuchElementException("The component '$componentIdentity' is already not registered!")
+
 		}
 	}
 
-	fun stop(component: Identifiable<Component>) {
-		jetTry {
-			JetCache.registeredComponents.first { it == component }.stop()
-			JetCache.runningComponents.remove(component.identityObject)
-			mainLog(Level.INFO, "stopped '${component.identity}' component!")
-		}
-	}
-
-	fun register(serializable: Class<out ConfigurationSerializable>) {
-		jetTry {
-			ConfigurationSerialization.registerClass(serializable)
-			mainLog(Level.INFO, "successfully registered '${serializable.simpleName}' as serializable!")
-		}
+	fun register(serializable: Class<out ConfigurationSerializable>) = jetTry {
+		ConfigurationSerialization.registerClass(serializable)
+		mainLog(Level.INFO, "successfully registered '${serializable.simpleName}' as serializable!")
 	}
 
 	fun register(serializable: KClass<out ConfigurationSerializable>) =
 		register(serializable.java)
+
+	fun unregister(serializable: Class<out ConfigurationSerializable>) = jetTry {
+		ConfigurationSerialization.unregisterClass(serializable)
+	}
+
+	fun unregister(serializable: KClass<out ConfigurationSerializable>) =
+		unregister(serializable.java)
 
 	// runtime
 

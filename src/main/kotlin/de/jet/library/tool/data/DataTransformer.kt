@@ -1,5 +1,6 @@
 package de.jet.library.tool.data
 
+import de.jet.library.extension.collection.toArrayList
 import de.jet.library.tool.display.world.SimpleLocation
 import org.bukkit.Location
 
@@ -12,6 +13,14 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 
 		fun <BOTH : Any> empty() =
 			DataTransformer<BOTH, BOTH>({ this }, { this })
+
+		// collections
+
+		inline fun <reified SET> setCollection() =
+			DataTransformer<Set<SET>, ArrayList<SET>>(
+				{ toArrayList() },
+				{ toSet() },
+			)
 
 		// colors
 

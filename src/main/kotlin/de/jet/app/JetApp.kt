@@ -8,6 +8,7 @@ import de.jet.app.interchange.ComponentInterchange
 import de.jet.app.interchange.JETInterchange
 import de.jet.app.interchange.SandboxInterchange
 import de.jet.app.interchange.ServiceInterchange
+import de.jet.library.extension.debugLog
 import de.jet.library.extension.mainLog
 import de.jet.library.extension.obj.buildSandBox
 import de.jet.library.structure.app.App
@@ -26,7 +27,13 @@ class JetApp : App() {
 
 	override fun register() {
 		instance = this
+
 		ConfigurationSerialization.registerClass(SimpleLocation::class.java)
+
+		debugMode = JetData.debugMode.content
+
+		debugLog("DebugMode preference loaded & set from file!")
+
 	}
 
 	override fun hello() {
@@ -74,6 +81,7 @@ class JetApp : App() {
 
 	companion object : AppCompanion<JetApp> {
 		override lateinit var instance: JetApp
+		var debugMode: Boolean = false
 	}
 
 }

@@ -15,6 +15,8 @@ data class Preference<SHELL : Any>(
 	val readAndWrite: Boolean = true,
 	var transformer: DataTransformer<SHELL, out Any> = DataTransformer.empty(),
 	var async: Boolean = false,
+	var forceUseOfTasks: Boolean = false,
+	var initTriggerSetup: Boolean = true, /* TODO coming soon */
 ) : Identifiable<Preference<SHELL>> {
 
 	override val identity = "${file.file.pathString}:${path.identity}"
@@ -24,7 +26,7 @@ data class Preference<SHELL : Any>(
 	var content: SHELL
 		get() {
 			var out: SHELL = default
-			task(instant(async = async)) {
+			val process = {
 				val currentCacheValue = registeredPreferenceCache[inFilePath]
 
 				if (!useCache && currentCacheValue != null) {
@@ -47,17 +49,25 @@ data class Preference<SHELL : Any>(
 						if (useCache)
 							registeredPreferenceCache[inFilePath] = it
 						if (it == default)
-							file.set(inFilePath, transformer.toCore(default))
+							file[inFilePath] = transformer.toCore(default)
 						file.save()
 						it
 					}
 
 				}
 			}
+
+			if (async || forceUseOfTasks) {
+				task(instant(async = async)) {
+					process()
+				}
+			} else
+				process()
+
 			return out
 		}
 		set(value) {
-			task(instant(async = async)) {
+			val process = {
 				if (readAndWrite) {
 					file.load() // TODO: 23.07.2021 SUS? (overriding cache?)
 				}
@@ -65,12 +75,20 @@ data class Preference<SHELL : Any>(
 				transformer.toCore(value).let { coreObject ->
 					if (useCache)
 						registeredPreferenceCache[identity] = coreObject
-					file.set(path.identity, coreObject)
+					file[path.identity] = coreObject
 				}
 
 				if (readAndWrite)
 					file.save()
 			}
+
+			if (async || forceUseOfTasks) {
+				task(instant(async = async)) {
+					process()
+				}
+			} else
+				process()
+
 		}
 
 	fun <CORE : Any> transformer(

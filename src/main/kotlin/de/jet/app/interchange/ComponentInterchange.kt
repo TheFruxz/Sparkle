@@ -37,7 +37,7 @@ class ComponentInterchange(vendor: App = system) : Interchange(vendor, "componen
 						lang("interchange.internal.component.list.line")
 							.replace(
 								"[component]" to component.identity,
-								"[autoStart]" to if (component.autoEnable || JetData.autoStartComponents.content.contains(component.identity)) "§a§lAUTO-START" else "§c§lAUTO-START",
+								"[autoStart]" to if (component.isAutoStarted || JetData.autoStartComponents.content.contains(component.identity)) "§a§lAUTO-START" else "§c§lAUTO-START",
 								"[status]" to if (component.isRunning) "§a§lON" else "§c§lOFF"
 							)
 					)
@@ -60,7 +60,7 @@ class ComponentInterchange(vendor: App = system) : Interchange(vendor, "componen
 
 						if (!component.isRunning) {
 
-							component.vendor.start(component)
+							component.vendor.start(component.identityObject)
 
 							lang("interchange.internal.component.nowRunning")
 								.replace("[component]", component.identity)
@@ -77,7 +77,7 @@ class ComponentInterchange(vendor: App = system) : Interchange(vendor, "componen
 					"stop" -> {
 						if (component.isRunning) {
 
-							component.vendor.stop(component)
+							component.vendor.stop(component.identityObject)
 
 							lang("interchange.internal.component.nowStopped")
 								.replace("[component]", component.identity)
@@ -92,7 +92,7 @@ class ComponentInterchange(vendor: App = system) : Interchange(vendor, "componen
 
 					"autostart" -> {
 
-						if (!component.autoEnable) {
+						if (!component.canBeAutoStartToggled) {
 
 							JetData.autoStartComponents.let { preference ->
 								val currentState = preference.content.toMutableSet()

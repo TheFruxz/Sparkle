@@ -1,11 +1,20 @@
 package de.jet.app
 
+import de.jet.app.JetData.File.BRAIN
 import de.jet.app.JetData.File.CONFIG
 import de.jet.library.extension.data.jetPath
+import de.jet.library.tool.data.DataTransformer
 import de.jet.library.tool.data.JetFile
 import de.jet.library.tool.data.Preference
 
 object JetData {
+
+	val debugMode = Preference(
+		file = CONFIG,
+		useCache = true,
+		path = jetPath("debugMode"),
+		default = false,
+	)
 
 	val systemPrefix = Preference(
 		file = CONFIG,
@@ -24,7 +33,13 @@ object JetData {
 		file = CONFIG,
 		path = jetPath("autoStartComponents"),
 		default = setOf<String>(),
-	)
+	).transformer(DataTransformer.setCollection())
+
+	val touchedComponents = Preference(
+		file = BRAIN,
+		path = jetPath("touchedComponents"),
+		default = setOf<String>()
+	).transformer(DataTransformer.setCollection())
 
 	val profileDataFirst = Preference(
 		file = CONFIG,
@@ -41,6 +56,7 @@ object JetData {
 	object File {
 
 		val CONFIG = JetFile.rootFile("system-config")
+		val BRAIN = JetFile.rootFile("system-memory")
 
 	}
 

@@ -4,10 +4,11 @@ import de.jet.library.extension.system
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.event.EventListener
 import de.jet.library.structure.component.Component
+import de.jet.library.structure.component.Component.RunType.DISABLED
 import io.papermc.paper.event.player.AsyncChatEvent
 import org.bukkit.event.EventHandler
 
-internal class JetChatComponent(vendor: App = system) : Component(vendor, true) {
+internal class JetChatComponent(vendor: App = system) : Component(vendor, DISABLED /* TODO: 30.08.2021 Because has no contents! */ ) {
 
 	override val thisIdentity = "Chat"
 

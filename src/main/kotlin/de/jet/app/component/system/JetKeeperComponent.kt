@@ -1,17 +1,20 @@
 package de.jet.app.component.system
 
 import de.jet.app.JetCache.livingCooldowns
+import de.jet.library.extension.debugLog
+import de.jet.library.extension.display.display
 import de.jet.library.extension.system
 import de.jet.library.extension.timing.isOver
 import de.jet.library.structure.app.App
 import de.jet.library.structure.component.Component
+import de.jet.library.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.jet.library.structure.service.Service
 import de.jet.library.tool.smart.Identifiable
 import de.jet.library.tool.timing.tasky.Tasky
 import de.jet.library.tool.timing.tasky.TemporalAdvice
 import java.util.logging.Level
 
-class JetKeeperComponent(vendor: App = system) : Component(vendor, true) {
+class JetKeeperComponent(vendor: App = system) : Component(vendor, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "Keeper"
 
@@ -47,8 +50,10 @@ class JetKeeperComponent(vendor: App = system) : Component(vendor, true) {
 
 			livingCooldowns.toList().forEach { (key, value) ->
 
-				if (value.isOver)
+				if (value.isOver) {
 					livingCooldowns.remove(key)
+					debugLog("removed livingCooldown $key, because, it was over; remaining: ${value.remainingCooldown.display()}")
+				}
 
 			}
 

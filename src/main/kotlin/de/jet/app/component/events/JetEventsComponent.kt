@@ -10,12 +10,13 @@ import de.jet.library.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.library.structure.app.App
 import de.jet.library.structure.app.event.EventListener
 import de.jet.library.structure.component.Component
+import de.jet.library.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 
-internal class JetEventsComponent(vendor: App = system) : Component(vendor, true) {
+internal class JetEventsComponent(vendor: App = system) : Component(vendor, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "Events"
 

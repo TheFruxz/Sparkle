@@ -9,6 +9,6 @@ interface VendorsIdentifiable<T> : Identifiable<T> {
 	val thisIdentity: String
 
 	override val identity: String
-		get() = "${vendorIdentity.id}:$thisIdentity"
+		get() = "${vendorIdentity.identity}:$thisIdentity"
 
 }
