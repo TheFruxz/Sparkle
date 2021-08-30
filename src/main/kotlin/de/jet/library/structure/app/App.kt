@@ -353,7 +353,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	val languageSpeaker by lazy { LanguageSpeaker(JetData.systemLanguage.content) }
 
-	protected val pluginManager = server.pluginManager
+	private val pluginManager = server.pluginManager
 
 	// override base-mechanics
 
