@@ -11,7 +11,7 @@ import java.util.logging.Level
 
 fun <T : Any?> T.debugLog(message: String) = this.also {
 	if (JetApp.debugMode) {
-		mainLog(Level.WARNING, message)
+		mainLog(Level.WARNING, "DEBUG /!/ $message")
 	}
 }
 
