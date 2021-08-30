@@ -30,23 +30,21 @@ abstract class Component(
 
 	fun firstContactHandshake() {
 		if (!JetData.touchedComponents.content.contains(identity)) {
-			when (behaviour) {
-				AUTOSTART_IMMUTABLE, AUTOSTART_MUTABLE -> {
-					JetData.autoStartComponents.content += identity
-				}
-				else -> debugLog("AutoStart setup was not required, '$identity' does not request auto-start!")
-			}
+			if (setOf(AUTOSTART_IMMUTABLE, AUTOSTART_MUTABLE).contains(behaviour)) {
+				JetData.touchedComponents.content += identity
+				debugLog("Remembering: I've stayed in touch with the '$identity'-component!")
+			} else
+				debugLog("AutoStart setup was not required, '$identity' does not request auto-start!")
 		} else
 			debugLog("Component '$identity' was already in touch with this system!")
 	}
 
-	val isAutoStarted: Boolean
+	val isAutoStarting: Boolean
 		get() = when (behaviour) {
 			ENABLED, AUTOSTART_IMMUTABLE -> {
 				true
 			}
 			else -> {
-				firstContactHandshake()
 				JetData.autoStartComponents.content.contains(identity)
 			}
 		}

@@ -37,7 +37,7 @@ class ComponentInterchange(vendor: App = system) : Interchange(vendor, "componen
 						lang("interchange.internal.component.list.line")
 							.replace(
 								"[component]" to component.identity,
-								"[autoStart]" to if (component.isAutoStarted || JetData.autoStartComponents.content.contains(component.identity)) "§a§lAUTO-START" else "§c§lAUTO-START",
+								"[autoStart]" to if (component.isAutoStarting || JetData.autoStartComponents.content.contains(component.identity)) "§a§lAUTO-START" else "§c§lAUTO-START",
 								"[status]" to if (component.isRunning) "§a§lON" else "§c§lOFF"
 							)
 					)

@@ -240,11 +240,13 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			if (JetCache.registeredComponents.any { it.identity == component.identity })
 				throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
 
+			component.firstContactHandshake()
+
 			JetCache.registeredComponents.add(component)
 
 			mainLog(Level.INFO, "registered '${component.identity}' component!")
 
-			if (component.isAutoStarted) {
+			if (component.isAutoStarting) {
 
 				mainLog(Level.INFO, "### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
 
@@ -405,7 +407,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	companion object {
 
 		fun createLog(app: String, section: String = "main"): Logger =
-			PaperPluginLogger.getLogger("JET/$app <$section>") ?: Logger.getLogger("[!] JET/$app <$section>")
+			(PaperPluginLogger.getLogger("JET/$app // $section") ?: Logger.getLogger("JET/$app // $section"))
 
 	}
 

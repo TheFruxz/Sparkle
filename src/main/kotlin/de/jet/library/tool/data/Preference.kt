@@ -53,7 +53,9 @@ data class Preference<SHELL : Any>(
 				} else {
 					file.load()
 					fun toShellTransformer() = transformer.toShell as Any.() -> SHELL
-					val currentFileValue = file.get<SHELL>(inFilePath)?.let { toShellTransformer()(it) }
+					val currentFileValue = file.get<SHELL>(inFilePath)?.let { toShellTransformer()(it).also { core ->
+						debugLog("transformed '$it'(shell) from '$core'(core)")
+					} }
 					val newContent = if (file.loader.contains(inFilePath) && currentFileValue != null) {
 						currentFileValue
 					} else default
@@ -80,6 +82,7 @@ data class Preference<SHELL : Any>(
 			return out
 		}
 		set(value) {
+			debugLog("Try to save in ($identity) the value: '$value'")
 			val process = {
 				if (readAndWrite) {
 					file.load() // TODO: 23.07.2021 SUS? (overriding cache?)
@@ -89,6 +92,7 @@ data class Preference<SHELL : Any>(
 					if (useCache)
 						registeredPreferenceCache[identity] = coreObject
 					file[path.identity] = coreObject
+					debugLog("transformed '$value'(shell) to '$coreObject'(core)")
 				}
 
 				if (readAndWrite)
