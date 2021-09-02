@@ -207,13 +207,15 @@ data class Completion(
 			}
 
 			return@TabCompleter output.let { out -> if (out.isEmpty()) listOf(" ") else out }.toMutableList().let { completion ->
-				return@let buildList {
+				val first = buildList {
 					completion.forEach {
 						if (it.startsWith(parameters.last(), false)) {
 							add(it)
 						}
 					}
-				}.sorted() + buildList {
+				}.sorted()
+
+				val second = buildList {
 					completion
 						.filter { !first.contains(it) }
 						.forEach {
@@ -221,15 +223,19 @@ data class Completion(
 								add(it)
 							}
 						}
-				}.sorted() + buildList {
+				}.sorted()
+
+				val third = buildList {
 					completion
-						.filter { !first.contains(it) && !second.contains(it) }
+						.filter { !second.contains(it) && !second.contains(it) }
 						.forEach {
 							if (it.contains(parameters.last(), true)) {
 								add(it)
 							}
 						}
 				}
+
+				return@let first + second + third
 			}
 
 		} else
