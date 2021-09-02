@@ -98,6 +98,7 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, AUTO
 			} catch (exception: NoSuchElementException) { }
 		}
 
+		@EventHandler
 		fun inventoryClick(event: InventoryClickEvent) {
 			val item = event.currentItem?.item
 			val player = event.whoClicked as Player
