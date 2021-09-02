@@ -54,6 +54,15 @@
     "interchange.internal.sandbox.info.header": "[GRAY]Info of registered SandBox:",
     "interchange.internal.sandbox.info.line": "[GRAY]Key: [GOLD][key][GRAY]; value: '[YELLOW][value][GRAY]'",
 
+    "interchange.internal.buildmode.neverOnline": "[GRAY]The player '[YELLOW][player][GRAY]' was [RED]never[GRAY] online!",
+    "interchange.internal.buildmode.info": "[GRAY]The player '[YELLOW][player][GRAY]'s BuildMode is currently: [GOLD][state][GRAY]!",
+    "interchange.internal.buildmode.enable": "[GRAY]The player '[YELLOW][player][GRAY]'s BuildMode is now [GREEN]enabled[GRAY]!",
+    "interchange.internal.buildmode.disable": "[GRAY]The player '[YELLOW][player][GRAY]'s BuildMode is now [RED]disabled[GRAY]!",
+    "interchange.internal.buildmode.stay": "[GRAY]There were [RED]no[GRAY] changes made, because it was [YELLOW]already set[GRAY] that way!",
+    "interchange.internal.buildmode.list.empty": "[GRAY]There are currently [RED]no[GRAY] players with the active BuildMode status!",
+    "interchange.internal.buildmode.list.header": "[GRAY]These players are currently in BuildMode:",
+    "interchange.internal.buildmode.list.line": "[GRAY]- [statusColor][player]",
+
     "component.jetAction.item.cooldown.jetInfo": "[GRAY]Please wait [YELLOW][remaining][GRAY] until you can perform this action again!"
   }
 }

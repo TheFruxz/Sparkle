@@ -18,7 +18,7 @@ class JetKeeperComponent(vendor: App = system) : Component(vendor, AUTOSTART_MUT
 
 	override val thisIdentity = "Keeper"
 
-	val service = KeeperService(vendor)
+	private val service = KeeperService(vendor)
 
 	override fun start() {
 		service.let { with(vendor) {

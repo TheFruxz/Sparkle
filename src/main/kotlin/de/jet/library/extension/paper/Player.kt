@@ -1,7 +1,9 @@
 package de.jet.library.extension.paper
 
+import de.jet.app.JetCache
 import de.jet.library.tool.permission.Approval
 import de.jet.library.tool.smart.Identity
+import org.bukkit.OfflinePlayer
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
@@ -23,5 +25,15 @@ fun LivingEntity.maxOutHealth() {
 
 val Player.identityObject: Identity<Player>
 	get() = Identity("$uniqueId")
+
+val OfflinePlayer.identityObject: Identity<OfflinePlayer>
+	get() = Identity("$uniqueId")
+
+var OfflinePlayer.buildMode: Boolean
+	get() = JetCache.buildModePlayers.contains(identityObject)
+	set(value) {
+		if (value)
+			JetCache.buildModePlayers.add(identityObject)
+	}
 
 // TODO: 22.08.2021 Cooldowns here

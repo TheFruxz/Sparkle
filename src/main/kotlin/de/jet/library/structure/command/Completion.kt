@@ -1,10 +1,8 @@
 package de.jet.library.structure.command
 
 import de.jet.app.JetCache
-import de.jet.library.extension.collection.first
 import de.jet.library.extension.collection.mapToString
 import de.jet.library.extension.collection.replace
-import de.jet.library.extension.collection.second
 import de.jet.library.extension.collection.withMap
 import de.jet.library.extension.display.notification
 import de.jet.library.extension.lang

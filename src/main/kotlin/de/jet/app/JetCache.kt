@@ -14,6 +14,7 @@ import de.jet.library.tool.display.ui.panel.PanelFlag
 import de.jet.library.tool.smart.Identity
 import de.jet.library.tool.timing.cooldown.Cooldown
 import de.jet.library.tool.timing.tasky.Tasky
+import org.bukkit.OfflinePlayer
 import java.util.*
 
 object JetCache : AppCache {
@@ -50,6 +51,8 @@ object JetCache : AppCache {
 		internal set
 
 	val runningTasks = mutableListOf<Int>()
+
+	val buildModePlayers = mutableSetOf<Identity<out OfflinePlayer>>()
 
 	internal val tmp_initSetupPreferences = mutableSetOf<Preference<*>>()
 

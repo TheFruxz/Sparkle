@@ -19,3 +19,5 @@ commands:
     description: Manages your services!
   sandbox:
     description: Manages your sandboxes!
+  buildmode:
+    description: Manages your buildmodes!

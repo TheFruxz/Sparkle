@@ -4,10 +4,12 @@ import de.jet.app.component.chat.JetChatComponent
 import de.jet.app.component.events.JetEventsComponent
 import de.jet.app.component.item.JetActionComponent
 import de.jet.app.component.system.JetKeeperComponent
+import de.jet.app.component.world.JetBuildModeComponent
 import de.jet.app.interchange.ComponentInterchange
 import de.jet.app.interchange.JETInterchange
 import de.jet.app.interchange.SandboxInterchange
 import de.jet.app.interchange.ServiceInterchange
+import de.jet.app.interchange.player.BuildModeInterchange
 import de.jet.library.extension.debugLog
 import de.jet.library.extension.forceCast
 import de.jet.library.extension.mainLog
@@ -72,11 +74,13 @@ class JetApp : App() {
 		add(JetChatComponent())
 		add(JetActionComponent())
 		add(JetKeeperComponent())
+		add(JetBuildModeComponent())
 
 		add(JETInterchange())
 		add(ComponentInterchange())
 		add(ServiceInterchange())
 		add(SandboxInterchange())
+		add(BuildModeInterchange())
 
 		buildSandBox(this, "worky") {
 			executor.sendMessage("worky is receiving: '${parameters.joinToString(" ")}'! NICE!")
