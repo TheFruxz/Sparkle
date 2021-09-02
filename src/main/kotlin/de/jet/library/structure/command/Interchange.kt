@@ -29,7 +29,7 @@ abstract class Interchange(
 	val requiredExecutorType: InterchangeExecutorType = BOTH,
 	val authorizationCheck: InterchangeAuthorizationCheck = JETCHECK,
 	val hiddenFromRecommendation: Boolean = false,
-	val completion: Completion,
+	val completion: Completion = emptyCompletion(),
 ) : CommandExecutor, VendorsIdentifiable<Interchange>, Logging {
 
 	override val sectionLabel = "InterchangeEngine"
