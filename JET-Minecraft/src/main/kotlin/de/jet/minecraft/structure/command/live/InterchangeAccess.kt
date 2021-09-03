@@ -33,7 +33,7 @@ data class InterchangeAccess(
 
 			return@with if (currentSection != null) {
 
-				currentSection.inputExpressionCheck(parameters[slot])
+				currentSection.inputExpressionCheck(parameters.getOrNull(slot) ?: "")
 
 			} else
 				completion.infinite && completion.sections.lastIndex < parameters.lastIndex
