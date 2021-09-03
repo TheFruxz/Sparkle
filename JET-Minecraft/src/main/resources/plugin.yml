@@ -1,0 +1,25 @@
+name: JET
+version: ${version}
+main: de.jet.app.JetApp
+load: STARTUP
+authors:
+  - TheFruxz (Fruxz)
+  - JaLuMu (JanLuca)
+softdepend:
+  - HeadDatabase
+api-version: 1.17
+prefix: ${name}
+website: ${website}
+commands:
+  jet:
+    description: Discover more info about JET!
+  component:
+    description: Manages your components!
+  service:
+    description: Manages your services!
+  sandbox:
+    description: Manages your sandboxes!
+  buildmode:
+    description: Manages your buildmodes!
+  demo:
+    description: demo
