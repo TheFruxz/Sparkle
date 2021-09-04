@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.display.color
 
-import de.jet.library.tool.smart.annotation.NotPerfect
+import de.jet.library.extension.tag.annotation.NotPerfect
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.util.RGBLike
