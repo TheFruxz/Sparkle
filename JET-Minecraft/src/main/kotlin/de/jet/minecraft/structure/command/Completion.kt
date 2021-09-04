@@ -1,22 +1,20 @@
 package de.jet.minecraft.structure.command
 
-import de.jet.library.extension.buildBoolean
 import de.jet.library.extension.collection.mapToString
 import de.jet.library.extension.collection.replace
 import de.jet.library.extension.collection.withMap
 import de.jet.library.extension.data.isDouble
 import de.jet.library.extension.data.isInt
-import de.jet.minecraft.extension.display.notification
 import de.jet.library.extension.modifiedIf
 import de.jet.library.extension.paper.getPlayer
-import de.jet.minecraft.extension.paper.hasApproval
 import de.jet.library.extension.paper.name
 import de.jet.library.extension.paper.onlinePlayers
 import de.jet.library.extension.paper.worlds
-import de.jet.library.extension.turnFalse
 import de.jet.library.tool.smart.Identifiable
 import de.jet.minecraft.app.JetCache
+import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.lang
+import de.jet.minecraft.extension.paper.hasApproval
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.structure.app.cache.CacheDepthLevel
 import de.jet.minecraft.tool.display.color.ColorType
@@ -62,25 +60,25 @@ data class CompletionVariable(
 		val INT = CompletionVariable(system, "INT", false) {
 			(0..99).mapToString()
 		}.checker { input, _ ->
-			input.isInt()
+			return@checker input.isInt()
 		}
 
 		val DOUBLE = CompletionVariable(system, "DOUBLE", false) {
 			setOf(.0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0).mapToString()
 		}.checker { input, _ ->
-			input.isDouble()
+			return@checker input.isDouble()
 		}
 
 		val PLAYER_NAME = CompletionVariable(system, "PLAYER-NAME", true) {
 			onlinePlayers.withMap { name }
 		}.checker { input, _ ->
-			getPlayer(input) != null
+			return@checker getPlayer(input) != null
 		}
 
 		val PLAYER_IDENTITY = CompletionVariable(system, "PLAYER-ID", true) {
 			onlinePlayers.withMap { "$uniqueId" }
 		}.checker { input, _ ->
-			try {
+			return@checker try {
 				getPlayer(UUID.fromString(input)) != null
 			} catch (e: IllegalArgumentException) {
 				false
@@ -90,7 +88,7 @@ data class CompletionVariable(
 		val MATERIAL = CompletionVariable(system, "MATERIAL", false) {
 			Material.values().withMap { name }
 		}.checker { input, _ ->
-			Material.matchMaterial(input) != null
+			return@checker Material.matchMaterial(input) != null
 		}
 
 		val MATERIAL_VARIANT = CompletionVariable(system, "MATERIAL-VARIANT", false) {
@@ -102,7 +100,7 @@ data class CompletionVariable(
 				}
 			}
 		}.checker { input, _ ->
-			DyeableMaterial.materialFromMaterialCode(input) != null
+			return@checker DyeableMaterial.materialFromMaterialCode(input) != null
 		}
 
 		val MATERIAL_CODE = CompletionVariable(system, "MATERIAL-CODE", false) {
@@ -118,49 +116,49 @@ data class CompletionVariable(
 
 			}
 		}.checker { input, _ ->
-			DyeableMaterial.materialFromMaterialCode(input) != null
+			return@checker DyeableMaterial.materialFromMaterialCode(input) != null
 		}
 
 		val ENTITY_TYPE = CompletionVariable(system, "ENTITY-TYPE", false) {
 			EntityType.values().withMap { name }
 		}.checker { input, ignoreCase ->
-			EntityType.values().any { name == input.modifiedIf(ignoreCase) { uppercase() } }
+			return@checker EntityType.values().any { name == input.modifiedIf(ignoreCase) { uppercase() } }
 		}
 
 		val WORLD_NAME = CompletionVariable(system, "WORLD-NAME", true) {
 			worlds.withMap { name }
 		}.checker { input, ignoreCase ->
-			worlds.any { it.name.equals(input, ignoreCase) }
+			return@checker worlds.any { it.name.equals(input, ignoreCase) }
 		}
 
 		val APP = CompletionVariable(system, "APP", true) {
 			JetCache.registeredApplications.withMap { identity }
 		}.checker { input, ignoreCase ->
-			JetCache.registeredApplications.any { it.identity.equals(input, ignoreCase) }
+			return@checker JetCache.registeredApplications.any { it.identity.equals(input, ignoreCase) }
 		}
 
 		val INTERCHANGE = CompletionVariable(system, "INTERCHANGE", true) {
 			JetCache.registeredInterchanges.withMap { identity }
 		}.checker { input, ignoreCase ->
-			JetCache.registeredInterchanges.any { it.identity.equals(input, ignoreCase) }
+			return@checker JetCache.registeredInterchanges.any { it.identity.equals(input, ignoreCase) }
 		}
 
 		val SERVICE = CompletionVariable(system, "SERVICE", true) {
 			JetCache.registeredServices.withMap { "$key" }
 		}.checker { input, ignoreCase ->
-			JetCache.registeredServices.any { "${it.key}".equals(input, ignoreCase) }
+			return@checker JetCache.registeredServices.any { "${it.key}".equals(input, ignoreCase) }
 		}
 
 		val SANDBOX = CompletionVariable(system, "SANDBOX", true) {
 			JetCache.registeredSandBoxes.withMap { identity }
 		}.checker { input, ignoreCase ->
-			JetCache.registeredSandBoxes.any { it.identity.equals(input, ignoreCase) }
+			return@checker JetCache.registeredSandBoxes.any { it.identity.equals(input, ignoreCase) }
 		}
 
 		val CACHE_DEPTH_LEVEL = CompletionVariable(system, "CACHE-DEPTH-LEVEL", false) {
 			CacheDepthLevel.values().withMap { name }
 		}.checker { input, ignoreCase ->
-			CacheDepthLevel.values().any { it.name.equals(input, ignoreCase) }
+			return@checker CacheDepthLevel.values().any { it.name.equals(input, ignoreCase) }
 		}
 
 	}
@@ -194,7 +192,7 @@ data class StaticCompletionComponent(
 	override val label = "[${completion.joinToString("/")}]"
 
 	override val inputExpressionCheck: (String, Boolean) -> Boolean = { input, ignoreCase ->
-			completion.any { it.equals(input, ignoreCase) }
+			completion.none { it.equals(input, ignoreCase) }
 	}
 
 }
@@ -210,14 +208,7 @@ data class VariableCompletionComponent(
 	override val label = "<${variable.storagePath}>"
 
 	override val inputExpressionCheck: (String, Boolean) -> Boolean = check@{ input, ignoreCase ->
-
-		return@check buildBoolean(true) {
-
-			if (!variable.check(input, ignoreCase))
-				turnFalse()
-
-		}
-
+		return@check variable.check(input, ignoreCase)
 	}
 
 }
@@ -232,18 +223,7 @@ data class CompletionComponentSection(
 ) {
 
 	val inputExpressionCheck: (String) -> Boolean = check@{ input ->
-
-		return@check buildBoolean(true) {
-
-			components.forEach { component ->
-
-				if (!component.inputExpressionCheck(input, mustMatchOutput))
-					turnFalse()
-
-			}
-
-		}
-
+		return@check components.all { it.inputExpressionCheck(input, mustMatchOutput) }
 	}
 
 }
@@ -264,21 +244,6 @@ data class Completion(
 	fun current(apply: CompletionComponentSection.() -> Unit) : Completion {
 		sections[currentSlot] = sections[currentSlot].apply(apply)
 		return this
-	}
-
-	val inputExpressionCheck: (String) -> Boolean = check@{ input ->
-
-		return@check buildBoolean(true) {
-
-			sections.forEach { section ->
-
-				if (!section.inputExpressionCheck(input))
-					turnFalse()
-
-			}
-
-		}
-
 	}
 
 	internal fun buildCompletion() = TabCompleter { executor, _, _, parameters ->

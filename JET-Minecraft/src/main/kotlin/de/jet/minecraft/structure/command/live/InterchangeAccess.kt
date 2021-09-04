@@ -1,6 +1,7 @@
 package de.jet.minecraft.structure.command.live
 
 import de.jet.library.tool.smart.Identifiable
+import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.command.Interchange
 import de.jet.minecraft.structure.command.InterchangeExecutorType
@@ -27,16 +28,19 @@ data class InterchangeAccess(
 		private val access: InterchangeAccess,
 	) {
 
+		/**
+		 * returning, if the parameter/variable was used correctly, or false if there is no parameter!
+		 */
 		operator fun get(slot: Int) = with(access) {
 			val completion = interchange.completion
 			val currentSection = completion.sections.getOrNull(slot)
 
 			return@with if (currentSection != null) {
 
-				currentSection.inputExpressionCheck(parameters.getOrNull(slot) ?: "")
+				currentSection.inputExpressionCheck(parameters.getOrNull(slot) ?: "").debugLog("checkit")
 
 			} else
-				completion.infinite && completion.sections.lastIndex < parameters.lastIndex
+				(completion.infinite && completion.sections.lastIndex < parameters.lastIndex).debugLog("skipit")
 
 		}
 

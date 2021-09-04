@@ -1,6 +1,9 @@
 package de.jet.minecraft.tool.data
 
 import de.jet.library.extension.collection.toArrayList
+import de.jet.library.extension.data.fromJson
+import de.jet.library.extension.data.toJson
+import de.jet.library.extension.tag.Data
 import de.jet.minecraft.tool.display.world.SimpleLocation
 import org.bukkit.Location
 
@@ -13,6 +16,11 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 
 		fun <BOTH : Any> empty() =
 			DataTransformer<BOTH, BOTH>({ this }, { this })
+
+		// JSON
+
+		inline fun <reified T : Data> jsonObject() =
+			DataTransformer<T, String>({ toJson() }, { fromJson() })
 
 		// collections
 
