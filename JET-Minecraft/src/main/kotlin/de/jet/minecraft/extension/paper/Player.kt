@@ -1,8 +1,8 @@
 package de.jet.minecraft.extension.paper
 
-import de.jet.minecraft.tool.permission.Approval
 import de.jet.library.tool.smart.Identity
 import de.jet.minecraft.app.JetCache
+import de.jet.minecraft.tool.permission.Approval
 import org.bukkit.OfflinePlayer
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
@@ -32,8 +32,10 @@ val OfflinePlayer.identityObject: Identity<OfflinePlayer>
 var OfflinePlayer.buildMode: Boolean
 	get() = JetCache.buildModePlayers.contains(identityObject)
 	set(value) {
-		if (value)
+		if (value) {
 			JetCache.buildModePlayers.add(identityObject)
+		} else
+			JetCache.buildModePlayers.remove(identityObject)
 	}
 
 // TODO: 22.08.2021 Cooldowns here
