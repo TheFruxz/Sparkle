@@ -21,5 +21,3 @@ commands:
     description: Manages your sandboxes!
   buildmode:
     description: Manages your buildmodes!
-  demo:
-    description: demo

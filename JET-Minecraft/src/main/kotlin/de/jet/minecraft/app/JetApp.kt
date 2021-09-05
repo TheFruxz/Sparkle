@@ -7,7 +7,6 @@ import de.jet.minecraft.app.component.item.JetActionComponent
 import de.jet.minecraft.app.component.system.JetKeeperComponent
 import de.jet.minecraft.app.component.world.JetBuildModeComponent
 import de.jet.minecraft.app.interchange.ComponentInterchange
-import de.jet.minecraft.app.interchange.DemoThatThingInterchange
 import de.jet.minecraft.app.interchange.JETInterchange
 import de.jet.minecraft.app.interchange.SandboxInterchange
 import de.jet.minecraft.app.interchange.ServiceInterchange
@@ -82,7 +81,6 @@ class JetApp : App() {
 		add(ServiceInterchange())
 		add(SandboxInterchange())
 		add(BuildModeInterchange())
-		add(DemoThatThingInterchange(this))
 
 		buildSandBox(this, "worky") {
 			executor.sendMessage("worky is receiving: '${parameters.joinToString(" ")}'! NICE!")
