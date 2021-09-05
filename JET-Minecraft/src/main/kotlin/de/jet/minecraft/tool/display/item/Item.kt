@@ -72,7 +72,7 @@ data class Item(
 		data = readItemDataStorage(itemStack).toMutableMap()
 		itemMetaBase = itemStack.itemMeta
 		this.identity =
-			("${itemStack.itemMeta.persistentDataContainer.get(identityNamespace, PersistentDataType.STRING)}").let {
+			(itemStack.itemMeta?.persistentDataContainer?.get(identityNamespace, PersistentDataType.STRING) ?: "").let {
 				if (it.isNotBlank()) {
 					return@let it
 				} else
@@ -532,29 +532,31 @@ data class Item(
 		}
 
 		private fun readItemDataStorage(itemStack: ItemStack): Map<String, Any> = mutableMapOf<String, Any>().apply {
-			val persistentDataContainer = itemStack.itemMeta.persistentDataContainer
-			val persistentDataTypes = setOf(
-				PersistentDataType.BYTE,
-				PersistentDataType.SHORT,
-				PersistentDataType.INTEGER,
-				PersistentDataType.LONG,
-				PersistentDataType.FLOAT,
-				PersistentDataType.DOUBLE,
-				PersistentDataType.STRING,
-				PersistentDataType.BYTE_ARRAY,
-				PersistentDataType.INTEGER_ARRAY,
-				PersistentDataType.LONG_ARRAY,
-				//PersistentDataType.TAG_CONTAINER_ARRAY, not supported
-				//PersistentDataType.TAG_CONTAINER, not supported
-			)
+			if (itemStack.itemMeta != null) {
+				val persistentDataContainer = itemStack.itemMeta.persistentDataContainer
+				val persistentDataTypes = setOf(
+					PersistentDataType.BYTE,
+					PersistentDataType.SHORT,
+					PersistentDataType.INTEGER,
+					PersistentDataType.LONG,
+					PersistentDataType.FLOAT,
+					PersistentDataType.DOUBLE,
+					PersistentDataType.STRING,
+					PersistentDataType.BYTE_ARRAY,
+					PersistentDataType.INTEGER_ARRAY,
+					PersistentDataType.LONG_ARRAY,
+					//PersistentDataType.TAG_CONTAINER_ARRAY, not supported
+					//PersistentDataType.TAG_CONTAINER, not supported
+				)
 
-			persistentDataContainer.keys.forEach {
-				persistentDataTypes.forEach { type ->
-					try {
-						persistentDataContainer[it, type]?.let { it1 -> put(it.asString, it1) }
-					} catch (e: NullPointerException) {
-						throw NoSuchElementException("Element '$it' is not contained!")
-					} catch (ignore: IllegalArgumentException) {
+				persistentDataContainer.keys.forEach {
+					persistentDataTypes.forEach { type ->
+						try {
+							persistentDataContainer[it, type]?.let { it1 -> put(it.asString, it1) }
+						} catch (e: NullPointerException) {
+							throw NoSuchElementException("Element '$it' is not contained!")
+						} catch (ignore: IllegalArgumentException) {
+						}
 					}
 				}
 			}
