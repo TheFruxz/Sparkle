@@ -18,14 +18,8 @@ fun Inventory.copyRaw(title: Component) = createInventory(this.holder, this.size
 	storageContents = this.storageContents
 }
 
-operator fun Inventory.get(slot: Int) = getItem(slot)
+operator fun <T : Inventory> T.get(slot: Int) = getItem(slot)
 
-operator fun Inventory.set(slot: Int, itemStack: ItemStack) = setItem(slot, itemStack)
+operator fun <T : Inventory> T.set(slot: Int, itemStack: ItemStack) = setItem(slot, itemStack)
 
-operator fun Inventory.set(slot: Int, item: Item) = setItem(slot, item.produce())
-
-operator fun PlayerInventory.get(slot: Int) = getItem(slot)
-
-operator fun PlayerInventory.set(slot: Int, itemStack: ItemStack) = setItem(slot, itemStack)
-
-operator fun PlayerInventory.set(slot: Int, item: Item) = setItem(slot, item.produce())
+operator fun <T : Inventory> T.set(slot: Int, item: Item) = setItem(slot, item.produce())
