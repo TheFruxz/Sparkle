@@ -223,7 +223,7 @@ data class CompletionComponentSection(
 ) {
 
 	val inputExpressionCheck: (String) -> Boolean = check@{ input ->
-		return@check components.all { it.inputExpressionCheck(input, mustMatchOutput) }
+		return@check components.any { it.inputExpressionCheck(input, mustMatchOutput) }
 	}
 
 }

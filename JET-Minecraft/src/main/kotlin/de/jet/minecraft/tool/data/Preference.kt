@@ -19,7 +19,7 @@ data class Preference<SHELL : Any>(
 	var initTriggerSetup: Boolean = true,
 ) : Identifiable<Preference<SHELL>> {
 
-	override val identity = "${file.file.toString()}:${path.identity}"
+	override val identity = "${file.file}:${path.identity}"
 	private val inFilePath = path.identity
 
 	init {
