@@ -33,10 +33,66 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.reflect.KClass
 
+/**
+ * # `App (abstract)`
+ * ## Info
+ * This class structures the main class of every app; It defines
+ * variables, management-containers, language and the functions
+ * of the whole app.
+ *
+ * ## Use
+ * You should use this Class as the base-plate of your app/plugin
+ * instead of the [JavaPlugin], because this class extends out of
+ * the [JavaPlugin] class. This class is way better, because it has
+ * more extending functionality over the classic [JavaPlugin]!
+ *
+ * ## Base
+ * The [App]-Class is abstract, so you can use it for your own class,
+ * to be the base of your own app.
+ *
+ * This class uses these base-plates:
+ * - [JavaPlugin]: Every app is a whole real Minecraft-Server-Plugin,
+ * but it is heavely extended. But you can touch the original Bukkit/
+ * Paper API, if you want to do so.
+ *
+ * - [Identifiable]<[App]>: Every app is identifiable thru is unique
+ * custom set [appIdentity] property. ([appIdentity] = [identity])
+ *
+ * @author Fruxz (@TheFruxz)
+ * @since 1.0-BETA-2 (preview)
+ * @see de.jet.minecraft.app.JetApp
+ * @constructor abstract
+ */
 abstract class App : JavaPlugin(), Identifiable<App> {
 
 	// parameters
 
+	/**
+	 * # `App.companion (abstract-value)`
+	 * ## Info
+	 * This value defines the Companion-Object of this class, which
+	 * holds the instance variable *(lateinit recommended)* and other
+	 * app-related special variables & functions.
+	 *
+	 * ## Use
+	 * Use this value/companion to save the app-instance, and other
+	 * important things, but not too much, it is only a place for very
+	 * important every-time reachable stuff! Use your App-Class(-Type)
+	 * as the input for the <T> at [AppCompanion]<*>, so that the
+	 * app-instance is from your class, but also use `instance = this`
+	 * at the [register]`()` function
+	 *
+	 * ## Relations
+	 * Because the [AppCompanion]<T> class provides the same identity
+	 * ([Identifiable]<[App]>) as the app itself, you can use the
+	 * [companion] instead of the app, to check equalities and more!
+	 *
+	 * @author Fruxz (@TheFruxz)
+	 * @since 1.0-BETA-2 (preview)
+	 * @see de.jet.minecraft.app.JetApp.Companion
+	 * @sample de.jet.minecraft.app.JetApp.companion
+	 * @constructor abstract
+	 */
 	abstract val companion: AppCompanion<*>
 
 	/**
@@ -362,7 +418,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	abstract fun bye()
 
 	/**
-	 * ***DO NOT OVERRIDE!***
+	 * # **DO NOT OVERRIDE IF YOU DON'T EXPLICITLY WANT TO!**
+	 * #### ___Expect heavy code changes during the BETA!___
 	 */
 	override fun onLoad() {
 		jetTry {
@@ -379,7 +436,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	}
 
 	/**
-	 * ***DO NOT OVERRIDE!***
+	 * # **DO NOT OVERRIDE IF YOU DON'T EXPLICITLY WANT TO!**
+	 * #### ___Expect heavy code changes during the BETA!___
 	 */
 	override fun onEnable() {
 		jetTry {
@@ -392,7 +450,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	}
 
 	/**
-	 * ***DO NOT OVERRIDE!***
+	 * # **DO NOT OVERRIDE IF YOU DON'T EXPLICITLY WANT TO!**
+	 * #### ___Expect heavy code changes during the BETA!___
 	 */
 	override fun onDisable() {
 		jetTry {
