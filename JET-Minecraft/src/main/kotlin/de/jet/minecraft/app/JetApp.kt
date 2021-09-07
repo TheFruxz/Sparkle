@@ -13,7 +13,7 @@ import de.jet.minecraft.app.interchange.ServiceInterchange
 import de.jet.minecraft.app.interchange.player.BuildModeInterchange
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.mainLog
-import de.jet.minecraft.extension.obj.buildSandBox
+import de.jet.minecraft.extension.o.buildSandBox
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.AppCompanion
 import de.jet.minecraft.tool.data.Preference

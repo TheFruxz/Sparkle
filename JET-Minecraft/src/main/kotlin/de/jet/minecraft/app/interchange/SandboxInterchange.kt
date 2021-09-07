@@ -5,10 +5,10 @@ import de.jet.library.tool.timing.calendar.Calendar
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.lang
-import de.jet.minecraft.extension.obj.allSandBoxes
-import de.jet.minecraft.extension.obj.destroyAllSandBoxes
-import de.jet.minecraft.extension.obj.destroySandBox
-import de.jet.minecraft.extension.obj.getSandBox
+import de.jet.minecraft.extension.o.allSandBoxes
+import de.jet.minecraft.extension.o.destroyAllSandBoxes
+import de.jet.minecraft.extension.o.destroySandBox
+import de.jet.minecraft.extension.o.getSandBox
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.command.CompletionVariable
