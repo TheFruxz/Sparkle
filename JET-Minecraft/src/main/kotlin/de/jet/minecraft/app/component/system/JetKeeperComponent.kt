@@ -1,12 +1,15 @@
 package de.jet.minecraft.app.component.system
 
+import de.jet.library.extension.collection.withForEach
 import de.jet.library.extension.display.display
 import de.jet.library.tool.smart.Identifiable
 import de.jet.minecraft.app.JetCache.livingCooldowns
+import de.jet.minecraft.app.JetCache.registeredApplications
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.extension.timing.isOver
 import de.jet.minecraft.structure.app.App
+import de.jet.minecraft.structure.app.cache.CacheDepthLevel.CLEAN
 import de.jet.minecraft.structure.component.Component
 import de.jet.minecraft.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.jet.minecraft.structure.service.Service
@@ -55,6 +58,11 @@ class JetKeeperComponent(vendor: App = system) : Component(vendor, AUTOSTART_MUT
 					debugLog("removed livingCooldown $key, because, it was over; remaining: ${value.remainingCooldown.display()}")
 				}
 
+			}
+
+			registeredApplications.withForEach {
+				appCache.dropEverything(CLEAN)
+				debugLog("removed appCache (level: CLEAN) from app $appLabel")
 			}
 
 		}

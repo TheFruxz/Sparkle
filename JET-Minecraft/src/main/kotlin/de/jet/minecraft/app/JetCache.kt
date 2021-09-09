@@ -1,5 +1,6 @@
 package de.jet.minecraft.app
 
+import de.jet.library.tool.smart.Identity
 import de.jet.minecraft.runtime.sandbox.SandBox
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.AppCache
@@ -11,7 +12,6 @@ import de.jet.minecraft.tool.data.Preference
 import de.jet.minecraft.tool.display.item.action.ItemClickAction
 import de.jet.minecraft.tool.display.item.action.ItemInteractAction
 import de.jet.minecraft.tool.display.ui.panel.PanelFlag
-import de.jet.library.tool.smart.Identity
 import de.jet.minecraft.tool.timing.cooldown.Cooldown
 import de.jet.minecraft.tool.timing.tasky.Tasky
 import org.bukkit.OfflinePlayer
@@ -57,10 +57,10 @@ object JetCache : AppCache {
 	internal val tmp_initSetupPreferences = mutableSetOf<Preference<*>>()
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
-		TODO("Not yet implemented")
+		// TODO("Not yet implemented")
 	}
 
 	override fun dropEverything(dropDepth: CacheDepthLevel) {
-		TODO("Not yet implemented")
+		// TODO("Not yet implemented")
 	}
 }
