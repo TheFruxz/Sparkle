@@ -95,13 +95,36 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 */
 	abstract val companion: AppCompanion<*>
 
-	/**
-	 * The unique application identity
-	 */
+
 	abstract val appIdentity: String
 
 	/**
-	 * The displayName
+	 * # `App.appLabel`
+	 * ## Info
+	 * This value defines the display-name of this app, which
+	 * will be displayed in app-lists and information with
+	 * the app included. Can be duplicated, but try to avoid
+	 * duplicated display names with other apps!
+	 *
+	 * ## Use
+	 * Use this value to tell your customers & visitors that
+	 * your app is running, there some possible ways to do that:
+	 *
+	 * - On Minecraft-Networks: Tell the players the name of your network
+	 * - On Publishing: Tell the players the name of your app (where they can find it)
+	 * - On private use: Tell yourself, that this app is this app
+	 *
+	 * But you can use this like you like!
+	 *
+	 * ## Relations
+	 * The label is not related to some crucial read/save system
+	 * or something else, in this cases [appIdentity] is used!
+	 *
+	 * @author Fruxz (@TheFruxz)
+	 * @since 1.0-BETA-2 (preview)
+	 * @see de.jet.minecraft.app.JetApp.appLabel
+	 * @sample de.jet.minecraft.app.JetApp.appLabel
+	 * @constructor abstract
 	 */
 	abstract val appLabel: String
 
