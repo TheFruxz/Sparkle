@@ -42,6 +42,11 @@ class JetApp : App() {
 
 	override fun hello() {
 
+		println("""
+			JET is building & running on Kotlin by JetBrains, special thanks to them!
+			https://www.jetbrains.com/ | https://kotlinlang.org/
+		""".trimIndent())
+
 		JetCache.tmp_initSetupPreferences.forEach {
 			fun <T : Any> proceed(default: T) {
 				val preference = it.forceCast<Preference<T>>()
