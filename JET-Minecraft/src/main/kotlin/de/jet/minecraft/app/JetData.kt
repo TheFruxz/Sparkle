@@ -1,8 +1,8 @@
 package de.jet.minecraft.app
 
+import de.jet.library.extension.data.jetPath
 import de.jet.minecraft.app.JetData.File.BRAIN
 import de.jet.minecraft.app.JetData.File.CONFIG
-import de.jet.library.extension.data.jetPath
 import de.jet.minecraft.tool.data.DataTransformer
 import de.jet.minecraft.tool.data.JetFile
 import de.jet.minecraft.tool.data.Preference
@@ -21,7 +21,7 @@ object JetData {
 		useCache = true,
 		path = jetPath("prefix"),
 		default = "§6JET §8» ",
-	)
+	).transformer(DataTransformer.simpleColorCode())
 
 	val systemLanguage = Preference(
 		file = CONFIG,
