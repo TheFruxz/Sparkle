@@ -138,6 +138,12 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	// api
 
+	fun replace(identity: Identity<Interchange>, environment: Interchange) {
+		val command = getCommand(identity.identity)
+		command?.setExecutor(environment)
+		command?.tabCompleter = environment.completionEngine
+	}
+
 	/**
 	 * Add Interchange
 	 */

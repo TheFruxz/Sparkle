@@ -7,8 +7,8 @@ import de.jet.minecraft.extension.paper.legacyString
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.event.EventListener
-import de.jet.minecraft.structure.component.Component
 import de.jet.minecraft.structure.component.Component.RunType.AUTOSTART_MUTABLE
+import de.jet.minecraft.structure.component.SmartComponent
 import io.papermc.paper.event.player.AsyncChatEvent
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.sound.Sound.Source.MASTER
@@ -19,23 +19,15 @@ import org.bukkit.event.EventHandler
 import java.util.*
 import net.kyori.adventure.text.Component as AdventureComponent
 
-internal class JetChatComponent(vendor: App = system) : Component(vendor, AUTOSTART_MUTABLE) {
+internal class JetChatComponent(vendor: App = system) : SmartComponent(vendor, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "Chat"
 
-	private val handler by lazy {
-		Handler(vendor)
+	override fun component() {
+		listener(Listener(vendor))
 	}
 
-	override fun start() {
-		vendor.add(handler)
-	}
-
-	override fun stop() {
-		vendor.remove(handler)
-	}
-
-	class Handler(override val vendor: App) : EventListener {
+	class Listener(override val vendor: App) : EventListener {
 
 		@EventHandler
 		fun onChat(event: AsyncChatEvent) {

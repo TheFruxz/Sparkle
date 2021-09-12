@@ -13,7 +13,7 @@ import org.bukkit.NamespacedKey
 
 abstract class Component(
 	override val vendor: App,
-	val behaviour: RunType = DISABLED,
+	open val behaviour: RunType = DISABLED,
 ) : VendorsIdentifiable<Component>, Logging {
 
 	override val vendorIdentity: Identity<out App>

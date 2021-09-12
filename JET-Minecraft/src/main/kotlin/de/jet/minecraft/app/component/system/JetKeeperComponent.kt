@@ -10,31 +10,19 @@ import de.jet.minecraft.extension.system
 import de.jet.minecraft.extension.timing.isOver
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.cache.CacheDepthLevel.CLEAN
-import de.jet.minecraft.structure.component.Component
 import de.jet.minecraft.structure.component.Component.RunType.AUTOSTART_MUTABLE
+import de.jet.minecraft.structure.component.SmartComponent
 import de.jet.minecraft.structure.service.Service
 import de.jet.minecraft.tool.timing.tasky.Tasky
 import de.jet.minecraft.tool.timing.tasky.TemporalAdvice
 import java.util.logging.Level
 
-class JetKeeperComponent(vendor: App = system) : Component(vendor, AUTOSTART_MUTABLE) {
+class JetKeeperComponent(vendor: App = system) : SmartComponent(vendor, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "Keeper"
 
-	private val service = KeeperService(vendor)
-
-	override fun start() {
-		service.let { with(vendor) {
-			register(it)
-			start(it)
-		} }
-	}
-
-	override fun stop() {
-		service.let { with(vendor) {
-			stop(it)
-			unregister(it)
-		} }
+	override fun component() {
+		service(KeeperService(vendor))
 	}
 
 	class KeeperService(override val vendor: Identifiable<App>) : Service {

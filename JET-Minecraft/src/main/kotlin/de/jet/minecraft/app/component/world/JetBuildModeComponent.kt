@@ -5,27 +5,21 @@ import de.jet.minecraft.extension.system
 import de.jet.minecraft.runtime.event.interact.PlayerInteractAtBlockEvent
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.event.EventListener
-import de.jet.minecraft.structure.component.Component
 import de.jet.minecraft.structure.component.Component.RunType.AUTOSTART_MUTABLE
+import de.jet.minecraft.structure.component.SmartComponent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 
-class JetBuildModeComponent(vendor: App = system) : Component(vendor, AUTOSTART_MUTABLE) {
+class JetBuildModeComponent(vendor: App = system) : SmartComponent(vendor, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "BuildMode"
 
-	private val handler = BuildModeHandler(vendor)
-
-	override fun start() {
-		vendor.add(handler)
+	override fun component() {
+		listener(BuildModeListener(vendor))
 	}
 
-	override fun stop() {
-		vendor.remove(handler)
-	}
-
-	class BuildModeHandler(override val vendor: App) : EventListener {
+	class BuildModeListener(override val vendor: App) : EventListener {
 
 		@EventHandler
 		fun onBlockDestroy(event: BlockBreakEvent) {

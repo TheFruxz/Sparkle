@@ -82,8 +82,8 @@ publishing {
 }
 
 tasks.shadowJar {
-    archiveBaseName.set("JET")
-    archiveClassifier.set("COMPLETE")
+    archiveBaseName.set("JET-Minecraft")
+    archiveClassifier.set("Runnable")
 }
 
 tasks.test {
