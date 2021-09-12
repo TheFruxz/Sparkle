@@ -5,6 +5,7 @@ import de.jet.minecraft.extension.display.BOLD
 import de.jet.minecraft.extension.display.GOLD
 import de.jet.minecraft.extension.display.GRAY
 import de.jet.minecraft.extension.display.YELLOW
+import de.jet.minecraft.extension.display.message
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.display.ui.buildClickAction
 import de.jet.minecraft.extension.display.ui.buildInteractAction
@@ -52,6 +53,9 @@ class JETInterchange(vendor: App = system) : Interchange(
 
 				"${GOLD}JET ${GRAY}was developed by$YELLOW TheFruxz$GRAY,$YELLOW JanLuca$GRAY, and other contributors of the repository:$GOLD$BOLD ${vendor.description.website}"
 					.notification(GENERAL, executor).display()
+
+				"${YELLOW}JET is running & developed with Kotlin (the programming Language) from JetBrains. Check their work out https://jetbrains.com or https://kotlinlang.org"
+					.message(executor).display()
 
 			}
 
