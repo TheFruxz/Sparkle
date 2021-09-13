@@ -6,6 +6,7 @@ name: JetPublish
 on:
   release:
     types: [created, edited, released, published]
+  workflow_dispatch:
 
 jobs:
   build:

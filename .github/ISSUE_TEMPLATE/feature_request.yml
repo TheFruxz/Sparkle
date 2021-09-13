@@ -1,7 +1,7 @@
 name: Feature Request
 description: Request a feature
 title: "[REQUEST]: "
-labels: 'State: unverified, Type: request'
+labels: 'State: unverified, Type: request, From: user'
 assignees: []
 body:
   - type: markdown
