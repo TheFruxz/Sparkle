@@ -3,6 +3,7 @@ package de.jet.minecraft.app
 import de.jet.library.extension.forceCast
 import de.jet.minecraft.app.component.chat.JetChatComponent
 import de.jet.minecraft.app.component.events.JetEventsComponent
+import de.jet.minecraft.app.component.feature.MarkingFeatureComponent
 import de.jet.minecraft.app.component.item.JetActionComponent
 import de.jet.minecraft.app.component.system.JetKeeperComponent
 import de.jet.minecraft.app.component.world.JetBuildModeComponent
@@ -80,6 +81,7 @@ class JetApp : App() {
 		add(JetActionComponent())
 		add(JetKeeperComponent())
 		add(JetBuildModeComponent())
+		add(MarkingFeatureComponent())
 
 		add(JETInterchange())
 		add(ComponentInterchange())

@@ -21,3 +21,5 @@ commands:
     description: Manages your sandboxes!
   buildmode:
     description: Manages your buildmodes!
+  markingtool:
+    description: Gives you the marking tool!
