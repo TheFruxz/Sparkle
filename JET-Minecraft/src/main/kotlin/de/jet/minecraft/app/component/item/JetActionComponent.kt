@@ -6,6 +6,7 @@ import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.display.ui.get
 import de.jet.minecraft.extension.display.ui.item
+import de.jet.minecraft.extension.get
 import de.jet.minecraft.extension.lang
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.extension.tasky.task
@@ -87,7 +88,7 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, AUTO
 					if (cancelType != null) {
 
 						if (cancelType == JET_INFO) {
-							lang("component.jetAction.item.cooldown.jetInfo")
+							lang["component.jetAction.item.cooldown.jetInfo"]
 								.replace("[remaining]" to remaining)
 								.notification(FAIL, player).display()
 						}

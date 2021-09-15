@@ -22,6 +22,8 @@ internal fun mainLog(level: Level = Level.INFO, message: String) = JetApp.instan
 internal val lang: LanguageSpeaker
 	get() = JET.languageSpeaker
 
+operator fun LanguageSpeaker.get(id: String) = lang(id)
+
 internal fun lang(id: String, smartColor: Boolean = true) = lang.message(id, smartColor)
 
 internal val system: JetApp

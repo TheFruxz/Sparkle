@@ -1,12 +1,14 @@
 package de.jet.minecraft.app.component.feature
 
 import de.jet.library.extension.collection.replaceVariables
+import de.jet.library.extension.data.shorter
 import de.jet.minecraft.app.JetCache.playerMarkerBoxes
 import de.jet.minecraft.extension.display.BOLD
-import de.jet.minecraft.extension.display.WHITE
 import de.jet.minecraft.extension.display.YELLOW
+import de.jet.minecraft.extension.display.message
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.display.ui.item
+import de.jet.minecraft.extension.get
 import de.jet.minecraft.extension.lang
 import de.jet.minecraft.extension.paper.identityObject
 import de.jet.minecraft.extension.system
@@ -42,12 +44,17 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 			append(')')
 		}
 
+		val test = Material.STONE.item.apply {
+			lore = """
+				${de.jet.minecraft.extension.display.DARK_BLUE}TEST
+			""".trimIndent()
+		}
+
 		val markingTool = Material.GOLDEN_HOE.item.apply {
 			label = "${YELLOW}${BOLD}Marking-Tool"
 			identity = "jet:marking_tool"
 			lore = """
-				$WHITE
-				Click on Block: 
+				 
 				LEFT-CLICK -> Position-1
 				RIGHT-CLICK -> Position-2
 				SHIFT-CLICK -> VIEW DATA
@@ -71,31 +78,35 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 									playerMarkerBoxes[player.identityObject] = currentBox.apply {
 										first = targetLocation
 									}
-									TODO("distance to other pos: 20.5m!")
-									lang("component.markingTool.action.set").replaceVariables(
+									lang["component.markingTool.action.set"].replaceVariables(
 										"n" to 1,
 										"pos" to targetPrint
 									).notification(APPLIED, whoInteract).display()
+									lang["component.markingTool.action.view.distance.other"].replaceVariables(
+										"distance" to targetLocation.distance(currentBox.last).shorter
+									).message(whoInteract).display()
 								} else
-									lang("component.markingTool.action.duplicate").replaceVariables(
+									lang["component.markingTool.action.duplicate"].replaceVariables(
 										"pos" to targetPrint
 									).notification(FAIL, whoInteract).display()
 							}
 							action.isRightClick -> {
 								denyInteraction()
 
-								if (actualBox?.first != targetLocation) {
+								if (actualBox?.last != targetLocation) {
 
 									playerMarkerBoxes[player.identityObject] = currentBox.apply {
-										first = targetLocation
+										last = targetLocation
 									}
-									TODO("distance to other pos: 20.5m!")
-									lang("component.markingTool.action.set").replaceVariables(
+									lang["component.markingTool.action.set"].replaceVariables(
 										"n" to 2,
 										"pos" to targetPrint
 									).notification(APPLIED, whoInteract).display()
+									lang["component.markingTool.action.view.distance.other"].replaceVariables(
+										"distance" to targetLocation.distance(currentBox.first).shorter
+									).message(whoInteract).display()
 								} else
-									lang("component.markingTool.action.duplicate").replaceVariables(
+									lang["component.markingTool.action.duplicate"].replaceVariables(
 										"pos" to targetPrint
 									).notification(FAIL, whoInteract).display()
 							}
@@ -103,19 +114,21 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 					} else {
 
 						if (playerMarkerBoxes[player.identityObject] != null) {
-							TODO("distance between both positions: 20.5m!")
-							lang("component.markingTool.action.view.detail").replaceVariables(
+							lang["component.markingTool.action.view.detail"].replaceVariables(
 								"1" to positionData(currentBox.first),
 								"2" to positionData(currentBox.last),
 							).notification(INFO, whoInteract).display()
+							lang["component.markingTool.action.view.distance.both"].replaceVariables(
+								"distance" to currentBox.first.distance(currentBox.last).shorter
+							).message(whoInteract).display()
 
 						} else
-							lang("component.markingTool.action.view.notSet")
+							lang["component.markingTool.action.view.notSet"]
 								.notification(FAIL, whoInteract).display()
 					}
 
 				} else
-					lang("component.markingTool.action.wrongLook")
+					lang["component.markingTool.action.wrongLook"]
 						.notification(FAIL, whoInteract).display()
 
 			}
@@ -125,7 +138,7 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 
 			(executor as Player).inventory.addItem(markingTool.produce())
 
-			lang("component.markingTool.interchange.success")
+			lang["component.markingTool.interchange.success"]
 				.notification(APPLIED, executor).display()
 
 			SUCCESS
