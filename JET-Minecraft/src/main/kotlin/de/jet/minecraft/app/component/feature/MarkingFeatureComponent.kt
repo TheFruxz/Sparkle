@@ -44,12 +44,6 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 			append(')')
 		}
 
-		val test = Material.STONE.item.apply {
-			lore = """
-				${de.jet.minecraft.extension.display.DARK_BLUE}TEST
-			""".trimIndent()
-		}
-
 		val markingTool = Material.GOLDEN_HOE.item.apply {
 			label = "${YELLOW}${BOLD}Marking-Tool"
 			identity = "jet:marking_tool"
