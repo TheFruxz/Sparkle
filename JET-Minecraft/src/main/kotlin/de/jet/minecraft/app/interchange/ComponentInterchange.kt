@@ -5,6 +5,7 @@ import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.extension.display.message
 import de.jet.minecraft.extension.display.notification
+import de.jet.minecraft.extension.get
 import de.jet.minecraft.extension.lang
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.structure.app.App
@@ -31,7 +32,7 @@ class ComponentInterchange(vendor: App = system) : Interchange(vendor, "componen
 
 		if (parameters.size == 1 && parameters.first() == "list") {
 
-			mutableListOf(lang("interchange.internal.component.list.header")).apply {
+			mutableListOf(lang["interchange.internal.component.list.header"]).apply {
 				JetCache.registeredComponents.forEach { component ->
 					add(
 						lang("interchange.internal.component.list.line")

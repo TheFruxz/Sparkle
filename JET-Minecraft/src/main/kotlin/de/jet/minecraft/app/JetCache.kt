@@ -12,6 +12,7 @@ import de.jet.minecraft.tool.data.Preference
 import de.jet.minecraft.tool.display.item.action.ItemClickAction
 import de.jet.minecraft.tool.display.item.action.ItemInteractAction
 import de.jet.minecraft.tool.display.ui.panel.PanelFlag
+import de.jet.minecraft.tool.position.LocationBox
 import de.jet.minecraft.tool.timing.cooldown.Cooldown
 import de.jet.minecraft.tool.timing.tasky.Tasky
 import org.bukkit.OfflinePlayer
@@ -53,6 +54,8 @@ object JetCache : AppCache {
 	val runningTasks = mutableListOf<Int>()
 
 	val buildModePlayers = mutableSetOf<Identity<out OfflinePlayer>>()
+
+	val playerMarkerBoxes = mutableMapOf<Identity<out OfflinePlayer>, LocationBox>()
 
 	internal val tmp_initSetupPreferences = mutableSetOf<Preference<*>>()
 

@@ -6,6 +6,7 @@ import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.display.ui.get
 import de.jet.minecraft.extension.display.ui.item
+import de.jet.minecraft.extension.get
 import de.jet.minecraft.extension.lang
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.extension.tasky.task
@@ -28,6 +29,7 @@ import de.jet.minecraft.tool.timing.tasky.TemporalAdvice.Companion.instant
 import org.bukkit.entity.Player
 import org.bukkit.event.Event.Result.DENY
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority.HIGH
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
@@ -52,7 +54,7 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, AUTO
 	private class Handler(override val vendor: App) : EventListener, Listener {
 
 		private fun hasNoCooldown(player: Player, action: ItemAction<*>, item: Item): Boolean {
-			return player.isCooldownDecaying("item:${item.identity}:${action.eventClass.simpleName}")
+			return !player.isCooldownDecaying("item:${item.identity}:${action.eventClass.simpleName}")
 		}
 
 		private fun produceActionCooldown(item: Item, player: Player, action: ItemAction<*>) {
@@ -86,7 +88,7 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, AUTO
 					if (cancelType != null) {
 
 						if (cancelType == JET_INFO) {
-							lang("component.jetAction.item.cooldown.jetInfo")
+							lang["component.jetAction.item.cooldown.jetInfo"]
 								.replace("[remaining]" to remaining)
 								.notification(FAIL, player).display()
 						}
@@ -145,48 +147,43 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, AUTO
 
 		}
 
-		@EventHandler
+		@EventHandler(priority = HIGH)
 		fun inventoryOpen(event: InventoryOpenEvent) {
 			if (getFlags(event.inventory[4]?.item).contains(NOT_OPEN_ABLE))
 				event.isCancelled = true
 		}
 
-		@EventHandler
+		@EventHandler(priority = HIGH)
 		fun inventoryClose(event: InventoryCloseEvent) {
 			if (getFlags(event.inventory[4]?.item).contains(NOT_CLOSE_ABLE))
 				event.player.openInventory(event.inventory)
 		}
 
-		@EventHandler
+		@EventHandler(priority = HIGH)
 		fun inventoryDrag(event: InventoryDragEvent) {
 			if (getFlags(event.inventory[4]?.item).contains(NOT_DRAG_ABLE))
 				event.isCancelled = true
 		}
 
-		@EventHandler
+		@EventHandler(priority = HIGH)
 		fun inventoryMove(event: InventoryMoveItemEvent) {
 			if ((getFlags(event.destination[4]?.item) + getFlags(event.initiator[4]?.item)).contains(NOT_MOVE_ABLE))
 				event.isCancelled = true
 		}
 
-		@EventHandler
+		@EventHandler(priority = HIGH)
 		fun playerInteractAtItem(event: PlayerInteractAtItemEvent) {
 			with(event) {
 				item.interactAction?.let { action ->
-
 					if (hasNoCooldown(player, action, item)) {
-
 						if (action.stop) {
 							event.interactedItem = DENY
 							event.interactedBlock = DENY
 						}
-
 						produceActionCooldown(item, player, action)
-
 						task(instant(async = action.async), vendor = vendor) {
 							action.action(event)
 						}
-
 					} else {
 						event.isCancelled = true
 						event.origin.isCancelled = true

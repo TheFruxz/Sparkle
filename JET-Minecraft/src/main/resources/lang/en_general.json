@@ -63,6 +63,15 @@
     "interchange.internal.buildmode.list.header": "[GRAY]These players are currently in BuildMode:",
     "interchange.internal.buildmode.list.line": "[GRAY]- [statusColor][player]",
 
-    "component.jetAction.item.cooldown.jetInfo": "[GRAY]Please wait [YELLOW][remaining][GRAY] until you can perform this action again!"
+    "component.jetAction.item.cooldown.jetInfo": "[GRAY]Please wait [YELLOW][remaining][GRAY] until you can perform this action again!",
+
+    "component.markingTool.interchange.success": "[GRAY]The [YELLOW]MARKING-TOOL[GRAY] got [GREEN]successfully[GRAY] added to your inventory!",
+    "component.markingTool.action.set": "[GRAY]Position #[n] set to [LIGHT_PURPLE][pos][GRAY]!",
+    "component.markingTool.action.duplicate": "[GRAY]This position is [RED]already[GRAY] set to [YELLOW][pos][GRAY]!",
+    "component.markingTool.action.wrongLook": "[GRAY]You are [RED]not [GRAY]looking at a valid [YELLOW]block[GRAY]!",
+    "component.markingTool.action.view.notSet": "[GRAY]You have [RED]no [GRAY] valid [YELLOW]locations[GRAY] set!",
+    "component.markingTool.action.view.detail": "[GRAY]You have the locations [LIGHT_PURPLE][1] [GRAY]and [LIGHT_PURPLE][2] [GRAY]set!",
+    "component.markingTool.action.view.distance.both": "[GRAY]Both locations are [GOLD][distance] Block(s) [GRAY]away!",
+    "component.markingTool.action.view.distance.other": "[GRAY]Other position is [GOLD][distance] Block(s) [GRAY]away!"
   }
 }
