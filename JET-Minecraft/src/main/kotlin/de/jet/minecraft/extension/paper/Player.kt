@@ -3,6 +3,7 @@ package de.jet.minecraft.extension.paper
 import de.jet.library.tool.smart.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.tool.permission.Approval
+import de.jet.minecraft.tool.position.LocationBox
 import org.bukkit.OfflinePlayer
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
@@ -36,6 +37,15 @@ var OfflinePlayer.buildMode: Boolean
 			JetCache.buildModePlayers.add(identityObject)
 		} else
 			JetCache.buildModePlayers.remove(identityObject)
+	}
+
+/**
+ * @throws IllegalArgumentException if the marker is not set for this player
+ */
+var Player.marker: LocationBox
+	get() = JetCache.playerMarkerBoxes[identityObject] ?: throw IllegalArgumentException("Player marker is not set!")
+	set(value) {
+		JetCache.playerMarkerBoxes[identityObject] = value
 	}
 
 // TODO: 22.08.2021 Cooldowns here
