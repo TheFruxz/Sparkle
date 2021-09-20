@@ -29,7 +29,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT")
 
     // Kotlin
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.30")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.31")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
 
