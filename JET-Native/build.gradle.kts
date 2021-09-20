@@ -12,7 +12,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.30")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.30")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
