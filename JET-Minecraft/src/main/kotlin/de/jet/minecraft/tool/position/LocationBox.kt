@@ -19,6 +19,8 @@ data class LocationBox(
 
 	constructor(locationEntry: Map.Entry<Location, Location>) : this(locationEntry.key, locationEntry.value)
 
+	constructor(vararg locations: Location) : this(locations.first(), locations.last())
+
 	val center: Vector
 		get() = produce().center
 
