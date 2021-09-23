@@ -141,12 +141,16 @@ abstract class Interchange(
 						}
 
 					} catch (e: Exception) {
+						issueFeedback(sender)
 						exception(e)
 					} catch (e: java.lang.Exception) {
+						issueFeedback(sender)
 						exception(e)
 					} catch (e: NullPointerException) {
+						issueFeedback(sender)
 						exception(e)
 					} catch (e: NoSuchElementException) {
+						issueFeedback(sender)
 						exception(e)
 					}
 
