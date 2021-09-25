@@ -63,6 +63,11 @@
     "interchange.internal.buildmode.list.header": "[GRAY]These players are currently in BuildMode:",
     "interchange.internal.buildmode.list.line": "[GRAY]- [statusColor][player]",
 
+    "interchange.internal.changeskin.reset": "[LIME]Successfully [GRAY]reset skin of '[YELLOW][player][GRAY]' back to original skin!",
+    "interchange.internal.changeskin.change": "[LIME]Successfully [GRAY]applied skin of '[YELLOW][skin][GRAY]' at '[GOLD][player][GRAY]'!",
+    "interchange.internal.changeskin.failed": "[RED]FAILED [GRAY]to get skin of player called '[YELLOW][target][GRAY]'!",
+    "interchange.internal.changeskin.remote": "[GRAY]A [YELLOW]remote [GRAY]user applied [GOLD]skin changes [GRAY]at your profile!",
+
     "component.jetAction.item.cooldown.jetInfo": "[GRAY]Please wait [YELLOW][remaining][GRAY] until you can perform this action again!",
 
     "component.markingTool.interchange.success": "[GRAY]The [YELLOW]MARKING-TOOL[GRAY] got [GREEN]successfully[GRAY] added to your inventory!",

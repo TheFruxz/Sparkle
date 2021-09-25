@@ -23,3 +23,5 @@ commands:
     description: Manages your buildmodes!
   markingtool:
     description: Gives you the marking tool!
+  changeskin:
+    description: test skin

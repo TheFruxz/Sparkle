@@ -12,6 +12,7 @@ import de.jet.minecraft.app.interchange.JETInterchange
 import de.jet.minecraft.app.interchange.SandboxInterchange
 import de.jet.minecraft.app.interchange.ServiceInterchange
 import de.jet.minecraft.app.interchange.player.BuildModeInterchange
+import de.jet.minecraft.app.interchange.player.ChangeSkinInterchange
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.mainLog
 import de.jet.minecraft.extension.o.buildSandBox
@@ -88,6 +89,7 @@ class JetApp : App() {
 		add(ServiceInterchange())
 		add(SandboxInterchange())
 		add(BuildModeInterchange())
+		add(ChangeSkinInterchange())
 
 		buildSandBox(this, "worky") {
 			executor.sendMessage("worky is receiving: '${parameters.joinToString(" ")}'! NICE!")
