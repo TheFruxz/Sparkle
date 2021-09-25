@@ -15,13 +15,13 @@ data class MojangProfile(
 	val uuid: String
 ) {
 
-    internal fun refresh(target: Player) {
+    private fun refresh(target: Player) {
         async {
             target.playerProfile.complete(true, true)
         }
     }
 
-    internal fun edit(target: Player, process: PlayerProfile.() -> Unit) {
+    private fun edit(target: Player, process: PlayerProfile.() -> Unit) {
         target.playerProfile = target.playerProfile.apply(process)
     }
 
