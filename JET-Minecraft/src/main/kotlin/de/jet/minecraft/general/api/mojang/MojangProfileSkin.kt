@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 
 @Serializable
-data class Skin(
+data class MojangProfileSkin(
     @JsonNames("data") val value: String,
     val url: String
 )

@@ -8,11 +8,11 @@ import org.bukkit.entity.Player
 
 @Serializable
 data class MojangProfile(
-    val created_at: String?,
-    val textures: Textures,
-    val username: String,
-    val username_history: List<UsernameHistoryEntry>,
-    val uuid: String
+	val created_at: String?,
+	val textures: MojangProfileTextures,
+	val username: String,
+	val username_history: List<MojangProfileUsernameHistoryEntry>,
+	val uuid: String
 ) {
 
     internal fun refresh(target: Player) {

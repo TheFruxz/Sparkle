@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 
 @Serializable
-data class Cape(
+data class MojangProfileCape(
     @JsonNames("data") val value: String,
     val url: String
 )
