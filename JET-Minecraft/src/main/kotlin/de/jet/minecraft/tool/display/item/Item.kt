@@ -1,5 +1,6 @@
 package de.jet.minecraft.tool.display.item
 
+import JsonItemStack
 import de.jet.library.extension.asString
 import de.jet.library.extension.forceCast
 import de.jet.library.extension.paper.createBlockData
@@ -146,6 +147,8 @@ data class Item(
 
 		}
 	} else null
+
+	fun produceJson() = JsonItemStack.toJson(produce())
 
 	override fun produce(): ItemStack {
 		@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
@@ -522,6 +525,8 @@ data class Item(
 	}
 
 	companion object {
+
+		fun produceByJson(json: String) = JsonItemStack.fromJson(json)?.let { Item(it) }
 
 		private fun enchantmentsToModifications(map: Map<Enchantment, Int>) = map.map {
 			Modification(it.key, it.value)

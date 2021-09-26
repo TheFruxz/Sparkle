@@ -4,6 +4,7 @@ import de.jet.library.extension.collection.toArrayList
 import de.jet.library.extension.data.fromJson
 import de.jet.library.extension.data.toJson
 import de.jet.library.extension.tag.Data
+import de.jet.minecraft.tool.display.item.Item
 import de.jet.minecraft.tool.display.world.SimpleLocation
 import org.bukkit.Location
 
@@ -21,6 +22,9 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 
 		inline fun <reified T : Data> jsonObject() =
 			DataTransformer<T, String>({ toJson() }, { fromJson() })
+
+		fun jsonItem() =
+			DataTransformer<Item, String>({ produceJson()}, { Item.produceByJson(this)!! })
 
 		// collections
 
