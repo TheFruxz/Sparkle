@@ -3,8 +3,11 @@ package de.jet.minecraft.general.api.mojang
 import com.destroystokyo.paper.profile.PlayerProfile
 import com.destroystokyo.paper.profile.ProfileProperty
 import de.jet.minecraft.extension.tasky.async
+import de.jet.minecraft.tool.display.item.Item
+import de.jet.minecraft.tool.display.item.quirk.Quirk
 import kotlinx.serialization.Serializable
 import org.bukkit.entity.Player
+import org.bukkit.inventory.meta.SkullMeta
 
 @Serializable
 data class MojangProfile(
@@ -34,5 +37,31 @@ data class MojangProfile(
         edit(target) { name = this@MojangProfile.username }
         refresh(target)
     }
+
+	/**
+	 * WARNING! owningPlayer have to be set!
+	 */
+	fun applySkinToSkullMeta(target: SkullMeta, replaceName: Boolean) {
+		target.playerProfile?.apply {
+			setProperty(ProfileProperty("textures", textures.raw.value, textures.raw.signature))
+			if (replaceName)
+				name = this@MojangProfile.username
+			complete(true, true)
+		}
+	}
+
+	/**
+	 * WARNING! current quirk will be overwritten!
+	 */
+	fun applySkinToSkull(item: Item, replaceName: Boolean) = item.apply {
+		quirk = Quirk.skull {
+			playerProfile?.apply {
+				setProperty(ProfileProperty("textures", textures.raw.value, textures.raw.signature))
+				if (replaceName)
+					name = this@MojangProfile.username
+				complete(true, true)
+			}
+		}
+	}
 
 }
