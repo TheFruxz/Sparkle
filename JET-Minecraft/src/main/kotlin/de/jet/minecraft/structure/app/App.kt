@@ -329,6 +329,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 			JetCache.registeredComponents.add(component)
 
+			component.register()
+
 			mainLog(Level.INFO, "registered '${component.identity}' component!")
 
 			if (component.isAutoStarting) {

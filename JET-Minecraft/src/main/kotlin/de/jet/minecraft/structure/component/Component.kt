@@ -55,6 +55,11 @@ abstract class Component(
 	val canBeAutoStartToggled: Boolean
 		get() = setOf(ENABLED, AUTOSTART_IMMUTABLE).contains(behaviour)
 
+	/**
+	 * Can be overwritten, no origin code!
+	 */
+	open fun register() { }
+
 	abstract fun start()
 
 	abstract fun stop()
