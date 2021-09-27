@@ -34,13 +34,23 @@ abstract class SmartComponent(
 
 	fun listener(vararg listener: EventListener) = listeners.addAll(listener)
 
-	final override fun start() {
+	final override fun register() {
 
 		component() // register all objects
 
 		interchanges.forEach {
 			jetTry {
-				vendor.add(it)
+				vendor.replace(it.identityObject, disabledModuleInterchange)
+			}
+		}
+
+	}
+
+	final override fun start() {
+
+		interchanges.forEach {
+			jetTry {
+				vendor.replace(it.identityObject, it)
 			}
 		}
 

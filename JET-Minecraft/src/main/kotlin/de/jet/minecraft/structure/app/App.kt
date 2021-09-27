@@ -138,6 +138,9 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	// api
 
+	/**
+	 * Interchange must not be initialized before executing this!
+	 */
 	fun replace(identity: Identity<Interchange>, environment: Interchange) {
 		val command = getCommand(identity.identity)
 		command?.setExecutor(environment)
