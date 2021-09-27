@@ -1,8 +1,8 @@
 package de.jet.minecraft.tool.display.ui.inventory
 
+import de.jet.library.extension.paper.createInventory
 import de.jet.minecraft.extension.display.GRAY
 import de.jet.minecraft.extension.display.ui.item
-import de.jet.library.extension.paper.createInventory
 import de.jet.minecraft.extension.tasky.sync
 import de.jet.minecraft.tool.display.color.ColorType
 import de.jet.minecraft.tool.display.item.Item
@@ -143,7 +143,10 @@ open class Container(
 			val inventory = createInventory(null, size, label)
 
 			content.forEach { (key, value) ->
-				inventory.setItem(key, value.produce())
+				if (key < inventory.size) {
+					inventory.setItem(key, value.produce())
+				} else
+					System.err.println("Failed to produce item: $value to slot $key because it is higher that the size-content max ${inventory.size}!")
 			}
 
 			return inventory

@@ -125,7 +125,7 @@ class Panel(
 	}
 
 	override fun display(humanEntity: HumanEntity) {
-
+		display(humanEntity, emptyMap())
 	}
 
 	override fun display(receiver: Player) =
