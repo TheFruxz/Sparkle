@@ -2,6 +2,7 @@ package de.jet.minecraft.structure.component
 
 import de.jet.library.extension.jetTry
 import de.jet.minecraft.app.JetApp
+import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.event.EventListener
@@ -41,6 +42,7 @@ abstract class SmartComponent(
 		interchanges.forEach {
 			jetTry {
 				vendor.replace(it.identityObject, disabledModuleInterchange)
+				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 			}
 		}
 
@@ -51,25 +53,30 @@ abstract class SmartComponent(
 		interchanges.forEach {
 			jetTry {
 				vendor.replace(it.identityObject, it)
+				debugLog("Interchange '${it.identity}' replaced through '$identity' with original interchange-value!")
 			}
 		}
 
 		services.forEach {
 			jetTry {
 				vendor.register(it)
+				debugLog("Service '${it.identity}' registered through '$identity'!")
 				vendor.start(it)
+				debugLog("Service '${it.identity}' started through '$identity'!")
 			}
 		}
 
 		components.forEach {
 			jetTry {
 				vendor.add(it)
+				debugLog("Component '${it.identity}' added through '$identity'!")
 			}
 		}
 
 		listeners.forEach {
 			jetTry {
 				vendor.add(it)
+				debugLog("Listener '${it.identity}' added through '$identity'!")
 			}
 		}
 
@@ -80,25 +87,30 @@ abstract class SmartComponent(
 		interchanges.forEach {
 			jetTry {
 				vendor.replace(it.identityObject, disabledModuleInterchange)
+				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 			}
 		}
 
 		services.forEach {
 			jetTry {
 				vendor.stop(it)
+				debugLog("Service '${it.identity}' stopped through '$identity'!")
 				vendor.unregister(it)
+				debugLog("Service '${it.identity}' unregistered through '$identity'!")
 			}
 		}
 
 		components.forEach {
 			jetTry {
 				vendor.stop(it.identityObject)
+				debugLog("Component '${it.identity}' stopped through '$identity'!")
 			}
 		}
 
 		listeners.forEach {
 			jetTry {
 				vendor.remove(it)
+				debugLog("Service '${it.identity}' removed through '$identity'")
 			}
 		}
 
