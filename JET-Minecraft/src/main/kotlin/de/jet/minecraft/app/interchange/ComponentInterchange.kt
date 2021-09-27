@@ -1,6 +1,7 @@
 package de.jet.minecraft.app.interchange
 
 import de.jet.library.extension.collection.replace
+import de.jet.library.extension.collection.replaceVariables
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.extension.display.message
@@ -33,13 +34,17 @@ class ComponentInterchange(vendor: App = system) : Interchange(vendor, "componen
 		if (parameters.size == 1 && parameters.first() == "list") {
 
 			mutableListOf(lang["interchange.internal.component.list.header"]).apply {
+				add(lang["interchange.internal.component.list.description"].replaceVariables(
+					"1" to "⏻/⭘",
+					"2" to "⚡",
+				))
 				JetCache.registeredComponents.forEach { component ->
 					add(
 						lang("interchange.internal.component.list.line")
 							.replace(
 								"[component]" to component.identity,
-								"[autoStart]" to if (component.isAutoStarting || JetData.autoStartComponents.content.contains(component.identity)) "§a§lAUTO-START" else "§c§lAUTO-START",
-								"[status]" to if (component.isRunning) "§a§lON" else "§c§lOFF"
+								"[autoStart]" to if (component.isAutoStarting || JetData.autoStartComponents.content.contains(component.identity)) "§a§o⚡" else "§c§o⚡",
+								"[status]" to if (component.isRunning) "§a⏻" else "§c⭘"
 							)
 					)
 				}

@@ -29,10 +29,24 @@ abstract class Component(
 		get() = vendor.createKey(thisIdentity)
 
 	fun firstContactHandshake() {
+		debugLog("starting firstContactHandshake function of component '$identity'!")
 		if (!JetData.touchedComponents.content.contains(identity)) {
+			debugLog("result: never touched '$identity'!")
 			if (setOf(AUTOSTART_IMMUTABLE, AUTOSTART_MUTABLE).contains(behaviour)) {
+
+				if (behaviour == AUTOSTART_MUTABLE) {
+					debugLog("Component-Behaviour of '$identity' is AUTOSTART_MUTABLE; Checking if not auto-start...")
+					if (!JetData.autoStartComponents.content.contains(identity)) {
+						debugLog("Adding Component '$identity' to auto-start set; was not known and want auto-start!")
+						JetData.autoStartComponents.content = JetData.autoStartComponents.content.toMutableSet().apply {
+							add(identity)
+						}
+					}
+				}
+
 				JetData.touchedComponents.content += identity
 				debugLog("Remembering: I've stayed in touch with the '$identity'-component!")
+
 			} else
 				debugLog("AutoStart setup was not required, '$identity' does not request auto-start!")
 		} else
@@ -54,6 +68,11 @@ abstract class Component(
 
 	val canBeAutoStartToggled: Boolean
 		get() = setOf(ENABLED, AUTOSTART_IMMUTABLE).contains(behaviour)
+
+	/**
+	 * Can be overwritten, no origin code!
+	 */
+	open fun register() { }
 
 	abstract fun start()
 

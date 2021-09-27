@@ -138,6 +138,9 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	// api
 
+	/**
+	 * Interchange must not be initialized before executing this!
+	 */
 	fun replace(identity: Identity<Interchange>, environment: Interchange) {
 		val command = getCommand(identity.identity)
 		command?.setExecutor(environment)
@@ -328,6 +331,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			component.firstContactHandshake()
 
 			JetCache.registeredComponents.add(component)
+
+			component.register()
 
 			mainLog(Level.INFO, "registered '${component.identity}' component!")
 
