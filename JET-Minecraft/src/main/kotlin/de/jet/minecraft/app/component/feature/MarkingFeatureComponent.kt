@@ -30,7 +30,7 @@ import org.bukkit.entity.Player
 
 class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUTOSTART_MUTABLE) {
 
-	override val thisIdentity = "feature_marking"
+	override val thisIdentity = "feature/PlayerMarkings"
 
 	override fun component() {
 		interchange(MarkingToolInterchange(vendor))
