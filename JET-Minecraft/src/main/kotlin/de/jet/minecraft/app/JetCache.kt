@@ -46,6 +46,8 @@ object JetCache : AppCache {
 
 	val registeredPanelFlags = mutableMapOf<String, Set<PanelFlag>>()
 
+	val registeredPreferences = mutableMapOf<Identity<out Preference<*>>, Preference<*>>()
+
 	val livingCooldowns = mutableMapOf<String, Cooldown>()
 
 	var runningServiceTaskController = mutableMapOf<Identity<Service>, Tasky>()

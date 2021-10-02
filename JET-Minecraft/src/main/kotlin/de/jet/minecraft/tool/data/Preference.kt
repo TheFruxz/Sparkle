@@ -26,6 +26,7 @@ data class Preference<SHELL : Any>(
 		if (initTriggerSetup && !isSavedInFile) {
 			JetCache.tmp_initSetupPreferences.add(this)
 		}
+		JetCache.registeredPreferences[identityObject] = this
 	}
 
 	val isSavedInFile: Boolean

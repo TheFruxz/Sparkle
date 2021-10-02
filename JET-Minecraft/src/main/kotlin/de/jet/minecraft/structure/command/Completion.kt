@@ -155,6 +155,12 @@ data class CompletionVariable(
 			return@checker JetCache.registeredSandBoxes.any { it.identity.equals(input, ignoreCase) }
 		}
 
+		val PREFERENCE = CompletionVariable(system, "PREFERENCE", true) {
+			JetCache.registeredPreferences.keys.withMap { identity }
+		}.checker { input, ignoreCase ->
+			return@checker JetCache.registeredPreferences.any { it.key.identity.equals(input, ignoreCase) }
+		}
+
 		val CACHE_DEPTH_LEVEL = CompletionVariable(system, "CACHE-DEPTH-LEVEL", false) {
 			CacheDepthLevel.values().withMap { name }
 		}.checker { input, ignoreCase ->
