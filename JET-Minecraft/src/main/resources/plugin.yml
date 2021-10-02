@@ -25,3 +25,5 @@ commands:
     description: Gives you the marking tool!
   changeskin:
     description: test skin
+  preference:
+    description: Manages your preferences!

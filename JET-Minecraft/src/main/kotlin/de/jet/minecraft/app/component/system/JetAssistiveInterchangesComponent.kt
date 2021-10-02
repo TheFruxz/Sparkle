@@ -6,9 +6,10 @@ import de.jet.minecraft.app.interchange.ServiceInterchange
 import de.jet.minecraft.app.interchange.player.ChangeSkinInterchange
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.structure.app.App
+import de.jet.minecraft.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.jet.minecraft.structure.component.SmartComponent
 
-class JetAssistiveInterchangesComponent(vendor: App = system) : SmartComponent(vendor) {
+class JetAssistiveInterchangesComponent(vendor: App = system) : SmartComponent(vendor, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "AssistiveInterchanges"
 
