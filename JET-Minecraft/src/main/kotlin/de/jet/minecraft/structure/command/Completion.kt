@@ -430,8 +430,17 @@ infix fun Completion.next(
 ) =
 	next(StaticCompletionComponent(staticCompletion.toSet()))
 
+@JvmName("next")
 fun Completion.next(
 	staticCompletion: Array<String>,
+	displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
+	accessApproval: Approval? = null,
+) =
+	next(StaticCompletionComponent(staticCompletion.toSet(), displayRequirement, accessApproval))
+
+@JvmName("nextMultipleArguments")
+fun Completion.next(
+	vararg staticCompletion: String,
 	displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
 	accessApproval: Approval? = null,
 ) =
@@ -485,6 +494,14 @@ infix operator fun Completion.plus(
 	staticCompletion: String,
 ) =
 	plus(StaticCompletionComponent(setOf(staticCompletion)))
+
+@JvmName("plusMultipleArguments")
+fun Completion.plus(
+	vararg staticCompletion: String,
+	displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
+	accessApproval: Approval? = null,
+) =
+	plus(StaticCompletionComponent(staticCompletion.toSet(), displayRequirement, accessApproval))
 
 fun Completion.plus(
 	staticCompletion: String,
