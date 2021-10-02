@@ -11,7 +11,6 @@ import de.jet.minecraft.app.interchange.ComponentInterchange
 import de.jet.minecraft.app.interchange.JETInterchange
 import de.jet.minecraft.app.interchange.SandboxInterchange
 import de.jet.minecraft.app.interchange.ServiceInterchange
-import de.jet.minecraft.app.interchange.player.BuildModeInterchange
 import de.jet.minecraft.app.interchange.player.ChangeSkinInterchange
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.mainLog
@@ -88,7 +87,6 @@ class JetApp : App() {
 		add(ComponentInterchange())
 		add(ServiceInterchange())
 		add(SandboxInterchange())
-		add(BuildModeInterchange())
 		add(ChangeSkinInterchange())
 
 		buildSandBox(this, "worky") {

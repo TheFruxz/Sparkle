@@ -1,5 +1,6 @@
 package de.jet.minecraft.app.component.world
 
+import de.jet.minecraft.app.interchange.player.BuildModeInterchange
 import de.jet.minecraft.extension.paper.buildMode
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.runtime.event.interact.PlayerInteractAtBlockEvent
@@ -17,6 +18,7 @@ class JetBuildModeComponent(vendor: App = system) : SmartComponent(vendor, AUTOS
 
 	override fun component() {
 		listener(BuildModeListener(vendor))
+		interchange(BuildModeInterchange(vendor))
 	}
 
 	class BuildModeListener(override val vendor: App) : EventListener {
