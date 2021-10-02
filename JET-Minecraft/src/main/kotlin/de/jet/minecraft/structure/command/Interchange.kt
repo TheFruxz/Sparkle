@@ -171,6 +171,8 @@ abstract class Interchange(
 
 	val completionCheck = completion.buildCheck()
 
+	fun Interchange.execution(execution: InterchangeAccess.() -> InterchangeResult) = execution
+
 }
 
 enum class InterchangeResult {
