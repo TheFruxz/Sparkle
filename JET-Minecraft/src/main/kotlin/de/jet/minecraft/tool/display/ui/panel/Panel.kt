@@ -68,6 +68,11 @@ class Panel(
 		}
 	}
 
+	/**
+	 * Available inner slots to set items into
+	 */
+	val innerSlots by lazy { 0..computedInnerSlots.lastIndex }
+
 	fun placeInner(slot: Int, item: Item) {
 		content[computedInnerSlots[slot]] = item
 	}
