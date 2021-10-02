@@ -1,15 +1,14 @@
 package de.jet.minecraft.structure.component
 
 import de.jet.library.extension.jetTry
+import de.jet.library.tool.smart.Identity
 import de.jet.minecraft.app.JetApp
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.event.EventListener
 import de.jet.minecraft.structure.command.Interchange
-import de.jet.minecraft.structure.command.InterchangeResult
 import de.jet.minecraft.structure.command.InterchangeResult.SUCCESS
-import de.jet.minecraft.structure.command.live.InterchangeAccess
 import de.jet.minecraft.structure.component.Component.RunType.DISABLED
 import de.jet.minecraft.structure.service.Service
 import de.jet.minecraft.tool.display.message.Transmission.Level.FAIL
@@ -41,7 +40,7 @@ abstract class SmartComponent(
 
 		interchanges.forEach {
 			jetTry {
-				vendor.replace(it.identityObject, disabledModuleInterchange)
+				vendor.replace(it.identityObject, disabledComponentInterchange(identityObject))
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 			}
 		}
@@ -86,7 +85,7 @@ abstract class SmartComponent(
 
 		interchanges.forEach {
 			jetTry {
-				vendor.replace(it.identityObject, disabledModuleInterchange)
+				vendor.replace(it.identityObject, disabledComponentInterchange(identityObject))
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 			}
 		}
@@ -120,10 +119,10 @@ abstract class SmartComponent(
 
 	companion object {
 
-		internal val disabledModuleInterchange = object : Interchange(JetApp.instance, "") {
-			override val execution: InterchangeAccess.() -> InterchangeResult = {
+		internal fun disabledComponentInterchange(identity: Identity<Component>) = object : Interchange(JetApp.instance, "") {
+			override val execution = execution {
 
-				"§cThe providing module is disabled!"
+				"§c§lSORRY!§7 The providing component '§e$identity§7' is currently §cdisabled§7!"
 					.notification(FAIL, executor).display()
 
 				SUCCESS
