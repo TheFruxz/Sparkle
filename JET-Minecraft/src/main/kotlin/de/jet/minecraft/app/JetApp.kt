@@ -5,16 +5,13 @@ import de.jet.minecraft.app.component.chat.JetChatComponent
 import de.jet.minecraft.app.component.events.JetEventsComponent
 import de.jet.minecraft.app.component.feature.MarkingFeatureComponent
 import de.jet.minecraft.app.component.item.JetActionComponent
+import de.jet.minecraft.app.component.system.JetAssistiveInterchangesComponent
 import de.jet.minecraft.app.component.system.JetKeeperComponent
 import de.jet.minecraft.app.component.world.JetBuildModeComponent
 import de.jet.minecraft.app.interchange.ComponentInterchange
 import de.jet.minecraft.app.interchange.JETInterchange
-import de.jet.minecraft.app.interchange.SandboxInterchange
-import de.jet.minecraft.app.interchange.ServiceInterchange
-import de.jet.minecraft.app.interchange.player.ChangeSkinInterchange
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.mainLog
-import de.jet.minecraft.extension.o.buildSandBox
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.AppCompanion
 import de.jet.minecraft.tool.data.Preference
@@ -82,16 +79,10 @@ class JetApp : App() {
 		add(JetKeeperComponent())
 		add(JetBuildModeComponent())
 		add(MarkingFeatureComponent())
+		add(JetAssistiveInterchangesComponent())
 
 		add(JETInterchange())
 		add(ComponentInterchange())
-		add(ServiceInterchange())
-		add(SandboxInterchange())
-		add(ChangeSkinInterchange())
-
-		buildSandBox(this, "worky") {
-			executor.sendMessage("worky is receiving: '${parameters.joinToString(" ")}'! NICE!")
-		}
 
 	}
 
