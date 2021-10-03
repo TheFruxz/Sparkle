@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion.VERSION_16
+
 plugins {
     kotlin("jvm") version "1.5.31"
     kotlin("plugin.serialization") version "1.5.30"
@@ -15,4 +17,9 @@ allprojects {
         mavenCentral()
     }
 
+}
+
+java {
+    sourceCompatibility = VERSION_16
+    targetCompatibility = VERSION_16
 }
