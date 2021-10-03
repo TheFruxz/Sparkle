@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion.VERSION_16
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
@@ -53,4 +55,9 @@ publishing {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+java {
+    sourceCompatibility = VERSION_16
+    targetCompatibility = VERSION_16
 }
