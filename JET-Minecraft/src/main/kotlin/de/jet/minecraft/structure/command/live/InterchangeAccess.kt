@@ -24,6 +24,12 @@ data class InterchangeAccess(
 
 	val checkParameter = ValidationData(this)
 
+	val inputLength = parameters.size
+
+	fun inputLength(checkIf: Int) = parameters.size == checkIf
+
+	fun inputParameter(slot: Int) = parameters[slot]
+
 	data class ValidationData(
 		private val access: InterchangeAccess,
 	) {
