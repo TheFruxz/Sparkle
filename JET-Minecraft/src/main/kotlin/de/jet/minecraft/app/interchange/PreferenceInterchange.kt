@@ -1,5 +1,6 @@
 package de.jet.minecraft.app.interchange
 
+import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.command.CompletionVariable
@@ -16,6 +17,28 @@ class PreferenceInterchange(vendor: App = system) : Interchange(vendor, "prefere
 }) {
 
 	override var execution = execution {
+
+		when {
+			inputLength(1) && parameters.first() == "list" -> {
+				""
+			}
+			inputLength(2) -> {
+				val preference = JetCache.registeredPreferences.toList().firstOrNull { it.first.identity == parameters.first() }?.second
+
+				if (preference != null) {
+					when (parameters.first()) {
+						"reset" -> {
+							preference.reset()
+						}
+						"info" -> {
+
+						}
+					}
+				} else
+					TODO()
+			}
+		}
+
 		SUCCESS
 	}
 
