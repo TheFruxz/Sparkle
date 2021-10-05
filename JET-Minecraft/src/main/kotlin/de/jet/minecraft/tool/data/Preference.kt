@@ -119,4 +119,8 @@ data class Preference<SHELL : Any>(
 		transformer: DataTransformer<SHELL, CORE>
 	) = transformer(toCore = transformer.toCore, toShell = transformer.toShell)
 
+	fun reset() {
+		content = default
+	}
+
 }
