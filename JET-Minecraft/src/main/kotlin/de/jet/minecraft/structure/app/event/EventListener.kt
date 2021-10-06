@@ -1,8 +1,7 @@
 package de.jet.minecraft.structure.app.event
 
 import de.jet.minecraft.structure.app.App
-import de.jet.library.tool.smart.Identifiable
-import de.jet.library.tool.smart.Identity
+import de.jet.library.tool.smart.identification.Identity
 import de.jet.minecraft.tool.smart.VendorsIdentifiable
 import org.bukkit.event.Listener
 import java.util.*

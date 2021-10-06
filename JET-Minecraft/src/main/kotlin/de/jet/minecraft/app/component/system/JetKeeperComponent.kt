@@ -2,7 +2,7 @@ package de.jet.minecraft.app.component.system
 
 import de.jet.library.extension.collection.withForEach
 import de.jet.library.extension.display.display
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache.livingCooldowns
 import de.jet.minecraft.app.JetCache.registeredApplications
 import de.jet.minecraft.extension.debugLog

@@ -1,6 +1,6 @@
 package de.jet.minecraft.structure.command.live
 
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.command.Interchange
@@ -10,12 +10,12 @@ import org.bukkit.command.CommandSender
 import java.util.logging.Level
 
 data class InterchangeAccess(
-	override val vendor: Identifiable<App>,
-	val executorType: InterchangeExecutorType,
-	val executor: CommandSender,
-	val interchange: Interchange,
-	val label: String,
-	val parameters: List<String>,
+    override val vendor: Identifiable<App>,
+    val executorType: InterchangeExecutorType,
+    val executor: CommandSender,
+    val interchange: Interchange,
+    val label: String,
+    val parameters: List<String>,
 ) : Logging {
 
 	override val sectionLabel = "InterchangeRun/$vendor:$label"

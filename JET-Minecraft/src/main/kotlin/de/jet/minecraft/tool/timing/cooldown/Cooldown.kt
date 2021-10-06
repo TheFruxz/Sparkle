@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.timing.cooldown
 
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.timing.calendar.Calendar
 import de.jet.library.tool.timing.calendar.Calendar.TimeField.MILLISECOND
 import de.jet.minecraft.app.JetCache.livingCooldowns

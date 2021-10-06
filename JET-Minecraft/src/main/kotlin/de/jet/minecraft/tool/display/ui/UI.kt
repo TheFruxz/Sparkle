@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.display.ui
 
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 

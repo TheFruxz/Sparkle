@@ -24,6 +24,7 @@ data class Transmission(
 	var displayType: DisplayType = DISPLAY_CHAT,
 	var promptSound: SoundMelody? = null,
 	var level: Level = Level.GENERAL,
+	var prefixByLevel: Boolean = true,
 	var hoverEvent: HoverEventSource<*>? = null,
 	var clickEvent: ClickEvent? = null,
 ) {
@@ -87,6 +88,7 @@ data class Transmission(
 
 	enum class Level(
 		val promptSound: SoundMelody?,
+		val prefixLink:
 	) {
 
 		GENERAL(SoundLibrary.NOTIFICATION_GENERAL),

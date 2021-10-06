@@ -1,4 +1,4 @@
-package de.jet.library.tool.smart
+package de.jet.library.tool.smart.identification
 
 data class Identity<T> constructor(
 	val identity: String,

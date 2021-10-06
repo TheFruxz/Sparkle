@@ -10,7 +10,7 @@ import de.jet.library.extension.paper.getPlayer
 import de.jet.library.extension.paper.name
 import de.jet.library.extension.paper.onlinePlayers
 import de.jet.library.extension.paper.worlds
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.lang
@@ -30,11 +30,11 @@ import java.util.*
 // Variables
 
 data class CompletionVariable(
-	val vendor: Identifiable<*>,
-	val label: String,
-	val refreshing: Boolean,
-	var check: (input: String, ignoreCase: Boolean) -> Boolean = { _, _ -> true },
-	val generator: CompletionVariable.() -> Collection<String>,
+    val vendor: Identifiable<*>,
+    val label: String,
+    val refreshing: Boolean,
+    var check: (input: String, ignoreCase: Boolean) -> Boolean = { _, _ -> true },
+    val generator: CompletionVariable.() -> Collection<String>,
 ) {
 
 	val storagePath = "${vendor.identity}:$label"

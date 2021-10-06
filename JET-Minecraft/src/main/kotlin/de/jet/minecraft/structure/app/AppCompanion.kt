@@ -1,6 +1,6 @@
 package de.jet.minecraft.structure.app
 
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 import org.jetbrains.annotations.NotNull
 
 interface AppCompanion<T : @NotNull App> : Identifiable<App> {

@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.effect.sound
 
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.tool.effect.Effect
 import kotlinx.serialization.Serializable
 import org.bukkit.Sound

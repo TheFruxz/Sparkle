@@ -1,6 +1,6 @@
 package de.jet.library.extension.paper
 
-import de.jet.library.tool.smart.Identity
+import de.jet.library.tool.smart.identification.Identity
 import org.bukkit.command.CommandSender
 
 val CommandSender.identityObject: Identity<CommandSender>

@@ -1,7 +1,7 @@
 package de.jet.minecraft.tool.display.ui.panel
 
 import de.jet.library.extension.paper.createKey
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.BOLD
 import de.jet.minecraft.extension.display.YELLOW
@@ -23,14 +23,14 @@ import org.bukkit.inventory.ItemStack
 import java.util.*
 
 class Panel(
-	label: Component = Component.text("$YELLOW${BOLD}Panel"),
-	val lines: Int = 3,
-	theme: ColorType = ColorType.GRAY,
-	openSound: SoundMelody? = null,
-	override var identity: String = "${UUID.randomUUID()}",
-	override var vendor: Identifiable<App> = system,
-	var playerSpecificUI: Panel.(player: Player, additionalParameters: Map<String, Any>) -> Panel = { _, _ -> this },
-	var icon: Item = theme.wool.item.apply {
+    label: Component = Component.text("$YELLOW${BOLD}Panel"),
+    val lines: Int = 3,
+    theme: ColorType = ColorType.GRAY,
+    openSound: SoundMelody? = null,
+    override var identity: String = "${UUID.randomUUID()}",
+    override var vendor: Identifiable<App> = system,
+    var playerSpecificUI: Panel.(player: Player, additionalParameters: Map<String, Any>) -> Panel = { _, _ -> this },
+    var icon: Item = theme.wool.item.apply {
 		lore = """
 			
 			This panel has no icon, override
@@ -39,7 +39,7 @@ class Panel(
 			   
 		""".trimIndent()
 	},
-	var borderProtection: Boolean = true,
+    var borderProtection: Boolean = true,
 ) : Logging, Container(label = label, size = lines * 9, theme = theme, openSound = openSound) {
 
 	init {

@@ -1,7 +1,7 @@
 package de.jet.minecraft.extension
 
-import de.jet.library.tool.smart.Identifiable
-import de.jet.library.tool.smart.Identity
+import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.library.tool.smart.identification.Identity
 import de.jet.minecraft.JET
 import de.jet.minecraft.app.JetApp
 import de.jet.minecraft.app.JetCache

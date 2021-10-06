@@ -1,7 +1,7 @@
 package de.jet.minecraft.tool.data
 
 import de.jet.library.extension.paper.bukkitVersion
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.component.Component
 import org.bukkit.configuration.file.YamlConfiguration
@@ -71,9 +71,9 @@ interface JetFile {
 			}
 
 		fun appFile(
-			vendor: Identifiable<App>,
-			fileName: String,
-			extension: String = "yml"
+            vendor: Identifiable<App>,
+            fileName: String,
+            extension: String = "yml"
 		) =
 			generate(
 				Path("JETData", "#${vendor.identity}", "$fileName.$extension")

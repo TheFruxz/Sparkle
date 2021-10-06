@@ -1,7 +1,7 @@
 package de.jet.minecraft.mutable
 
 import de.jet.library.tool.mutable.FlexibleMutable
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache
 
 class CachedMutable<T>(

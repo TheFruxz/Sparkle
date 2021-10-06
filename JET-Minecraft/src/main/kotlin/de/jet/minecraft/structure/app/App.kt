@@ -6,8 +6,8 @@ import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.jet.library.extension.catchException
 import de.jet.library.extension.collection.mutableReplaceWith
 import de.jet.library.extension.jetTry
-import de.jet.library.tool.smart.Identifiable
-import de.jet.library.tool.smart.Identity
+import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.library.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.extension.mainLog

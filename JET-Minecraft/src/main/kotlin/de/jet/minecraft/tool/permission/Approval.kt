@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.permission
 
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.structure.app.App
 import kotlinx.serialization.Serializable
 import org.bukkit.permissions.Permissible
