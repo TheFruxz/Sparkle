@@ -1,8 +1,8 @@
 package de.jet.library.tool.smart.identification
 
 data class Identity<T> constructor(
-	val identity: String,
-) {
+	override val identity: String,
+) : Identifiable<T> {
 
 	override fun toString() = identity
 
