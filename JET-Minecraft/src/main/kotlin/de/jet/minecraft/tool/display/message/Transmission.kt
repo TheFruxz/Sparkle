@@ -2,6 +2,8 @@ package de.jet.minecraft.tool.display.message
 
 import de.jet.library.extension.paper.consoleSender
 import de.jet.library.extension.paper.onlinePlayers
+import de.jet.library.tool.smart.positioning.Address
+import de.jet.library.tool.smart.positioning.Address.Companion.address
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.tool.display.message.DisplayType.*
 import de.jet.minecraft.tool.effect.sound.SoundLibrary
@@ -88,18 +90,18 @@ data class Transmission(
 
 	enum class Level(
 		val promptSound: SoundMelody?,
-		val prefixLink:
+		val prefixLink: Address<Level>,
 	) {
 
-		GENERAL(SoundLibrary.NOTIFICATION_GENERAL),
-		INFO(SoundLibrary.NOTIFICATION_INFO),
-		FAIL(SoundLibrary.NOTIFICATION_FAIL),
-		ERROR(SoundLibrary.NOTIFICATION_ERROR),
-		LEVEL(SoundLibrary.NOTIFICATION_LEVEL),
-		WARNING(SoundLibrary.NOTIFICATION_WARNING),
-		ATTENTION(SoundLibrary.NOTIFICATION_ATTENTION),
-		PAYMENT(SoundLibrary.NOTIFICATION_PAYMENT),
-		APPLIED(SoundLibrary.NOTIFICATION_APPLIED),
+		GENERAL(SoundLibrary.NOTIFICATION_GENERAL, address("prefix.general")),
+		INFO(SoundLibrary.NOTIFICATION_INFO, address("prefix.info")),
+		FAIL(SoundLibrary.NOTIFICATION_FAIL, address("prefix.fail")),
+		ERROR(SoundLibrary.NOTIFICATION_ERROR, address("prefix.error")),
+		LEVEL(SoundLibrary.NOTIFICATION_LEVEL, address("prefix.level")),
+		WARNING(SoundLibrary.NOTIFICATION_WARNING, address("prefix.warning")),
+		ATTENTION(SoundLibrary.NOTIFICATION_ATTENTION, address("prefix.attention")),
+		PAYMENT(SoundLibrary.NOTIFICATION_PAYMENT, address("prefix.payment")),
+		APPLIED(SoundLibrary.NOTIFICATION_APPLIED, address("prefix.applied")),
 
 	}
 
