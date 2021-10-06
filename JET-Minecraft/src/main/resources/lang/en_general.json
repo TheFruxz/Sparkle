@@ -78,6 +78,10 @@
     "component.markingTool.action.view.notSet": "[GRAY]You have [RED]no [GRAY] valid [YELLOW]locations[GRAY] set!",
     "component.markingTool.action.view.detail": "[GRAY]You have the locations [LIGHT_PURPLE][1] [GRAY]and [LIGHT_PURPLE][2] [GRAY]set!",
     "component.markingTool.action.view.distance.both": "[GRAY]Both locations are [GOLD][distance] Block(s) [GRAY]away!",
-    "component.markingTool.action.view.distance.other": "[GRAY]Other position is [GOLD][distance] Block(s) [GRAY]away!"
+    "component.markingTool.action.view.distance.other": "[GRAY]Other position is [GOLD][distance] Block(s) [GRAY]away!",
+
+    "interchange.internal.preference.list.empty": "[GRAY]There are currently [RED]no[GRAY] preferences registered!",
+    "interchange.internal.preference.list.header": "[GRAY]These '[GOLD][amount][GRAY]' preferences are currently registered:",
+    "interchange.internal.preference.list.stash": "[GRAY][preference-array]"
   }
 }
