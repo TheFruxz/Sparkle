@@ -9,11 +9,13 @@ import de.jet.minecraft.tool.effect.sound.SoundMelody
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
+import net.kyori.adventure.text.event.ClickEvent
+import net.kyori.adventure.text.event.HoverEvent
+import net.kyori.adventure.text.event.HoverEventSource
 import net.kyori.adventure.title.Title
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Entity
 
-@Serializable
 data class Transmission(
 	var prefix: Component = Component.text(JetData.systemPrefix.content),
 	var content: TextComponent.Builder = Component.text(),
@@ -21,7 +23,9 @@ data class Transmission(
 	var withoutPrefix: Boolean = false,
 	var displayType: DisplayType = DISPLAY_CHAT,
 	var promptSound: SoundMelody? = null,
-	var level: Level = Level.GENERAL
+	var level: Level = Level.GENERAL,
+	var hoverEvent: HoverEventSource<*>? = null,
+	var clickEvent: ClickEvent? = null,
 ) {
 
 	infix fun edit(action: Transmission.() -> Unit) = apply(action)
@@ -40,10 +44,21 @@ data class Transmission(
 
 	infix fun promptSound(soundMelody: SoundMelody?) = edit { this.promptSound = soundMelody }
 
+	infix fun hoverEvent(hoverEvent: HoverEventSource<*>?) = edit { this.hoverEvent = hoverEvent }
+
+	infix fun hover(hover: HoverEventSource<*>?) = hoverEvent(hover)
+
+	infix fun clickEvent(clickEvent: ClickEvent?) = edit { this.clickEvent = clickEvent }
+
+	infix fun click(click: ClickEvent?) = clickEvent(click)
+
 	fun display(): Transmission {
 		val nextRound = mutableSetOf<Entity>()
 		val displayObject = prefix
-			.append(content)
+			.append(content).apply {
+				hoverEvent?.let { hoverEvent(it) }
+				clickEvent?.let { clickEvent(it) }
+			}
 
 		for (participant in participants) {
 
