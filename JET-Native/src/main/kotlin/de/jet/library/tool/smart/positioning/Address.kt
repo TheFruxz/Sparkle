@@ -6,6 +6,8 @@ data class Address<T> internal constructor(val address: String) : Identifiable<A
 
     override val identity = address
 
+    override fun toString() = address
+
     companion object {
 
         fun <T> address(path: String) =

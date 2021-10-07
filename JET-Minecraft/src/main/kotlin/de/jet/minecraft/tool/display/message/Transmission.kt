@@ -5,14 +5,14 @@ import de.jet.library.extension.paper.onlinePlayers
 import de.jet.library.tool.smart.positioning.Address
 import de.jet.library.tool.smart.positioning.Address.Companion.address
 import de.jet.minecraft.app.JetData
+import de.jet.minecraft.extension.lang
+import de.jet.minecraft.extension.paper.adventureComponent
 import de.jet.minecraft.tool.display.message.DisplayType.*
 import de.jet.minecraft.tool.effect.sound.SoundLibrary
 import de.jet.minecraft.tool.effect.sound.SoundMelody
-import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.event.ClickEvent
-import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.event.HoverEventSource
 import net.kyori.adventure.title.Title
 import org.bukkit.command.CommandSender
@@ -57,11 +57,12 @@ data class Transmission(
 
 	fun display(): Transmission {
 		val nextRound = mutableSetOf<Entity>()
-		val displayObject = prefix
-			.append(content).apply {
-				hoverEvent?.let { hoverEvent(it) }
-				clickEvent?.let { clickEvent(it) }
-			}
+
+		hoverEvent?.let { content.hoverEvent(it) }
+		clickEvent?.let { content.clickEvent(it) }
+
+		val displayObject = (if (prefixByLevel) lang("system.${level.prefixLink.address}").adventureComponent else prefix)
+			.append(content)
 
 		for (participant in participants) {
 

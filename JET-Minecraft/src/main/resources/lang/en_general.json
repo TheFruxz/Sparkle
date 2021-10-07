@@ -7,6 +7,16 @@
   "languageData": {
     "system.hello": "Welcome to JET! - Welcome to this Language!",
 
+    "system.prefix.general": "§6JET §8» ",
+    "system.prefix.info": "§6INFO §8» ",
+    "system.prefix.fail": "§cFAIL §8» ",
+    "system.prefix.error": "§c§lERROR §8» ",
+    "system.prefix.level": "§5STATS §8» ",
+    "system.prefix.warning": "§e§lWARNING §8» ",
+    "system.prefix.attention": "§eATTENTION §8» ",
+    "system.prefix.payment": "§3PAYMENT §8» ",
+    "system.prefix.applied": "§aAPPLIED §8» ",
+
     "interchange.run.issue.wrongApproval": "[GRAY]This action[RED] requires[GRAY] the approval [YELLOW]'[approval]'[GRAY], to be executed!",
     "interchange.run.issue.wrongUsage": "[GRAY]The input[RED] must[GRAY] follow the instruction '[YELLOW][usage][GRAY]' to be executed!",
     "interchange.run.issue.wrongClient": "[GRAY]This action[RED] needs[GRAY] you as a '[YELLOW][client][GRAY]' to be executed!",

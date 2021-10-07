@@ -7,14 +7,13 @@ import de.jet.minecraft.tool.display.ui.panel.Panel
 import net.kyori.adventure.text.Component
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.PlayerInventory
 
 fun buildContainer(lines: Int = 3, action: Container.() -> Unit) = Container(size = lines*9).apply(action)
 
 fun buildPanel(lines: Int = 3, action: Panel.() -> Unit) = Panel(lines = lines).apply(action)
 
 fun Inventory.copyRaw(title: Component) = createInventory(this.holder, this.size, title).apply {
-	contents = this.contents
+	setContents(this.contents.filterNotNull().toTypedArray())
 	storageContents = this.storageContents
 }
 
