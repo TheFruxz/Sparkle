@@ -1,7 +1,9 @@
 package de.jet.library.tool.smart.positioning
 
 import de.jet.library.tool.smart.identification.Identifiable
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Address<T> internal constructor(val address: String) : Identifiable<Address<T>> {
 
     override val identity = address
