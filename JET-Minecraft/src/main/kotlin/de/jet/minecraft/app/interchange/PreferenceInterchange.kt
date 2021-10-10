@@ -5,9 +5,15 @@ import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.structure.app.App
-import de.jet.minecraft.structure.command.*
+import de.jet.minecraft.structure.command.CompletionVariable
+import de.jet.minecraft.structure.command.Interchange
 import de.jet.minecraft.structure.command.InterchangeResult.SUCCESS
-import de.jet.minecraft.tool.display.message.Transmission
+import de.jet.minecraft.structure.command.buildCompletion
+import de.jet.minecraft.structure.command.isRequired
+import de.jet.minecraft.structure.command.label
+import de.jet.minecraft.structure.command.mustMatchOutput
+import de.jet.minecraft.structure.command.next
+import de.jet.minecraft.structure.command.plus
 import de.jet.minecraft.tool.display.message.Transmission.Level.APPLIED
 import de.jet.minecraft.tool.display.message.Transmission.Level.FAIL
 
@@ -46,11 +52,7 @@ class PreferenceInterchange(vendor: App = system) : Interchange(vendor, "prefere
 			}
 			inputLength(3) && parameters.second == "set" -> {
 
-				try {
-					
-				} catch (exception: IllegalArgumentException) {
-					TODO("not supported!")
-				}
+
 
 			}
 		}
