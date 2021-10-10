@@ -73,6 +73,10 @@ class Panel(
 	 */
 	val innerSlots by lazy { 0..computedInnerSlots.lastIndex }
 
+	fun playerSpecificUI(playerSpecificUI: Panel.(player: Player, additionalParameters: Map<String, Any>) -> Panel) {
+		this.playerSpecificUI = playerSpecificUI
+	}
+
 	fun placeInner(slot: Int, item: Item) {
 		content[computedInnerSlots[slot]] = item
 	}
