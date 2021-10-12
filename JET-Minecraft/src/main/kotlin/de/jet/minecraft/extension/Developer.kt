@@ -2,6 +2,7 @@ package de.jet.minecraft.extension
 
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.identification.Identity
+import de.jet.library.tool.smart.positioning.Address
 import de.jet.minecraft.JET
 import de.jet.minecraft.app.JetApp
 import de.jet.minecraft.app.JetCache
@@ -19,6 +20,11 @@ internal fun mainLog(level: Level = Level.INFO, message: String) = JetApp.instan
 
 internal val lang: LanguageSpeaker
 	get() = JET.languageSpeaker
+
+// TODO: 12.10.21 LanguageSpeaker bei Address austauschen mit sinvoller, erst dann existierender Klasse
+fun getSystemTranslated(vendor: Identifiable<App>, address: Address<LanguageSpeaker>) {
+	getSystemTranslated(system.identityObject, Address.address("test"))
+}
 
 operator fun LanguageSpeaker.get(id: String) = lang(id)
 
