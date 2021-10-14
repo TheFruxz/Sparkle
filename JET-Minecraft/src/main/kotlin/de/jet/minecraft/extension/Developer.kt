@@ -7,6 +7,7 @@ import de.jet.minecraft.JET
 import de.jet.minecraft.app.JetApp
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.runtime.app.LanguageSpeaker
+import de.jet.minecraft.runtime.lang.LanguageData
 import de.jet.minecraft.structure.app.App
 import java.util.logging.Level
 
@@ -23,7 +24,7 @@ internal val lang: LanguageSpeaker
 
 // TODO: 12.10.21 LanguageSpeaker bei Address austauschen mit sinvoller, erst dann existierender Klasse
 fun getSystemTranslated(vendor: Identifiable<App>, address: Address<LanguageData>) {
-	getSystemTranslated(system.identityObject, Address.address("test"))
+	getSystemTranslated(system.identityObject, address)
 }
 
 operator fun LanguageSpeaker.get(id: String) = lang(id)
