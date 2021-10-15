@@ -1,4 +1,4 @@
-import org.gradle.api.JavaVersion.VERSION_17
+import org.gradle.api.JavaVersion.VERSION_16
 
 plugins {
     kotlin("jvm") version "1.6.0-M1"
@@ -20,6 +20,6 @@ allprojects {
 }
 
 java {
-    sourceCompatibility = VERSION_17
-    targetCompatibility = VERSION_17
+    sourceCompatibility = VERSION_16
+    targetCompatibility = VERSION_16
 }
