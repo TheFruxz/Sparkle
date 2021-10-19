@@ -86,6 +86,9 @@ interface JetFile {
 		fun componentFile(component: VendorsIdentifiable<Component>, fileName: String, extension: String = "yml"): JetFile =
 			generate(Path("JETData") / "#${component.identity}@${component.vendorIdentity.identity}" / "$fileName.$extension")
 
+		internal fun dummyComponentFile(dataA: String, dataB: String, fileName: String, extension: String = "yml"): JetFile =
+			generate(Path("JETData") / "#$dataA@$dataB" / "$fileName.$extension")
+
 		fun versionFile(fileName: String, extension: String = "yml") =
 			generate(Path("JETData") / bukkitVersion / "$fileName.$extension")
 

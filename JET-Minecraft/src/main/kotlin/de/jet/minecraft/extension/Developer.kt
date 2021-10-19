@@ -23,8 +23,8 @@ internal val lang: LanguageSpeaker
 	get() = JET.languageSpeaker
 
 // TODO: 12.10.21 LanguageSpeaker bei Address austauschen mit sinvoller, erst dann existierender Klasse
-fun getSystemTranslated(vendor: Identifiable<App>, address: Address<LanguageData>) {
-	getSystemTranslated(system.identityObject, address)
+fun getSystemTranslated(vendor: Identifiable<App>, address: Address<LanguageData>): String {
+	return lang(id = address.address) //todo replace with real system
 }
 
 operator fun LanguageSpeaker.get(id: String) = lang(id)

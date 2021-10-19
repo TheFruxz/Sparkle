@@ -27,3 +27,5 @@ commands:
     description: test skin
   preference:
     description: Manages your preferences!
+  point:
+    description: Manages your points!

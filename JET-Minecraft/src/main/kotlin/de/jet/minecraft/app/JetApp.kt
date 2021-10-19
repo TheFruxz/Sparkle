@@ -2,6 +2,7 @@ package de.jet.minecraft.app
 
 import de.jet.library.extension.forceCast
 import de.jet.minecraft.app.component.chat.JetChatComponent
+import de.jet.minecraft.app.component.essentials.EssentialsComponent
 import de.jet.minecraft.app.component.events.JetEventsComponent
 import de.jet.minecraft.app.component.feature.MarkingFeatureComponent
 import de.jet.minecraft.app.component.item.JetActionComponent
@@ -31,6 +32,8 @@ class JetApp : App() {
 		instance = this
 
 		ConfigurationSerialization.registerClass(SimpleLocation::class.java)
+
+		// TODO: 19.10.2021 load language files to the lang-folder
 
 		debugMode = JetData.debugMode.content
 
@@ -80,6 +83,7 @@ class JetApp : App() {
 		add(JetBuildModeComponent())
 		add(MarkingFeatureComponent())
 		add(JetAssistiveInterchangesComponent())
+		add(EssentialsComponent())
 
 		add(JETInterchange())
 		add(ComponentInterchange())

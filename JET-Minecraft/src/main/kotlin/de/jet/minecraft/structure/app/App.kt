@@ -9,7 +9,6 @@ import de.jet.library.extension.jetTry
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
-import de.jet.minecraft.app.JetData
 import de.jet.minecraft.extension.mainLog
 import de.jet.minecraft.extension.tasky.task
 import de.jet.minecraft.extension.tasky.wait
@@ -441,7 +440,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	internal fun getResourceFile(path: String) =
 		classLoader.getResourceAsStream(path)?.reader()?.readText()
 
-	val languageSpeaker by lazy { LanguageSpeaker(JetData.systemLanguage.content) }
+	val languageSpeaker by lazy { LanguageSpeaker(/*JetData.systemLanguage.content*/"en_general") }
 
 	private val pluginManager = server.pluginManager
 

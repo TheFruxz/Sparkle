@@ -92,6 +92,17 @@
 
     "interchange.internal.preference.list.empty": "[GRAY]There are currently [RED]no[GRAY] preferences registered!",
     "interchange.internal.preference.list.header": "[GRAY]These '[GOLD][amount][GRAY]' preferences are currently registered:",
-    "interchange.internal.preference.list.stash": "[GRAY][preference-array]"
+    "interchange.internal.preference.list.stash": "[GRAY][preference-array]",
+
+    "interchange.internal.essentials.point.list.empty": "[GRAY]There are currently [RED]no[GRAY] points saved!",
+    "interchange.internal.essentials.point.list.header": "[GRAY]These '[GOLD][amount][GRAY]' points are currently saved:",
+    "interchange.internal.essentials.point.list.stash": "[GREEN][point-array][GRAY]",
+    "interchange.internal.essentials.point.edit.removed": "[GREEN]Successfully [GRAY]removed the Point '[YELLOW][point][GRAY]'!",
+    "interchange.internal.essentials.point.edit.created": "[GRAY]A Point called '[YELLOW][point][GRAY]' got [GREEN]successfully[GRAY] created!",
+    "interchange.internal.essentials.point.edit.notFound": "[GRAY]A Point called '[YELLOW][point][GRAY]' is not saved!",
+    "interchange.internal.essentials.point.edit.exists": "[GRAY]A Point called '[YELLOW][point][GRAY]' [RED]already exists[GRAY]!",
+    "interchange.internal.essentials.point.edit.teleportedSelf": "[GRAY]Teleported you to the Point '[YELLOW][point][GRAY]'!",
+    "interchange.internal.essentials.point.edit.teleportedAll": "[GRAY]Teleported everybody to the Point '[YELLOW][point][GRAY]'!"
+
   }
 }
