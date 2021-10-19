@@ -57,6 +57,12 @@ fun <T> Array<out T>.stackRandom(times: Int) = buildString {
 	repeat(times) { append(random()) }
 }
 
+fun <T, C : Collection<T>> C.stackUniqueRandom(times: Int) =
+	shuffled().take(times).joinToString(separator = "")
+
+fun <T> Array<out T>.stackUniqueRandom(times: Int) =
+	toList().shuffled().take(times).joinToString(separator = "")
+
 val <T, C : Collection<T>> C.first: T
 	get() = first()
 
