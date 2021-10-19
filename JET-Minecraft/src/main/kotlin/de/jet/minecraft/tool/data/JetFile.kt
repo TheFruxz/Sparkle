@@ -4,6 +4,7 @@ import de.jet.library.extension.paper.bukkitVersion
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.component.Component
+import de.jet.minecraft.tool.smart.VendorsIdentifiable
 import org.bukkit.configuration.file.YamlConfiguration
 import java.nio.file.Path
 import kotlin.io.path.Path
@@ -82,8 +83,8 @@ interface JetFile {
 		fun rootFile(fileName: String, extension: String = "yml") =
 			generate(kotlin.io.path.Path("JETData") / "ROOT" / "$fileName.$extension")
 
-		fun componentFile(component: Component, fileName: String, extension: String = "yml"): JetFile =
-			generate(Path("JETData") / "#${component.identity}@${component.vendor.identity}" / "$fileName.$extension")
+		fun componentFile(component: VendorsIdentifiable<Component>, fileName: String, extension: String = "yml"): JetFile =
+			generate(Path("JETData") / "#${component.identity}@${component.vendorIdentity.identity}" / "$fileName.$extension")
 
 		fun versionFile(fileName: String, extension: String = "yml") =
 			generate(Path("JETData") / bukkitVersion / "$fileName.$extension")
