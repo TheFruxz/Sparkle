@@ -49,6 +49,14 @@ fun <T, C : Collection<T>> C.toArrayList() = ArrayList(this)
  */
 fun <T> Array<out T>.toArrayList() = ArrayList(this.toList())
 
+fun <T, C : Collection<T>> C.stackRandom(times: Int) = buildString {
+	repeat(times) { append(random()) }
+}
+
+fun <T> Array<out T>.stackRandom(times: Int) = buildString {
+	repeat(times) { append(random()) }
+}
+
 val <T, C : Collection<T>> C.first: T
 	get() = first()
 
