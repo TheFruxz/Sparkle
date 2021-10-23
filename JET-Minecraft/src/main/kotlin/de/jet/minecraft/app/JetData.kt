@@ -3,8 +3,11 @@ package de.jet.minecraft.app
 import de.jet.library.extension.data.jetPath
 import de.jet.minecraft.app.JetData.File.BRAIN
 import de.jet.minecraft.app.JetData.File.CONFIG
-import de.jet.minecraft.app.JetData.File.ESSENTIALS
-import de.jet.minecraft.app.component.essentials.point.PointingData
+import de.jet.minecraft.app.JetData.File.ESSENTIALS_CONFIG
+import de.jet.minecraft.app.JetData.File.ESSENTIALS_WORLDS
+import de.jet.minecraft.app.component.essentials.point.PointConfig
+import de.jet.minecraft.app.component.essentials.world.WorldConfig
+import de.jet.minecraft.app.component.essentials.world.tree.WorldTree
 import de.jet.minecraft.tool.data.DataTransformer
 import de.jet.minecraft.tool.data.JetFile
 import de.jet.minecraft.tool.data.Preference
@@ -43,17 +46,32 @@ object JetData {
 		default = setOf<String>()
 	).transformer(DataTransformer.setCollection())
 
+	// ESSENTIALS component
+
 	val savedPoints = Preference(
-		file = ESSENTIALS,
+		file = ESSENTIALS_CONFIG,
 		path = jetPath("savedPoints"),
-		default = PointingData(emptyList())
+		default = PointConfig(emptyList()),
+	).transformer(DataTransformer.jsonObject())
+
+	val worldConfig = Preference(
+		file = ESSENTIALS_WORLDS,
+		path = jetPath("worldConfig"),
+		default = WorldConfig(emptyList(), emptyList()),
+	).transformer(DataTransformer.jsonObject())
+
+	val worldStructure = Preference(
+		file = ESSENTIALS_WORLDS,
+		path = jetPath("worldStructure"),
+		default = WorldTree.renderBase(worldConfig.content).structure(),
 	).transformer(DataTransformer.jsonObject())
 
 	object File {
 
 		val CONFIG = JetFile.rootFile("system-config")
 		val BRAIN = JetFile.rootFile("system-memory")
-		val ESSENTIALS = JetFile.dummyComponentFile("Essentials", "JET", "config")
+		val ESSENTIALS_CONFIG = JetFile.dummyComponentFile("Essentials", "JET", "config")
+		val ESSENTIALS_WORLDS = JetFile.dummyComponentFile("Essentials", "JET", "worlds")
 		val TESTING = JetFile.rootFile("system-testing")
 
 	}

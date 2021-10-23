@@ -78,7 +78,7 @@ class PointInterchange(vendor: App) : Interchange(
 
 							points.removeAll { it.identity.equals(parameters.last(), true) }
 
-							JetData.savedPoints.content = PointingData(points)
+							JetData.savedPoints.content = PointConfig(points)
 
 							getSystemTranslated(system, address("interchange.internal.essentials.point.edit.removed"))
 								.replaceVariables("point" to parameters.last())
@@ -136,7 +136,7 @@ class PointInterchange(vendor: App) : Interchange(
 						if (searchedPoint == null) {
 
 							JetData.savedPoints.content =
-								PointingData(points + Point(parameters.last(), executor.location))
+								PointConfig(points + Point(parameters.last(), executor.location))
 
 							getSystemTranslated(system, address("interchange.internal.essentials.point.edit.created"))
 								.replaceVariables("point" to parameters.last())

@@ -81,7 +81,7 @@ interface JetFile {
 			)
 
 		fun rootFile(fileName: String, extension: String = "yml") =
-			generate(kotlin.io.path.Path("JETData") / "ROOT" / "$fileName.$extension")
+			generate(Path("JETData") / "ROOT" / "$fileName.$extension")
 
 		fun componentFile(component: VendorsIdentifiable<Component>, fileName: String, extension: String = "yml"): JetFile =
 			generate(Path("JETData") / "#${component.identity}@${component.vendorIdentity.identity}" / "$fileName.$extension")

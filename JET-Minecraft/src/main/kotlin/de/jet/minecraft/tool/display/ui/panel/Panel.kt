@@ -22,15 +22,20 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
-class Panel(
-    label: Component = Component.text("$YELLOW${BOLD}Panel"),
-    val lines: Int = 3,
-    theme: ColorType = ColorType.GRAY,
-    openSound: SoundMelody? = null,
-    override var identity: String = "${UUID.randomUUID()}",
-    override var vendor: Identifiable<App> = system,
-    var playerSpecificUI: Panel.(player: Player, additionalParameters: Map<String, Any>) -> Panel = { _, _ -> this },
-    var icon: Item = theme.wool.item.apply {
+data class PanelReceiveData(
+	val receiver: Player,
+	val receiveParameters: Map<String, Any>,
+)
+
+data class Panel(
+	override var label: Component = Component.text("$YELLOW${BOLD}Panel"),
+	val lines: Int = 3,
+	override var theme: ColorType = ColorType.GRAY,
+	override var openSound: SoundMelody? = null,
+	override var identity: String = "${UUID.randomUUID()}",
+	override var vendor: Identifiable<App> = system,
+	var onReceiveEvent: Panel.(PanelReceiveData) -> Unit = { },
+	var icon: Item = theme.wool.item.apply {
 		lore = """
 			
 			This panel has no icon, override
@@ -39,7 +44,7 @@ class Panel(
 			   
 		""".trimIndent()
 	},
-    var borderProtection: Boolean = true,
+	var borderProtection: Boolean = true,
 ) : Logging, Container(label = label, size = lines * 9, theme = theme, openSound = openSound) {
 
 	init {
@@ -73,8 +78,8 @@ class Panel(
 	 */
 	val innerSlots by lazy { 0..computedInnerSlots.lastIndex }
 
-	fun playerSpecificUI(playerSpecificUI: Panel.(player: Player, additionalParameters: Map<String, Any>) -> Panel) {
-		this.playerSpecificUI = playerSpecificUI
+	fun onReceive(onReceive: Panel.(PanelReceiveData) -> Unit) {
+		this.onReceiveEvent = onReceive
 	}
 
 	fun placeInner(slot: Int, item: Item) {
@@ -151,7 +156,12 @@ class Panel(
 		}
 		sync {
 			if (humanEntity is Player) {
-				humanEntity.openInventory(playerSpecificUI(this@Panel, humanEntity, specificParameters).rawInventory)
+				var clone = (this@Panel.clone() as Panel)
+				with(clone) {
+					onReceiveEvent(this, PanelReceiveData(humanEntity, specificParameters))
+					clone = this
+				}
+				humanEntity.openInventory(clone.rawInventory)
 			} else
 				super.display(humanEntity)
 		}

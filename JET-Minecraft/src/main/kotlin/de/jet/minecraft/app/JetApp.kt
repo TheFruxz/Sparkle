@@ -3,6 +3,7 @@ package de.jet.minecraft.app
 import de.jet.library.extension.forceCast
 import de.jet.minecraft.app.component.chat.JetChatComponent
 import de.jet.minecraft.app.component.essentials.EssentialsComponent
+import de.jet.minecraft.app.component.essentials.world.tree.WorldTree
 import de.jet.minecraft.app.component.events.JetEventsComponent
 import de.jet.minecraft.app.component.feature.MarkingFeatureComponent
 import de.jet.minecraft.app.component.item.JetActionComponent
@@ -13,6 +14,7 @@ import de.jet.minecraft.app.interchange.ComponentInterchange
 import de.jet.minecraft.app.interchange.JETInterchange
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.mainLog
+import de.jet.minecraft.extension.o.buildSandBox
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.AppCompanion
 import de.jet.minecraft.tool.data.Preference
@@ -87,6 +89,12 @@ class JetApp : App() {
 
 		add(JETInterchange())
 		add(ComponentInterchange())
+
+		buildSandBox(this, "tree") {
+
+			WorldTree.FileSystem.demo().close().visualize()
+
+		}
 
 	}
 

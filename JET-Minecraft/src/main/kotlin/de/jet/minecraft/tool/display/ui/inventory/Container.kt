@@ -19,10 +19,10 @@ import kotlin.math.roundToInt
 
 open class Container(
 	var content: MutableMap<Int, Item> = mutableMapOf(),
-	var label: Component = Component.text("${GRAY}Container"),
+	open var label: Component = Component.text("${GRAY}Container"),
 	var size: Int = 9*3,
-	var theme: ColorType = ColorType.GRAY,
-	var openSound: SoundMelody? = null,
+	open var theme: ColorType = ColorType.GRAY,
+	open var openSound: SoundMelody? = null,
 	override var identity: String = "${UUID.randomUUID()}"
 ) : UI, Cloneable {
 

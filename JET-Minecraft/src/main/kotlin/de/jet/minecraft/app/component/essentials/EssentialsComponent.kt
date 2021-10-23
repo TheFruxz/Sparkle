@@ -1,6 +1,7 @@
 package de.jet.minecraft.app.component.essentials
 
 import de.jet.minecraft.app.component.essentials.point.PointInterchange
+import de.jet.minecraft.app.component.essentials.world.WorldInterchange
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.component.Component.RunType.AUTOSTART_MUTABLE
@@ -12,6 +13,7 @@ class EssentialsComponent(vendor: App = system) : SmartComponent(vendor, AUTOSTA
 
 	override fun component() {
 		interchange(PointInterchange(vendor))
+		interchange(WorldInterchange(vendor))
 	}
 
 }
