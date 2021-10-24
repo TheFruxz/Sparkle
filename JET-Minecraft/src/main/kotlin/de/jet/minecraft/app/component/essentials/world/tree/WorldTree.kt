@@ -178,7 +178,7 @@ object WorldTree {
 	object FileSystem {
 
 		fun buildTree(process: OpenWorldStructure.() -> Unit) = OpenWorldStructure(mutableListOf(
-			RenderFolder("/", "/", address("/"), emptyList(), false)
+			//RenderFolder("/", "/", address("/"), emptyList(), false)
 		)).apply(process)
 
 		fun OpenWorldStructure.folder(folderName: String, process: Pair<Address<RenderObject>, OpenWorldStructure>.() -> Unit = { }): Pair<Address<RenderObject>, OpenWorldStructure> {
