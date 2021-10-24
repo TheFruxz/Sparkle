@@ -90,7 +90,7 @@ class JetApp : App() {
 		add(JETInterchange())
 		add(ComponentInterchange())
 
-		buildSandBox(this, "tree") {
+		buildSandBox(this, "filesystem demo") {
 
 			WorldTree.FileSystem.demo().visualize(parameters.firstOrNull().toBoolean())
 

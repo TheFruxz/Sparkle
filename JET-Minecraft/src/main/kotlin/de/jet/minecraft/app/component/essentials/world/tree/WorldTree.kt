@@ -189,30 +189,6 @@ object WorldTree {
 	) = renderWorldStructure(base, true, path)
 
 	object FileSystem {
-
-		fun buildTree(process: OpenWorldStructure.() -> Unit) = OpenWorldStructure(mutableListOf(
-			RenderFolder("/", "/", address("/"), emptyList(), false)
-		)).apply(process)
-
-		fun OpenWorldStructure.folder(folderName: String, process: Pair<Address<RenderObject>, OpenWorldStructure>.() -> Unit = { }): Pair<Address<RenderObject>, OpenWorldStructure> {
-			smashedStructure.add(RenderFolder(folderName, folderName, address("/$folderName/"), emptyList(), false))
-			return address<RenderObject>("/$folderName/") to this
-		}
-
-		fun OpenWorldStructure.world(worldName: String): Pair<Address<RenderObject>, OpenWorldStructure> {
-			smashedStructure.add(RenderWorld(worldName, worldName, address("/$worldName"), emptyList(), false, emptyList()))
-			return address<RenderObject>("/$worldName") to this
-		}
-
-		fun Pair<Address<RenderObject>, OpenWorldStructure>.folder(folderName: String, process: Pair<Address<RenderObject>, OpenWorldStructure>.() -> Unit = { }): Pair<Address<RenderObject>, OpenWorldStructure> {
-			second.smashedStructure.add(RenderFolder(folderName, folderName, address(first.address + folderName + "/"), emptyList(), false))
-			return first to second
-		}
-
-		fun Pair<Address<RenderObject>, OpenWorldStructure>.world(worldName: String): Pair<Address<RenderObject>, OpenWorldStructure> {
-			second.smashedStructure.add(RenderWorld(worldName, worldName, address(first.address + worldName), emptyList(), false, emptyList()))
-			return first to second
-		}
 		fun demo() = WorldStructure(listOf(
 
 			RenderFolder("/", "/", address("/"), emptyList(), false),
