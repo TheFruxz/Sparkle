@@ -75,7 +75,7 @@ object JetData {
 		file = ESSENTIALS_WORLDS,
 		path = jetPath("worldStructure"),
 		default = WorldTree.renderBase(worldConfig.content).structure(),
-	).transformer(DataTransformer.jsonObject())
+	).transformer(DataTransformer.jsonRenderObject())
 
 	object File {
 

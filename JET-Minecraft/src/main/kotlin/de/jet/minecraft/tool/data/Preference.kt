@@ -127,6 +127,10 @@ data class Preference<SHELL : Any>(
 
 		}
 
+	fun editContent(process: SHELL.() -> Unit) {
+		content = content.apply(process)
+	}
+
 	fun <CORE : Any> transformer(
 		toCore: (SHELL.() -> CORE),
 		toShell: (CORE.() -> SHELL),

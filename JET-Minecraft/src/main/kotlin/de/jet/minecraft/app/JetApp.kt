@@ -1,6 +1,7 @@
 package de.jet.minecraft.app
 
 import de.jet.library.extension.forceCast
+import de.jet.library.extension.paper.worlds
 import de.jet.minecraft.app.component.chat.JetChatComponent
 import de.jet.minecraft.app.component.essentials.EssentialsComponent
 import de.jet.minecraft.app.component.essentials.world.tree.WorldTree
@@ -91,9 +92,15 @@ class JetApp : App() {
 		add(ComponentInterchange())
 
 		buildSandBox(this, "filesystem-demo") {
-
 			WorldTree.FileSystem.demo().visualize(parameters.firstOrNull().toBoolean())
+		}
 
+		buildSandBox(this, "filesystem-live") {
+			JetData.worldStructure.content.visualize()
+		}
+
+		buildSandBox(this, "importAllWorlds") {
+			worlds.map { it.name }.forEach(WorldTree.FileSystem::importWorld)
 		}
 
 	}

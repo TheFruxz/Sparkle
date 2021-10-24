@@ -9,6 +9,7 @@ import de.jet.library.tool.smart.positioning.Address.Companion.address
 import de.jet.library.tool.smart.positioning.Addressable
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.app.component.essentials.world.WorldConfig
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.WorldType
 
@@ -18,7 +19,7 @@ object WorldTree {
 
 	@Serializable
 	data class WorldStructure(
-		val smashedStructure: List<RenderObject>,
+		var smashedStructure: List<RenderObject>,
 	) : PromisingData {
 
 		private fun printFolderContents(folder: RenderFolder, onlyBase: Boolean = false) {
@@ -58,7 +59,7 @@ object WorldTree {
 		}
 
 		fun visualize(onlyBase: Boolean = false) {
-			printFolderContents(smashedStructure.first { it.address.address == "/" } as RenderFolder, onlyBase)
+			printFolderContents(RenderFolder("/", "/", address("/"), emptyList(), false), onlyBase)
 		}
 
 		val root: RenderFolder?
@@ -72,13 +73,14 @@ object WorldTree {
 		fun close() = WorldStructure(smashedStructure)
 	}
 
-	sealed interface RenderObject : Identifiable<RenderObject>, Addressable<RenderObject>, PromisingData {
+	interface RenderObject : Identifiable<RenderObject>, Addressable<RenderObject>, PromisingData {
 		val displayName: String
 		val labels: List<String>
 		val archived: Boolean
 	}
 
 	@Serializable
+	@SerialName("world")
 	data class RenderWorld(
 		override val displayName: String,
 		override val identity: String,
@@ -96,6 +98,7 @@ object WorldTree {
 	}
 
 	@Serializable
+	@SerialName("folder")
 	data class RenderFolder(
 		override val displayName: String,
 		override val identity: String,
@@ -157,10 +160,6 @@ object WorldTree {
 
 		}
 
-		if (onlyBaseFolder && resultFolders.none { it.address.address == basePath }) {
-			throw NoSuchElementException("basePath directory '$basePath' does not exist!")
-		}
-
 		resultWorlds.mutableReplaceWith(resultWorlds.filter {
 			if (onlyBaseFolder) {
 				it.address.address == "$basePath${it.identity}"
@@ -218,7 +217,12 @@ object WorldTree {
 			renderWorldStructure().worldExists(path)
 
 		fun importWorld(worldName: String) {
-
+			JetData.worldConfig.editContent {
+				importedWorlds = (importedWorlds + worldName).distinct()
+			}
+			JetData.worldStructure.editContent {
+				smashedStructure = (smashedStructure + RenderWorld(worldName, worldName, address("/$worldName"), emptyList(), false, emptyList())).distinct()
+			}
 		}
 
 		fun createWorld(worldName: String, worldType: WorldType, worldData: RenderWorld) {

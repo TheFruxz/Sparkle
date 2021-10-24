@@ -4,8 +4,18 @@ import de.jet.library.extension.collection.toArrayList
 import de.jet.library.extension.data.fromJson
 import de.jet.library.extension.data.toJson
 import de.jet.library.extension.tag.PromisingData
+import de.jet.minecraft.app.component.essentials.world.tree.WorldTree.RenderFolder
+import de.jet.minecraft.app.component.essentials.world.tree.WorldTree.RenderObject
+import de.jet.minecraft.app.component.essentials.world.tree.WorldTree.RenderWorld
+import de.jet.minecraft.app.component.essentials.world.tree.WorldTree.WorldStructure
 import de.jet.minecraft.tool.display.item.Item
 import de.jet.minecraft.tool.display.world.SimpleLocation
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 import org.bukkit.Location
 
 data class DataTransformer<SHELL: Any, CORE: Any>(
@@ -22,6 +32,22 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 
 		inline fun <reified T : PromisingData> jsonObject() =
 			DataTransformer<T, String>({ toJson() }, { fromJson() })
+
+		fun jsonRenderObject(): DataTransformer<WorldStructure, String> {
+			val module = SerializersModule {
+				polymorphic(RenderObject::class) {
+					subclass(RenderWorld::class)
+					subclass(RenderFolder::class)
+				}
+			}
+			val format = Json { serializersModule = module }
+
+			return DataTransformer({
+				format.encodeToString(this)
+			}, {
+				format.decodeFromString(this)
+			})
+		}
 
 		fun jsonItem() =
 			DataTransformer<Item, String>({ produceJson()}, { Item.produceByJson(this)!! })

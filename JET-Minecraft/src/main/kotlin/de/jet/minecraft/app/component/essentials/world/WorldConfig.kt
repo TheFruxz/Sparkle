@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class WorldConfig(
-	val importedWorlds: List<String>,
-	val autostartWorlds: List<String>,
+	var importedWorlds: List<String>,
+	var autostartWorlds: List<String>,
 ) : PromisingData

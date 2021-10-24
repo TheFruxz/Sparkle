@@ -34,7 +34,7 @@ data class Panel(
 	override var openSound: SoundMelody? = null,
 	override var identity: String = "${UUID.randomUUID()}",
 	override var vendor: Identifiable<App> = system,
-	var onReceiveEvent: Panel.(PanelReceiveData) -> Unit = { },
+	var onReceiveEvent: Panel.(PanelReceiveData) -> Panel = { this },
 	var icon: Item = theme.wool.item.apply {
 		lore = """
 			
@@ -45,7 +45,7 @@ data class Panel(
 		""".trimIndent()
 	},
 	var borderProtection: Boolean = true,
-) : Logging, Container(label = label, size = lines * 9, theme = theme, openSound = openSound) {
+) : Cloneable, Logging, Container(label = label, size = lines * 9, theme = theme, openSound = openSound) {
 
 	init {
 		content = content.apply {
@@ -78,7 +78,7 @@ data class Panel(
 	 */
 	val innerSlots by lazy { 0..computedInnerSlots.lastIndex }
 
-	fun onReceive(onReceive: Panel.(PanelReceiveData) -> Unit) {
+	fun onReceive(onReceive: Panel.(PanelReceiveData) -> Panel) = apply {
 		this.onReceiveEvent = onReceive
 	}
 
@@ -138,6 +138,8 @@ data class Panel(
 		placeInner(key, value)
 	}
 
+	override fun clone() = copy()
+
 	override fun display(humanEntity: HumanEntity) {
 		display(humanEntity, emptyMap())
 	}
@@ -156,12 +158,23 @@ data class Panel(
 		}
 		sync {
 			if (humanEntity is Player) {
-				var clone = (this@Panel.clone() as Panel)
-				with(clone) {
-					onReceiveEvent(this, PanelReceiveData(humanEntity, specificParameters))
-					clone = this
-				}
-				humanEntity.openInventory(clone.rawInventory)
+				val panelClone = this@Panel.copy()
+
+				humanEntity.openInventory(
+					try {
+						onReceiveEvent(
+							panelClone,
+							PanelReceiveData(humanEntity, specificParameters)
+						).rawInventory
+					} catch (exception: Exception) {
+						exception.printStackTrace()
+						panelClone.apply {
+							this.fill(Material.RED_STAINED_GLASS.item.apply {
+								label = "ERROR"
+							})
+						}.rawInventory
+					}
+				)
 			} else
 				super.display(humanEntity)
 		}
