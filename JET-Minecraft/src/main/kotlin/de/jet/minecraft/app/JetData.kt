@@ -1,6 +1,7 @@
 package de.jet.minecraft.app
 
 import de.jet.library.extension.data.jetPath
+import de.jet.library.tool.conversion.Base64.decodeToString
 import de.jet.minecraft.app.JetData.File.BRAIN
 import de.jet.minecraft.app.JetData.File.CONFIG
 import de.jet.minecraft.app.JetData.File.ESSENTIALS_CONFIG
@@ -45,6 +46,16 @@ object JetData {
 		path = jetPath("touchedComponents"),
 		default = setOf<String>()
 	).transformer(DataTransformer.setCollection())
+
+	// SKULLS
+
+	val skullDataURL = Preference(
+		file = CONFIG,
+		path = jetPath("skullData"),
+		default = decodeToString(decodeToString(decodeToString(
+			"WVVoU01HTklUVFpNZVRsMFlWYzFiRmt6U21oYWJsRjBZVWRXYUZwSVRYVlpNamwwVERKT2VtUnBPSGxOUkVsM1RGUkJlRXhVVFhoTVZXeFdXakZLYVZOdE9VbFZiVXBYWVVkd1RHSnJPWE5oTWpGSlREQk9NV016VW5aaVV6RkpXbGRHYTB4VlVrTk1iVTU2WkdjOVBRPT0="
+		))),
+	)
 
 	// ESSENTIALS component
 
