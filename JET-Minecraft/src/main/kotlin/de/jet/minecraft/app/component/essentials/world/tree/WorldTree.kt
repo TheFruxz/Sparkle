@@ -1,6 +1,7 @@
 package de.jet.minecraft.app.component.essentials.world.tree
 
 import de.jet.library.extension.collection.mutableReplaceWith
+import de.jet.library.extension.isNotNull
 import de.jet.library.extension.switchResult
 import de.jet.library.extension.tag.PromisingData
 import de.jet.library.tool.smart.identification.Identifiable
@@ -11,6 +12,9 @@ import de.jet.minecraft.app.JetData
 import de.jet.minecraft.app.component.essentials.world.WorldConfig
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.bukkit.Bukkit
+import org.bukkit.World
+import org.bukkit.WorldCreator
 import org.bukkit.WorldType
 
 object WorldTree {
@@ -127,9 +131,13 @@ object WorldTree {
 
 		fun structure() = WorldStructure(smash())
 
-		fun folderExists(path: Address<RenderObject>) = renderFolders.any { it.address.address == path.address }
+		fun getFolder(path: Address<RenderObject>) = renderFolders.firstOrNull { it.address == path }
 
-		fun worldExists(path: Address<RenderObject>) = renderWorlds.any { it.address.address == path.address }
+		fun folderExists(path: Address<RenderObject>) = getFolder(path).isNotNull
+
+		fun getWorld(path: Address<RenderObject>) = renderWorlds.firstOrNull { it.address == path }
+
+		fun worldExists(path: Address<RenderObject>) = getWorld(path).isNotNull
 
 	}
 
@@ -188,57 +196,94 @@ object WorldTree {
 	) = renderWorldStructure(base, true, path)
 
 	object FileSystem {
-		fun demo() = WorldStructure(listOf(
-
-			RenderFolder("/", "/", address("/"), emptyList(), false),
-
-			RenderFolder("onefolder", "onefolder", address("/onefolder/"), emptyList(), false),
-			RenderFolder("onefolder1", "onefolder1", address("/onefolder1/"), emptyList(), false),
-			RenderFolder("onefolder2", "onefolder2", address("/onefolder2/"), emptyList(), false),
-
-			RenderWorld("oneworld", "oneworld", address("/oneworld"), emptyList(), false, emptyList()),
-			RenderWorld("oneworld1", "oneworld1", address("/onefolder1/oneworld1"), emptyList(), false, emptyList()),
-			RenderWorld("oneworld2", "oneworld2", address("/onefolder2/oneworld2"), emptyList(), false, emptyList()),
-
-		))
 
 		fun directoryExists(path: Address<RenderObject>) =
 			renderWorldStructure().folderExists(path)
 
-		fun createDirectory(path: Address<RenderObject>) {
+		fun getDirectory(path: Address<RenderObject>) =
+			renderWorldStructure().getFolder(path)
 
+		fun createDirectory(path: Address<RenderObject>) {
+			assert(path.address.endsWith("/")) { "path does not define a folder (missing / at the end)" }
+
+			JetData.worldStructure.editContent {
+				val name = path.address.removeSurrounding("/").split("/").last()
+				smashedStructure = (smashedStructure + RenderFolder(name, name, path, emptyList(), false)).distinct()
+			}
 		}
 
-		fun deleteDirectory(path: Address<RenderObject>) {
+		fun deleteDirectory(path: Address<RenderObject>, keepContent: Boolean = false) {
+			assert(path.address.endsWith("/")) { "path does not define a folder (missing / at the end)" }
 
+			JetData.worldStructure.editContent {
+				val directory = getDirectory(path)
+				if (directory != null) {
+
+					// TODO the content of the folder have to be moved to the root directory
+					// TODO: 25.10.21 to move, maybe use moveobject function at every content-object
+					// TODO: 25.10.21 MOVE-EXPERIMENTAL START 
+
+					computeFolderContents(directory).smash().forEach {
+						if (keepContent) {
+							moveObject(it.address, address("/"))
+						} else {
+							when (it) {
+								is RenderWorld -> deleteWorld(it.address)
+								is RenderFolder -> deleteDirectory(it.address)
+							}
+						}
+					}
+					// TODO: 25.10.21 EXPERIMENTAL END
+
+					smashedStructure = smashedStructure.toMutableList().apply {
+						removeAll { it.address == path }
+					}
+
+				} else
+					throw NoSuchElementException("No directory")
+			}
 		}
 
 		fun worldExists(path: Address<RenderObject>) =
 			renderWorldStructure().worldExists(path)
 
-		fun importWorld(worldName: String) {
+		fun getWorld(path: Address<RenderObject>) =
+			renderWorldStructure().getWorld(path)
+
+		fun importWorld(worldName: String, renderWorld: RenderWorld = RenderWorld(worldName, worldName, address("/$worldName"), emptyList(), false, emptyList())) {
 			JetData.worldConfig.editContent {
 				importedWorlds = (importedWorlds + worldName).distinct()
 			}
 			JetData.worldStructure.editContent {
-				smashedStructure = (smashedStructure + RenderWorld(worldName, worldName, address("/$worldName"), emptyList(), false, emptyList())).distinct()
+				smashedStructure = (smashedStructure + renderWorld).distinct()
 			}
 		}
 
-		fun createWorld(worldName: String, worldType: WorldType, worldData: RenderWorld) {
-
+		fun createWorld(worldName: String, worldEnvironment: World.Environment, worldType: WorldType, worldData: RenderWorld) {
+			Bukkit.createWorld(WorldCreator(worldName).environment(worldEnvironment).type(worldType))
+			importWorld(worldName, worldData.copy(identity = worldName))
 		}
 
 		/**
 		 * Removes the world from the config
 		 */
 		fun ignoreWorld(path: Address<RenderObject>) {
+			assert(!path.address.endsWith("/")) { "path does not define a world (/ at the end)" }
+
 			// TODO: 23.10.2021 remove from config & autostart words
 			// TODO: 23.10.2021 remove from structure
 		}
 
 		fun deleteWorld(path: Address<RenderObject>) {
+			assert(!path.address.endsWith("/")) { "path does not define a world (/ at the end)" }
+
 			// TODO: 23.10.2021 completly ignoreWorld() & delete of the real world folder
+		}
+
+		fun moveObject(currentPath: Address<RenderObject>, futurePath: Address<RenderObject>) {
+			// TODO: 25.10.21 Check if the currentPath object exists
+			// TODO: 25.10.21 check if current is folder or world (world is easier than folder, because folder have contents)
+			// TODO: 25.10.21 rename path to future path of world/folder and its folder-contents
 		}
 
 	}
