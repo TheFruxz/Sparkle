@@ -46,7 +46,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 	private fun renderItem(view: WorldPanelViewProperties, renderObject: RenderObject): Item {
 		return when (renderObject) {
 			is RenderWorld -> texturedSkull(32442).apply {
-				val world = Bukkit.getWorld(identity)
+				val world = Bukkit.getWorlds().firstOrNull { it.name == renderObject.identity.lowercase() }
 
 				identity = renderObject.identity
 
