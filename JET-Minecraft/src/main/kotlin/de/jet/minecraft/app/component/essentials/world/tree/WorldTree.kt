@@ -1,6 +1,7 @@
 package de.jet.minecraft.app.component.essentials.world.tree
 
 import de.jet.library.extension.collection.mutableReplaceWith
+import de.jet.library.extension.switchResult
 import de.jet.library.extension.tag.PromisingData
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.positioning.Address
@@ -13,43 +14,55 @@ import org.bukkit.WorldType
 
 object WorldTree {
 
+	private var pathDepth = -1
+
 	@Serializable
 	data class WorldStructure(
 		val smashedStructure: List<RenderObject>,
 	) : PromisingData {
 
-		private var pathDepth = 0
-
-		private fun printFolderContents(folder: RenderFolder) {
+		private fun printFolderContents(folder: RenderFolder, onlyBase: Boolean = false) {
 			pathDepth++
+
 			println(buildString {
 				repeat(pathDepth) { append("   ") }
-				append("|- [${folder.identity}]")
+				append("|- [${folder.identity}] ${folder.isRootDirectory.switchResult("(root)", "")}")
 			})
+
 			computeFolderContents(folder, this).let { result ->
 
-				pathDepth++
 				result.renderWorlds.forEach { printWorld(it) }
-				result.renderFolders.forEach { printFolderContents(it) }
-				pathDepth--
+				result.renderFolders.forEach {
+					if (onlyBase) {
+						pathDepth++
+						println(buildString {
+							repeat(pathDepth) { append("   ") }
+							append("|- [${it.identity}]")
+						})
+						pathDepth--
+					} else
+						printFolderContents(it)
+				}
 			}
 			pathDepth--
+
 		}
 
 		private fun printWorld(world: RenderWorld) {
+			pathDepth++
 			println(buildString {
 				repeat(pathDepth) { append("   ") }
 				append("|- ${world.identity}.world")
 			})
+			pathDepth--
 		}
 
-		fun visualize() {
-			println("AB-start")
-			smashedStructure.forEach { println(it.address.address) }
-			println("AB-end")
-			println("|- ROOT: [/]")
-			printFolderContents(smashedStructure.first { it.address.address == "/" } as RenderFolder)
+		fun visualize(onlyBase: Boolean = false) {
+			printFolderContents(smashedStructure.first { it.address.address == "/" } as RenderFolder, onlyBase)
 		}
+
+		val root: RenderFolder?
+			get() = smashedStructure.firstOrNull { it.address.address == "/" } as RenderFolder?
 
 	}
 
@@ -95,6 +108,8 @@ object WorldTree {
 			// / at the end, because it is a directory
 			assert(address.address.endsWith("$identity/")) { "value address (path) have to include itself at the end" }
 		}
+
+		val isRootDirectory = address.address == "/"
 
 	}
 
@@ -146,20 +161,18 @@ object WorldTree {
 			throw NoSuchElementException("basePath directory '$basePath' does not exist!")
 		}
 
-		if (basePath != "/") {
-			resultWorlds.mutableReplaceWith(resultWorlds.filter {
-				if (onlyBaseFolder) {
-					it.address.address == "$basePath${it.identity}"
-				} else
-					it.address.address.startsWith(basePath)
-			})
-			resultFolders.mutableReplaceWith(resultFolders.filter {
-				if (onlyBaseFolder) {
-					it.address.address == "$basePath${it.identity}/" && it.address.address != basePath
-				} else
-					it.address.address.startsWith(basePath) && it.address.address != basePath
-			})
-		}
+		resultWorlds.mutableReplaceWith(resultWorlds.filter {
+			if (onlyBaseFolder) {
+				it.address.address == "$basePath${it.identity}"
+			} else
+				it.address.address.startsWith(basePath)
+		})
+		resultFolders.mutableReplaceWith(resultFolders.filter {
+			if (onlyBaseFolder) {
+				it.address.address == "$basePath${it.identity}/" && it.address.address != basePath
+			} else
+				it.address.address.startsWith(basePath) && it.address.address != basePath
+		})
 
 		return RenderBranchResult("/", resultWorlds, resultFolders)
 	}
@@ -178,7 +191,7 @@ object WorldTree {
 	object FileSystem {
 
 		fun buildTree(process: OpenWorldStructure.() -> Unit) = OpenWorldStructure(mutableListOf(
-			//RenderFolder("/", "/", address("/"), emptyList(), false)
+			RenderFolder("/", "/", address("/"), emptyList(), false)
 		)).apply(process)
 
 		fun OpenWorldStructure.folder(folderName: String, process: Pair<Address<RenderObject>, OpenWorldStructure>.() -> Unit = { }): Pair<Address<RenderObject>, OpenWorldStructure> {
@@ -200,33 +213,19 @@ object WorldTree {
 			second.smashedStructure.add(RenderWorld(worldName, worldName, address(first.address + worldName), emptyList(), false, emptyList()))
 			return first to second
 		}
+		fun demo() = WorldStructure(listOf(
 
-		fun demo() = buildTree {
+			RenderFolder("/", "/", address("/"), emptyList(), false),
 
-			world("demo-world")
-			world("more-world")
+			RenderFolder("onefolder", "onefolder", address("/onefolder/"), emptyList(), false),
+			RenderFolder("onefolder1", "onefolder1", address("/onefolder1/"), emptyList(), false),
+			RenderFolder("onefolder2", "onefolder2", address("/onefolder2/"), emptyList(), false),
 
-			folder("test")
-			folder("lol")
-			folder("more") {
+			RenderWorld("oneworld", "oneworld", address("/oneworld"), emptyList(), false, emptyList()),
+			RenderWorld("oneworld1", "oneworld1", address("/onefolder1/oneworld1"), emptyList(), false, emptyList()),
+			RenderWorld("oneworld2", "oneworld2", address("/onefolder2/oneworld2"), emptyList(), false, emptyList()),
 
-				world("some")
-				world("more")
-				world("worlds")
-
-				folder("demo1")
-				folder("demo2")
-				folder("demo3")
-				folder("demo4") {
-					folder("x1") {
-						world("doit")
-					}
-					folder("x2") {
-						world("smooth")
-					}
-				}
-			}
-		}
+		))
 
 		fun directoryExists(path: Address<RenderObject>) =
 			renderWorldStructure().folderExists(path)

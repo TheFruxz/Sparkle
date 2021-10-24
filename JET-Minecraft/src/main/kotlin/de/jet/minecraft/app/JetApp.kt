@@ -92,7 +92,7 @@ class JetApp : App() {
 
 		buildSandBox(this, "tree") {
 
-			WorldTree.FileSystem.demo().close().visualize()
+			WorldTree.FileSystem.demo().visualize(parameters.firstOrNull().toBoolean())
 
 		}
 
