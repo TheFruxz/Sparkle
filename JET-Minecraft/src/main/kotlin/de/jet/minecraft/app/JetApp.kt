@@ -91,10 +91,6 @@ class JetApp : App() {
 		add(JETInterchange())
 		add(ComponentInterchange())
 
-		buildSandBox(this, "filesystem-demo") {
-			WorldTree.FileSystem.demo().visualize(parameters.firstOrNull().toBoolean())
-		}
-
 		buildSandBox(this, "filesystem-live") {
 			JetData.worldStructure.content.visualize()
 		}
