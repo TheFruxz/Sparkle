@@ -4,7 +4,7 @@ import de.jet.library.extension.forceCast
 import de.jet.library.extension.paper.worlds
 import de.jet.minecraft.app.component.chat.JetChatComponent
 import de.jet.minecraft.app.component.essentials.EssentialsComponent
-import de.jet.minecraft.app.component.essentials.world.tree.WorldTree
+import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer
 import de.jet.minecraft.app.component.events.JetEventsComponent
 import de.jet.minecraft.app.component.feature.MarkingFeatureComponent
 import de.jet.minecraft.app.component.item.JetActionComponent
@@ -96,7 +96,7 @@ class JetApp : App() {
 		}
 
 		buildSandBox(this, "importAllWorlds") {
-			worlds.map { it.name }.forEach(WorldTree.FileSystem::importWorld)
+			worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld)
 		}
 
 	}

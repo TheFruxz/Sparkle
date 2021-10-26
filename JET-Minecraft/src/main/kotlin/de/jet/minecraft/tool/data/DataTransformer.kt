@@ -4,10 +4,10 @@ import de.jet.library.extension.collection.toArrayList
 import de.jet.library.extension.data.fromJson
 import de.jet.library.extension.data.toJson
 import de.jet.library.extension.tag.PromisingData
-import de.jet.minecraft.app.component.essentials.world.tree.WorldTree.RenderFolder
-import de.jet.minecraft.app.component.essentials.world.tree.WorldTree.RenderObject
-import de.jet.minecraft.app.component.essentials.world.tree.WorldTree.RenderWorld
-import de.jet.minecraft.app.component.essentials.world.tree.WorldTree.WorldStructure
+import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer.RenderFolder
+import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer.RenderObject
+import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer.RenderWorld
+import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer.WorldStructure
 import de.jet.minecraft.tool.display.item.Item
 import de.jet.minecraft.tool.display.world.SimpleLocation
 import kotlinx.serialization.decodeFromString

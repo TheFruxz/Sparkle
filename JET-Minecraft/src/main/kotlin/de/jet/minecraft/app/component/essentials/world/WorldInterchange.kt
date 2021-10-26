@@ -4,11 +4,11 @@ import de.jet.library.extension.paper.getWorld
 import de.jet.library.extension.tag.PromisingData
 import de.jet.library.tool.smart.positioning.Address.Companion.address
 import de.jet.minecraft.app.component.essentials.world.WorldInterchange.WorldPanelViewProperties.ViewType.*
-import de.jet.minecraft.app.component.essentials.world.tree.WorldTree
-import de.jet.minecraft.app.component.essentials.world.tree.WorldTree.FileSystem
-import de.jet.minecraft.app.component.essentials.world.tree.WorldTree.RenderFolder
-import de.jet.minecraft.app.component.essentials.world.tree.WorldTree.RenderObject
-import de.jet.minecraft.app.component.essentials.world.tree.WorldTree.RenderWorld
+import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer
+import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer.FileSystem
+import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer.RenderFolder
+import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer.RenderObject
+import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer.RenderWorld
 import de.jet.minecraft.extension.display.ui.buildPanel
 import de.jet.minecraft.extension.display.ui.item
 import de.jet.minecraft.extension.display.ui.skull
@@ -130,7 +130,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 	}
 
 	val panel = buildPanel(lines = 5) {
-		WorldTree.FileSystem.createDirectory(address("/test/"))
+		WorldRenderer.FileSystem.createDirectory(address("/test/"))
 
 		set(38, texturedSkull(9885).apply {
 			label = "Create"
@@ -142,7 +142,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 	}.onReceive {
 		assert(receiveParameters["view"] != null) { "view-property not exist!" }
 		val view = receiveParameters["view"] as WorldPanelViewProperties
-		val viewContent = WorldTree.renderOverview(view.path).let {
+		val viewContent = WorldRenderer.renderOverview(view.path).let {
 			return@let when (view.viewType) {
 				ALL -> it.renderFolders.also { println("folder: ${it.size}") } + it.renderWorlds.also { println("world: ${it.size}") }
 				DIRECTORIES -> it.renderFolders

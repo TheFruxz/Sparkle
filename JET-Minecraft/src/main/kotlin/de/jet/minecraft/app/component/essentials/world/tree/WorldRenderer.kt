@@ -17,7 +17,7 @@ import org.bukkit.World
 import org.bukkit.WorldCreator
 import org.bukkit.WorldType
 
-object WorldTree {
+object WorldRenderer {
 
 	private var pathDepth = -1
 

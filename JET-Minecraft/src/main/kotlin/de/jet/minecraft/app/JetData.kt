@@ -8,7 +8,7 @@ import de.jet.minecraft.app.JetData.File.ESSENTIALS_CONFIG
 import de.jet.minecraft.app.JetData.File.ESSENTIALS_WORLDS
 import de.jet.minecraft.app.component.essentials.point.PointConfig
 import de.jet.minecraft.app.component.essentials.world.WorldConfig
-import de.jet.minecraft.app.component.essentials.world.tree.WorldTree
+import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer
 import de.jet.minecraft.tool.data.DataTransformer
 import de.jet.minecraft.tool.data.JetFile
 import de.jet.minecraft.tool.data.Preference
@@ -74,7 +74,7 @@ object JetData {
 	val worldStructure = Preference(
 		file = ESSENTIALS_WORLDS,
 		path = jetPath("worldStructure"),
-		default = WorldTree.renderBase(worldConfig.content).structure(),
+		default = WorldRenderer.renderBase(worldConfig.content).structure(),
 	).transformer(DataTransformer.jsonRenderObject())
 
 	object File {
