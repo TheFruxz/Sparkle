@@ -18,15 +18,129 @@ import java.util.*
 import kotlin.math.roundToInt
 
 open class Container(
-	var content: MutableMap<Int, Item> = mutableMapOf(),
+	open var content: MutableMap<Int, Item> = mutableMapOf(),
 	open var label: Component = Component.text("${GRAY}Container"),
-	var size: Int = 9*3,
+	var size: Int = 9 * 3,
 	open var theme: ColorType = ColorType.GRAY,
 	open var openSound: SoundMelody? = null,
 	override var identity: String = "${UUID.randomUUID()}"
 ) : UI, Cloneable {
 
-	fun replace(that: Material, withThat: Material) {
+	open val rawInventory: Inventory
+		get() {
+			val inventory = createInventory(null, size, label)
+
+			content.forEach { (key, value) ->
+				if (key < inventory.size) {
+					inventory.setItem(key, value.produce())
+				} else
+					System.err.println("Failed to produce item: $value to slot $key because it is higher that the size-content max ${inventory.size}!")
+			}
+
+			return inventory
+		}
+
+	override fun display(receiver: Player) = display(humanEntity = receiver)
+
+	override fun display(humanEntity: HumanEntity) {
+		sync {
+			humanEntity.openInventory(rawInventory)
+		}
+	}
+
+	override fun display(receiver: Player, specificParameters: Map<String, Any>) =
+		display(receiver)
+
+	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>) =
+		display(humanEntity)
+
+	fun <T : Container> T.place(slot: Int, item: Item) = apply {
+		content[slot] = item
+	}
+
+	fun <T : Container> T.place(slot: Int, stack: ItemStack) = place(slot = slot, item = Item(stack))
+
+	fun <T : Container> T.place(slot: Int, material: Material) = place(slot = slot, item = Item(material))
+
+	fun <T : Container> T.place(rangeSlots: IntRange, item: Item) = apply {
+		rangeSlots.forEach {
+			place(it, item)
+		}
+	}
+
+	fun <T : Container> T.place(rangeSlots: IntRange, itemStack: ItemStack) = apply {
+		rangeSlots.forEach {
+			place(it, itemStack)
+		}
+	}
+
+	fun <T : Container> T.place(rangeSlots: IntRange, material: Material) = apply {
+		rangeSlots.forEach {
+			place(it, material)
+		}
+	}
+
+	fun <T : Container> T.place(arraySlots: Array<Int>, item: Item) = apply {
+		arraySlots.forEach {
+			place(it, item)
+		}
+	}
+
+	fun <T : Container> T.place(arraySlots: Array<Int>, itemStack: ItemStack) = apply {
+		arraySlots.forEach {
+			place(it, itemStack)
+		}
+	}
+
+	fun <T : Container> T.place(arraySlots: Array<Int>, material: Material) = apply {
+		arraySlots.forEach {
+			place(it, material)
+		}
+	}
+
+	fun <T : Container> T.place(arraySlots: Collection<Int>, item: Item) = apply {
+		arraySlots.forEach {
+			place(it, item)
+		}
+	}
+
+	fun <T : Container> T.place(arraySlots: Collection<Int>, itemStack: ItemStack) = apply {
+		arraySlots.forEach {
+			place(it, itemStack)
+		}
+	}
+
+	fun <T : Container> T.place(arraySlots: Collection<Int>, material: Material) = apply {
+		arraySlots.forEach {
+			place(it, material)
+		}
+	}
+
+	fun <T : Container> T.place(listSlots: List<Int>, item: Item) = apply {
+		listSlots.forEach {
+			place(it, item)
+		}
+	}
+
+	fun <T : Container> T.place(listSlots: List<Int>, material: Material) = apply {
+		listSlots.forEach {
+			place(it, material)
+		}
+	}
+
+	fun <T : Container> T.place(map: Map<Int, Item>) = apply {
+		map.forEach { (key, value) ->
+			place(key, value)
+		}
+	}
+
+	fun <T : Container> T.placeover(content: Map<Int, Item>) = apply {
+		for ((key, value) in content) {
+			this.content[key] = value
+		}
+	}
+
+	fun <T : Container> T.replace(that: Material, withThat: Material) = apply {
 		val out = HashMap<Int, Item>()
 
 		content.forEach { (key, value) ->
@@ -45,7 +159,7 @@ open class Container(
 		content = out
 	}
 
-	fun replace(that: Item, withThat: Item) {
+	fun <T : Container> T.replace(that: Item, withThat: Item) = apply {
 		val out = HashMap<Int, Item>()
 
 		content.forEach { (key, value) ->
@@ -55,7 +169,7 @@ open class Container(
 		content = out
 	}
 
-	fun replace(that: Material, withThat: Item) {
+	fun <T : Container> T.replace(that: Material, withThat: Item) = apply {
 		val out = HashMap<Int, Item>()
 
 		content.forEach { (key, value) ->
@@ -74,7 +188,7 @@ open class Container(
 		content = out
 	}
 
-	fun replace(that: Item, withThat: Material) {
+	fun <T : Container> T.replace(that: Item, withThat: Material) = apply {
 		val out = HashMap<Int, Item>()
 
 		content.forEach { (key, value) ->
@@ -93,27 +207,27 @@ open class Container(
 		content = out
 	}
 
-	fun background(item: Item) = replace(Material.AIR, item)
+	fun <T : Container> T.background(item: Item) = replace(Material.AIR, item)
 
-	fun background(material: Material) = background(Item(material))
+	fun <T : Container> T.background(material: Material) = background(Item(material))
 
-	fun fill(vararg items: Item) {
+	fun <T : Container> T.fill(vararg items: Item) = apply {
 		(0 until size).forEach { slot ->
 			content[slot] = items.random()
 		}
 	}
 
-	fun fill(vararg materials: Material) = fill(*materials.map { Item(it) }.toTypedArray())
+	fun <T : Container> T.fill(vararg materials: Material) = fill(*materials.map { Item(it) }.toTypedArray())
 
-	fun border(item: Item, schema: Array<Int>) {
+	fun <T : Container> T.border(item: Item, schema: Array<Int>) = apply {
 		schema.forEach { position ->
 			content[position] = item
 		}
 	}
 
-	fun border(material: Material, schema: Array<Int>) = border(Item(material), schema)
+	fun <T : Container> T.border(material: Material, schema: Array<Int>) = border(Item(material), schema)
 
-	fun border(item: Item) {
+	fun <T : Container> T.border(item: Item) = apply {
 		val fullBorders = size >= 9 * 2
 		val sideRows = if (fullBorders) {
 			(size.toDouble() / 9.0).let {
@@ -136,142 +250,50 @@ open class Container(
 
 	}
 
-	fun border(material: Material) = border(item = material.item)
+	fun <T : Container> T.border(material: Material) = border(item = material.item)
 
-	val rawInventory: Inventory
-		get() {
-			val inventory = createInventory(null, size, label)
+	fun <T : Container> T.placeover(container: Container) = placeover(container.content)
 
-			content.forEach { (key, value) ->
-				if (key < inventory.size) {
-					inventory.setItem(key, value.produce())
-				} else
-					System.err.println("Failed to produce item: $value to slot $key because it is higher that the size-content max ${inventory.size}!")
-			}
+	fun <T : Container> T.placeover(vararg items: Pair<Int, Item>) = placeover(mapOf(*items))
 
-			return inventory
-		}
+	operator fun <T : Container> T.set(i: Int, value: Item) = place(i, value)
 
-	fun place(slot: Int, item: Item) {
-		content[slot] = item
-	}
+	operator fun <T : Container> T.set(i: Int, value: ItemStack) = place(i, value)
 
-	fun place(slot: Int, stack: ItemStack) = place(slot = slot, item = Item(stack))
+	operator fun <T : Container> T.set(i: Int, value: Material) = place(i, value)
 
-	fun place(slot: Int, material: Material) = place(slot = slot, item = Item(material))
+	operator fun <T : Container> T.set(i: IntRange, value: Item) = place(i, value)
 
-	fun place(rangeSlots: IntRange, item: Item) = rangeSlots.forEach {
-		place(it, item)
-	}
+	operator fun <T : Container> T.set(i: IntRange, value: ItemStack) = place(i, value)
 
-	fun place(rangeSlots: IntRange, itemStack: ItemStack) = rangeSlots.forEach {
-		place(it, itemStack)
-	}
+	operator fun <T : Container> T.set(i: IntRange, value: Material) = place(i, value)
 
-	fun place(rangeSlots: IntRange, material: Material) = rangeSlots.forEach {
-		place(it, material)
-	}
+	operator fun <T : Container> T.set(i: Array<Int>, value: Item) = place(i, value)
 
-	fun place(arraySlots: Array<Int>, item: Item) = arraySlots.forEach {
-		place(it, item)
-	}
+	operator fun <T : Container> T.set(i: Array<Int>, value: ItemStack) = place(i, value)
 
-	fun place(arraySlots: Array<Int>, itemStack: ItemStack) = arraySlots.forEach {
-		place(it, itemStack)
-	}
+	operator fun <T : Container> T.set(i: Array<Int>, value: Material) = place(i, value)
 
-	fun place(arraySlots: Array<Int>, material: Material) = arraySlots.forEach {
-		place(it, material)
-	}
+	operator fun <T : Container> T.set(i: Collection<Int>, value: Item) = place(i, value)
 
-	fun place(arraySlots: Collection<Int>, item: Item) = arraySlots.forEach {
-		place(it, item)
-	}
+	operator fun <T : Container> T.set(i: Collection<Int>, value: ItemStack) = place(i, value)
 
-	fun place(arraySlots: Collection<Int>, itemStack: ItemStack) = arraySlots.forEach {
-		place(it, itemStack)
-	}
+	operator fun <T : Container> T.set(i: Collection<Int>, value: Material) = place(i, value)
 
-	fun place(arraySlots: Collection<Int>, material: Material) = arraySlots.forEach {
-		place(it, material)
-	}
+	operator fun <T : Container> T.set(vararg i: Int, value: Item) = set(i.toTypedArray(), value)
 
-	fun place(listSlots: List<Int>, item: Item) = listSlots.forEach {
-		place(it, item)
-	}
+	operator fun <T : Container> T.set(vararg i: Int, value: ItemStack) = set(i.toTypedArray(), value)
 
-	fun place(listSlots: List<Int>, material: Material) = listSlots.forEach {
-		place(it, material)
-	}
+	operator fun <T : Container> T.set(vararg i: Int, value: Material) = set(i.toTypedArray(), value)
 
-	fun place(map: Map<Int, Item>) = map.forEach { (key, value) ->
-		place(key, value)
-	}
+	operator fun <T : Container> T.get(i: Int) = content[i]
 
-	fun placeover(content: Map<Int, Item>) {
+	operator fun <T : Container> T.get(c: Collection<Int>) = content.toList().filter { c.contains(it.first) }.toMap().values
 
-		for ((key, value) in content) {
-			this.content[key] = value
-		}
+	operator fun <T : Container> T.get(a: Array<Int>) = get(a.toList())
 
-	}
+	operator fun <T : Container> T.get(i: IntRange) = get(c = i.asIterable().toList())
 
-	fun placeover(container: Container) = placeover(container.content)
-
-	fun placeover(vararg items: Pair<Int, Item>) = placeover(mapOf(*items))
-
-	operator fun set(i: Int, value: Item) = place(i, value)
-
-	operator fun set(i: Int, value: ItemStack) = place(i, value)
-
-	operator fun set(i: Int, value: Material) = place(i, value)
-
-	operator fun set(i: IntRange, value: Item) = place(i, value)
-
-	operator fun set(i: IntRange, value: ItemStack) = place(i, value)
-
-	operator fun set(i: IntRange, value: Material) = place(i, value)
-
-	operator fun set(i: Array<Int>, value: Item) = place(i, value)
-
-	operator fun set(i: Array<Int>, value: ItemStack) = place(i, value)
-
-	operator fun set(i: Array<Int>, value: Material) = place(i, value)
-
-	operator fun set(i: Collection<Int>, value: Item) = place(i, value)
-
-	operator fun set(i: Collection<Int>, value: ItemStack) = place(i, value)
-
-	operator fun set(i: Collection<Int>, value: Material) = place(i, value)
-
-	operator fun set(vararg i: Int, value: Item) = set(i.toTypedArray(), value)
-
-	operator fun set(vararg i: Int, value: ItemStack) = set(i.toTypedArray(), value)
-
-	operator fun set(vararg i: Int, value: Material) = set(i.toTypedArray(), value)
-
-	operator fun get(i: Int) = content[i]
-
-	operator fun get(c: Collection<Int>) = content.toList().filter { c.contains(it.first) }.toMap().values
-
-	operator fun get(a: Array<Int>) = get(a.toList())
-
-	operator fun get(i: IntRange) = get(c = i.asIterable().toList())
-
-	operator fun get(vararg i: Int) = get(i.toTypedArray())
-
-	override fun display(receiver: Player) = display(humanEntity = receiver)
-
-	override fun display(humanEntity: HumanEntity) {
-		sync {
-			humanEntity.openInventory(rawInventory)
-		}
-	}
-
-	override fun display(receiver: Player, specificParameters: Map<String, Any>) =
-		display(receiver)
-
-	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>) =
-		display(humanEntity)
+	operator fun <T : Container> T.get(vararg i: Int) = get(i.toTypedArray())
 
 }

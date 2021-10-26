@@ -81,6 +81,14 @@ object WorldTree {
 		val displayName: String
 		val labels: List<String>
 		val archived: Boolean
+
+		fun renderLabels() = if (labels.isEmpty()) {
+			"No Labels"
+		} else
+			labels.joinToString()
+
+		fun renderArchiveStatus() = if (archived) "§bArchived" else "§aActive"
+
 	}
 
 	@Serializable

@@ -1,5 +1,6 @@
 package de.jet.minecraft.tool.display.ui.panel
 
+import de.jet.library.extension.paper.createInventory
 import de.jet.library.extension.paper.createKey
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache
@@ -19,22 +20,31 @@ import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
 data class PanelReceiveData(
+	var panel: Panel,
 	val receiver: Player,
 	val receiveParameters: Map<String, Any>,
-)
+) {
+
+	fun editPanel(process: Panel.() -> Unit) {
+		panel = panel.apply(process)
+	}
+
+}
 
 data class Panel(
+	override var content: MutableMap<Int, Item> = mutableMapOf(),
 	override var label: Component = Component.text("$YELLOW${BOLD}Panel"),
 	val lines: Int = 3,
 	override var theme: ColorType = ColorType.GRAY,
 	override var openSound: SoundMelody? = null,
 	override var identity: String = "${UUID.randomUUID()}",
 	override var vendor: Identifiable<App> = system,
-	var onReceiveEvent: Panel.(PanelReceiveData) -> Panel = { this },
+	var onReceiveEvent: PanelReceiveData.() -> Unit = {  },
 	var icon: Item = theme.wool.item.apply {
 		lore = """
 			
@@ -44,15 +54,17 @@ data class Panel(
 			   
 		""".trimIndent()
 	},
-	var borderProtection: Boolean = true,
+	var overridingBorderProtection: Boolean = false,
 ) : Cloneable, Logging, Container(label = label, size = lines * 9, theme = theme, openSound = openSound) {
 
 	init {
-		content = content.apply {
-			border(theme.stainedGlassPane.item.blankLabel().apply {
-				if (borderProtection)
-					dataPut(system.createKey("panelBorder"), 1)
-			})
+		if (content.isEmpty()) { // do not write a border, if already content is inside
+			content = content.apply {
+				border(theme.stainedGlassPane.item.blankLabel().apply {
+					if (overridingBorderProtection)
+						dataPut(system.createKey("panelBorder"), 1)
+				})
+			}
 		}
 	}
 
@@ -78,8 +90,8 @@ data class Panel(
 	 */
 	val innerSlots by lazy { 0..computedInnerSlots.lastIndex }
 
-	fun onReceive(onReceive: Panel.(PanelReceiveData) -> Panel) = apply {
-		this.onReceiveEvent = onReceive
+	fun onReceive(onReceive: PanelReceiveData.() -> Unit) = apply {
+		onReceiveEvent = onReceive
 	}
 
 	fun placeInner(slot: Int, item: Item) {
@@ -138,6 +150,20 @@ data class Panel(
 		placeInner(key, value)
 	}
 
+	override val rawInventory: Inventory
+		get() {
+			val inventory = createInventory(null, size, label)
+
+			content.forEach { (key, value) ->
+				if (key < inventory.size) {
+					inventory.setItem(key, value.produce())
+				} else
+					System.err.println("Failed to produce item: $value to slot $key because it is higher that the size-content max ${inventory.size}!")
+			}
+
+			return inventory
+		}
+
 	override fun clone() = copy()
 
 	override fun display(humanEntity: HumanEntity) {
@@ -152,23 +178,19 @@ data class Panel(
 			set(4, icon.apply {
 				label = this@Panel.label.legacyString
 				dataPut(system.createKey("panelId"), this@Panel.identity, true)
-				if (borderProtection)
+				if (overridingBorderProtection)
 					dataPut(system.createKey("panelBorder"), 1)
 			})
 		}
 		sync {
 			if (humanEntity is Player) {
-				val panelClone = this@Panel.copy()
-
 				humanEntity.openInventory(
 					try {
-						onReceiveEvent(
-							panelClone,
-							PanelReceiveData(humanEntity, specificParameters)
-						).rawInventory
+						copy().content.values.forEach { println(it.material.name) }
+						PanelReceiveData(copy(), humanEntity, specificParameters).apply(onReceiveEvent).panel.rawInventory
 					} catch (exception: Exception) {
 						exception.printStackTrace()
-						panelClone.apply {
+						copy().apply {
 							this.fill(Material.RED_STAINED_GLASS.item.apply {
 								label = "ERROR"
 							})
