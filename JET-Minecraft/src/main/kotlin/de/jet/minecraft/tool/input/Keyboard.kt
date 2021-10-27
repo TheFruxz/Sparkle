@@ -6,6 +6,7 @@ import de.jet.library.extension.tag.PromisingData
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.type.Breakable
 import de.jet.minecraft.app.JetCache
+import de.jet.minecraft.app.JetData
 import de.jet.minecraft.extension.display.ui.buildPanel
 import de.jet.minecraft.extension.display.ui.item
 import de.jet.minecraft.extension.special.texturedSkull
@@ -113,7 +114,7 @@ object Keyboard {
 			val keys: List<Key>
 		) : PromisingData
 
-		private val renderKeys =
+		private val renderKeys = JetData.keyConfig.content.keys
 
 		fun renderKeyboard(holder: HumanEntity, keyboardType: Type = ANY, message: String = "", vararg extensions: Extension = emptyArray()): RenderingState {
 
