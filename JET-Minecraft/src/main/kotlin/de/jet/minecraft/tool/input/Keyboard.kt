@@ -64,7 +64,7 @@ object Keyboard {
 
 	object RunningEngine {
 
-		// todo @Serializable
+		// todo @Serializable, no real reason, only for the convenience
 		data class PlayerKeyboardPort(
 			val player: UUID,
 			val keyboard: UUID,
