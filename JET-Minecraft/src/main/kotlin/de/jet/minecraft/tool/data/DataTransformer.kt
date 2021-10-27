@@ -47,6 +47,9 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 			}, {
 				format.decodeFromString(this)
 			})
+
+			// TODO: 27.10.2021 For this whole process of own classes and interfaces in json, we need a system for that, that you only register a class/interface via
+			// a global function or something like that. interface Data : JsonRegistered, or similar also possible!
 		}
 
 		fun jsonItem() =
