@@ -2,6 +2,7 @@ package de.jet.minecraft.tool.input
 
 import de.jet.library.extension.collection.skip
 import de.jet.library.extension.paper.getOfflinePlayer
+import de.jet.library.extension.tag.PromisingData
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.type.Breakable
 import de.jet.minecraft.app.JetCache
@@ -107,98 +108,12 @@ object Keyboard {
 			val write: String = displayInline,
 		) : Identifiable<Key>
 
-		private val renderKeys = listOf(
-			Key("A", 44004, "A", "A"),
-			Key("B", 44003, "B", "B"),
-			Key("C", 44002, "C", "C"),
-			Key("D", 44001, "D", "D"),
-			Key("E", 44000, "E", "E"),
-			Key("F", 43999, "F", "F"),
-			Key("G", 43998, "G", "G"),
-			Key("H", 43997, "H", "H"),
-			Key("I", 43996, "I", "I"),
-			Key("J", 43995, "J", "J"),
-			Key("K", 43994, "K", "K"),
-			Key("L", 43993, "L", "L"),
-			Key("M", 43992, "M", "M"),
-			Key("N", 43991, "N", "N"),
-			Key("O", 43990, "O", "O"),
-			Key("P", 43989, "P", "P"),
-			Key("Q", 43988, "Q", "Q"),
-			Key("R", 43987, "R", "R"),
-			Key("S", 43986, "S", "S"),
-			Key("T", 43985, "T", "T"),
-			Key("U", 43984, "U", "U"),
-			Key("V", 43983, "V", "V"),
-			Key("W", 43982, "W", "W"),
-			Key("X", 43981, "X", "X"),
-			Key("Y", 43980, "Y", "Y"),
-			Key("Z", 43979, "Z", "Z"),
+		@Serializable
+		data class KeyConfiguration(
+			val keys: List<Key>
+		) : PromisingData
 
-			// German (here, until extension exists for this)
-			Key("Ü", 44006, "Ü", "Ü"),
-			Key("Ö", 44007, "Ö", "Ö"),
-			Key("Ä", 44008, "Ä", "Ä"),
-
-			// Numbers
-			Key("0", 44061, "0", "0"),
-			Key("1", 44060, "1", "1"),
-			Key("2", 44059, "2", "2"),
-			Key("3", 44058, "3", "3"),
-			Key("4", 44057, "4", "4"),
-			Key("5", 44056, "5", "5"),
-			Key("6", 44055, "6", "6"),
-			Key("7", 44054, "7", "7"),
-			Key("8", 44053, "8", "8"),
-			Key("9", 44052, "9", "9"),
-
-			// Symbols
-			Key("@", 44085, "@", "@"),
-			Key("#", 44088, "#", "#"),
-			Key("_", 44089, "_", "_"),
-			Key("=", 44090, "=", "="),
-			Key("°", 44091, "°", "°"),
-			Key("+", 44092, "+", "+"),
-			Key("%", 44093, "%", "%"),
-			Key("-", 44094, "-", "-"),
-			Key("...", 44095, "...", "..."),
-			Key("\"", 44099, "\n", "\n"),
-			Key("?", 44101, "?", "?"),
-			Key("!", 44103, "!", "!"),
-			Key("&", 44104, "&", "&"),
-			Key(":", 44105, ":", ":"),
-			Key(";", 44106, ";", ";"),
-			Key(",", 44107, ",", ","),
-			Key(".", 44108, ".", "."),
-			Key("}", 44022, "}", "}"),
-			Key("{", 44023, "{", "{"),
-			Key("]", 44024, "]", "]"),
-			Key("[", 44025, "[", "["),
-			Key(")", 44026, ")", ")"),
-			Key("(", 44027, "(", "("),
-			Key("/", 44029, "/", "/"),
-			Key("\\", 44028, "\\", "\\"),
-
-			// Special Symbols
-			Key("_REFRESH", 44086, "Refresh", "↺"),
-			Key("_CHECK", 44087, "Check", "✔︎"),
-			Key("_BLANK", 44005, "Blank", " "),
-
-			// Special Symbols without direct use
-			Key("_ARROW-FORWARD", 44011, ">", ">"),
-			Key("_ARROW-BACKWARD", 44013, "<", "<"),
-			Key("_ARROW-RIGHT-UP", 44014, "?>", "?>"),
-			Key("_ARROW-RIGHT-DOWN", 44015, "?>", "?>"),
-			Key("_ARROW-DOUBLE-RIGHT", 44009, ">>", ">>"),
-			Key("_ARROW-RIGHT", 44018, "▶", "▶"),
-			Key("_ARROW-LEFT-UP", 44016, "?<", "?<"),
-			Key("_ARROW-LEFT-DOWN", 44017, "?<", "?<"),
-			Key("_ARROW-DOUBLE-LEFT", 44012, "<<", "<<"),
-			Key("_ARROW-LEFT", 44019, "◀", "◀"),
-			Key("_ARROW-UP", 44020, "▲", "▲"),
-			Key("_ARROW-DOWN", 40021, "▼", "▼"),
-
-		)
+		private val renderKeys =
 
 		fun renderKeyboard(holder: HumanEntity, keyboardType: Type = ANY, message: String = "", vararg extensions: Extension = emptyArray()): RenderingState {
 
