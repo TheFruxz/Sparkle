@@ -10,7 +10,11 @@ import org.bukkit.inventory.ItemStack
 
 fun buildContainer(lines: Int = 3, action: Container.() -> Unit) = Container(size = lines*9).apply(action)
 
+fun emptyContainer(lines: Int = 3) = Container(size = lines*9)
+
 fun buildPanel(lines: Int = 3, action: Panel.() -> Unit) = Panel(lines = lines).apply(action)
+
+fun emptyPanel(lines: Int = 3) = Panel(lines = lines)
 
 fun Inventory.copyRaw(title: Component) = createInventory(this.holder, this.size, title).apply {
 	setContents(this.contents.filterNotNull().toTypedArray())

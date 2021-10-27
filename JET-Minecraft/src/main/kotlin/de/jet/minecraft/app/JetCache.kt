@@ -12,6 +12,7 @@ import de.jet.minecraft.tool.data.Preference
 import de.jet.minecraft.tool.display.item.action.ItemClickAction
 import de.jet.minecraft.tool.display.item.action.ItemInteractAction
 import de.jet.minecraft.tool.display.ui.panel.PanelFlag
+import de.jet.minecraft.tool.input.Keyboard.RunningEngine.PlayerKeyboardPort
 import de.jet.minecraft.tool.position.LocationBox
 import de.jet.minecraft.tool.timing.cooldown.Cooldown
 import de.jet.minecraft.tool.timing.tasky.Tasky
@@ -54,6 +55,8 @@ object JetCache : AppCache {
 		internal set
 
 	val runningTasks = mutableListOf<Int>()
+
+	val runningKeyboards = mutableMapOf<PlayerKeyboardPort, String>()
 
 	val buildModePlayers = mutableSetOf<Identity<out OfflinePlayer>>()
 

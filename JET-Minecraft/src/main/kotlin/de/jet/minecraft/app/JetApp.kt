@@ -20,7 +20,9 @@ import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.AppCompanion
 import de.jet.minecraft.tool.data.Preference
 import de.jet.minecraft.tool.display.world.SimpleLocation
+import de.jet.minecraft.tool.input.Keyboard
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import org.bukkit.entity.Player
 import java.util.logging.Level
 
 class JetApp : App() {
@@ -97,6 +99,11 @@ class JetApp : App() {
 
 		buildSandBox(this, "importAllWorlds") {
 			worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld)
+		}
+
+		buildSandBox(this, "keyboard-demo") {
+			executor as Player
+			Keyboard.RenderEngine.renderKeyboard(executor).mainKeyboard.display(executor)
 		}
 
 	}
