@@ -7,12 +7,13 @@ import de.jet.minecraft.runtime.event.interact.PlayerInteractAtBlockEvent
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.event.EventListener
 import de.jet.minecraft.structure.component.Component.RunType.AUTOSTART_MUTABLE
+import de.jet.minecraft.structure.component.Component.RunType.DISABLED
 import de.jet.minecraft.structure.component.SmartComponent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 
-class JetBuildModeComponent(vendor: App = system) : SmartComponent(vendor, AUTOSTART_MUTABLE) {
+class JetBuildModeComponent(vendor: App = system) : SmartComponent(vendor, DISABLED) {
 
 	override val thisIdentity = "BuildMode"
 
