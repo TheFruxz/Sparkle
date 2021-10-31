@@ -147,12 +147,7 @@ object Keyboard {
 
 				placeInner(innerSlots, Material.GRAY_STAINED_GLASS_PANE.item.blankLabel()) // inner key-marking
 
-				this[48..50] = generateKey("_BLANK").apply {
-					label = "SPACE"
-					skullQuirk {
-						owningPlayer = getOfflinePlayer("MHF_Wood")
-					}
-				}
+				this[48..50] = generateKey("_BLANK").putLabel("SPACE")
 
 				this[46] = generateKey("_ARROW-DOUBLE-LEFT").skullQuirk { owningPlayer = getOfflinePlayer("MHF_ArrowLeft") }
 				this[47] = generateKey("_ARROW-LEFT").skullQuirk { owningPlayer = getOfflinePlayer("MHF_ArrowLeft") }

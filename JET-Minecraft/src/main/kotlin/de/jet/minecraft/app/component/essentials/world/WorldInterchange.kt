@@ -169,15 +169,15 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 								appendLine("§7Labels: §e${it.renderLabels()}")
 								appendLine("§7Archive: ${it.renderArchiveStatus()}")
 								appendLine()
-								appendLine("§a§lLEFT-CLICK§7 - edit this directory")
-								appendLine("§a§lRIGHT-CLICK§7 - go to parent directory")
+								appendLine("§a§lLEFT-CLICK§7 - go to parent directory")
+								appendLine("§a§lRIGHT-CLICK§7 - edit this directory")
 
 							}
 
 							putClickAction {
 								when (click) {
-									LEFT, SHIFT_LEFT -> whoClicked.sendMessage("edit")
-									RIGHT, SHIFT_RIGHT -> {
+									RIGHT, SHIFT_RIGHT -> whoClicked.sendMessage("edit")
+									LEFT, SHIFT_LEFT -> {
 										displayPanel(whoClicked, view.copy(path = view.path.removeSurrounding("/").split("/").dropLast(1).joinToString("/", prefix = "/", postfix = "/").replaceFirst("//", "/")))
 									}
 									else -> whoClicked.sendMessage("nothing")

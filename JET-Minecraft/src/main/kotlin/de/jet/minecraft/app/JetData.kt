@@ -165,7 +165,7 @@ object JetData {
 				// Special Symbols
 				Key("_REFRESH", 44086, "Refresh", "↺"),
 				Key("_CHECK", 44087, "Check", "✔︎"),
-				Key("_BLANK", 44005, "Blank", " "),
+				Key("_BLANK", 22757, "Blank", " "),
 
 				// Special Symbols without direct use
 				Key("_ARROW-FORWARD", 44011, ">", ">"),
