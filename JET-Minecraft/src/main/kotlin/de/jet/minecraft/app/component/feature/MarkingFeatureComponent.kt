@@ -2,10 +2,10 @@ package de.jet.minecraft.app.component.feature
 
 import de.jet.library.extension.collection.replaceVariables
 import de.jet.library.extension.data.shorter
+import de.jet.library.extension.paper.templateLocation
 import de.jet.minecraft.app.JetCache.playerMarkerBoxes
 import de.jet.minecraft.extension.display.BOLD
 import de.jet.minecraft.extension.display.YELLOW
-import de.jet.minecraft.extension.display.message
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.display.ui.item
 import de.jet.minecraft.extension.get
@@ -23,6 +23,7 @@ import de.jet.minecraft.structure.component.SmartComponent
 import de.jet.minecraft.tool.display.item.Item
 import de.jet.minecraft.tool.display.message.Transmission.Level.*
 import de.jet.minecraft.tool.position.LocationBox
+import net.kyori.adventure.text.Component
 import org.bukkit.FluidCollisionMode.ALWAYS
 import org.bukkit.Location
 import org.bukkit.Material
@@ -36,7 +37,8 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 		interchange(MarkingToolInterchange(vendor))
 	}
 
-	private class MarkingToolInterchange(vendor: App) : Interchange(vendor, "markingtool", requiredExecutorType = PLAYER, requiresAuthorization = true) {
+	private class MarkingToolInterchange(vendor: App) :
+		Interchange(vendor, "markingtool", requiredExecutorType = PLAYER, requiresAuthorization = true) {
 
 		fun positionData(location: Location) = buildString {
 			append('(')
@@ -56,13 +58,13 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 			""".trimIndent()
 			putInteractAction {
 				val targetBlock = whoInteract.rayTraceBlocks(10.0, ALWAYS)?.hitBlock
+				val actualBox = playerMarkerBoxes[player.identityObject]
+				val currentBox = actualBox ?: LocationBox(targetBlock?.location ?: templateLocation)
 
-				if (targetBlock != null) {
-					val actualBox = playerMarkerBoxes[player.identityObject]
-					val currentBox = actualBox ?: LocationBox(targetBlock.location)
-					val targetLocation = targetBlock.location
-					val targetPrint = positionData(targetBlock.location)
-					if (!whoInteract.isSneaking) {
+				if (!whoInteract.isSneaking) {
+					if (targetBlock != null) {
+						val targetLocation = targetBlock.location
+						val targetPrint = positionData(targetBlock.location)
 						when {
 							action.isLeftClick -> {
 								denyInteraction()
@@ -75,10 +77,22 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 									lang["component.markingTool.action.set"].replaceVariables(
 										"n" to 1,
 										"pos" to targetPrint
-									).notification(APPLIED, whoInteract).display()
-									lang["component.markingTool.action.view.distance.other"].replaceVariables(
-										"distance" to targetLocation.distance(currentBox.last).shorter
-									).message(whoInteract).display()
+									).notification(APPLIED, whoInteract).hover(
+										Component.text(
+											buildString {
+												appendLine(
+													lang["component.markingTool.action.view.distance.other"].replaceVariables(
+														"distance" to targetLocation.distance(currentBox.last).shorter
+													)
+												)
+												append(
+													lang["component.markingTool.action.view.distance.volume"].replaceVariables(
+														"volume" to currentBox.blockVolume
+													)
+												)
+											}
+										)
+									).display()
 								} else
 									lang["component.markingTool.action.duplicate"].replaceVariables(
 										"pos" to targetPrint
@@ -95,35 +109,60 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 									lang["component.markingTool.action.set"].replaceVariables(
 										"n" to 2,
 										"pos" to targetPrint
-									).notification(APPLIED, whoInteract).display()
-									lang["component.markingTool.action.view.distance.other"].replaceVariables(
-										"distance" to targetLocation.distance(currentBox.first).shorter
-									).message(whoInteract).display()
+									).notification(APPLIED, whoInteract).hover(
+										Component.text(
+											buildString {
+												appendLine(
+													lang["component.markingTool.action.view.distance.other"].replaceVariables(
+														"distance" to targetLocation.distance(currentBox.first).shorter
+													)
+												)
+												append(
+													lang["component.markingTool.action.view.distance.volume"].replaceVariables(
+														"volume" to currentBox.blockVolume
+													)
+												)
+											}
+										)
+									).display()
 								} else
 									lang["component.markingTool.action.duplicate"].replaceVariables(
 										"pos" to targetPrint
 									).notification(FAIL, whoInteract).display()
 							}
 						}
-					} else {
 
-						if (playerMarkerBoxes[player.identityObject] != null) {
-							lang["component.markingTool.action.view.detail"].replaceVariables(
-								"1" to positionData(currentBox.first),
-								"2" to positionData(currentBox.last),
-							).notification(INFO, whoInteract).display()
-							lang["component.markingTool.action.view.distance.both"].replaceVariables(
-								"distance" to currentBox.first.distance(currentBox.last).shorter
-							).message(whoInteract).display()
+					} else
+						lang["component.markingTool.action.wrongLook"]
+							.notification(FAIL, whoInteract).display()
 
-						} else
-							lang["component.markingTool.action.view.notSet"]
-								.notification(FAIL, whoInteract).display()
-					}
+				} else {
 
-				} else
-					lang["component.markingTool.action.wrongLook"]
-						.notification(FAIL, whoInteract).display()
+					if (playerMarkerBoxes[player.identityObject] != null) {
+						lang["component.markingTool.action.view.detail"].replaceVariables(
+							"1" to positionData(currentBox.first),
+							"2" to positionData(currentBox.last),
+						).notification(INFO, whoInteract).hover(
+							Component.text(
+								buildString {
+									appendLine(
+										lang["component.markingTool.action.view.distance.both"].replaceVariables(
+											"distance" to currentBox.distance.shorter
+										)
+									)
+									append(
+										lang["component.markingTool.action.view.distance.volume"].replaceVariables(
+											"volume" to currentBox.blockVolume
+										)
+									)
+								}
+							)
+						).display()
+
+					} else
+						lang["component.markingTool.action.view.notSet"]
+							.notification(FAIL, whoInteract).display()
+				}
 
 			}
 		}
