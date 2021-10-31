@@ -130,7 +130,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 	}
 
 	val panel = buildPanel(lines = 5) {
-		WorldRenderer.FileSystem.createDirectory(address("/test/"))
+		FileSystem.createDirectory(address("/test/"))
 
 		set(38, texturedSkull(9885).apply {
 			label = "Create"
@@ -198,13 +198,13 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 			panelFlags = setOf(NOT_CLICK_ABLE, NOT_MOVE_ABLE, NOT_DRAG_ABLE)
 
 			innerSlots.forEach { innerSlot ->
-				val viewContentSlot = (innerSlot + (innerSlots.last * (view.page - 1))).also { println("slot: $it") }
+				val viewContentSlot = (innerSlot + (innerSlots.last * (view.page - 1)))
 				val item = viewContent.getOrNull(viewContentSlot)
 
 				if (item != null) {
 					placeInner(innerSlot, renderItem(view, item))
-				} else
-					placeInner(innerSlot, Material.RED_WOOL.item)
+				}// else
+				// TODO	placeInner(innerSlot, Material.RED_WOOL.item)
 
 			}
 
