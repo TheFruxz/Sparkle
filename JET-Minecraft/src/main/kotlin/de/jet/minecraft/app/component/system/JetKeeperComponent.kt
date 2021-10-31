@@ -1,8 +1,10 @@
 package de.jet.minecraft.app.component.system
 
+import de.jet.library.extension.catchException
 import de.jet.library.extension.collection.withForEach
 import de.jet.library.extension.display.display
 import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.minecraft.app.JetApp
 import de.jet.minecraft.app.JetCache.livingCooldowns
 import de.jet.minecraft.app.JetCache.registeredApplications
 import de.jet.minecraft.extension.debugLog
@@ -49,8 +51,17 @@ class JetKeeperComponent(vendor: App = system) : SmartComponent(vendor, AUTOSTAR
 			}
 
 			registeredApplications.withForEach {
-				appCache.dropEverything(CLEAN)
-				debugLog("removed appCache (level: CLEAN) from app $appLabel")
+				try {
+					appCache.dropEverything(CLEAN)
+					debugLog("removed appCache (level: CLEAN) from app $appLabel")
+				} catch (exception: Exception) {
+
+					if (JetApp.debugMode)
+						catchException(exception)
+
+					debugLog("failed to clean appCache of '$appLabel'${ if (JetApp.debugMode.not()) ", enable debugMode to see the stacktrace" else "" }!")
+
+				}
 			}
 
 		}
