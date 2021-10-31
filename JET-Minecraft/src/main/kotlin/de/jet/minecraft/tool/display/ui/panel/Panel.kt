@@ -34,6 +34,8 @@ data class PanelReceiveData(
 		panel = panel.apply(process)
 	}
 
+	fun updateView() = panel.display(receiver, receiveParameters)
+
 }
 
 data class Panel(

@@ -16,6 +16,7 @@ import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.WorldCreator
 import org.bukkit.WorldType
+import kotlin.io.path.Path
 
 object WorldRenderer {
 
@@ -283,14 +284,18 @@ object WorldRenderer {
 				importedWorlds = importedWorlds.filterNot { equals(identity) }
 				autostartWorlds = autostartWorlds.filterNot { equals(identity) }
 			}
-			// TODO: 23.10.2021 remove from config & autostart words
-			// TODO: 23.10.2021 remove from structure
+
+			JetData.worldStructure.editContent {
+				smashedStructure = smashedStructure.filterNot { it.identity == identity }
+			}
 		}
 
 		fun deleteWorld(path: Address<RenderObject>) {
 			assert(!path.address.endsWith("/")) { "path does not define a world (/ at the end)" }
+			val identity = path.address.split('/').last()
 
-			// TODO: 23.10.2021 completly ignoreWorld() & delete of the real world folder
+			ignoreWorld(path)
+			Path("$identity/").toFile().deleteRecursively()
 		}
 
 		fun moveObject(currentPath: Address<RenderObject>, futurePath: Address<RenderObject>) {

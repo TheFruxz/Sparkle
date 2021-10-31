@@ -2,6 +2,7 @@ package de.jet.minecraft.app.component.essentials.world
 
 import de.jet.library.extension.paper.getWorld
 import de.jet.library.extension.tag.PromisingData
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.positioning.Address.Companion.address
 import de.jet.minecraft.app.component.essentials.world.WorldInterchange.WorldPanelViewProperties.ViewType.*
 import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer
@@ -22,6 +23,7 @@ import de.jet.minecraft.tool.display.ui.panel.PanelFlag.*
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.World.Environment.NETHER
+import org.bukkit.WorldCreator
 import org.bukkit.WorldType.AMPLIFIED
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
@@ -73,6 +75,29 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 						appendLine("§a§lMIDDLE-CLICK§7 - unload this world")
 						appendLine("§a§lRIGHT-CLICK§7 - edit this world")
 					}
+
+					putClickAction(async = false) {
+						val identity = Identifiable.custom<RenderWorld>(lore.lines().first().removePrefix("§7Identity: §e"))
+						val address = address<RenderObject>(lore.lines()[1].removePrefix("§7Path: §e"))
+
+						when (click) {
+							LEFT, SHIFT_LEFT -> {
+								whoClicked.teleport(getWorld(identity.identity)!!.spawnLocation)
+							}
+							MIDDLE -> {
+								whoClicked.sendMessage("unloading...")
+								Bukkit.unloadWorld(identity.identity, true)
+								whoClicked.sendMessage("unloaded!")
+								displayPanel(whoClicked, WorldPanelViewProperties())
+							}
+							RIGHT, SHIFT_RIGHT -> {
+								whoClicked.sendMessage("edit")
+							}
+							else -> { }
+						}
+
+					}
+
 				} else {
 					label = "§7${renderObject.displayName}"
 					lore = buildString {
@@ -88,6 +113,26 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 						appendLine("§a§lLEFT-CLICK§7 - load this world")
 						appendLine("§a§lRIGHT-CLICK§7 - edit this world")
 					}
+
+					putClickAction(async = false) {
+						val identity = Identifiable.custom<RenderWorld>(lore.lines().first().removePrefix("§7Identity: §e"))
+						val address = address<RenderObject>(lore.lines()[1].removePrefix("§7Path: §e"))
+
+						when (click) {
+							LEFT, SHIFT_LEFT -> {
+								whoClicked.sendMessage("loading...")
+								Bukkit.createWorld(WorldCreator.name(identity.identity))
+								whoClicked.sendMessage("loaded!")
+								displayPanel(whoClicked, WorldPanelViewProperties())
+							}
+							RIGHT, SHIFT_RIGHT -> {
+								whoClicked.sendMessage("edit")
+							}
+							else -> { }
+						}
+
+					}
+
 				}
 
 			}
@@ -109,7 +154,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 					appendLine("§a§lRIGHT-CLICK§7 - edit this directory")
 				}
 
-				putClickAction {
+				putClickAction(async = false) {
 					when (click) {
 						LEFT, SHIFT_LEFT -> {
 							displayPanel(whoClicked, view.copy(path = renderObject.address.address))
