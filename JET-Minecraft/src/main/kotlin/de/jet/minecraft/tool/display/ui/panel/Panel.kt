@@ -44,7 +44,7 @@ data class Panel(
 	override var openSound: SoundMelody? = null,
 	override var identity: String = "${UUID.randomUUID()}",
 	override var vendor: Identifiable<App> = system,
-	var onReceiveEvent: PanelReceiveData.() -> Unit = {  },
+	var onReceiveEvent: PanelReceiveData.() -> Unit = { },
 	var icon: Item = theme.wool.item.apply {
 		lore = """
 			
@@ -164,7 +164,7 @@ data class Panel(
 			return inventory
 		}
 
-	override fun clone() = copy()
+	override fun clone() = Panel(content, label, lines, theme, openSound, identity, vendor, onReceiveEvent, icon, overridingBorderProtection)
 
 	override fun display(humanEntity: HumanEntity) {
 		display(humanEntity, emptyMap())
@@ -173,33 +173,48 @@ data class Panel(
 	override fun display(receiver: Player) =
 		display(humanEntity = receiver)
 
-	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>) {
-		content = content.apply {
-			set(4, icon.apply {
-				label = this@Panel.label.legacyString
-				dataPut(system.createKey("panelId"), this@Panel.identity, true)
-				if (overridingBorderProtection)
+
+	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>): Unit = with(copy()) {
+		val previousState = this@Panel.content.toMap()
+
+		this@with.content = this@with.content.apply {
+			set(4, this@with.icon.apply {
+
+				label = this@with.label.legacyString
+
+				dataPut(system.createKey("panelId"), this@with.identity, true)
+
+				if (overridingBorderProtection) {
 					dataPut(system.createKey("panelBorder"), 1)
+				}
+
 			})
 		}
-		sync {
-			if (humanEntity is Player) {
-				humanEntity.openInventory(
-					try {
-						copy().content.values.forEach { println(it.material.name) }
-						PanelReceiveData(copy(), humanEntity, specificParameters).apply(onReceiveEvent).panel.rawInventory
-					} catch (exception: Exception) {
-						exception.printStackTrace()
-						copy().apply {
-							this.fill(Material.RED_STAINED_GLASS.item.apply {
-								label = "ERROR"
-							})
-						}.rawInventory
-					}
-				)
-			} else
-				super.display(humanEntity)
-		}
+
+		if (humanEntity is Player) {
+
+			val editedPanel = try {
+
+				PanelReceiveData(this@with, humanEntity, specificParameters)
+					.apply(onReceiveEvent)
+					.panel
+
+			} catch (exception: Exception) {
+
+				exception.printStackTrace()
+
+				this@with.apply {
+					fill(Material.RED_STAINED_GLASS_PANE)
+				}
+
+			}
+
+			sync { humanEntity.openInventory(editedPanel.rawInventory) }
+
+		} else
+			super.display(humanEntity, specificParameters)
+
+		this@Panel.content = previousState.toMutableMap()
 	}
 
 	override fun display(receiver: Player, specificParameters: Map<String, Any>) =
