@@ -144,7 +144,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 		val view = receiveParameters["view"] as WorldPanelViewProperties
 		val viewContent = WorldRenderer.renderOverview(view.path).let {
 			return@let when (view.viewType) {
-				ALL -> it.renderFolders.also { println("folder: ${it.size}") } + it.renderWorlds.also { println("world: ${it.size}") }
+				ALL -> it.renderFolders + it.renderWorlds
 				DIRECTORIES -> it.renderFolders
 				WORLDS -> it.renderWorlds
 			}
