@@ -216,7 +216,7 @@ object WorldRenderer {
 
 			JetData.worldStructure.editContent {
 				val name = path.address.removeSurrounding("/").split("/").last()
-				smashedStructure = (smashedStructure + RenderFolder(name, name, path, emptyList(), false)).distinct()
+				smashedStructure = (smashedStructure + RenderFolder(name, name, path, emptyList(), false)).distinctBy { it.identity }
 			}
 		}
 
@@ -260,10 +260,10 @@ object WorldRenderer {
 
 		fun importWorld(worldName: String, renderWorld: RenderWorld = RenderWorld(worldName, worldName, address("/$worldName"), emptyList(), false, emptyList())) {
 			JetData.worldConfig.editContent {
-				importedWorlds = (importedWorlds + worldName).distinct()
+				importedWorlds = (importedWorlds + worldName).distinctBy { it }
 			}
 			JetData.worldStructure.editContent {
-				smashedStructure = (smashedStructure + renderWorld).distinct()
+				smashedStructure = (smashedStructure + renderWorld).distinctBy { it.identity }
 			}
 		}
 
@@ -277,7 +277,12 @@ object WorldRenderer {
 		 */
 		fun ignoreWorld(path: Address<RenderObject>) {
 			assert(!path.address.endsWith("/")) { "path does not define a world (/ at the end)" }
+			val identity = path.address.split('/').last()
 
+			JetData.worldConfig.editContent {
+				importedWorlds = importedWorlds.filterNot { equals(identity) }
+				autostartWorlds = autostartWorlds.filterNot { equals(identity) }
+			}
 			// TODO: 23.10.2021 remove from config & autostart words
 			// TODO: 23.10.2021 remove from structure
 		}
