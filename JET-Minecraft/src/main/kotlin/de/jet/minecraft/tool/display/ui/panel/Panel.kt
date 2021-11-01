@@ -166,7 +166,7 @@ data class Panel(
 			return inventory
 		}
 
-	override fun clone() = Panel(content, label, lines, theme, openSound, identity, vendor, onReceiveEvent, icon, overridingBorderProtection)
+	override fun clone() = copy()
 
 	override fun display(humanEntity: HumanEntity) {
 		display(humanEntity, emptyMap())
@@ -217,6 +217,7 @@ data class Panel(
 			super.display(humanEntity, specificParameters)
 
 		this@Panel.content = previousState.toMutableMap()
+
 	}
 
 	override fun display(receiver: Player, specificParameters: Map<String, Any>) =
