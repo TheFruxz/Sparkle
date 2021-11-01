@@ -26,7 +26,7 @@ data class Cooldown(
 		livingCooldowns.remove(identity)
 	}
 
-	val remainingCooldown: Duration
+	val remainingTime: Duration
 		get() = Calendar.now().durationTo(destination)
 
 	companion object {
@@ -34,14 +34,18 @@ data class Cooldown(
 		internal fun sectioning(section: String) =
 			if (section.isBlank()) "" else "$section:"
 
-		fun isCooldownRunning(identity: String, section:  String = CooldownSection.general()) = livingCooldowns.any {
-			it.key == "${sectioning(section)}:$identity" && it.value.destination.before(Calendar.now())
+		fun isCooldownRunning(identity: String, section: String = CooldownSection.general()) = livingCooldowns.any {
+			it.key == "${sectioning(section)}$identity" && it.value.destination.before(Calendar.now())
 		}
+
+		fun getCooldown(identity: String, section: String = CooldownSection.general()) = livingCooldowns.toList().firstOrNull {
+			it.first == "${sectioning(section)}$identity"
+		}?.second
 
 		fun launchCooldown(identity: String, ticks: Int, section: String = CooldownSection.general()): Cooldown {
 
 			if (isCooldownRunning(identity, section))
-				livingCooldowns.remove("$section:$identity")
+				livingCooldowns.remove("${sectioning(section)}$identity")
 
 			return Cooldown("${sectioning(section)}:$identity", ticks).apply {
 				startCooldown()

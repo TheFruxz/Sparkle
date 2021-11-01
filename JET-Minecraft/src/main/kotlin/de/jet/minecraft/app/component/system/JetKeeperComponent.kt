@@ -45,7 +45,7 @@ class JetKeeperComponent(vendor: App = system) : SmartComponent(vendor, AUTOSTAR
 
 				if (value.isOver) {
 					livingCooldowns.remove(key)
-					debugLog("removed livingCooldown $key, because, it was over; remaining: ${value.remainingCooldown.display()}")
+					debugLog("removed livingCooldown $key, because, it was over; remaining: ${value.remainingTime.display()}")
 				}
 
 			}

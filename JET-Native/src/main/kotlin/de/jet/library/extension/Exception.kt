@@ -11,7 +11,7 @@ fun catchException(exception: Exception) {
 	println(" > $exceptionTag - $exceptionShort")
 	exception.printStackTrace()
 	println(" < $exceptionTag - $exceptionShort")
-	
+
 }
 
 fun jetTry(catchBlock: () -> Unit = { }, tryBlock: () -> Unit) {

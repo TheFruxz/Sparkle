@@ -83,7 +83,7 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, AUTO
 
 				player.getCooldown("item:${item.identity}:${action.eventClass.simpleName}")?.let { cooldown ->
 					val cancelType = action.cooldown?.type
-					val remaining = cooldown.remainingCooldown
+					val remaining = cooldown.remainingTime
 
 					if (cancelType != null) {
 
