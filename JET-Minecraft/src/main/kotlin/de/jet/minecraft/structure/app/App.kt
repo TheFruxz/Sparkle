@@ -201,8 +201,6 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 		} else
 			mainLog(Level.WARNING, "skipped registering '$failFreeLabel' interchange, app disabled!")
-
-		// TODO: 11.07.2021 Add Interchanges
 	}
 
 	fun add(eventListener: EventListener) {
