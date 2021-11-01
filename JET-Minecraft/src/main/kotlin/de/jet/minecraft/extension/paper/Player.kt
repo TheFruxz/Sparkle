@@ -47,5 +47,3 @@ var Player.marker: LocationBox
 	set(value) {
 		JetCache.playerMarkerBoxes[identityObject] = value
 	}
-
-// TODO: 22.08.2021 Cooldowns here
