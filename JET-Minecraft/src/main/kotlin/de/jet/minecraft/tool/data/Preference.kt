@@ -104,7 +104,7 @@ data class Preference<SHELL : Any>(
 			debugLog("Try to save in ($identity) the value: '$value'")
 			val process = {
 				if (readAndWrite) {
-					file.load() // TODO: 23.07.2021 SUS? (overriding cache?)
+					file.load()
 				}
 
 				transformer.toCore(value).let { coreObject ->
