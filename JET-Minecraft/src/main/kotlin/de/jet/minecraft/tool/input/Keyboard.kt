@@ -65,20 +65,11 @@ object Keyboard {
 	sealed interface Extension
 
 	object RunningEngine {
-
-		@Serializable
+		
 		data class PlayerKeyboardPort(
-			private val playerId: String,
-			private val keyboardId: String,
+			val player: UUID,
+			val keyboard: UUID,
 		) {
-
-			constructor(
-				player: UUID,
-				keyboard: UUID,
-			) : this("$player", "$keyboard")
-
-			val player: UUID = UUID.fromString(playerId)
-			val keyboard: UUID = UUID.fromString(keyboardId)
 
 			var cachedInput: String
 				get() = JetCache.runningKeyboards.toList().firstOrNull { it.first.keyboard == keyboard && it.first.player == player }?.second ?: ""
