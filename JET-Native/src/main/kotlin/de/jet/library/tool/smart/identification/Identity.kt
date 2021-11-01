@@ -6,4 +6,6 @@ data class Identity<T> constructor(
 
 	override fun toString() = identity
 
+	fun <O> change() = Identity<O>(identity)
+
 }
