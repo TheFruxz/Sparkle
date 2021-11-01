@@ -23,7 +23,7 @@ open class Container(
 	var size: Int = 9 * 3,
 	open var theme: ColorType = ColorType.GRAY,
 	open var openSound: SoundMelody? = null,
-	override var identity: String = "${UUID.randomUUID()}"
+	override var identity: String = "${UUID.randomUUID()}",
 ) : UI, Cloneable {
 
 	open val rawInventory: Inventory

@@ -3,6 +3,7 @@ package de.jet.minecraft.tool.display.ui.panel
 import de.jet.library.extension.paper.createInventory
 import de.jet.library.extension.paper.createKey
 import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.library.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.BOLD
 import de.jet.minecraft.extension.display.YELLOW
@@ -21,8 +22,12 @@ import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
 import java.util.*
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.set
 
 data class PanelReceiveData(
 	var panel: Panel,
@@ -57,6 +62,7 @@ data class Panel(
 		""".trimIndent()
 	},
 	var overridingBorderProtection: Boolean = false,
+	var singleViewLimitation: Boolean = false,
 ) : Cloneable, Logging, Container(label = label, size = lines * 9, theme = theme, openSound = openSound) {
 
 	init {
@@ -222,5 +228,15 @@ data class Panel(
 
 	override fun display(receiver: Player, specificParameters: Map<String, Any>) =
 		display(humanEntity = receiver, specificParameters)
+
+	companion object {
+
+		val InventoryView.panelIdentity: Identifiable<Panel>?
+			get() = topInventory.panelIdentity
+
+		val Inventory.panelIdentity: Identity<Panel>?
+			get() = getItem(4)?.item?.identityObject?.change()
+
+	}
 
 }
