@@ -66,11 +66,19 @@ object Keyboard {
 
 	object RunningEngine {
 
-		// todo @Serializable, no real reason, only for the convenience
+		@Serializable
 		data class PlayerKeyboardPort(
-			val player: UUID,
-			val keyboard: UUID,
+			private val playerId: String,
+			private val keyboardId: String,
 		) {
+
+			constructor(
+				player: UUID,
+				keyboard: UUID,
+			) : this("$player", "$keyboard")
+
+			val player: UUID = UUID.fromString(playerId)
+			val keyboard: UUID = UUID.fromString(keyboardId)
 
 			var cachedInput: String
 				get() = JetCache.runningKeyboards.toList().firstOrNull { it.first.keyboard == keyboard && it.first.player == player }?.second ?: ""
