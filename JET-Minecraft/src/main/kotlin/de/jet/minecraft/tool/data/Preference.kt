@@ -61,9 +61,9 @@ data class Preference<SHELL : Any>(
 			val process = {
 				val currentCacheValue = registeredPreferenceCache[inFilePath]
 
-				if (useCache && currentCacheValue != null) { // todo .2 | maybe, the cache-transformation issue is, that !useCache should useCache, because of the cache usage (flipped)
+				if (useCache && currentCacheValue != null) {
 					out = try {
-						currentCacheValue as SHELL // todo .1 | looks like, that the cache was never CORE, check if this is true, so this issue doesnt event exists!
+						currentCacheValue as SHELL
 					} catch (e: ClassCastException) {
 						debugLog("Reset property $inFilePath to default \n${e.stackTrace}")
 						content = default
