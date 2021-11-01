@@ -11,9 +11,7 @@ fun catchException(exception: Exception) {
 	println(" > $exceptionTag - $exceptionShort")
 	exception.printStackTrace()
 	println(" < $exceptionTag - $exceptionShort")
-
-	// TODO: 11.07.2021 Nice error message
-
+	
 }
 
 fun jetTry(catchBlock: () -> Unit = { }, tryBlock: () -> Unit) {
