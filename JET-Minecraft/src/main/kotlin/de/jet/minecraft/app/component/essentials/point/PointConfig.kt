@@ -1,9 +1,10 @@
 package de.jet.minecraft.app.component.essentials.point
 
-import de.jet.library.extension.tag.PromisingData
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@SerialName("EssentialsPointConfig")
 data class PointConfig(
 	val points: List<Point>,
-) : PromisingData
+)

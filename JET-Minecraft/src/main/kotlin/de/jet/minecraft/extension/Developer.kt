@@ -32,7 +32,7 @@ operator fun LanguageSpeaker.get(id: String) = lang(id)
 internal fun lang(id: String, smartColor: Boolean = true) = lang.message(id, smartColor)
 
 internal val system: JetApp
-	get() = JET.appInstance
+	get() = JET.appInstance 
 
 @Throws(NoSuchElementException::class)
 fun app(id: String) = JetCache.registeredApplications.first { it.appIdentity == id }

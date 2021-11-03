@@ -1,11 +1,13 @@
 package de.jet.minecraft.app.component.essentials.point
 
 import de.jet.library.tool.smart.identification.Identifiable
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit
 import org.bukkit.Location
 
 @Serializable
+@SerialName("EssentialsPoint")
 data class Point(
 	override val identity: String,
 	val world: String,

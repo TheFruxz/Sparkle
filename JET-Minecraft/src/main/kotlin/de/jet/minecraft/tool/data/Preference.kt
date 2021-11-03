@@ -51,7 +51,7 @@ data class Preference<SHELL : Any>(
 	val isSavedInFile: Boolean
 		get() = file.let { jetFile ->
 			jetFile.load()
-			return@let jetFile.loader.contains(inFilePath)
+			return@let jetFile.contains(inFilePath)
 		}
 
 	@Suppress("UNCHECKED_CAST")
@@ -75,7 +75,7 @@ data class Preference<SHELL : Any>(
 					val currentFileValue = file.get<SHELL>(inFilePath)?.let { toShellTransformer()(it).also { core ->
 						debugLog("transformed '$it'(shell) from '$core'(core)")
 					} }
-					val newContent = if (file.loader.contains(inFilePath) && currentFileValue != null) {
+					val newContent = if (file.contains(inFilePath) && currentFileValue != null) {
 						currentFileValue
 					} else default
 

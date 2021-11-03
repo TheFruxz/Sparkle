@@ -6,13 +6,16 @@ import de.jet.minecraft.app.JetData.File.BRAIN
 import de.jet.minecraft.app.JetData.File.CONFIG
 import de.jet.minecraft.app.JetData.File.ESSENTIALS_CONFIG
 import de.jet.minecraft.app.JetData.File.ESSENTIALS_WORLDS
+import de.jet.minecraft.app.JetData.File.JSON_TEST
 import de.jet.minecraft.app.JetData.File.RAW
 import de.jet.minecraft.app.component.essentials.point.PointConfig
 import de.jet.minecraft.app.component.essentials.world.WorldConfig
 import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer
 import de.jet.minecraft.tool.data.DataTransformer
-import de.jet.minecraft.tool.data.JetFile
+import de.jet.minecraft.tool.data.JetJsonFile
+import de.jet.minecraft.tool.data.JetYamlFile
 import de.jet.minecraft.tool.data.Preference
+import de.jet.minecraft.tool.data.json.CollectionLike
 import de.jet.minecraft.tool.input.Keyboard.RenderEngine.Key
 import de.jet.minecraft.tool.input.Keyboard.RenderEngine.KeyConfiguration
 
@@ -70,19 +73,19 @@ object JetData {
 		file = ESSENTIALS_CONFIG,
 		path = jetPath("savedPoints"),
 		default = PointConfig(emptyList()),
-	).transformer(DataTransformer.jsonObject())
+	).transformer(DataTransformer.json())
 
 	val worldConfig = Preference(
 		file = ESSENTIALS_WORLDS,
 		path = jetPath("worldConfig"),
 		default = WorldConfig(emptyList(), emptyList()),
-	).transformer(DataTransformer.jsonObject())
+	).transformer(DataTransformer.json())
 
 	val worldStructure = Preference(
 		file = ESSENTIALS_WORLDS,
 		path = jetPath("worldStructure"),
 		default = WorldRenderer.renderBase(worldConfig.content).structure(),
-	).transformer(DataTransformer.jsonRenderObject())
+	).transformer(DataTransformer.json())
 
 	// Keyboard
 
@@ -91,6 +94,7 @@ object JetData {
 		path = jetPath("keyConfig"),
 		default = KeyConfiguration(
 			listOf(
+				//<editor-fold desc="Description" defaultstate="collapsed">
 				Key("A", 44004, "A", "A"),
 				Key("B", 44003, "B", "B"),
 				Key("C", 44002, "C", "C"),
@@ -180,19 +184,38 @@ object JetData {
 				Key("_ARROW-LEFT", 44019, "◀", "◀"),
 				Key("_ARROW-UP", 44020, "▲", "▲"),
 				Key("_ARROW-DOWN", 40021, "▼", "▼"),
+				//</editor-fold>
 			)
 		)
-	).transformer(DataTransformer.jsonObject())
+	).transformer(DataTransformer.json())
+
+	val jsonTestConfig = Preference(
+		file = JSON_TEST,
+		path = jetPath("demothis"),
+		default = KeyConfiguration(
+			listOf(
+				Key("a", 1, "a", "a"),
+				Key("a", 2, "a", "a"),
+				Key("a", 3, "a", "a"),
+			)
+		)
+	)
+
+	val jsonTestConfig2 = Preference(
+		file = JSON_TEST,
+		path = jetPath("demosecond"),
+		default = CollectionLike(listOf("this", "is", "a", "0", "and", "the", 0, "is a number?", true, "!"))
+	)
 
 	object File {
 
-		val CONFIG = JetFile.rootFile("system-config")
-		val RAW = JetFile.rootFile("system-raw-data")
-		val BRAIN = JetFile.rootFile("system-memory")
-		val ESSENTIALS_CONFIG = JetFile.dummyComponentFile("Essentials", "JET", "config")
-		val ESSENTIALS_WORLDS = JetFile.dummyComponentFile("Essentials", "JET", "worlds")
-		val TESTING = JetFile.rootFile("system-testing")
-
+		val CONFIG = JetYamlFile.rootFile("system-config")
+		val RAW = JetYamlFile.rootFile("system-raw-data")
+		val BRAIN = JetYamlFile.rootFile("system-memory")
+		val ESSENTIALS_CONFIG = JetYamlFile.dummyComponentFile("Essentials", "JET", "config")
+		val ESSENTIALS_WORLDS = JetYamlFile.dummyComponentFile("Essentials", "JET", "worlds")
+		val TESTING = JetYamlFile.rootFile("system-testing")
+		val JSON_TEST = JetJsonFile.appFile(JetApp.instance, "json_test")
 	}
 
 }

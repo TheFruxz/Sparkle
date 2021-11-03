@@ -4,10 +4,12 @@ import de.jet.library.tool.smart.Producible
 import de.jet.minecraft.extension.effect.playSoundEffect
 import de.jet.minecraft.extension.tasky.task
 import de.jet.minecraft.tool.timing.tasky.TemporalAdvice.Companion.ticking
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.entity.Entity
 
 @Serializable
+@SerialName("EffectSoundMelody")
 class SoundMelody(
 	var insideDelay: Long,
 	var wholeRepeats: Int,

@@ -2,7 +2,6 @@ package de.jet.minecraft.tool.input
 
 import de.jet.library.extension.collection.skip
 import de.jet.library.extension.paper.getOfflinePlayer
-import de.jet.library.extension.tag.PromisingData
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.type.Breakable
 import de.jet.minecraft.app.JetCache
@@ -16,6 +15,7 @@ import de.jet.minecraft.tool.display.ui.panel.Panel
 import de.jet.minecraft.tool.input.Keyboard.Extension
 import de.jet.minecraft.tool.input.Keyboard.Type
 import de.jet.minecraft.tool.input.Keyboard.Type.ANY
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
@@ -100,6 +100,7 @@ object Keyboard {
 		 * @param write the text written from this key, default the [displayInline] value, but configurable if this does not match (e.g. the colored box)
 		 */
 		@Serializable
+		@SerialName("KeyboardKey")
 		data class Key(
 			override val identity: String,
 			val textureIdentity: Int,
@@ -109,9 +110,10 @@ object Keyboard {
 		) : Identifiable<Key>
 
 		@Serializable
+		@SerialName("KeyboardKeyConfiguration")
 		data class KeyConfiguration(
 			val keys: List<Key>
-		) : PromisingData
+		)
 
 		private val renderKeys = JetData.keyConfig.content.keys
 

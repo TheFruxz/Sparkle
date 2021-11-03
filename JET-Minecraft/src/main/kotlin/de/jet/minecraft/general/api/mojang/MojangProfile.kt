@@ -5,11 +5,13 @@ import com.destroystokyo.paper.profile.ProfileProperty
 import de.jet.minecraft.extension.tasky.async
 import de.jet.minecraft.tool.display.item.Item
 import de.jet.minecraft.tool.display.item.quirk.Quirk
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.SkullMeta
 
 @Serializable
+@SerialName("MojangProfile")
 data class MojangProfile(
 	val created_at: String?,
 	val textures: MojangProfileTextures,

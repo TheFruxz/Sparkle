@@ -3,6 +3,7 @@ package de.jet.minecraft.runtime.app
 import de.jet.library.extension.collection.replace
 import de.jet.minecraft.app.JetApp
 import de.jet.minecraft.tool.display.ide.API
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -17,6 +18,7 @@ class LanguageSpeaker(
 ) {
 
 	@Serializable
+	@SerialName("AppLanguageContainer")
 	data class LanguageContainer(
 		val languageId: String,
 		val languageVersion: String,

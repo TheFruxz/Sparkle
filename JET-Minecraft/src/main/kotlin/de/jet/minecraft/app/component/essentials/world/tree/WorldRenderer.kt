@@ -3,7 +3,6 @@ package de.jet.minecraft.app.component.essentials.world.tree
 import de.jet.library.extension.collection.mutableReplaceWith
 import de.jet.library.extension.isNotNull
 import de.jet.library.extension.switchResult
-import de.jet.library.extension.tag.PromisingData
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.positioning.Address
 import de.jet.library.tool.smart.positioning.Address.Companion.address
@@ -23,9 +22,10 @@ object WorldRenderer {
 	private var pathDepth = -1
 
 	@Serializable
+	@SerialName("TreeWorldStructure")
 	data class WorldStructure(
 		var smashedStructure: List<RenderObject>,
-	) : PromisingData {
+	) {
 
 		private fun printFolderContents(folder: RenderFolder, onlyBase: Boolean = false) {
 			pathDepth++
@@ -78,7 +78,7 @@ object WorldRenderer {
 		fun close() = WorldStructure(smashedStructure)
 	}
 
-	interface RenderObject : Identifiable<RenderObject>, Addressable<RenderObject>, PromisingData {
+	interface RenderObject : Identifiable<RenderObject>, Addressable<RenderObject> {
 		val displayName: String
 		val labels: List<String>
 		val archived: Boolean
@@ -93,7 +93,7 @@ object WorldRenderer {
 	}
 
 	@Serializable
-	@SerialName("world")
+	@SerialName("WorldStructureRenderWorld")
 	data class RenderWorld(
 		override val displayName: String,
 		override val identity: String,
@@ -111,7 +111,7 @@ object WorldRenderer {
 	}
 
 	@Serializable
-	@SerialName("folder")
+	@SerialName("WorldStructureRenderDirectory")
 	data class RenderFolder(
 		override val displayName: String,
 		override val identity: String,
@@ -130,11 +130,12 @@ object WorldRenderer {
 	}
 
 	@Serializable
+	@SerialName("WorldStructureRenderBranch")
 	data class RenderBranchResult(
 		val currentDirectory: String,
 		val renderWorlds: List<RenderWorld> = emptyList(),
 		val renderFolders: List<RenderFolder> = emptyList(),
-	) : PromisingData {
+	) {
 
 		fun smash() = renderFolders + renderWorlds
 

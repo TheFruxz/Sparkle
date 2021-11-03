@@ -1,7 +1,6 @@
 package de.jet.minecraft.app.component.essentials.world
 
 import de.jet.library.extension.paper.getWorld
-import de.jet.library.extension.tag.PromisingData
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.positioning.Address.Companion.address
 import de.jet.minecraft.app.component.essentials.world.WorldInterchange.WorldPanelViewProperties.ViewType.*
@@ -37,7 +36,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 		val page: Int = 1,
 		val searchKey: String? = null,
 		val searchFilters: List<Filter> = emptyList(),
-	) : PromisingData {
+	) {
 
 		enum class ViewType {
 			ALL, DIRECTORIES, WORLDS;
