@@ -235,7 +235,12 @@ object WorldRenderer {
 
 					computeFolderContents(directory).smash().forEach {
 						if (keepContent) {
-							moveObject(it.address, address("/"))
+							moveObject(it.address, address(
+								when (it) {
+									is RenderFolder -> "/$it/"
+									else -> "/$it"
+								}
+							))
 						} else {
 							when (it) {
 								is RenderWorld -> deleteWorld(it.address)
@@ -299,7 +304,7 @@ object WorldRenderer {
 			Path("$identity/").toFile().deleteRecursively()
 		}
 
-		fun moveObject(currentPath: Address<RenderObject>, futurePath: Address<RenderObject>) {
+		fun moveObject(currentObjectPath: Address<RenderObject>, futurePath: Address<RenderObject>) {
 			// TODO: 25.10.21 Check if the currentPath object exists
 			// TODO: 25.10.21 check if current is folder or world (world is easier than folder, because folder have contents)
 			// TODO: 25.10.21 rename path to future path of world/folder and its folder-contents
