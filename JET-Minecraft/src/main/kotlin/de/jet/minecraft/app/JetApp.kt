@@ -139,13 +139,6 @@ class JetApp : App() {
 			executor.sendMessage("done! ")
 		}
 
-		buildSandBox(this, "test-json") {
-			executor.sendMessage("...")
-            JetData.jsonTestConfig.reset()
-			JetData.jsonTestConfig2.reset()
-            executor.sendMessage("done! ")
-		}
-
 	}
 
 	override fun bye() {
@@ -164,8 +157,6 @@ class JetApp : App() {
 			JSON.addExtension(Identifiable.custom("JET")) {
 
 				polymorphic(Any::class) {
-
-					System.err.println("< !!! > IT DIT IT < !!! >")
 
 					subclass(Point::class)
 					subclass(PointConfig::class)

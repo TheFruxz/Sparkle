@@ -6,16 +6,13 @@ import de.jet.minecraft.app.JetData.File.BRAIN
 import de.jet.minecraft.app.JetData.File.CONFIG
 import de.jet.minecraft.app.JetData.File.ESSENTIALS_CONFIG
 import de.jet.minecraft.app.JetData.File.ESSENTIALS_WORLDS
-import de.jet.minecraft.app.JetData.File.JSON_TEST
 import de.jet.minecraft.app.JetData.File.RAW
 import de.jet.minecraft.app.component.essentials.point.PointConfig
 import de.jet.minecraft.app.component.essentials.world.WorldConfig
 import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer
 import de.jet.minecraft.tool.data.DataTransformer
-import de.jet.minecraft.tool.data.JetJsonFile
 import de.jet.minecraft.tool.data.JetYamlFile
 import de.jet.minecraft.tool.data.Preference
-import de.jet.minecraft.tool.data.json.CollectionLike
 import de.jet.minecraft.tool.input.Keyboard.RenderEngine.Key
 import de.jet.minecraft.tool.input.Keyboard.RenderEngine.KeyConfiguration
 
@@ -189,33 +186,15 @@ object JetData {
 		)
 	).transformer(DataTransformer.json())
 
-	val jsonTestConfig = Preference(
-		file = JSON_TEST,
-		path = jetPath("demothis"),
-		default = KeyConfiguration(
-			listOf(
-				Key("a", 1, "a", "a"),
-				Key("a", 2, "a", "a"),
-				Key("a", 3, "a", "a"),
-			)
-		)
-	)
-
-	val jsonTestConfig2 = Preference(
-		file = JSON_TEST,
-		path = jetPath("demosecond"),
-		default = CollectionLike(listOf("this", "is", "a", "0", "and", "the", 0, "is a number?", true, "!"))
-	)
-
 	object File {
 
 		val CONFIG = JetYamlFile.rootFile("system-config")
 		val RAW = JetYamlFile.rootFile("system-raw-data")
 		val BRAIN = JetYamlFile.rootFile("system-memory")
+
 		val ESSENTIALS_CONFIG = JetYamlFile.dummyComponentFile("Essentials", "JET", "config")
 		val ESSENTIALS_WORLDS = JetYamlFile.dummyComponentFile("Essentials", "JET", "worlds")
-		val TESTING = JetYamlFile.rootFile("system-testing")
-		val JSON_TEST = JetJsonFile.appFile(JetApp.instance, "json_test")
+
 	}
 
 }
