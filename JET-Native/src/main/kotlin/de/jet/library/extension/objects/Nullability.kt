@@ -1,4 +1,4 @@
-package de.jet.library.extension.`object`
+package de.jet.library.extension.objects
 
 import de.jet.library.extension.isNotNull
 import org.jetbrains.annotations.NotNull
