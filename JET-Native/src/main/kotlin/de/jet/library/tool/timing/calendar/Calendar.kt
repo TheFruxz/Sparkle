@@ -1,8 +1,8 @@
 package de.jet.library.tool.timing.calendar
 
 import de.jet.library.tool.smart.Producible
-import de.jet.library.extension.tag.annotation.NotPerfect
-import de.jet.library.extension.tag.annotation.NotTested
+import de.jet.library.annotation.NotPerfect
+import de.jet.library.annotation.NotTested
 import de.jet.library.tool.timing.calendar.Calendar.TimeField.MILLISECOND
 import de.jet.library.tool.timing.calendar.Calendar.TimeField.SECOND
 import java.util.*
