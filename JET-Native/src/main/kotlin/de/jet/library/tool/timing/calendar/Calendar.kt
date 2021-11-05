@@ -1,8 +1,8 @@
 package de.jet.library.tool.timing.calendar
 
-import de.jet.library.tool.smart.Producible
 import de.jet.library.annotation.NotPerfect
 import de.jet.library.annotation.NotTested
+import de.jet.library.tool.smart.Producible
 import de.jet.library.tool.timing.calendar.Calendar.TimeField.MILLISECOND
 import de.jet.library.tool.timing.calendar.Calendar.TimeField.SECOND
 import java.util.*
@@ -34,14 +34,14 @@ class Calendar private constructor(
 
 	fun getTicks() = get(SECOND).toLong() * 20L
 
-	fun after(it: Calendar) = origin.after(it.origin)
+	fun isAfter(it: Calendar) = origin.after(it.origin)
 
-	fun before(it: Calendar) = !after(it)
+	fun isBefore(it: Calendar) = !isAfter(it)
 
-	fun expired(latest: Calendar) = after(latest)
+	fun isInputExpired(latest: Calendar) = isAfter(latest)
 
 	val isExpired: Boolean
-		get() = before(now())
+		get() = isBefore(now())
 
 	val javaDate: Date
 		get() = origin.time
@@ -99,10 +99,10 @@ class Calendar private constructor(
 		fun now(locale: Locale, timeZone: TimeZone) = Calendar(JavaUtilCalendar.getInstance(timeZone, locale))
 
 		@ExperimentalTime
-		fun after(duration: Duration) = now().plus(duration)
+		fun isAfter(duration: Duration) = now().plus(duration)
 
 		@ExperimentalTime
-		fun since(duration: Duration) = now().minus(duration)
+		fun durationSince(duration: Duration) = now().minus(duration)
 
 		fun fromLegacy(calendar: JavaUtilCalendar) = Calendar(calendar)
 
