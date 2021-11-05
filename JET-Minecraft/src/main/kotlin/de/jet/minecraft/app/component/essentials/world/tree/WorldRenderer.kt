@@ -68,7 +68,7 @@ object WorldRenderer {
 		}
 
 		val root: RenderFolder?
-			get() = smashedStructure.firstOrNull { it.address.address == "/" } as RenderFolder?
+			get() = smashedStructure.firstOrNull { it.address.addressString == "/" } as RenderFolder?
 
 	}
 
@@ -105,7 +105,7 @@ object WorldRenderer {
 
 		init {
 			// no / at the end, because it is no directory
-			assert(address.address.endsWith(identity)) { "value address (path) have to include itself at the end" }
+			assert(address.addressString.endsWith(identity)) { "value address (path) have to include itself at the end" }
 		}
 
 	}
@@ -122,10 +122,10 @@ object WorldRenderer {
 
 		init {
 			// / at the end, because it is a directory
-			assert(address.address.endsWith("$identity/")) { "value address (path) have to include itself at the end" }
+			assert(address.addressString.endsWith("$identity/")) { "value address (path) have to include itself at the end" }
 		}
 
-		val isRootDirectory = address.address == "/"
+		val isRootDirectory = address.addressString == "/"
 
 	}
 
@@ -151,7 +151,7 @@ object WorldRenderer {
 
 	}
 
-	fun computeFolderContents(folder: RenderFolder, worldStructure: WorldStructure = JetData.worldStructure.content) = renderWorldStructure(worldStructure, true, folder.address.address)
+	fun computeFolderContents(folder: RenderFolder, worldStructure: WorldStructure = JetData.worldStructure.content) = renderWorldStructure(worldStructure, true, folder.address.addressString)
 
 	fun renderBase(base: WorldConfig = JetData.worldConfig.content) =
 		RenderBranchResult("/", renderWorlds = base.importedWorlds.map {
@@ -180,15 +180,15 @@ object WorldRenderer {
 
 		resultWorlds.mutableReplaceWith(resultWorlds.filter {
 			if (onlyBaseFolder) {
-				it.address.address == "$basePath${it.identity}"
+				it.address.addressString == "$basePath${it.identity}"
 			} else
-				it.address.address.startsWith(basePath)
+				it.address.addressString.startsWith(basePath)
 		})
 		resultFolders.mutableReplaceWith(resultFolders.filter {
 			if (onlyBaseFolder) {
-				it.address.address == "$basePath${it.identity}/" && it.address.address != basePath
+				it.address.addressString == "$basePath${it.identity}/" && it.address.addressString != basePath
 			} else
-				it.address.address.startsWith(basePath) && it.address.address != basePath
+				it.address.addressString.startsWith(basePath) && it.address.addressString != basePath
 		})
 
 		return RenderBranchResult("/", resultWorlds, resultFolders)
@@ -214,16 +214,16 @@ object WorldRenderer {
 			renderWorldStructure().getFolder(path)
 
 		fun createDirectory(path: Address<RenderObject>) {
-			assert(path.address.endsWith("/")) { "path does not define a folder (missing / at the end)" }
+			assert(path.addressString.endsWith("/")) { "path does not define a folder (missing / at the end)" }
 
 			JetData.worldStructure.editContent {
-				val name = path.address.removeSurrounding("/").split("/").last()
+				val name = path.addressString.removeSurrounding("/").split("/").last()
 				smashedStructure = (smashedStructure + RenderFolder(name, name, path, emptyList(), false)).distinctBy { it.identity }
 			}
 		}
 
 		fun deleteDirectory(path: Address<RenderObject>, keepContent: Boolean = false) {
-			assert(path.address.endsWith("/")) { "path does not define a folder (missing / at the end)" }
+			assert(path.addressString.endsWith("/")) { "path does not define a folder (missing / at the end)" }
 
 			JetData.worldStructure.editContent {
 				val directory = getDirectory(path)
@@ -283,8 +283,8 @@ object WorldRenderer {
 		 * Removes the world from the config
 		 */
 		fun ignoreWorld(path: Address<RenderObject>) {
-			assert(!path.address.endsWith("/")) { "path does not define a world (/ at the end)" }
-			val identity = path.address.split('/').last()
+			assert(!path.addressString.endsWith("/")) { "path does not define a world (/ at the end)" }
+			val identity = path.addressString.split('/').last()
 
 			JetData.worldConfig.editContent {
 				importedWorlds = importedWorlds.filterNot { equals(identity) }
@@ -297,8 +297,8 @@ object WorldRenderer {
 		}
 
 		fun deleteWorld(path: Address<RenderObject>) {
-			assert(!path.address.endsWith("/")) { "path does not define a world (/ at the end)" }
-			val identity = path.address.split('/').last()
+			assert(!path.addressString.endsWith("/")) { "path does not define a world (/ at the end)" }
+			val identity = path.addressString.split('/').last()
 
 			ignoreWorld(path)
 			Path("$identity/").toFile().deleteRecursively()

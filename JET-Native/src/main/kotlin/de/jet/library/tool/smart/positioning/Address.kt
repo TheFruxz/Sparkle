@@ -7,30 +7,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("smartAddress")
 data class Address<T> internal constructor(
-	@SerialName("path") val address: String
-) : Identifiable<Address<T>> {
+	@SerialName("path") override val addressString: String
+) : Addressable<T>, Identifiable<T> {
 
-	override val identity = address
+	override val identity = addressString
 
-	override fun toString() = address
+	override fun toString() = addressString
 
-	override fun hashCode(): Int {
-		var result = address.hashCode()
-		result = 31 * result + identity.hashCode()
-		return result
-	}
-
-	override fun equals(other: Any?): Boolean {
-		if (this === other) return true
-		if (javaClass != other?.javaClass) return false
-
-		other as Address<out Any>
-
-		if (address != other.address) return false
-		if (identity != other.identity) return false
-
-		return true
-	}
+	override val address: Address<T>
+		get() = address(addressString)
 
 	companion object {
 
