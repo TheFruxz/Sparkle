@@ -156,7 +156,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 				putClickAction(async = false) {
 					when (click) {
 						LEFT, SHIFT_LEFT -> {
-							displayPanel(whoClicked, view.copy(path = renderObject.address.address))
+							displayPanel(whoClicked, view.copy(path = renderObject.addressString))
 						}
 						RIGHT, SHIFT_RIGHT -> {
 							whoClicked.sendMessage("edit")

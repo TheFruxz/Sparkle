@@ -35,7 +35,6 @@ import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.AppCompanion
 import de.jet.minecraft.structure.classes.JSON
 import de.jet.minecraft.tool.data.Preference
-import de.jet.minecraft.tool.data.json.CollectionLike
 import de.jet.minecraft.tool.data.json.JsonConfiguration
 import de.jet.minecraft.tool.data.json.JsonFileDataElement
 import de.jet.minecraft.tool.display.item.Modification
@@ -178,7 +177,6 @@ class JetApp : App() {
 					subclass(Key::class)
 					subclass(KeyConfiguration::class)
 					subclass(Approval::class)
-					subclass(CollectionLike::class)
 
 					polymorphic(RenderObject::class) {
 						subclass(RenderWorld::class)
