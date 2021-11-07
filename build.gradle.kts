@@ -5,6 +5,7 @@ plugins {
     kotlin("plugin.serialization") version "1.5.31"
     id("org.jetbrains.dokka") version "1.5.31"
     id("com.github.johnrengelman.shadow") version "7.1.0"
+    id("org.jetbrains.qodana") version "0.1.12"
     id("maven-publish")
 }
 

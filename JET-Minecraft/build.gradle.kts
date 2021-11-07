@@ -5,6 +5,7 @@ plugins {
     kotlin("plugin.serialization")
     id("org.jetbrains.dokka")
     id("com.github.johnrengelman.shadow")
+    id("org.jetbrains.qodana")
     id("maven-publish")
 }
 
