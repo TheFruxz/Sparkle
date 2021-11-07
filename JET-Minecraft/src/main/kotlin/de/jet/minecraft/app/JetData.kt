@@ -1,6 +1,6 @@
 package de.jet.minecraft.app
 
-import de.jet.library.extension.data.jetPath
+import de.jet.minecraft.extension.data.jetPath
 import de.jet.library.tool.conversion.Base64.decodeToString
 import de.jet.minecraft.app.JetData.File.BRAIN
 import de.jet.minecraft.app.JetData.File.CONFIG

@@ -1,4 +1,4 @@
-package de.jet.library.extension.paper
+package de.jet.minecraft.extension.paper
 
 import de.jet.library.tool.smart.identification.Identity
 import org.bukkit.command.CommandSender

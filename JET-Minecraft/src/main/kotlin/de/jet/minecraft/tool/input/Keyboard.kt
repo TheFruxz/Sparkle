@@ -1,13 +1,13 @@
 package de.jet.minecraft.tool.input
 
 import de.jet.library.extension.collection.skip
-import de.jet.library.extension.paper.getOfflinePlayer
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.type.Breakable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.extension.display.ui.buildPanel
 import de.jet.minecraft.extension.display.ui.item
+import de.jet.minecraft.extension.paper.getOfflinePlayer
 import de.jet.minecraft.extension.special.texturedSkull
 import de.jet.minecraft.tool.display.item.Item
 import de.jet.minecraft.tool.display.item.quirk.Quirk.Companion.skullQuirk

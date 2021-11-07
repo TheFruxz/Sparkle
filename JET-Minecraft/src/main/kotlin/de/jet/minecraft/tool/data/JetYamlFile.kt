@@ -1,7 +1,7 @@
 package de.jet.minecraft.tool.data
 
-import de.jet.library.extension.paper.bukkitVersion
 import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.minecraft.extension.paper.bukkitVersion
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.component.Component
 import de.jet.minecraft.tool.smart.VendorsIdentifiable

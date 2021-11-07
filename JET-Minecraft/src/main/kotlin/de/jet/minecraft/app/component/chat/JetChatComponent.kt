@@ -1,7 +1,7 @@
 package de.jet.minecraft.app.component.chat
 
-import de.jet.library.extension.paper.getPlayer
-import de.jet.library.extension.paper.onlinePlayers
+import de.jet.minecraft.extension.paper.getPlayer
+import de.jet.minecraft.extension.paper.onlinePlayers
 import de.jet.minecraft.extension.display.buildTextComponent
 import de.jet.minecraft.extension.paper.legacyString
 import de.jet.minecraft.extension.system

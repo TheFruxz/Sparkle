@@ -3,12 +3,12 @@ package de.jet.minecraft.tool.display.skull
 import com.destroystokyo.paper.profile.ProfileProperty
 import de.jet.library.extension.data.randomBoolean
 import de.jet.library.extension.data.url
-import de.jet.library.extension.paper.getOfflinePlayer
 import de.jet.library.tool.conversion.Base64
 import de.jet.library.tool.conversion.CSV
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.display.ui.item
+import de.jet.minecraft.extension.paper.getOfflinePlayer
 import de.jet.minecraft.tool.display.item.quirk.Quirk.Companion.skullQuirk
 import org.bukkit.Material
 

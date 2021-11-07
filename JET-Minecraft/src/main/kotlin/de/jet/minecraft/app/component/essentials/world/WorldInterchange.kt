@@ -1,6 +1,5 @@
 package de.jet.minecraft.app.component.essentials.world
 
-import de.jet.library.extension.paper.getWorld
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.positioning.Address.Companion.address
 import de.jet.minecraft.app.component.essentials.world.WorldInterchange.WorldPanelViewProperties.ViewType.*
@@ -13,6 +12,7 @@ import de.jet.minecraft.extension.display.ui.buildPanel
 import de.jet.minecraft.extension.display.ui.item
 import de.jet.minecraft.extension.display.ui.skull
 import de.jet.minecraft.extension.paper.displayString
+import de.jet.minecraft.extension.paper.getWorld
 import de.jet.minecraft.extension.special.texturedSkull
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.command.Interchange

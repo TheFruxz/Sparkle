@@ -1,10 +1,8 @@
 @file:Suppress("unused")
 
-package de.jet.library.extension.paper
+package de.jet.minecraft.extension.paper
 
 import com.destroystokyo.paper.entity.ai.MobGoals
-import de.jet.minecraft.extension.paper.adventureComponent
-import de.jet.minecraft.extension.paper.legacyString
 import io.papermc.paper.datapack.DatapackManager
 import net.kyori.adventure.text.Component
 import org.bukkit.*
@@ -351,7 +349,7 @@ fun loadServerIcon(image: BufferedImage) = Bukkit.loadServerIcon(image)
 
 fun loadServerIcon(file: File) = Bukkit.loadServerIcon(file)
 
-fun matchPlayer(name: String) = Bukkit.matchPlayer(name)
+fun matchPlayer(name: String): List<Player> = Bukkit.matchPlayer(name)
 
 val recipeIterator: Iterator<Recipe>
 	get() = Bukkit.recipeIterator()

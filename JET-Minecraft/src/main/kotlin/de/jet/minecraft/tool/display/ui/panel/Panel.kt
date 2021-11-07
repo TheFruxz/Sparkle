@@ -1,13 +1,13 @@
 package de.jet.minecraft.tool.display.ui.panel
 
-import de.jet.library.extension.paper.createInventory
-import de.jet.library.extension.paper.createKey
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.BOLD
 import de.jet.minecraft.extension.display.YELLOW
 import de.jet.minecraft.extension.display.ui.item
+import de.jet.minecraft.extension.paper.createInventory
+import de.jet.minecraft.extension.paper.createKey
 import de.jet.minecraft.extension.paper.legacyString
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.extension.tasky.sync

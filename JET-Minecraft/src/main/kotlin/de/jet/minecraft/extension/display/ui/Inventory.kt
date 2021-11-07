@@ -1,6 +1,6 @@
 package de.jet.minecraft.extension.display.ui
 
-import de.jet.library.extension.paper.createInventory
+import de.jet.minecraft.extension.paper.createInventory
 import de.jet.minecraft.tool.display.item.Item
 import de.jet.minecraft.tool.display.ui.inventory.Container
 import de.jet.minecraft.tool.display.ui.panel.Panel

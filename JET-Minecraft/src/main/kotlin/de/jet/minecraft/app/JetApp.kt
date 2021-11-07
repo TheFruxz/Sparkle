@@ -1,7 +1,6 @@
 package de.jet.minecraft.app
 
 import de.jet.library.extension.forceCast
-import de.jet.library.extension.paper.worlds
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.component.chat.JetChatComponent
 import de.jet.minecraft.app.component.essentials.EssentialsComponent
@@ -24,6 +23,7 @@ import de.jet.minecraft.app.interchange.JETInterchange
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.mainLog
 import de.jet.minecraft.extension.o.buildSandBox
+import de.jet.minecraft.extension.paper.worlds
 import de.jet.minecraft.general.api.mojang.MojangProfile
 import de.jet.minecraft.general.api.mojang.MojangProfileCape
 import de.jet.minecraft.general.api.mojang.MojangProfileRaw

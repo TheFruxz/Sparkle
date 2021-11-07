@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.display.world
 
-import de.jet.library.extension.paper.getWorld
+import de.jet.minecraft.extension.paper.getWorld
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Location

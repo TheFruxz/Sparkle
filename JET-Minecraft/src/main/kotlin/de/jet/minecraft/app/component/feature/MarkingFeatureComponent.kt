@@ -1,8 +1,7 @@
 package de.jet.minecraft.app.component.feature
 
 import de.jet.library.extension.collection.replaceVariables
-import de.jet.library.extension.data.shorter
-import de.jet.library.extension.paper.templateLocation
+import de.jet.library.extension.math.shorter
 import de.jet.minecraft.app.JetCache.playerMarkerBoxes
 import de.jet.minecraft.extension.display.BOLD
 import de.jet.minecraft.extension.display.YELLOW
@@ -11,6 +10,7 @@ import de.jet.minecraft.extension.display.ui.item
 import de.jet.minecraft.extension.get
 import de.jet.minecraft.extension.lang
 import de.jet.minecraft.extension.paper.identityObject
+import de.jet.minecraft.extension.paper.templateLocation
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.command.Interchange

@@ -1,26 +1,18 @@
 package de.jet.minecraft.app.interchange.player
 
 import de.jet.library.extension.collection.replaceVariables
-import de.jet.library.extension.paper.getPlayer
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.get
 import de.jet.minecraft.extension.lang
 import de.jet.minecraft.extension.mojang.applySkin
 import de.jet.minecraft.extension.mojang.resetSkin
+import de.jet.minecraft.extension.paper.getPlayer
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.structure.app.App
-import de.jet.minecraft.structure.command.CompletionVariable
-import de.jet.minecraft.structure.command.Interchange
+import de.jet.minecraft.structure.command.*
 import de.jet.minecraft.structure.command.InterchangeExecutorType.PLAYER
-import de.jet.minecraft.structure.command.InterchangeResult
 import de.jet.minecraft.structure.command.InterchangeResult.SUCCESS
-import de.jet.minecraft.structure.command.buildCompletion
-import de.jet.minecraft.structure.command.isRequired
-import de.jet.minecraft.structure.command.label
 import de.jet.minecraft.structure.command.live.InterchangeAccess
-import de.jet.minecraft.structure.command.mustMatchOutput
-import de.jet.minecraft.structure.command.next
-import de.jet.minecraft.structure.command.plus
 import de.jet.minecraft.tool.display.message.Transmission.Level.*
 import org.bukkit.entity.Player
 

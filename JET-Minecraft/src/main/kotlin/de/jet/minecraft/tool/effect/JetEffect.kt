@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.effect
 
-import de.jet.library.extension.paper.onlinePlayers
+import de.jet.minecraft.extension.paper.onlinePlayers
 import org.bukkit.entity.LivingEntity
 
 interface JetEffect {

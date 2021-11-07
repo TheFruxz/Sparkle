@@ -1,8 +1,8 @@
 package de.jet.minecraft.tool.display.ui.inventory
 
-import de.jet.library.extension.paper.createInventory
 import de.jet.minecraft.extension.display.GRAY
 import de.jet.minecraft.extension.display.ui.item
+import de.jet.minecraft.extension.paper.createInventory
 import de.jet.minecraft.extension.tasky.sync
 import de.jet.minecraft.tool.display.color.ColorType
 import de.jet.minecraft.tool.display.item.Item
