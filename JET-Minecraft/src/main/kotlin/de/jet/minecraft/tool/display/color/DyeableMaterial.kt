@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.display.color
 
-import de.jet.library.extension.paper.createKey
+import de.jet.minecraft.extension.paper.createKey
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.tool.display.color.ColorType.WHITE
 import org.bukkit.Material

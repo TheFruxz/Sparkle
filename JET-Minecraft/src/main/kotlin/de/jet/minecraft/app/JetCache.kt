@@ -1,6 +1,6 @@
 package de.jet.minecraft.app
 
-import de.jet.library.tool.smart.Identity
+import de.jet.library.tool.smart.identification.Identity
 import de.jet.minecraft.runtime.sandbox.SandBox
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.AppCache
@@ -12,6 +12,7 @@ import de.jet.minecraft.tool.data.Preference
 import de.jet.minecraft.tool.display.item.action.ItemClickAction
 import de.jet.minecraft.tool.display.item.action.ItemInteractAction
 import de.jet.minecraft.tool.display.ui.panel.PanelFlag
+import de.jet.minecraft.tool.input.Keyboard.RunningEngine.PlayerKeyboardPort
 import de.jet.minecraft.tool.position.LocationBox
 import de.jet.minecraft.tool.timing.cooldown.Cooldown
 import de.jet.minecraft.tool.timing.tasky.Tasky
@@ -46,12 +47,16 @@ object JetCache : AppCache {
 
 	val registeredPanelFlags = mutableMapOf<String, Set<PanelFlag>>()
 
+	val registeredPreferences = mutableMapOf<Identity<out Preference<*>>, Preference<*>>()
+
 	val livingCooldowns = mutableMapOf<String, Cooldown>()
 
 	var runningServiceTaskController = mutableMapOf<Identity<Service>, Tasky>()
 		internal set
 
 	val runningTasks = mutableListOf<Int>()
+
+	val runningKeyboards = mutableMapOf<PlayerKeyboardPort, String>()
 
 	val buildModePlayers = mutableSetOf<Identity<out OfflinePlayer>>()
 

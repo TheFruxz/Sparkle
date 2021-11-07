@@ -1,11 +1,7 @@
 @file:Suppress("DEPRECATION", "SENSELESS_COMPARISON", "DuplicatedCode", "ReplaceNegatedIsEmptyWithIsNotEmpty")
+package de.jet.minecraft.tool.display.item
 
-import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
-import com.google.gson.JsonPrimitive
+import com.google.gson.*
 import org.bukkit.Color
 import org.bukkit.DyeColor
 import org.bukkit.FireworkEffect
@@ -16,15 +12,7 @@ import org.bukkit.block.banner.PatternType
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.BannerMeta
-import org.bukkit.inventory.meta.BookMeta
-import org.bukkit.inventory.meta.EnchantmentStorageMeta
-import org.bukkit.inventory.meta.FireworkEffectMeta
-import org.bukkit.inventory.meta.FireworkMeta
-import org.bukkit.inventory.meta.LeatherArmorMeta
-import org.bukkit.inventory.meta.MapMeta
-import org.bukkit.inventory.meta.PotionMeta
-import org.bukkit.inventory.meta.SkullMeta
+import org.bukkit.inventory.meta.*
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import java.util.*

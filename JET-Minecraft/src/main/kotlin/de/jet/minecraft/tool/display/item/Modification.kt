@@ -1,13 +1,15 @@
 package de.jet.minecraft.tool.display.item
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.enchantments.Enchantment
 
 @Serializable
+@SerialName("ItemModification")
 data class Modification(
-	val type: String,
+	@SerialName("modificationType") val type: String,
 	val level: Int,
 ) : ConfigurationSerializable {
 

@@ -1,16 +1,15 @@
 package de.jet.minecraft.tool.display.item
 
-import JsonItemStack
 import de.jet.library.extension.asString
 import de.jet.library.extension.forceCast
-import de.jet.library.extension.paper.createBlockData
-import de.jet.library.extension.paper.itemFactory
-import de.jet.library.tool.smart.Identifiable
 import de.jet.library.tool.smart.Producible
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.display.WHITE
 import de.jet.minecraft.extension.display.ui.changeColor
+import de.jet.minecraft.extension.paper.createBlockData
+import de.jet.minecraft.extension.paper.itemFactory
 import de.jet.minecraft.extension.paper.legacyString
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.runtime.event.interact.PlayerInteractAtItemEvent

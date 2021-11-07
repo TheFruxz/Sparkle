@@ -3,18 +3,14 @@ package de.jet.minecraft.structure.command
 import de.jet.library.extension.collection.mapToString
 import de.jet.library.extension.collection.replace
 import de.jet.library.extension.collection.withMap
-import de.jet.library.extension.data.isDouble
-import de.jet.library.extension.data.isInt
+import de.jet.library.extension.math.isDouble
+import de.jet.library.extension.math.isInt
 import de.jet.library.extension.modifiedIf
-import de.jet.library.extension.paper.getPlayer
-import de.jet.library.extension.paper.name
-import de.jet.library.extension.paper.onlinePlayers
-import de.jet.library.extension.paper.worlds
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.lang
-import de.jet.minecraft.extension.paper.hasApproval
+import de.jet.minecraft.extension.paper.*
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.structure.app.cache.CacheDepthLevel
 import de.jet.minecraft.tool.display.color.ColorType
@@ -30,11 +26,11 @@ import java.util.*
 // Variables
 
 data class CompletionVariable(
-	val vendor: Identifiable<*>,
-	val label: String,
-	val refreshing: Boolean,
-	var check: (input: String, ignoreCase: Boolean) -> Boolean = { _, _ -> true },
-	val generator: CompletionVariable.() -> Collection<String>,
+    val vendor: Identifiable<*>,
+    val label: String,
+    val refreshing: Boolean,
+    var check: (input: String, ignoreCase: Boolean) -> Boolean = { _, _ -> true },
+    val generator: CompletionVariable.() -> Collection<String>,
 ) {
 
 	val storagePath = "${vendor.identity}:$label"
@@ -153,6 +149,12 @@ data class CompletionVariable(
 			JetCache.registeredSandBoxes.withMap { identity }
 		}.checker { input, ignoreCase ->
 			return@checker JetCache.registeredSandBoxes.any { it.identity.equals(input, ignoreCase) }
+		}
+
+		val PREFERENCE = CompletionVariable(system, "PREFERENCE", true) {
+			JetCache.registeredPreferences.keys.withMap { identity }
+		}.checker { input, ignoreCase ->
+			return@checker JetCache.registeredPreferences.any { it.key.identity.equals(input, ignoreCase) }
 		}
 
 		val CACHE_DEPTH_LEVEL = CompletionVariable(system, "CACHE-DEPTH-LEVEL", false) {
@@ -430,8 +432,17 @@ infix fun Completion.next(
 ) =
 	next(StaticCompletionComponent(staticCompletion.toSet()))
 
+@JvmName("next")
 fun Completion.next(
 	staticCompletion: Array<String>,
+	displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
+	accessApproval: Approval? = null,
+) =
+	next(StaticCompletionComponent(staticCompletion.toSet(), displayRequirement, accessApproval))
+
+@JvmName("nextMultipleArguments")
+fun Completion.next(
+	vararg staticCompletion: String,
 	displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
 	accessApproval: Approval? = null,
 ) =
@@ -485,6 +496,14 @@ infix operator fun Completion.plus(
 	staticCompletion: String,
 ) =
 	plus(StaticCompletionComponent(setOf(staticCompletion)))
+
+@JvmName("plusMultipleArguments")
+fun Completion.plus(
+	vararg staticCompletion: String,
+	displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
+	accessApproval: Approval? = null,
+) =
+	plus(StaticCompletionComponent(staticCompletion.toSet(), displayRequirement, accessApproval))
 
 fun Completion.plus(
 	staticCompletion: String,

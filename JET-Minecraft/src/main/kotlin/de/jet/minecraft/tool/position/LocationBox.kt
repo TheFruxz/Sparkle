@@ -1,5 +1,6 @@
 package de.jet.minecraft.tool.position
 
+import de.jet.library.extension.math.difference
 import de.jet.library.tool.smart.Producible
 import org.bukkit.Location
 import org.bukkit.block.Block
@@ -49,6 +50,12 @@ data class LocationBox(
 	fun updateLastLocation(newLocation: Location) = apply {
 		last = newLocation
 	}
+
+	val blockVolume: Double
+		get() = (first.x.difference(last.x)+1) * (first.y.difference(last.y)+1) * (first.z.difference(last.z)+1)
+
+	val distance: Double
+		get() = first.distance(last)
 
 	override fun produce() = BoundingBox.of(first, last)
 

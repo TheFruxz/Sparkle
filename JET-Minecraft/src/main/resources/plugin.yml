@@ -25,3 +25,9 @@ commands:
     description: Gives you the marking tool!
   changeskin:
     description: test skin
+  preference:
+    description: Manages your preferences!
+  point:
+    description: Manages your points!
+  world:
+    description: Manages your worlds!

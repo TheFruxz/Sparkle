@@ -1,37 +1,57 @@
 package de.jet.minecraft.tool.data
 
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.extension.forceCast
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.app.JetCache.registeredPreferenceCache
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.tasky.task
 import de.jet.minecraft.tool.timing.tasky.TemporalAdvice.Companion.instant
 
+/**
+ * @param inputType null if automatic
+ */
 data class Preference<SHELL : Any>(
-	val file: JetFile,
-	val path: Identifiable<JetPath>,
-	val default: SHELL,
-	val useCache: Boolean = false,
-	val readAndWrite: Boolean = true,
-	var transformer: DataTransformer<SHELL, out Any> = DataTransformer.empty(),
-	var async: Boolean = false,
-	var forceUseOfTasks: Boolean = false,
-	var initTriggerSetup: Boolean = true,
+    val file: JetFile,
+    val path: Identifiable<JetPath>,
+    val default: SHELL,
+    val useCache: Boolean = false,
+    val readAndWrite: Boolean = true,
+    var transformer: DataTransformer<SHELL, out Any> = DataTransformer.empty(),
+    var async: Boolean = false,
+    var forceUseOfTasks: Boolean = false,
+    var initTriggerSetup: Boolean = true,
+	var inputType: InputType? = null,
 ) : Identifiable<Preference<SHELL>> {
 
 	override val identity = "${file.file}:${path.identity}"
 	private val inFilePath = path.identity
 
 	init {
+
 		if (initTriggerSetup && !isSavedInFile) {
 			JetCache.tmp_initSetupPreferences.add(this)
 		}
+
+		JetCache.registeredPreferences[identityObject] = this
+
+		if (inputType != null) {
+			when (default) {
+				is String -> inputType = InputType.STRING
+				is Int -> inputType = InputType.INT
+				is Long -> inputType = InputType.LONG
+				is Double -> inputType = InputType.DOUBLE
+				is Float -> inputType = InputType.FLOAT
+				is Boolean -> inputType = InputType.BOOLEAN
+			}
+		}
+
 	}
 
 	val isSavedInFile: Boolean
 		get() = file.let { jetFile ->
 			jetFile.load()
-			return@let jetFile.loader.contains(inFilePath)
+			return@let jetFile.contains(inFilePath)
 		}
 
 	@Suppress("UNCHECKED_CAST")
@@ -41,7 +61,7 @@ data class Preference<SHELL : Any>(
 			val process = {
 				val currentCacheValue = registeredPreferenceCache[inFilePath]
 
-				if (!useCache && currentCacheValue != null) {
+				if (useCache && currentCacheValue != null) {
 					out = try {
 						currentCacheValue as SHELL
 					} catch (e: ClassCastException) {
@@ -55,7 +75,7 @@ data class Preference<SHELL : Any>(
 					val currentFileValue = file.get<SHELL>(inFilePath)?.let { toShellTransformer()(it).also { core ->
 						debugLog("transformed '$it'(shell) from '$core'(core)")
 					} }
-					val newContent = if (file.loader.contains(inFilePath) && currentFileValue != null) {
+					val newContent = if (file.contains(inFilePath) && currentFileValue != null) {
 						currentFileValue
 					} else default
 
@@ -84,7 +104,7 @@ data class Preference<SHELL : Any>(
 			debugLog("Try to save in ($identity) the value: '$value'")
 			val process = {
 				if (readAndWrite) {
-					file.load() // TODO: 23.07.2021 SUS? (overriding cache?)
+					file.load()
 				}
 
 				transformer.toCore(value).let { coreObject ->
@@ -107,6 +127,10 @@ data class Preference<SHELL : Any>(
 
 		}
 
+	fun editContent(process: SHELL.() -> Unit) {
+		content = content.apply(process)
+	}
+
 	fun <CORE : Any> transformer(
 		toCore: (SHELL.() -> CORE),
 		toShell: (CORE.() -> SHELL),
@@ -117,5 +141,29 @@ data class Preference<SHELL : Any>(
 	fun <CORE : Any> transformer(
 		transformer: DataTransformer<SHELL, CORE>
 	) = transformer(toCore = transformer.toCore, toShell = transformer.toShell)
+
+	fun reset() {
+		content = default
+	}
+
+	fun insertFromString(string: String) = inputType?.fromStringConverter()?.let { content = it(string).forceCast() } ?: throw IllegalArgumentException("String not accepted!")
+
+	enum class InputType {
+
+		STRING, INT, DOUBLE, FLOAT, LONG, BOOLEAN;
+
+		/**
+		 * Null if failed to transform
+		 */
+		fun fromStringConverter(): (String) -> Any? = when (this) {
+			STRING -> { { it } }
+			INT -> { { it.toIntOrNull() } }
+			DOUBLE -> { { it.toDoubleOrNull() } }
+			FLOAT -> { { it.toFloatOrNull() } }
+			LONG -> { { it.toLongOrNull() } }
+			BOOLEAN -> { { it.toBooleanStrictOrNull() } }
+		}
+
+	}
 
 }

@@ -9,7 +9,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 
 val Cooldown?.isOver: Boolean
-	get() = this?.destination?.let { Calendar.now().after(it) } ?: true
+	get() = this?.destination?.let { Calendar.now().isAfter(it) } ?: true
 
 fun isCooldownDecaying(identity: String, section: String) =
 	Cooldown.isCooldownRunning(identity, section)

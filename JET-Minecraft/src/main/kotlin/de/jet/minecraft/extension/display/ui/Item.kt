@@ -1,6 +1,6 @@
 package de.jet.minecraft.extension.display.ui
 
-import de.jet.library.extension.paper.getOfflinePlayer
+import de.jet.minecraft.extension.paper.getOfflinePlayer
 import de.jet.minecraft.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.minecraft.tool.display.color.ColorType
 import de.jet.minecraft.tool.display.color.DyeableMaterial

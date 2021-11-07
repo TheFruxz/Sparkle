@@ -7,6 +7,16 @@
   "languageData": {
     "system.hello": "Welcome to JET! - Welcome to this Language!",
 
+    "system.prefix.general": "§6JET §8» ",
+    "system.prefix.info": "§6INFO §8» ",
+    "system.prefix.fail": "§cFAIL §8» ",
+    "system.prefix.error": "§c§lERROR §8» ",
+    "system.prefix.level": "§5STATS §8» ",
+    "system.prefix.warning": "§e§lWARNING §8» ",
+    "system.prefix.attention": "§eATTENTION §8» ",
+    "system.prefix.payment": "§3PAYMENT §8» ",
+    "system.prefix.applied": "§aAPPLIED §8» ",
+
     "interchange.run.issue.wrongApproval": "[GRAY]This action[RED] requires[GRAY] the approval [YELLOW]'[approval]'[GRAY], to be executed!",
     "interchange.run.issue.wrongUsage": "[GRAY]The input[RED] must[GRAY] follow the instruction '[YELLOW][usage][GRAY]' to be executed!",
     "interchange.run.issue.wrongClient": "[GRAY]This action[RED] needs[GRAY] you as a '[YELLOW][client][GRAY]' to be executed!",
@@ -78,6 +88,22 @@
     "component.markingTool.action.view.notSet": "[GRAY]You have [RED]no [GRAY] valid [YELLOW]locations[GRAY] set!",
     "component.markingTool.action.view.detail": "[GRAY]You have the locations [LIGHT_PURPLE][1] [GRAY]and [LIGHT_PURPLE][2] [GRAY]set!",
     "component.markingTool.action.view.distance.both": "[GRAY]Both locations are [GOLD][distance] Block(s) [GRAY]away!",
-    "component.markingTool.action.view.distance.other": "[GRAY]Other position is [GOLD][distance] Block(s) [GRAY]away!"
+    "component.markingTool.action.view.distance.other": "[GRAY]Other position is [GOLD][distance] Block(s) [GRAY]away!",
+    "component.markingTool.action.view.distance.volume": "[GRAY]Volume: [GOLD][volume] Block(s) [GRAY]containing!",
+
+    "interchange.internal.preference.list.empty": "[GRAY]There are currently [RED]no[GRAY] preferences registered!",
+    "interchange.internal.preference.list.header": "[GRAY]These '[GOLD][amount][GRAY]' preferences are currently registered:",
+    "interchange.internal.preference.list.stash": "[GRAY][preference-array]",
+
+    "interchange.internal.essentials.point.list.empty": "[GRAY]There are currently [RED]no[GRAY] points saved!",
+    "interchange.internal.essentials.point.list.header": "[GRAY]These '[GOLD][amount][GRAY]' points are currently saved:",
+    "interchange.internal.essentials.point.list.stash": "[GREEN][point-array][GRAY]",
+    "interchange.internal.essentials.point.edit.removed": "[GREEN]Successfully [GRAY]removed the Point '[YELLOW][point][GRAY]'!",
+    "interchange.internal.essentials.point.edit.created": "[GRAY]A Point called '[YELLOW][point][GRAY]' got [GREEN]successfully[GRAY] created!",
+    "interchange.internal.essentials.point.edit.notFound": "[GRAY]A Point called '[YELLOW][point][GRAY]' is not saved!",
+    "interchange.internal.essentials.point.edit.exists": "[GRAY]A Point called '[YELLOW][point][GRAY]' [RED]already exists[GRAY]!",
+    "interchange.internal.essentials.point.edit.teleportedSelf": "[GRAY]Teleported you to the Point '[YELLOW][point][GRAY]'!",
+    "interchange.internal.essentials.point.edit.teleportedAll": "[GRAY]Teleported everybody to the Point '[YELLOW][point][GRAY]'!"
+
   }
 }

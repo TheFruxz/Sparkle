@@ -1,11 +1,11 @@
 package de.jet.minecraft.tool.data
 
 import de.jet.library.extension.collection.toArrayList
-import de.jet.library.extension.data.fromJson
-import de.jet.library.extension.data.toJson
-import de.jet.library.extension.tag.Data
+import de.jet.minecraft.structure.classes.JSON
 import de.jet.minecraft.tool.display.item.Item
 import de.jet.minecraft.tool.display.world.SimpleLocation
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import org.bukkit.Location
 
 data class DataTransformer<SHELL: Any, CORE: Any>(
@@ -19,12 +19,14 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 			DataTransformer<BOTH, BOTH>({ this }, { this })
 
 		// JSON
-
-		inline fun <reified T : Data> jsonObject() =
-			DataTransformer<T, String>({ toJson() }, { fromJson() })
+		inline fun <reified T : Any> json() =
+			DataTransformer<T, String>(
+				{ JSON.jsonFormat.encodeToString(this) },
+				{ JSON.jsonFormat.decodeFromString(this) },
+			)
 
 		fun jsonItem() =
-			DataTransformer<Item, String>({ produceJson()}, { Item.produceByJson(this)!! })
+			DataTransformer<Item, String>({ produceJson() }, { Item.produceByJson(this)!! })
 
 		// collections
 

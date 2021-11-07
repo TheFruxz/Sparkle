@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion.VERSION_16
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
@@ -30,14 +32,14 @@ dependencies {
 
     // Kotlin
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.31")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
 
     // External
 
     implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
 
-    compileOnly("me.arcaniax:HeadDatabase-API:[1.0.0,)") // Head-Database
+    compileOnly("com.arcaniax:HeadDatabase-API:1.3.0") // Head-Database
 
 }
 
@@ -48,6 +50,11 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.ExperimentalStdlibApi"
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi"
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.io.path.ExperimentalPathApi"
+}
+
+java {
+    sourceCompatibility = VERSION_16
+    targetCompatibility = VERSION_16
 }
 
 tasks.processResources {

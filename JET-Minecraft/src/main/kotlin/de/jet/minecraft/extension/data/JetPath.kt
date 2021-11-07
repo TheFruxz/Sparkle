@@ -1,4 +1,4 @@
-package de.jet.library.extension.data
+package de.jet.minecraft.extension.data
 
 import de.jet.minecraft.tool.data.JetPath
 

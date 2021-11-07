@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion.VERSION_16
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
@@ -11,7 +13,7 @@ dependencies {
     // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.31")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
 }
 
@@ -53,4 +55,9 @@ publishing {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+java {
+    sourceCompatibility = VERSION_16
+    targetCompatibility = VERSION_16
 }

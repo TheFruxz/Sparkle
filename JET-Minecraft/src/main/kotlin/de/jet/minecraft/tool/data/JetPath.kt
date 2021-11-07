@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.data
 
-import de.jet.library.tool.smart.Identifiable
+import de.jet.library.tool.smart.identification.Identifiable
 
 /**
  * The path used inside yaml files

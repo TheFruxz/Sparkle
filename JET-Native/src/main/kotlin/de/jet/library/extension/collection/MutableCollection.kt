@@ -8,6 +8,9 @@ fun <T> MutableCollection<T>.mutableReplaceWith(collection: Collection<T>) {
 	}
 }
 
+/**
+ * If contained, remove; or if not contained add element!
+ */
 fun <T> MutableCollection<T>.toggle(o: T) {
 	if (contains(o))
 		remove(o)
@@ -15,6 +18,9 @@ fun <T> MutableCollection<T>.toggle(o: T) {
 		add(o)
 }
 
+/**
+ * If contained, remove; or if not contained add element!
+ */
 fun <T> MutableSet<T>.toggle(o: T) {
 	if (contains(o))
 		remove(o)
@@ -22,6 +28,9 @@ fun <T> MutableSet<T>.toggle(o: T) {
 		add(o)
 }
 
+/**
+ * If contained, remove; or if not contained add element!
+ */
 fun <T> MutableList<T>.toggle(o: T) {
 	if (contains(o))
 		remove(o)

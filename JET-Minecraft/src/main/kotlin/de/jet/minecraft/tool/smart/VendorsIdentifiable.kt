@@ -1,7 +1,7 @@
 package de.jet.minecraft.tool.smart
 
-import de.jet.library.tool.smart.Identifiable
-import de.jet.library.tool.smart.Identity
+import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.library.tool.smart.identification.Identity
 import de.jet.minecraft.structure.app.App
 
 interface VendorsIdentifiable<T> : Identifiable<T> {

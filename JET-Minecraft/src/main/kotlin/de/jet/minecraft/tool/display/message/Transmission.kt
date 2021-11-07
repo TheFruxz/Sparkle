@@ -1,19 +1,23 @@
 package de.jet.minecraft.tool.display.message
 
-import de.jet.library.extension.paper.consoleSender
-import de.jet.library.extension.paper.onlinePlayers
+import de.jet.library.tool.smart.positioning.Address
+import de.jet.library.tool.smart.positioning.Address.Companion.address
 import de.jet.minecraft.app.JetData
+import de.jet.minecraft.extension.lang
+import de.jet.minecraft.extension.paper.adventureComponent
+import de.jet.minecraft.extension.paper.consoleSender
+import de.jet.minecraft.extension.paper.onlinePlayers
 import de.jet.minecraft.tool.display.message.DisplayType.*
 import de.jet.minecraft.tool.effect.sound.SoundLibrary
 import de.jet.minecraft.tool.effect.sound.SoundMelody
-import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
+import net.kyori.adventure.text.event.ClickEvent
+import net.kyori.adventure.text.event.HoverEventSource
 import net.kyori.adventure.title.Title
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Entity
 
-@Serializable
 data class Transmission(
 	var prefix: Component = Component.text(JetData.systemPrefix.content),
 	var content: TextComponent.Builder = Component.text(),
@@ -21,7 +25,10 @@ data class Transmission(
 	var withoutPrefix: Boolean = false,
 	var displayType: DisplayType = DISPLAY_CHAT,
 	var promptSound: SoundMelody? = null,
-	var level: Level = Level.GENERAL
+	var level: Level = Level.GENERAL,
+	var prefixByLevel: Boolean = true,
+	var hoverEvent: HoverEventSource<*>? = null,
+	var clickEvent: ClickEvent? = null,
 ) {
 
 	infix fun edit(action: Transmission.() -> Unit) = apply(action)
@@ -40,9 +47,21 @@ data class Transmission(
 
 	infix fun promptSound(soundMelody: SoundMelody?) = edit { this.promptSound = soundMelody }
 
+	infix fun hoverEvent(hoverEvent: HoverEventSource<*>?) = edit { this.hoverEvent = hoverEvent }
+
+	infix fun hover(hover: HoverEventSource<*>?) = hoverEvent(hover)
+
+	infix fun clickEvent(clickEvent: ClickEvent?) = edit { this.clickEvent = clickEvent }
+
+	infix fun click(click: ClickEvent?) = clickEvent(click)
+
 	fun display(): Transmission {
 		val nextRound = mutableSetOf<Entity>()
-		val displayObject = prefix
+
+		hoverEvent?.let { content.hoverEvent(it) }
+		clickEvent?.let { content.clickEvent(it) }
+
+		val displayObject = (if (prefixByLevel) lang("system.${level.prefixLink.address}").adventureComponent else prefix)
 			.append(content)
 
 		for (participant in participants) {
@@ -72,17 +91,18 @@ data class Transmission(
 
 	enum class Level(
 		val promptSound: SoundMelody?,
+		val prefixLink: Address<Level>,
 	) {
 
-		GENERAL(SoundLibrary.NOTIFICATION_GENERAL),
-		INFO(SoundLibrary.NOTIFICATION_INFO),
-		FAIL(SoundLibrary.NOTIFICATION_FAIL),
-		ERROR(SoundLibrary.NOTIFICATION_ERROR),
-		LEVEL(SoundLibrary.NOTIFICATION_LEVEL),
-		WARNING(SoundLibrary.NOTIFICATION_WARNING),
-		ATTENTION(SoundLibrary.NOTIFICATION_ATTENTION),
-		PAYMENT(SoundLibrary.NOTIFICATION_PAYMENT),
-		APPLIED(SoundLibrary.NOTIFICATION_APPLIED),
+		GENERAL(SoundLibrary.NOTIFICATION_GENERAL, address("prefix.general")),
+		INFO(SoundLibrary.NOTIFICATION_INFO, address("prefix.info")),
+		FAIL(SoundLibrary.NOTIFICATION_FAIL, address("prefix.fail")),
+		ERROR(SoundLibrary.NOTIFICATION_ERROR, address("prefix.error")),
+		LEVEL(SoundLibrary.NOTIFICATION_LEVEL, address("prefix.level")),
+		WARNING(SoundLibrary.NOTIFICATION_WARNING, address("prefix.warning")),
+		ATTENTION(SoundLibrary.NOTIFICATION_ATTENTION, address("prefix.attention")),
+		PAYMENT(SoundLibrary.NOTIFICATION_PAYMENT, address("prefix.payment")),
+		APPLIED(SoundLibrary.NOTIFICATION_APPLIED, address("prefix.applied")),
 
 	}
 

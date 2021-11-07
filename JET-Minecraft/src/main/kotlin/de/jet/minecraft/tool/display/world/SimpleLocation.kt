@@ -1,12 +1,14 @@
 package de.jet.minecraft.tool.display.world
 
-import de.jet.library.extension.paper.getWorld
+import de.jet.minecraft.extension.paper.getWorld
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 
 @Serializable
+@SerialName("WorldSimpleLocation")
 data class SimpleLocation(
 	val world: String,
 	val x: Double,

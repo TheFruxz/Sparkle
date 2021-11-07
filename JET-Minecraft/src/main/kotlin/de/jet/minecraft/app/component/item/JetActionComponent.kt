@@ -1,13 +1,13 @@
 package de.jet.minecraft.app.component.item
 
 import de.jet.library.extension.collection.replace
-import de.jet.library.extension.paper.createKey
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.display.ui.get
 import de.jet.minecraft.extension.display.ui.item
 import de.jet.minecraft.extension.get
 import de.jet.minecraft.extension.lang
+import de.jet.minecraft.extension.paper.createKey
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.extension.tasky.task
 import de.jet.minecraft.extension.timing.getCooldown
@@ -83,7 +83,7 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, AUTO
 
 				player.getCooldown("item:${item.identity}:${action.eventClass.simpleName}")?.let { cooldown ->
 					val cancelType = action.cooldown?.type
-					val remaining = cooldown.remainingCooldown
+					val remaining = cooldown.remainingTime
 
 					if (cancelType != null) {
 

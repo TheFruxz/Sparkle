@@ -1,4 +1,4 @@
-package de.jet.library.extension.data
+package de.jet.library.extension.math
 
 import java.text.DecimalFormat
 

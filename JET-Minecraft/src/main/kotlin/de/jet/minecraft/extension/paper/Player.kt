@@ -1,6 +1,6 @@
 package de.jet.minecraft.extension.paper
 
-import de.jet.library.tool.smart.Identity
+import de.jet.library.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.tool.permission.Approval
 import de.jet.minecraft.tool.position.LocationBox
@@ -47,5 +47,3 @@ var Player.marker: LocationBox
 	set(value) {
 		JetCache.playerMarkerBoxes[identityObject] = value
 	}
-
-// TODO: 22.08.2021 Cooldowns here

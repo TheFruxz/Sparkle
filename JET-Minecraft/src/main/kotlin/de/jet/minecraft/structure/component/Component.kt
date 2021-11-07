@@ -1,10 +1,10 @@
 package de.jet.minecraft.structure.component
 
-import de.jet.library.extension.paper.createKey
-import de.jet.library.tool.smart.Identity
+import de.jet.library.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.extension.debugLog
+import de.jet.minecraft.extension.paper.createKey
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.component.Component.RunType.*
 import de.jet.minecraft.tool.smart.Logging
