@@ -1,6 +1,7 @@
 package de.jet.minecraft.app
 
 import de.jet.library.extension.forceCast
+import de.jet.library.extension.math.decimalAsPercent
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.component.chat.JetChatComponent
 import de.jet.minecraft.app.component.essentials.EssentialsComponent
@@ -24,12 +25,7 @@ import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.mainLog
 import de.jet.minecraft.extension.o.buildSandBox
 import de.jet.minecraft.extension.paper.worlds
-import de.jet.minecraft.general.api.mojang.MojangProfile
-import de.jet.minecraft.general.api.mojang.MojangProfileCape
-import de.jet.minecraft.general.api.mojang.MojangProfileRaw
-import de.jet.minecraft.general.api.mojang.MojangProfileSkin
-import de.jet.minecraft.general.api.mojang.MojangProfileTextures
-import de.jet.minecraft.general.api.mojang.MojangProfileUsernameHistoryEntry
+import de.jet.minecraft.general.api.mojang.*
 import de.jet.minecraft.runtime.app.LanguageSpeaker.LanguageContainer
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.AppCompanion
@@ -136,6 +132,10 @@ class JetApp : App() {
 			executor.sendMessage("...")
 			JSON.rebuildJsonInstructions()
 			executor.sendMessage("done! ")
+		}
+
+		buildSandBox(this, "percentage") {
+			executor.sendMessage(parameters.first().toDouble().decimalAsPercent.displayPercentageString("§a|", "§7|", 10))
 		}
 
 	}

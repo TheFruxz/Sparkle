@@ -1,5 +1,6 @@
 package de.jet.library.extension.math
 
+import de.jet.library.tool.math.Percentage
 import java.text.DecimalFormat
 
 fun String?.isInt() = try {
@@ -59,3 +60,9 @@ operator fun IntArray.plus(intArray: IntArray) = asIterable().toList().toTypedAr
 fun Int.maxedOut(maximum: Int) = this.let { if (it <= maximum) it else maximum }
 
 fun Int.minedOut(minimum: Int) = this.let { if (it >= minimum) it else minimum }
+
+val Double.decimalAsPercent: Percentage
+    get() = Percentage(this)
+
+val Float.decimalAsPercent: Percentage
+    get() = Percentage(this.toDouble())
