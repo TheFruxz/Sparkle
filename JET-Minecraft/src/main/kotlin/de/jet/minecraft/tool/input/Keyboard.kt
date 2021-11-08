@@ -112,35 +112,37 @@ object Keyboard {
 		@Serializable
 		@SerialName("KeyboardKeyConfiguration")
 		data class KeyConfiguration(
-			val keys: List<Key>
+			val darkModeKeys: List<Key>,
+			val lightModeKeys: List<Key>,
 		)
 
-		private val renderKeys = JetData.keyConfig.content.keys
+		private val renderKeys = JetData.keyConfig.content.lightModeKeys
+
+		fun renderKey(keyObject: Key): Item {
+			return texturedSkull(keyObject.textureIdentity).apply {
+				label = "§7Key: §6${keyObject.displayTitle}"
+				lore = buildString {
+
+					appendLine()
+					appendLine("§7The §e${keyObject.displayTitle}§7 Key inserts")
+					appendLine("§7a new '§6${keyObject.displayInline}§7'!")
+					appendLine()
+					append("§8${keyObject.identity}")
+
+				}
+			}
+		}
+
+		fun renderKey(key: String): Item {
+			val keyObject = renderKeys.firstOrNull { it.identity == key.uppercase() }
+
+			if (keyObject != null) {
+				return renderKey(keyObject)
+			} else
+				throw NoSuchElementException("No key '$key' registered!")
+		}
 
 		fun renderKeyboard(holder: HumanEntity, keyboardType: Type = ANY, message: String = "", vararg extensions: Extension = emptyArray()): RenderingState {
-
-			fun generateKey(key: String): Item {
-				val keyObject = renderKeys.firstOrNull { it.identity == key.uppercase() }
-
-				if (keyObject != null) {
-
-					return texturedSkull(keyObject.textureIdentity).apply {
-						label = "§7Key: §6${keyObject.displayTitle}"
-						lore = buildString {
-
-							appendLine()
-							appendLine("§7The §e${keyObject.displayTitle}§7 Key inserts")
-							appendLine("§7a new '§6${keyObject.displayInline}§7'!")
-							appendLine()
-							append("§8${keyObject.identity}")
-
-						}
-					}
-
-				} else
-					throw NoSuchElementException("No key '$key' registered!")
-
-			}
 
 			fun renderBasePlate() = buildPanel(lines = 6) {
 
@@ -148,13 +150,13 @@ object Keyboard {
 
 				placeInner(innerSlots, Material.GRAY_STAINED_GLASS_PANE.item.blankLabel()) // inner key-marking
 
-				this[48..50] = generateKey("_BLANK").putLabel("SPACE")
+				this[48..50] = renderKey("_BLANK").putLabel("SPACE")
 
-				this[46] = generateKey("_ARROW-DOUBLE-LEFT").skullQuirk { owningPlayer = getOfflinePlayer("MHF_ArrowLeft") }
-				this[47] = generateKey("_ARROW-LEFT").skullQuirk { owningPlayer = getOfflinePlayer("MHF_ArrowLeft") }
+				this[46] = renderKey("_ARROW-DOUBLE-LEFT").skullQuirk { owningPlayer = getOfflinePlayer("MHF_ArrowLeft") }
+				this[47] = renderKey("_ARROW-LEFT").skullQuirk { owningPlayer = getOfflinePlayer("MHF_ArrowLeft") }
 
-				this[51] = generateKey("_ARROW-RIGHT").skullQuirk { owningPlayer = getOfflinePlayer("MHF_ArrowRight") }
-				this[52] = generateKey("_ARROW-DOUBLE-RIGHT").skullQuirk { owningPlayer = getOfflinePlayer("MHF_ArrowRight") }
+				this[51] = renderKey("_ARROW-RIGHT").skullQuirk { owningPlayer = getOfflinePlayer("MHF_ArrowRight") }
+				this[52] = renderKey("_ARROW-DOUBLE-RIGHT").skullQuirk { owningPlayer = getOfflinePlayer("MHF_ArrowRight") }
 
 			}
 
@@ -167,7 +169,7 @@ object Keyboard {
 				val primaryKeys = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
 
 				innerSlots.skip(21, 27).withIndex().forEach { (index, value) ->
-					placeInner(value, generateKey(primaryKeys[index].toString()))
+					placeInner(value, renderKey(primaryKeys[index].toString()))
 				}
 
 			}
