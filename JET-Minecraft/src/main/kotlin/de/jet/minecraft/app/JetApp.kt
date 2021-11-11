@@ -3,6 +3,7 @@ package de.jet.minecraft.app
 import de.jet.library.extension.forceCast
 import de.jet.library.extension.math.decimalAsPercent
 import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.library.tool.smart.identification.Identity
 import de.jet.minecraft.app.component.chat.JetChatComponent
 import de.jet.minecraft.app.component.essentials.EssentialsComponent
 import de.jet.minecraft.app.component.essentials.point.Point
@@ -159,6 +160,7 @@ class JetApp : App() {
 
 	companion object : AppCompanion<JetApp> {
 		override lateinit var instance: JetApp
+		override val predictedIdentity = Identity<App>("JET")
 		var debugMode: Boolean = false
 		val registerSerialization = {
 

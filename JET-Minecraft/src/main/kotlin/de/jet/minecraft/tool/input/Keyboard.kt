@@ -2,6 +2,7 @@ package de.jet.minecraft.tool.input
 
 import de.jet.library.extension.collection.skip
 import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.library.tool.smart.identification.Identity
 import de.jet.library.tool.smart.type.Breakable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.app.JetData
@@ -28,23 +29,16 @@ import java.util.*
  * @param extensions the extensions, that defines the UI and capabilities of the keyboard (***BETA***)
  * @return [Breakable]<[Keyboard],[String]> the keyboard object & the last input, which got entered (empty or unfinished if break is called!)
  */
-fun awaitKeyboardInput(target: HumanEntity, keyboardType: Type = ANY, message: String = "", vararg extensions: Extension = emptyArray()): Breakable<Keyboard, String>? {
+fun <T : HumanEntity> requestKeyboardInput(target: T, keyboardType: Type = ANY, message: String = "", requestIdentity: Identity<Keyboard> = Identity("${UUID.randomUUID()}"), vararg extensions: Extension = emptyArray(), onReaction: (reactor: T, reaction: String) -> Unit): Breakable<Keyboard, String>? {
 	// TODO: 27.10.2021 register keyboard request (use UUID for multiple uses of the keyboard at a time)
 	return null // placeholder
 }
 
-fun <T : HumanEntity> T.requestKeyboardInput(keyboardType: Type = ANY, message: String = "", vararg extensions: Extension = emptyArray()) =
-	awaitKeyboardInput(this, keyboardType, message, *extensions)
-
-fun demo() {
-	/*awaitKeyboardInput()
-		.atSuccess {
-
-		}
-		.atBreak {
-
-		}*/
-}
+@JvmName("entityRequestKeyboardInput")
+fun <T : HumanEntity> T.requestKeyboardInput(keyboardType: Type = ANY, message: String = "", requestIdentity: Identity<Keyboard> = Identity("${UUID.randomUUID()}"), vararg extensions: Extension = emptyArray(), onReaction: (reactor: T, reaction: String) -> Unit) =
+	requestKeyboardInput(this, keyboardType, message, requestIdentity, *extensions) { reactor, reaction ->
+		onReaction(reactor, reaction)
+	}
 
 object Keyboard {
 
@@ -63,6 +57,14 @@ object Keyboard {
 	 * WIP
 	 */
 	sealed interface Extension
+
+	data class KeyboardRequest<T : HumanEntity>(
+		val executor: T,
+		val keyboardType: Type,
+		val message: String,
+		val extensions: List<Extension>,
+		val reaction: (reactor: T, reaction: String) -> Unit,
+	)
 
 	object RunningEngine {
 
