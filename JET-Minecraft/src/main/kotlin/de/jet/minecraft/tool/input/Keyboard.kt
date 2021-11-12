@@ -59,7 +59,7 @@ object Keyboard {
 	sealed interface Extension
 
 	data class KeyboardRequest<T : HumanEntity>(
-		val executor: T,
+		val holder: T,
 		val keyboardType: Type,
 		val message: String,
 		val extensions: List<Extension>,
