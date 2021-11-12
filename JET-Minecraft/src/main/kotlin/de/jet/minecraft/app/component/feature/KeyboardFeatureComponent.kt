@@ -1,8 +1,13 @@
 package de.jet.minecraft.app.component.feature
 
+import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetFeature
 import de.jet.minecraft.structure.app.App
+import de.jet.minecraft.structure.app.event.EventListener
 import de.jet.minecraft.structure.component.Component
+import de.jet.minecraft.structure.service.Service
+import de.jet.minecraft.tool.timing.tasky.Tasky
+import de.jet.minecraft.tool.timing.tasky.TemporalAdvice
 
 class KeyboardFeatureComponent(override val vendor: App) : Component(vendor, RunType.AUTOSTART_MUTABLE) {
 
@@ -19,5 +24,18 @@ class KeyboardFeatureComponent(override val vendor: App) : Component(vendor, Run
     }
 
     override val thisIdentity = "feature/VisualKeyboard"
+
+    class RequestService(override val vendor: Identifiable<App>) : Service {
+        override val temporalAdvice: TemporalAdvice
+            get() = TODO("Not yet implemented")
+        override val process: Tasky.() -> Unit
+            get() = TODO("Not yet implemented")
+        override val thisIdentity: String
+            get() = TODO("Not yet implemented")
+    }
+
+    class RequestListener(override val vendor: App) : EventListener {
+
+    }
 
 }
