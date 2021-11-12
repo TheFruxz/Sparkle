@@ -25,18 +25,30 @@ class KeyboardFeatureComponent(override val vendor: App) : Component(vendor, Run
         JetFeature.VISUAL_KEYBOARD.registerIfNotRegistered()
     }
 
-    fun uselessFunction() {
-
-    }
-
-    val unnusedVariable = "unused"
-
     override fun start() {
+
+        RequestService(vendor).let { service ->
+            vendor.register(service)
+            vendor.start(service)
+        }
+
+        RequestListener(vendor).let(vendor::add)
+
         JetFeature.VISUAL_KEYBOARD.isEnabled = true
+
     }
 
     override fun stop() {
+
+        RequestService(vendor).let { service ->
+            vendor.stop(service)
+            vendor.unregister(service)
+        }
+
+        RequestListener(vendor).let(vendor::remove)
+
         JetFeature.VISUAL_KEYBOARD.isEnabled = false
+
     }
 
     class RequestService(override val vendor: Identifiable<App>) : Service {
