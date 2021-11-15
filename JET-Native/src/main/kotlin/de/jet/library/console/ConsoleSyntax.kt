@@ -75,4 +75,9 @@ class ConsoleSyntax(
             "[${it.variableName} <${it.contentType.name}>]"
     }
 
+    fun buildUsedVariables(input: Array<String>) =
+        ConsoleInput.processVariables(input).filter { entry ->
+            syntaxVariables.any { it.variableName == entry.key }
+        }
+
 }
