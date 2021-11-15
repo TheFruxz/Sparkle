@@ -7,16 +7,19 @@ import de.jet.minecraft.structure.app.AppCache
 import de.jet.minecraft.structure.app.cache.CacheDepthLevel
 import de.jet.minecraft.structure.command.Interchange
 import de.jet.minecraft.structure.component.Component
+import de.jet.minecraft.structure.feature.Feature
 import de.jet.minecraft.structure.service.Service
 import de.jet.minecraft.tool.data.Preference
 import de.jet.minecraft.tool.display.item.action.ItemClickAction
 import de.jet.minecraft.tool.display.item.action.ItemInteractAction
 import de.jet.minecraft.tool.display.ui.panel.PanelFlag
+import de.jet.minecraft.tool.input.Keyboard
 import de.jet.minecraft.tool.input.Keyboard.RunningEngine.PlayerKeyboardPort
 import de.jet.minecraft.tool.position.LocationBox
 import de.jet.minecraft.tool.timing.cooldown.Cooldown
 import de.jet.minecraft.tool.timing.tasky.Tasky
 import org.bukkit.OfflinePlayer
+import org.bukkit.entity.HumanEntity
 import java.util.*
 
 object JetCache : AppCache {
@@ -61,6 +64,10 @@ object JetCache : AppCache {
 	val buildModePlayers = mutableSetOf<Identity<out OfflinePlayer>>()
 
 	val playerMarkerBoxes = mutableMapOf<Identity<out OfflinePlayer>, LocationBox>()
+
+	val featureStates = mutableMapOf<Identity<Feature>, Feature.FeatureState>()
+
+	val keyboardRequests = mutableListOf<Keyboard.KeyboardRequest<out HumanEntity>>()
 
 	internal val tmp_initSetupPreferences = mutableSetOf<Preference<*>>()
 

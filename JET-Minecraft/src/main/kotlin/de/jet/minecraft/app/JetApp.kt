@@ -3,6 +3,7 @@ package de.jet.minecraft.app
 import de.jet.library.extension.forceCast
 import de.jet.library.extension.math.decimalAsPercent
 import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.library.tool.smart.identification.Identity
 import de.jet.minecraft.app.component.chat.JetChatComponent
 import de.jet.minecraft.app.component.essentials.EssentialsComponent
 import de.jet.minecraft.app.component.essentials.point.Point
@@ -22,6 +23,7 @@ import de.jet.minecraft.app.component.world.JetBuildModeComponent
 import de.jet.minecraft.app.interchange.ComponentInterchange
 import de.jet.minecraft.app.interchange.JETInterchange
 import de.jet.minecraft.extension.debugLog
+import de.jet.minecraft.extension.display.ui.buildContainer
 import de.jet.minecraft.extension.mainLog
 import de.jet.minecraft.extension.o.buildSandBox
 import de.jet.minecraft.extension.paper.worlds
@@ -128,6 +130,14 @@ class JetApp : App() {
 			Keyboard.RenderEngine.renderKeyboard(executor).mainKeyboard.display(executor)
 		}
 
+		buildSandBox(this, "renderAllKeys") {
+			buildContainer(lines = 6) {
+				JetData.keyConfig.content.lightModeKeys.withIndex().forEach { (index, value) ->
+					set(index, value.let { Keyboard.RenderEngine.renderKey(it) })
+				}
+			}.display(executor as Player)
+		}
+
 		buildSandBox(this, "rebuild-json") {
 			executor.sendMessage("...")
 			JSON.rebuildJsonInstructions()
@@ -135,7 +145,7 @@ class JetApp : App() {
 		}
 
 		buildSandBox(this, "percentage") {
-			executor.sendMessage(parameters.first().toDouble().decimalAsPercent.displayPercentageString("§a|", "§7|", 10))
+			executor.sendMessage(parameters.first().toDouble().decimalAsPercent.displayPercentageString("§a|", "§7|", 60))
 		}
 
 	}
@@ -150,6 +160,7 @@ class JetApp : App() {
 
 	companion object : AppCompanion<JetApp> {
 		override lateinit var instance: JetApp
+		override val predictedIdentity = Identity<App>("JET")
 		var debugMode: Boolean = false
 		val registerSerialization = {
 
