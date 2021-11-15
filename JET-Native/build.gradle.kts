@@ -9,7 +9,7 @@ plugins {
     id("maven-publish")
 }
 
-var host = "github.com/JustEverythingTweaked/JET"
+var host = "github.com/TheFruxz/JET"
 
 dependencies {
     // Kotlin
