@@ -13,10 +13,10 @@ var host = "github.com/JustEverythingTweaked/JET"
 
 dependencies {
     // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.31")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

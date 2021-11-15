@@ -1,18 +1,18 @@
 import org.gradle.api.JavaVersion.VERSION_16
 
 plugins {
-    kotlin("jvm") version "1.5.31"
-    kotlin("plugin.serialization") version "1.5.31"
+    kotlin("jvm") version "1.6.0"
+    kotlin("plugin.serialization") version "1.6.0"
     id("org.jetbrains.dokka") version "1.5.31"
     id("com.github.johnrengelman.shadow") version "7.1.0"
-    id("org.jetbrains.qodana") version "0.1.12"
+    id("org.jetbrains.qodana") version "0.1.13"
     id("maven-publish")
 }
 
 allprojects {
 
     group = "de.jet"
-    version = "1.0-BETA-5"
+    version = "1.0-BETA-6"
 
     repositories {
         mavenCentral()
