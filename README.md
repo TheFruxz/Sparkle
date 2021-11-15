@@ -35,7 +35,8 @@ maven("https://jitpack.io")
 
 ##### Dependency
 ```kotlin
-implementation("de.jet:jet:<version>")
+implementation("com.github.TheFruxz.JET:jet-native:1.0-BETA-5")
+implementation("com.github.TheFruxz.JET:jet-minecraft:1.0-BETA-5") // or additionally with JET-Minecraft
 ```
 
 ## Version
