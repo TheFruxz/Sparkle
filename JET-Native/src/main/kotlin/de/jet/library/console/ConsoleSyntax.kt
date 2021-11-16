@@ -17,7 +17,6 @@ class ConsoleSyntax(
     ) {
 
         fun isNoneOneUsed(variableName: String): Boolean {
-            println("used: $usedVariables")
             return usedVariables.containsKey(variableName) && usedVariables[variableName]?.isBlank() == true
         }
 
