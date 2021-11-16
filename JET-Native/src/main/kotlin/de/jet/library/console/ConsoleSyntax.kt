@@ -1,5 +1,8 @@
 package de.jet.library.console
 
+import de.jet.library.annotation.NotPerfect
+import de.jet.library.annotation.NotTested
+import de.jet.library.annotation.NotWorking
 import de.jet.library.extension.switchResult
 import de.jet.library.tool.smart.identification.Identifiable
 
@@ -14,7 +17,8 @@ class ConsoleSyntax(
     ) {
 
         fun isNoneOneUsed(variableName: String): Boolean {
-            return usedVariables[variableName] == ""
+            println("used: $usedVariables")
+            return usedVariables.containsKey(variableName) && usedVariables[variableName]?.isBlank() == true
         }
 
         fun isSet(variableName: String) =
@@ -57,7 +61,11 @@ class ConsoleSyntax(
         WORD,
         STRING,
         INT,
+        LONG,
+        BYTE,
+        SHORT,
         DOUBLE,
+        FLOAT,
         BOOLEAN,
     }
 
@@ -71,19 +79,35 @@ class ConsoleSyntax(
         override val identity = variableName
 
         fun checkVariableContent(value: String) = when (contentType) {
-            ContentType.NONE -> SyntaxCheck.produce(value.isBlank(), "Content not allowed at -$variableName!")
+            ContentType.NONE -> SyntaxCheck.produce(value.isBlank(), "Content ('$value') not allowed at -$variableName! (isset-variable)")
             ContentType.WORD -> SyntaxCheck.produce(
                 value.isNotEmpty() && value.split(" ").size == 1,
-                "Only one word allowed at -$variableName!"
+                "Only one word (string with only one word) allowed at -$variableName!"
             )
             ContentType.STRING -> SyntaxCheck.produce(value.isNotBlank(), "Content is required at -$variableName!")
             ContentType.INT -> SyntaxCheck.produce(
                 value.toIntOrNull() != null,
                 "Integer/Number is required at -$variableName!"
             )
+            ContentType.LONG -> SyntaxCheck.produce(
+                value.toLongOrNull() != null,
+                "Long/Number is required at -$variableName"
+            )
+            ContentType.BYTE -> SyntaxCheck.produce(
+                value.toByteOrNull() != null,
+                "Byte/Number is required at -$variableName"
+            )
+            ContentType.SHORT -> SyntaxCheck.produce(
+                value.toShortOrNull() != null,
+                "Short/Number is required at -$variableName"
+            )
             ContentType.DOUBLE -> SyntaxCheck.produce(
                 value.toDoubleOrNull() != null,
-                "Double/Float is required at -$variableName!"
+                "Double/Number is required at -$variableName!"
+            )
+            ContentType.FLOAT -> SyntaxCheck.produce(
+                value.toFloatOrNull() != null,
+                "Float/Number is required at -$variableName"
             )
             ContentType.BOOLEAN -> SyntaxCheck.produce(
                 value.toBooleanStrictOrNull() != null,
@@ -114,6 +138,46 @@ class ConsoleSyntax(
         }
     }
 
+    @NotPerfect
+    @NotTested
+    @NotWorking
+    fun checkInputContentWithFeedback(input: Array<String>): SyntaxCheck {
+
+        val processedVariables = ConsoleInput.processVariables(input)
+
+        val syntaxVariableNames = syntaxVariables.map(ConsoleSyntaxVariable::variableName)
+
+        syntaxVariableNames.let { syntaxVariableName ->
+
+            processedVariables.keys.forEach { key ->
+                if (!syntaxVariableName.contains(key))
+                    return SyntaxCheck.failed("Your variable -$key is not provided by the software!")
+            }
+
+            processedVariables.forEach { map ->
+                syntaxVariables.first { it.variableName == map.key }.checkVariableContent(map.value).let { s ->
+                    if (s.failed) {
+                        return s
+                    }
+                }
+            }
+
+        }
+
+        onlyRequiredVariables().forEach { required ->
+            if (!processedVariables.containsKey(required.variableName)) {
+                return SyntaxCheck.failed("The variable ${required.variableName} is required to be used!")
+            }
+        }
+
+        /*processedVariables.keys.forEach {
+            if (!syntaxVariableNames.contains(it))
+                return SyntaxCheck.failed("")
+        }*/
+
+        return SyntaxCheck.succeed()
+    }
+
     fun buildSyntaxString() = syntaxVariables.joinToString(" ") {
         if (it.contentType == ContentType.NONE) {
             "[-${it.variableName}]${it.optional.switchResult("?", "!!")}"
@@ -128,10 +192,12 @@ class ConsoleSyntax(
 
     // TODO: 15.11.2021 Additional issue feedback (what was wrong) is coming in future release
     fun runWithSyntaxOrNotify(input: Array<String>, code: ActivatedConsoleSyntax.() -> Unit) {
-        if (checkInputContent(input)) {
+        val checkInput = checkInputContentWithFeedback(input)
+        if (!checkInput.failed) {
             code(ActivatedConsoleSyntax(input, syntaxVariables, buildUsedVariables(input)))
         } else
             println(buildString {
+                appendLine(checkInput.message)
                 append("Follow the SYNTAX: ${buildSyntaxString()}")
             })
     }

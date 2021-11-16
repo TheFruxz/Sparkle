@@ -14,7 +14,7 @@ object ConsoleInput {
                     val contentContent = input.getOrNull(contentPosition)
 
                     if (input.size > contentPosition) {
-                        if (contentContent != null && !contentContent.startsWith("-")) {
+                        if (!contentContent.isNullOrBlank() && !contentContent.startsWith("-")) {
                             if (contentContent.startsWith("\"")) {
                                 val droppedContent = input.drop(index + 1)
                                 val endOfLine = droppedContent.indexOfFirst { it.endsWith("\"") }
@@ -24,8 +24,11 @@ object ConsoleInput {
                             } else {
                                 this[variableName] = contentContent
                             }
-                        } else
+                        } else {
                             this[variableName] = ""
+                        }
+                    } else {
+                        this[variableName] = ""
                     }
                 }
             }
