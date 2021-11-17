@@ -6,7 +6,7 @@ import de.jet.library.annotation.NotWorking
 import de.jet.library.extension.switchResult
 import de.jet.library.tool.smart.identification.Identifiable
 
-class ConsoleSyntax(
+class ArgumentSyntax(
     private vararg val syntaxVariables: ConsoleSyntaxVariable
 ) {
 
@@ -122,7 +122,7 @@ class ConsoleSyntax(
         syntaxVariables.filter { !it.optional }
 
     fun checkInputContent(input: Array<String>): Boolean {
-        return ConsoleInput.processVariables(input).let { consoleInputVariables ->
+        return ArgumentInput.processVariables(input).let { consoleInputVariables ->
             return@let consoleInputVariables.all { variable ->
                 syntaxVariables.any { syntax ->
                     syntax.variableName == variable.key &&
@@ -142,7 +142,7 @@ class ConsoleSyntax(
     @NotWorking
     fun checkInputContentWithFeedback(input: Array<String>): SyntaxCheck {
 
-        val processedVariables = ConsoleInput.processVariables(input)
+        val processedVariables = ArgumentInput.processVariables(input)
 
         val syntaxVariableNames = syntaxVariables.map(ConsoleSyntaxVariable::variableName)
 
@@ -185,7 +185,7 @@ class ConsoleSyntax(
     }
 
     fun buildUsedVariables(input: Array<String>) =
-        ConsoleInput.processVariables(input).filter { entry ->
+        ArgumentInput.processVariables(input).filter { entry ->
             syntaxVariables.any { it.variableName == entry.key }
         }
 

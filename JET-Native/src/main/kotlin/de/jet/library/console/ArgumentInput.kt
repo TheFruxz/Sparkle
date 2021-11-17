@@ -1,6 +1,6 @@
 package de.jet.library.console
 
-object ConsoleInput {
+object ArgumentInput {
 
     fun processVariables(inputArray: Array<String>) =
         processVariables(input = inputArray.toList())
