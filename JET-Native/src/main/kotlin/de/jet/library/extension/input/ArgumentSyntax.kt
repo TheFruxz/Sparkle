@@ -1,4 +1,4 @@
-package de.jet.library.extension.console
+package de.jet.library.extension.input
 
 import de.jet.library.console.ArgumentInput
 
