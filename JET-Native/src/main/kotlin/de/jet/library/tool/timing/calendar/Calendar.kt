@@ -22,12 +22,20 @@ class Calendar private constructor(
 		origin.add(timeField.field, amount)
 	}
 
+	fun add(duration: Duration) = apply {
+		add(MILLISECOND, duration.inWholeMilliseconds.toInt())
+	}
+
 	fun set(timeField: TimeField, amount: Int) = apply {
 		origin.add(timeField.field, amount)
 	}
 
 	fun take(timeField: TimeField, amount: Int) = apply {
 		origin.add(timeField.field, amount * (-1))
+	}
+
+	fun take(duration: Duration) = apply {
+		take(MILLISECOND, duration.inWholeMicroseconds.toInt())
 	}
 
 	fun get(timeField: TimeField) = origin.get(timeField.field)
@@ -57,7 +65,6 @@ class Calendar private constructor(
 
 	fun durationTo(jetCalendar: Calendar) = durationTo(jetCalendar.origin)
 
-	@NotPerfect
 	operator fun plus(duration: Duration) = clone().apply {
 		add(MILLISECOND, duration.inWholeMilliseconds.toInt())
 	}
@@ -66,7 +73,6 @@ class Calendar private constructor(
 		add(MILLISECOND, duration.inWholeMilliseconds.toInt())
 	}
 
-	@NotPerfect
 	operator fun minus(duration: Duration) = clone().apply {
 		take(MILLISECOND, duration.inWholeMilliseconds.toInt())
 	}
@@ -97,6 +103,8 @@ class Calendar private constructor(
 		fun now(locale: Locale) = Calendar(JavaUtilCalendar.getInstance(locale))
 
 		fun now(locale: Locale, timeZone: TimeZone) = Calendar(JavaUtilCalendar.getInstance(timeZone, locale))
+
+		fun fromNow(duration: Duration) = now().plus(duration)
 
 		@ExperimentalTime
 		fun isAfter(duration: Duration) = now().plus(duration)
