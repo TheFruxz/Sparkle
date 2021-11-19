@@ -40,7 +40,7 @@ dependencies {
 
     implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
 
-    compileOnly("com.arcaniax:HeadDatabase-API:1.3.0") // Head-Database
+    compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") // Head-Database
 
 }
 
