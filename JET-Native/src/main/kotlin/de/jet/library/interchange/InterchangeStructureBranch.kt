@@ -17,11 +17,11 @@ open class InterchangeStructureBranch(
             branchList.add(Addressed(Address("$path/${branch.branchName}"), branch))
 
             if (subbranches) {
-                branchList.addAll(branch.getBranchList("$path/${branch.branchName}/").map {
+                branchList.addAll(branch.getBranchList("$path/${branch.branchName}/", subbranches).map {
                     Addressed(Address(path + "/" + branch.branchName + "/" + it.value.branchName), it.value)
                 })
             }
-            
+
         }
         return branchList
     }
