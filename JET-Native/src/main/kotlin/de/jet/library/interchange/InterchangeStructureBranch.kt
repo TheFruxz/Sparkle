@@ -8,20 +8,16 @@ open class InterchangeStructureBranch(
     override val branches: List<InterchangeStructureBranch> = emptyList(),
 ) : InterchangeStructureBranchable {
 
-    fun getBranchList(path: String = branchName, subbranches: Boolean = true): List<Addressed<InterchangeStructureBranch>> {
-        val branchList = mutableListOf<Addressed<InterchangeStructureBranch>>()
-        val branchListIterator = branches.iterator()
-        while (branchListIterator.hasNext()) {
-            val branch = branchListIterator.next()
-
-            branchList.add(Addressed(Address("$path/${branch.branchName}"), branch))
+    fun <T : InterchangeStructureBranch> getBranchList(path: String = branchName, subbranches: Boolean = true): List<Addressed<T>> {
+        val branchList = mutableListOf<Addressed<T>>()
+        branches.forEach { branch ->
+            branchList.add(Addressed(Address<T>("$path/${branch.branchName}"), branch as T))
 
             if (subbranches) {
-                branchList.addAll(branch.getBranchList("$path/${branch.branchName}/", subbranches).map {
+                branchList.addAll(branch.getBranchList<T>("$path/${branch.branchName}/", subbranches).map {
                     Addressed(Address(path + "/" + branch.branchName + "/" + it.value.branchName), it.value)
                 })
             }
-
         }
         return branchList
     }

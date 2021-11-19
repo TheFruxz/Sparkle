@@ -2,12 +2,36 @@ package de.jet.library.console.interchange
 
 import de.jet.library.interchange.InterchangeStructure
 import de.jet.library.tool.smart.Producible
+import de.jet.library.tool.smart.positioning.Address
 
 class ConsoleInterchange(
     override val identity: String,
     override val branches: List<ConsoleStructureBranch>,
     val content: ((parameters: List<String>) -> Unit)? = null,
-) : InterchangeStructure(identity) {
+) : InterchangeStructure<ConsoleStructureBranch>(identity) {
+
+    fun performInterchange(input: String): Boolean {
+        val nearest = getNearestBranchWithParameters(Address.address(input.removePrefix("$identity ").replace(" ", "/")))
+
+        println("n: ${nearest?.first?.address?.addressString}")
+
+        return if (nearest != null) {
+
+            val content = nearest.first.value.content
+
+            if (content != null) {
+
+                content(nearest.second.split(" "))
+
+                true
+
+            } else
+                false
+
+        } else
+            false
+
+    }
 
     data class Builder(
         var identity: String,
@@ -30,6 +54,7 @@ class ConsoleInterchange(
         override fun produce() = ConsoleInterchange(
             identity, branches, content
         )
+
     }
 
 }
