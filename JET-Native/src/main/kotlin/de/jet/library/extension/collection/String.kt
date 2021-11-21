@@ -28,3 +28,5 @@ fun String.replaceVariables(vararg pairs: Pair<Any?, Any?>) = replaceVariables(m
 
 fun String.replaceVariables(pairs: Collection<Pair<Any?, Any?>>) = replaceVariables(*pairs.toTypedArray())
 
+fun emptyString() = ""
+

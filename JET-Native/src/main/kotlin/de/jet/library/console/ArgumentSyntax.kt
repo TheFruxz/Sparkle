@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate", "unused")
+
 package de.jet.library.console
 
 import de.jet.library.annotation.NotPerfect
@@ -6,7 +8,7 @@ import de.jet.library.annotation.NotWorking
 import de.jet.library.extension.switchResult
 import de.jet.library.tool.smart.identification.Identifiable
 
-class ConsoleSyntax(
+class ArgumentSyntax(
     private vararg val syntaxVariables: ConsoleSyntaxVariable
 ) {
 
@@ -118,11 +120,12 @@ class ConsoleSyntax(
 
     }
 
-    fun onlyRequiredVariables() =
+    private fun onlyRequiredVariables() =
         syntaxVariables.filter { !it.optional }
 
+    @Suppress("unused")
     fun checkInputContent(input: Array<String>): Boolean {
-        return ConsoleInput.processVariables(input).let { consoleInputVariables ->
+        return ArgumentInput.processVariables(input).let { consoleInputVariables ->
             return@let consoleInputVariables.all { variable ->
                 syntaxVariables.any { syntax ->
                     syntax.variableName == variable.key &&
@@ -142,7 +145,7 @@ class ConsoleSyntax(
     @NotWorking
     fun checkInputContentWithFeedback(input: Array<String>): SyntaxCheck {
 
-        val processedVariables = ConsoleInput.processVariables(input)
+        val processedVariables = ArgumentInput.processVariables(input)
 
         val syntaxVariableNames = syntaxVariables.map(ConsoleSyntaxVariable::variableName)
 
@@ -177,7 +180,7 @@ class ConsoleSyntax(
         return SyntaxCheck.succeed()
     }
 
-    fun buildSyntaxString() = syntaxVariables.joinToString(" ") {
+    private fun buildSyntaxString() = syntaxVariables.joinToString(" ") {
         if (it.contentType == ContentType.NONE) {
             "[-${it.variableName}]${it.optional.switchResult("?", "!!")}"
         } else
@@ -185,11 +188,12 @@ class ConsoleSyntax(
     }
 
     fun buildUsedVariables(input: Array<String>) =
-        ConsoleInput.processVariables(input).filter { entry ->
+        ArgumentInput.processVariables(input).filter { entry ->
             syntaxVariables.any { it.variableName == entry.key }
         }
 
     // TODO: 15.11.2021 Additional issue feedback (what was wrong) is coming in future release
+    @Suppress("unused")
     fun runWithSyntaxOrNotify(input: Array<String>, code: ActivatedConsoleSyntax.() -> Unit) {
         val checkInput = checkInputContentWithFeedback(input)
         if (!checkInput.failed) {
