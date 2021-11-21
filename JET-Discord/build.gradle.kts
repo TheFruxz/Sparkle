@@ -16,7 +16,13 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+
+    // internal
+
+    implementation(project(":JET-Native"))
+
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
+    
 }
 
 publishing {
