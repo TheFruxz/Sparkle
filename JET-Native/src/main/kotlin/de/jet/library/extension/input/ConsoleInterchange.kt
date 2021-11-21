@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package de.jet.library.extension.input
 
 import de.jet.library.console.interchange.ConsoleInterchange
@@ -17,14 +19,14 @@ fun requestTerminalInterchangeInput(vararg interchanges: ConsoleInterchange) {
 
         println(buildString {
 
-            println("--- HELP MENU --- --- ---")
-            println("Here you can see all usable interchanges:")
+            appendLine("--- HELP MENU --- --- ---")
+            appendLine("Here you can see all usable interchanges:")
 
             interchanges.forEach {
-                println("- ${it.name}")
+                appendLine("- ${it.name}")
             }
 
-            print("--- HELP MENU --- --- ---")
+            append("--- HELP MENU --- --- ---")
 
         })
 
@@ -37,7 +39,6 @@ fun requestTerminalInterchangeInput(vararg interchanges: ConsoleInterchange) {
         }
 
         if (call != null) {
-            println("call: '${input.split(" ").drop(1).joinToString(" ")}'")
 
             if (!call.performInterchange(input.split(" ").drop(1).joinToString(" "))) {
                 println("No response from interchange, seems that your input-syntax was wrong, try again!")

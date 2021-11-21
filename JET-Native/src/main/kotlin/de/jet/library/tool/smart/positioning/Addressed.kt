@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package de.jet.library.tool.smart.positioning
 
 data class Addressed<T>(

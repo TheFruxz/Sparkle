@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate", "unused")
+
 package de.jet.library.console
 
 import de.jet.library.annotation.NotPerfect
@@ -118,9 +120,10 @@ class ArgumentSyntax(
 
     }
 
-    fun onlyRequiredVariables() =
+    private fun onlyRequiredVariables() =
         syntaxVariables.filter { !it.optional }
 
+    @Suppress("unused")
     fun checkInputContent(input: Array<String>): Boolean {
         return ArgumentInput.processVariables(input).let { consoleInputVariables ->
             return@let consoleInputVariables.all { variable ->
@@ -177,7 +180,7 @@ class ArgumentSyntax(
         return SyntaxCheck.succeed()
     }
 
-    fun buildSyntaxString() = syntaxVariables.joinToString(" ") {
+    private fun buildSyntaxString() = syntaxVariables.joinToString(" ") {
         if (it.contentType == ContentType.NONE) {
             "[-${it.variableName}]${it.optional.switchResult("?", "!!")}"
         } else
@@ -190,6 +193,7 @@ class ArgumentSyntax(
         }
 
     // TODO: 15.11.2021 Additional issue feedback (what was wrong) is coming in future release
+    @Suppress("unused")
     fun runWithSyntaxOrNotify(input: Array<String>, code: ActivatedConsoleSyntax.() -> Unit) {
         val checkInput = checkInputContentWithFeedback(input)
         if (!checkInput.failed) {
