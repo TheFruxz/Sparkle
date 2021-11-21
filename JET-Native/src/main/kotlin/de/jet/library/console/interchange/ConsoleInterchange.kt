@@ -6,25 +6,20 @@ import de.jet.library.tool.smart.positioning.Address
 
 class ConsoleInterchange(
     override val identity: String,
+    override val path: String,
     override val branches: List<ConsoleStructureBranch>,
     val content: ((parameters: List<String>) -> Unit)? = null,
 ) : InterchangeStructure<ConsoleStructureBranch>(identity) {
 
     fun performInterchange(input: String): Boolean {
-        val nearest = getNearestBranchWithParameters(Address.address(input.removePrefix("$identity ").replace(" ", "/")))
-
-        println("n: ${nearest?.first?.address?.addressString}")
+        val nearest = getNearestBranchWithParameters(Address.address(input.replace(" ", "/")))
 
         return if (nearest != null) {
-
-            val content = nearest.first.value.content
+            val content = nearest.first.content
 
             if (content != null) {
-
                 content(nearest.second.split(" "))
-
                 true
-
             } else
                 false
 
@@ -35,6 +30,7 @@ class ConsoleInterchange(
 
     data class Builder(
         var identity: String,
+        var path: String,
         var branches: MutableList<ConsoleStructureBranch> = mutableListOf(),
         var content: ((parameters: List<String>) -> Unit)? = null,
     ) : Producible<ConsoleInterchange> {
@@ -44,7 +40,7 @@ class ConsoleInterchange(
         }
 
         fun branch(name: String, process: ConsoleStructureBranch.Builder.() -> Unit = { }) = apply {
-            branches.add(ConsoleStructureBranch.Builder(name).apply(process).produce())
+            branches.add(ConsoleStructureBranch.Builder(name, "$path/$name", branches, content).apply(process).produce())
         }
 
         fun content(content: ((parameters: List<String>) -> Unit)?) = apply {
@@ -52,7 +48,7 @@ class ConsoleInterchange(
         }
 
         override fun produce() = ConsoleInterchange(
-            identity, branches, content
+            identity, path, branches, content
         )
 
     }

@@ -5,12 +5,14 @@ import de.jet.library.tool.smart.Producible
 
 class ConsoleStructureBranch(
     override val branchName: String,
+    override val path: String,
     override val branches: List<ConsoleStructureBranch> = emptyList(),
     val content: ((parameters: List<String>) -> Unit)? = null,
-) : InterchangeStructureBranch(branchName, branches) {
+) : InterchangeStructureBranch(branchName, path, branches) {
 
     data class Builder(
         var branchName: String,
+        var path: String,
         var branches: MutableList<ConsoleStructureBranch> = mutableListOf(),
         var content: ((parameters: List<String>) -> Unit)? = null,
     ) : Producible<ConsoleStructureBranch> {
@@ -20,7 +22,7 @@ class ConsoleStructureBranch(
         }
 
         fun branch(name: String, process: Builder.() -> Unit = { }) = apply {
-            branches.add(Builder(name).apply(process).produce())
+            branches.add(Builder(name, "$path/$name", branches, content).apply(process).produce())
         }
 
         fun content(content: ((parameters: List<String>) -> Unit)?) = apply {
@@ -29,6 +31,7 @@ class ConsoleStructureBranch(
 
         override fun produce() = ConsoleStructureBranch(
             branchName,
+            path,
             branches,
             content
         )

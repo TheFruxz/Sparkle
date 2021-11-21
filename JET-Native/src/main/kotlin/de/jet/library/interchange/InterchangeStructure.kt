@@ -2,43 +2,35 @@ package de.jet.library.interchange
 
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.library.tool.smart.positioning.Address
-import de.jet.library.tool.smart.positioning.Addressed
 
 open class InterchangeStructure<T : InterchangeStructureBranch>(
     val name: String,
+    override val path: String = "/",
     override val branches: List<T> = emptyList(),
-) : Identifiable<T>, InterchangeStructureBranch(name) {
+) : Identifiable<T>, InterchangeStructureBranch(name, path, branches) {
 
     override val identity = name
 
-    fun getNearestBranchWithParameters(original: Address<T>): Pair<Addressed<T>, String>? {
+    fun getNearestBranchWithParameters(original: Address<T>): Pair<T, String>? {
 
-        fun getContent(address: Address<T>): Pair<Addressed<T>, String>? {
-            var currentAddressState = address.addressString.split("/").also { println("cc: $it") }
+        fun getContent(address: Address<T>): Pair<T, String>? {
+            val currentAddressState = address.addressString.split("/")
+            var output: Pair<T, String>?
 
-            getBranchList<T>().forEach { branch ->
-                if (branch.address.addressString == currentAddressState.joinToString("/")) {
-                    println(1)
-                    return branch to original.addressString.removePrefix(currentAddressState.joinToString("/"))
-                } else {
-
-                    if (currentAddressState.size.also { println("size: $it") } > 1) {
-                        currentAddressState = currentAddressState.dropLast(1)
-                        getContent(Address(currentAddressState.joinToString("/")))
-                    } else {
-                        println(2)
-                    }
-
-                }
+            output = getStructureBranches<T>().firstOrNull { branch ->
+                branch.path.removePrefix("/") == currentAddressState.joinToString("/")
+            }?.let {
+                return@let it to original.addressString.removePrefix(currentAddressState.joinToString("/")).removePrefix("/").split("/").joinToString(" ")
             }
 
-            println(3)
-            return null
+            if (output == null && currentAddressState.size > 1) {
+                output = getContent(Address(currentAddressState.dropLast(1).joinToString("/")))
+            }
+
+            return output
         }
 
-        println(4)
-        return getContent(original.copy().also { println(it.addressString) })
-
+        return getContent(original.copy())
     }
 
 }
