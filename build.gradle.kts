@@ -24,3 +24,11 @@ java {
     sourceCompatibility = VERSION_16
     targetCompatibility = VERSION_16
 }
+
+tasks.dokkaHtmlMultiModule.configure {
+    outputDirectory.set(buildDir.resolve("../docs/"))
+}
+
+tasks.dokkaGfmMultiModule.configure {
+    outputDirectory.set(buildDir.resolve("../MDdocs/"))
+}
