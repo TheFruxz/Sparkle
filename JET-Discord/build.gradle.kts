@@ -12,6 +12,7 @@ var host = "github.com/TheFruxz/JET"
 
 repositories {
     mavenCentral()
+    maven("https://mvnrepository.com/artifact/org.javacord/javacord")
 }
 
 dependencies {
@@ -22,8 +23,11 @@ dependencies {
     implementation(project(":JET-Native"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
-    
+
+    implementation("org.javacord:javacord:3.3.2")
+
 }
+
 
 publishing {
 
