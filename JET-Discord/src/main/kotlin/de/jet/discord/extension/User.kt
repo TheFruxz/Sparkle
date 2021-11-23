@@ -10,3 +10,5 @@ fun DiscordApi.getDiscordUserObjectByID(id: Long) = getUserById(id).get().let { 
 fun DiscordApi.getDiscordUserObjectByName(name: String) = getCachedUsersByName(name).firstOrNull()?.let { user ->
     return@let DiscordUser(user.name, user.id)
 }
+
+fun DiscordApi.user(id: Long) = getUserById(id).get()
