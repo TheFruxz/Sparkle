@@ -1,0 +1,12 @@
+//[JET-Minecraft](../../index.md)/[de.jet.minecraft.tool.display.item](index.md)
+
+# Package de.jet.minecraft.tool.display.item
+
+## Types
+
+| Name | Summary |
+|---|---|
+| [Item](-item/index.md) | [jvm]<br>data class [Item](-item/index.md)(material: Material, label: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), size: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), lore: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), damage: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), modifications: [MutableSet](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html)&lt;[Modification](-modification/index.md)&gt;, flags: [MutableSet](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html)&lt;ItemFlag&gt;, quirk: [Quirk](../de.jet.minecraft.tool.display.item.quirk/-quirk/index.md), postProperties: [MutableSet](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html)&lt;[PostProperty](-post-property/index.md)&gt;, identity: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), data: [MutableMap](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html)&lt;[String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), [Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)&gt;, itemMetaBase: ItemMeta?) : [Identifiable](../../../JET-Native/-j-e-t--native/de.jet.library.tool.smart.identification/-identifiable/index.md)&lt;[Item](-item/index.md)&gt; , [Producible](../../../JET-Native/-j-e-t--native/de.jet.library.tool.smart/-producible/index.md)&lt;ItemStack&gt; , HoverEventSource&lt;HoverEvent.ShowItem&gt; |
+| [JsonItemStack](-json-item-stack/index.md) | [jvm]<br>object [JsonItemStack](-json-item-stack/index.md)<br>Parse ItemStack to JSON |
+| [Modification](-modification/index.md) | [jvm]<br>data class [Modification](-modification/index.md)(type: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), level: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)) : ConfigurationSerializable |
+| [PostProperty](-post-property/index.md) | [jvm]<br>enum [PostProperty](-post-property/index.md) : [Enum](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html)&lt;[PostProperty](-post-property/index.md)&gt; |
