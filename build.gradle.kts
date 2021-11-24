@@ -1,4 +1,5 @@
-import org.gradle.api.JavaVersion.VERSION_16
+import org.gradle.api.JavaVersion.VERSION_17
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.6.0"
@@ -21,8 +22,12 @@ allprojects {
 }
 
 java {
-    sourceCompatibility = VERSION_16
-    targetCompatibility = VERSION_16
+    sourceCompatibility = VERSION_17
+    targetCompatibility = VERSION_17
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "17"
 }
 
 tasks.dokkaHtmlMultiModule.configure {

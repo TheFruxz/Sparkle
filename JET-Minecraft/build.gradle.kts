@@ -1,4 +1,5 @@
-import org.gradle.api.JavaVersion.VERSION_16
+import org.gradle.api.JavaVersion.VERSION_17
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
@@ -44,8 +45,8 @@ dependencies {
 
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "16"
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "17"
     kotlinOptions.freeCompilerArgs += "-Xunrestricted-builder-inference"
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.ExperimentalStdlibApi"
@@ -54,8 +55,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 java {
-    sourceCompatibility = VERSION_16
-    targetCompatibility = VERSION_16
+    sourceCompatibility = VERSION_17
+    targetCompatibility = VERSION_17
 }
 
 tasks.processResources {
