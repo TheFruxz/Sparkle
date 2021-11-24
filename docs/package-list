@@ -75,6 +75,7 @@ de.jet.library.extension.collection
 de.jet.library.extension.data
 de.jet.library.extension.display
 de.jet.library.extension.input
+de.jet.library.extension.java
 de.jet.library.extension.math
 de.jet.library.extension.objects
 de.jet.library.extension.timing

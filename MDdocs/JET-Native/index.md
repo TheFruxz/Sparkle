@@ -14,6 +14,7 @@
 | [de.jet.library.extension.data](-j-e-t--native/de.jet.library.extension.data/index.md) |
 | [de.jet.library.extension.display](-j-e-t--native/de.jet.library.extension.display/index.md) |
 | [de.jet.library.extension.input](-j-e-t--native/de.jet.library.extension.input/index.md) |
+| [de.jet.library.extension.java](-j-e-t--native/de.jet.library.extension.java/index.md) |
 | [de.jet.library.extension.math](-j-e-t--native/de.jet.library.extension.math/index.md) |
 | [de.jet.library.extension.objects](-j-e-t--native/de.jet.library.extension.objects/index.md) |
 | [de.jet.library.extension.timing](-j-e-t--native/de.jet.library.extension.timing/index.md) |

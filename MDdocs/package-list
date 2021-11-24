@@ -38,7 +38,7 @@ $dokka.location:de.jet.discord.extension//textChannel/org.javacord.api.DiscordAp
 $dokka.location:de.jet.discord.extension//textChannel/org.javacord.api.DiscordApi#kotlin.String/PointingToDeclaration/JET-Discord/-j-e-t--discord/de.jet.discord.extension/text-channel.md
 $dokka.location:de.jet.discord.extension//textChannel/org.javacord.api.entity.server.Server#kotlin.Long/PointingToDeclaration/JET-Discord/-j-e-t--discord/de.jet.discord.extension/text-channel.md
 $dokka.location:de.jet.discord.extension//textChannel/org.javacord.api.entity.server.Server#kotlin.String/PointingToDeclaration/JET-Discord/-j-e-t--discord/de.jet.discord.extension/text-channel.md
-$dokka.location:de.jet.discord.extension//textChannels/org.javacord.api.DiscordApi#kotlin.Long/PointingToDeclaration/JET-Discord/-j-e-t--discord/de.jet.discord.extension/text-channels.md
+$dokka.location:de.jet.discord.extension//textChannels/org.javacord.api.DiscordApi#/PointingToDeclaration/JET-Discord/-j-e-t--discord/de.jet.discord.extension/text-channels.md
 $dokka.location:de.jet.discord.extension//textChannels/org.javacord.api.DiscordApi#kotlin.String/PointingToDeclaration/JET-Discord/-j-e-t--discord/de.jet.discord.extension/text-channels.md
 $dokka.location:de.jet.discord.extension//textChannels/org.javacord.api.entity.server.Server#kotlin.Long/PointingToDeclaration/JET-Discord/-j-e-t--discord/de.jet.discord.extension/text-channels.md
 $dokka.location:de.jet.discord.extension//textChannels/org.javacord.api.entity.server.Server#kotlin.String/PointingToDeclaration/JET-Discord/-j-e-t--discord/de.jet.discord.extension/text-channels.md
@@ -203,6 +203,13 @@ $dokka.location:de.jet.library.extension.input//buildConsoleInterchange/#kotlin.
 $dokka.location:de.jet.library.extension.input//processConsoleVariables/kotlin.Array[kotlin.String]#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.input/process-console-variables.md
 $dokka.location:de.jet.library.extension.input//processConsoleVariables/kotlin.collections.Collection[kotlin.String]#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.input/process-console-variables.md
 $dokka.location:de.jet.library.extension.input//requestTerminalInterchangeInput/#kotlin.Array[de.jet.library.console.interchange.ConsoleInterchange]/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.input/request-terminal-interchange-input.md
+$dokka.location:de.jet.library.extension.java////PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.java/index.md
+$dokka.location:de.jet.library.extension.java//getOrDefault/java.util.Optional[TypeParam(bounds=[kotlin.Any?])]#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.java/get-or-default.md
+$dokka.location:de.jet.library.extension.java//getOrDefault/java.util.Optional[TypeParam(bounds=[kotlin.Any?])]?#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.java/get-or-default.md
+$dokka.location:de.jet.library.extension.java//getOrDefault/java.util.concurrent.CompletableFuture[TypeParam(bounds=[kotlin.Any?])]#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.java/get-or-default.md
+$dokka.location:de.jet.library.extension.java//getOrNull/java.util.Optional[TypeParam(bounds=[kotlin.Any?])]#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.java/get-or-null.md
+$dokka.location:de.jet.library.extension.java//getOrNull/java.util.Optional[TypeParam(bounds=[kotlin.Any?])]?#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.java/get-or-null.md
+$dokka.location:de.jet.library.extension.java//getOrNull/java.util.concurrent.CompletableFuture[TypeParam(bounds=[kotlin.Any?])]#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.java/get-or-null.md
 $dokka.location:de.jet.library.extension.math////PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.math/index.md
 $dokka.location:de.jet.library.extension.math//decimalAsPercent/kotlin.Double#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.math/decimal-as-percent.md
 $dokka.location:de.jet.library.extension.math//decimalAsPercent/kotlin.Float#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.math/decimal-as-percent.md
@@ -2159,6 +2166,7 @@ de.jet.library.extension.collection
 de.jet.library.extension.data
 de.jet.library.extension.display
 de.jet.library.extension.input
+de.jet.library.extension.java
 de.jet.library.extension.math
 de.jet.library.extension.objects
 de.jet.library.extension.timing
