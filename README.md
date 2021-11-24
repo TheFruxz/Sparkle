@@ -48,3 +48,5 @@ Since we always try to use the latest versions as soon as possible, as already d
 Of course, you can also participate in JET and contribute to the development. However, please follow all community and general guidelines of GitHub and the repositories. You also have to respect the licenses set in this repository as well as in other repositories.
 
 If you have any questions, suggestions or other items you would like to contribute to JET or just discuss, check out the Discussions section of this repository, where you will find the respective areas where you can create your own questions or join in discussions on other things. 
+
+###### JET is build on Java 17 - Eclipse Temurin; run & build JET also with Temurin to get the best possible experience.
