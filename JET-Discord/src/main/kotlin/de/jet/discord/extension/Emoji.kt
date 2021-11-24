@@ -11,7 +11,7 @@ fun Server.isCustomEmojiExisting(emojiName: String, ignoreCase: Boolean = false)
 fun Server.isCustomEmojiExisting(id: Long) =
     getCustomEmoji(id).isNotNull
 
-fun Server.getCustomEmoji(emojiName: String, ignoreCase: Boolean) =
+fun Server.getCustomEmoji(emojiName: String, ignoreCase: Boolean = false) =
     (if (ignoreCase) getCustomEmojisByNameIgnoreCase(emojiName) else getCustomEmojisByName(emojiName)).firstOrNull()
 
 fun Server.getCustomEmoji(id: Long) = try {
@@ -28,15 +28,17 @@ fun Server.createCustomEmoji(emojiName: String, resource: ByteArray, replaceExis
         .create()
         .join()
 } else
-    null
+    getCustomEmoji(emojiName, false)
 
-fun Server.createCustomEmojiIfNotExists(emojiName: String, resource: ByteArray, process: CustomEmojiBuilder.() -> Unit = {}): KnownCustomEmoji =
+fun Server.createCustomEmojiIfNotExists(emojiName: String, resource: ByteArray, process: CustomEmojiBuilder.() -> Unit = {}): KnownCustomEmoji = if (!isCustomEmojiExisting(emojiName)) {
     CustomEmojiBuilder(this)
         .setName(emojiName)
         .setImage(resource)
         .apply(process)
         .create()
         .join()
+} else
+    getCustomEmoji(emojiName, false)!!
 
 fun Server.removeCustomEmoji(condition: (KnownCustomEmoji) -> Boolean) = customEmojis.forEach {
     if (condition(it)) {
