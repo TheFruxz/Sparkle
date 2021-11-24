@@ -28,7 +28,7 @@ fun Server.createCustomEmoji(emojiName: String, resource: ByteArray, replaceExis
         .create()
         .join()
 } else
-    null
+    getCustomEmoji(emojiName, false)
 
 fun Server.createCustomEmojiIfNotExists(emojiName: String, resource: ByteArray, process: CustomEmojiBuilder.() -> Unit = {}): KnownCustomEmoji = if (!isCustomEmojiExisting(emojiName)) {
     CustomEmojiBuilder(this)
