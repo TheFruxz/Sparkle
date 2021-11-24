@@ -11,7 +11,7 @@ fun Server.isCustomEmojiExisting(emojiName: String, ignoreCase: Boolean = false)
 fun Server.isCustomEmojiExisting(id: Long) =
     getCustomEmoji(id).isNotNull
 
-fun Server.getCustomEmoji(emojiName: String, ignoreCase: Boolean) =
+fun Server.getCustomEmoji(emojiName: String, ignoreCase: Boolean = false) =
     (if (ignoreCase) getCustomEmojisByNameIgnoreCase(emojiName) else getCustomEmojisByName(emojiName)).firstOrNull()
 
 fun Server.getCustomEmoji(id: Long) = try {
