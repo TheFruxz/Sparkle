@@ -30,13 +30,15 @@ fun Server.createCustomEmoji(emojiName: String, resource: ByteArray, replaceExis
 } else
     null
 
-fun Server.createCustomEmojiIfNotExists(emojiName: String, resource: ByteArray, process: CustomEmojiBuilder.() -> Unit = {}): KnownCustomEmoji =
+fun Server.createCustomEmojiIfNotExists(emojiName: String, resource: ByteArray, process: CustomEmojiBuilder.() -> Unit = {}): KnownCustomEmoji = if (!isCustomEmojiExisting(emojiName)) {
     CustomEmojiBuilder(this)
         .setName(emojiName)
         .setImage(resource)
         .apply(process)
         .create()
         .join()
+} else
+    getCustomEmoji(emojiName, false)!!
 
 fun Server.removeCustomEmoji(condition: (KnownCustomEmoji) -> Boolean) = customEmojis.forEach {
     if (condition(it)) {
