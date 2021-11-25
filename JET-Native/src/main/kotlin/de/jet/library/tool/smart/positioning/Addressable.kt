@@ -7,5 +7,4 @@ interface Addressable<T> {
 
 	val address: Address<T>
 
-
 }
