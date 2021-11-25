@@ -53,37 +53,98 @@ fun <T, C : Collection<T>> C.stackRandom(times: Int) = buildString {
 	repeat(times) { append(random()) }
 }
 
+/**
+ * Stacks the element randomized [times] times
+ * @param times the amount of repeats
+ * @return the randomized string
+ * @author Fruxz
+ * @since 1.0
+ */
 fun <T> Array<out T>.stackRandom(times: Int) = buildString {
 	repeat(times) { append(random()) }
 }
 
+/**
+ * Stacks the element randomized [times] times
+ * @param times the amount of repeats
+ * @return the randomized string
+ * @author Fruxz
+ * @since 1.0
+ */
 fun <T, C : Collection<T>> C.stackUniqueRandom(times: Int) =
 	shuffled().take(times).joinToString(separator = "")
 
+/**
+ * Stacks the element randomized [times] times
+ * @param times the amount of repeats
+ * @return the randomized string
+ * @author Fruxz
+ * @since 1.0
+ */
 fun <T> Array<out T>.stackUniqueRandom(times: Int) =
 	toList().shuffled().take(times).joinToString(separator = "")
 
+/**
+ * Returning the first object of the collection [C]
+ * @author Fruxz
+ * @since 1.0
+ */
 val <T, C : Collection<T>> C.first: T
 	get() = first()
 
+/**
+ * Returning the first object of the array
+ * @author Fruxz
+ * @since 1.0
+ */
 val <T> Array<out T>.first: T
 	get() = first()
 
+/**
+ * Returning the second object of the collection [C]
+ * @author Fruxz
+ * @since 1.0
+ */
 val <T, C : Collection<T>> C.second: T
 	get() = elementAt(1)
 
+/**
+ * Returning the second object of the array
+ * @author Fruxz
+ * @since 1.0
+ */
 val <T> Array<out T>.second: T
 	get() = elementAt(1)
 
+/**
+ * Returning the third object of the collection [C]
+ * @author Fruxz
+ * @since 1.0
+ */
 val <T, C : Collection<T>> C.third: T
 	get() = elementAt(2)
 
+/**
+ * Returning the third object of the array
+ * @author Fruxz
+ * @since 1.0
+ */
 val <T> Array<out T>.third: T
 	get() = elementAt(2)
 
+/**
+ * Returning the last object of the collection [C]
+ * @author Fruxz
+ * @since 1.0
+ */
 val <T, C : Collection<T>> C.last: T
 	get() = last()
 
+/**
+ * Returns the last object of the array
+ * @author Fruxz
+ * @since 1.0
+ */
 val <T> Array<out T>.last: T
 	get() = last()
 
