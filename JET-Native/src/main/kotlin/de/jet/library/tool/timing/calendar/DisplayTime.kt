@@ -4,6 +4,12 @@ import kotlin.math.floor
 import kotlin.math.roundToInt
 import kotlin.time.Duration
 
+/**
+ * This data class helps to easily create a displayable
+ * Time-String, which can be set up to display the data
+ * you want to display it.
+ * @param ticks the amount of ticks used in this time
+ */
 data class DisplayTime(
 	var ticks: Double
 ) {

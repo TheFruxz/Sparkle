@@ -10,7 +10,12 @@ import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import java.util.Calendar as JavaUtilCalendar
 
-@NotPerfect
+/**
+ * This class is a calender, which can be from & to a [JavaUtilCalendar] transformed.
+ * @param origin the java base of the calendar
+ * @author Fruxz
+ * @since 1.0
+ */
 @NotTested
 class Calendar private constructor(
 	private var origin: JavaUtilCalendar
@@ -116,6 +121,15 @@ class Calendar private constructor(
 
 	}
 
+	/**
+	 * @property ERA era as a time unit
+	 * @property YEAR year as a time unit
+	 * @property MONTH month as a time unit
+	 * @property HOUR hour as a time unit
+	 * @property MINUTE minute as a time unit
+	 * @property SECOND second as a time unit
+	 * @property MILLISECOND millisecond as a time unit
+	 */
 	enum class TimeField {
 		ERA, YEAR, MONTH, HOUR, MINUTE, SECOND, MILLISECOND;
 
