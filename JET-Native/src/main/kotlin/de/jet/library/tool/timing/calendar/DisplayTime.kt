@@ -18,6 +18,14 @@ data class DisplayTime(
 
 	constructor(duration: Duration) : this(duration.inWholeSeconds.toDouble() * 20)
 
+	/**
+	 * Generates a displayable string, but only contains
+	 * the values of the time units of [views].
+	 * @param views the displaying time units
+	 * @return the view-string
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun getClockDisplay(vararg views: Format): String {
 		var out = ""
 
@@ -48,6 +56,10 @@ data class DisplayTime(
 		return out.removeSuffix(":")
 	}
 
+	/**
+	 * The time formats
+	 */
+	@Deprecated(message = "Calendar units used in the future")
 	enum class Format {
 		TICKS, SECONDS, MINUTES, HOURS, DAYS, YEARS;
 
