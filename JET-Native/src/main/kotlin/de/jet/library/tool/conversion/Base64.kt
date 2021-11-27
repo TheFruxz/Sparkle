@@ -2,6 +2,9 @@ package de.jet.library.tool.conversion
 
 import java.util.Base64
 
+/**
+ * This object provides methods to encode and decode strings to and from Base64.
+ */
 object Base64 {
 
 	/**
