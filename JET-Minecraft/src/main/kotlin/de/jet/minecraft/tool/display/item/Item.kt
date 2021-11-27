@@ -1,9 +1,9 @@
 package de.jet.minecraft.tool.display.item
 
-import de.jet.library.extension.asString
-import de.jet.library.extension.forceCast
-import de.jet.library.tool.smart.Producible
-import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.jvm.extension.asString
+import de.jet.jvm.extension.forceCast
+import de.jet.jvm.tool.smart.Producible
+import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.display.WHITE

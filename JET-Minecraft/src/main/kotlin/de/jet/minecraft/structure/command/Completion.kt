@@ -1,12 +1,12 @@
 package de.jet.minecraft.structure.command
 
-import de.jet.library.extension.collection.mapToString
-import de.jet.library.extension.collection.replace
-import de.jet.library.extension.collection.withMap
-import de.jet.library.extension.math.isDouble
-import de.jet.library.extension.math.isInt
+import de.jet.jvm.extension.collection.mapToString
+import de.jet.jvm.extension.collection.replace
+import de.jet.jvm.extension.collection.withMap
+import de.jet.jvm.extension.math.isDouble
+import de.jet.jvm.extension.math.isInt
 import de.jet.jvm.extension.modifiedIf
-import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.lang
@@ -26,11 +26,11 @@ import java.util.*
 // Variables
 
 data class CompletionVariable(
-    val vendor: Identifiable<*>,
-    val label: String,
-    val refreshing: Boolean,
-    var check: (input: String, ignoreCase: Boolean) -> Boolean = { _, _ -> true },
-    val generator: CompletionVariable.() -> Collection<String>,
+	val vendor: Identifiable<*>,
+	val label: String,
+	val refreshing: Boolean,
+	var check: (input: String, ignoreCase: Boolean) -> Boolean = { _, _ -> true },
+	val generator: CompletionVariable.() -> Collection<String>,
 ) {
 
 	val storagePath = "${vendor.identity}:$label"

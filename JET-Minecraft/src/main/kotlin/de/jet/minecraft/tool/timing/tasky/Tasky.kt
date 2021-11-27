@@ -1,8 +1,8 @@
 package de.jet.minecraft.tool.timing.tasky
 
-import de.jet.library.extension.catchException
-import de.jet.library.tool.smart.identification.Identifiable
-import de.jet.library.tool.smart.identification.Identity
+import de.jet.jvm.extension.catchException
+import de.jet.jvm.tool.smart.identification.Identifiable
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.paper.scheduler
 import de.jet.minecraft.structure.app.App
@@ -30,14 +30,14 @@ interface Tasky {
 	companion object {
 
 		fun task(
-            vendor: App,
-            temporalAdvice: TemporalAdvice,
-            killAtError: Boolean = true,
-            onStart: Tasky.() -> Unit = {},
-            onStop: Tasky.() -> Unit = {},
-            onCrash: Tasky.() -> Unit = {},
-            serviceVendor: Identity<Service> = Identifiable.custom<Service>("dummy").identityObject,
-            process: Tasky.() -> Unit,
+			vendor: App,
+			temporalAdvice: TemporalAdvice,
+			killAtError: Boolean = true,
+			onStart: Tasky.() -> Unit = {},
+			onStop: Tasky.() -> Unit = {},
+			onCrash: Tasky.() -> Unit = {},
+			serviceVendor: Identity<Service> = Identifiable.custom<Service>("dummy").identityObject,
+			process: Tasky.() -> Unit,
 		): Tasky {
 			val currentTask = Task(temporalAdvice, true, process)
 			lateinit var output: Tasky

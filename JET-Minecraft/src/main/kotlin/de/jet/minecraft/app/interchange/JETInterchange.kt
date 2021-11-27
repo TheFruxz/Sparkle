@@ -1,6 +1,6 @@
 package de.jet.minecraft.app.interchange
 
-import de.jet.library.extension.collection.replace
+import de.jet.jvm.extension.collection.replace
 import de.jet.minecraft.extension.display.BOLD
 import de.jet.minecraft.extension.display.GOLD
 import de.jet.minecraft.extension.display.GRAY

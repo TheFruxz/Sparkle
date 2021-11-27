@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.data
 
-import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.minecraft.extension.data.fromJson
 import de.jet.minecraft.extension.data.toJson
 import de.jet.minecraft.extension.paper.bukkitVersion

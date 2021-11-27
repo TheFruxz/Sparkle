@@ -1,7 +1,7 @@
 package de.jet.javacord.extension
 
 import de.jet.javacord.user.DiscordUser
-import de.jet.library.extension.java.getOrNull
+import de.jet.jvm.extension.java.getOrNull
 import org.javacord.api.DiscordApi
 
 /**

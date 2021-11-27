@@ -1,6 +1,6 @@
 package de.jet.minecraft.extension.o
 
-import de.jet.library.tool.timing.calendar.Calendar
+import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.minecraft.app.JetCache.registeredSandBoxes
 import de.jet.minecraft.runtime.sandbox.SandBox
 import de.jet.minecraft.runtime.sandbox.SandBoxInteraction

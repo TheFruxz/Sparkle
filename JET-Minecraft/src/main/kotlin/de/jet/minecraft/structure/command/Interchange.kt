@@ -1,6 +1,6 @@
 package de.jet.minecraft.structure.command
 
-import de.jet.library.extension.catchException
+import de.jet.jvm.extension.catchException
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.lang

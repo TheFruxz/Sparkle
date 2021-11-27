@@ -1,6 +1,6 @@
 package de.jet.minecraft.app.component.essentials.point
 
-import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.jvm.tool.smart.identification.Identifiable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit

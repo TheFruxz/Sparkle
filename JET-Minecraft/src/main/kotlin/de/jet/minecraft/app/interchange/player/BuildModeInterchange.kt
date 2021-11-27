@@ -1,8 +1,8 @@
 package de.jet.minecraft.app.interchange.player
 
-import de.jet.library.extension.collection.last
-import de.jet.library.extension.collection.replaceVariables
-import de.jet.library.extension.switchResult
+import de.jet.jvm.extension.collection.last
+import de.jet.jvm.extension.collection.replaceVariables
+import de.jet.jvm.extension.switchResult
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.lang

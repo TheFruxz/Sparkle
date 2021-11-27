@@ -1,12 +1,12 @@
 package de.jet.minecraft.app.component.essentials.world.tree
 
-import de.jet.library.extension.collection.mutableReplaceWith
-import de.jet.library.extension.isNotNull
-import de.jet.library.extension.switchResult
-import de.jet.library.tool.smart.identification.Identifiable
-import de.jet.library.tool.smart.positioning.Address
-import de.jet.library.tool.smart.positioning.Address.Companion.address
-import de.jet.library.tool.smart.positioning.Addressable
+import de.jet.jvm.extension.collection.mutableReplaceWith
+import de.jet.jvm.extension.isNotNull
+import de.jet.jvm.extension.switchResult
+import de.jet.jvm.tool.smart.identification.Identifiable
+import de.jet.jvm.tool.smart.positioning.Address
+import de.jet.jvm.tool.smart.positioning.Address.Companion.address
+import de.jet.jvm.tool.smart.positioning.Addressable
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.app.component.essentials.world.WorldConfig
 import kotlinx.serialization.SerialName

@@ -1,6 +1,6 @@
 package de.jet.javacord.user
 
-import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.jvm.tool.smart.identification.Identifiable
 import kotlinx.serialization.Serializable
 
 /**

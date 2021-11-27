@@ -1,7 +1,7 @@
 package de.jet.minecraft.tool.display.ui.panel
 
-import de.jet.library.tool.smart.identification.Identifiable
-import de.jet.library.tool.smart.identification.Identity
+import de.jet.jvm.tool.smart.identification.Identifiable
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.BOLD
 import de.jet.minecraft.extension.display.YELLOW

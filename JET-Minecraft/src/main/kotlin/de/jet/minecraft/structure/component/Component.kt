@@ -1,6 +1,6 @@
 package de.jet.minecraft.structure.component
 
-import de.jet.library.tool.smart.identification.Identity
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.extension.debugLog

@@ -1,9 +1,9 @@
 package de.jet.minecraft.app.component.system
 
-import de.jet.library.extension.catchException
-import de.jet.library.extension.collection.withForEach
-import de.jet.library.extension.display.display
-import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.jvm.extension.catchException
+import de.jet.jvm.extension.collection.withForEach
+import de.jet.jvm.extension.display.display
+import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetApp
 import de.jet.minecraft.app.JetCache.livingCooldowns
 import de.jet.minecraft.app.JetCache.registeredApplications

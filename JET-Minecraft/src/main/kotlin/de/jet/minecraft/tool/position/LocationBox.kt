@@ -1,7 +1,7 @@
 package de.jet.minecraft.tool.position
 
-import de.jet.library.extension.math.difference
-import de.jet.library.tool.smart.Producible
+import de.jet.jvm.extension.math.difference
+import de.jet.jvm.tool.smart.Producible
 import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.entity.Entity

@@ -1,7 +1,7 @@
 package de.jet.minecraft.app.interchange
 
-import de.jet.library.extension.collection.replace
-import de.jet.library.extension.collection.replaceVariables
+import de.jet.jvm.extension.collection.replace
+import de.jet.jvm.extension.collection.replaceVariables
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.extension.display.message

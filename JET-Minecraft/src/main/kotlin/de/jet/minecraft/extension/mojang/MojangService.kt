@@ -1,6 +1,6 @@
 package de.jet.minecraft.extension.mojang
 
-import de.jet.library.extension.data.fromJson
+import de.jet.jvm.extension.data.fromJson
 import de.jet.minecraft.general.api.mojang.MojangProfile
 import java.net.URL
 import java.util.*

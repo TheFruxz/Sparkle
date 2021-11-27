@@ -1,6 +1,6 @@
 package de.jet.minecraft.extension.timing
 
-import de.jet.library.tool.timing.calendar.Calendar
+import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.tool.timing.cooldown.Cooldown
 import de.jet.minecraft.tool.timing.cooldown.Cooldown.Companion.CooldownSection

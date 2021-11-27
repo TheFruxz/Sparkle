@@ -4,10 +4,10 @@ package de.jet.minecraft.structure.app
 
 import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.jet.jvm.extension.catchException
-import de.jet.library.extension.collection.mutableReplaceWith
-import de.jet.library.extension.jetTry
-import de.jet.library.tool.smart.identification.Identifiable
-import de.jet.library.tool.smart.identification.Identity
+import de.jet.jvm.extension.collection.mutableReplaceWith
+import de.jet.jvm.extension.jetTry
+import de.jet.jvm.tool.smart.identification.Identifiable
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.mainLog
 import de.jet.minecraft.extension.tasky.task

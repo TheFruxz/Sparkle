@@ -1,6 +1,6 @@
 package de.jet.javacord.extension
 
-import de.jet.library.extension.isNotNull
+import de.jet.jvm.extension.isNotNull
 import org.javacord.api.entity.emoji.CustomEmojiBuilder
 import org.javacord.api.entity.emoji.KnownCustomEmoji
 import org.javacord.api.entity.server.Server

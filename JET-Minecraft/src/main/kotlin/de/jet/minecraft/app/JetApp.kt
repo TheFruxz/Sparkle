@@ -1,9 +1,9 @@
 package de.jet.minecraft.app
 
-import de.jet.library.extension.forceCast
+import de.jet.jvm.extension.forceCast
 import de.jet.jvm.extension.math.decimalAsPercent
 import de.jet.jvm.tool.smart.identification.Identifiable
-import de.jet.library.tool.smart.identification.Identity
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.minecraft.app.component.chat.JetChatComponent
 import de.jet.minecraft.app.component.essentials.EssentialsComponent
 import de.jet.minecraft.app.component.essentials.point.Point

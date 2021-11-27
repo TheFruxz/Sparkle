@@ -1,6 +1,6 @@
 package de.jet.minecraft.app.interchange.player
 
-import de.jet.library.extension.collection.replaceVariables
+import de.jet.jvm.extension.collection.replaceVariables
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.get
 import de.jet.minecraft.extension.lang

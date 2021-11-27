@@ -1,6 +1,6 @@
 package de.jet.minecraft.extension.paper
 
-import de.jet.library.tool.smart.identification.Identity
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.tool.permission.Approval
 import de.jet.minecraft.tool.position.LocationBox

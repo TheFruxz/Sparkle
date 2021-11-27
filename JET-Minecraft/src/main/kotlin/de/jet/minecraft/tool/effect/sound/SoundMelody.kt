@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.effect.sound
 
-import de.jet.library.tool.smart.Producible
+import de.jet.jvm.tool.smart.Producible
 import de.jet.minecraft.extension.effect.playSoundEffect
 import de.jet.minecraft.extension.tasky.task
 import de.jet.minecraft.tool.timing.tasky.TemporalAdvice.Companion.ticking

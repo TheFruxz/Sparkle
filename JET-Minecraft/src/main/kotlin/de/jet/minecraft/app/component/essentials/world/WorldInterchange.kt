@@ -1,7 +1,7 @@
 package de.jet.minecraft.app.component.essentials.world
 
-import de.jet.library.tool.smart.identification.Identifiable
-import de.jet.library.tool.smart.positioning.Address.Companion.address
+import de.jet.jvm.tool.smart.identification.Identifiable
+import de.jet.jvm.tool.smart.positioning.Address.Companion.address
 import de.jet.minecraft.app.component.essentials.world.WorldInterchange.WorldPanelViewProperties.ViewType.*
 import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer
 import de.jet.minecraft.app.component.essentials.world.tree.WorldRenderer.FileSystem

@@ -1,8 +1,8 @@
 package de.jet.minecraft.app.component.feature
 
-import de.jet.library.extension.collection.replaceVariables
-import de.jet.library.extension.forceCast
-import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.jvm.extension.collection.replaceVariables
+import de.jet.jvm.extension.forceCast
+import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.app.JetFeature
 import de.jet.minecraft.extension.display.notification

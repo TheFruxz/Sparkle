@@ -1,6 +1,6 @@
 package de.jet.minecraft.structure.service
 
-import de.jet.library.tool.smart.identification.Identity
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.app
 import de.jet.minecraft.extension.paper.createKey

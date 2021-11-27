@@ -1,7 +1,7 @@
 package de.jet.minecraft.tool.data
 
-import de.jet.library.extension.forceCast
-import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.jvm.extension.forceCast
+import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.app.JetCache.registeredPreferenceCache
 import de.jet.minecraft.extension.debugLog
@@ -12,15 +12,15 @@ import de.jet.minecraft.tool.timing.tasky.TemporalAdvice.Companion.instant
  * @param inputType null if automatic
  */
 data class Preference<SHELL : Any>(
-    val file: JetFile,
-    val path: Identifiable<JetPath>,
-    val default: SHELL,
-    val useCache: Boolean = false,
-    val readAndWrite: Boolean = true,
-    var transformer: DataTransformer<SHELL, out Any> = DataTransformer.empty(),
-    var async: Boolean = false,
-    var forceUseOfTasks: Boolean = false,
-    var initTriggerSetup: Boolean = true,
+	val file: JetFile,
+	val path: Identifiable<JetPath>,
+	val default: SHELL,
+	val useCache: Boolean = false,
+	val readAndWrite: Boolean = true,
+	var transformer: DataTransformer<SHELL, out Any> = DataTransformer.empty(),
+	var async: Boolean = false,
+	var forceUseOfTasks: Boolean = false,
+	var initTriggerSetup: Boolean = true,
 	var inputType: InputType? = null,
 ) : Identifiable<Preference<SHELL>> {
 

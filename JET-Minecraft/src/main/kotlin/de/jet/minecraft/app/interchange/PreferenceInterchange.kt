@@ -1,6 +1,6 @@
 package de.jet.minecraft.app.interchange
 
-import de.jet.library.extension.collection.second
+import de.jet.jvm.extension.collection.second
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.system

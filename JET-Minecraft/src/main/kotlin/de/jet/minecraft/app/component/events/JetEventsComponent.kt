@@ -1,7 +1,7 @@
 package de.jet.minecraft.app.component.events
 
-import de.jet.library.extension.checkAllObjects
-import de.jet.library.extension.forceCast
+import de.jet.jvm.extension.checkAllObjects
+import de.jet.jvm.extension.forceCast
 import de.jet.minecraft.extension.display.ui.item
 import de.jet.minecraft.extension.system
 import de.jet.minecraft.runtime.event.PlayerDamageByPlayerEvent

@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.data
 
-import de.jet.library.extension.collection.toArrayList
+import de.jet.jvm.extension.collection.toArrayList
 import de.jet.minecraft.structure.classes.JSON
 import de.jet.minecraft.tool.display.item.Item
 import de.jet.minecraft.tool.display.world.SimpleLocation

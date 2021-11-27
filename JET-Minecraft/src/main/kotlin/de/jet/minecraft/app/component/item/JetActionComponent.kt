@@ -1,6 +1,6 @@
 package de.jet.minecraft.app.component.item
 
-import de.jet.library.extension.collection.replace
+import de.jet.jvm.extension.collection.replace
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.display.ui.get

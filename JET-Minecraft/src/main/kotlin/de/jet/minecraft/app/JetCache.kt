@@ -1,6 +1,6 @@
 package de.jet.minecraft.app
 
-import de.jet.library.tool.smart.identification.Identity
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.minecraft.runtime.sandbox.SandBox
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.structure.app.AppCache

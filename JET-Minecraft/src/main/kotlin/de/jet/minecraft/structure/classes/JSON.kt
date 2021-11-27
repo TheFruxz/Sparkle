@@ -1,7 +1,7 @@
 package de.jet.minecraft.structure.classes
 
-import de.jet.library.extension.jetTry
-import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.jvm.extension.jetTry
+import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetApp
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.structure.app.App

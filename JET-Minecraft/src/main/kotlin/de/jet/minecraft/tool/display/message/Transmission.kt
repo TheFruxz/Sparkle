@@ -1,7 +1,7 @@
 package de.jet.minecraft.tool.display.message
 
-import de.jet.library.tool.smart.positioning.Address
-import de.jet.library.tool.smart.positioning.Address.Companion.address
+import de.jet.jvm.tool.smart.positioning.Address
+import de.jet.jvm.tool.smart.positioning.Address.Companion.address
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.extension.lang
 import de.jet.minecraft.extension.paper.adventureComponent

@@ -1,6 +1,6 @@
 package de.jet.minecraft.structure.feature
 
-import de.jet.library.tool.smart.identification.Identity
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.structure.app.App
 import de.jet.minecraft.tool.smart.VendorsIdentifiable
@@ -8,10 +8,10 @@ import de.jet.minecraft.tool.smart.VendorsIdentifiable
 class Feature(override val vendorIdentity: Identity<out App>, name: String, description: String = "", version: String = "1.0") : VendorsIdentifiable<Feature> {
 
     class FeatureProperties internal constructor(
-        identity: Identity<Feature>,
-        name: String,
-        description: String,
-        version: String
+	    identity: Identity<Feature>,
+	    name: String,
+	    description: String,
+	    version: String
     ) {
 
         var identity: Identity<Feature> = identity

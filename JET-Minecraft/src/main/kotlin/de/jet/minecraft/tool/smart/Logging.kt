@@ -1,6 +1,6 @@
 package de.jet.minecraft.tool.smart
 
-import de.jet.library.tool.smart.identification.Identifiable
+import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.minecraft.structure.app.App
 import java.util.logging.Logger
 

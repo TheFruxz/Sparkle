@@ -1,7 +1,7 @@
 package de.jet.minecraft.app.component.essentials.point
 
-import de.jet.library.extension.collection.replaceVariables
-import de.jet.library.tool.smart.positioning.Address.Companion.address
+import de.jet.jvm.extension.collection.replaceVariables
+import de.jet.jvm.tool.smart.positioning.Address.Companion.address
 import de.jet.minecraft.app.JetData
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.getSystemTranslated

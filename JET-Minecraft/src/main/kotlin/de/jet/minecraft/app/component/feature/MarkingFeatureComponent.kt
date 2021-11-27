@@ -1,7 +1,7 @@
 package de.jet.minecraft.app.component.feature
 
-import de.jet.library.extension.collection.replaceVariables
-import de.jet.library.extension.math.shorter
+import de.jet.jvm.extension.collection.replaceVariables
+import de.jet.jvm.extension.math.shorter
 import de.jet.minecraft.app.JetCache.playerMarkerBoxes
 import de.jet.minecraft.extension.display.BOLD
 import de.jet.minecraft.extension.display.YELLOW

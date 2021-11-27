@@ -1,6 +1,6 @@
 package de.jet.minecraft.runtime.app
 
-import de.jet.library.extension.collection.replace
+import de.jet.jvm.extension.collection.replace
 import de.jet.minecraft.app.JetApp
 import de.jet.minecraft.tool.display.ide.API
 import kotlinx.serialization.SerialName

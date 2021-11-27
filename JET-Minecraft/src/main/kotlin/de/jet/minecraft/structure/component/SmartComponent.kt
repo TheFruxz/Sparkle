@@ -1,7 +1,7 @@
 package de.jet.minecraft.structure.component
 
-import de.jet.library.extension.jetTry
-import de.jet.library.tool.smart.identification.Identity
+import de.jet.jvm.extension.jetTry
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.minecraft.app.JetApp
 import de.jet.minecraft.extension.debugLog
 import de.jet.minecraft.extension.display.notification
