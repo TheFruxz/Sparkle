@@ -34,17 +34,17 @@ JET currently offers 3 different project modules, each with its own platform goa
 modules are based on Kotlin JVM.
 
 ### JET-JVM
-JET-JVM is the main module, all other modules of JET, which also work on the JVM basis of Kotlin, use
+JET-JVM is the main module, all other modules of JET, which also work on the JVM basis of [Kotlin](https://github.com/jetbrains/kotlin), use
 this module. This is because this is where the JET libraries are located, which you can also use in your projects.
 Here are the more general systems and structures that are compatible with any JVM project.
 
 ### JET-JavaCord
-JET-JavaCord is the module for the development of Discord bots, which is based on the public JavaCord API.
+JET-JavaCord is the module for the development of Discord bots, which is based on the public [JavaCord API](https://github.com/Javacord/Javacord).
 With JET-JavaCord especially this development area is supported, with functions & systems which are exactly
 adapted for this system.
 
 ### JET-Paper
-JET-Paper is the module for Minecraft server paper plugin development, which is based on the PaperMC server API.
+JET-Paper is the module for Minecraft server paper plugin development, which is based on the [PaperMC server API](https://github.com/PaperMC/Paper).
 With JET-Paper specifically this development area is supported, with functions & systems which are precisely
 adapted for this system.
 

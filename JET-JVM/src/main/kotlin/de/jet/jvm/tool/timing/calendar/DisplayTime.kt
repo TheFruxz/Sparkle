@@ -59,8 +59,8 @@ data class DisplayTime(
 
 	/**
 	 * The time formats
+	 * ***CALENDAR UNITS IN FUTURE***
 	 */
-	@Deprecated(message = "Calendar units used in the future")
 	enum class Format {
 		TICKS, SECONDS, MINUTES, HOURS, DAYS, YEARS;
 

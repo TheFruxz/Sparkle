@@ -1,0 +1,1 @@
+sourceset_dependencies = '{":JET-JavaCord:dokkaHtmlPartial/main":[],":JET-Paper:dokkaHtmlPartial/main":[],":JET-JVM:dokkaHtmlPartial/main":[]}'
