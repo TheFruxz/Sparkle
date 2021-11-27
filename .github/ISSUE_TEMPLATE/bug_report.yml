@@ -23,7 +23,13 @@ body:
       description: What version of our software are you running?
       options:
         - v1.0 BETA 1
-        - v1.0 BETA 2 (preview)
+        - v1.0 BETA 2
+        - v1.0 BETA 3
+        - v1.0 BETA 4
+        - v1.0 BETA 5
+        - v1.0 BETA 6
+        - v1.0 BETA 7
+        - v1.0 BETA 8 (preview)
     validations:
       required: true
   - type: dropdown
@@ -32,6 +38,7 @@ body:
       label: What Server-Version are you seeing the problem on?
       multiple: false
       options:
+        - 1.18
         - 1.17
         - 1.16
         - 1.15
