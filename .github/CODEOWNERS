@@ -1,15 +1,1 @@
-*.kt @TheFruxz
-*.kts @TheFruxz
-*.java @TheFruxz @JaLuMu
-*.xml @JaLuMu
-LICENSE @JaLuMu
-.gitignore @TheFruxz @JaLuMu
-
-*.py @JaLuMu @CraftMinerTV
-
-*.md @TheFruxz
-
-*.yml @TheFruxz @JaLuMu
-*.json @TheFruxz @JaLuMU
-
-*.properties @TheFruxz
+* @TheFruxz

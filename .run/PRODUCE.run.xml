@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="PRODUCE" type="GradleRunConfiguration" factoryName="Gradle">
+  <configuration default="false" name="JET-PRODUCE" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
       <option name="externalSystemIdString" value="GRADLE" />
-      <option name="scriptParameters" value="test build shadowJar publishToMavenLocal dokkaHtmlMultiModule dokkaGfmMultiModule" />
+      <option name="scriptParameters" value="test build shadowJar publishToMavenLocal dokkaHtmlMultiModule" />
       <option name="taskDescriptions">
         <list />
       </option>

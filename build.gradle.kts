@@ -33,7 +33,3 @@ tasks.withType<KotlinCompile> {
 tasks.dokkaHtmlMultiModule.configure {
     outputDirectory.set(buildDir.resolve("../docs/"))
 }
-
-tasks.dokkaGfmMultiModule.configure {
-    outputDirectory.set(buildDir.resolve("../MDdocs/"))
-}

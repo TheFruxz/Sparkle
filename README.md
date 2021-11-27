@@ -1,4 +1,4 @@
-# ![JET - The Kotlin-Based Framework for Next-Gen Paper Plugins - Just everything tweaked](https://user-images.githubusercontent.com/28064149/126283274-71633d1c-95ec-407d-ab71-c7db9e96a3d5.gif)
+# ![JET - The Kotlin-Based Framework for Next-Gen Paper Plugins - Just everything tweaked](https://user-images.githubusercontent.com/28064149/143691452-6bc94d3d-5815-49ba-a041-722af5aef580.gif)
 
 [![JitPack](https://jitpack.io/v/TheFruxz/JET.svg)](https://jitpack.io/#TheFruxz/JET)
 [![JETBuild](https://github.com/TheFruxz/JET/actions/workflows/build-JET.yml/badge.svg)](https://github.com/TheFruxz/JET/actions/workflows/build-JET.yml)
@@ -13,12 +13,40 @@
 
 ## JET
 
-JET is a Kotlin based framework developed for the Paper platform, which is based on Bukkit & Spigot.
-JET is designed to simplify development with both simple and complex steps, and provide various technologies for higher securing and structuring so that the final product is safer, stable, and of simpler quality.
+JET is a multi-vector platform framework developed using the Kotlin programming language.
+JET does as a framework provide supporting system, functions and variables for other Kotlin projects
+and is additionally optimized for other sub-areas besides the general Kotlin JVM.
 
-## Version Policy
+Among other things, there is a JET module for the development of Minecraft server paper plugins as well as a module for developing
+of Discord bots via the JavaCord API.
 
-JET is about more security, quality and stability. That's why we always use the latest Minecraft version to offer all this as soon as possible. We always use the latest paper version so that patches and fixes contribute to these factors.
+JET's goal is to simplify and improve development with those platforms through its own, mostly easy to use systems, functions and variables.
+and improve the development with those platforms.
+
+## Version
+
+Currently JET is working with Kotlin version 1.6, which is the latest Kotlin version. In the future, versions of both
+Kotlin, as well as those of Minecraft & JavaCord will be constantly updated to provide the best API as possible.
+
+## Modules
+
+JET currently offers 3 different project modules, each with its own platform goals, but all of these are currently based on the
+modules are based on Kotlin JVM.
+
+### JET-JVM
+JET-JVM is the main module, all other modules of JET, which also work on the JVM basis of Kotlin, use
+this module. This is because this is where the JET libraries are located, which you can also use in your projects.
+Here are the more general systems and structures that are compatible with any JVM project.
+
+### JET-JavaCord
+JET-JavaCord is the module for the development of Discord bots, which is based on the public JavaCord API.
+With JET-JavaCord especially this development area is supported, with functions & systems which are exactly
+adapted for this system.
+
+### JET-Paper
+JET-Paper is the module for Minecraft server paper plugin development, which is based on the PaperMC server API.
+With JET-Paper specifically this development area is supported, with functions & systems which are precisely
+adapted for this system.
 
 ## Setup
 
@@ -35,13 +63,14 @@ maven("https://jitpack.io")
 
 ##### Dependency
 ```kotlin
-implementation("com.github.TheFruxz.JET:jet-native:1.0-BETA-5")
-implementation("com.github.TheFruxz.JET:jet-minecraft:1.0-BETA-5") // or additionally with JET-Minecraft
+implementation("com.github.TheFruxz.JET:jet-jvm:1.0-BETA-6")
+implementation("com.github.TheFruxz.JET:jet-javacord:1.0-BETA-6") // or additionally with JET-JavaCord
+implementation("com.github.TheFruxz.JET:jet-paper:1.0-BETA-6") // or additionally with JET-Minecraft
 ```
 
 ## Version
 
-Since we always try to use the latest versions as soon as possible, as already described in the point 'Version Policy', current versions quickly become obsolete after half a year, so we will soon release a list of versions, where it will be shown exactly how long a certain version is still supported.
+Since we always try to use the latest versions as soon as possible, as already described in the point 'Version Policy', current versions quickly become obsolete, so we will soon release a list of versions, where it will be shown exactly how long a certain version is still being supported.
 
 ## Contribution
 
