@@ -1,4 +1,4 @@
 rootProject.name = "JET"
 include("JET-JVM")
 include("JET-JavaCord")
-include("JET-Minecraft")
+include("JET-Paper")

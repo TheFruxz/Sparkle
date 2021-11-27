@@ -80,10 +80,10 @@ publishing {
 
     }
 
-    publications.create("JET-Minecraft", MavenPublication::class) {
+    publications.create("JET-Paper", MavenPublication::class) {
 
         from(components["kotlin"])
-        artifactId = "jet-minecraft"
+        artifactId = "jet-paper"
         version = version.toLowerCase()
 
     }
@@ -91,7 +91,7 @@ publishing {
 }
 
 tasks.shadowJar {
-    archiveBaseName.set("JET-Minecraft")
+    archiveBaseName.set("JET-Paper")
     archiveClassifier.set("Runnable")
 }
 
