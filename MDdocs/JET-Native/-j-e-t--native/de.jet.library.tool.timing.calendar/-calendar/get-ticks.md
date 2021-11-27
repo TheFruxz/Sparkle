@@ -4,3 +4,17 @@
 
 [jvm]\
 fun [getTicks](get-ticks.md)(): [Long](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html)
+
+This function returns the time of the calendar in Minecraft-Ticks.
+
+#### Return
+
+the time in Minecraft-Ticks
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0

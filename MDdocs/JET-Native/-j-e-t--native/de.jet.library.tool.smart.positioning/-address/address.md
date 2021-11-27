@@ -4,3 +4,5 @@
 
 [jvm]\
 open override val [address](address.md): [Address](index.md)&lt;[T](index.md)&gt;
+
+The addres of the object as a [Address](index.md)

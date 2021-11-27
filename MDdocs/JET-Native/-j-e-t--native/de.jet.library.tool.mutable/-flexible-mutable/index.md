@@ -3,7 +3,32 @@
 # FlexibleMutable
 
 [jvm]\
-open class [FlexibleMutable](index.md)&lt;[T](index.md)&gt;(property: [T](index.md)) : [Mutable](../-mutable/index.md)&lt;[T](index.md)&gt;
+open class [FlexibleMutable](index.md)&lt;[T](index.md)&gt;(property: [T](index.md)) : [Mutable](../-mutable/index.md)&lt;[T](index.md)&gt; 
+
+This open class is a mutable flexible implementation of the [Mutable](../-mutable/index.md)<[T](index.md)> interface.
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0
+
+## Parameters
+
+jvm
+
+| | |
+|---|---|
+| T | The type of the mutable flexible. |
+| property | The property of the mutable flexible. |
+
+## Constructors
+
+| | |
+|---|---|
+| [FlexibleMutable](-flexible-mutable.md) | [jvm]<br>fun &lt;[T](index.md)&gt; [FlexibleMutable](-flexible-mutable.md)(property: [T](index.md)) |
 
 ## Properties
 

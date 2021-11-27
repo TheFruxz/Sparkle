@@ -9,4 +9,4 @@ object [Companion](index.md)
 
 | Name | Summary |
 |---|---|
-| [address](address.md) | [jvm]<br>fun &lt;[T](address.md)&gt; [address](address.md)(path: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [Address](../index.md)&lt;[T](address.md)&gt; |
+| [address](address.md) | [jvm]<br>fun &lt;[T](address.md)&gt; [address](address.md)(path: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [Address](../index.md)&lt;[T](address.md)&gt;<br>Generates an [Addressed](../../-addressed/index.md)<[T](address.md)> from the [Address](../index.md)'s class internal constructor. |

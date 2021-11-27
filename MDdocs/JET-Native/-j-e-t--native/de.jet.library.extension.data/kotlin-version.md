@@ -4,3 +4,13 @@
 
 [jvm]\
 val [kotlinVersion](kotlin-version.md): [KotlinVersion](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-kotlin-version/index.html)
+
+Returning the currently used kotlin runtime version.
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0

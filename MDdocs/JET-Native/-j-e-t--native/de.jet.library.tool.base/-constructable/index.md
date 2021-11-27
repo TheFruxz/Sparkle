@@ -5,6 +5,16 @@
 [jvm]\
 interface [Constructable](index.md)&lt;[T](index.md) : [Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)&gt;
 
+Interface for constructable objects.
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0
+
 ## Functions
 
 | Name | Summary |

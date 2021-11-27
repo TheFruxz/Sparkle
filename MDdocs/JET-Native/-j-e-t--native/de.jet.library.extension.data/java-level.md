@@ -4,3 +4,5 @@
 
 [jvm]\
 val [javaLevel](java-level.md): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)
+
+Returning the currently used java level or 0 if the java level is not a number.

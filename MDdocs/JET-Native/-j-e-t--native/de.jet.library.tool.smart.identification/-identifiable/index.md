@@ -5,6 +5,24 @@
 [jvm]\
 interface [Identifiable](index.md)&lt;[T](index.md)&gt;
 
+This interface marks every object that can be identified using the [Identity](../-identity/index.md) object and an identity [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html).
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0
+
+## Parameters
+
+jvm
+
+| | |
+|---|---|
+| T | the type of the object that is identifiable |
+
 ## Types
 
 | Name | Summary |
@@ -15,8 +33,8 @@ interface [Identifiable](index.md)&lt;[T](index.md)&gt;
 
 | Name | Summary |
 |---|---|
-| [identity](identity.md) | [jvm]<br>abstract val [identity](identity.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |
-| [identityObject](identity-object.md) | [jvm]<br>open val [identityObject](identity-object.md): [Identity](../-identity/index.md)&lt;[T](index.md)&gt; |
+| [identity](identity.md) | [jvm]<br>abstract val [identity](identity.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>Represents the identity of the object as a [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html). |
+| [identityObject](identity-object.md) | [jvm]<br>open val [identityObject](identity-object.md): [Identity](../-identity/index.md)&lt;[T](index.md)&gt;<br>Represents the identity of the object as an [Identity](../-identity/index.md) type [T](index.md). |
 
 ## Inheritors
 

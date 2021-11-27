@@ -4,3 +4,17 @@
 
 [jvm]\
 open override fun [produce](produce.md)(): [Calendar](https://docs.oracle.com/javase/8/docs/api/java/util/Calendar.html)
+
+Produces the product T
+
+#### Return
+
+the product T
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0

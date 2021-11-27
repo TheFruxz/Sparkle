@@ -12,7 +12,7 @@ data class [Builder](index.md)(identity: [String](https://kotlinlang.org/api/lat
 | [branch](branch.md) | [jvm]<br>fun [branch](branch.md)(name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), process: [ConsoleStructureBranch.Builder](../../-console-structure-branch/-builder/index.md).() -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html) = { }): [ConsoleInterchange.Builder](index.md) |
 | [content](content.md) | [jvm]<br>fun [content](content.md)(content: (parameters: [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)&gt;) -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)?): [ConsoleInterchange.Builder](index.md) |
 | [plus](plus.md) | [jvm]<br>operator fun [plus](plus.md)(branch: [ConsoleStructureBranch](../../-console-structure-branch/index.md)): [ConsoleInterchange.Builder](index.md) |
-| [produce](produce.md) | [jvm]<br>open override fun [produce](produce.md)(): [ConsoleInterchange](../index.md) |
+| [produce](produce.md) | [jvm]<br>open override fun [produce](produce.md)(): [ConsoleInterchange](../index.md)<br>Produces the product T |
 
 ## Properties
 

@@ -10,3 +10,19 @@ fun &lt;[T](toggle.md)&gt; [MutableSet](https://kotlinlang.org/api/latest/jvm/st
 fun &lt;[T](toggle.md)&gt; [MutableList](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html)&lt;[T](toggle.md)&gt;.[toggle](toggle.md)(o: [T](toggle.md))
 
 If contained, remove; or if not contained add element!
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0
+
+## Parameters
+
+jvm
+
+| | |
+|---|---|
+| o | The element to be added or removed |

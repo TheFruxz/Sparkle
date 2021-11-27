@@ -4,3 +4,13 @@
 
 [jvm]\
 abstract val [identity](identity.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)
+
+Represents the identity of the object as a [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html).
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0

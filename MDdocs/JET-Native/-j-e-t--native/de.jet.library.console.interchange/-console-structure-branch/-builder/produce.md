@@ -4,3 +4,17 @@
 
 [jvm]\
 open override fun [produce](produce.md)(): [ConsoleStructureBranch](../index.md)
+
+Produces the product T
+
+#### Return
+
+the product T
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0

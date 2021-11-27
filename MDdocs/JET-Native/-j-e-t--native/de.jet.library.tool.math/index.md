@@ -6,5 +6,4 @@
 
 | Name | Summary |
 |---|---|
-| [ModResult](-mod-result/index.md) | [jvm]<br>data class [ModResult](-mod-result/index.md)(value: [Long](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html), divide: [Long](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html)) |
-| [Percentage](-percentage/index.md) | [jvm]<br>data class [Percentage](-percentage/index.md)(decimal: [Double](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html)) |
+| [Percentage](-percentage/index.md) | [jvm]<br>data class [Percentage](-percentage/index.md)(decimal: [Double](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html))<br>This data class represents a percentage value, which can be used to calculate a value from a given base value. |

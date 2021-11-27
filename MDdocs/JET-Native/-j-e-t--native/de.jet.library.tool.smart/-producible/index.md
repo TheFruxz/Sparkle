@@ -5,11 +5,21 @@
 [jvm]\
 interface [Producible](index.md)&lt;[T](index.md) : [Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)&gt;
 
+This interface marks every class/object, that can produce a object type [T](index.md)
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0
+
 ## Functions
 
 | Name | Summary |
 |---|---|
-| [produce](produce.md) | [jvm]<br>abstract fun [produce](produce.md)(): [T](index.md) |
+| [produce](produce.md) | [jvm]<br>abstract fun [produce](produce.md)(): [T](index.md)<br>Produces the product [T](index.md) |
 
 ## Inheritors
 

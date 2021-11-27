@@ -4,3 +4,12 @@
 
 [jvm]\
 fun &lt;[T](index.md)&gt; [Addressed](-addressed.md)(address: [Address](../-address/index.md)&lt;[T](index.md)&gt;, value: [T](index.md))
+
+## Parameters
+
+jvm
+
+| | |
+|---|---|
+| address | the address of the element |
+| value | the value of the element |

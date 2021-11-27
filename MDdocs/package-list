@@ -219,7 +219,6 @@ $dokka.location:de.jet.library.extension.math//difference/kotlin.Float#kotlin.Fl
 $dokka.location:de.jet.library.extension.math//difference/kotlin.Int#kotlin.Int/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.math/difference.md
 $dokka.location:de.jet.library.extension.math//difference/kotlin.Long#kotlin.Long/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.math/difference.md
 $dokka.location:de.jet.library.extension.math//difference/kotlin.Short#kotlin.Short/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.math/difference.md
-$dokka.location:de.jet.library.extension.math//divideResult/kotlin.Long#kotlin.Long/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.math/divide-result.md
 $dokka.location:de.jet.library.extension.math//format/kotlin.Number#kotlin.String/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.math/format.md
 $dokka.location:de.jet.library.extension.math//isBoolean/kotlin.String?#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.math/is-boolean.md
 $dokka.location:de.jet.library.extension.math//isByte/kotlin.String?#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.extension.math/is-byte.md
@@ -311,7 +310,7 @@ $dokka.location:de.jet.library.tool.devlang/JSON.Companion///PointingToDeclarati
 $dokka.location:de.jet.library.tool.devlang/JSON.Companion/constructor/#kotlin.Array[kotlin.Any?]/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.devlang/-j-s-o-n/-companion/constructor.md
 $dokka.location:de.jet.library.tool.devlang/JSON///PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.devlang/-j-s-o-n/index.md
 $dokka.location:de.jet.library.tool.devlang/JSON/JSON/#kotlin.String/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.devlang/-j-s-o-n/-j-s-o-n.md
-$dokka.location:de.jet.library.tool.devlang/JSON/toJson/#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.devlang/-j-s-o-n/to-json.md
+$dokka.location:de.jet.library.tool.devlang/JSON/fromJson/#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.devlang/-j-s-o-n/from-json.md
 $dokka.location:de.jet.library.tool.devlang/JSON/value/#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.devlang/-j-s-o-n/value.md
 $dokka.location:de.jet.library.tool.devlang/SQL.Companion///PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.devlang/-s-q-l/-companion/index.md
 $dokka.location:de.jet.library.tool.devlang/SQL.Companion/constructor/#kotlin.Array[kotlin.Any?]/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.devlang/-s-q-l/-companion/constructor.md
@@ -324,12 +323,6 @@ $dokka.location:de.jet.library.tool.devlang/YAML///PointingToDeclaration/JET-Na
 $dokka.location:de.jet.library.tool.devlang/YAML/YAML/#kotlin.String/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.devlang/-y-a-m-l/-y-a-m-l.md
 $dokka.location:de.jet.library.tool.devlang/YAML/value/#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.devlang/-y-a-m-l/value.md
 $dokka.location:de.jet.library.tool.math////PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.math/index.md
-$dokka.location:de.jet.library.tool.math/ModResult///PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.math/-mod-result/index.md
-$dokka.location:de.jet.library.tool.math/ModResult/ModResult/#kotlin.Long#kotlin.Long/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.math/-mod-result/-mod-result.md
-$dokka.location:de.jet.library.tool.math/ModResult/divide/#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.math/-mod-result/divide.md
-$dokka.location:de.jet.library.tool.math/ModResult/fittingTimes/#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.math/-mod-result/fitting-times.md
-$dokka.location:de.jet.library.tool.math/ModResult/notUsed/#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.math/-mod-result/not-used.md
-$dokka.location:de.jet.library.tool.math/ModResult/value/#/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.math/-mod-result/value.md
 $dokka.location:de.jet.library.tool.math/Percentage///PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.math/-percentage/index.md
 $dokka.location:de.jet.library.tool.math/Percentage/Percentage/#kotlin.Byte/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.math/-percentage/-percentage.md
 $dokka.location:de.jet.library.tool.math/Percentage/Percentage/#kotlin.Double/PointingToDeclaration/JET-Native/-j-e-t--native/de.jet.library.tool.math/-percentage/-percentage.md

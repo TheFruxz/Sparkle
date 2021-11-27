@@ -5,6 +5,8 @@
 [jvm]\
 object [Base64](index.md)
 
+This object provides methods to encode and decode strings to and from Base64.
+
 ## Functions
 
 | Name | Summary |

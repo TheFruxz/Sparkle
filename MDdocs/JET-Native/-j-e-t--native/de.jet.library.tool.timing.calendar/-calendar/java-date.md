@@ -4,3 +4,13 @@
 
 [jvm]\
 val [javaDate](java-date.md): [Date](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html)
+
+This value returns this calendar as a [Date](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html) object.
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0

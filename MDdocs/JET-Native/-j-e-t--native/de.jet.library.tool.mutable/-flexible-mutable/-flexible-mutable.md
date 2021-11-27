@@ -4,3 +4,12 @@
 
 [jvm]\
 fun &lt;[T](index.md)&gt; [FlexibleMutable](-flexible-mutable.md)(property: [T](index.md))
+
+## Parameters
+
+jvm
+
+| | |
+|---|---|
+| T | The type of the mutable flexible. |
+| property | The property of the mutable flexible. |

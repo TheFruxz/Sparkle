@@ -5,6 +5,16 @@
 [jvm]\
 interface [DevLangObject](index.md)
 
+This interface represents an object, which contains a chunk of code inside a [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html).
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0
+
 ## Properties
 
 | Name | Summary |

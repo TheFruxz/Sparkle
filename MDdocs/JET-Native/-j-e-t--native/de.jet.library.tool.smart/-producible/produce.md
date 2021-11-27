@@ -4,3 +4,17 @@
 
 [jvm]\
 abstract fun [produce](produce.md)(): [T](index.md)
+
+Produces the product [T](index.md)
+
+#### Return
+
+the product [T](index.md)
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0

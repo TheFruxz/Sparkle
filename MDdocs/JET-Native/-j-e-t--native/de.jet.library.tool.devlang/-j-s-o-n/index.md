@@ -5,6 +5,22 @@
 [jvm]\
 data class [JSON](index.md)(value: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)) : [DevLangObject](../-dev-lang-object/index.md)
 
+This data class represents a chunk of JSON code stored inside the [value](value.md)
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0
+
+## Constructors
+
+| | |
+|---|---|
+| [JSON](-j-s-o-n.md) | [jvm]<br>fun [JSON](-j-s-o-n.md)(value: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)) |
+
 ## Types
 
 | Name | Summary |
@@ -15,7 +31,7 @@ data class [JSON](index.md)(value: [String](https://kotlinlang.org/api/latest/jv
 
 | Name | Summary |
 |---|---|
-| [toJson](to-json.md) | [jvm]<br>fun &lt;[T](to-json.md)&gt; [toJson](to-json.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |
+| [fromJson](from-json.md) | [jvm]<br>inline fun &lt;[T](from-json.md) : [Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)&gt; [fromJson](from-json.md)(): [T](from-json.md)<br>Converts the [value](value.md) to a [T](from-json.md) object using the [fromJson](from-json.md) function |
 
 ## Properties
 

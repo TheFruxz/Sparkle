@@ -4,3 +4,13 @@
 
 [jvm]\
 val [Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)?.[isNotNull](is-not-null.md): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)
+
+Returns true if this is not null, otherwise false.
+
+#### Author
+
+Fruxz
+
+#### Since
+
+1.0

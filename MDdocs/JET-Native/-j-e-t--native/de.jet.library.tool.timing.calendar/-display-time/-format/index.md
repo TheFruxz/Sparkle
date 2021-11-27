@@ -3,7 +3,9 @@
 # Format
 
 [jvm]\
-enum [Format](index.md) : [Enum](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html)&lt;[DisplayTime.Format](index.md)&gt;
+~~enum~~ [~~Format~~](index.md) ~~:~~ [~~Enum~~](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html)~~&lt;~~[DisplayTime.Format](index.md)~~&gt;~~ 
+
+The time formats
 
 ## Entries
 

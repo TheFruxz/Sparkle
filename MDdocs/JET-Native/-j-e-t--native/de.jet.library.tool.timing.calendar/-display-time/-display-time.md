@@ -7,4 +7,13 @@ fun [DisplayTime](-display-time.md)(format: [DisplayTime.Format](-format/index.m
 
 fun [DisplayTime](-display-time.md)(duration: [Duration](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.time/-duration/index.html))
 
+[jvm]\
 fun [DisplayTime](-display-time.md)(ticks: [Double](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html))
+
+## Parameters
+
+jvm
+
+| | |
+|---|---|
+| ticks | the amount of ticks used in this time |
