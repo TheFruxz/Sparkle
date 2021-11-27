@@ -1,13 +1,39 @@
 package de.jet.library.tool.smart.positioning
 
+/**
+ * This interface represents an object, which has a specific
+ * path inside a pathed structure.
+ * @author Fruxz
+ * @since 1.0
+ */
 @Suppress("SpellCheckingInspection")
 interface Pathed<T> : Addressable<T> {
 
+	/**
+	 * This is the path of this object, which
+	 * represents the address of the object
+	 * inside the pathed structure.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	override val address: Address<T>
 		get() = path
 
+	/**
+	 * This is the path of this object, which
+	 * represents the address of the object
+	 * inside the pathed structure.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	val path: Address<T>
 
+	/**
+	 * This value represents the different parts
+	 * of the paths of this object.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	val pathParts: List<String>
 		get() {
 			var isDirectory = false
