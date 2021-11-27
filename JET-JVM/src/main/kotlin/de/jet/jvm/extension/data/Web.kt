@@ -1,6 +1,6 @@
 package de.jet.jvm.extension.data
 
-import java.net.URL
+import java.nio.charset.Charset
 
 /**
  * Returns the text of the web page at the given [url].
@@ -9,4 +9,4 @@ import java.net.URL
  * @author Fruxz
  * @since 1.0
  */
-fun getWebText(url: String) = URL(url).openStream().bufferedReader().readText()
+fun getWebText(url: String, charset: Charset = Charsets.UTF_8) = url(url).readText(charset)
