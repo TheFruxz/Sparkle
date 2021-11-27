@@ -2,7 +2,7 @@ package de.jet.minecraft.tool.input
 
 import de.jet.library.extension.collection.skip
 import de.jet.library.tool.smart.identification.Identifiable
-import de.jet.library.tool.smart.identification.Identity
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.library.tool.smart.type.Breakable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.app.JetData

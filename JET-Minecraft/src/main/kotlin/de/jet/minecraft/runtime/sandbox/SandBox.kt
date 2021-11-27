@@ -2,7 +2,7 @@ package de.jet.minecraft.runtime.sandbox
 
 import de.jet.library.extension.catchException
 import de.jet.library.extension.collection.replaceVariables
-import de.jet.library.tool.timing.calendar.Calendar
+import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
 import de.jet.minecraft.extension.lang

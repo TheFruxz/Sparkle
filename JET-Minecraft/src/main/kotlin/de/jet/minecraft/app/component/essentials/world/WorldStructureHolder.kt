@@ -3,7 +3,7 @@ package de.jet.minecraft.app.component.essentials.world
 import de.jet.library.extension.switchResult
 import de.jet.library.structure.DataStructureHolder
 import de.jet.library.structure.DataStructureItem
-import de.jet.library.tool.smart.positioning.Address
+import de.jet.jvm.tool.smart.positioning.Address
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

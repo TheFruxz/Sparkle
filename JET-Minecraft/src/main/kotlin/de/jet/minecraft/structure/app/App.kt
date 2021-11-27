@@ -3,7 +3,7 @@
 package de.jet.minecraft.structure.app
 
 import com.destroystokyo.paper.utils.PaperPluginLogger
-import de.jet.library.extension.catchException
+import de.jet.jvm.extension.catchException
 import de.jet.library.extension.collection.mutableReplaceWith
 import de.jet.library.extension.jetTry
 import de.jet.library.tool.smart.identification.Identifiable

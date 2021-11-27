@@ -2,7 +2,7 @@ package de.jet.minecraft.tool.display.skull
 
 import com.destroystokyo.paper.profile.ProfileProperty
 import de.jet.library.extension.data.randomBoolean
-import de.jet.library.extension.data.url
+import de.jet.jvm.extension.data.url
 import de.jet.library.tool.conversion.Base64
 import de.jet.library.tool.conversion.CSV
 import de.jet.minecraft.app.JetData

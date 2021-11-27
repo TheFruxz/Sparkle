@@ -6,29 +6,28 @@ plugins {
     kotlin("plugin.serialization")
     id("org.jetbrains.dokka")
     id("org.jetbrains.qodana")
+    id("com.github.johnrengelman.shadow")
     id("maven-publish")
 }
 
 var host = "github.com/TheFruxz/JET"
 
-repositories {
-    mavenCentral()
-    maven("https://mvnrepository.com/artifact/org.javacord/javacord")
-}
-
 dependencies {
+    // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.0")
-
-    // internal
-
-    implementation(project(":JET-JVM"))
-
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
-
-    implementation("org.javacord:javacord:3.3.2")
-
 }
 
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "17"
+    kotlinOptions.freeCompilerArgs += "-Xunrestricted-builder-inference"
+    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
+    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.ExperimentalStdlibApi"
+    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi"
+    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.io.path.ExperimentalPathApi"
+}
 
 publishing {
 
@@ -47,10 +46,10 @@ publishing {
 
     }
 
-    publications.create("JET-JAVACORD", MavenPublication::class) {
+    publications.create("JET-JVM", MavenPublication::class) {
 
         from(components["kotlin"])
-        artifactId = "jet-javacord"
+        artifactId = "jet-jvm"
         version = version.toLowerCase()
 
     }
@@ -64,8 +63,4 @@ tasks.test {
 java {
     sourceCompatibility = VERSION_17
     targetCompatibility = VERSION_17
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
 }

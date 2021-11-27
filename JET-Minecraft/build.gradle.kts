@@ -26,7 +26,7 @@ dependencies {
 
     // Internal
 
-    implementation(project(":JET-Native"))
+    implementation(project(":JET-JVM"))
 
     // PaperMC
 

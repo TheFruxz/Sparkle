@@ -5,7 +5,7 @@ import de.jet.library.extension.collection.replace
 import de.jet.library.extension.collection.withMap
 import de.jet.library.extension.math.isDouble
 import de.jet.library.extension.math.isInt
-import de.jet.library.extension.modifiedIf
+import de.jet.jvm.extension.modifiedIf
 import de.jet.library.tool.smart.identification.Identifiable
 import de.jet.minecraft.app.JetCache
 import de.jet.minecraft.extension.display.notification
