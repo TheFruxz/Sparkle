@@ -1,4 +1,4 @@
-package de.jet.discord.extension
+package de.jet.javacord.extension
 
 /**
  * Creates a new Discord connection via the [buildDiscordApi] function and its login & join methods.

@@ -1,4 +1,4 @@
-package de.jet.discord.extension
+package de.jet.javacord.extension
 
 import org.javacord.api.DiscordApiBuilder
 import org.javacord.api.entity.message.MessageBuilder

@@ -1,6 +1,6 @@
-package de.jet.discord.extension
+package de.jet.javacord.extension
 
-import de.jet.discord.user.DiscordUser
+import de.jet.javacord.user.DiscordUser
 import de.jet.library.extension.java.getOrNull
 import org.javacord.api.DiscordApi
 

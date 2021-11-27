@@ -2,8 +2,8 @@ $dokka.format:html-v1
 $dokka.linkExtension:html
 
 module:JET-Discord
-de.jet.discord.extension
-de.jet.discord.user
+de.jet.javacord.extension
+de.jet.javacord.user
 module:JET-Minecraft
 de.jet.minecraft
 de.jet.minecraft.app

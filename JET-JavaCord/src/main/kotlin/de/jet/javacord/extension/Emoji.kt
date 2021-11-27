@@ -1,4 +1,4 @@
-package de.jet.discord.extension
+package de.jet.javacord.extension
 
 import de.jet.library.extension.isNotNull
 import org.javacord.api.entity.emoji.CustomEmojiBuilder

@@ -1,4 +1,4 @@
-package de.jet.discord.user
+package de.jet.javacord.user
 
 import de.jet.library.tool.smart.identification.Identifiable
 import kotlinx.serialization.Serializable

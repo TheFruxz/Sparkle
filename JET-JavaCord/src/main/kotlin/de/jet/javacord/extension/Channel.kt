@@ -1,4 +1,4 @@
-package de.jet.discord.extension
+package de.jet.javacord.extension
 
 import de.jet.library.extension.java.getOrNull
 import org.javacord.api.DiscordApi
@@ -144,7 +144,7 @@ fun Server.textChannels(name: String) = getTextChannelsByName(name).toList()
  * @author Fruxz
  * @since 1.0
  */
-fun Server.textChannels(id: Long) = textChannels.toList()
+fun Server.textChannels() = textChannels.toList()
 
 // Starting with (server + channel) extensions
 
