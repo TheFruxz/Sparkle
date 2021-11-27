@@ -9,14 +9,7 @@ import java.text.DecimalFormat
  * @author Fruxz
  * @since 1.0
  */
-fun String?.isInt() = try {
-	if (this != null) {
-		toInt()
-		true
-	} else false
-} catch (e: NumberFormatException) {
-	false
-}
+fun String?.isInt() = this?.toIntOrNull() != null
 
 /**
  * Returns if the string can be parsed to a [Double].
@@ -24,14 +17,7 @@ fun String?.isInt() = try {
  * @author Fruxz
  * @since 1.0
  */
-fun String?.isDouble() = try {
-	if (this != null) {
-		toDouble()
-		true
-	} else false
-} catch (e: NumberFormatException) {
-	false
-}
+fun String?.isDouble() = this?.toDoubleOrNull() != null
 
 /**
  * Returns if the string can be parsed to a [Float].
@@ -39,14 +25,7 @@ fun String?.isDouble() = try {
  * @author Fruxz
  * @since 1.0
  */
-fun String?.isFloat() = try {
-	if (this != null) {
-		toFloat()
-		true
-	} else false
-} catch (e: NumberFormatException) {
-	false
-}
+fun String?.isFloat() = this?.toFloatOrNull() != null
 
 /**
  * Returns if the string can be parsed to a [Long].
@@ -54,14 +33,7 @@ fun String?.isFloat() = try {
  * @author Fruxz
  * @since 1.0
  */
-fun String?.isLong() = try {
-	if (this != null) {
-		toLong()
-		true
-	} else false
-} catch (e: NumberFormatException) {
-	false
-}
+fun String?.isLong() = this?.toLongOrNull() != null
 
 /**
  * Returns if the string can be parsed to a [Byte].
@@ -69,14 +41,7 @@ fun String?.isLong() = try {
  * @author Fruxz
  * @since 1.0
  */
-fun String?.isByte() = try {
-	if (this != null) {
-		toByte()
-		true
-	} else false
-} catch (e: NumberFormatException) {
-	false
-}
+fun String?.isByte() = this?.toByteOrNull() != null
 
 /**
  * Returns if the string can be parsed to a [Boolean].
