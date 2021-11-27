@@ -1,16 +1,5 @@
 package de.jet.library.extension.math
 
-import de.jet.library.tool.math.ModResult
-
-/**
- * Creates a new [ModResult] with the division value and the
- * given numbers [this] and [divide].
- * @param divide The number to divide [this] by.
- * @return The new [ModResult] with the division value.
- * @author Fruxz
- * @since 1.0
- */
-infix fun Long.divideResult(divide: Long) = ModResult(this, divide)
 
 /**
  * This function returns the non-negative difference between two numbers.
