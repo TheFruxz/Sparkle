@@ -7,6 +7,12 @@ package de.jet.library.tool.smart
  */
 interface Producible<T : Any> {
 
+	/**
+	 * Produces the product [T]
+	 * @return the product [T]
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun produce(): T
 
 }
