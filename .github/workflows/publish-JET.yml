@@ -1,19 +1,17 @@
 # This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
 
-name: JetPublish
+name: JET-PUBLISH
 
 on:
   workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 16
@@ -23,10 +21,8 @@ jobs:
         distribution: 'temurin'
         server-id: github
         settings-path: ${{ github.workspace }}
-
     - name: Build with Gradle
       run: gradle build
-
     - name: Publish to GitHub Packages
       run: gradle publish
       env:

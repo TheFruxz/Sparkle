@@ -1,4 +1,4 @@
-name: JetTest
+name: JET-TEST
 
 on: [push, pull_request]
 

@@ -4,7 +4,7 @@ main: de.jet.minecraft.app.JetApp
 load: STARTUP
 authors:
   - TheFruxz (Fruxz)
-  - JaLuMu (JanLuca)
+  - GitHub Contributors
 softdepend:
   - HeadDatabase
 api-version: 1.17

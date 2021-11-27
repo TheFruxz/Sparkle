@@ -1,6 +1,6 @@
 name: Bug report
 description: Report a bug
-title: "[BUG]: "
+title: "JET-JavaCord | BUG: "
 labels: 'State: unverified, Type: bug, From: user'
 assignees: []
 body:
@@ -32,23 +32,6 @@ body:
         - v1.0 BETA 8 (preview)
     validations:
       required: true
-  - type: dropdown
-    id: server
-    attributes:
-      label: What Server-Version are you seeing the problem on?
-      multiple: false
-      options:
-        - 1.18
-        - 1.17
-        - 1.16
-        - 1.15
-        - 1.14
-        - 1.13
-        - 1.12
-        - 1.11
-        - 1.10
-        - 1.9
-        - 1.8
   - type: textarea
     id: logs
     attributes:
