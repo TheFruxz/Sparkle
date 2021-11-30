@@ -43,6 +43,40 @@ JET-JavaCord is the module for the development of Discord bots, which is based o
 With JET-JavaCord especially this development area is supported, with functions & systems which are exactly
 adapted for this system.
 
+Example:
+```kotlin
+fun main() = runBot {
+
+	credentials {
+		botToken = "OTA5OXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXIvDkM"
+	}
+
+	appearance {
+
+		displayName = "JavaCord-Bot"
+		status = ONLINE
+
+		activity {
+			name = "JET-JavaCord"
+			activityType = STREAMING
+			streamingUrl = url("https://www.youtube.com/watch?v=ow5kdhDa_pk")
+		}
+
+	}
+
+	preProcess { println("PreProcess") }
+
+	preSetup { println("PreSetup") }
+
+	preLogin { println("PreLogin") }
+
+	postLogin { println("PostLogin") }
+
+	postProcess { println("PostProcess") }
+
+}
+```
+
 ### JET-Paper
 JET-Paper is the module for Minecraft server paper plugin development, which is based on the [PaperMC server API](https://github.com/PaperMC/Paper).
 With JET-Paper specifically this development area is supported, with functions & systems which are precisely
