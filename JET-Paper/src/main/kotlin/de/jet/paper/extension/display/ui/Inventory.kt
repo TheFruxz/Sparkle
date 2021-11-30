@@ -16,11 +16,6 @@ fun buildPanel(lines: Int = 3, action: Panel.() -> Unit) = Panel(lines = lines).
 
 fun emptyPanel(lines: Int = 3) = Panel(lines = lines)
 
-fun Inventory.copyRaw(title: Component) = createInventory(this.holder, this.size, title).apply {
-	setContents(this.contents.filterNotNull().toTypedArray())
-	storageContents = this.storageContents
-}
-
 operator fun <T : Inventory> T.get(slot: Int) = getItem(slot)
 
 operator fun <T : Inventory> T.set(slot: Int, itemStack: ItemStack) = setItem(slot, itemStack)

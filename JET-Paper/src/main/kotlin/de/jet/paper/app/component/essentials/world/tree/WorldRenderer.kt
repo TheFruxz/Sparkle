@@ -304,6 +304,7 @@ object WorldRenderer {
 			Path("$identity/").toFile().deleteRecursively()
 		}
 
+		@Suppress("UNUSED_PARAMETER")
 		fun moveObject(currentObjectPath: Address<RenderObject>, futurePath: Address<RenderObject>) {
 			// TODO: 25.10.21 Check if the currentPath object exists
 			// TODO: 25.10.21 check if current is folder or world (world is easier than folder, because folder have contents)

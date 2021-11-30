@@ -28,6 +28,7 @@ import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.display.message.Transmission.Level.INFO
 import java.util.*
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 class ServiceInterchange(vendor: App = system) : Interchange(vendor, "service", requiresAuthorization = true, completion = buildCompletion {
 	next(setOf("start", "stop", "restart", "list", "unregister", "reset")) isRequired true mustMatchOutput true
@@ -50,7 +51,7 @@ class ServiceInterchange(vendor: App = system) : Interchange(vendor, "service", 
 				lang("interchange.internal.service.list.line")
 					.replace("[service]", service.identity)
 					.replace("[enabled]" to if (service.isRunning) "$GREEN${BOLD}ONLINE" else "$RED${BOLD}OFFLINE")
-					.replace("[activeSince]" to Duration.milliseconds(Calendar.getInstance().timeInMillis - (service.controller?.startTime ?: Calendar.getInstance()).timeInMillis).toString())
+					.replace("[activeSince]" to (Calendar.getInstance().timeInMillis - (service.controller?.startTime ?: Calendar.getInstance()).timeInMillis).milliseconds.toString())
 					.message(executor).display()
 
 			}

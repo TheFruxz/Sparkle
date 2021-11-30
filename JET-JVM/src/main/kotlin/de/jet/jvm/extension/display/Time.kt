@@ -1,7 +1,7 @@
 package de.jet.jvm.extension.display
 
-import de.jet.jvm.tool.timing.calendar.DisplayTime
-import de.jet.jvm.tool.timing.calendar.DisplayTime.Format.SECONDS
+import de.jet.jvm.tool.timing.clock.DisplayTime
+import de.jet.jvm.tool.timing.clock.DisplayTime.Format.SECONDS
 import kotlin.time.Duration
 
 /**

@@ -77,7 +77,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 
 					putClickAction(async = false) {
 						val identity = Identifiable.custom<RenderWorld>(lore.lines().first().removePrefix("§7Identity: §e"))
-						val address = address<RenderObject>(lore.lines()[1].removePrefix("§7Path: §e"))
+						//val address = address<RenderObject>(lore.lines()[1].removePrefix("§7Path: §e"))
 
 						when (click) {
 							LEFT, SHIFT_LEFT -> {
@@ -115,7 +115,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAutho
 
 					putClickAction(async = false) {
 						val identity = Identifiable.custom<RenderWorld>(lore.lines().first().removePrefix("§7Identity: §e"))
-						val address = address<RenderObject>(lore.lines()[1].removePrefix("§7Path: §e"))
+						//val address = address<RenderObject>(lore.lines()[1].removePrefix("§7Path: §e"))
 
 						when (click) {
 							LEFT, SHIFT_LEFT -> {

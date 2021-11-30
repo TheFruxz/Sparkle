@@ -23,7 +23,7 @@ internal val lang: LanguageSpeaker
 	get() = JET.languageSpeaker
 
 // TODO: 12.10.21 LanguageSpeaker bei Address austauschen mit sinvoller, erst dann existierender Klasse
-fun getSystemTranslated(vendor: Identifiable<App>, address: Address<LanguageData>): String {
+fun getSystemTranslated(@Suppress("UNUSED_PARAMETER") vendor: Identifiable<App>, address: Address<LanguageData>): String {
 	return lang(id = address.addressString) //todo replace with real system
 }
 

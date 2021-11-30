@@ -113,7 +113,6 @@ fun createProfile(uuid: UUID) = Bukkit.createProfile(uuid)
 
 fun createProfile(uuid: UUID?, name: String?) = Bukkit.createProfile(uuid, name)
 
-fun createVanillaChunkData(world: World, x: Int, z: Int) = Bukkit.createVanillaChunkData(world, x, z)
 
 fun createWorld(creator: WorldCreator) = Bukkit.createWorld(creator)
 

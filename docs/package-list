@@ -2,7 +2,9 @@ $dokka.format:html-v1
 $dokka.linkExtension:html
 
 module:JET-JavaCord
+de.jet.javacord
 de.jet.javacord.extension
+de.jet.javacord.structure
 de.jet.javacord.user
 module:JET-JVM
 de.jet.jvm.annotation
@@ -29,6 +31,7 @@ de.jet.jvm.tool.smart.identification
 de.jet.jvm.tool.smart.positioning
 de.jet.jvm.tool.smart.type
 de.jet.jvm.tool.timing.calendar
+de.jet.jvm.tool.timing.clock
 module:JET-Paper
 de.jet.paper
 de.jet.paper.app

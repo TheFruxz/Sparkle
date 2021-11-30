@@ -20,7 +20,7 @@ class PreferenceInterchange(vendor: App = system) : Interchange(vendor, "prefere
 
 		when {
 			inputLength(1) && parameters.first() == "list" -> {
-				""
+				TODO()
 			}
 			inputLength(2) && checkParameter[1] -> {
 				val preference = JetCache.registeredPreferences.toList().firstOrNull { it.first.identity == parameters.first() }?.second
