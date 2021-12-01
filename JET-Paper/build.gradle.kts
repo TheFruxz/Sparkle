@@ -30,7 +30,7 @@ dependencies {
 
     // PaperMC
 
-    compileOnly("io.papermc.paper:paper-api:1.18-rc3-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.18-R0.1-SNAPSHOT")
 
     // Kotlin
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.0")
