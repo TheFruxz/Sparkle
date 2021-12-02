@@ -11,9 +11,9 @@ open class InterchangeStructure<T : InterchangeStructureBranch>(
 
     override val identity = name
 
-    fun getNearestBranchWithParameters(original: Address<T>): Pair<T, String>? {
+    fun getNearestBranchWithParameters(original: Address<T>): Pair<T, String> {
 
-        fun getContent(address: Address<T>): Pair<T, String>? {
+        fun getContent(address: Address<T>): Pair<T, String> {
             val currentAddressState = address.addressString.split("/")
             var output: Pair<T, String>?
 
@@ -25,9 +25,9 @@ open class InterchangeStructure<T : InterchangeStructureBranch>(
 
             if (output == null && currentAddressState.size > 1) {
                 output = getContent(Address(currentAddressState.dropLast(1).joinToString("/")))
-            }
+            } else
 
-            return output
+            return output ?: (getStructureBranches<T>().first() to original.addressString.removePrefix("/").split("/").joinToString(" "))
         }
 
         return getContent(original.copy())
