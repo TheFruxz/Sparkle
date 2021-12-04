@@ -5,11 +5,11 @@ package de.jet.jvm.console.interchange
 import de.jet.jvm.interchange.InterchangeStructureBranch
 import de.jet.jvm.tool.smart.Producible
 
-class ConsoleStructureBranch(
+open class ConsoleStructureBranch(
     override val branchName: String,
     override val path: String,
     override val branches: List<ConsoleStructureBranch> = emptyList(),
-    val content: ((parameters: List<String>) -> Unit)? = null,
+    open val content: ((parameters: List<String>) -> Unit)? = null,
 ) : InterchangeStructureBranch(branchName, path, branches) {
 
     data class Builder(

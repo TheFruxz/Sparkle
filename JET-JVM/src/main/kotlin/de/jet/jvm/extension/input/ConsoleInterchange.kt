@@ -12,10 +12,13 @@ fun buildConsoleInterchange(name: String, process: ConsoleInterchange.Builder.()
 }
 
 fun requestTerminalInterchangeInput(vararg interchanges: ConsoleInterchange) {
-    println("Type your interchange/command:")
+    println(buildString {
+        appendLine("Welcome to the custom JET JVM Console Interchange Console!")
+        append("Enter interchange/command, 'help' or 'exit':")
+    })
     val input = readln()
 
-    if (input.startsWith("help") || input.startsWith("?")) {
+    if (input.startsWith("help")) {
 
         println(buildString {
 
@@ -30,8 +33,9 @@ fun requestTerminalInterchangeInput(vararg interchanges: ConsoleInterchange) {
 
         })
 
-        requestTerminalInterchangeInput(*interchanges)
-
+    } else if (input.startsWith("exit")) {
+        println("Okay, bye!")
+        return
     } else {
 
         val call = input.split(" ").let { searched ->
@@ -42,14 +46,14 @@ fun requestTerminalInterchangeInput(vararg interchanges: ConsoleInterchange) {
 
             if (!call.performInterchange(input.split(" ").drop(1).joinToString(" "))) {
                 println("No response from interchange, seems that your input-syntax was wrong, try again!")
-                requestTerminalInterchangeInput(*interchanges)
             }
 
         } else {
             println("No interchange called '${input.split(" ")[0]}' found, try again or enter 'help'!")
-            requestTerminalInterchangeInput(*interchanges)
         }
 
     }
+
+    requestTerminalInterchangeInput(*interchanges)
 
 }

@@ -177,11 +177,6 @@ class ArgumentSyntax(
             }
         }
 
-        /*processedVariables.keys.forEach {
-            if (!syntaxVariableNames.contains(it))
-                return SyntaxCheck.failed("")
-        }*/
-
         return Companion.succeed()
     }
 
