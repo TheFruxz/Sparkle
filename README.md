@@ -1,6 +1,6 @@
 # ![JET - The Kotlin-Based Framework for Next-Gen Paper Plugins - Just everything tweaked](https://user-images.githubusercontent.com/28064149/143691452-6bc94d3d-5815-49ba-a041-722af5aef580.gif)
 
-[![JitPack](https://jitpack.io/v/TheFruxz/JET.svg)](https://jitpack.io/#TheFruxz/JET)
+[![JitPack](https://jitpack.io/v/TheFruxz/JET.svg?style=flat-square)](https://jitpack.io/#TheFruxz/JET)
 [![JETBuild](https://github.com/TheFruxz/JET/actions/workflows/build-JET.yml/badge.svg)](https://github.com/TheFruxz/JET/actions/workflows/build-JET.yml)
 [![JETTest](https://github.com/TheFruxz/JET/actions/workflows/test-JET.yml/badge.svg)](https://github.com/TheFruxz/JET/actions/workflows/test-JET.yml)
 [![JETPublish](https://github.com/TheFruxz/JET/actions/workflows/publish-JET.yml/badge.svg)](https://github.com/TheFruxz/JET/actions/workflows/publish-JET.yml)
