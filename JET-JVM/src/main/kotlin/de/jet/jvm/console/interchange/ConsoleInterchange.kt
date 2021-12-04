@@ -10,6 +10,7 @@ class ConsoleInterchange(
     override val path: String,
     override val branches: List<ConsoleStructureBranch>,
     override val content: ((parameters: List<String>) -> Unit)? = null,
+    val syntaxIssue: ((parameters: List<String>) -> Unit)? = null,
 ) : ConsoleInterchangeStructure<ConsoleStructureBranch>(identity) {
 
     fun performInterchange(input: String): Boolean {
@@ -33,6 +34,7 @@ class ConsoleInterchange(
         var path: String,
         var branches: MutableList<ConsoleStructureBranch> = mutableListOf(),
         var content: ((parameters: List<String>) -> Unit)? = null,
+        var syntaxIssue: ((parameters: List<String>) -> Unit)? = null,
     ) : Producible<ConsoleInterchange> {
 
         operator fun plus(branch: ConsoleStructureBranch) = apply {
@@ -45,6 +47,10 @@ class ConsoleInterchange(
 
         fun content(content: ((parameters: List<String>) -> Unit)?) = apply {
             this.content = content
+        }
+
+        fun onSyntaxIssue(syntaxIssue: ((parameters: List<String>) -> Unit)?) = apply {
+            this.syntaxIssue = syntaxIssue
         }
 
         override fun produce() = ConsoleInterchange(

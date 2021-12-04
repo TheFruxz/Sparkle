@@ -43,9 +43,16 @@ fun requestTerminalInterchangeInput(vararg interchanges: ConsoleInterchange) {
         }
 
         if (call != null) {
+            val inputParameters = input.split(" ").drop(1)
+            if (!call.performInterchange(inputParameters.joinToString(" "))) {
+                val syntaxIssueReaction = call.syntaxIssue
 
-            if (!call.performInterchange(input.split(" ").drop(1).joinToString(" "))) {
-                println("No response from interchange, seems that your input-syntax was wrong, try again!")
+                if (syntaxIssueReaction != null) {
+                    syntaxIssueReaction(inputParameters)
+                } else {
+                    println("No response from interchange, seems that your input-syntax was wrong, try again!")
+                }
+
             }
 
         } else {
