@@ -15,7 +15,7 @@ class ConsoleInterchange(
     fun performInterchange(input: String): Boolean {
         val nearest = getNearestBranchWithParameters(Address.address(input.replace(" ", "/")))
 
-        return if (nearest != null) {
+        return run {
             val content = nearest.first.content
 
             if (content != null) {
@@ -24,8 +24,7 @@ class ConsoleInterchange(
             } else
                 false
 
-        } else
-            false
+        }
 
     }
 
