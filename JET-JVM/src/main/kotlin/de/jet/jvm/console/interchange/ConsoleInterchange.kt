@@ -2,7 +2,6 @@
 
 package de.jet.jvm.console.interchange
 
-import de.jet.jvm.interchange.InterchangeStructure
 import de.jet.jvm.tool.smart.Producible
 import de.jet.jvm.tool.smart.positioning.Address
 
@@ -10,8 +9,8 @@ class ConsoleInterchange(
     override val identity: String,
     override val path: String,
     override val branches: List<ConsoleStructureBranch>,
-    val content: ((parameters: List<String>) -> Unit)? = null,
-) : InterchangeStructure<ConsoleStructureBranch>(identity) {
+    override val content: ((parameters: List<String>) -> Unit)? = null,
+) : ConsoleInterchangeStructure<ConsoleStructureBranch>(identity) {
 
     fun performInterchange(input: String): Boolean {
         val nearest = getNearestBranchWithParameters(Address.address(input.replace(" ", "/")))
