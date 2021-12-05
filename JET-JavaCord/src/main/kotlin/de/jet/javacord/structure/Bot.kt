@@ -23,4 +23,13 @@ data class Bot(
 	var processPreLogin: DiscordApiBuilder.() -> Unit = { },
 	var processPostLogin: DiscordApi.() -> Unit = { },
 	var processPostProcess: DiscordApi.() -> Unit = { },
-)
+) {
+
+	companion object Running {
+
+		lateinit var instance: DiscordApi
+			internal set
+
+	}
+
+}
