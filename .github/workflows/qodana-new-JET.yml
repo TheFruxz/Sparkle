@@ -1,7 +1,5 @@
 name: JET-QODANA-EAP
-
 on: [workflow_dispatch]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,3 +9,7 @@ jobs:
     steps:
     - name: Qodana - EAP Linters
       uses: JetBrains/qodana-action-eap@v1.1.2-eap
+      with:
+        linter: qodana-jvm
+        save-html-report: true
+        gradle-settings-path: gradle.properties
