@@ -1,3 +1,13 @@
-- name: Qodana - EAP Linters
-  on: [workflow_dispatch]
-  uses: JetBrains/qodana-action-eap@v1.1.2-eap
+name: JET-QODANA-EAP
+
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Qodana - EAP Linters
+      uses: JetBrains/qodana-action-eap@v1.1.2-eap
