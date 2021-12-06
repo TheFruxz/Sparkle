@@ -56,3 +56,23 @@ val Any?.isNull: Boolean
  */
 val Any?.isNotNull: Boolean
 	get() = !isNull
+
+/**
+ * Only an empty body function.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun empty() { }
+
+/**
+ * Returns the [this]<[T]> modified with the [process] if [modifyIf] is true,
+ */
+fun <T> T?.applyIfNull(process: (T?) -> Unit) = isNull.switchResult(this.apply(process), this)
+
+fun <T> T?.applyIfNotNull(process: (T) -> Unit) = isNotNull.switchResult(this.forceCast<T>().apply(process), this)
+
+fun <T> T?.ifNull(process: () -> Unit) = if (isNull) process() else empty()
+
+fun <T> T?.ifNotNull(process: () -> Unit) = if (isNotNull) process() else empty()
+
+fun <T, D> Pair<T?, D>.asDefaultNullDodge() = first.isNull.switchResult(first, second)
