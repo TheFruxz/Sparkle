@@ -62,7 +62,9 @@ fun runBot(process: Bot.() -> Unit) {
  * @author Fruxz
  * @since 1.0
  */
-fun talkDiscord(instance: DiscordApi = Bot.instance, process: (DiscordApi) -> Unit) = instance.apply(process)
+fun talkDiscord(instance: DiscordApi = Bot.instance, process: (DiscordApi) -> Unit) {
+	instance.apply(process)
+}
 
 /**
  * Communicates with the current running bot instance.

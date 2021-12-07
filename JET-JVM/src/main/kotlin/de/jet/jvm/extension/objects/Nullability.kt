@@ -16,3 +16,16 @@ fun <T : Any> T?.trust(): T {
 	} else
 		throw NoSuchElementException("element [T] was null, but it is not allowed to be null!")
 }
+
+/**
+ * Waits, until the element is not null, then returns the not-null it.
+ * If it never hits not-null, it never ends!
+ */
+fun <T> T?.awaitTrust(): T {
+	do {
+		if (this != null) {
+			return this
+		}
+	} while (this == null)
+	throw NullPointerException("AwaitTrust failed")
+}
