@@ -67,9 +67,12 @@ fun empty() { }
 /**
  * Returns the [this]<[T]> modified with the [process] if [modifyIf] is true,
  */
-fun <T> T?.applyIfNull(process: (T?) -> Unit) = isNull.switchResult(this.apply(process), this)
 
-fun <T> T?.applyIfNotNull(process: (T) -> Unit) = isNotNull.switchResult(this.forceCast<T>().apply(process), this)
+fun <T> T?.applyIfNull(process: (T?) -> Unit) = modifyIf(isNull, process)
+
+fun <T> T?.applyIfNotNull(process: (T) -> Unit) = modifyIf(isNotNull) {
+	process(this!!)
+}
 
 fun <T> T?.ifNull(process: () -> Unit) = if (isNull) process() else empty()
 
