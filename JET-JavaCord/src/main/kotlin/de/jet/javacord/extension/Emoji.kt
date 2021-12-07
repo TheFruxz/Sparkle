@@ -1,5 +1,7 @@
 package de.jet.javacord.extension
 
+import de.jet.jvm.extension.ifNotNull
+import de.jet.jvm.extension.ifNull
 import de.jet.jvm.extension.isNotNull
 import org.javacord.api.entity.emoji.CustomEmojiBuilder
 import org.javacord.api.entity.emoji.KnownCustomEmoji
@@ -14,7 +16,7 @@ import org.javacord.api.entity.server.Server
  * @since 1.0
  */
 fun Server.isCustomEmojiExisting(emojiName: String, ignoreCase: Boolean = false) =
-    getCustomEmoji(emojiName, ignoreCase).isNotNull
+	getCustomEmoji(emojiName, ignoreCase).isNotNull
 
 /**
  * Returns if a emoji with the [id] exists / stored at the server.
@@ -24,7 +26,7 @@ fun Server.isCustomEmojiExisting(emojiName: String, ignoreCase: Boolean = false)
  * @since 1.0
  */
 fun Server.isCustomEmojiExisting(id: Long) =
-    getCustomEmoji(id).isNotNull
+	getCustomEmoji(id).isNotNull
 
 /**
  * Returns the [KnownCustomEmoji] with the given name or null if it does not exist.
@@ -36,7 +38,7 @@ fun Server.isCustomEmojiExisting(id: Long) =
  * @since 1.0
  */
 fun Server.getCustomEmoji(emojiName: String, ignoreCase: Boolean = false) =
-    (if (ignoreCase) getCustomEmojisByNameIgnoreCase(emojiName) else getCustomEmojisByName(emojiName)).firstOrNull()
+	(if (ignoreCase) getCustomEmojisByNameIgnoreCase(emojiName).filterNotNull() else getCustomEmojisByName(emojiName).filterNotNull()).firstOrNull()
 
 /**
  * Returns the [KnownCustomEmoji] with the given [id] or nul if no emoji with the given [id] exists.
@@ -46,9 +48,9 @@ fun Server.getCustomEmoji(emojiName: String, ignoreCase: Boolean = false) =
  * @since 1.0
  */
 fun Server.getCustomEmoji(id: Long) = try {
-    getCustomEmojiById(id).get()
+	getCustomEmojiById(id).get()
 } catch (exception: NoSuchElementException) {
-    null
+	null
 }
 
 /**
@@ -63,15 +65,20 @@ fun Server.getCustomEmoji(id: Long) = try {
  * @author Fruxz
  * @since 1.0
  */
-fun Server.createCustomEmoji(emojiName: String, resource: ByteArray, replaceExisting: Boolean = false, process: CustomEmojiBuilder.() -> Unit = {}) = if (replaceExisting || !isCustomEmojiExisting(emojiName)) {
-    CustomEmojiBuilder(this)
-        .setName(emojiName)
-        .setImage(resource)
-        .apply(process)
-        .create()
-        .join()
+fun Server.createCustomEmoji(
+	emojiName: String,
+	resource: ByteArray,
+	replaceExisting: Boolean = false,
+	process: CustomEmojiBuilder.() -> Unit = {}
+) = if (replaceExisting || !isCustomEmojiExisting(emojiName)) {
+	CustomEmojiBuilder(this)
+		.setName(emojiName)
+		.setImage(resource)
+		.apply(process)
+		.create()
+		.join()
 } else
-    getCustomEmoji(emojiName, false)
+	getCustomEmoji(emojiName)
 
 /**
  * Creates a custom emoji using the [CustomEmojiBuilder] and returns the created emoji. If a emoji with the name [emojiName]
@@ -83,15 +90,19 @@ fun Server.createCustomEmoji(emojiName: String, resource: ByteArray, replaceExis
  * @author Fruxz
  * @since 1.0
  */
-fun Server.createCustomEmojiIfNotExists(emojiName: String, resource: ByteArray, process: CustomEmojiBuilder.() -> Unit = {}): KnownCustomEmoji = if (!isCustomEmojiExisting(emojiName)) {
-    CustomEmojiBuilder(this)
-        .setName(emojiName)
-        .setImage(resource)
-        .apply(process)
-        .create()
-        .join()
-} else
-    getCustomEmoji(emojiName, false)!!
+fun Server.createCustomEmojiIfNotExists(
+	emojiName: String,
+	resource: ByteArray,
+	process: CustomEmojiBuilder.() -> Unit = {}
+): KnownCustomEmoji = with(getCustomEmoji(emojiName)) {
+    return@with this
+        ?: CustomEmojiBuilder(this@createCustomEmojiIfNotExists)
+            .setName(emojiName)
+            .setImage(resource)
+            .apply(process)
+            .create()
+            .join()
+}
 
 /**
  * Removes every custom emoji from the server, where the condition is returning true.
@@ -102,9 +113,9 @@ fun Server.createCustomEmojiIfNotExists(emojiName: String, resource: ByteArray, 
  * @since 1.0
  */
 fun Server.removeCustomEmoji(condition: (KnownCustomEmoji) -> Boolean) = customEmojis.forEach {
-    if (condition(it)) {
-        it.delete().join()
-    }
+	if (condition(it)) {
+		it.delete().join()
+	}
 }
 
 /**
