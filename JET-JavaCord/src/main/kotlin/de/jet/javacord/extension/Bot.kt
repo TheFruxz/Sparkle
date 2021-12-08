@@ -62,9 +62,7 @@ fun runBot(process: Bot.() -> Unit) {
  * @author Fruxz
  * @since 1.0
  */
-fun talkDiscord(instance: DiscordApi = Bot.instance, process: (DiscordApi) -> Unit) {
-	instance.apply(process)
-}
+fun <T, I : T> talkDiscord(instance: DiscordApi = Bot.instance, process: (DiscordApi) -> I): T = process(instance)
 
 /**
  * Communicates with the current running bot instance.
@@ -73,7 +71,7 @@ fun talkDiscord(instance: DiscordApi = Bot.instance, process: (DiscordApi) -> Un
  * @author Fruxz
  * @since 1.0
  */
-fun withTalkDiscord(instance: DiscordApi = Bot.instance, process: DiscordApi.() -> Unit) = talkDiscord(instance, process)
+fun <T, I : T> withTalkDiscord(instance: DiscordApi = Bot.instance, process: DiscordApi.() -> I): T = talkDiscord<T, I>(instance, process)
 
 /**
  * The credential setup of the discord bot
