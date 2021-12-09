@@ -1,4 +1,4 @@
-package de.jet.jvm.console.interchange
+package de.jet.jvm.application.console.interchange
 
 import de.jet.jvm.interchange.InterchangeStructured
 import de.jet.jvm.tool.smart.identification.Identifiable

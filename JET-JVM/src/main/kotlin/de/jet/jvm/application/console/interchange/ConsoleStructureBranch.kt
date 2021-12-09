@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package de.jet.jvm.console.interchange
+package de.jet.jvm.application.console.interchange
 
 import de.jet.jvm.interchange.InterchangeStructureBranch
 import de.jet.jvm.tool.smart.Producible

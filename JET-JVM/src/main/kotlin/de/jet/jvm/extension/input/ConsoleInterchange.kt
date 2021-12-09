@@ -2,7 +2,7 @@
 
 package de.jet.jvm.extension.input
 
-import de.jet.jvm.console.interchange.ConsoleInterchange
+import de.jet.jvm.application.console.interchange.ConsoleInterchange
 import de.jet.jvm.extension.collection.emptyString
 
 fun buildConsoleInterchange(name: String, process: ConsoleInterchange.Builder.() -> Unit = { }): ConsoleInterchange {

@@ -1,4 +1,4 @@
-package de.jet.jvm.console
+package de.jet.jvm.application.console
 
 object ArgumentInput {
 
