@@ -2,6 +2,7 @@ package de.jet.jvm.extension.objects
 
 import de.jet.jvm.extension.isNotNull
 import org.jetbrains.annotations.NotNull
+import java.io.File
 
 /**
  * Converts a nullable object/value to a non-null object/value, if it is not null.

@@ -14,23 +14,14 @@ var host = "github.com/TheFruxz/JET"
 
 repositories {
 
-    // PaperMC
-
-    maven("https://papermc.io/repo/repository/maven-public/")
-
+    maven("https://papermc.io/repo/repository/maven-public/") // PaperMC
     maven("https://mvn.intellectualsites.com/content/repositories/thirdparty/")
 
 }
 
 dependencies {
-
-    // Internal
-
-    implementation(project(":JET-JVM"))
-
-    // PaperMC
-
-    compileOnly("io.papermc.paper:paper-api:1.18-R0.1-SNAPSHOT")
+    implementation(project(":JET-JVM")) // Internal
+    compileOnly("io.papermc.paper:paper-api:1.18-R0.1-SNAPSHOT") // PaperMC
 
     // Kotlin
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.0")
@@ -38,20 +29,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
 
     // External
-
     implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
-
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") // Head-Database
 
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
-    kotlinOptions.freeCompilerArgs += "-Xunrestricted-builder-inference"
-    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
-    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.ExperimentalStdlibApi"
-    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi"
-    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.io.path.ExperimentalPathApi"
 }
 
 java {
@@ -64,11 +48,8 @@ tasks.processResources {
 }
 
 publishing {
-
     repositories {
-
         mavenLocal()
-
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.$host")
@@ -77,21 +58,16 @@ publishing {
                 password = System.getenv("GITHUB_TOKEN")
             }
         }
-
     }
 
     publications.create("JET-Paper", MavenPublication::class) {
-
         from(components["kotlin"])
         artifactId = "jet-paper"
         version = version.toLowerCase()
-
     }
-
 }
 
 tasks.shadowJar {
-    archiveBaseName.set("JET-Paper")
     archiveClassifier.set("Runnable")
 }
 
