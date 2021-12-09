@@ -3,6 +3,7 @@ package de.jet.javacord.extension
 import de.jet.javacord.user.DiscordUser
 import de.jet.jvm.extension.java.getOrNull
 import org.javacord.api.DiscordApi
+import org.javacord.api.entity.user.User
 
 /**
  * Get the user with the matching [id] from the discord api as a [DiscordUser]
@@ -34,3 +35,11 @@ fun DiscordApi.getDiscordUserObjectByName(name: String) = getCachedUsersByName(n
  * @since 1.0
  */
 fun DiscordApi.user(id: Long) = getUserById(id).getOrNull()
+
+/**
+ * Returns the user as a [DiscordUser] object
+ * @return the user as a [DiscordUser]
+ * @author Fruxz
+ * @since 1.0
+ */
+fun User.discordUserObject() = DiscordUser(this.name, this.id)
