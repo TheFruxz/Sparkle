@@ -1,5 +1,7 @@
 package de.jet.jvm.extension.math
 
+import kotlin.math.abs
+
 
 /**
  * This function returns the non-negative difference between two numbers.
@@ -9,10 +11,7 @@ package de.jet.jvm.extension.math
  * @author Fruxz
  * @since 1.0
  */
-fun Int.difference(o: Int) = if (o > this) {
-	o - this
-} else
-	this - 0
+fun Int.difference(o: Int) = abs(o - this)
 
 /**
  * This function returns the non-negative difference between two numbers.
@@ -22,10 +21,7 @@ fun Int.difference(o: Int) = if (o > this) {
  * @author Fruxz
  * @since 1.0
  */
-fun Long.difference(o: Long) = if (o > this) {
-	o - this
-} else
-	this - o
+fun Long.difference(o: Long) = abs(o - this)
 
 /**
  * This function returns the non-negative difference between two numbers.
@@ -35,10 +31,7 @@ fun Long.difference(o: Long) = if (o > this) {
  * @author Fruxz
  * @since 1.0
  */
-fun Double.difference(o: Double) = if (o > this) {
-	o - this
-} else
-	this - o
+fun Double.difference(o: Double) = abs(o - this)
 
 /**
  * This function returns the non-negative difference between two numbers.
@@ -48,10 +41,7 @@ fun Double.difference(o: Double) = if (o > this) {
  * @author Fruxz
  * @since 1.0
  */
-fun Float.difference(o: Float) = if (o > this) {
-	o - this
-} else
-	this - o
+fun Float.difference(o: Float) = abs(o - this)
 
 /**
  * This function returns the non-negative difference between two numbers.
@@ -61,10 +51,7 @@ fun Float.difference(o: Float) = if (o > this) {
  * @author Fruxz
  * @since 1.0
  */
-fun Byte.difference(o: Byte) = if (o > this) {
-	o - this
-} else
-	this - o
+fun Byte.difference(o: Byte) = abs(o - this)
 
 /**
  * This function returns the non-negative difference between two numbers.
@@ -74,7 +61,4 @@ fun Byte.difference(o: Byte) = if (o > this) {
  * @author Fruxz
  * @since 1.0
  */
-fun Short.difference(o: Short) = if (o > this) {
-	o - this
-} else
-	this - o
+fun Short.difference(o: Short) = abs(o - this)
