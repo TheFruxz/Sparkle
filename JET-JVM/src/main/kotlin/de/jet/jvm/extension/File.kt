@@ -2,6 +2,9 @@
 
 package de.jet.jvm.extension
 
+import java.io.File
+import java.nio.file.Path
+
 /**
  * Returns the file inside the resource folder of the class, where the function is called from.
  * The file is returned by its content read by the [readText] function.
@@ -23,3 +26,9 @@ inline fun getResourceText(resource: String) =
  */
 inline fun getResourceByteArray(resource: String) =
     object {}.javaClass.classLoader.getResource(resource)?.readBytes() ?: throw NoSuchElementException("Resource $resource not found")
+
+fun String.pathAsFile() =
+    Path.of(this).toFile()
+
+fun String.pathAsFileFromRuntime() =
+    File(System.getProperty("user.dir") + "/$this")
