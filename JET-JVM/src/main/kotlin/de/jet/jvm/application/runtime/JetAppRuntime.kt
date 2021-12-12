@@ -9,6 +9,7 @@ import de.jet.jvm.application.tag.version
 import de.jet.jvm.extension.pathAsFileFromRuntime
 import de.jet.jvm.tool.timing.calendar.Calendar
 import java.io.File
+import kotlin.concurrent.thread
 
 class JetAppRuntime(override val identity: String, override val version: Version = 1.0.version) :
 	JetApp(identity, version) {
@@ -50,19 +51,26 @@ class JetAppRuntime(override val identity: String, override val version: Version
 
 	fun <RUNTIME, ACCESSOR_OUT, UNIT, T : AppExtension<RUNTIME, ACCESSOR_OUT, UNIT>> attach(
 		extension: T,
+		createThread: Boolean = false,
 		runtime: (RUNTIME) -> ACCESSOR_OUT
 	) {
 		if (extension.parallelRunAllowed || runningExtensions.all { it.identity != extension.identity }) {
 			runningExtensions.add(extension)
-			extension.runtimeAccessor(runtime)
+			if (createThread) {
+				thread {
+					extension.runtimeAccessor(runtime)
+				}
+			} else
+				extension.runtimeAccessor(runtime)
 		} else
 			throw IllegalStateException("The extension '${extension.identity}' is already running and is not allowed to run parallel to itself!")
 	}
 
 	fun <RUNTIME, ACCESSOR_OUT, UNIT, T : AppExtension<RUNTIME, ACCESSOR_OUT, UNIT>> attachWith(
 		extension: T,
+		createThread: Boolean = false,
 		runtime: RUNTIME.() -> ACCESSOR_OUT
 	) =
-		attach(extension, runtime)
+		attach(extension, createThread, runtime)
 
 }
