@@ -31,7 +31,7 @@ object JetAppConfigController {
 
 	fun addApp(appModule: JetAppConfigModule) {
 		val get = get()
-		if (get.apps.none { it.identity == appModule.appIdentity }) {
+		if (get.apps.none { it.identity == appModule.identity }) {
 			set(get.let {
 				return@let it.copy(apps = (it.apps + appModule))
 			})
