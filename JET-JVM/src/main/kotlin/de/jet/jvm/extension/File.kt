@@ -32,3 +32,5 @@ fun String.pathAsFile() =
 
 fun String.pathAsFileFromRuntime() =
     File(System.getProperty("user.dir") + "/$this")
+
+operator fun Path.div(other: String): Path = resolve(other)
