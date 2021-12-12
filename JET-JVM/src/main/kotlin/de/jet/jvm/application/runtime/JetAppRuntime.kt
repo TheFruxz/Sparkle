@@ -23,7 +23,7 @@ class JetAppRuntime(override val identity: String, override val version: Version
 		JetAppConfigController.apply {
 			module = JetAppConfigModule.autoGenerateFromApp(this@JetAppRuntime)
 			addApp(module)
-			(module.appFileFolderPath + "info.jetRun").pathAsFileFromRuntime().apply {
+			(getApp(this@JetAppRuntime)!!.appFileFolderPath + "info.jetRun").pathAsFileFromRuntime().apply {
 				if (!exists()) {
 					toPath().parent.toFile().mkdirs()
 					createNewFile()
