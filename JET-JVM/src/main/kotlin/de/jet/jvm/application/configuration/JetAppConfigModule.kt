@@ -7,11 +7,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("JetAppModule")
 data class JetAppConfigModule(
-	val appIdentity: String,
+	override val identity: String,
 	val appFileFolderPath: String,
 ) : Identifiable<JetAppConfigModule> {
-
-	override val identity = appIdentity
 
 	companion object {
 
