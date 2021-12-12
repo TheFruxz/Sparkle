@@ -1,12 +1,12 @@
 @file:Suppress("MemberVisibilityCanBePrivate", "unused")
 
-package de.jet.jvm.console
+package de.jet.jvm.application.console
 
 import de.jet.jvm.annotation.NotPerfect
 import de.jet.jvm.annotation.NotTested
 import de.jet.jvm.annotation.NotWorking
-import de.jet.jvm.console.ArgumentSyntax.ContentType.*
-import de.jet.jvm.console.ArgumentSyntax.SyntaxCheck.Companion
+import de.jet.jvm.application.console.ArgumentSyntax.ContentType.*
+import de.jet.jvm.application.console.ArgumentSyntax.SyntaxCheck.Companion
 import de.jet.jvm.extension.switchResult
 import de.jet.jvm.tool.smart.identification.Identifiable
 

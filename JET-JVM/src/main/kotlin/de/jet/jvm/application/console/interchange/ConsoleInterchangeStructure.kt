@@ -1,4 +1,4 @@
-package de.jet.jvm.console.interchange
+package de.jet.jvm.application.console.interchange
 
 import de.jet.jvm.interchange.InterchangeStructured
 import de.jet.jvm.tool.smart.identification.Identifiable
@@ -28,9 +28,7 @@ open class ConsoleInterchangeStructure<T : ConsoleStructureBranch>(
 			if (output == null && currentAddressState.size > 1) {
 				output = getContent(Address(currentAddressState.dropLast(1).joinToString("/")))
 			} else if (address == original) {
-				return (getStructureBranches<T>().also { it.forEach {
-					println("${it.path}")
-				} }.first() to "")
+				return (getStructureBranches<T>().first() to "")
 			}
 
 			return output ?: (getStructureBranches<T>().first() to original.addressString.removePrefix("/").split("/").joinToString(" "))
