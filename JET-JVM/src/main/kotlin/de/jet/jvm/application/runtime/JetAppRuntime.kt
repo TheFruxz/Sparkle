@@ -6,6 +6,7 @@ import de.jet.jvm.application.configuration.JetAppConfigModule
 import de.jet.jvm.application.extension.AppExtension
 import de.jet.jvm.application.tag.Version
 import de.jet.jvm.application.tag.version
+import de.jet.jvm.extension.div
 import de.jet.jvm.extension.pathAsFileFromRuntime
 import de.jet.jvm.tool.timing.calendar.Calendar
 import java.io.File
@@ -45,9 +46,8 @@ class JetAppRuntime(override val identity: String, override val version: Version
 		}
 	}
 
-	fun getAppFile(path: String) = File(appFolder.path + "/" + path).apply {
-		File(path.split("/").dropLast(1).joinToString("/")).mkdirs()
-	}.toPath()
+	fun getLocalFilePath(localPath: String) =
+		appFolder.toPath() / localPath
 
 	fun <RUNTIME, ACCESSOR_OUT, UNIT, T : AppExtension<RUNTIME, ACCESSOR_OUT, UNIT>> attach(
 		extension: T,
