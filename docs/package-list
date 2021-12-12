@@ -1,16 +1,21 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
-$dokka.location:////PointingToDeclaration/JET-JavaCord/[root]/index.html
-$dokka.location://main/#/PointingToDeclaration/JET-JavaCord/[root]/main.html
+
 module:JET-JavaCord
+de.jet.javacord.app
 de.jet.javacord.extension
 de.jet.javacord.structure
 de.jet.javacord.user
 module:JET-JVM
 de.jet.jvm.annotation
-de.jet.jvm.console
-de.jet.jvm.console.interchange
+de.jet.jvm.application.configuration
+de.jet.jvm.application.console
+de.jet.jvm.application.console.interchange
+de.jet.jvm.application.extension
+de.jet.jvm.application.runtime
+de.jet.jvm.application.tag
 de.jet.jvm.extension
+de.jet.jvm.extension.app
 de.jet.jvm.extension.collection
 de.jet.jvm.extension.data
 de.jet.jvm.extension.display
