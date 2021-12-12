@@ -13,7 +13,7 @@ import java.io.File
 class JetAppRuntime(override val identity: String, override val version: Version = 1.0.version) :
 	JetApp(identity, version) {
 
-	private val runningExtensions = mutableListOf<AppExtension<*, *>>()
+	private val runningExtensions = mutableListOf<AppExtension<*, *, *>>()
 
 	private lateinit var module: JetAppConfigModule
 
@@ -48,7 +48,7 @@ class JetAppRuntime(override val identity: String, override val version: Version
 		File(path.split("/").dropLast(1).joinToString("/")).mkdirs()
 	}.toPath()
 
-	fun <RUNTIME, ACCESSOR_OUT, T : AppExtension<RUNTIME, ACCESSOR_OUT>> attach(
+	fun <RUNTIME, ACCESSOR_OUT, UNIT, T : AppExtension<RUNTIME, ACCESSOR_OUT, UNIT>> attach(
 		extension: T,
 		runtime: (RUNTIME) -> ACCESSOR_OUT
 	) {
@@ -59,7 +59,7 @@ class JetAppRuntime(override val identity: String, override val version: Version
 			throw IllegalStateException("The extension '${extension.identity}' is already running and is not allowed to run parallel to itself!")
 	}
 
-	fun <RUNTIME, ACCESSOR_OUT, T : AppExtension<RUNTIME, ACCESSOR_OUT>> attachWith(
+	fun <RUNTIME, ACCESSOR_OUT, UNIT, T : AppExtension<RUNTIME, ACCESSOR_OUT, UNIT>> attachWith(
 		extension: T,
 		runtime: RUNTIME.() -> ACCESSOR_OUT
 	) =

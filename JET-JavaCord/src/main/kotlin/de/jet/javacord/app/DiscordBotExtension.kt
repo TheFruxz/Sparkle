@@ -7,9 +7,7 @@ import de.jet.javacord.structure.BotCredentials
 import de.jet.jvm.application.extension.AppExtension
 import kotlin.reflect.KFunction1
 
-object DiscordBotExtension : AppExtension<Bot, Unit> {
-
-	override fun produceExtensionAccessorValue() = Bot(BotCredentials(), BotAppearance())
+object DiscordBotExtension : AppExtension<Bot, Unit, Unit> {
 
 	override val identity = "discordbot"
 
