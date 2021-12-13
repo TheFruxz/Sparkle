@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     implementation(project(":JET-JVM")) // Internal
-    compileOnly("io.papermc.paper:paper-api:1.18-R0.1-SNAPSHOT") // PaperMC
+    compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT") // PaperMC
 
     // Kotlin
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.0")
