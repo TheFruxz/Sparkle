@@ -16,7 +16,9 @@ interface Addressable<T> {
 		get() = address.addressString
 
 	/**
-	 * The addres of the object as a [Address]
+	 * The address of the object as a [Address]
+	 * @author Fruxz
+	 * @since 1.0
 	 */
 	val address: Address<T>
 
