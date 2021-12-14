@@ -16,6 +16,8 @@ data class JSON(
 
 	/**
 	 * Converts the [value] to a [T] object using the [fromJson] function
+	 * @author Fruxz
+	 * @since 1.0
 	 */
 	inline fun <reified T : Any> fromJson() = value.fromJson<T>()
 
