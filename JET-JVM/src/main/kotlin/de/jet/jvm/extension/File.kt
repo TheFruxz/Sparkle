@@ -27,10 +27,31 @@ inline fun getResourceText(resource: String) =
 inline fun getResourceByteArray(resource: String) =
     object {}.javaClass.classLoader.getResource(resource)?.readBytes() ?: throw NoSuchElementException("Resource $resource not found")
 
-fun String.pathAsFile() =
+/**
+ * Converts the string [this] into a full [File] using [this] as a [Path],
+ * through the [Path.of] and the [Path.toFile] functions.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun String.pathAsFile(): File =
     Path.of(this).toFile()
 
+/**
+ * Converts the string [this] into a base-based [File] using [this] as a [Path],
+ * through the [Path.of] and the [Path.toFile] functions additionaly the
+ * [System.getProperty]("user.dir") process.
+ * @author Fruxz
+ * @since 1.0
+ */
 fun String.pathAsFileFromRuntime() =
     File(System.getProperty("user.dir") + "/$this")
 
+/**
+ * This function adds an additional part to the [Path] using
+ * the [Path.resolve] function and a [other] part attaching
+ * to the [Path].
+ * @param other is the additional path
+ * @author Fruxz
+ * @since 1.0
+ */
 operator fun Path.div(other: String): Path = resolve(other)

@@ -60,6 +60,8 @@ data class DisplayTime(
 	/**
 	 * The time formats
 	 * ***CALENDAR UNITS IN FUTURE***
+	 * @author Fruxz
+	 * @since 1.0
 	 */
 	enum class Format {
 		TICKS, SECONDS, MINUTES, HOURS, DAYS, YEARS;

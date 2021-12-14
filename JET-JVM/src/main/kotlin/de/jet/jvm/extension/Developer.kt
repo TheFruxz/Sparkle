@@ -65,17 +65,44 @@ val Any?.isNotNull: Boolean
 fun empty() { }
 
 /**
- * Returns the [this]<[T]> modified with the [process] if [modifyIf] is true,
+ * Returns the [this]<[T]> modified with the [process] if [isNull] is true,
+ * else return the unmodified state
+ * @param process is the optional modification process
+ * @author Fruxz
+ * @since 1.0
  */
-
 fun <T> T?.applyIfNull(process: (T?) -> Unit) = modifyIf(isNull, process)
 
+/**
+ * Returns the [this]<[T]> modified with the [process] if [isNotNull] is true,
+ * else return the unmodified state
+ * @param process is the optional modification process
+ * @author Fruxz
+ * @since 1.0
+ */
 fun <T> T?.applyIfNotNull(process: (T) -> Unit) = modifyIf(isNotNull) {
 	process(this!!)
 }
 
+/**
+ * Executes the [process], if the [T] (nullable) is null ([isNull])
+ * @param process is the optional execution process
+ * @author Fruxz
+ * @since 1.0
+ */
 fun <T> T?.ifNull(process: () -> Unit) = if (isNull) process() else empty()
 
+/**
+ * Executes the [process], if the [T] (nullable) is notNull ([isNotNull])
+ * @param process is the optional execution process
+ * @author Fruxz
+ * @since 1.0
+ */
 fun <T> T?.ifNotNull(process: () -> Unit) = if (isNotNull) process() else empty()
 
+/**
+ * Returns [Pair.first] if [T]? [isNotNull], else use [Pair.second]
+ * @author Fruxz
+ * @since 1.0
+ */
 fun <T, D> Pair<T?, D>.asDefaultNullDodge() = first.isNull.switchResult(first, second)

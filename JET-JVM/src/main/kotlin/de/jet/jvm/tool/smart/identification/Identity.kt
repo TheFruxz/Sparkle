@@ -19,6 +19,8 @@ data class Identity<T> constructor(
 
 	/**
 	 * Returns the [identity] (in the form of a [String])
+	 * @author Fruxz
+	 * @since 1.0
 	 */
 	override fun toString() = identity
 
