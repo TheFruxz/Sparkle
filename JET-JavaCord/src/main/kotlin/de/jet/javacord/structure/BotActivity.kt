@@ -32,6 +32,14 @@ class BotActivity {
 		this.streamingUrl = streamingUrl
 	}
 
+	/**
+	 * This function applies the activity data to the [bot].
+	 * *if [streamingUrl] is not null* -> stream-activity
+	 * *if [activityType] is not null* -> [activityType] + [name]
+	 * *else* -> [name]
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun applyToBot(bot: DiscordApi) = when {
 		streamingUrl != null -> bot.updateActivity(name, streamingUrl?.path)
 		activityType != null -> bot.updateActivity(activityType, name)
