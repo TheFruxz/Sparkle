@@ -21,8 +21,7 @@ import kotlin.concurrent.thread
  * @author Fruxz
  * @since 1.0
  */
-class JetAppRuntime(override val identity: String, override val version: Version = 1.0.version) :
-	JetApp(identity, version) {
+class JetAppRuntime(override val identity: String, override val version: Version = 1.0.version) : JetApp(identity, version) {
 
 	/**
 	 * The current registered and running extensions as a list
