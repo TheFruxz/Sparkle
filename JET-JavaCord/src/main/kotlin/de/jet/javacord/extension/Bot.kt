@@ -103,22 +103,37 @@ fun BotAppearance.activity(process: BotActivity.() -> Unit) = apply {
 	activity = activity.apply(process)
 }
 
+/**
+ * Replaces the preProcess-function of the [Bot] with the given [process]
+ */
 fun Bot.preProcess(process: Bot.() -> Unit) = apply {
 	processPreProcess = process
 }
 
+/**
+ * Replaces the preSetup-function of the [Bot] with the given [process]
+ */
 fun Bot.preSetup(process: DiscordApiBuilder.() -> Unit) = apply {
 	processPreSetup = process
 }
 
+/**
+ * Replaces the preLogin-function of the [Bot] with the given [process]
+ */
 fun Bot.preLogin(process: DiscordApiBuilder.() -> Unit) = apply {
 	processPreLogin = process
 }
 
+/**
+ * Replaces the postLogin-function of the [Bot] with the given [process]
+ */
 fun Bot.postLogin(process: DiscordApi.() -> Unit) = apply {
 	processPostLogin = process
 }
 
+/**
+ * Replaces the postProcess-function of the [Bot] with the given [process]
+ */
 fun Bot.postProcess(process: DiscordApi.() -> Unit) = apply {
 	processPostProcess = process
 }
