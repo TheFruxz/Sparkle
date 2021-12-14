@@ -66,6 +66,4 @@ object DataStructure {
 
 	private var currentPathDepth = -1
 
-
-
 }
