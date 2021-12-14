@@ -12,7 +12,7 @@ import kotlin.reflect.KFunction1
  * [runBot] function. It can be attached to a App-Runtime using
  * the *attach* or *attachWith* function.
  * @property identity is "discordbot"
- * @property parallelRunAllowed is true - parallel runs allowed
+ * @property parallelRunAllowed is false - parallel runs disallowed
  * @property runtimeAccessor is [runBot] - also a builder for the bot instance
  * @author Fruxz
  * @since 1.0
@@ -21,7 +21,7 @@ object DiscordBotExtension : AppExtension<Bot, Unit, Unit> {
 
 	override val identity = "discordbot"
 
-	override val parallelRunAllowed = true
+	override val parallelRunAllowed = false
 
 	override val runtimeAccessor: KFunction1<Bot.() -> Unit, Unit> = ::runBot
 
