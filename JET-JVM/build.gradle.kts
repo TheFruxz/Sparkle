@@ -63,4 +63,6 @@ tasks.test {
 java {
     sourceCompatibility = VERSION_17
     targetCompatibility = VERSION_17
+    withJavadocJar()
+    withSourcesJar()
 }
