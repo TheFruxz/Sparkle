@@ -2,6 +2,7 @@ package de.jet.jvm.extension.math
 
 import de.jet.jvm.tool.math.Percentage
 import java.text.DecimalFormat
+import kotlin.DeprecationLevel.ERROR
 
 /**
  * Returns if the string can be parsed to a [Int].
@@ -87,7 +88,8 @@ operator fun IntArray.plus(intArray: IntArray) = asIterable().toList().toTypedAr
  * @author Fruxz
  * @since 1.0
  */
-fun Int.maxedOut(maximum: Int) = this.let { if (it <= maximum) it else maximum }
+@Deprecated("Use maxTo() function instead.", ReplaceWith("maxTo(maximum)"), ERROR)
+fun Int.maxedOut(maximum: Int) = maxTo(maximum)
 
 /**
  * Returns the [this] [Int] but it cannot be smaller than the [minimum] number,
@@ -97,7 +99,52 @@ fun Int.maxedOut(maximum: Int) = this.let { if (it <= maximum) it else maximum }
  * @author Fruxz
  * @since 1.0
  */
-fun Int.minedOut(minimum: Int) = this.let { if (it >= minimum) it else minimum }
+@Deprecated("Use minTo() function instead.", ReplaceWith("minTo(minimum)"), ERROR)
+fun Int.minedOut(minimum: Int) = minTo(minimum)
+
+// max functions
+
+fun Byte.maxTo(maximum: Byte) = let { if (it <= maximum) it else maximum }
+
+fun Short.maxTo(maximum: Short) = let { if (it <= maximum) it else maximum }
+
+fun Int.maxTo(maximum: Int) = let { if (it <= maximum) it else maximum }
+
+fun Long.maxTo(maximum: Long) = let { if (it <= maximum) it else maximum }
+
+fun Float.maxTo(maximum: Float) = let { if (it <= maximum) it else maximum }
+
+fun Double.maxTo(maximum: Double) = let { if (it <= maximum) it else maximum }
+
+fun UByte.maxTo(maximum: UByte) = let { if (it <= maximum) it else maximum }
+
+fun UShort.maxTo(maximum: UShort) = let { if (it <= maximum) it else maximum }
+
+fun UInt.maxTo(maximum: UInt) = let { if (it <= maximum) it else maximum }
+
+fun ULong.maxTo(maximum: ULong) = let { if (it <= maximum) it else maximum }
+
+// min functions
+
+fun Byte.minTo(minimum: Byte) = let { if (it >= minimum) it else minimum }
+
+fun Short.minTo(minimum: Short) = let { if (it >= minimum) it else minimum }
+
+fun Int.minTo(minimum: Int) = let { if (it >= minimum) it else minimum }
+
+fun Long.minTo(minimum: Long) = let { if (it >= minimum) it else minimum }
+
+fun Float.minTo(minimum: Float) = let { if (it >= minimum) it else minimum }
+
+fun Double.minTo(minimum: Double) = let { if (it >= minimum) it else minimum }
+
+fun UByte.minTo(minimum: UByte) = let { if (it >= minimum) it else minimum }
+
+fun UShort.minTo(minimum: UShort) = let { if (it >= minimum) it else minimum }
+
+fun UInt.minTo(minimum: UInt) = let { if (it >= minimum) it else minimum }
+
+fun ULong.minTo(minimum: ULong) = let { if (it >= minimum) it else minimum }
 
 /**
  * Creates a [Percentage] object with the [this] [Double]
