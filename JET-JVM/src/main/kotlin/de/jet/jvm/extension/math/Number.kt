@@ -146,7 +146,7 @@ fun UInt.minTo(minimum: UInt) = let { if (it >= minimum) it else minimum }
 
 fun ULong.minTo(minimum: ULong) = let { if (it >= minimum) it else minimum }
 
-// limit functions
+// limit range functions
 
 fun Byte.limitTo(range: IntRange) = let { if (it in range) it else range.first }
 
@@ -167,6 +167,24 @@ fun UShort.limitTo(range: UIntRange) = let { if (it in range) it else range.firs
 fun UInt.limitTo(range: UIntRange) = let { if (it in range) it else range.first }
 
 fun ULong.limitTo(range: ULongRange) = let { if (it in range) it else range.first }
+
+// limit progression functions
+
+fun Byte.limitTo(progression: IntProgression) = let { if (it.toInt() in progression) it else progression.first }
+
+fun Short.limitTo(progression: IntProgression) = let { if (it.toInt() in progression) it else progression.first }
+
+fun Int.limitTo(progression: IntProgression) = let { if (it in progression) it else progression.first }
+
+fun Long.limitTo(progression: LongProgression) = let { if (it in progression) it else progression.first }
+
+fun UByte.limitTo(progression: UIntProgression) = let { if (it.toUInt() in progression) it else progression.first }
+
+fun UShort.limitTo(progression: UIntProgression) = let { if (it.toUInt() in progression) it else progression.first }
+
+fun UInt.limitTo(progression: UIntProgression) = let { if (it in progression) it else progression.first }
+
+fun ULong.limitTo(progression: ULongProgression) = let { if (it in progression) it else progression.first }
 
 /**
  * Creates a [Percentage] object with the [this] [Double]
