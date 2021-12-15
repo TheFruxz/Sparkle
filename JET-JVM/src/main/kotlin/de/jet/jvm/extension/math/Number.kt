@@ -146,6 +146,28 @@ fun UInt.minTo(minimum: UInt) = let { if (it >= minimum) it else minimum }
 
 fun ULong.minTo(minimum: ULong) = let { if (it >= minimum) it else minimum }
 
+// limit functions
+
+fun Byte.limitTo(range: IntRange) = let { if (it in range) it else range.first }
+
+fun Short.limitTo(range: IntRange) = let { if (it in range) it else range.first }
+
+fun Int.limitTo(range: IntRange) = let { if (it in range) it else range.first }
+
+fun Long.limitTo(range: LongRange) = let { if (it in range) it else range.first }
+
+fun Float.limitTo(range: ClosedFloatingPointRange<Float>) = let { if (it in range) it else range.start }
+
+fun Double.limitTo(range: ClosedFloatingPointRange<Double>) = let { if (it in range) it else range.start }
+
+fun UByte.limitTo(range: UIntRange) = let { if (it in range) it else range.first }
+
+fun UShort.limitTo(range: UIntRange) = let { if (it in range) it else range.first }
+
+fun UInt.limitTo(range: UIntRange) = let { if (it in range) it else range.first }
+
+fun ULong.limitTo(range: ULongRange) = let { if (it in range) it else range.first }
+
 /**
  * Creates a [Percentage] object with the [this] [Double]
  * as a decimal number.
