@@ -25,7 +25,7 @@ dependencies {
 
     // Kotlin
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.10")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
 
     // External
