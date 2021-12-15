@@ -274,7 +274,7 @@ fun ULong.minTo(minimum: ULong) = let { if (it >= minimum) it else minimum }
  * @author Fruxz
  * @since 1.0
  */
-fun Byte.limitTo(range: IntRange) = let { if (it in range) it else range.first }
+fun Byte.limitTo(range: IntRange): Byte = let { if (it in range) it else if (it > range.last) range.last.toByte() else range.first.toByte() }
 
 /**
  * This function limits [this] number to the [range] number range.
@@ -282,7 +282,7 @@ fun Byte.limitTo(range: IntRange) = let { if (it in range) it else range.first }
  * @author Fruxz
  * @since 1.0
  */
-fun Short.limitTo(range: IntRange) = let { if (it in range) it else range.first }
+fun Short.limitTo(range: IntRange): Short = let { if (it in range) it else if (it > range.last) range.last.toShort() else range.first.toShort() }
 
 /**
  * This function limits [this] number to the [range] number range.
@@ -290,7 +290,7 @@ fun Short.limitTo(range: IntRange) = let { if (it in range) it else range.first 
  * @author Fruxz
  * @since 1.0
  */
-fun Int.limitTo(range: IntRange) = let { if (it in range) it else range.first }
+fun Int.limitTo(range: IntRange): Int = let { if (it in range) it else if (it > range.last) range.last else range.first }
 
 /**
  * This function limits [this] number to the [range] number range.
@@ -298,7 +298,7 @@ fun Int.limitTo(range: IntRange) = let { if (it in range) it else range.first }
  * @author Fruxz
  * @since 1.0
  */
-fun Long.limitTo(range: LongRange) = let { if (it in range) it else range.first }
+fun Long.limitTo(range: LongRange): Long = let { if (it in range) it else if (it > range.last) range.last else range.first }
 
 /**
  * This function limits [this] number to the [range] number range.
@@ -306,7 +306,7 @@ fun Long.limitTo(range: LongRange) = let { if (it in range) it else range.first 
  * @author Fruxz
  * @since 1.0
  */
-fun Float.limitTo(range: ClosedFloatingPointRange<Float>) = let { if (it in range) it else range.start }
+fun Float.limitTo(range: ClosedFloatingPointRange<Float>): Float = let { if (it in range) it else if (it > range.endInclusive) range.endInclusive else range.start }
 
 /**
  * This function limits [this] number to the [range] number range.
@@ -314,7 +314,7 @@ fun Float.limitTo(range: ClosedFloatingPointRange<Float>) = let { if (it in rang
  * @author Fruxz
  * @since 1.0
  */
-fun Double.limitTo(range: ClosedFloatingPointRange<Double>) = let { if (it in range) it else range.start }
+fun Double.limitTo(range: ClosedFloatingPointRange<Double>): Double = let { if (it in range) it else if (it > range.endInclusive) range.endInclusive else range.start }
 
 /**
  * This function limits [this] number to the [range] number range.
@@ -322,7 +322,7 @@ fun Double.limitTo(range: ClosedFloatingPointRange<Double>) = let { if (it in ra
  * @author Fruxz
  * @since 1.0
  */
-fun UByte.limitTo(range: UIntRange) = let { if (it in range) it else range.first }
+fun UByte.limitTo(range: UIntRange): UByte = let { if (it in range) it else if (it > range.last) range.last.toUByte() else range.first.toUByte() }
 
 /**
  * This function limits [this] number to the [range] number range.
@@ -330,7 +330,7 @@ fun UByte.limitTo(range: UIntRange) = let { if (it in range) it else range.first
  * @author Fruxz
  * @since 1.0
  */
-fun UShort.limitTo(range: UIntRange) = let { if (it in range) it else range.first }
+fun UShort.limitTo(range: UIntRange): UShort = let { if (it in range) it else if (it > range.last) range.last.toUShort() else range.first.toUShort() }
 
 /**
  * This function limits [this] number to the [range] number range.
@@ -338,7 +338,7 @@ fun UShort.limitTo(range: UIntRange) = let { if (it in range) it else range.firs
  * @author Fruxz
  * @since 1.0
  */
-fun UInt.limitTo(range: UIntRange) = let { if (it in range) it else range.first }
+fun UInt.limitTo(range: UIntRange): UInt = let { if (it in range) it else if (it > range.last) range.last else range.first }
 
 /**
  * This function limits [this] number to the [range] number range.
@@ -346,7 +346,7 @@ fun UInt.limitTo(range: UIntRange) = let { if (it in range) it else range.first 
  * @author Fruxz
  * @since 1.0
  */
-fun ULong.limitTo(range: ULongRange) = let { if (it in range) it else range.first }
+fun ULong.limitTo(range: ULongRange): ULong = let { if (it in range) it else if (it > range.last) range.last else range.last }
 
 // limit progression functions
 
@@ -356,7 +356,7 @@ fun ULong.limitTo(range: ULongRange) = let { if (it in range) it else range.firs
  * @author Fruxz
  * @since 1.0
  */
-fun Byte.limitTo(progression: IntProgression) = let { if (it.toInt() in progression) it else progression.first }
+fun Byte.limitTo(progression: IntProgression): Byte = let { if (it.toInt() in progression) it else if (it > progression.last) progression.last.toByte() else progression.first.toByte() }
 
 /**
  * This function limits [this] number to the [progression] number range.
@@ -364,7 +364,7 @@ fun Byte.limitTo(progression: IntProgression) = let { if (it.toInt() in progress
  * @author Fruxz
  * @since 1.0
  */
-fun Short.limitTo(progression: IntProgression) = let { if (it.toInt() in progression) it else progression.first }
+fun Short.limitTo(progression: IntProgression): Short = let { if (it.toInt() in progression) it else if (it > progression.last) progression.last.toShort() else progression.first.toShort() }
 
 /**
  * This function limits [this] number to the [progression] number range.
@@ -372,7 +372,7 @@ fun Short.limitTo(progression: IntProgression) = let { if (it.toInt() in progres
  * @author Fruxz
  * @since 1.0
  */
-fun Int.limitTo(progression: IntProgression) = let { if (it in progression) it else progression.first }
+fun Int.limitTo(progression: IntProgression): Int = let { if (it in progression) it else if (it > progression.last) progression.last else progression.first }
 
 /**
  * This function limits [this] number to the [progression] number range.
@@ -380,7 +380,7 @@ fun Int.limitTo(progression: IntProgression) = let { if (it in progression) it e
  * @author Fruxz
  * @since 1.0
  */
-fun Long.limitTo(progression: LongProgression) = let { if (it in progression) it else progression.first }
+fun Long.limitTo(progression: LongProgression): Long = let { if (it in progression) it else if (it > progression.last) progression.last else progression.first }
 
 /**
  * This function limits [this] number to the [progression] number range.
@@ -388,7 +388,7 @@ fun Long.limitTo(progression: LongProgression) = let { if (it in progression) it
  * @author Fruxz
  * @since 1.0
  */
-fun UByte.limitTo(progression: UIntProgression) = let { if (it.toUInt() in progression) it else progression.first }
+fun UByte.limitTo(progression: UIntProgression): UByte = let { if (it.toUInt() in progression) it else if (it > progression.last.toUByte()) progression.last.toUByte() else progression.first.toUByte() }
 
 /**
  * This function limits [this] number to the [progression] number range.
@@ -396,7 +396,7 @@ fun UByte.limitTo(progression: UIntProgression) = let { if (it.toUInt() in progr
  * @author Fruxz
  * @since 1.0
  */
-fun UShort.limitTo(progression: UIntProgression) = let { if (it.toUInt() in progression) it else progression.first }
+fun UShort.limitTo(progression: UIntProgression): UShort = let { if (it.toUInt() in progression) it else if (it > progression.last.toUShort()) progression.last.toUShort() else progression.first.toUShort() }
 
 /**
  * This function limits [this] number to the [progression] number range.
@@ -404,7 +404,7 @@ fun UShort.limitTo(progression: UIntProgression) = let { if (it.toUInt() in prog
  * @author Fruxz
  * @since 1.0
  */
-fun UInt.limitTo(progression: UIntProgression) = let { if (it in progression) it else progression.first }
+fun UInt.limitTo(progression: UIntProgression): UInt = let { if (it in progression) it else if (it > progression.last) progression.last else progression.first }
 
 /**
  * This function limits [this] number to the [progression] number range.
@@ -412,7 +412,7 @@ fun UInt.limitTo(progression: UIntProgression) = let { if (it in progression) it
  * @author Fruxz
  * @since 1.0
  */
-fun ULong.limitTo(progression: ULongProgression) = let { if (it in progression) it else progression.first }
+fun ULong.limitTo(progression: ULongProgression): ULong = let { if (it in progression) it else if (it > progression.last) progression.last else progression.first }
 
 /**
  * Creates a [Percentage] object with the [this] [Double]
