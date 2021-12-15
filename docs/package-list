@@ -16,6 +16,7 @@ de.jet.jvm.application.runtime
 de.jet.jvm.application.tag
 de.jet.jvm.extension
 de.jet.jvm.extension.app
+de.jet.jvm.extension.classes
 de.jet.jvm.extension.collection
 de.jet.jvm.extension.data
 de.jet.jvm.extension.display
