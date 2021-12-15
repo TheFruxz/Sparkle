@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_PARAMETER")
+
 package de.jet.paper.tool.input
 
 import de.jet.jvm.extension.collection.skip
