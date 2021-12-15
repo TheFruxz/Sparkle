@@ -101,9 +101,9 @@ maven("https://jitpack.io")
 
 ##### Dependency
 ```kotlin
-implementation("com.github.TheFruxz.JET:jet-jvm:1.0-BETA-7")
-implementation("com.github.TheFruxz.JET:jet-javacord:1.0-BETA-7") // or additionally with JET-JavaCord
-implementation("com.github.TheFruxz.JET:jet-paper:1.0-BETA-7") // or additionally with JET-Minecraft
+implementation("com.github.TheFruxz.JET:jet-jvm:1.0-BETA-10")
+implementation("com.github.TheFruxz.JET:jet-javacord:1.0-BETA-10") // or additionally with JET-JavaCord
+implementation("com.github.TheFruxz.JET:jet-paper:1.0-BETA-10") // or additionally with JET-Minecraft
 ```
 
 ## Version
