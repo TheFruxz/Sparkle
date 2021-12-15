@@ -45,34 +45,38 @@ adapted for this system.
 
 Example:
 ```kotlin
-fun main() = runBot {
+fun main() = runApp("test-app") {
 
-	credentials {
-		botToken = "OTA5OXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXIvDkM"
-	}
+	attachWith(DiscordBotExtension) {
 
-	appearance {
-
-		displayName = "JavaCord-Bot"
-		status = ONLINE
-
-		activity {
-			name = "JET-JavaCord"
-			activityType = STREAMING
-			streamingUrl = url("https://www.youtube.com/watch?v=ow5kdhDa_pk")
+		credentials {
+			token = "OTA5OXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXIvDkM"
 		}
 
+		appearance {
+
+			displayName = "JavaCord-Bot"
+			status = ONLINE
+
+			activity {
+				name = "JET-JavaCord"
+				activityType = STREAMING
+				streamingUrl = url("https://www.youtube.com/watch?v=ow5kdhDa_pk")
+			}
+
+		}
+
+		preProcess { println("PreProcess") }
+
+		preSetup { println("PreSetup") }
+
+		preLogin { println("PreLogin") }
+
+		postLogin { println("PostLogin") }
+
+		postProcess { println("PostProcess") }
+
 	}
-
-	preProcess { println("PreProcess") }
-
-	preSetup { println("PreSetup") }
-
-	preLogin { println("PreLogin") }
-
-	postLogin { println("PostLogin") }
-
-	postProcess { println("PostProcess") }
 
 }
 ```
