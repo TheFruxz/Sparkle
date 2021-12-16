@@ -10,6 +10,7 @@ import de.jet.jvm.extension.div
 import de.jet.jvm.extension.pathAsFileFromRuntime
 import de.jet.jvm.tool.timing.calendar.Calendar
 import java.io.File
+import java.nio.file.Path
 import kotlin.concurrent.thread
 
 /**
@@ -73,6 +74,16 @@ class JetAppRuntime(override val identity: String, override val version: Version
 				}
 			}
 		}
+	}
+
+	/**
+	 * The path, where the [appFolder] is located.
+	 * @see appFolder
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val appFolderPath: Path by lazy {
+		appFolder.toPath()
 	}
 
 	/**
