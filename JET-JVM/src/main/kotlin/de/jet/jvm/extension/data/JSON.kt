@@ -1,6 +1,5 @@
 package de.jet.jvm.extension.data
 
-import de.jet.jvm.extension.objects.trustOrThrow
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -51,7 +50,7 @@ val jsonBase: Json
 				return constructed
 			}
 		} else
-			return jsonBaseState.trustOrThrow(IllegalStateException("Json state cannot be null"))
+			return jsonBaseState!!
 	}
 
 /**
