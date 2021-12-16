@@ -1,6 +1,5 @@
 package de.jet.jvm.extension.objects
 
-import de.jet.jvm.extension.isNotNull
 import org.jetbrains.annotations.NotNull
 
 /**
@@ -10,10 +9,11 @@ import org.jetbrains.annotations.NotNull
  * @since 1.0
  */
 fun <T : Any> T?.trustOrThrow(throwable: Throwable): T {
-	if (isNotNull) {
+	try {
 		return this!!
-	} else
+	} catch (e: NullPointerException) {
 		throw throwable
+	}
 }
 
 /**
