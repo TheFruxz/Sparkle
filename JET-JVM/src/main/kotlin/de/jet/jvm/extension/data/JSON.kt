@@ -4,11 +4,15 @@ import de.jet.jvm.extension.objects.trustOrThrow
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonBuilder
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.SerializersModuleBuilder
 
-internal val runningModuleModifications = mutableListOf<SerializersModuleBuilder.() -> Unit>()
-internal var lastKnownModifications = listOf<SerializersModuleBuilder.() -> Unit>()
+internal val runningJsonModuleModifications = mutableListOf<SerializersModuleBuilder.() -> Unit>()
+internal var lastKnownJsonModuleModifications = listOf<SerializersModuleBuilder.() -> Unit>()
+
+internal val runningJsonModifications = mutableListOf<JsonBuilder.() -> Unit>()
+internal var lastKnownJsonModifications = listOf<JsonBuilder.() -> Unit>()
 
 /**
  * This value returns the current [Json] from the cached value,
@@ -21,7 +25,10 @@ internal var lastKnownModifications = listOf<SerializersModuleBuilder.() -> Unit
 @Suppress("JSON_FORMAT_REDUNDANT")
 val jsonBase: Json
 	get() {
-		if (jsonBaseState == null || lastKnownModifications != runningModuleModifications) {
+		if (jsonBaseState == null
+			|| lastKnownJsonModuleModifications != runningJsonModuleModifications
+			|| lastKnownJsonModifications != runningJsonModifications
+		) {
 			Json {
 				prettyPrint = true
 				isLenient = true
@@ -32,9 +39,12 @@ val jsonBase: Json
 				allowStructuredMapKeys = true
 				allowSpecialFloatingPointValues = true
 				serializersModule = SerializersModule {
-					runningModuleModifications.forEach {
+					runningJsonModuleModifications.forEach {
 						this.apply(it)
 					}
+				}
+				runningJsonModifications.forEach {
+					this.apply(it)
 				}
 			}.let { constructed ->
 				jsonBaseState = constructed
@@ -60,8 +70,19 @@ private var jsonBaseState: Json? = null
  * @author Fruxz
  * @since 1.0
  */
-fun addJetJsonModification(process: SerializersModuleBuilder.() -> Unit) {
-	runningModuleModifications += process
+fun addJetJsonModuleModification(process: SerializersModuleBuilder.() -> Unit) {
+	runningJsonModuleModifications += process
+}
+
+/**
+ * Adds a custom modification to the [Json] during its build process
+ * for the [jsonBase], used at the [toJson] and [fromJson] functions.
+ * @param process the modification to the [JsonBuilder] in the building process
+ * @author Fruxz
+ * @since 1.0
+ */
+fun addJatJsonModification(process: JsonBuilder.() -> Unit) {
+	runningJsonModifications += process
 }
 
 /**
