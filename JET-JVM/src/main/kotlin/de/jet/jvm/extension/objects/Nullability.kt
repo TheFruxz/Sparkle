@@ -24,18 +24,3 @@ fun <T : Any> T?.trustOrThrow(throwable: Throwable): T {
 @Throws(NoSuchElementException::class)
 @NotNull
 fun <T : Any> T?.trust() = trustOrThrow(NoSuchElementException("element [T] was null, but it is not allowed to be null!"))
-
-/**
- * Waits, until the element is not null, then returns the not-null it.
- * If it never hits not-null, it never ends!
- * @author Fruxz
- * @since 1.0
- */
-fun <T> T?.awaitTrust(): T {
-	do {
-		if (this != null) {
-			return this
-		}
-	} while (this == null)
-	throw NullPointerException("AwaitTrust failed")
-}
