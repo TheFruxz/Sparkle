@@ -12,8 +12,6 @@ plugins {
 
 var host = "github.com/TheFruxz/JET"
 
-group = "de.jet.paper"
-
 repositories {
 
     maven("https://papermc.io/repo/repository/maven-public/") // PaperMC
@@ -52,14 +50,14 @@ tasks.processResources {
 }
 
 val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
-    dependsOn(tasks.dokkaJavadoc)
-    from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
+    dependsOn(tasks.dokkaJavadocPartial)
+    from(tasks.dokkaJavadocPartial.flatMap { it.outputDirectory })
     archiveClassifier.set("javadoc")
 }
 
 val dokkaHtmlJar by tasks.register<Jar>("dokkaHtmlJar") {
-    dependsOn(tasks.dokkaHtml)
-    from(tasks.dokkaHtml.flatMap { it.outputDirectory })
+    dependsOn(tasks.dokkaHtmlPartial)
+    from(tasks.dokkaHtmlPartial.flatMap { it.outputDirectory })
     archiveClassifier.set("html-doc")
 }
 

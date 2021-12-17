@@ -30,14 +30,14 @@ tasks.withType<KotlinCompile> {
 }
 
 val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
-    dependsOn(tasks.dokkaJavadoc)
-    from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
+    dependsOn(tasks.dokkaJavadocPartial)
+    from(tasks.dokkaJavadocPartial.flatMap { it.outputDirectory })
     archiveClassifier.set("javadoc")
 }
 
 val dokkaHtmlJar by tasks.register<Jar>("dokkaHtmlJar") {
-    dependsOn(tasks.dokkaHtml)
-    from(tasks.dokkaHtml.flatMap { it.outputDirectory })
+    dependsOn(tasks.dokkaHtmlPartial)
+    from(tasks.dokkaHtmlPartial.flatMap { it.outputDirectory })
     archiveClassifier.set("html-doc")
 }
 
@@ -46,8 +46,6 @@ publishing {
     repositories {
 
         mavenLocal()
-
-        group = "de.jet.jvm"
 
         maven {
             name = "GitHubPackages"
