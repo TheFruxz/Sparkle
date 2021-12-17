@@ -96,14 +96,21 @@ We ourselves recommend that you use `Gradle Kotlin` in all your projects, but yo
 #### `Gradle Kotlin`
 ##### Repository 
 ```kotlin
-maven("https://jitpack.io")
+maven("https://maven.pkg.github.com/TheFruxz/JET") {
+        credentials {
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+            }
+        }
+    }
 ```
 
 ##### Dependency
 ```kotlin
-implementation("com.github.TheFruxz.JET:jet-jvm:1.0-BETA-10.2")
-implementation("com.github.TheFruxz.JET:jet-javacord:1.0-BETA-10.2") // optional add JET-JavaCord
-implementation("com.github.TheFruxz.JET:jet-paper:1.0-BETA-10.2") // or JET-Minecraft
+implementation("de.jet:jet-jvm:1.0-BETA-10.2")
+implementation("de.jet:jet-javacord:1.0-BETA-10.2") // optional add JET-JavaCord
+implementation("de.jet:jet-paper:1.0-BETA-10.2") // or JET-Minecraft
 ```
 #### INFO
 
