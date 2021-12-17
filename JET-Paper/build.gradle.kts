@@ -12,6 +12,8 @@ plugins {
 
 var host = "github.com/TheFruxz/JET"
 
+group = "de.jet.paper"
+
 repositories {
 
     maven("https://papermc.io/repo/repository/maven-public/") // PaperMC
@@ -49,6 +51,18 @@ tasks.processResources {
     expand("version" to project.version, "name" to project.name, "website" to "https://$host")
 }
 
+val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
+    dependsOn(tasks.dokkaJavadoc)
+    from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
+    archiveClassifier.set("javadoc")
+}
+
+val dokkaHtmlJar by tasks.register<Jar>("dokkaHtmlJar") {
+    dependsOn(tasks.dokkaHtml)
+    from(tasks.dokkaHtml.flatMap { it.outputDirectory })
+    archiveClassifier.set("html-doc")
+}
+
 publishing {
     repositories {
         mavenLocal()
@@ -63,9 +77,15 @@ publishing {
     }
 
     publications.create("JET-Paper", MavenPublication::class) {
+
         from(components["kotlin"])
+
+        artifact(dokkaJavadocJar)
+        artifact(dokkaHtmlJar)
+
         artifactId = "jet-paper"
         version = version.toLowerCase()
+
     }
 }
 

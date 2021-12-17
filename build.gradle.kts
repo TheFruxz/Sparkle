@@ -12,8 +12,7 @@ plugins {
 
 allprojects {
 
-    group = "de.jet"
-    version = "1.0-BETA-10.1"
+    version = "1.0-BETA-10.1-TEST"
 
     repositories {
         mavenCentral()
