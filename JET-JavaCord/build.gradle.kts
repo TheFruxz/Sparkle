@@ -29,6 +29,22 @@ dependencies {
 
 }
 
+val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
+    dependsOn(tasks.dokkaJavadocPartial)
+    from(tasks.dokkaJavadocPartial.flatMap { it.outputDirectory })
+    archiveClassifier.set("javadoc")
+}
+
+val dokkaHtmlJar by tasks.register<Jar>("dokkaHtmlJar") {
+    dependsOn(tasks.dokkaHtmlPartial)
+    from(tasks.dokkaHtmlPartial.flatMap { it.outputDirectory })
+    archiveClassifier.set("html-doc")
+}
+
+val source by tasks.register<Jar>("sourceJar") {
+    from(sourceSets.main.get().allSource)
+    archiveClassifier.set("sources")
+}
 
 publishing {
 
@@ -50,6 +66,11 @@ publishing {
     publications.create("JET-JAVACORD", MavenPublication::class) {
 
         from(components["kotlin"])
+
+        artifact(dokkaJavadocJar)
+        artifact(dokkaHtmlJar)
+        artifact(source)
+
         artifactId = "jet-javacord"
         version = version.toLowerCase()
 

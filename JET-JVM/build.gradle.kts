@@ -29,6 +29,23 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.io.path.ExperimentalPathApi"
 }
 
+val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
+    dependsOn(tasks.dokkaJavadocPartial)
+    from(tasks.dokkaJavadocPartial.flatMap { it.outputDirectory })
+    archiveClassifier.set("javadoc")
+}
+
+val dokkaHtmlJar by tasks.register<Jar>("dokkaHtmlJar") {
+    dependsOn(tasks.dokkaHtmlPartial)
+    from(tasks.dokkaHtmlPartial.flatMap { it.outputDirectory })
+    archiveClassifier.set("html-doc")
+}
+
+val source by tasks.register<Jar>("sourceJar") {
+    from(sourceSets.main.get().allSource)
+    archiveClassifier.set("sources")
+}
+
 publishing {
 
     repositories {
@@ -49,6 +66,11 @@ publishing {
     publications.create("JET-JVM", MavenPublication::class) {
 
         from(components["kotlin"])
+
+        artifact(dokkaJavadocJar)
+        artifact(dokkaHtmlJar)
+        artifact(source)
+
         artifactId = "jet-jvm"
         version = version.toLowerCase()
 

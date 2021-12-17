@@ -101,10 +101,14 @@ maven("https://jitpack.io")
 
 ##### Dependency
 ```kotlin
-implementation("com.github.TheFruxz.JET:jet-jvm:1.0-BETA-10")
-implementation("com.github.TheFruxz.JET:jet-javacord:1.0-BETA-10") // or additionally with JET-JavaCord
-implementation("com.github.TheFruxz.JET:jet-paper:1.0-BETA-10") // or additionally with JET-Minecraft
+implementation("com.github.TheFruxz.JET:jet-jvm:1.0-BETA-10.2")
+implementation("com.github.TheFruxz.JET:jet-javacord:1.0-BETA-10.2") // optional add JET-JavaCord
+implementation("com.github.TheFruxz.JET:jet-paper:1.0-BETA-10.2") // or JET-Minecraft
 ```
+#### INFO
+
+Using JitPack as an alternative to GitHub Packages is also possible, but it is not recommended,
+due to the lack of documentation transportation!
 
 ## Version
 

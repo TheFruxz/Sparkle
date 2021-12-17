@@ -49,6 +49,23 @@ tasks.processResources {
     expand("version" to project.version, "name" to project.name, "website" to "https://$host")
 }
 
+val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
+    dependsOn(tasks.dokkaJavadocPartial)
+    from(tasks.dokkaJavadocPartial.flatMap { it.outputDirectory })
+    archiveClassifier.set("javadoc")
+}
+
+val dokkaHtmlJar by tasks.register<Jar>("dokkaHtmlJar") {
+    dependsOn(tasks.dokkaHtmlPartial)
+    from(tasks.dokkaHtmlPartial.flatMap { it.outputDirectory })
+    archiveClassifier.set("html-doc")
+}
+
+val source by tasks.register<Jar>("sourceJar") {
+    from(sourceSets.main.get().allSource)
+    archiveClassifier.set("sources")
+}
+
 publishing {
     repositories {
         mavenLocal()
@@ -63,9 +80,16 @@ publishing {
     }
 
     publications.create("JET-Paper", MavenPublication::class) {
+
         from(components["kotlin"])
+
+        artifact(dokkaJavadocJar)
+        artifact(dokkaHtmlJar)
+        artifact(source)
+
         artifactId = "jet-paper"
         version = version.toLowerCase()
+
     }
 }
 
