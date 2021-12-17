@@ -108,9 +108,9 @@ maven("https://maven.pkg.github.com/TheFruxz/JET") {
 
 ##### Dependency
 ```kotlin
-implementation("de.jet:jet-jvm:1.0-BETA-10.2")
-implementation("de.jet:jet-javacord:1.0-BETA-10.2") // optional add JET-JavaCord
-implementation("de.jet:jet-paper:1.0-BETA-10.2") // or JET-Minecraft
+implementation("de.jet:jet-jvm:1.0-beta-10.2")
+implementation("de.jet:jet-javacord:1.0-beta-10.2") // optional add JET-JavaCord
+implementation("de.jet:jet-paper:1.0-beta-10.2") // or JET-Minecraft
 ```
 #### INFO
 
