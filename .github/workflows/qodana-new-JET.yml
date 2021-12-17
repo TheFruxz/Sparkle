@@ -2,7 +2,7 @@ name: JET-QODANA-EAP
 on: [workflow_dispatch]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-11
     permissions:
       contents: read
       packages: write
