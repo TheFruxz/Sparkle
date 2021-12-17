@@ -112,6 +112,13 @@ implementation("de.jet:jet-jvm:1.0-beta-10.2")
 implementation("de.jet:jet-javacord:1.0-beta-10.2") // optional add JET-JavaCord
 implementation("de.jet:jet-paper:1.0-beta-10.2") // or JET-Minecraft
 ```
+
+#### Auth
+
+You need to have set the system variables `USERNAME` and `TOKEN` to your GitHub-Username and GitHub-Personal-Access-Token,
+to access the packages via the GitHub-Packages Feature. You can also use the project variables `gpr.user` and `grp.key`, but
+don't publish them to the web!
+
 #### INFO
 
 Using JitPack as an alternative to GitHub Packages is also possible, but it is not recommended,
