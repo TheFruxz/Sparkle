@@ -61,6 +61,11 @@ val dokkaHtmlJar by tasks.register<Jar>("dokkaHtmlJar") {
     archiveClassifier.set("html-doc")
 }
 
+val source by tasks.register<Jar>("sourceJar") {
+    from(sourceSets.main.get().allSource)
+    archiveClassifier.set("sources")
+}
+
 publishing {
     repositories {
         mavenLocal()
@@ -80,6 +85,7 @@ publishing {
 
         artifact(dokkaJavadocJar)
         artifact(dokkaHtmlJar)
+        artifact(source)
 
         artifactId = "jet-paper"
         version = version.toLowerCase()
