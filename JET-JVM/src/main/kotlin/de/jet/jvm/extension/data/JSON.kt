@@ -80,7 +80,7 @@ fun addJetJsonModuleModification(process: SerializersModuleBuilder.() -> Unit) {
  * @author Fruxz
  * @since 1.0
  */
-fun addJatJsonModification(process: JsonBuilder.() -> Unit) {
+fun addJetJsonModification(process: JsonBuilder.() -> Unit) {
 	runningJsonModifications += process
 }
 
