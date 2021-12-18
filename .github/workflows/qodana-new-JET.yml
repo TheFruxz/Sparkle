@@ -1,4 +1,4 @@
-name: JET-QODANA-EAP
+name: JET-QODANA
 on: [workflow_dispatch]
 jobs:
   build:
