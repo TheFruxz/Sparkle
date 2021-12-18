@@ -1,12 +1,12 @@
 package de.jet.javacord.extension
 
+import de.jet.javacord.app.DiscordBotExtension
 import de.jet.javacord.structure.Bot
 import de.jet.javacord.structure.BotActivity
 import de.jet.javacord.structure.BotAppearance
 import de.jet.javacord.structure.BotCredentials
 import org.javacord.api.DiscordApi
 import org.javacord.api.DiscordApiBuilder
-import kotlin.jvm.Throws
 
 /**
  * Creates & registers a new running discord bot instance.
@@ -72,6 +72,20 @@ fun <T, I : T> talkDiscord(instance: DiscordApi = Bot.instance, process: (Discor
  * @since 1.0
  */
 fun <T, I : T> withTalkDiscord(instance: DiscordApi = Bot.instance, process: DiscordApi.() -> I): T = talkDiscord<T, I>(instance, process)
+
+/**
+ * Returning the current registered runnign [Bot.instance],
+ * which get used by the [DiscordBotExtension] and so the
+ * [talkDiscord] and [withTalkDiscord] as variable default
+ * state parameters too!
+ *
+ * It uses a lateinit variable, so if the extension is not
+ * properly registered, the bot instance will not exist!
+ * @author Fruxz
+ * @since 1.0
+ */
+val talkDiscord: DiscordApi
+	get() = Bot.instance
 
 /**
  * The credential setup of the discord bot
