@@ -16,7 +16,19 @@ val Any.asString: String
  * @author Fruxz
  * @since 1.0
  */
-fun <T> checkAllObjects(vararg objects: T, check: T.() -> Boolean): Boolean {
+@Deprecated("Use the `all` extension function instead.", ReplaceWith("all(*objects, check = check)"))
+fun <T> checkAllObjects(vararg objects: T, check: T.() -> Boolean) =
+	all(*objects, check = check)
+
+/**
+ * Executes a check, if all [objects] are passing the [check] check.
+ * @param objects The objects to check.
+ * @param check The check to execute.
+ * @return `true` if all [objects] are passing the [check] check, `false` otherwise.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T> all(vararg objects: T, check: T.() -> Boolean): Boolean {
 	return objects.all(check)
 }
 
