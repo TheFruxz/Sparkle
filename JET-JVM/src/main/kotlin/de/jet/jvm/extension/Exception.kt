@@ -36,3 +36,41 @@ fun jetTry(catchBlock: () -> Unit = { }, tryBlock: () -> Unit) {
 		catchException(e)
 	}
 }
+
+/**
+ * Try return the value returning of the [process] or returns the [other].
+ * [other]-return is triggered by a thrown [Exception]
+ * @param A (short for air) is the type of the surrounding block or the object, where it is called from
+ * @param R is the return type of the process
+ * @param T is the [other] type
+ * @param other the value to return if the process throws an [Exception]
+ * @param process the process to execute, returning the normal value as [R]
+ * @return the value returned by the [process] or the [other]
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <A, R, T : R> A.tryOrElse(other: T, process: A.() -> R): R {
+	return try {
+		process()
+	} catch (e: Exception) {
+		other
+	}
+}
+
+/**
+ * Try return the value returning of the [process] or returns null.
+ * null-return is triggered by a thrown [Exception]
+ * @param A (short for air) is the type of the surrounding block or the object, where it is called from
+ * @param T is the return type of the process
+ * @param process the process to execute, returning the normal value as [T]
+ * @return the value returned by the [process] or null
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <A, T> A.tryOrNull(process: A.() -> T): T? {
+	return try {
+		process()
+	} catch (e: Exception) {
+		null
+	}
+}
