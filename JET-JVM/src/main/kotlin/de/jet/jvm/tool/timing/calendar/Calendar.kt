@@ -1,8 +1,9 @@
 package de.jet.jvm.tool.timing.calendar
 
+import de.jet.jvm.annotation.NotTested
+import de.jet.jvm.extension.time.prettyPrint
 import de.jet.jvm.tool.smart.Producible
 import de.jet.jvm.tool.timing.calendar.Calendar.TimeField.*
-import de.jet.jvm.annotation.NotTested
 import java.util.*
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -234,7 +235,7 @@ class Calendar private constructor(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	override fun toString() = origin.toString()
+	override fun toString() = prettyPrint
 
 	override fun equals(other: Any?) = if (other is JavaUtilCalendar) {
 		other == origin
