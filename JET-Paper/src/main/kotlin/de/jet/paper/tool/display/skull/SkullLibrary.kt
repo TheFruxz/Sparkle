@@ -3,8 +3,8 @@ package de.jet.paper.tool.display.skull
 import com.destroystokyo.paper.profile.ProfileProperty
 import de.jet.jvm.extension.data.randomBoolean
 import de.jet.jvm.extension.data.url
-import de.jet.jvm.tool.conversion.Base64
-import de.jet.jvm.tool.conversion.CSV
+import de.jet.jvm.tool.data.Base64
+import de.jet.jvm.tool.data.CSV
 import de.jet.paper.app.JetData
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.ui.item

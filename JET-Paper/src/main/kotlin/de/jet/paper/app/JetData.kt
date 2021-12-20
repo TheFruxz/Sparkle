@@ -1,6 +1,6 @@
 package de.jet.paper.app
 
-import de.jet.jvm.tool.conversion.Base64.decodeToString
+import de.jet.jvm.tool.data.Base64.decodeToString
 import de.jet.paper.app.JetData.File.BRAIN
 import de.jet.paper.app.JetData.File.CONFIG
 import de.jet.paper.app.JetData.File.ESSENTIALS_CONFIG
