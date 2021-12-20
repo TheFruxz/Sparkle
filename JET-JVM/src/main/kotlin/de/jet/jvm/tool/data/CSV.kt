@@ -1,4 +1,4 @@
-package de.jet.jvm.tool.conversion
+package de.jet.jvm.tool.data
 
 /**
  * This object provides methods to convert a CSV file to a list of arrays of strings.
@@ -18,5 +18,7 @@ object CSV {
 			add(it.split(";").toTypedArray())
 		}
 	}
+
+	fun convertToTabularData(csvContent: String) = TabularData(csvContent)
 
 }
