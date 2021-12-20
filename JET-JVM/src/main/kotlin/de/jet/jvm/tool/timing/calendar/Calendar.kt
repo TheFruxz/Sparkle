@@ -19,7 +19,7 @@ import java.util.Calendar as JavaUtilCalendar
 @NotTested
 class Calendar private constructor(
 	private var origin: JavaUtilCalendar
-) : Producible<JavaUtilCalendar>, Cloneable {
+) : Producible<JavaUtilCalendar>, Cloneable, Comparable<Calendar> {
 
 	override fun produce() = origin
 
@@ -233,15 +233,36 @@ class Calendar private constructor(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	override fun toString() = prettyPrint
+	override fun toString() = "Calendar($prettyPrint)"
 
+	/**
+	 * This function returns, if the [JavaUtilCalendar.getTimeInMillis] of [this] == [other].
+	 * @param other the calendar which should be compared
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	override fun equals(other: Any?) = if (other is JavaUtilCalendar) {
-		other == origin
+		other.timeInMillis == origin.timeInMillis
 	} else
 		false
 
 	override fun hashCode(): Int {
 		return origin.hashCode()
+	}
+
+	/**
+	 * This function compares the [origin] object with the [other] object,
+	 * with their [JavaUtilCalendar.getTimeInMillis] values.
+	 * @param calendar is the calendar which should be compared
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	override operator fun compareTo(calendar: Calendar): Int {
+		if (origin.timeInMillis < calendar.origin.timeInMillis)
+			return -1
+		if (origin.timeInMillis > calendar.origin.timeInMillis)
+			return 1
+		return 0
 	}
 
 	companion object {

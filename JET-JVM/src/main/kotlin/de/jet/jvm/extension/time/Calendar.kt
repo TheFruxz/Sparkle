@@ -2,6 +2,7 @@ package de.jet.jvm.extension.time
 
 import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.jvm.tool.timing.calendar.Calendar.TimeField.*
+import de.jet.jvm.tool.timing.calendar.CalendarRange
 import java.util.Calendar as JavaUtilCalendar
 
 /**
@@ -187,3 +188,11 @@ val Calendar.styledMillisecond: String
  */
 val Calendar.prettyPrint: String
 	get() = "y: $styledYear; m: $styledMonth; d: $styledDay; h: $styledHour; m: $styledMinute; s: $styledSecond; ms: $styledMillisecond"
+
+/**
+ * This function creates a [CalendarRange] object from [this] to the [other] Calendar.
+ * @param other the other Calendar to create the [CalendarRange] object.
+ * @author Fruxz
+ * @since 1.0
+ */
+operator fun Calendar.rangeTo(other: Calendar) = CalendarRange(this, other)
