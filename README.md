@@ -113,7 +113,7 @@ implementation("de.jet:jet-javacord:1.0-beta-11") // optional add JET-JavaCord
 implementation("de.jet:jet-paper:1.0-beta-11") // or JET-Minecraft
 ```
 
-#### Using JitPack (easy to use)
+#### Using JitPack (easy to setup)
 ##### Repository
 ```kotlin
 maven("https://jitpack.io")
@@ -121,9 +121,9 @@ maven("https://jitpack.io")
 
 ##### Dependency
 ```kotlin
-implementation("...:1.0-beta-11")
-implementation("...:1.0-beta-11") // optional add JET-JavaCord
-implementation("...:1.0-beta-11") // or JET-Minecraft
+implementation("com.github.TheFruxz.JET:jet-jvm:1.0-beta-11")
+implementation("com.github.TheFruxz.JET:jet-javacord:1.0-beta-11") // optional add JET-JavaCord
+implementation("com.github.TheFruxz.JET:jet-paper:1.0-beta-11") // or JET-Minecraft
 ```
 
 #### Auth
