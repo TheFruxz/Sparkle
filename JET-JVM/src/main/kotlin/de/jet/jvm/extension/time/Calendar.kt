@@ -173,12 +173,17 @@ val Calendar.millisecond: Int
  * This value returns the value of the [Calendar.millisecond] value, but
  * attaches 0 at the beginning if the value is lower than the usual
  * used displayed time format.
- * ***Format: ####***
+ * ***Format: ###***
  * @author Fruxz
  * @since 1.0
  */
 val Calendar.styledMillisecond: String
-	get() = "$millisecond".padStart(4, '0')
+	get() = "$millisecond".padStart(3, '0')
 
+/**
+ * This value returns the current state of the [Calendar] object, as a YYYY MM DD HH MM SS SSS format.
+ * @author Fruxz
+ * @since 1.0
+ */
 val Calendar.prettyPrint: String
 	get() = "y: $styledYear; m: $styledMonth; d: $styledDay; h: $styledHour; m: $styledMinute; s: $styledSecond; ms: $styledMillisecond"
