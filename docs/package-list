@@ -24,7 +24,7 @@ de.jet.jvm.extension.input
 de.jet.jvm.extension.java
 de.jet.jvm.extension.math
 de.jet.jvm.extension.objects
-de.jet.jvm.extension.timing
+de.jet.jvm.extension.time
 de.jet.jvm.interchange
 de.jet.jvm.structure
 de.jet.jvm.tool.base
