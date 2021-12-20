@@ -204,17 +204,13 @@ class Calendar private constructor(
 	 */
 	fun durationTo(jetCalendar: Calendar) = durationTo(jetCalendar.origin)
 
-	operator fun plus(duration: Duration) = clone().apply {
-		add(MILLISECOND, duration.inWholeMilliseconds.toInt())
-	}
+	operator fun plus(duration: Duration) = clone().add(MILLISECOND, duration.inWholeMilliseconds.toInt())
 
 	operator fun plusAssign(duration: Duration) {
 		add(MILLISECOND, duration.inWholeMilliseconds.toInt())
 	}
 
-	operator fun minus(duration: Duration) = clone().apply {
-		take(MILLISECOND, duration.inWholeMilliseconds.toInt())
-	}
+	operator fun minus(duration: Duration) = clone().take(MILLISECOND, duration.inWholeMilliseconds.toInt())
 
 	operator fun minusAssign(duration: Duration) {
 		take(MILLISECOND, duration.inWholeMilliseconds.toInt())
@@ -227,7 +223,9 @@ class Calendar private constructor(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	override fun clone() = Calendar(origin)
+	override fun clone(): Calendar {
+		return Calendar(origin.clone() as JavaUtilCalendar)
+	}
 
 	/**
 	 * This function returns the result of the [toString] function
