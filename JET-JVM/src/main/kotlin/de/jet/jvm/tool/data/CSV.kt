@@ -19,4 +19,6 @@ object CSV {
 		}
 	}
 
+	fun convertToTabularData(csvContent: String) = TabularData(csvContent)
+
 }
