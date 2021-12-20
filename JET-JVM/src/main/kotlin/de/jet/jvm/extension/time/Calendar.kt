@@ -2,7 +2,28 @@ package de.jet.jvm.extension.time
 
 import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.jvm.tool.timing.calendar.Calendar.TimeField.*
-import java.util.Calendar as UtilCalendar
+import de.jet.jvm.tool.timing.calendar.CalendarRange
+import java.util.Calendar as JavaUtilCalendar
+
+/**
+ * Converts a [JavaUtilCalendar] to a [Calendar] from JET, but keeps it contents.
+ * @author Fruxz
+ * @since 1.0
+ */
+val JavaUtilCalendar.jetCalendar: Calendar
+	get() = Calendar.fromLegacy(this)
+
+/**
+ * Gets the [JavaUtilCalendar], internally converts it, with its contents, to a
+ * JET-[Calendar], edit it with the [action] in the JET-Calender-Environment and
+ * returns the [Calendar] converted back to a [JavaUtilCalendar] with the new
+ * values containing inside the [JavaUtilCalendar].
+ * @param action the edit process, which is executed in the JET-[Calendar]-Environment
+ * @return the [JavaUtilCalendar] with the new values
+ * @author Fruxz
+ * @since 1.0
+ */
+fun JavaUtilCalendar.editInJETEnvironment(action: Calendar.() -> Unit) = jetCalendar.apply(action).produce()
 
 /**
  * This value returns the value of the [Calendar.get] function
@@ -57,14 +78,14 @@ val Calendar.styledMonth: String
 	get() = "$month".padStart(2, '0')
 
 /**
- * This value returns the value of the [UtilCalendar.get] function
- * with the TimeUnit [UtilCalendar.DAY_OF_MONTH].
- * @return the value of the [UtilCalendar.get] function with the TimeUnit [UtilCalendar.DAY_OF_MONTH].
+ * This value returns the value of the [JavaUtilCalendar.get] function
+ * with the TimeUnit [JavaUtilCalendar.DAY_OF_MONTH].
+ * @return the value of the [JavaUtilCalendar.get] function with the TimeUnit [JavaUtilCalendar.DAY_OF_MONTH].
  * @author Fruxz
  * @since 1.0
  */
 val Calendar.day: Int
-	get() = javaCalendar.get(UtilCalendar.DAY_OF_MONTH)
+	get() = javaCalendar.get(JavaUtilCalendar.DAY_OF_MONTH)
 
 /**
  * This value returns the value of the [Calendar.day] value, but
@@ -153,12 +174,25 @@ val Calendar.millisecond: Int
  * This value returns the value of the [Calendar.millisecond] value, but
  * attaches 0 at the beginning if the value is lower than the usual
  * used displayed time format.
- * ***Format: ####***
+ * ***Format: ###***
  * @author Fruxz
  * @since 1.0
  */
 val Calendar.styledMillisecond: String
-	get() = "$millisecond".padStart(4, '0')
+	get() = "$millisecond".padStart(3, '0')
 
+/**
+ * This value returns the current state of the [Calendar] object, as a YYYY MM DD HH MM SS SSS format.
+ * @author Fruxz
+ * @since 1.0
+ */
 val Calendar.prettyPrint: String
 	get() = "y: $styledYear; m: $styledMonth; d: $styledDay; h: $styledHour; m: $styledMinute; s: $styledSecond; ms: $styledMillisecond"
+
+/**
+ * This function creates a [CalendarRange] object from [this] to the [other] Calendar.
+ * @param other the other Calendar to create the [CalendarRange] object.
+ * @author Fruxz
+ * @since 1.0
+ */
+operator fun Calendar.rangeTo(other: Calendar) = CalendarRange(this, other)
