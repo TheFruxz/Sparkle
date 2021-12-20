@@ -253,14 +253,14 @@ class Calendar private constructor(
 	/**
 	 * This function compares the [origin] object with the [other] object,
 	 * with their [JavaUtilCalendar.getTimeInMillis] values.
-	 * @param calendar is the calendar which should be compared
+	 * @param other is the calendar which should be compared
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	override operator fun compareTo(calendar: Calendar): Int {
-		if (origin.timeInMillis < calendar.origin.timeInMillis)
+	override operator fun compareTo(other: Calendar): Int {
+		if (origin.timeInMillis < other.origin.timeInMillis)
 			return -1
-		if (origin.timeInMillis > calendar.origin.timeInMillis)
+		if (origin.timeInMillis > other.origin.timeInMillis)
 			return 1
 		return 0
 	}
