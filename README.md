@@ -93,7 +93,7 @@ adapted for this system.
 How can I use JET in my own projects? For this you need to know what your project is based on, or should be based on.
 We ourselves recommend that you use `Gradle Kotlin` in all your projects, but you can also use other systems like `Gradle` and `Maven`!
 
-#### `Gradle Kotlin`
+#### Using GitHub Packages (recommended)
 ##### Repository 
 ```kotlin
 maven("https://maven.pkg.github.com/TheFruxz/JET") {
@@ -108,9 +108,22 @@ maven("https://maven.pkg.github.com/TheFruxz/JET") {
 
 ##### Dependency
 ```kotlin
-implementation("de.jet:jet-jvm:1.0-beta-10.2")
-implementation("de.jet:jet-javacord:1.0-beta-10.2") // optional add JET-JavaCord
-implementation("de.jet:jet-paper:1.0-beta-10.2") // or JET-Minecraft
+implementation("de.jet:jet-jvm:1.0-beta-11")
+implementation("de.jet:jet-javacord:1.0-beta-11") // optional add JET-JavaCord
+implementation("de.jet:jet-paper:1.0-beta-11") // or JET-Minecraft
+```
+
+#### Using JitPack (easy to use)
+##### Repository
+```kotlin
+maven("https://jitpack.io")
+```
+
+##### Dependency
+```kotlin
+implementation("...:1.0-beta-11")
+implementation("...:1.0-beta-11") // optional add JET-JavaCord
+implementation("...:1.0-beta-11") // or JET-Minecraft
 ```
 
 #### Auth
