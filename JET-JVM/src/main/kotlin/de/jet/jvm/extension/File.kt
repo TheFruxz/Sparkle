@@ -65,7 +65,7 @@ operator fun Path.div(other: String): Path = resolve(other)
  * @author Fruxz
  * @since 1.0
  */
-val jetArtificialPath = ArtificialPath(listOf(
+val jetArtificialPath = ArtificialPath(arrayOf(
     ArtificialReadOnlyResourcePathProcessor,
 ))
 

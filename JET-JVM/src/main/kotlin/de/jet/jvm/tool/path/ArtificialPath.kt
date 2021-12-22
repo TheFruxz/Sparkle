@@ -14,6 +14,8 @@ data class ArtificialPath(
     val extensions: MutableList<ArtificialPathProcessor>,
 ) {
 
+    constructor(extensions: Array<ArtificialPathProcessor>) : this(extensions.toMutableList())
+
     /**
      * This function returns a real, or an artificial created
      * file using the [fullPath] and the transformers of
