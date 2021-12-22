@@ -1,7 +1,5 @@
 package de.jet.javacord.extension
 
-import de.jet.jvm.extension.ifNotNull
-import de.jet.jvm.extension.ifNull
 import de.jet.jvm.extension.isNotNull
 import org.javacord.api.entity.emoji.CustomEmojiBuilder
 import org.javacord.api.entity.emoji.KnownCustomEmoji

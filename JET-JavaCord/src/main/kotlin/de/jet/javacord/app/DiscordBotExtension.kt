@@ -1,9 +1,10 @@
 package de.jet.javacord.app
 
+import de.jet.javacord.app.DiscordBotExtension.identity
+import de.jet.javacord.app.DiscordBotExtension.parallelRunAllowed
+import de.jet.javacord.app.DiscordBotExtension.runtimeAccessor
 import de.jet.javacord.extension.runBot
 import de.jet.javacord.structure.Bot
-import de.jet.javacord.structure.BotAppearance
-import de.jet.javacord.structure.BotCredentials
 import de.jet.jvm.application.extension.AppExtension
 import kotlin.reflect.KFunction1
 
