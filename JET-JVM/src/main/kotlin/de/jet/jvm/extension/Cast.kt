@@ -18,11 +18,7 @@ fun <O> Any?.forceCast() = this as O
  * @author Fruxz
  * @since 1.0
  */
-fun <O> Any?.forceCastOrNull() = try {
-	this as O
-} catch (e: ClassCastException) {
-	null
-}
+fun <O> Any?.forceCastOrNull() = tryOrNull { this as O }
 
 /**
  * Cast the given object to the given type and not highlight risky casts in the IDE.
@@ -40,11 +36,7 @@ fun <O> Any?.forceNullableCast() = this as O?
  * @author Fruxz
  * @since 1.0
  */
-fun <O> Any?.forceNullableCastOrNull() = try {
-	this as O?
-} catch (e: ClassCastException) {
-	null
-}
+fun <O> Any?.forceNullableCastOrNull() = tryOrNull { this as O? }
 
 /**
  * Cast the given object to the given type and not highlight risky casts in the IDE.
@@ -62,11 +54,7 @@ fun <O> Nothing?.forceCast() = this as O
  * @author Fruxz
  * @since 1.0
  */
-fun <O> Nothing?.forceCastOrNull() = try {
-	this as O
-} catch (e: ClassCastException) {
-	null
-}
+fun <O> Nothing?.forceCastOrNull() = tryOrNull { this as O }
 
 /**
  * Cast the given object to the given type and not highlight risky casts in the IDE.

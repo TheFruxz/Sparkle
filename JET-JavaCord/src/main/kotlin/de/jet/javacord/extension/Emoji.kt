@@ -1,6 +1,7 @@
 package de.jet.javacord.extension
 
 import de.jet.jvm.extension.isNotNull
+import de.jet.jvm.extension.tryOrNull
 import org.javacord.api.entity.emoji.CustomEmojiBuilder
 import org.javacord.api.entity.emoji.KnownCustomEmoji
 import org.javacord.api.entity.server.Server
@@ -39,17 +40,13 @@ fun Server.getCustomEmoji(emojiName: String, ignoreCase: Boolean = false) =
 	(if (ignoreCase) getCustomEmojisByNameIgnoreCase(emojiName).filterNotNull() else getCustomEmojisByName(emojiName).filterNotNull()).firstOrNull()
 
 /**
- * Returns the [KnownCustomEmoji] with the given [id] or nul if no emoji with the given [id] exists.
- * @param id the id of the emoji stored on the server
+ * Returns the [KnownCustomEmoji] with the given [emojiId] or null if no emoji with the given [emojiId] exists.
+ * @param emojiId the id of the emoji stored on the server
  * @return the emoji or null if not exists
  * @author Fruxz
  * @since 1.0
  */
-fun Server.getCustomEmoji(id: Long) = try {
-	getCustomEmojiById(id).get()
-} catch (exception: NoSuchElementException) {
-	null
-}
+fun Server.getCustomEmoji(emojiId: Long) = tryOrNull { getCustomEmojiById(emojiId).get() }
 
 /**
  * Creates a custom emoji using the [CustomEmojiBuilder] and returns the created emoji. If an emoji with the name [emojiName]

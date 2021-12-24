@@ -1,5 +1,6 @@
 package de.jet.jvm.extension.java
 
+import de.jet.jvm.extension.tryOrNull
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -9,11 +10,7 @@ import java.util.concurrent.CompletableFuture
  * @author Fruxz
  * @since 1.0
  */
-fun <T> CompletableFuture<T>.getOrNull() = try {
-    get()
-} catch (e: Exception) {
-    null
-}
+fun <T> CompletableFuture<T>.getOrNull() = tryOrNull { get() }
 
 /**
  * Returns the value of the [CompletableFuture] or if it throws

@@ -28,6 +28,7 @@ fun catchException(exception: Exception) {
  * @author Fruxz
  * @since 1.0
  */
+@Deprecated(message = "Do not use this, in future, a proper try-catch object would be available!")
 fun jetTry(catchBlock: () -> Unit = { }, tryBlock: () -> Unit) {
 	try {
 		tryBlock()
@@ -68,6 +69,14 @@ fun <A, R, T : R> A.tryOrElse(other: T, process: A.() -> R): R {
  * @since 1.0
  */
 fun <A, T> A.tryOrNull(process: A.() -> T): T? {
+	return try {
+		process()
+	} catch (e: Exception) {
+		null
+	}
+}
+
+fun <T> tryOrNull(process: () -> T): T? {
 	return try {
 		process()
 	} catch (e: Exception) {
