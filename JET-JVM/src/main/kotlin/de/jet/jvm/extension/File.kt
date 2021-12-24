@@ -40,7 +40,7 @@ fun String.pathAsFile(): File =
 
 /**
  * Converts the string [this] into a base-based [File] using [this] as a [Path],
- * through the [Path.of] and the [Path.toFile] functions additionaly the
+ * through the [Path.of] and the [Path.toFile] functions additionally the
  * [System.getProperty]("user.dir") process.
  * @author Fruxz
  * @since 1.0
@@ -49,7 +49,7 @@ fun String.pathAsFileFromRuntime() =
     File(System.getProperty("user.dir") + "/$this")
 
 /**
- * This function adds an additional part to the [Path] using
+ * This function adds a part to the [Path] using
  * the [Path.resolve] function and a [other] part attaching
  * to the [Path].
  * @param other is the additional path
