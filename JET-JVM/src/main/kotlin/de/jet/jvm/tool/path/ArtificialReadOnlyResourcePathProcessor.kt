@@ -4,7 +4,7 @@ import de.jet.jvm.extension.getResourceByteArray
 import java.io.File
 
 /**
- * This object represents the, from jet provided, [ArtificialPathProcessor],
+ * This object represents the jet provided [ArtificialPathProcessor],
  * to easily get files from the resources.
  * @author Fruxz
  * @since 1.0

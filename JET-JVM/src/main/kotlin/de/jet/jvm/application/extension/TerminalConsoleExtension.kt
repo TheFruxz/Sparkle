@@ -5,7 +5,7 @@ import de.jet.jvm.extension.input.requestTerminalInterchangeInput
 import kotlin.reflect.KFunction1
 
 /**
- * Extension to easily create terminal input requests inside a application
+ * Extension to easily create terminal input requests inside an application
  * @author Fruxz
  * @since 1.0
  */

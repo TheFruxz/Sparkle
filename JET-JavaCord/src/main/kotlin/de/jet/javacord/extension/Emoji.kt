@@ -17,7 +17,7 @@ fun Server.isCustomEmojiExisting(emojiName: String, ignoreCase: Boolean = false)
 	getCustomEmoji(emojiName, ignoreCase).isNotNull
 
 /**
- * Returns if a emoji with the [id] exists / stored at the server.
+ * Returns if an emoji with the [id] exists / stored at the server.
  * @param id the id of the custom emoji
  * @return true if the emoji exists, false otherwise.
  * @author Fruxz
@@ -54,7 +54,7 @@ fun Server.getCustomEmoji(id: Long) = try {
 /**
  * Creates a custom emoji using the [CustomEmojiBuilder] and returns the created emoji. If an emoji with the name [emojiName]
  * already exists, the property [replaceExisting] will decide, if the new one will be created besides the existing one,
- * or if the existing one will be immediatly be returned without the creation of a new emoji.
+ * or if the existing one will be immediately be returned without the creation of a new emoji.
  * @param emojiName the (new) name of the emoji.
  * @param resource the image file of the emoji (png) as a byte array
  * @param replaceExisting if true it will create a new emoji named with [emojiName] + some other stuff or if false it returns the already existing one
@@ -79,7 +79,7 @@ fun Server.createCustomEmoji(
 	getCustomEmoji(emojiName)
 
 /**
- * Creates a custom emoji using the [CustomEmojiBuilder] and returns the created emoji. If a emoji with the name [emojiName]
+ * Creates a custom emoji using the [CustomEmojiBuilder] and returns the created emoji. If an emoji with the name [emojiName]
  * already exists, the existing emoji will be returned and no new emoji will be created and stored on the server.
  * @param emojiName the (new) name of the emoji
  * @param resource the image file of the emoji (png) as a byte array
@@ -104,7 +104,7 @@ fun Server.createCustomEmojiIfNotExists(
 
 /**
  * Removes every custom emoji from the server, where the condition is returning true.
- * Every emoji on the server get piped thru a forEach and the condition is applied & checked.
+ * Every emoji on the server get piped through a forEach and the condition is applied & checked.
  * If the condition is true, the emoji will be removed, if false the emoji will be skipped.
  * @param condition the condition, which will be applied to every single customEmoji
  * @author Fruxz

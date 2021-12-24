@@ -20,7 +20,7 @@ import kotlin.reflect.KFunction1
  */
 object DiscordBotExtension : AppExtension<Bot, Unit, Unit> {
 
-	override val identity = "discordbot"
+	override val identity = "discordBot"
 
 	override val parallelRunAllowed = false
 

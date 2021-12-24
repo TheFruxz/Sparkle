@@ -16,5 +16,4 @@ data class BotAppearance(
 	var status: UserStatus? = null,
 	var activity: BotActivity = BotActivity(),
 	var avatar: BotAvatar = BotAvatar(),
-) {
-}
+)

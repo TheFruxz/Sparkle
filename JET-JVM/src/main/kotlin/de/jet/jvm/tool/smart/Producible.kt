@@ -1,7 +1,7 @@
 package de.jet.jvm.tool.smart
 
 /**
- * This interface marks every class/object, that can produce a object type [T]
+ * This interface marks every class/object, that can produce an object type [T]
  * @author Fruxz
  * @since 1.0
  */

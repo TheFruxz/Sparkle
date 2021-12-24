@@ -5,7 +5,7 @@ package de.jet.jvm.extension
 /**
  * Cast the given object to the given type and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
@@ -14,7 +14,7 @@ fun <O> Any?.forceCast() = this as O
 /**
  * Cast the given object to the given type or null if fails and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
@@ -27,7 +27,7 @@ fun <O> Any?.forceCastOrNull() = try {
 /**
  * Cast the given object to the given type and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
@@ -36,7 +36,7 @@ fun <O> Any?.forceNullableCast() = this as O?
 /**
  * Cast the given object to the given type or null if fails and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
@@ -49,7 +49,7 @@ fun <O> Any?.forceNullableCastOrNull() = try {
 /**
  * Cast the given object to the given type and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
@@ -58,7 +58,7 @@ fun <O> Nothing?.forceCast() = this as O
 /**
  * Cast the given object to the given type or null if fails and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
@@ -71,7 +71,7 @@ fun <O> Nothing?.forceCastOrNull() = try {
 /**
  * Cast the given object to the given type and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
@@ -80,7 +80,7 @@ fun <O> Nothing?.forceNullableCast() = this as O?
 /**
  * Cast the given object to the given type or null if fails and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */

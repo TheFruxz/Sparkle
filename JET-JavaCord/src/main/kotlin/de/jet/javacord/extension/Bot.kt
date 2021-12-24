@@ -74,7 +74,7 @@ fun <T, I : T> talkDiscord(instance: DiscordApi = Bot.instance, process: (Discor
 fun <T, I : T> withTalkDiscord(instance: DiscordApi = Bot.instance, process: DiscordApi.() -> I): T = talkDiscord<T, I>(instance, process)
 
 /**
- * Returning the current registered runnign [Bot.instance],
+ * Returning the current registered running [Bot.instance],
  * which get used by the [DiscordBotExtension] and so the
  * [talkDiscord] and [withTalkDiscord] as variable default
  * state parameters too!
