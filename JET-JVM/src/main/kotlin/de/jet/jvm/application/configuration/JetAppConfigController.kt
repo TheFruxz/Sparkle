@@ -17,7 +17,7 @@ object JetAppConfigController {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val jetConfig = File("jet.apps.json")
+	private val jetConfig = File("jet.apps.json")
 
 	/**
 	 * The current configuration state of the application
