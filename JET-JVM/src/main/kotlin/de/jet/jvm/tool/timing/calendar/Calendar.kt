@@ -236,7 +236,7 @@ class Calendar private constructor(
 	override fun toString() = "Calendar($prettyPrint)"
 
 	/**
-	 * This function returns, if the [JavaUtilCalendar.getTimeInMillis] of [this] == [other].
+	 * This function returns, if the [JavaUtilCalendar.getTimeInMillis] of this == [other].
 	 * @param other the calendar which should be compared
 	 * @author Fruxz
 	 * @since 1.0
