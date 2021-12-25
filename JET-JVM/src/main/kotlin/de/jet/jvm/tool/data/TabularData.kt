@@ -14,7 +14,7 @@ data class TabularData(
 
 	constructor(rawCSV: String) : this(
 		headers = rawCSV.lines().first().split(",").map { it.trim() },
-		rows = rawCSV.lines().drop(1).map { it.split(",").map { it.trim() } },
+		rows = rawCSV.lines().drop(1).map { it.split(",").map { lineContent -> lineContent.trim() } },
 	)
 
 	/**

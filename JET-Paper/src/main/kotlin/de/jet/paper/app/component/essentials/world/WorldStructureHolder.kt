@@ -9,9 +9,7 @@ import kotlinx.serialization.Serializable
 
 data class WorldStructureHolder(
 	override val smashedStructure: List<WorldStructureObject>
-) : DataStructureHolder<WorldStructureObject>(smashedStructure) {
-
-}
+) : DataStructureHolder<WorldStructureObject>(smashedStructure)
 
 interface WorldStructureObject : DataStructureItem {
 	val displayName: String

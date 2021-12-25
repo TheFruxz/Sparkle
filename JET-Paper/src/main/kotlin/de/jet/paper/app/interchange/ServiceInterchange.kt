@@ -27,7 +27,6 @@ import de.jet.paper.structure.service.Service
 import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.display.message.Transmission.Level.INFO
 import java.util.*
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 class ServiceInterchange(vendor: App = system) : Interchange(vendor, "service", requiresAuthorization = true, completion = buildCompletion {

@@ -314,10 +314,10 @@ data class Item(
 		this.modifications.containsAll(modifications.map { Modification(it.first, it.second) })
 
 	fun dropModifications(vararg modifications: Modification) =
-		apply { this.modifications.removeAll(modifications) }
+		apply { this.modifications.removeAll(modifications.toSet()) }
 
 	fun dropModifications(modifications: Collection<Modification>) =
-		apply { this.modifications.removeAll(modifications) }
+		apply { this.modifications.removeAll(modifications.toSet()) }
 
 
 
@@ -340,10 +340,10 @@ data class Item(
 		apply { this.flags = flags.toMutableSet() }
 
 	fun dropFlags(flags: Collection<ItemFlag>) =
-		apply { this.flags.removeAll(flags) }
+		apply { this.flags.removeAll(flags.toSet()) }
 
 	fun dropFlags(vararg flags: ItemFlag) =
-		apply { this.flags.removeAll(flags) }
+		apply { this.flags.removeAll(flags.toSet()) }
 
 
 
@@ -366,10 +366,10 @@ data class Item(
 		apply { this.postProperties = postProperties.toMutableSet() }
 
 	fun dropPostProperties(postProperties: Collection<PostProperty>) =
-		apply { this.postProperties.removeAll(postProperties) }
+		apply { this.postProperties.removeAll(postProperties.toSet()) }
 
 	fun dropPostProperties(vararg postProperties: PostProperty) =
-		apply { this.postProperties.removeAll(postProperties) }
+		apply { this.postProperties.removeAll(postProperties.toSet()) }
 
 
 

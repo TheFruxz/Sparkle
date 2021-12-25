@@ -28,9 +28,7 @@ fun <T> checkAllObjects(vararg objects: T, check: T.() -> Boolean) =
  * @author Fruxz
  * @since 1.0
  */
-fun <T> all(vararg objects: T, check: T.() -> Boolean): Boolean {
-	return objects.all(check)
-}
+fun <T> all(vararg objects: T, check: T.() -> Boolean) = objects.all(check)
 
 /**
  * Returning the [this]<[T]> modified with the [modification] if [modifyIf] is true,

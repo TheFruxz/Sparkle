@@ -8,7 +8,7 @@ package de.jet.jvm.extension.collection
  * @since 1.0
  */
 fun IntRange.skip(vararg ints: Int) =
-	toMutableList().apply { removeAll(ints.toList()) }
+	toMutableList().apply { removeAll(ints.toList().toSet()) }
 
 /**
  * Removes the [int] from this range.
