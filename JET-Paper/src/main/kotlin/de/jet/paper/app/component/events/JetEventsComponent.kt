@@ -1,6 +1,6 @@
 package de.jet.paper.app.component.events
 
-import de.jet.jvm.extension.checkAllObjects
+import de.jet.jvm.extension.all
 import de.jet.jvm.extension.forceCast
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.system
@@ -37,7 +37,7 @@ internal class JetEventsComponent(vendor: App = system) : Component(vendor, AUTO
 		@EventHandler
 		fun entityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
 
-			if (checkAllObjects(event.entity, event.damager) { this is Player }) {
+			if (all(event.entity, event.damager) { this is Player }) {
 				val internal = PlayerDamageByPlayerEvent(
 					attacked = event.entity.forceCast(),
 					attacker = event.damager.forceCast(),
