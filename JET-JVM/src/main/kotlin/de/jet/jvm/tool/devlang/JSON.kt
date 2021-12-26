@@ -23,7 +23,7 @@ data class JSON(
 
 	companion object : Constructable<JSON> {
 		override fun constructor(vararg parameters: Any?): JSON =
-			JSON("" + parameters.first())
+			JSON(parameters.first() as String)
 	}
 
 }

@@ -2,6 +2,8 @@
 
 package de.jet.jvm.extension
 
+import de.jet.jvm.tool.path.ArtificialPath
+import de.jet.jvm.tool.path.ArtificialReadOnlyResourcePathProcessor
 import java.io.File
 import java.nio.file.Path
 
@@ -38,7 +40,7 @@ fun String.pathAsFile(): File =
 
 /**
  * Converts the string [this] into a base-based [File] using [this] as a [Path],
- * through the [Path.of] and the [Path.toFile] functions additionaly the
+ * through the [Path.of] and the [Path.toFile] functions additionally the
  * [System.getProperty]("user.dir") process.
  * @author Fruxz
  * @since 1.0
@@ -47,7 +49,7 @@ fun String.pathAsFileFromRuntime() =
     File(System.getProperty("user.dir") + "/$this")
 
 /**
- * This function adds an additional part to the [Path] using
+ * This function adds a part to the [Path] using
  * the [Path.resolve] function and a [other] part attaching
  * to the [Path].
  * @param other is the additional path
@@ -55,3 +57,25 @@ fun String.pathAsFileFromRuntime() =
  * @since 1.0
  */
 operator fun Path.div(other: String): Path = resolve(other)
+
+/**
+ * This value defines the basic, from jet created [ArtificialPath].
+ * This [ArtificialPath] can be used, to easily access file in the
+ * local directory & the resources.
+ * @author Fruxz
+ * @since 1.0
+ */
+val jetArtificialPath = ArtificialPath(arrayOf(
+    ArtificialReadOnlyResourcePathProcessor,
+))
+
+/**
+ * This function uses the [jetArtificialPath] and its [ArtificialPath.getFile]
+ * function, to get access to the file behind the [path].
+ * @param path is the path to the file
+ * @return the file behind the path, or if the path is a '//readOnlyResource/:/',
+ * than the file inside the resources.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun getFileViaArtificialPath(path: String) = jetArtificialPath.getFile(path)

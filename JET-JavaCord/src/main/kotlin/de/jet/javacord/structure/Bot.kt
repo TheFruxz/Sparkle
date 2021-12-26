@@ -5,7 +5,7 @@ import org.javacord.api.DiscordApiBuilder
 
 /**
  * This data class represents the configuration state of a discord-api bot.
- * @param data the credentials of the bot to login with
+ * @param data the credentials of the bot to log in with
  * @param appearance the public appearance of the bot
  * @param processPreProcess the process, before the bot-builder will be created
  * @param processPreSetup the process, before the bot-builder will be setup

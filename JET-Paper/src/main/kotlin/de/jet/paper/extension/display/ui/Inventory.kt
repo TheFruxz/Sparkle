@@ -1,10 +1,8 @@
 package de.jet.paper.extension.display.ui
 
-import de.jet.paper.extension.paper.createInventory
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.ui.inventory.Container
 import de.jet.paper.tool.display.ui.panel.Panel
-import net.kyori.adventure.text.Component
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 

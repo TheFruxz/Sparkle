@@ -5,7 +5,7 @@ package de.jet.jvm.extension
 /**
  * Cast the given object to the given type and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
@@ -14,20 +14,16 @@ fun <O> Any?.forceCast() = this as O
 /**
  * Cast the given object to the given type or null if fails and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
-fun <O> Any?.forceCastOrNull() = try {
-	this as O
-} catch (e: ClassCastException) {
-	null
-}
+fun <O> Any?.forceCastOrNull() = tryOrNull { this as O }
 
 /**
  * Cast the given object to the given type and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
@@ -36,20 +32,16 @@ fun <O> Any?.forceNullableCast() = this as O?
 /**
  * Cast the given object to the given type or null if fails and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
-fun <O> Any?.forceNullableCastOrNull() = try {
-	this as O?
-} catch (e: ClassCastException) {
-	null
-}
+fun <O> Any?.forceNullableCastOrNull() = tryOrNull { this as O? }
 
 /**
  * Cast the given object to the given type and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
@@ -58,20 +50,16 @@ fun <O> Nothing?.forceCast() = this as O
 /**
  * Cast the given object to the given type or null if fails and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
-fun <O> Nothing?.forceCastOrNull() = try {
-	this as O
-} catch (e: ClassCastException) {
-	null
-}
+fun <O> Nothing?.forceCastOrNull() = tryOrNull { this as O }
 
 /**
  * Cast the given object to the given type and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */
@@ -80,7 +68,7 @@ fun <O> Nothing?.forceNullableCast() = this as O?
 /**
  * Cast the given object to the given type or null if fails and not highlight risky casts in the IDE.
  * @param O the type of the object to cast
- * @return the casted object
+ * @return the cast object
  * @author Fruxz
  * @since 1.0
  */

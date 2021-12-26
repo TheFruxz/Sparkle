@@ -1,7 +1,12 @@
 @file:Suppress("DEPRECATION", "SENSELESS_COMPARISON", "DuplicatedCode", "ReplaceNegatedIsEmptyWithIsNotEmpty")
 package de.jet.paper.tool.display.item
 
-import com.google.gson.*
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import com.google.gson.JsonPrimitive
 import org.bukkit.Color
 import org.bukkit.DyeColor
 import org.bukkit.FireworkEffect
@@ -12,7 +17,15 @@ import org.bukkit.block.banner.PatternType
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.*
+import org.bukkit.inventory.meta.BannerMeta
+import org.bukkit.inventory.meta.BookMeta
+import org.bukkit.inventory.meta.EnchantmentStorageMeta
+import org.bukkit.inventory.meta.FireworkEffectMeta
+import org.bukkit.inventory.meta.FireworkMeta
+import org.bukkit.inventory.meta.LeatherArmorMeta
+import org.bukkit.inventory.meta.MapMeta
+import org.bukkit.inventory.meta.PotionMeta
+import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import java.util.*
@@ -86,19 +99,17 @@ object JsonItemStack {
                 }
             }
             if (meta is SkullMeta) {
-                val skullMeta = meta
-                if (skullMeta.hasOwner()) {
+                if (meta.hasOwner()) {
                     val extraMeta = JsonObject()
-                    extraMeta.addProperty("owner", skullMeta.owner)
+                    extraMeta.addProperty("owner", meta.owner)
                     metaJson.add("extra-meta", extraMeta)
                 }
             } else if (meta is BannerMeta) {
-                val bannerMeta = meta
                 val extraMeta = JsonObject()
-                extraMeta.addProperty("base-color", bannerMeta.baseColor!!.name)
-                if (bannerMeta.numberOfPatterns() > 0) {
+                extraMeta.addProperty("base-color", meta.baseColor!!.name)
+                if (meta.numberOfPatterns() > 0) {
                     val patterns = JsonArray()
-                    bannerMeta.patterns
+                    meta.patterns
                         .stream()
                         .map { pattern: Pattern ->
                             pattern.color.name + ":" + pattern.pattern.identifier
@@ -114,11 +125,10 @@ object JsonItemStack {
                 }
                 metaJson.add("extra-meta", extraMeta)
             } else if (meta is EnchantmentStorageMeta) {
-                val esmeta = meta
-                if (esmeta.hasStoredEnchants()) {
+                if (meta.hasStoredEnchants()) {
                     val extraMeta = JsonObject()
                     val storedEnchants = JsonArray()
-                    esmeta.storedEnchants.forEach { (enchantment: Enchantment, integer: Int) ->
+                    meta.storedEnchants.forEach { (enchantment: Enchantment, integer: Int) ->
                         storedEnchants.add(
                             JsonPrimitive(enchantment.name + ":" + integer)
                         )
@@ -131,18 +141,17 @@ object JsonItemStack {
                 extraMeta.addProperty("color", Integer.toHexString(meta.color.asRGB()))
                 metaJson.add("extra-meta", extraMeta)
             } else if (meta is BookMeta) {
-                val bmeta = meta
-                if (bmeta.hasAuthor() || bmeta.hasPages() || bmeta.hasTitle()) {
+                if (meta.hasAuthor() || meta.hasPages() || meta.hasTitle()) {
                     val extraMeta = JsonObject()
-                    if (bmeta.hasTitle()) {
-                        extraMeta.addProperty("title", bmeta.title)
+                    if (meta.hasTitle()) {
+                        extraMeta.addProperty("title", meta.title)
                     }
-                    if (bmeta.hasAuthor()) {
-                        extraMeta.addProperty("author", bmeta.author)
+                    if (meta.hasAuthor()) {
+                        extraMeta.addProperty("author", meta.author)
                     }
-                    if (bmeta.hasPages()) {
+                    if (meta.hasPages()) {
                         val pages = JsonArray()
-                        bmeta.pages.forEach(Consumer { str: String? ->
+                        meta.pages.forEach(Consumer { str: String? ->
                             pages.add(
                                 JsonPrimitive(str)
                             )
@@ -152,11 +161,10 @@ object JsonItemStack {
                     metaJson.add("extra-meta", extraMeta)
                 }
             } else if (meta is PotionMeta) {
-                val pmeta = meta
-                if (pmeta.hasCustomEffects()) {
+                if (meta.hasCustomEffects()) {
                     val extraMeta = JsonObject()
                     val customEffects = JsonArray()
-                    pmeta.customEffects.forEach(Consumer { potionEffect: PotionEffect ->
+                    meta.customEffects.forEach(Consumer { potionEffect: PotionEffect ->
                         customEffects.add(
                             JsonPrimitive(
                                 potionEffect.type.name
@@ -169,9 +177,8 @@ object JsonItemStack {
                     metaJson.add("extra-meta", extraMeta)
                 }
             } else if (meta is FireworkEffectMeta) {
-                val femeta = meta
-                if (femeta.hasEffect()) {
-                    val effect = femeta.effect
+                if (meta.hasEffect()) {
+                    val effect = meta.effect
                     val extraMeta = JsonObject()
                     extraMeta.addProperty("type", effect!!.type.name)
                     if (effect.hasFlicker()) extraMeta.addProperty("flicker", true)
@@ -197,12 +204,11 @@ object JsonItemStack {
                     metaJson.add("extra-meta", extraMeta)
                 }
             } else if (meta is FireworkMeta) {
-                val fmeta = meta
                 val extraMeta = JsonObject()
-                extraMeta.addProperty("power", fmeta.power)
-                if (fmeta.hasEffects()) {
+                extraMeta.addProperty("power", meta.power)
+                if (meta.hasEffects()) {
                     val effects = JsonArray()
-                    fmeta.effects.forEach(Consumer { effect: FireworkEffect ->
+                    meta.effects.forEach(Consumer { effect: FireworkEffect ->
                         val jsonObject = JsonObject()
                         jsonObject.addProperty("type", effect.type.name)
                         if (effect.hasFlicker()) jsonObject.addProperty("flicker", true)
@@ -306,7 +312,7 @@ object JsonItemStack {
                                         if (enchantment != null && level > 0) {
                                             meta.addEnchant(enchantment, level, true)
                                         }
-                                    } catch (ex: NumberFormatException) {
+                                    } catch (_: NumberFormatException) {
                                     }
                                 }
                             }
@@ -344,7 +350,6 @@ object JsonItemStack {
                             } else if (meta is BannerMeta) {
                                 val baseColorElement = extraJson["base-color"]
                                 val patternsElement = extraJson["patterns"]
-                                val bmeta = meta
                                 if (baseColorElement != null && baseColorElement.isJsonPrimitive) {
                                     try {
                                         val color = Arrays.stream(DyeColor.values())
@@ -356,9 +361,9 @@ object JsonItemStack {
                                             }
                                             .findFirst()
                                         if (color.isPresent) {
-                                            bmeta.baseColor = color.get()
+                                            meta.baseColor = color.get()
                                         }
-                                    } catch (ex: NumberFormatException) {
+                                    } catch (_: NumberFormatException) {
                                     }
                                 }
                                 if (patternsElement != null && patternsElement.isJsonArray) {
@@ -385,7 +390,7 @@ object JsonItemStack {
                                             }
                                         }
                                     })
-                                    if (!patterns.isEmpty()) bmeta.patterns = patterns
+                                    if (!patterns.isEmpty()) meta.patterns = patterns
                                 }
                             } else if (meta is EnchantmentStorageMeta) {
                                 val storedEnchantsElement = extraJson["stored-enchants"]
@@ -404,7 +409,7 @@ object JsonItemStack {
                                                     if (enchantment != null && level > 0) {
                                                         meta.addStoredEnchant(enchantment, level, true)
                                                     }
-                                                } catch (ex: NumberFormatException) {
+                                                } catch (_: NumberFormatException) {
                                                 }
                                             }
                                         }
@@ -415,19 +420,18 @@ object JsonItemStack {
                                 if (colorElement != null && colorElement.isJsonPrimitive) {
                                     try {
                                         meta.setColor(Color.fromRGB(colorElement.asString.toInt(16)))
-                                    } catch (ex: NumberFormatException) {
+                                    } catch (_: NumberFormatException) {
                                     }
                                 }
                             } else if (meta is BookMeta) {
                                 val titleElement = extraJson["title"]
                                 val authorElement = extraJson["author"]
                                 val pagesElement = extraJson["pages"]
-                                val bmeta = meta
                                 if (titleElement != null && titleElement.isJsonPrimitive) {
-                                    bmeta.title = titleElement.asString
+                                    meta.title = titleElement.asString
                                 }
                                 if (authorElement != null && authorElement.isJsonPrimitive) {
-                                    bmeta.author = authorElement.asString
+                                    meta.author = authorElement.asString
                                 }
                                 if (pagesElement != null && pagesElement.isJsonArray) {
                                     val jarray = pagesElement.asJsonArray
@@ -437,7 +441,7 @@ object JsonItemStack {
                                             jsonElement.asString
                                         )
                                     })
-                                    bmeta.pages = pages
+                                    meta.pages = pages
                                 }
                             } else if (meta is PotionMeta) {
                                 val customEffectsElement = extraJson["custom-effects"]
@@ -463,7 +467,7 @@ object JsonItemStack {
                                                             ), true
                                                         )
                                                     }
-                                                } catch (ex: NumberFormatException) {
+                                                } catch (_: NumberFormatException) {
                                                 }
                                             }
                                         }
@@ -505,11 +509,10 @@ object JsonItemStack {
                                     }
                                 }
                             } else if (meta is FireworkMeta) {
-                                val fmeta = meta
                                 val effectArrayElement = extraJson["effects"]
                                 val powerElement = extraJson["power"]
                                 if (powerElement != null && powerElement.isJsonPrimitive) {
-                                    fmeta.power = powerElement.asInt
+                                    meta.power = powerElement.asInt
                                 }
                                 if (effectArrayElement != null && effectArrayElement.isJsonArray) {
                                     effectArrayElement.asJsonArray.forEach(Consumer { jsonElement: JsonElement ->
@@ -557,7 +560,7 @@ object JsonItemStack {
                                                     )
                                                     if (!colors.isEmpty()) builder.withColor(colors)
                                                     if (!fadeColors.isEmpty()) builder.withFade(fadeColors)
-                                                    fmeta.addEffect(builder.build())
+                                                    meta.addEffect(builder.build())
                                                 }
                                             }
                                         }

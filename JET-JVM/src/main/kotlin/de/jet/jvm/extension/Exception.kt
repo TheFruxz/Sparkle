@@ -3,7 +3,7 @@ package de.jet.jvm.extension
 import kotlin.random.Random
 
 /**
- * Gets the exception [exception] and prints a beatiful stack trace & message.
+ * Gets the exception [exception] and prints a beautiful stack trace & message.
  * @param exception the exception to print
  * @author Fruxz
  * @since 1.0
@@ -21,13 +21,14 @@ fun catchException(exception: Exception) {
 }
 
 /**
- * Sourrunds the [tryBlock] with a try catch block and if the
+ * Surrounds the [tryBlock] with a try catch block and if the
  * try catch block catches an exception it will execute [catchException].
  * @param catchBlock the block to execute if the try catch block catches an exception, before the [catchException] is executed
  * @param tryBlock the block to execute
  * @author Fruxz
  * @since 1.0
  */
+@Deprecated(message = "Do not use this, in future, a proper try-catch object would be available!")
 fun jetTry(catchBlock: () -> Unit = { }, tryBlock: () -> Unit) {
 	try {
 		tryBlock()
@@ -68,6 +69,14 @@ fun <A, R, T : R> A.tryOrElse(other: T, process: A.() -> R): R {
  * @since 1.0
  */
 fun <A, T> A.tryOrNull(process: A.() -> T): T? {
+	return try {
+		process()
+	} catch (e: Exception) {
+		null
+	}
+}
+
+fun <T> tryOrNull(process: () -> T): T? {
 	return try {
 		process()
 	} catch (e: Exception) {

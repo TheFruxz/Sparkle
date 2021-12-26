@@ -1,20 +1,17 @@
 package de.jet.javacord.extension
 
+import de.jet.jvm.extension.tryOrNull
 import org.javacord.api.DiscordApi
 
 /**
- * Get the server with the given [id] or null if the bot is
+ * Get the server with the given [serverId] or null if the bot is
  * not part of that server (or the server-id doesn't exist).
- * @param id the id of the searched server
- * @return the server with the given [id] or null if the bot is not part of that server
+ * @param serverId the id of the searched server
+ * @return the server with the given [serverId] or null if the bot is not part of that server
  * @author Fruxz
  * @since 1.0
  */
-fun DiscordApi.server(id: Long) = try {
-    getServerById(id).get()
-} catch (e: NoSuchElementException) {
-    null
-}
+fun DiscordApi.server(serverId: Long) = tryOrNull { getServerById(serverId).get() }
 
 /**
  * Get the first server with the given [name].

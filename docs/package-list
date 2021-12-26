@@ -32,6 +32,7 @@ de.jet.jvm.tool.data
 de.jet.jvm.tool.devlang
 de.jet.jvm.tool.math
 de.jet.jvm.tool.mutable
+de.jet.jvm.tool.path
 de.jet.jvm.tool.smart
 de.jet.jvm.tool.smart.identification
 de.jet.jvm.tool.smart.positioning

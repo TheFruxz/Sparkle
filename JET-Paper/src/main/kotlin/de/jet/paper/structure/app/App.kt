@@ -40,7 +40,7 @@ import kotlin.reflect.KClass
  * of the whole app.
  *
  * ## Use
- * You should use this Class as the base-plate of your app/plugin
+ * You should use this Class as the baseplate of your app/plugin
  * instead of the [JavaPlugin], because this class extends out of
  * the [JavaPlugin] class. This class is way better, because it has
  * more extending functionality over the classic [JavaPlugin]!
@@ -49,12 +49,12 @@ import kotlin.reflect.KClass
  * The [App]-Class is abstract, so you can use it for your own class,
  * to be the base of your own app.
  *
- * This class uses these base-plates:
+ * This class uses these baseplates:
  * - [JavaPlugin]: Every app is a whole real Minecraft-Server-Plugin,
  * but it is heavely extended. But you can touch the original Bukkit/
  * Paper API, if you want to do so.
  *
- * - [Identifiable]<[App]>: Every app is identifiable thru is unique
+ * - [Identifiable]<[App]>: Every app is identifiable through is unique
  * custom set [appIdentity] property. ([appIdentity] = [identity])
  *
  * @author Fruxz (@TheFruxz)

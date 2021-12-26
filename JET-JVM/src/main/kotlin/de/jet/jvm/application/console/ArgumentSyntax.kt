@@ -84,7 +84,7 @@ class ArgumentSyntax(
         fun checkVariableContent(value: String) = when (contentType) {
             NONE -> Companion.produce(
                 value.isBlank(),
-                "Content ('$value') not allowed at -$variableName! (isset-variable)"
+                "Content ('$value') not allowed at -$variableName! (is-set-variable)"
             )
             WORD -> Companion.produce(
                 value.isNotEmpty() && value.split(" ").size == 1,
@@ -139,8 +139,8 @@ class ArgumentSyntax(
             } && consoleInputVariables.keys
                 .containsAll(onlyRequiredVariables()
                     .map { mapped -> mapped.variableName }
-                ) && consoleInputVariables.keys.all { cIVkeys ->
-                syntaxVariables.map { it.variableName }.contains(cIVkeys)
+                ) && consoleInputVariables.keys.all { civKeys ->
+                syntaxVariables.map { it.variableName }.contains(civKeys)
             }
         }
     }

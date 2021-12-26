@@ -41,12 +41,8 @@ data class InterchangeAccess(
 			val completion = interchange.completion
 			val currentSection = completion.sections.getOrNull(slot)
 
-			return@with if (currentSection != null) {
-
-				currentSection.inputExpressionCheck(parameters.getOrNull(slot) ?: "").debugLog("checkit")
-
-			} else
-				(completion.infinite && completion.sections.lastIndex < parameters.lastIndex).debugLog("skipit")
+			return@with currentSection?.inputExpressionCheck?.let { it(parameters.getOrNull(slot) ?: "") }?.debugLog("checkit")
+				?: (completion.infinite && completion.sections.lastIndex < parameters.lastIndex).debugLog("skipit")
 
 		}
 

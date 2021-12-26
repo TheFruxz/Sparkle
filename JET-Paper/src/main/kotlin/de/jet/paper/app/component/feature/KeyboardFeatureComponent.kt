@@ -86,9 +86,7 @@ class KeyboardFeatureComponent(override val vendor: App) : Component(vendor, Run
         }
     }
 
-    class RequestListener(override val vendor: App) : EventListener {
-
-    }
+    class RequestListener(override val vendor: App) : EventListener
 
     companion object {
 

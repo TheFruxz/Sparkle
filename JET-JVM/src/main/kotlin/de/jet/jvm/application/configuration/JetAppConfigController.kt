@@ -17,7 +17,7 @@ object JetAppConfigController {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val jetConfig = File("jet.apps.json")
+	private val jetConfig = File("jet.apps.json")
 
 	/**
 	 * The current configuration state of the application
@@ -73,7 +73,7 @@ object JetAppConfigController {
 	}
 
 	/**
-	 * This functio returns the [JetAppConfigModule] of the searched
+	 * This function returns the [JetAppConfigModule] of the searched
 	 * jet app [app] or returns null, if the module is not stored.
 	 * The module contains, most importantly, the configured path
 	 * of the files, which the [app] uses.

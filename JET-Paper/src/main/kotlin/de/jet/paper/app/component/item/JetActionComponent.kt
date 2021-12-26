@@ -97,7 +97,7 @@ internal class JetActionComponent(vendor: App = system) : Component(vendor, AUTO
 
 				}
 
-			} catch (exception: NoSuchElementException) { }
+			} catch (_: NoSuchElementException) { }
 		}
 
 		@EventHandler

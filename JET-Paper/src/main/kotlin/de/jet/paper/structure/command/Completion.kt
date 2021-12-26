@@ -10,7 +10,11 @@ import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.lang
-import de.jet.paper.extension.paper.*
+import de.jet.paper.extension.paper.getPlayer
+import de.jet.paper.extension.paper.hasApproval
+import de.jet.paper.extension.paper.name
+import de.jet.paper.extension.paper.onlinePlayers
+import de.jet.paper.extension.paper.worlds
 import de.jet.paper.extension.system
 import de.jet.paper.structure.app.cache.CacheDepthLevel
 import de.jet.paper.tool.display.color.ColorType
@@ -355,7 +359,7 @@ data class Completion(
 
 					if (index <= parameters.size) {
 
-						if (value.isRequired || (!value.isRequired && parameters.lastIndex >= index)) {
+						if (value.isRequired || parameters.lastIndex >= index) {
 
 							if (value.mustMatchOutput && !value.components.flatMap { it.completion() }
 									.contains(parameters[index])) {

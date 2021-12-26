@@ -11,7 +11,7 @@ import kotlin.time.ExperimentalTime
 import java.util.Calendar as JavaUtilCalendar
 
 /**
- * This class is a calender, which can be from & to a [JavaUtilCalendar] transformed.
+ * This class is a calendar, which can be from & to a [JavaUtilCalendar] transformed.
  * @param origin the java base of the calendar
  * @author Fruxz
  * @since 1.0
@@ -236,7 +236,7 @@ class Calendar private constructor(
 	override fun toString() = "Calendar($prettyPrint)"
 
 	/**
-	 * This function returns, if the [JavaUtilCalendar.getTimeInMillis] of [this] == [other].
+	 * This function returns, if the [JavaUtilCalendar.getTimeInMillis] of this == [other].
 	 * @param other the calendar which should be compared
 	 * @author Fruxz
 	 * @since 1.0

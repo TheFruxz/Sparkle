@@ -415,7 +415,7 @@ fun UInt.limitTo(progression: UIntProgression): UInt = let { if (it in progressi
 fun ULong.limitTo(progression: ULongProgression): ULong = let { if (it in progression) it else if (it > progression.last) progression.last else progression.first }
 
 /**
- * Creates a [Percentage] object with the [this] [Double]
+ * Creates a [Percentage] object with the this [Double]
  * as a decimal number.
  * @author Fruxz
  * @since 1.0
@@ -424,7 +424,7 @@ val Double.decimalAsPercent: Percentage
 	get() = Percentage(this)
 
 /**
- * Creates a [Percentage] object with the [this] [Double]
+ * Creates a [Percentage] object with the this [Float]
  * as a decimal number.
  * @author Fruxz
  * @since 1.0
