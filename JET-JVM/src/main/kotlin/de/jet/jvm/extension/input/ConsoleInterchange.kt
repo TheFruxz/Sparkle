@@ -18,7 +18,7 @@ fun buildConsoleInterchange(name: String, process: ConsoleInterchangeBranch.() -
     ConsoleInterchangeBranch(name, Address.address(name), emptyList(), ConsoleInterchangeBranchType.OBJECT, null).apply(process)
 
 fun requestTerminalInterchangeInput(vararg interchanges: ConsoleInterchangeBranch) =
-    de.jet.jvm.extension.input.requestTerminalInterchangeInput(ConsoleInterchangeConfiguration(interchanges.toList()))
+    requestTerminalInterchangeInput(ConsoleInterchangeConfiguration(interchanges.toList()))
 
 /**
  * Requests an input from the user, like a terminal input,
