@@ -22,4 +22,7 @@ interface Addressable<T> {
 	 */
 	val address: Address<T>
 
+	val isRoot: Boolean
+		get() = !addressString.contains("/") || addressString == "/"
+
 }
