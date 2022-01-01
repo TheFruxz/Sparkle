@@ -15,10 +15,12 @@ import de.jet.jvm.tool.smart.positioning.Address
  * @since 1.0
  */
 fun buildConsoleInterchange(name: String, process: ConsoleInterchangeBranch.() -> Unit = { }) =
-    ConsoleInterchangeBranch(name, Address.address(name), emptyList(), ConsoleInterchangeBranchType.OBJECT, null).apply(process)
+	ConsoleInterchangeBranch(name, Address.address(name), emptyList(), ConsoleInterchangeBranchType.OBJECT, null).apply(
+		process
+	)
 
 fun requestTerminalInterchangeInput(vararg interchanges: ConsoleInterchangeBranch) =
-    requestTerminalInterchangeInput(ConsoleInterchangeConfiguration(interchanges.toList()))
+	requestTerminalInterchangeInput(ConsoleInterchangeConfiguration(interchanges.toList()))
 
 /**
  * Requests an input from the user, like a terminal input,
@@ -28,46 +30,61 @@ fun requestTerminalInterchangeInput(vararg interchanges: ConsoleInterchangeBranc
  * @author Fruxz
  * @since 1.0
  */
-fun requestTerminalInterchangeInput(consoleInterchangeConfiguration: ConsoleInterchangeConfiguration) {
-    with(consoleInterchangeConfiguration) {
+fun requestTerminalInterchangeInput(consoleInterchangeConfiguration: ConsoleInterchangeConfiguration, run: Int = 1) {
+	val border = buildString {
+		append("> ")
+		repeat(90) { append('=') }
+		append(" <")
+	}
 
-        assert(interchanges.all { it.path.isRoot }) { "Not all branches are roots!" }
+	with(consoleInterchangeConfiguration) {
 
-        println(buildString {
-            appendLine("Welcome to the custom JET JVM Console Interchange Console!")
-            append("Enter interchange/command, 'help' or 'exit':")
-        })
+		assert(interchanges.all { it.path.isRoot }) { "Not all branches are roots!" }
 
-        val input = readln()
+		println(buildString {
+			if (run == 1) appendLine("Welcome to the custom JET JVM Console Interchange Console!")
+			append("[>] Enter interchange/command, 'help' or 'exit':")
+		})
 
-        if (input.startsWith("help")) {
+		val input = readln()
 
-            println(buildString {
+		if (input.startsWith("help")) {
 
-                appendLine("--- HELP MENU --- --- ---")
-                appendLine("Here you can see all usable interchanges:")
+			println(buildString {
 
-                interchanges.forEach {
-                    appendLine("- ${it.identity}")
-                }
+				appendLine("--- HELP MENU --- --- ---")
+				appendLine("Here you can see all usable interchanges:")
 
-                append("--- HELP MENU --- --- ---")
+				interchanges.forEach {
+					appendLine("- ${it.identity}")
+				}
 
-            })
+				append("--- HELP MENU --- --- ---")
 
-        } else if (input.startsWith("exit")) {
-            println("Okay, bye!")
-            return
-        } else {
+			})
 
-            if (!consoleInterchangeConfiguration.executeCommand(input)) {
-                println("No response from interchange, seems that your input-syntax was wrong, try again!")
-            }
+		} else if (input.startsWith("exit")) {
+			println("[!] Okay, bye!")
+			return
+		} else {
 
-        }
+			fun printBorder() = println(buildString {
+				appendLine()
+				appendLine(border)
+			})
 
-    }
+			printBorder()
 
-    requestTerminalInterchangeInput(consoleInterchangeConfiguration)
+			if (!consoleInterchangeConfiguration.executeCommand(input)) {
+				println("[!] No response from interchange, seems that your input-syntax was wrong, try again!")
+			}
+
+			printBorder()
+
+		}
+
+	}
+
+	requestTerminalInterchangeInput(consoleInterchangeConfiguration, run + 1)
 
 }
