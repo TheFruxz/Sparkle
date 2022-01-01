@@ -18,7 +18,7 @@ class ConsoleInterchangeBranch(
 
     fun getBestMatchFromCommandInputWithParameters(commandInput: String): Pair<ConsoleInterchangeBranch?, String> {
         val (branch, remaining) = getBestMatchFromPathWithRemaining(Address(commandInput.replace(" ", "/")))
-        return Pair(branch, remaining.addressString.replace("/", " "))
+        return Pair(branch, remaining.addressString.replace("/", " ").removePrefix(" "))
     }
 
     fun branch(
