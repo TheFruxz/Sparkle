@@ -6,21 +6,25 @@ import de.jet.jvm.tool.smart.positioning.Address
 import de.jet.jvm.tool.smart.positioning.Pathed
 
 open class TreeBranch<SUBBRANCH : TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>, CONTENT, BRANCH_TYPE : TreeBranchType>(
-    override val identity: String,
-    override val path: Address<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>>,
-    val branchType: TreeBranchType,
-    private val subBranches: List<SUBBRANCH>,
-    val content: CONTENT,
+    override var identity: String,
+    override var path: Address<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>> = Address.address(identity),
+    var branchType: TreeBranchType,
+    var subBranches: List<SUBBRANCH>,
+    var content: CONTENT,
 ) : Identifiable<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>>, Pathed<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>> {
 
-    fun directSubBranches() = subBranches.distinctBy { it.path }
+    init {
+    	subBranches = subBranches.distinctBy { path }
+    }
+
+    fun content(content: CONTENT) = apply { this.content = content }
 
     fun flatSubBranches(): List<SUBBRANCH> {
-        return subBranches.flatMap { it.flatSubBranches() }.distinctBy { it.path }
+        return subBranches.flatMap { it.flatSubBranches() }
     }
 
     fun allKnownBranches(): List<SUBBRANCH> {
-        return (subBranches.flatMap { it.allKnownBranches() } + this.forceCast<SUBBRANCH>()).distinctBy { it.path }
+        return (subBranches.flatMap { it.allKnownBranches() } + this.forceCast<SUBBRANCH>())
     }
 
     fun getBestMatchFromPath(path: Address<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>>): SUBBRANCH? {
