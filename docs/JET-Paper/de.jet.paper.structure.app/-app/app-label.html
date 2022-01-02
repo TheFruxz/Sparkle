@@ -7,13 +7,13 @@
 const savedDarkMode = storage ? JSON.parse(storage) : false
 if(savedDarkMode === true){
     document.getElementsByTagName("html")[0].classList.add("theme-dark")
-}</script><script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><link href="../../../styles/prism.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script><script type="text/javascript" src="../../../scripts/main.js" async></script><script type="text/javascript" src="../../../scripts/prism.js" async></script>
+}</script><script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><link href="../../../styles/prism.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script><script type="text/javascript" src="../../../scripts/main.js" defer></script><script type="text/javascript" src="../../../scripts/prism.js" async></script>
 <script src="https://unpkg.com/kotlin-playground@1"></script>
   
     <div class="navigation-wrapper" id="navigation-wrapper">
       <div id="leftToggler"><span class="icon-toggler"></span></div>
       <div class="library-name"><a href="../../../index.html"><span>JET</span></a></div>
-      <div>1.0-BETA-11.1</div>
+      <div>1.0-BETA-12.1</div>
       <div class="pull-right d-flex"><button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
       </div>
@@ -22,15 +22,67 @@ if(savedDarkMode === true){
       <div id="leftColumn">
         <div id="sideMenu"></div>
       </div>
-      <div id="main"><script type="text/javascript" src="../../../scripts/main.js"></script>
+      <div id="main">
         <div class="main-content" id="content" pageids="JET-Paper::de.jet.paper.structure.app/App/appLabel/#/PointingToDeclaration//-897372606">
           <div class="breadcrumbs"><a href="../../index.html">JET-Paper</a>/<a href="../index.html">de.jet.paper.structure.app</a>/<a href="index.html">App</a>/<a href="app-label.html">appLabel</a></div>
           <div class="cover ">
             <h1 class="cover"><span>app</span><wbr><span><span>Label</span></span></h1>
           </div>
-          <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":JET-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="app-label.html">appLabel</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h1 class=""><code class="lang-kotlin">App.appLabel</code></h1><h2 class=""> Info</h2><p class="paragraph">This value defines the display-name of this app, which will be displayed in app-lists and information with the app included. Can be duplicated, but try to avoid duplicated display names with other apps!</p><h2 class=""> Use</h2><p class="paragraph">Use this value to tell your customers &amp; visitors that your app is running, there some possible ways to do that:</p><ul><li><p class="paragraph">On Minecraft-Networks: Tell the players the name of your network</p></li><li><p class="paragraph">On Publishing: Tell the players the name of your app (where they can find it)</p></li><li><p class="paragraph">On private use: Tell yourself, that this app is this app</p></li></ul><p class="paragraph">But you can use this like you like!</p><h2 class=""> Relations</h2><p class="paragraph">The label is not related to some crucial read/save system or something else, in this cases <a href="app-identity.html">appIdentity</a> is used!</p><h4 class="">Author</h4><p class="paragraph">Fruxz (@TheFruxz)</p><h4 class="">Since</h4><p class="paragraph">1.0-BETA-2 (preview)</p><h2 class="">Samples</h2>de.jet.paper.app.JetApp.appLabel<h2 class="">See also</h2><div data-togglable="See also"><div class="table" data-togglable="See also"><div class="table-row" data-filterable-current=":JET-Paper:dokkaHtmlPartial/main" data-filterable-set=":JET-Paper:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><a href="../../de.jet.paper.app/-jet-app/app-label.html">de.jet.paper.app.JetApp</a></span></div><div><div class="title"><div data-togglable="See also"></div></div></div></div></div></div></div></div></div>
+          <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":JET-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="app-label.html">appLabel</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h1 class=""><code class="lang-kotlin">App.appLabel</code></h1><h2 class=""> Info</h2><p class="paragraph">This value defines the display-name of this app, which will be displayed in app-lists and information with the app included. Can be duplicated, but try to avoid duplicated display names with other apps!</p><h2 class=""> Use</h2><p class="paragraph">Use this value to tell your customers &amp; visitors that your app is running, there some possible ways to do that:</p><ul><li><p class="paragraph">On Minecraft-Networks: Tell the players the name of your network</p></li><li><p class="paragraph">On Publishing: Tell the players the name of your app (where they can find it)</p></li><li><p class="paragraph">On private use: Tell yourself, that this app is this app</p></li></ul><p class="paragraph">But you can use this like you like!</p><h2 class=""> Relations</h2><p class="paragraph">The label is not related to some crucial read/save system or something else, in this cases <a href="app-identity.html">appIdentity</a> is used!</p><h4 class="">Author</h4><p class="paragraph">Fruxz (@TheFruxz)</p><h4 class="">Since</h4><p class="paragraph">1.0-BETA-2 (preview)</p><h2 class="">Samples</h2><div class="sample-container"><pre><code class="runnablesample monospace block lang-kotlin" theme="idea">import de.jet.jvm.extension.forceCast
+import de.jet.jvm.extension.math.decimalAsPercent
+import de.jet.jvm.tool.smart.identification.Identifiable
+import de.jet.jvm.tool.smart.identification.Identity
+import de.jet.paper.app.component.chat.JetChatComponent
+import de.jet.paper.app.component.essentials.EssentialsComponent
+import de.jet.paper.app.component.essentials.point.Point
+import de.jet.paper.app.component.essentials.point.PointConfig
+import de.jet.paper.app.component.essentials.world.WorldConfig
+import de.jet.paper.app.component.essentials.world.tree.WorldRenderer
+import de.jet.paper.app.component.essentials.world.tree.WorldRenderer.RenderFolder
+import de.jet.paper.app.component.essentials.world.tree.WorldRenderer.RenderObject
+import de.jet.paper.app.component.essentials.world.tree.WorldRenderer.RenderWorld
+import de.jet.paper.app.component.essentials.world.tree.WorldRenderer.WorldStructure
+import de.jet.paper.app.component.events.JetEventsComponent
+import de.jet.paper.app.component.feature.MarkingFeatureComponent
+import de.jet.paper.app.component.item.JetActionComponent
+import de.jet.paper.app.component.system.JetAssistiveInterchangesComponent
+import de.jet.paper.app.component.system.JetKeeperComponent
+import de.jet.paper.app.component.world.JetBuildModeComponent
+import de.jet.paper.app.interchange.ComponentInterchange
+import de.jet.paper.app.interchange.JETInterchange
+import de.jet.paper.extension.debugLog
+import de.jet.paper.extension.display.ui.buildContainer
+import de.jet.paper.extension.mainLog
+import de.jet.paper.extension.o.buildSandBox
+import de.jet.paper.extension.paper.worlds
+import de.jet.paper.general.api.mojang.*
+import de.jet.paper.runtime.app.LanguageSpeaker.LanguageContainer
+import de.jet.paper.structure.app.App
+import de.jet.paper.structure.app.AppCompanion
+import de.jet.paper.structure.classes.JSON
+import de.jet.paper.tool.data.Preference
+import de.jet.paper.tool.data.json.JsonConfiguration
+import de.jet.paper.tool.data.json.JsonFileDataElement
+import de.jet.paper.tool.display.item.Modification
+import de.jet.paper.tool.display.world.SimpleLocation
+import de.jet.paper.tool.effect.sound.SoundData
+import de.jet.paper.tool.effect.sound.SoundMelody
+import de.jet.paper.tool.input.Keyboard
+import de.jet.paper.tool.input.Keyboard.RenderEngine.Key
+import de.jet.paper.tool.input.Keyboard.RenderEngine.KeyConfiguration
+import de.jet.paper.tool.permission.Approval
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
+import org.bukkit.configuration.serialization.ConfigurationSerialization
+import org.bukkit.entity.Player
+import java.util.logging.Level
+fun main() { 
+   //sampleStart 
+   override val appLabel = "JET" 
+   //sampleEnd
+}</code></pre></div><h2 class="">See also</h2><div data-togglable="See also"><div class="table" data-togglable="See also"><div class="table-row" data-filterable-current=":JET-Paper:dokkaHtmlPartial/main" data-filterable-set=":JET-Paper:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><a href="../../de.jet.paper.app/-jet-app/app-label.html"><span>de.</span><wbr><span>jet.</span><wbr><span>paper.</span><wbr><span>app.</span><wbr><span>JetApp</span></a></div></span></div><div><div class="title"><div data-togglable="See also"></div></div></div></div></div></div></div></div></div>
         </div>
-        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2021 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
       </div>
     </div>
   

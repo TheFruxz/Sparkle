@@ -10,7 +10,6 @@ module:JET-JVM
 de.jet.jvm.annotation
 de.jet.jvm.application.configuration
 de.jet.jvm.application.console
-de.jet.jvm.application.console.interchange
 de.jet.jvm.application.extension
 de.jet.jvm.application.runtime
 de.jet.jvm.application.tag
@@ -22,6 +21,7 @@ de.jet.jvm.extension.data
 de.jet.jvm.extension.display
 de.jet.jvm.extension.input
 de.jet.jvm.extension.java
+de.jet.jvm.extension.logging
 de.jet.jvm.extension.math
 de.jet.jvm.extension.objects
 de.jet.jvm.extension.time
@@ -38,7 +38,9 @@ de.jet.jvm.tool.smart.identification
 de.jet.jvm.tool.smart.positioning
 de.jet.jvm.tool.smart.type
 de.jet.jvm.tool.timing.calendar
+de.jet.jvm.tool.timing.calendar.timeunit
 de.jet.jvm.tool.timing.clock
+de.jet.jvm.tree
 module:JET-Paper
 de.jet.paper
 de.jet.paper.app
