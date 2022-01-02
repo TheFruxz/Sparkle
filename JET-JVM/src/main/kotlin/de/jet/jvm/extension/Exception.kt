@@ -20,6 +20,16 @@ fun catchException(exception: Exception) {
 
 }
 
+@Deprecated("DO NOT USE THIS", ReplaceWith("catchException(exception)"))
+fun jetTry(catchBlock: () -> Unit = {}, tryBlock: () -> Unit) {
+	try {
+		tryBlock()
+	} catch (e: Exception) {
+		catchException(e)
+		catchBlock()
+	}
+}
+
 /**
  * Try return the value and returns the result inside a [Result] object.
  * @param A (short for air) is the type of the surrounding block or the object, where it is called from
