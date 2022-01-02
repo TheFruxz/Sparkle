@@ -9,7 +9,7 @@ import kotlin.reflect.KFunction1
  * @author Fruxz
  * @since 1.0
  */
-object TerminalConsoleExtension : AppExtension<MutableList<ConsoleInterchangeBranch>, Unit, Unit> {
+object ConsoleInterchangeExtension : AppExtension<MutableList<ConsoleInterchangeBranch>, Unit, Unit> {
 
 	override val identity = "TerminalConsole"
 	override val parallelRunAllowed = false
