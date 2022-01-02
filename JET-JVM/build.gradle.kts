@@ -18,6 +18,10 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.10")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    implementation("org.slf4j:slf4j-api:2.0.0-alpha5")
+
 }
 
 tasks.withType<KotlinCompile> {
