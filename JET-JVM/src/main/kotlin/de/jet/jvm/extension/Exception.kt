@@ -21,20 +21,35 @@ fun catchException(exception: Exception) {
 }
 
 /**
- * Surrounds the [tryBlock] with a try catch block and if the
- * try catch block catches an exception it will execute [catchException].
- * @param catchBlock the block to execute if the try catch block catches an exception, before the [catchException] is executed
- * @param tryBlock the block to execute
+ * Try return the value and returns the result inside a [Result] object.
+ * @param A (short for air) is the type of the surrounding block or the object, where it is called from
+ * @param T is the return type of the process
+ * @param process the process to execute, returning the normal value as [T]
+ * @return the value returned by the [process] as a [Result]
  * @author Fruxz
  * @since 1.0
  */
-@Deprecated(message = "Do not use this, in future, a proper try-catch object would be available!")
-fun jetTry(catchBlock: () -> Unit = { }, tryBlock: () -> Unit) {
-	try {
-		tryBlock()
+fun <A, T> A.tryToResult(process: A.() -> T): Result<T> {
+	return try {
+		Result.success(process())
 	} catch (e: Exception) {
-		catchBlock()
-		catchException(e)
+		Result.failure(e)
+	}
+}
+
+/**
+ * Try return the value and returns the result inside a [Result] object.
+ * @param T is the return type of the process
+ * @param process the process to execute, returning the normal value as [T]
+ * @return the value returned by the [process] as a [Result]
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T> tryToResult(process: () -> T): Result<T> {
+	return try {
+		Result.success(process())
+	} catch (e: Exception) {
+		Result.failure(e)
 	}
 }
 
@@ -51,11 +66,7 @@ fun jetTry(catchBlock: () -> Unit = { }, tryBlock: () -> Unit) {
  * @since 1.0
  */
 fun <A, R, T : R> A.tryOrElse(other: T, process: A.() -> R): R {
-	return try {
-		process()
-	} catch (e: Exception) {
-		other
-	}
+	return tryToResult(process).getOrElse { other }
 }
 
 /**
@@ -69,11 +80,7 @@ fun <A, R, T : R> A.tryOrElse(other: T, process: A.() -> R): R {
  * @since 1.0
  */
 fun <A, T> A.tryOrNull(process: A.() -> T): T? {
-	return try {
-		process()
-	} catch (e: Exception) {
-		null
-	}
+	return tryToResult(process).getOrNull()
 }
 
 /**
@@ -86,9 +93,5 @@ fun <A, T> A.tryOrNull(process: A.() -> T): T? {
  * @since 1.0
  */
 fun <T> tryOrNull(process: () -> T): T? {
-	return try {
-		process()
-	} catch (e: Exception) {
-		null
-	}
+	return tryToResult(process).getOrNull()
 }
