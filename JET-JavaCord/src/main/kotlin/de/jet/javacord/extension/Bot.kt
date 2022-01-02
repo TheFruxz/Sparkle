@@ -5,6 +5,7 @@ import de.jet.javacord.structure.Bot
 import de.jet.javacord.structure.BotActivity
 import de.jet.javacord.structure.BotAppearance
 import de.jet.javacord.structure.BotCredentials
+import org.javacord.api.AccountType.BOT
 import org.javacord.api.DiscordApi
 import org.javacord.api.DiscordApiBuilder
 
@@ -37,6 +38,7 @@ fun runBot(process: Bot.() -> Unit) {
 		Bot.instance = DiscordApiBuilder()
 			.apply(data.processPreSetup)
 			.setToken(data.data.token)
+			.setAccountType(BOT)
 			.apply(data.processPreLogin)
 			.login()
 			.join()
@@ -46,10 +48,15 @@ fun runBot(process: Bot.() -> Unit) {
 			apply(data.appearance.avatar.application)
 			updateStatus(data.appearance.status)
 			addServerBecomesAvailableListener {
-				yourself.updateNickname(it?.server, data.appearance.displayName)
+				it.api.yourself.updateNickname(it.server, data.appearance.displayName)
 			}
 			data.appearance.activity.applyToBot(this)
 			apply(data.processPostProcess)
+			apply {
+				servers().forEach {
+					yourself.updateNickname(it, data.appearance.displayName)
+				}
+			}
 		}
 
 	}
