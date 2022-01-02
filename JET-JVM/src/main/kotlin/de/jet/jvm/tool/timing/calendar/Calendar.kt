@@ -3,7 +3,9 @@ package de.jet.jvm.tool.timing.calendar
 import de.jet.jvm.annotation.NotTested
 import de.jet.jvm.extension.time.prettyPrint
 import de.jet.jvm.tool.smart.Producible
-import de.jet.jvm.tool.timing.calendar.Calendar.TimeField.*
+import de.jet.jvm.tool.timing.calendar.timeunit.TimeUnit
+import de.jet.jvm.tool.timing.calendar.timeunit.TimeUnit.Companion.MILLISECOND
+import de.jet.jvm.tool.timing.calendar.timeunit.TimeUnit.Companion.SECOND
 import java.util.*
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -33,8 +35,8 @@ class Calendar private constructor(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun add(timeField: TimeField, amount: Int) = apply {
-		origin.add(timeField.field, amount)
+	fun add(timeField: TimeUnit, amount: Int) = apply {
+		origin.add(timeField.javaField, amount)
 	}
 
 	/**
@@ -60,8 +62,8 @@ class Calendar private constructor(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun set(timeField: TimeField, amount: Int) = apply {
-		origin.set(timeField.field, amount)
+	fun set(timeField: TimeUnit, amount: Int) = apply {
+		origin.set(timeField.javaField, amount)
 	}
 
 	/**
@@ -74,8 +76,8 @@ class Calendar private constructor(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun take(timeField: TimeField, amount: Int) = apply {
-		origin.add(timeField.field, amount * (-1))
+	fun take(timeField: TimeUnit, amount: Int) = apply {
+		origin.add(timeField.javaField, amount * (-1))
 	}
 
 	/**
@@ -99,7 +101,7 @@ class Calendar private constructor(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun get(timeField: TimeField) = origin.get(timeField.field)
+	fun get(timeField: TimeUnit) = origin.get(timeField.javaField)
 
 	/**
 	 * This function returns the time of the calendar in Minecraft-Ticks.
@@ -340,32 +342,6 @@ class Calendar private constructor(
 		 * @since 1.0
 		 */
 		fun fromLegacy(calendar: JavaUtilCalendar) = Calendar(calendar)
-
-	}
-
-	/**
-	 * @property ERA era as a time unit
-	 * @property YEAR year as a time unit
-	 * @property MONTH month as a time unit
-	 * @property HOUR hour as a time unit
-	 * @property MINUTE minute as a time unit
-	 * @property SECOND second as a time unit
-	 * @property MILLISECOND millisecond as a time unit
-	 */
-	enum class TimeField {
-		ERA, YEAR, MONTH, HOUR, MINUTE, SECOND, MILLISECOND;
-
-		internal val field by lazy {
-			when (this) {
-				ERA -> JavaUtilCalendar.ERA
-				YEAR -> JavaUtilCalendar.YEAR
-				MONTH -> JavaUtilCalendar.MONTH
-				HOUR -> JavaUtilCalendar.HOUR
-				MINUTE -> JavaUtilCalendar.MINUTE
-				SECOND -> JavaUtilCalendar.SECOND
-				MILLISECOND -> JavaUtilCalendar.MILLISECOND
-			}
-		}
 
 	}
 
