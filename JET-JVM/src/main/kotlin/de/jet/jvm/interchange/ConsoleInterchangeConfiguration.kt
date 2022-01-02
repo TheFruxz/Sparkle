@@ -2,12 +2,28 @@ package de.jet.jvm.interchange
 
 import de.jet.jvm.extension.switchResult
 
+/**
+ * This data class represents a configuration of multiple
+ * usable interchanges, a reaction to failure and a
+ * reaction to success.
+ * @param interchanges A list of all usable interchanges.
+ * @param onFail A reaction to failure.
+ * @param onSuccess A reaction to success.
+ * @author Fruxz
+ * @since 1.0
+ */
 data class ConsoleInterchangeConfiguration(
 	val interchanges: List<ConsoleInterchangeBranch>,
 	val onFail: (input: String) -> Unit = {},
 	val onSuccess: (input: String) -> Unit = {},
 ) {
 
+	/**
+	 * This function executes an interchange call onto all given interchanges.
+	 * @param input The input to be passed onto the interchanges.
+	 * @return The result of the interchange call.
+	 * @author Fruxz
+	 */
 	fun executeCommand(input: String): Boolean {
 
 		fun executeBase(input: String): Boolean {

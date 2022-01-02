@@ -27,6 +27,11 @@ data class Bot(
 
 	companion object Running {
 
+		/**
+		 * The currently running [DiscordApi] of the discord-bot instance.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
 		lateinit var instance: DiscordApi
 			internal set
 

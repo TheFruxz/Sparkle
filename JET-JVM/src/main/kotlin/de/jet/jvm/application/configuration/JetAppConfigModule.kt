@@ -21,6 +21,14 @@ data class JetAppConfigModule(
 
 	companion object {
 
+		/**
+		 * This function automatically generate a new configuration module
+		 * from the provided [app].
+		 * @param [app] is the application to generate the configuration module from.
+		 * @return the generated configuration module.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
 		fun autoGenerateFromApp(app: JetApp) =
 			JetAppConfigModule(app.identity, "APP_${app.identity}/")
 

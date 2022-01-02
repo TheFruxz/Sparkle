@@ -16,11 +16,29 @@ import kotlin.reflect.KFunction1
  */
 interface AppExtension<RUNTIME, ACCESSOR_OUT, UNIT> : Identifiable<AppExtension<RUNTIME, ACCESSOR_OUT, UNIT>> {
 
+	/**
+	 * The identity of this extension.
+	 * @return the identity of this extension
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	val extensionIdentity: Identity<AppExtension<RUNTIME, ACCESSOR_OUT, UNIT>>
 		get() = identityObject
 
+	/**
+	 * This value defines, if this extension can be run multiple times parallel.
+	 * @return true, if this extension can be run multiple times parallel, false otherwise
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	val parallelRunAllowed: Boolean
 
+	/**
+	 * This value defines the process, that is executed by this extension.
+	 * @return the process, that is executed by this extension
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	val runtimeAccessor: KFunction1<RUNTIME.() -> ACCESSOR_OUT, UNIT>
 
 }

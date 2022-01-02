@@ -21,7 +21,7 @@ fun <T> mutableOf(o: T) = Mutable.default(o)
  * @author Fruxz
  * @since 1.0
  */
-fun <T : Any> T.intoMutable() = Mutable.default(this)
+fun <T : Any?> T.intoMutable() = Mutable.default(this)
 
 /**
  * This function increases the int value of the [Mutable]<[Int]> by 1 int.

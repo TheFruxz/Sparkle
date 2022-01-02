@@ -76,6 +76,15 @@ fun <A, T> A.tryOrNull(process: A.() -> T): T? {
 	}
 }
 
+/**
+ * Try return the value returning of the [process] or returns null.
+ * null-return is triggered by a thrown [Exception]
+ * @param T is the return type of the process
+ * @param process the process to execute, returning the normal value as [T]
+ * @return the value returned by the [process] or null
+ * @author Fruxz
+ * @since 1.0
+ */
 fun <T> tryOrNull(process: () -> T): T? {
 	return try {
 		process()

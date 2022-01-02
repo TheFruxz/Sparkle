@@ -15,6 +15,12 @@ object TerminalConsoleExtension : AppExtension<MutableList<ConsoleInterchangeBra
 	override val parallelRunAllowed = false
 	override val runtimeAccessor: KFunction1<MutableList<ConsoleInterchangeBranch>.() -> Unit, Unit> = this::runTerminal
 
+	/**
+	 * This function executes the terminal input request
+	 * @param process The process of building & providing the terminal input request interchanges
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	private fun runTerminal(process: (MutableList<ConsoleInterchangeBranch>.() -> Unit)) =
 		requestTerminalInterchangeInput(*buildList(process).toTypedArray())
 
