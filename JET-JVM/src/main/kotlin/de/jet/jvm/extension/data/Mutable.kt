@@ -14,6 +14,16 @@ import de.jet.jvm.tool.mutable.Mutable
 fun <T> mutableOf(o: T) = Mutable.default(o)
 
 /**
+ * This function takes the current object [T] and returns a new mutable object,
+ * which contains the same value as the current object.
+ * @param T the inner type of the mutable
+ * @return a new mutable object containing the same value as the current object
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T : Any> T.intoMutable() = Mutable.default(this)
+
+/**
  * This function increases the int value of the [Mutable]<[Int]> by 1 int.
  * @return the [Mutable]<[Int]> with the value increased by 1
  * @author Fruxz
