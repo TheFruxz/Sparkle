@@ -2,7 +2,7 @@ package de.jet.paper.tool.timing.cooldown
 
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.timing.calendar.Calendar
-import de.jet.jvm.tool.timing.calendar.Calendar.TimeField.MILLISECOND
+import de.jet.jvm.tool.timing.calendar.timeunit.TimeUnit.Companion.MILLISECOND
 import de.jet.paper.app.JetCache.livingCooldowns
 import org.bukkit.Server
 import org.bukkit.entity.Entity
