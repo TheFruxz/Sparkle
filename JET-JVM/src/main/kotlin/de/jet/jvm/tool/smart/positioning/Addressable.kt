@@ -23,6 +23,6 @@ interface Addressable<T> {
 	val address: Address<T>
 
 	val isRoot: Boolean
-		get() = !addressString.contains("/") || addressString == "/"
+		get() = !addressString.contains(address.divider) || addressString == address.divider
 
 }

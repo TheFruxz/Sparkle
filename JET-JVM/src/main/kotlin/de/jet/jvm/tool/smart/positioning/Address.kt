@@ -13,7 +13,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("smartAddress")
 data class Address<T> internal constructor(
-	@SerialName("path") override val addressString: String
+	@SerialName("path") override val addressString: String,
+	@SerialName("divider") val divider: String,
 ) : Addressable<T>, Identifiable<T> {
 
 	override val identity = addressString
@@ -29,7 +30,7 @@ data class Address<T> internal constructor(
 	override val address: Address<T>
 		get() = address(addressString)
 
-	operator fun div(addition: String) = copy(addressString = "$addressString/$addition")
+	operator fun div(addition: String) = copy(addressString = "$addressString$divider$addition")
 
 	companion object {
 
@@ -37,12 +38,25 @@ data class Address<T> internal constructor(
 		 * Generates an [Addressed]<[T]> from the [Address]'s class
 		 * internal constructor.
 		 * @param path the path as a string
-		 * @return the [Addressed]<[T]>
+		 * @param divider the divider as a string
+		 * @return the [Address]<[T]>
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun <T> address(path: String) =
-			Address<T>(path)
+		fun <T> address(path: String, divider: String = "/") =
+			Address<T>(path, divider)
+
+		/**
+		 * Generates an [Address]<[T]> from the [Address]'s class internal constructor,
+		 * like the [address] companion function, but uses a '.' as the divider.
+		 * @param path the path as a string
+		 * @param divider the divider as a string
+		 * @return the [Address]<[T]>
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		fun <T> packagedAddress(path: String, divider: String = ".") =
+			Address<T>(path, divider)
 
 	}
 
