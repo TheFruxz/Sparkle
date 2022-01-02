@@ -28,3 +28,57 @@ operator fun <T : Mutable<Int>> T.inc(): T { return apply { property += 1 } }
  * @since 1.0
  */
 operator fun <T : Mutable<Int>> T.dec(): T { return apply { property -= 1 } }
+
+/**
+ * This function increases the int value of the [Mutable]<[Long]> by 1 int.
+ * @return the [Mutable]<[Long]> with the value increased by 1
+ * @author Fruxz
+ * @since 1.0
+ */
+@JvmName("incLong")
+operator fun <T : Mutable<Long>> T.inc(): T { return apply { property += 1 } }
+
+/**
+ * This function decreased the int value of the [Mutable]<[Long]> by 1 int.
+ * @return the [Mutable]<[Long]> with the value decreased by 1
+ * @author Fruxz
+ * @since 1.0
+ */
+@JvmName("decLong")
+operator fun <T : Mutable<Long>> T.dec(): T { return apply { property -= 1 } }
+
+/**
+ * This function increases the int value of the [Mutable]<[Float]> by 1 int.
+ * @return the [Mutable]<[Float]> with the value increased by 1
+ * @author Fruxz
+ * @since 1.0
+ */
+@JvmName("incFloat")
+operator fun <T : Mutable<Float>> T.inc(): T { return apply { property += 1 } }
+
+/**
+ * This function decreased the int value of the [Mutable]<[Float]> by 1 int.
+ * @return the [Mutable]<[Float]> with the value decreased by 1
+ * @author Fruxz
+ * @since 1.0
+ */
+@JvmName("decFloat")
+operator fun <T : Mutable<Float>> T.dec(): T { return apply { property -= 1 } }
+
+/**
+ * This function increases the int value of the [Mutable]<[Double]> by 1 int.
+ * @return the [Mutable]<[Double]> with the value increased by 1
+ * @author Fruxz
+ * @since 1.0
+ */
+@JvmName("incDouble")
+operator fun <T : Mutable<Double>> T.inc(): T { return apply { property += 1 } }
+
+/**
+ * This function decreased the int value of the [Mutable]<[Double]> by 1 int.
+ * @return the [Mutable]<[Double]> with the value decreased by 1
+ * @author Fruxz
+ * @since 1.0
+ */
+@JvmName("decDouble")
+operator fun <T : Mutable<Double>> T.dec(): T { return apply { property -= 1 } }
