@@ -1,5 +1,7 @@
 package de.jet.javacord.structure
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.javacord.api.DiscordApi
 import org.javacord.api.entity.activity.ActivityType
 import java.net.URL
@@ -10,27 +12,21 @@ import java.net.URL
  * @author Fruxz
  * @since 1.0
  */
-class BotActivity {
+@Serializable
+@SerialName("BotActivity")
+class BotActivity internal constructor(
+	var name: String? = null,
+	var activityType: ActivityType? = null,
+	var streamingUrl: String? = null,
+) {
 
-	var name: String? = null
-	var activityType: ActivityType? = null
-	var streamingUrl: URL? = null
+	constructor() : this(null, null, null)
 
-	constructor()
+	constructor(name: String) : this(name, null, null)
 
-	constructor(name: String) {
-		this.name = name
-	}
+	constructor(activityType: ActivityType, name: String) : this(name, activityType, null)
 
-	constructor(activityType: ActivityType, name: String) {
-		this.activityType = activityType
-		this.name = name
-	}
-
-	constructor(name: String, streamingUrl: URL) {
-		this.name = name
-		this.streamingUrl = streamingUrl
-	}
+	constructor(name: String, streamingUrl: URL) : this(name, null, streamingUrl.path)
 
 	/**
 	 * This function applies the activity data to the [bot].
@@ -41,7 +37,7 @@ class BotActivity {
 	 * @since 1.0
 	 */
 	fun applyToBot(bot: DiscordApi) = when {
-		streamingUrl != null -> bot.updateActivity(name, streamingUrl?.path)
+		streamingUrl != null -> bot.updateActivity(name, streamingUrl)
 		activityType != null -> bot.updateActivity(activityType, name)
 		else -> bot.updateActivity(name)
 	}
