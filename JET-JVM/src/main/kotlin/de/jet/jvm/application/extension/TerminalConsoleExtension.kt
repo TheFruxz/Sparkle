@@ -1,7 +1,7 @@
 package de.jet.jvm.application.extension
 
-import de.jet.jvm.application.console.interchange.ConsoleInterchange
 import de.jet.jvm.extension.input.requestTerminalInterchangeInput
+import de.jet.jvm.interchange.ConsoleInterchangeBranch
 import kotlin.reflect.KFunction1
 
 /**
@@ -9,13 +9,13 @@ import kotlin.reflect.KFunction1
  * @author Fruxz
  * @since 1.0
  */
-object TerminalConsoleExtension : AppExtension<MutableList<ConsoleInterchange>, Unit, Unit> {
+object TerminalConsoleExtension : AppExtension<MutableList<ConsoleInterchangeBranch>, Unit, Unit> {
 
 	override val identity = "TerminalConsole"
 	override val parallelRunAllowed = false
-	override val runtimeAccessor: KFunction1<MutableList<ConsoleInterchange>.() -> Unit, Unit> = this::runTerminal
+	override val runtimeAccessor: KFunction1<MutableList<ConsoleInterchangeBranch>.() -> Unit, Unit> = this::runTerminal
 
-	private fun runTerminal(process: (MutableList<ConsoleInterchange>.() -> Unit)) =
+	private fun runTerminal(process: (MutableList<ConsoleInterchangeBranch>.() -> Unit)) =
 		requestTerminalInterchangeInput(*buildList(process).toTypedArray())
 
 }

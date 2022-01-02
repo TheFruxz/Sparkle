@@ -29,6 +29,8 @@ data class Address<T> internal constructor(
 	override val address: Address<T>
 		get() = address(addressString)
 
+	operator fun div(addition: String) = copy(addressString = "$addressString/$addition")
+
 	companion object {
 
 		/**

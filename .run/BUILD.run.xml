@@ -13,10 +13,7 @@
           <option value="clean" />
           <option value="test" />
           <option value="build" />
-          <option value="javadoc" />
-          <option value="javadocJar" />
           <option value="shadowJar" />
-          <option value="publishToMavenLocal" />
         </list>
       </option>
       <option name="vmOptions" />
