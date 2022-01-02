@@ -1,5 +1,6 @@
 package de.jet.jvm.interchange
 
+import de.jet.jvm.extension.input.buildConsoleInterchange
 import de.jet.jvm.extension.switchResult
 
 /**
@@ -27,14 +28,14 @@ data class ConsoleInterchangeConfiguration(
 	fun executeCommand(input: String): Boolean {
 
 		fun executeBase(input: String): Boolean {
-			interchanges.forEach {
-				it.getBestMatchFromCommandInputWithParameters(input).let { result ->
-					result.first.let { branch ->
-						if (branch != null) {
-							branch.content?.let { content ->
-								content.invoke(result.second)
-								return true
-							}
+			buildConsoleInterchange("") {
+				subBranches = interchanges
+			}.getBestMatchFromCommandInputWithParameters(input).let { result ->
+				result.first.let { branch ->
+					if (branch != null) {
+						branch.content?.let { content ->
+							content.invoke(result.second)
+							return true
 						}
 					}
 				}

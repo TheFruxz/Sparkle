@@ -26,10 +26,6 @@ open class TreeBranch<SUBBRANCH : TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>, C
     open var content: CONTENT,
 ) : Identifiable<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>>, Pathed<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>> {
 
-    init {
-    	subBranches = subBranches.distinctBy { path }
-    }
-
     /**
      * This function replaces the current [content] of the branch with the given new [content].
      * @param content the new content of the branch
@@ -56,7 +52,7 @@ open class TreeBranch<SUBBRANCH : TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>, C
      * @since 1.0
      */
     fun allKnownBranches(): List<SUBBRANCH> {
-        return (subBranches.flatMap { it.allKnownBranches() } + this.forceCast<SUBBRANCH>())
+        return ((subBranches.flatMap { it.allKnownBranches() } + this.forceCast<SUBBRANCH>()).distinctBy { it.path })
     }
 
     /**
@@ -69,7 +65,7 @@ open class TreeBranch<SUBBRANCH : TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>, C
     fun getBestMatchFromPath(path: Address<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>>): SUBBRANCH? {
         return allKnownBranches()
             .filter { path.addressString.startsWith(it.path.addressString) }
-            .maxByOrNull { it.addressString.length }
+            .maxByOrNull { obj -> obj.address.let { address -> return@let address.addressString.split(address.divider) }.let { split -> split.size + split.last().length } }
     }
 
     /**

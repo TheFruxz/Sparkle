@@ -2,7 +2,6 @@ package de.jet.jvm.interchange
 
 import de.jet.jvm.tool.smart.positioning.Address
 import de.jet.jvm.tree.TreeBranch
-import de.jet.jvm.tree.TreeBranchType
 
 /**
  * This class defines a branch of the console interchange.
@@ -25,7 +24,7 @@ class ConsoleInterchangeBranch(
      * @author Fruxz
      */
     fun getBestMatchFromCommandInput(commandInput: String): ConsoleInterchangeBranch? {
-        return getBestMatchFromPath(Address(commandInput.replace(" ", "/")))
+        return getBestMatchFromPath(Address.address(commandInput.replace(" ", "/")))
     }
 
     /**
@@ -37,7 +36,7 @@ class ConsoleInterchangeBranch(
      * @author Fruxz
      */
     fun getBestMatchFromCommandInputWithParameters(commandInput: String): Pair<ConsoleInterchangeBranch?, String> {
-        val (branch, remaining) = getBestMatchFromPathWithRemaining(Address(commandInput.replace(" ", "/")))
+        val (branch, remaining) = getBestMatchFromPathWithRemaining(Address.address(commandInput.replace(" ", "/")))
         return Pair(branch, remaining.addressString.replace("/", " ").removePrefix(" "))
     }
 
