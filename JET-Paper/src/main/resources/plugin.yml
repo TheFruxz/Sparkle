@@ -1,6 +1,6 @@
-name: JET
+name: JET-Paper
 version: ${version}
-main: de.jet.minecraft.app.JetApp
+main: de.jet.paper.app.JetApp
 load: STARTUP
 authors:
   - TheFruxz (Fruxz)
