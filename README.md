@@ -108,9 +108,9 @@ maven("https://maven.pkg.github.com/TheFruxz/JET") {
 
 ##### Dependency
 ```kotlin
-implementation("de.jet:jet-jvm:1.0-beta-11")
-implementation("de.jet:jet-javacord:1.0-beta-11") // optional add JET-JavaCord
-implementation("de.jet:jet-paper:1.0-beta-11") // or JET-Minecraft
+implementation("de.jet:jet-jvm:1.0-beta-12.2")
+implementation("de.jet:jet-javacord:1.0-beta-12.2") // optional add JET-JavaCord
+implementation("de.jet:jet-paper:1.0-beta-12.2") // or JET-Minecraft
 ```
 
 #### Using JitPack (easy to setup)
@@ -121,9 +121,9 @@ maven("https://jitpack.io")
 
 ##### Dependency
 ```kotlin
-implementation("com.github.TheFruxz.JET:jet-jvm:1.0-beta-11")
-implementation("com.github.TheFruxz.JET:jet-javacord:1.0-beta-11") // optional add JET-JavaCord
-implementation("com.github.TheFruxz.JET:jet-paper:1.0-beta-11") // or JET-Minecraft
+implementation("com.github.TheFruxz.JET:jet-jvm:1.0-beta-12.2")
+implementation("com.github.TheFruxz.JET:jet-javacord:1.0-beta-12.2") // optional add JET-JavaCord
+implementation("com.github.TheFruxz.JET:jet-paper:1.0-beta-12.2") // or JET-Minecraft
 ```
 
 #### Auth
