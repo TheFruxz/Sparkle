@@ -40,7 +40,7 @@ abstract class SmartComponent(
 
 		interchanges.forEach {
 			tryToCatch {
-				vendor.replace(it.identityObject, disabledComponentInterchange(identityObject))
+				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject))
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 			}
 		}
@@ -51,7 +51,7 @@ abstract class SmartComponent(
 
 		interchanges.forEach {
 			tryToCatch {
-				vendor.replace(it.identityObject, it)
+				vendor.replace(it.thisIdentityObject, it)
 				debugLog("Interchange '${it.identity}' replaced through '$identity' with original interchange-value!")
 			}
 		}
@@ -85,7 +85,7 @@ abstract class SmartComponent(
 
 		interchanges.forEach {
 			tryToCatch {
-				vendor.replace(it.identityObject, disabledComponentInterchange(identityObject))
+				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject))
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 			}
 		}

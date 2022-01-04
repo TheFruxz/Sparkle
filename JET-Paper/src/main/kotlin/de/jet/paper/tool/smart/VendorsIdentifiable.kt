@@ -10,6 +10,9 @@ interface VendorsIdentifiable<T> : Identifiable<T> {
 
 	val thisIdentity: String
 
+	val thisIdentityObject: Identity<T>
+		get() = Identity(thisIdentity)
+
 	override val identity: String
 		get() = "${vendorIdentity.identity}:$thisIdentity"
 

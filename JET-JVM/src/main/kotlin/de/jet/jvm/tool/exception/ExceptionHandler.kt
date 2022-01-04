@@ -9,7 +9,7 @@ data class ExceptionHandler<O>(
         this.tryBlock = tryBlock
     }
 
-    infix fun doCatch(catchBlock: (exception: Exception) -> O) = apply {
+    infix fun doCatch(catchBlock: (Exception) -> O) = apply {
         this.catchBlock = catchBlock
     }
 

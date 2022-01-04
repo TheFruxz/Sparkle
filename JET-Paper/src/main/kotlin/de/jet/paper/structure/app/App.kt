@@ -9,6 +9,7 @@ import de.jet.jvm.extension.tryToCatch
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
+import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.tasky.task
 import de.jet.paper.extension.tasky.wait
@@ -142,6 +143,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 */
 	fun replace(identity: Identity<Interchange>, environment: Interchange) {
 		val command = getCommand(identity.identity)
+		debugLog("Command '${identity.identity}' command is ${command?.name} and is ${command?.javaClass}")
 		command?.setExecutor(environment)
 		command?.tabCompleter = environment.completionEngine
 	}
