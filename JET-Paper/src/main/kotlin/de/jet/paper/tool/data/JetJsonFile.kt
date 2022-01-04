@@ -1,8 +1,8 @@
 package de.jet.paper.tool.data
 
+import de.jet.jvm.extension.data.fromJson
+import de.jet.jvm.extension.data.toJson
 import de.jet.jvm.tool.smart.identification.Identifiable
-import de.jet.paper.extension.data.fromJson
-import de.jet.paper.extension.data.toJson
 import de.jet.paper.extension.paper.bukkitVersion
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.component.Component

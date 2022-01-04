@@ -1,8 +1,8 @@
 package de.jet.paper.app
 
+import de.jet.jvm.extension.data.addJetJsonModuleModification
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.extension.math.decimalAsPercent
-import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.component.chat.JetChatComponent
 import de.jet.paper.app.component.essentials.EssentialsComponent
@@ -27,11 +27,15 @@ import de.jet.paper.extension.display.ui.buildContainer
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.o.buildSandBox
 import de.jet.paper.extension.paper.worlds
-import de.jet.paper.general.api.mojang.*
+import de.jet.paper.general.api.mojang.MojangProfile
+import de.jet.paper.general.api.mojang.MojangProfileCape
+import de.jet.paper.general.api.mojang.MojangProfileRaw
+import de.jet.paper.general.api.mojang.MojangProfileSkin
+import de.jet.paper.general.api.mojang.MojangProfileTextures
+import de.jet.paper.general.api.mojang.MojangProfileUsernameHistoryEntry
 import de.jet.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.AppCompanion
-import de.jet.paper.structure.classes.JSON
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
@@ -59,6 +63,38 @@ class JetApp : App() {
 
 	override fun register() {
 		instance = this
+
+		addJetJsonModuleModification {
+			polymorphic(Any::class) {
+
+				subclass(Point::class)
+				subclass(PointConfig::class)
+				subclass(WorldConfig::class)
+				subclass(WorldStructure::class)
+				subclass(MojangProfile::class)
+				subclass(MojangProfileCape::class)
+				subclass(MojangProfileRaw::class)
+				subclass(MojangProfileSkin::class)
+				subclass(MojangProfileTextures::class)
+				subclass(MojangProfileUsernameHistoryEntry::class)
+				subclass(LanguageContainer::class)
+				subclass(JsonConfiguration::class)
+				subclass(JsonFileDataElement::class)
+				subclass(Modification::class)
+				subclass(SimpleLocation::class)
+				subclass(SoundData::class)
+				subclass(SoundMelody::class)
+				subclass(Key::class)
+				subclass(KeyConfiguration::class)
+				subclass(Approval::class)
+
+				polymorphic(RenderObject::class) {
+					subclass(RenderWorld::class)
+					subclass(RenderFolder::class)
+				}
+
+			}
+		}
 
 		ConfigurationSerialization.registerClass(SimpleLocation::class.java)
 
@@ -138,12 +174,6 @@ class JetApp : App() {
 			}.display(executor as Player)
 		}
 
-		buildSandBox(this, "rebuild-json") {
-			executor.sendMessage("...")
-			JSON.rebuildJsonInstructions()
-			executor.sendMessage("done! ")
-		}
-
 		buildSandBox(this, "percentage") {
 			executor.sendMessage(parameters.first().toDouble().decimalAsPercent.displayPercentageString("§a|", "§7|", 60))
 		}
@@ -162,41 +192,6 @@ class JetApp : App() {
 		override lateinit var instance: JetApp
 		override val predictedIdentity = Identity<App>("JET")
 		var debugMode: Boolean = false
-		val registerSerialization = {
-
-			JSON.addExtension(Identifiable.custom("JET")) {
-
-				polymorphic(Any::class) {
-
-					subclass(Point::class)
-					subclass(PointConfig::class)
-					subclass(WorldConfig::class)
-					subclass(WorldStructure::class)
-					subclass(MojangProfile::class)
-					subclass(MojangProfileCape::class)
-					subclass(MojangProfileRaw::class)
-					subclass(MojangProfileSkin::class)
-					subclass(MojangProfileTextures::class)
-					subclass(MojangProfileUsernameHistoryEntry::class)
-					subclass(LanguageContainer::class)
-					subclass(JsonConfiguration::class)
-					subclass(JsonFileDataElement::class)
-					subclass(Modification::class)
-					subclass(SimpleLocation::class)
-					subclass(SoundData::class)
-					subclass(SoundMelody::class)
-					subclass(Key::class)
-					subclass(KeyConfiguration::class)
-					subclass(Approval::class)
-
-					polymorphic(RenderObject::class) {
-						subclass(RenderWorld::class)
-						subclass(RenderFolder::class)
-					}
-
-				}
-			}
-		}
 	}
 
 }
