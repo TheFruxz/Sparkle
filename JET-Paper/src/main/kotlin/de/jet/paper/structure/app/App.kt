@@ -5,7 +5,7 @@ package de.jet.paper.structure.app
 import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.jet.jvm.extension.catchException
 import de.jet.jvm.extension.collection.mutableReplaceWith
-import de.jet.jvm.extension.jetTry
+import de.jet.jvm.extension.tryToCatch
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
@@ -224,7 +224,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	fun register(service: Service) {
 		if (JetCache.registeredServices.none { it.identity == service.identity }) {
-			jetTry {
+			tryToCatch {
 				JetCache.registeredServices.add(service)
 				mainLog(Level.INFO, "Register of service '${service.identity}' succeed!")
 			}
@@ -234,7 +234,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	fun unregister(service: Service) {
 		if (JetCache.registeredServices.any { it.identity == service.identity }) {
-			jetTry {
+			tryToCatch {
 				stop(service)
 				JetCache.registeredServices.remove(service)
 				mainLog(Level.INFO, "Unregister of service '${service.identity}' succeed!")
@@ -245,7 +245,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	fun reset(service: Service) {
 		if (JetCache.registeredServices.any { it.identity == service.identity }) {
-			jetTry {
+			tryToCatch {
 				service.controller?.attempt = 0
 				mainLog(Level.INFO, "Reset of service '${service.identity}' succeed!")
 			}
@@ -256,7 +256,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	fun start(service: Service) {
 		if (JetCache.registeredServices.any { it.identity == service.identity }) {
 			if (!service.isRunning) {
-				jetTry {
+				tryToCatch {
 					task(
 						service.temporalAdvice,
 						process = service.process,
@@ -276,7 +276,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	fun stop(service: Service) {
 		if (service.isRunning) {
-			jetTry {
+			tryToCatch {
 				service.shutdown()
 				mainLog(Level.INFO, "Stopping of service '${service.identity}' succeed!")
 			}
@@ -320,7 +320,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	}
 
 	fun add(component: Component) {
-		jetTry {
+		tryToCatch {
 
 			if (JetCache.registeredComponents.any { it.identity == component.identity })
 				throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
@@ -344,7 +344,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 		}
 	}
 
-	fun start(componentIdentity: Identity<Component>) = jetTry {
+	fun start(componentIdentity: Identity<Component>) = tryToCatch {
 		val component = JetCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 		if (component != null) {
@@ -365,7 +365,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	}
 
-	fun stop(componentIdentity: Identity<Component>, unregisterComponent: Boolean = false) = jetTry {
+	fun stop(componentIdentity: Identity<Component>, unregisterComponent: Boolean = false) = tryToCatch {
 		val component = JetCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 		if (component != null) {
@@ -395,7 +395,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	}
 
 	fun unregister(componentIdentity: Identity<Component>) {
-		jetTry {
+		tryToCatch {
 			val component = JetCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 			if (component != null) {
@@ -408,7 +408,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 		}
 	}
 
-	fun register(serializable: Class<out ConfigurationSerializable>) = jetTry {
+	fun register(serializable: Class<out ConfigurationSerializable>) = tryToCatch {
 		ConfigurationSerialization.registerClass(serializable)
 		mainLog(Level.INFO, "successfully registered '${serializable.simpleName}' as serializable!")
 	}
@@ -416,7 +416,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	fun register(serializable: KClass<out ConfigurationSerializable>) =
 		register(serializable.java)
 
-	fun unregister(serializable: Class<out ConfigurationSerializable>) = jetTry {
+	fun unregister(serializable: Class<out ConfigurationSerializable>) = tryToCatch {
 		ConfigurationSerialization.unregisterClass(serializable)
 	}
 
@@ -453,7 +453,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * #### ___Expect heavy code changes during the BETA!___
 	 */
 	override fun onLoad() {
-		jetTry {
+		tryToCatch {
 			JetCache.registeredApplications.add(this)
 
 			runStatus = PRE_LOAD
@@ -471,7 +471,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * #### ___Expect heavy code changes during the BETA!___
 	 */
 	override fun onEnable() {
-		jetTry {
+		tryToCatch {
 
 			runStatus = PRE_ENABLE
 			hello()
@@ -485,7 +485,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * #### ___Expect heavy code changes during the BETA!___
 	 */
 	override fun onDisable() {
-		jetTry {
+		tryToCatch {
 
 			runStatus = SHUTDOWN
 			bye()

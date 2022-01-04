@@ -1,6 +1,6 @@
 package de.jet.paper.structure.classes
 
-import de.jet.jvm.extension.jetTry
+import de.jet.jvm.extension.tryToCatch
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.app.JetApp
 import de.jet.paper.extension.debugLog
@@ -71,14 +71,14 @@ object JSON {
 		debugLog("successfully rebuild ${jsonExtensions.size} json instructions into jsonModule!")
 	}
 
-	fun addExtension(vendor: Identifiable<App>, extension: SerializersModuleBuilder.() -> Unit) = jetTry {
+	fun addExtension(vendor: Identifiable<App>, extension: SerializersModuleBuilder.() -> Unit) = tryToCatch {
 		debugLog("Adding JSON-Extension as '${vendor.identity}'!")
 		jsonExtensions.add(vendor to extension)
 		rebuildJsonInstructions()
 		debugLog("Adding succeed!")
 	}
 
-	fun removeVendorExtensions(vendor: Identifiable<App>) = jetTry {
+	fun removeVendorExtensions(vendor: Identifiable<App>) = tryToCatch {
 		debugLog("Removing JSON-Classes of '${vendor.identity}'...")
 		jsonExtensions.removeAll { it.first.identityObject == vendor }
 		rebuildJsonInstructions()
