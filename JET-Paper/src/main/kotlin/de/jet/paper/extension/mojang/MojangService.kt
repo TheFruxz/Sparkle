@@ -7,7 +7,6 @@ import java.util.*
 
 @Throws(NullPointerException::class)
 private fun String.badRequestCheck() = apply {
-	"".replace("\"created_at\": null", "\"created_at\": \"null\"")
 	if (contains("Not Found") && contains("404")) throw NullPointerException("Failed to get profile!")
 }
 
