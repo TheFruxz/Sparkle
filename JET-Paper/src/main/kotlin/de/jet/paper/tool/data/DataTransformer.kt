@@ -1,11 +1,10 @@
 package de.jet.paper.tool.data
 
 import de.jet.jvm.extension.collection.toArrayList
-import de.jet.paper.structure.classes.JSON
+import de.jet.jvm.extension.data.fromJson
+import de.jet.jvm.extension.data.toJson
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.world.SimpleLocation
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import org.bukkit.Location
 
 data class DataTransformer<SHELL: Any, CORE: Any>(
@@ -21,8 +20,8 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 		// JSON
 		inline fun <reified T : Any> json() =
 			DataTransformer<T, String>(
-				{ JSON.jsonFormat.encodeToString(this) },
-				{ JSON.jsonFormat.decodeFromString(this) },
+				{ this.toJson() },
+				{ this.fromJson() },
 			)
 
 		fun jsonItem() =

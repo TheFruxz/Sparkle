@@ -1,6 +1,6 @@
 package de.jet.paper.structure.component
 
-import de.jet.jvm.extension.jetTry
+import de.jet.jvm.extension.tryToCatch
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetApp
 import de.jet.paper.extension.debugLog
@@ -39,8 +39,8 @@ abstract class SmartComponent(
 		component() // register all objects
 
 		interchanges.forEach {
-			jetTry {
-				vendor.replace(it.identityObject, disabledComponentInterchange(identityObject))
+			tryToCatch {
+				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject))
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 			}
 		}
@@ -50,14 +50,14 @@ abstract class SmartComponent(
 	final override fun start() {
 
 		interchanges.forEach {
-			jetTry {
-				vendor.replace(it.identityObject, it)
+			tryToCatch {
+				vendor.replace(it.thisIdentityObject, it)
 				debugLog("Interchange '${it.identity}' replaced through '$identity' with original interchange-value!")
 			}
 		}
 
 		services.forEach {
-			jetTry {
+			tryToCatch {
 				vendor.register(it)
 				debugLog("Service '${it.identity}' registered through '$identity'!")
 				vendor.start(it)
@@ -66,14 +66,14 @@ abstract class SmartComponent(
 		}
 
 		components.forEach {
-			jetTry {
+			tryToCatch {
 				vendor.add(it)
 				debugLog("Component '${it.identity}' added through '$identity'!")
 			}
 		}
 
 		listeners.forEach {
-			jetTry {
+			tryToCatch {
 				vendor.add(it)
 				debugLog("Listener '${it.identity}' added through '$identity'!")
 			}
@@ -84,14 +84,14 @@ abstract class SmartComponent(
 	final override fun stop() {
 
 		interchanges.forEach {
-			jetTry {
-				vendor.replace(it.identityObject, disabledComponentInterchange(identityObject))
+			tryToCatch {
+				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject))
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 			}
 		}
 
 		services.forEach {
-			jetTry {
+			tryToCatch {
 				vendor.stop(it)
 				debugLog("Service '${it.identity}' stopped through '$identity'!")
 				vendor.unregister(it)
@@ -100,14 +100,14 @@ abstract class SmartComponent(
 		}
 
 		components.forEach {
-			jetTry {
+			tryToCatch {
 				vendor.stop(it.identityObject)
 				debugLog("Component '${it.identity}' stopped through '$identity'!")
 			}
 		}
 
 		listeners.forEach {
-			jetTry {
+			tryToCatch {
 				vendor.remove(it)
 				debugLog("Service '${it.identity}' removed through '$identity'")
 			}

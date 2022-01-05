@@ -1,5 +1,6 @@
 package de.jet.jvm.extension
 
+import de.jet.jvm.tool.exception.ExceptionHandler
 import kotlin.random.Random
 
 /**
@@ -20,13 +21,45 @@ fun catchException(exception: Exception) {
 
 }
 
-@Deprecated("DO NOT USE THIS", ReplaceWith("catchException(exception)"))
-fun jetTry(catchBlock: () -> Unit = {}, tryBlock: () -> Unit) {
+/**
+ * This function creates a [ExceptionHandler] and places its try block to the [tryBlock]
+ * parameter from this function.
+ * @param tryBlock the try block to place
+ * @return the [ExceptionHandler]
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <O> doTry(tryBlock: () -> O) =
+	ExceptionHandler(tryBlock, null)
+
+/**
+ * Try to execute the code specified inside the [process] function.
+ * If an exception is thrown, the [catchException] function will be executed.
+ * @param process the code to execute
+ * @author Fruxz
+ * @since 1.0
+ */
+fun tryToCatch(process: () -> Unit) {
 	try {
-		tryBlock()
+		process()
 	} catch (e: Exception) {
 		catchException(e)
-		catchBlock()
+	}
+}
+
+/**
+ * Try to execute the code specified inside the [process] function.
+ * If an exception is thrown, the [catchException] function will be executed.
+ * @param A (short for air) is the type of the surrounding block or the object, where it is called from
+ * @param process the code to execute
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <A> A.tryToCatch(process: A.() -> Unit) {
+	try {
+		process(this)
+	} catch (e: Exception) {
+		catchException(e)
 	}
 }
 
