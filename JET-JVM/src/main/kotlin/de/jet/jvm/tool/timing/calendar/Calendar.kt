@@ -175,6 +175,16 @@ class Calendar private constructor(
 		get() = produce()
 
 	/**
+	 * This value returns this calendar time, represented as
+	 * the time in milliseconds.
+	 * This value uses the [JavaUtilCalendar.getTimeInMillis] function.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val timeInMilliseconds: Long
+		get() = origin.timeInMillis
+
+	/**
 	 * Gets this calendar, internally converts it, with its contents, to a
 	 * [JavaUtilCalendar], edit it with the [action] in the [JavaUtilCalendar]-Environment and
 	 * returns the [JavaUtilCalendar] converted back to a [Calendar] with the new
@@ -205,6 +215,40 @@ class Calendar private constructor(
 	 * @since 1.0
 	 */
 	fun durationTo(jetCalendar: Calendar) = durationTo(jetCalendar.origin)
+
+	/**
+	 * Gets the duration from this to the current time.
+	 * @return the duration from this to the current time
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun durationToNow() = durationTo(now())
+
+	/**
+	 * Gets the duration from the [javaCalendar] to this.
+	 * @param javaCalendar the calendar which should be compared
+	 * @return the duration from the [javaCalendar] to this
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun durationFrom(javaCalendar: JavaUtilCalendar) = (origin.timeInMillis-javaCalendar.timeInMillis).milliseconds
+
+	/**
+	 * Gets the duration from the [jetCalendar] to this.
+	 * @param jetCalendar the calendar which should be compared
+	 * @return the duration from the [jetCalendar] to this
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun durationFrom(jetCalendar: Calendar) = durationFrom(jetCalendar.origin)
+
+	/**
+	 * Gets the duration from the current time to this.
+	 * @return the duration from the current time to this
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun durationFromNow() = durationFrom(now())
 
 	operator fun plus(duration: Duration) = clone().add(MILLISECOND, duration.inWholeMilliseconds.toInt())
 
