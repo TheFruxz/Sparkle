@@ -109,7 +109,7 @@ class JetApp : App() {
 	override fun hello() {
 
 		println("""
-			JET is building & running on Kotlin by JetBrains, special thanks to them!
+			JET is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
 			https://www.jetbrains.com/ | https://kotlinlang.org/
 		""".trimIndent())
 
