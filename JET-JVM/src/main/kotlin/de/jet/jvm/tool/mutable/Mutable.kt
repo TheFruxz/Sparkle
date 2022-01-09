@@ -36,8 +36,8 @@ interface Mutable<T> {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun <T> computational(default: T, onSet: (T) -> Unit, onGet: () -> T) =
-			ComputationalMutable(default, onSet, onGet)
+		fun <T> computational(value: T, onSet: (T) -> Unit, onGet: () -> T) =
+			ComputationalMutable(value, onSet, onGet)
 
 	}
 
