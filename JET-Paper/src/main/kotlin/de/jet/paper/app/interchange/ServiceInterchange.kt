@@ -1,7 +1,9 @@
 package de.jet.paper.app.interchange
 
 import de.jet.jvm.extension.collection.replace
+import de.jet.jvm.extension.time.millisecond
 import de.jet.jvm.tool.smart.identification.Identity
+import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.app
 import de.jet.paper.extension.display.BOLD
@@ -26,7 +28,6 @@ import de.jet.paper.structure.command.plus
 import de.jet.paper.structure.service.Service
 import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.display.message.Transmission.Level.INFO
-import java.util.*
 import kotlin.time.Duration.Companion.milliseconds
 
 class ServiceInterchange(vendor: App = system) : Interchange(vendor, "service", requiresAuthorization = true, completion = buildCompletion {
@@ -50,7 +51,7 @@ class ServiceInterchange(vendor: App = system) : Interchange(vendor, "service", 
 				lang("interchange.internal.service.list.line")
 					.replace("[service]", service.identity)
 					.replace("[enabled]" to if (service.isRunning) "$GREEN${BOLD}ONLINE" else "$RED${BOLD}OFFLINE")
-					.replace("[activeSince]" to (Calendar.getInstance().timeInMillis - (service.controller?.startTime ?: Calendar.getInstance()).timeInMillis).milliseconds.toString())
+					.replace("[activeSince]" to (Calendar.now().timeInMilliseconds - (service.controller?.startTime ?: Calendar.now()).timeInMilliseconds).milliseconds.toString())
 					.message(executor).display()
 
 			}
