@@ -26,7 +26,18 @@ interface Mutable<T> {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun <T> default(value: T) = FlexibleMutable(value)
+		fun <T> default(value: T) =
+			FlexibleMutable(value)
+
+		/**
+		 * This function generates a [ComputationalMutable] object, which is a [Mutable] object with a [T] value.
+		 * @param value The first value of the [ComputationalMutable] object.
+		 * @return The [ComputationalMutable] object, with [value] inside.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		fun <T> computational(default: T, onSet: (T) -> Unit, onGet: () -> T) =
+			ComputationalMutable(default, onSet, onGet)
 
 	}
 

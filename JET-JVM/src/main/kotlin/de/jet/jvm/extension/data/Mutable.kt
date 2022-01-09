@@ -23,6 +23,8 @@ fun <T> mutableOf(o: T) = Mutable.default(o)
  */
 fun <T : Any?> T.intoMutable() = Mutable.default(this)
 
+fun <T> computationalMutableOf(o: T, onSet: (T) -> Unit, onGet: () -> T) = Mutable.computational(o, onSet, onGet)
+
 /**
  * This function increases the int value of the [Mutable]<[Int]> by 1 int.
  * @return the [Mutable]<[Int]> with the value increased by 1
