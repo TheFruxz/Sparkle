@@ -57,7 +57,7 @@ fun <T> T.modifyIf(modifyIf: Boolean, modification: T.() -> Unit) = if (!modifyI
  * @since 1.0
  */
 val Any?.isNull: Boolean
-	get() = this != null
+	get() = this == null
 
 /**
  * Returns true if this [Any]? is not null, otherwise false.
