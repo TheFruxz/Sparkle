@@ -7,17 +7,20 @@ plugins {
     id("org.jetbrains.dokka")
     id("org.jetbrains.qodana")
     id("com.github.johnrengelman.shadow")
-    id("maven-publish")
+    `maven-publish`
 }
 
 var host = "github.com/TheFruxz/JET"
 
 dependencies {
+
     // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.10")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.10")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+
+    testImplementation(kotlin("test"))
+    implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+
+    // External
 
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     implementation("org.slf4j:slf4j-api:2.0.0-alpha6")

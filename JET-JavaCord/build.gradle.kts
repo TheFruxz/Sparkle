@@ -6,7 +6,7 @@ plugins {
     kotlin("plugin.serialization")
     id("org.jetbrains.dokka")
     id("org.jetbrains.qodana")
-    id("maven-publish")
+    `maven-publish`
 }
 
 var host = "github.com/TheFruxz/JET"
@@ -17,11 +17,17 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.10")
 
     // internal
 
     implementation(project(":JET-JVM"))
+
+    // Kotlin
+
+    testImplementation(kotlin("test"))
+    implementation(kotlin("reflect"))
+
+    // External
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 

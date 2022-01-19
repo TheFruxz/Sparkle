@@ -7,7 +7,7 @@ plugins {
     id("org.jetbrains.dokka")
     id("com.github.johnrengelman.shadow")
     id("org.jetbrains.qodana")
-    id("maven-publish")
+    `maven-publish`
 }
 
 var host = "github.com/TheFruxz/JET"
@@ -20,17 +20,22 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":JET-JVM")) // Internal
-    compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT") // PaperMC
+
+    // Internal
+
+    implementation(project(":JET-JVM"))
 
     // Kotlin
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.10")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+
+    testImplementation(kotlin("test"))
+    implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     // External
+
     implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") // Head-Database
+    compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT") // PaperMC
 
 }
 
