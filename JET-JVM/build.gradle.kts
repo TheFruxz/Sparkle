@@ -22,9 +22,6 @@ dependencies {
 
     // External
 
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-    implementation("org.slf4j:slf4j-api:2.0.0-alpha6")
-
 }
 
 tasks.withType<KotlinCompile> {
