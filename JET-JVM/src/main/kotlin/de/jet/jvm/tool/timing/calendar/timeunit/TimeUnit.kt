@@ -21,7 +21,7 @@ interface TimeUnit {
         }
 
         val HOUR = object : TimeUnit {
-            override val javaField: Int = JavaUtilCalendar.HOUR
+            override val javaField: Int = JavaUtilCalendar.HOUR_OF_DAY
         }
 
         val MINUTE = object : TimeUnit {
