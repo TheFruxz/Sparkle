@@ -122,7 +122,7 @@ maven("https://jitpack.io")
 ##### Dependency
 ```kotlin
 implementation("com.github.TheFruxz.JET:jet-jvm:[version]")
-implementation("com.github.TheFruxz.JET:jet-javacord:[version]3") // optional add JET-JavaCord
+implementation("com.github.TheFruxz.JET:jet-javacord:[version]") // optional add JET-JavaCord
 implementation("com.github.TheFruxz.JET:jet-paper:[version]") // or JET-Minecraft
 ```
 
