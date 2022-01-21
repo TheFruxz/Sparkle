@@ -1,11 +1,11 @@
 package de.jet.jvm.tool.timing.calendar
 
-import de.jet.jvm.annotation.NotTested
 import de.jet.jvm.extension.time.prettyPrint
 import de.jet.jvm.tool.smart.Producible
 import de.jet.jvm.tool.timing.calendar.timeunit.TimeUnit
 import de.jet.jvm.tool.timing.calendar.timeunit.TimeUnit.Companion.MILLISECOND
 import de.jet.jvm.tool.timing.calendar.timeunit.TimeUnit.Companion.SECOND
+import kotlinx.serialization.Serializable
 import java.util.*
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -14,14 +14,34 @@ import java.util.Calendar as JavaUtilCalendar
 
 /**
  * This class is a calendar, which can be from & to a [JavaUtilCalendar] transformed.
- * @param origin the java base of the calendar
+ * @param timeInMillis the milliseconds stored in the calendar
+ * @param timeZoneId the id of the used timezone
  * @author Fruxz
  * @since 1.0
  */
-@NotTested
-class Calendar private constructor(
-	private var origin: JavaUtilCalendar
+@Serializable
+class Calendar constructor(
+	private var timeInMillis: Long,
+	private var timeZoneId: String,
 ) : Producible<JavaUtilCalendar>, Cloneable, Comparable<Calendar> {
+
+	constructor(
+		timeInMillis: Long,
+		timeZone: TimeZone,
+	) : this(timeInMillis, timeZone.id)
+
+	constructor(
+		origin: JavaUtilCalendar
+	) : this(origin.timeInMillis, origin.timeZone.id)
+
+	private var origin: JavaUtilCalendar
+		set(value) {
+			timeInMillis = value.timeInMillis
+			timeZoneId = value.timeZone.id
+		}
+		get() = JavaUtilCalendar.getInstance(TimeZone.getTimeZone(timeZoneId)).apply {
+			this.timeInMillis = timeInMillis
+		}
 
 	override fun produce() = origin
 
@@ -164,6 +184,15 @@ class Calendar private constructor(
 	 */
 	val javaDate: Date
 		get() = origin.time
+
+	/**
+	 * This value returns the timezone of this
+	 * calendar, using the [javaCalendar].
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val timeZone: TimeZone
+		get() = javaCalendar.timeZone
 
 	/**
 	 * This value returns this calendar as a [JavaUtilCalendar]
