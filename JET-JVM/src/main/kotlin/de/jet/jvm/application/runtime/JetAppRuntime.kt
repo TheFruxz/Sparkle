@@ -6,12 +6,14 @@ import de.jet.jvm.application.configuration.JetAppConfigModule
 import de.jet.jvm.application.extension.AppExtension
 import de.jet.jvm.application.tag.Version
 import de.jet.jvm.application.tag.version
+import de.jet.jvm.extension.data.json
 import de.jet.jvm.extension.div
 import de.jet.jvm.extension.pathAsFileFromRuntime
 import de.jet.jvm.tool.timing.calendar.Calendar
 import java.io.File
 import java.nio.file.Path
 import kotlin.concurrent.thread
+import kotlin.io.path.pathString
 
 /**
  * This class represents a running Jet application and its properties.
@@ -48,11 +50,21 @@ class JetAppRuntime(override val identity: String, override val version: Version
 		JetAppConfigController.apply {
 			module = JetAppConfigModule.autoGenerateFromApp(this@JetAppRuntime)
 			addApp(module)
-			(getApp(this@JetAppRuntime)!!.appFileFolderPath + "info.jetRun").pathAsFileFromRuntime().apply {
+			(getApp(this@JetAppRuntime)!!.appFileFolderPath + RUNNER_FILE_NAME).pathAsFileFromRuntime().apply {
 				if (!exists()) {
 					toPath().parent.toFile().mkdirs()
 					createNewFile()
-					writeText("installed='${Calendar.now().javaDate}'")
+					writeText(json("""
+						{
+							"init_date": "${Calendar.now()}",
+							"init_app_state": {
+								"identity": "$identity",
+								"version": "${version.versionNumber}",
+								"extensions": "${runningExtensions.joinToString { it.identity }}",
+								"genuinFile": "${this.toPath().pathString.replace("\\", "/")}"
+							}
+						}
+					""".trimIndent()).value)
 				}
 			}
 		}
@@ -134,5 +146,11 @@ class JetAppRuntime(override val identity: String, override val version: Version
 		runtime: RUNTIME.() -> ACCESSOR_OUT
 	) =
 		attach(extension, createThread, runtime)
+
+	companion object {
+
+		const val RUNNER_FILE_NAME = "jet-app-info.json"
+
+	}
 
 }
