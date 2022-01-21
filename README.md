@@ -129,7 +129,7 @@ implementation("com.github.TheFruxz.JET:jet-paper:1.0-BETA-12.2") // or JET-Mine
 #### Auth
 
 You need to have set the system variables `USERNAME` and `TOKEN` to your GitHub-Username and GitHub-Personal-Access-Token,
-to access the packages via the GitHub-Packages Feature. You can also use the project variables `gpr.user` and `grp.key`, but
+to access the packages via the GitHub-Packages Feature. You can also use the project variables `gpr.user` and `gpr.key`, but
 don't publish them to the web!
 
 #### INFO
