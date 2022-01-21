@@ -13,6 +13,9 @@ data class SQL(
 	override val value: String,
 ) : DevLangObject {
 
+	override fun toString() =
+		value
+
 	companion object : Constructable<SQL> {
 		override fun constructor(vararg parameters: Any?): SQL =
 			SQL("" + parameters.first())

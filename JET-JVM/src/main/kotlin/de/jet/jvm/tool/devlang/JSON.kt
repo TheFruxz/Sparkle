@@ -21,6 +21,9 @@ data class JSON(
 	 */
 	inline fun <reified T : Any> fromJson() = value.fromJson<T>()
 
+	override fun toString() =
+		value
+
 	companion object : Constructable<JSON> {
 		override fun constructor(vararg parameters: Any?): JSON =
 			JSON(parameters.first() as String)

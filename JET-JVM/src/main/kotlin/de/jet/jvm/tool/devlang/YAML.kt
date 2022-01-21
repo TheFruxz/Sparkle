@@ -13,6 +13,9 @@ data class YAML(
 	override val value: String
 ) : DevLangObject {
 
+	override fun toString() =
+		value
+
 	companion object : Constructable<YAML> {
 		override fun constructor(vararg parameters: Any?): YAML =
 			YAML("" + parameters.first())
