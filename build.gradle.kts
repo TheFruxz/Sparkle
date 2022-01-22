@@ -7,12 +7,12 @@ plugins {
     id("org.jetbrains.dokka") version "1.6.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.jetbrains.qodana") version "0.1.13"
-    id("maven-publish")
+    `maven-publish`
 }
 
 allprojects {
 
-    version = "1.0-BETA-13"
+    version = "1.0-BETA-14"
     group = "de.jet"
 
     repositories {
