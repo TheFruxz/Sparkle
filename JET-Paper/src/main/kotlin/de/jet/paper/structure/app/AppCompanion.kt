@@ -38,6 +38,6 @@ abstract class AppCompanion<T : App> : Identifiable<App> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	abstract val predictedIdentity: Identity<App>
+	abstract val predictedIdentity: Identity<T>
 
 }

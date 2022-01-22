@@ -23,7 +23,7 @@ internal val lang: LanguageSpeaker
 	get() = JET.languageSpeaker
 
 // TODO: 12.10.21 LanguageSpeaker bei Address austauschen mit sinvoller, erst dann existierender Klasse
-fun getSystemTranslated(@Suppress("UNUSED_PARAMETER") vendor: Identifiable<App>, address: Address<LanguageData>): String {
+fun getSystemTranslated(@Suppress("UNUSED_PARAMETER") vendor: Identifiable<out App>, address: Address<LanguageData>): String {
 	return lang(id = address.addressString) //todo replace with real system
 }
 
@@ -32,16 +32,16 @@ operator fun LanguageSpeaker.get(id: String) = lang(id)
 internal fun lang(id: String, smartColor: Boolean = true) = lang.message(id, smartColor)
 
 internal val system: JetApp
-	get() = JET.appInstance 
+	get() = JET.appInstance
 
 @Throws(NoSuchElementException::class)
 fun app(id: String) = JetCache.registeredApplications.first { it.appIdentity == id }
 
 @Throws(NoSuchElementException::class)
-fun app(vendor: Identifiable<App>) = JetCache.registeredApplications.first { it.appIdentity == vendor.identity }
+fun app(vendor: Identifiable<out App>) = JetCache.registeredApplications.first { it.appIdentity == vendor.identity }
 
 @Throws(NoSuchElementException::class)
-fun app(vendorIdentity: Identity<App>) = JetCache.registeredApplications.first { it.appIdentity == vendorIdentity.identity }
+fun app(vendorIdentity: Identity<out App>) = JetCache.registeredApplications.first { it.appIdentity == vendorIdentity.identity }
 
 @Throws(NoSuchElementException::class)
-fun Identifiable<App>.getApp() = app(identity)
+fun Identifiable<out App>.getApp() = app(identity)

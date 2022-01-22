@@ -22,7 +22,7 @@ interface AppExtension<RUNTIME, ACCESSOR_OUT, UNIT> : Identifiable<AppExtension<
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val extensionIdentity: Identity<AppExtension<RUNTIME, ACCESSOR_OUT, UNIT>>
+	val extensionIdentity: Identity<out AppExtension<RUNTIME, ACCESSOR_OUT, UNIT>>
 		get() = identityObject
 
 	/**

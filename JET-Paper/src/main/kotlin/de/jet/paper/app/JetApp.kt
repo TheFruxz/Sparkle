@@ -189,7 +189,7 @@ class JetApp : App() {
 
 	companion object : AppCompanion<JetApp>() {
 
-		override val predictedIdentity = Identity<App>("JET")
+		override val predictedIdentity = Identity<JetApp>("JET")
 
 		var debugMode: Boolean = false
 
