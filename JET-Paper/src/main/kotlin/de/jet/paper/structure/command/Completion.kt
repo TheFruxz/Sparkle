@@ -298,7 +298,7 @@ data class Completion(
 						}
 				}
 
-				return@let first + second + third
+				return@let sortedSetOf(*first.toTypedArray(), *second.toTypedArray(), *third.toTypedArray()).toMutableList()
 			}
 
 		} else
