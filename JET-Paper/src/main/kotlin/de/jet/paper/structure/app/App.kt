@@ -80,7 +80,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * important every-time reachable stuff! Use your App-Class(-Type)
 	 * as the input for the <T> at [AppCompanion]<*>, so that the
 	 * app-instance is from your class, but also use `instance = this`
-	 * at the [register]`()` function
+	 * at the [preHello]`()` function
 	 *
 	 * ## Relations
 	 * Because the [AppCompanion]<T> class provides the same identity
@@ -446,15 +446,37 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	// override base-mechanics
 
-	abstract fun register()
-	abstract fun hello()
-	abstract fun bye()
+	/**
+	 * This function is called, when the plugin gets loaded.
+	 * Representing the first stage of the plugin-lifecycle,
+	 * also known as the "[onLoad]" stage.
+	 * @see [onLoad]
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	abstract fun preHello()
 
 	/**
-	 * # **DO NOT OVERRIDE IF YOU DON'T EXPLICITLY WANT TO!**
-	 * #### ___Expect heavy code changes during the BETA!___
+	 * This function is called, when the plugin gets enabled.
+	 * Representing the second stage of the plugin-lifecycle,
+	 * also known as the "[onEnable]" stage.
+	 * @see [onEnable]
+	 * @author Fruxz
+	 * @since 1.0
 	 */
-	override fun onLoad() {
+	abstract fun hello()
+
+	/**
+	 * This function is called, when the plugin gets disabled.
+	 * Representing the last stage of the plugin-lifecycle,
+	 * also known as the "[onDisable]" stage.
+	 * @see [onDisable]
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	abstract fun bye()
+
+	final override fun onLoad() {
 		tryToCatch {
 			JetCache.registeredApplications.add(this)
 
@@ -462,17 +484,13 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			classLoader.getResourceAsStream("plugin.yml")?.let { resource ->
 				appRegistrationFile.load(InputStreamReader(resource))
 			}
-			register()
+			preHello()
 			runStatus = LOAD
 
 		}
 	}
 
-	/**
-	 * # **DO NOT OVERRIDE IF YOU DON'T EXPLICITLY WANT TO!**
-	 * #### ___Expect heavy code changes during the BETA!___
-	 */
-	override fun onEnable() {
+	final override fun onEnable() {
 		tryToCatch {
 
 			runStatus = PRE_ENABLE
@@ -482,11 +500,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 		}
 	}
 
-	/**
-	 * # **DO NOT OVERRIDE IF YOU DON'T EXPLICITLY WANT TO!**
-	 * #### ___Expect heavy code changes during the BETA!___
-	 */
-	override fun onDisable() {
+	final override fun onDisable() {
 		tryToCatch {
 
 			runStatus = SHUTDOWN

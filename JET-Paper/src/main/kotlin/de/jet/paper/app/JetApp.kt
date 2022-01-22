@@ -61,8 +61,7 @@ class JetApp : App() {
 	override val appLabel = "JET"
 	override val appCache = JetCache
 
-	override fun register() {
-		instance = this
+	override fun preHello() {
 
 		addJetJsonModuleModification {
 			polymorphic(Any::class) {
@@ -188,10 +187,12 @@ class JetApp : App() {
 
 	}
 
-	companion object : AppCompanion<JetApp> {
-		override lateinit var instance: JetApp
+	companion object : AppCompanion<JetApp>() {
+
 		override val predictedIdentity = Identity<App>("JET")
+
 		var debugMode: Boolean = false
+
 	}
 
 }
