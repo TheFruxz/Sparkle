@@ -50,7 +50,7 @@ fun <T, C : Collection<T>> C.toArrayList() = ArrayList(this)
 fun <T> Array<out T>.toArrayList() = ArrayList(this.toList())
 
 fun <T, C : Collection<T>> C.stackRandom(times: Int) = buildString {
-	repeat(times) { append(random()) }
+	repeat(times) { append(this@stackRandom.random()) }
 }
 
 /**
@@ -61,7 +61,7 @@ fun <T, C : Collection<T>> C.stackRandom(times: Int) = buildString {
  * @since 1.0
  */
 fun <T> Array<out T>.stackRandom(times: Int) = buildString {
-	repeat(times) { append(random()) }
+	repeat(times) { append(this@stackRandom.random()) }
 }
 
 /**
