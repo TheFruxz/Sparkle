@@ -85,6 +85,18 @@ fun <T> Array<out T>.stackUniqueRandom(times: Int) =
 	toList().shuffled().take(times).joinToString(separator = "")
 
 /**
+ * This function creates a list of [T] objects, created
+ * by each entries [generator] function.
+ * @param T the inner containing data type
+ * @param size the size of the list
+ * @param generator the function, which will be used to generate an entry
+ * @return the list of [T] objects
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T> listOf(size: Int, generator: (Int) -> T) = List(size) { generator(it) }
+
+/**
  * Returning the first object of the collection [C]
  * @author Fruxz
  * @since 1.0
