@@ -31,7 +31,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
-    implementation("org.javacord:javacord:3.3.2")
+    implementation("org.javacord:javacord:3.4.0")
 
 }
 
