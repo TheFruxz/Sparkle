@@ -29,7 +29,7 @@ import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.display.message.Transmission.Level.INFO
 import kotlin.time.Duration.Companion.milliseconds
 
-class ServiceInterchange(vendor: App = system) : Interchange(vendor, "service", requiresAuthorization = true, completion = buildCompletion {
+class ServiceInterchange(vendor: App = system) : Interchange(vendor, "service", protectedAccess = true, completion = buildCompletion {
 	next(setOf("start", "stop", "restart", "list", "unregister", "reset")) isRequired true mustMatchOutput true
 	next(CompletionVariable(vendor, "Service", true) {
 		JetCache.registeredServices.map { it.identity }

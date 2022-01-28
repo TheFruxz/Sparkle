@@ -25,7 +25,7 @@ import de.jet.paper.structure.command.next
 import de.jet.paper.tool.display.message.Transmission.Level.*
 
 class SandboxInterchange(vendor: App = system) :
-	Interchange(vendor, "sandbox", requiresAuthorization = true, completion = buildCompletion {
+	Interchange(vendor, "sandbox", protectedAccess = true, completion = buildCompletion {
 
 		next(listOf("list", "drop", "run", "info", "dropAll", "runAll")) isRequired true mustMatchOutput true
 		next(CompletionVariable.SANDBOX) isRequired false mustMatchOutput true infinite true

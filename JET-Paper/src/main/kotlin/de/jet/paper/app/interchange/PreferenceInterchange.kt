@@ -10,7 +10,7 @@ import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.tool.display.message.Transmission.Level.APPLIED
 import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 
-class PreferenceInterchange(vendor: App = system) : Interchange(vendor, "preference", requiresAuthorization = true, completion = buildCompletion {
+class PreferenceInterchange(vendor: App = system) : Interchange(vendor, "preference", protectedAccess = true, completion = buildCompletion {
 	next("list", "reset", "info", "set") isRequired true mustMatchOutput true
 	next(CompletionVariable.PREFERENCE) isRequired false mustMatchOutput true
 	plus("Input") label "<Component>" isRequired false mustMatchOutput false infinite true

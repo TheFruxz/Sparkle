@@ -35,7 +35,7 @@ import org.bukkit.entity.Player
 class JETInterchange(vendor: App = system) : Interchange(
 	vendor = vendor,
 	label = "jet",
-	requiresAuthorization = false,
+	protectedAccess = false,
 	completion = buildCompletion {
 		next("version") + "website" + "repository" + "ping" + "test" isRequired false
 		next("demo-panel") + CompletionVariable(vendor, "message-level", false) {

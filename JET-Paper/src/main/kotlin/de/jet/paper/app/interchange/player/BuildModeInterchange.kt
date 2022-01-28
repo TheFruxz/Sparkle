@@ -20,7 +20,7 @@ import org.bukkit.OfflinePlayer
 import java.util.*
 
 class BuildModeInterchange(vendor: App = system) :
-	Interchange(vendor, "buildmode", requiresAuthorization = true, completion = buildCompletion {
+	Interchange(vendor, "buildmode", protectedAccess = true, completion = buildCompletion {
 		next(setOf("enable", "disable", "toggle", "info", "list", "enableAll", "disableAll")) isRequired true mustMatchOutput true
 		next(CompletionVariable.PLAYER_NAME) isRequired false mustMatchOutput true
 	}) {

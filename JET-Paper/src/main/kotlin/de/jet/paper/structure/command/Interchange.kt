@@ -5,9 +5,9 @@ import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.lang
 import de.jet.paper.structure.app.App
-import de.jet.paper.structure.command.InterchangeAuthorizationCheck.JETCHECK
-import de.jet.paper.structure.command.InterchangeExecutorType.*
+import de.jet.paper.structure.command.InterchangeAuthorizationType.JET
 import de.jet.paper.structure.command.InterchangeResult.*
+import de.jet.paper.structure.command.InterchangeUserRestriction.*
 import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.annotation.LegacyCraftBukkitFeature
 import de.jet.paper.tool.display.message.Transmission.Level.ERROR
@@ -26,20 +26,20 @@ abstract class Interchange(
 	final override val vendor: App,
 	val label: String,
 	val aliases: Set<String> = emptySet(),
-	val requiresAuthorization: Boolean = false,
-	val requiredExecutorType: InterchangeExecutorType = BOTH,
-	val authorizationCheck: InterchangeAuthorizationCheck = JETCHECK,
-	val hiddenFromRecommendation: Boolean = false,
+	val protectedAccess: Boolean = false,
+	val userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
+	val accessProtectionType: InterchangeAuthorizationType = JET,
+	val hiddenFromRecommendation: Boolean = false, // todo: seems to be unused, that have to be an enabled feature
 	val completion: Completion = emptyCompletion(),
 ) : CommandExecutor, VendorsIdentifiable<Interchange>, Logging {
 
-	override val sectionLabel = "InterchangeEngine"
+	final override val sectionLabel = "InterchangeEngine"
 
 	override val thisIdentity = label
 
-	override val vendorIdentity = vendor.identityObject
+	final override val vendorIdentity = vendor.identityObject
 
-	val requiredApproval = if (requiresAuthorization) Approval.fromApp(vendor, "interchange.$label") else null
+	private val requiredApproval = if (protectedAccess) Approval.fromApp(vendor, "interchange.$label") else null
 
 	// parameters
 
@@ -47,7 +47,7 @@ abstract class Interchange(
 
 	// runtime-functions
 
-	fun interchangeException(exception: Exception, executor: CommandSender, executorType: InterchangeExecutorType) {
+	fun interchangeException(exception: Exception, executor: CommandSender, executorType: InterchangeUserRestriction) {
 		sectionLog.log(
 			WARNING,
 			"Executor ${executor.name} as ${executorType.name} caused an error at execution at ${with(exception.stackTrace[0]) { "$className:$methodName" }}!"
@@ -59,8 +59,8 @@ abstract class Interchange(
 	 * with its approvals. (**Not looking for the parameters and
 	 * its own possible approvals!**)
 	 */
-	fun canExecuteBasePlate(executor: CommandSender) = listOf(
-		authorizationCheck != JETCHECK,
+	fun canExecuteBasePlate(executor: CommandSender) = setOf(
+		accessProtectionType != JET,
 		requiredApproval == null,
 		requiredApproval?.let { approval -> executor.hasPermission(approval.identity) } ?: true,
 		executor.hasPermission("${vendor.identity}.*"),
@@ -92,7 +92,7 @@ abstract class Interchange(
 		receiver: CommandSender,
 	) {
 		lang("interchange.run.issue.wrongClient")
-			.replace("[client]", requiredExecutorType.name)
+			.replace("[client]", userRestriction.name)
 			.notification(FAIL, receiver).display()
 	}
 
@@ -113,13 +113,13 @@ abstract class Interchange(
 		if (canExecuteBasePlate(sender)) {
 
 			if (
-				(requiredExecutorType == BOTH)
-				|| (sender is Player && requiredExecutorType == PLAYER)
-				|| (sender is ConsoleCommandSender && requiredExecutorType == CONSOLE)
+				(userRestriction == NOT_RESTRICTED)
+				|| (sender is Player && userRestriction == ONLY_PLAYERS)
+				|| (sender is ConsoleCommandSender && userRestriction == ONLY_CONSOLE)
 			) {
 
 				if (completionCheck(sender, this, parameters)) {
-					val clientType = if (sender is Player) PLAYER else CONSOLE
+					val clientType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE
 
 					fun exception(exception: Exception) {
 						sectionLog.log(WARNING, "Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!")
@@ -134,7 +134,7 @@ abstract class Interchange(
 							NOT_PERMITTED -> wrongApprovalFeedback(sender)
 							WRONG_CLIENT -> wrongClientFeedback(sender)
 							WRONG_USAGE -> wrongUsageFeedback(sender)
-							UNEXPECTED -> issueFeedback(sender)
+							InterchangeResult.FAIL -> issueFeedback(sender)
 							SUCCESS -> debugLog(
 								"Executor ${sender.name} as ${clientType.name} successfully executed $label-interchange!"
 							)
@@ -172,25 +172,25 @@ abstract class Interchange(
 
 	val completionCheck = completion.buildCheck()
 
-	fun Interchange.execution(execution: InterchangeAccess.() -> InterchangeResult) = execution
-
 }
 
 enum class InterchangeResult {
 
-	SUCCESS, NOT_PERMITTED, WRONG_USAGE, WRONG_CLIENT, UNEXPECTED;
+	SUCCESS, NOT_PERMITTED, WRONG_USAGE, WRONG_CLIENT, FAIL;
 
 }
 
-enum class InterchangeExecutorType {
+enum class InterchangeUserRestriction {
 
-	PLAYER, CONSOLE, BOTH;
+	ONLY_PLAYERS,
+	ONLY_CONSOLE,
+	NOT_RESTRICTED;
 
 }
 
-enum class InterchangeAuthorizationCheck {
+enum class InterchangeAuthorizationType {
 
-	JETCHECK,
+	JET,
 
 	@LegacyCraftBukkitFeature
 	CRAFTBUKKIT,
@@ -198,3 +198,5 @@ enum class InterchangeAuthorizationCheck {
 	NONE;
 
 }
+
+fun Interchange.execution(execution: InterchangeAccess.() -> InterchangeResult) = execution
