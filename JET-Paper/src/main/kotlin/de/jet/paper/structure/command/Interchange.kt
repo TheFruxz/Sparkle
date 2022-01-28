@@ -9,6 +9,7 @@ import de.jet.paper.structure.command.InterchangeAuthorizationCheck.JETCHECK
 import de.jet.paper.structure.command.InterchangeExecutorType.*
 import de.jet.paper.structure.command.InterchangeResult.*
 import de.jet.paper.structure.command.live.InterchangeAccess
+import de.jet.paper.tool.annotation.LegacyCraftBukkitFeature
 import de.jet.paper.tool.display.message.Transmission.Level.ERROR
 import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.permission.Approval
@@ -191,7 +192,7 @@ enum class InterchangeAuthorizationCheck {
 
 	JETCHECK,
 
-	@Deprecated("This is JET, not Bukkit! If you like to use 'old' technology, why you are not using Windows NT?")
+	@LegacyCraftBukkitFeature
 	CRAFTBUKKIT,
 
 	NONE;

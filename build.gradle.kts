@@ -19,6 +19,10 @@ allprojects {
         mavenCentral()
     }
 
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+    }
+
 }
 
 java {
