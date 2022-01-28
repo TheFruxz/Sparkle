@@ -40,7 +40,7 @@ class Calendar constructor(
 			timeZoneId = value.timeZone.id
 		}
 		get() = JavaUtilCalendar.getInstance(TimeZone.getTimeZone(timeZoneId)).apply {
-			this.timeInMillis = timeInMillis
+			this.timeInMillis = this@Calendar.timeInMillis
 		}
 
 	override fun produce() = origin
@@ -348,7 +348,7 @@ class Calendar constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun now() = Calendar(JavaUtilCalendar.getInstance())
+		fun now(instance: JavaUtilCalendar = JavaUtilCalendar.getInstance()) = Calendar(instance)
 
 		/**
 		 * This function returns the current date and time.
@@ -357,7 +357,7 @@ class Calendar constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun now(timeZone: TimeZone) = Calendar(JavaUtilCalendar.getInstance(timeZone))
+		fun now(timeZone: TimeZone) = now(instance = JavaUtilCalendar.getInstance(timeZone))
 
 		/**
 		 * This function returns the current date and time.
@@ -366,7 +366,7 @@ class Calendar constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun now(locale: Locale) = Calendar(JavaUtilCalendar.getInstance(locale))
+		fun now(locale: Locale) = now(instance = JavaUtilCalendar.getInstance(locale))
 
 		/**
 		 * This function returns the current date and time.
@@ -375,7 +375,7 @@ class Calendar constructor(
 		 * @return the current date and time of [timeZone] and [locale]
 		 * @author Fruxz
 		 */
-		fun now(locale: Locale, timeZone: TimeZone) = Calendar(JavaUtilCalendar.getInstance(timeZone, locale))
+		fun now(locale: Locale, timeZone: TimeZone) = now(instance = JavaUtilCalendar.getInstance(timeZone, locale))
 
 		/**
 		 * This function returns the current date and time plus the [duration].
@@ -385,16 +385,6 @@ class Calendar constructor(
 		 * @since 1.0
 		 */
 		fun fromNow(duration: Duration) = now().plus(duration)
-
-		/**
-		 * This function returns the current date and time plus the [duration].
-		 * @param duration the duration which should be added
-		 * @return the current date and time plus the [duration]
-		 * @author Fruxz
-		 * @since 1.0
-		 */
-		@ExperimentalTime
-		fun isAfter(duration: Duration) = now().plus(duration)
 
 		/**
 		 * This function returns the current date and time plus the [duration].
@@ -414,7 +404,7 @@ class Calendar constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun fromLegacy(calendar: JavaUtilCalendar) = Calendar(calendar)
+		fun fromLegacy(calendar: JavaUtilCalendar) = now(instance = calendar)
 
 	}
 
