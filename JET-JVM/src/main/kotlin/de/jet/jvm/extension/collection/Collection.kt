@@ -160,3 +160,21 @@ val <T, C : Collection<T>> C.last: T
 val <T> Array<out T>.last: T
 	get() = last()
 
+/**
+ * This function returns the object at the [index] of the collection [C]<[T]>,
+ * or if the index is out of bounds and [overflow] is true, it will go back to
+ * the start of the collection and return the object at the [index] minus the
+ * size of the collection and returns that object.
+ * @param T the inner containing data type
+ * @param C the collection type
+ * @param index the index of the searched object
+ * @param overflow if the index is out of bounds, should it go back to the start of the collection
+ * @return the object at the [index] of the collection [C]<[T]>
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T, C : Iterable<T>> C.get(index: Int, overflow: Boolean = false): T {
+	return if (index in 0 until count()) elementAt(index) else if (overflow) elementAt(index % count()) else throw NoSuchElementException(
+		"Index $index is not inside lists 0..${count() - 1} content and overflow is disabled!"
+	)
+}
