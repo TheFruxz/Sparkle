@@ -75,7 +75,7 @@ class ChangeSkinInterchange(vendor: App = system) : Interchange(
 
 						notifyTarget()
 
-					} catch (exception: NullPointerException) {
+					} catch (exception: Exception) {
 
 						lang["interchange.internal.changeskin.failed"]
 							.replaceVariables("target" to parameters.last())
