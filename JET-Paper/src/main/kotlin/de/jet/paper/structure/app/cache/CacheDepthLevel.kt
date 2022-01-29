@@ -22,8 +22,8 @@ enum class CacheDepthLevel {
 	 */
 	KILL;
 
-	fun isDeeperThan(cacheDepthLevel: CacheDepthLevel) = cacheDepthLevel >= this
+	fun isDeeperThan(cacheDepthLevel: CacheDepthLevel) = cacheDepthLevel < this
 
-	fun isDeeperThanOrEquals(cacheDepthLevel: CacheDepthLevel) = cacheDepthLevel >= this
+	fun isDeeperThanOrEquals(cacheDepthLevel: CacheDepthLevel) = cacheDepthLevel <= this
 
 }
