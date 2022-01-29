@@ -2,10 +2,28 @@ package de.jet.paper.structure.app.cache
 
 enum class CacheDepthLevel {
 
-	DUMP, CLEAN, CLEAR, KILL;
+	/**
+	 * Regular cleaning level, no game breaking changes.
+	 */
+	DUMP,
 
-	fun isDeeperThan(cacheDepthLevel: CacheDepthLevel) = cacheDepthLevel.ordinal > ordinal
+	/**
+	 * Hard cleaning level, some game behavior changes, but only affecting background operations.
+	 */
+	CLEAN,
 
-	fun isDeeperThanOrEquals(cacheDepthLevel: CacheDepthLevel) = cacheDepthLevel.ordinal >= ordinal
+	/**
+	 * Hard clear level, some game elements reset and some stuff is deleted, that can change visual look.
+	 */
+	CLEAR,
+
+	/**
+	 * Kill level, everything is deleted, that can break the games current running state.
+	 */
+	KILL;
+
+	fun isDeeperThan(cacheDepthLevel: CacheDepthLevel) = cacheDepthLevel < this
+
+	fun isDeeperThanOrEquals(cacheDepthLevel: CacheDepthLevel) = cacheDepthLevel <= this
 
 }

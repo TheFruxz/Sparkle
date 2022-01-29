@@ -14,9 +14,9 @@ import de.jet.paper.extension.paper.templateLocation
 import de.jet.paper.extension.system
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
-import de.jet.paper.structure.command.InterchangeExecutorType.PLAYER
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
+import de.jet.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
 import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.jet.paper.structure.component.SmartComponent
@@ -38,7 +38,7 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 	}
 
 	private class MarkingToolInterchange(vendor: App) :
-		Interchange(vendor, "markingtool", requiredExecutorType = PLAYER, requiresAuthorization = true) {
+		Interchange(vendor, "markingtool", userRestriction = ONLY_PLAYERS, protectedAccess = true) {
 
 		fun positionData(location: Location) = buildString {
 			append('(')

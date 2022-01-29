@@ -12,9 +12,9 @@ import de.jet.paper.extension.system
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.CompletionVariable
 import de.jet.paper.structure.command.Interchange
-import de.jet.paper.structure.command.InterchangeExecutorType.PLAYER
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
+import de.jet.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
 import de.jet.paper.structure.command.buildCompletion
 import de.jet.paper.structure.command.isRequired
 import de.jet.paper.structure.command.label
@@ -28,8 +28,8 @@ import org.bukkit.entity.Player
 class ChangeSkinInterchange(vendor: App = system) : Interchange(
 	vendor = vendor,
 	label = "changeskin",
-	requiresAuthorization = true,
-	requiredExecutorType = PLAYER,
+	protectedAccess = true,
+	userRestriction = ONLY_PLAYERS,
 	completion = buildCompletion {
 		next(CompletionVariable.PLAYER_NAME) isRequired true mustMatchOutput true
 		next("/reset") plus CompletionVariable.PLAYER_NAME isRequired true mustMatchOutput false label "skin-player-name"

@@ -17,6 +17,7 @@ import de.jet.paper.extension.special.texturedSkull
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
+import de.jet.paper.structure.command.execution
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.ui.panel.PanelFlag.*
 import org.bukkit.Bukkit
@@ -28,7 +29,7 @@ import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType.*
 
-class WorldInterchange(vendor: App) : Interchange(vendor, "world", requiresAuthorization = true) {
+class WorldInterchange(vendor: App) : Interchange(vendor, "world", protectedAccess = true) {
 
 	data class WorldPanelViewProperties(
 		val path: String = "/",

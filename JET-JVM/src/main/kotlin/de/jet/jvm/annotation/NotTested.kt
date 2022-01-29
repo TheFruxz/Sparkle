@@ -7,4 +7,5 @@ package de.jet.jvm.annotation
  * @author Fruxz
  * @since 1.0
  */
+@RequiresOptIn(message = "This feature is marked as 'not tested'!", level = RequiresOptIn.Level.WARNING)
 annotation class NotTested

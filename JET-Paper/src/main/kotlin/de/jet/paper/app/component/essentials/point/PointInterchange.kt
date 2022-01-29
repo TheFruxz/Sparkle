@@ -9,10 +9,11 @@ import de.jet.paper.extension.system
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.CompletionVariable
 import de.jet.paper.structure.command.Interchange
-import de.jet.paper.structure.command.InterchangeExecutorType.PLAYER
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
+import de.jet.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
 import de.jet.paper.structure.command.buildCompletion
+import de.jet.paper.structure.command.execution
 import de.jet.paper.structure.command.isRequired
 import de.jet.paper.structure.command.mustMatchOutput
 import de.jet.paper.structure.command.next
@@ -22,8 +23,8 @@ import org.bukkit.entity.Player
 class PointInterchange(vendor: App) : Interchange(
 	vendor,
 	"point",
-	requiresAuthorization = true,
-	requiredExecutorType = PLAYER,
+	protectedAccess = true,
+	userRestriction = ONLY_PLAYERS,
 	completion = buildCompletion {
 		next("create", "delete", "list", "teleport", "teleportAll") isRequired true mustMatchOutput true
 		next(CompletionVariable(vendor, "<Point>", true, { input, ignoreCase ->

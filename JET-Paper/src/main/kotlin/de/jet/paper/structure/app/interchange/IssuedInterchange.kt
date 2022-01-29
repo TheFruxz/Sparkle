@@ -18,7 +18,7 @@ class IssuedInterchange(
 	vendor = vendor,
 	label = label,
 	aliases = aliases,
-	requiresAuthorization = false,
+	protectedAccess = false,
 	completion = emptyCompletion(),
 ) {
 
