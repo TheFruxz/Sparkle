@@ -36,6 +36,7 @@ import de.jet.paper.general.api.mojang.MojangProfileUsernameHistoryEntry
 import de.jet.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.AppCompanion
+import de.jet.paper.structure.app.cache.CacheDepthLevel
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
@@ -175,6 +176,30 @@ class JetApp : App() {
 
 		buildSandBox(this, "percentage") {
 			executor.sendMessage(parameters.first().toDouble().decimalAsPercent.displayPercentageString("§a|", "§7|", 60))
+		}
+
+		buildSandBox(this, "cleaner") {
+			if (parameters.size >= 2) {
+				val levelDepth = when (parameters[0].uppercase()) {
+					"KILL" -> CacheDepthLevel.KILL
+					"CLEAN" -> CacheDepthLevel.CLEAN
+					"CLEAR" -> CacheDepthLevel.CLEAR
+					"DUMP" -> CacheDepthLevel.DUMP
+					else -> return@buildSandBox
+				}
+
+				when (parameters[1].uppercase()) {
+					"ALL" -> {
+						JetCache.dropEverything(levelDepth)
+						executor.sendMessage("§aCleaned all caches!")
+					}
+					"ENTITY" -> {
+						JetCache.dropEntityData((executor as Player).uniqueId, levelDepth)
+						executor.sendMessage("§aCleaned all entity caches!")
+					}
+				}
+
+			}
 		}
 
 	}
