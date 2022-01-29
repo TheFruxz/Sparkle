@@ -6,6 +6,8 @@ import de.jet.jvm.extension.math.isDouble
 import de.jet.jvm.extension.math.isLong
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.app.JetCache
+import de.jet.paper.app.JetData
+import de.jet.paper.app.component.essentials.point.Point
 import de.jet.paper.extension.paper.getPlayer
 import de.jet.paper.extension.paper.onlinePlayers
 import de.jet.paper.extension.paper.worlds
@@ -16,6 +18,7 @@ import de.jet.paper.structure.command.completion.CompletionInputType
 import de.jet.paper.structure.command.completion.CompletionInputType.STRING
 import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.color.DyeableMaterial
+import de.jet.paper.tool.display.message.Transmission
 import de.jet.paper.tool.smart.VendorsIdentifiable
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
@@ -99,6 +102,12 @@ data class CompletionAsset(
 			JetCache.registeredServices.any { it.identity.equals(input, ignoreCase) }
 		}
 
+		val COMPONENT = CompletionAsset(system, "COMPONENT", true, listOf(STRING)) {
+			JetCache.registeredComponents.withMap { identity }
+		}.doCheck { input, ignoreCase ->
+			JetCache.registeredComponents.any { it.identity.equals(input, ignoreCase) }
+		}
+
 		val SANDBOX = CompletionAsset(system, "SANDBOX", true, listOf(STRING)) {
 			JetCache.registeredSandBoxes.withMap { identity }
 		}.doCheck { input, ignoreCase ->
@@ -115,6 +124,18 @@ data class CompletionAsset(
 			CacheDepthLevel.values().withMap { name }
 		}.doCheck { input, ignoreCase ->
 			CacheDepthLevel.values().any { it.name.equals(input, ignoreCase) }
+		}
+
+		val TRANSMISSION_LEVEL = CompletionAsset(system, "TRANSMISSION_LEVEL", false, listOf(STRING)) {
+			Transmission.Level.values().withMap { name }
+		}.doCheck { input, ignoreCase ->
+			Transmission.Level.values().any { it.name.equals(input, ignoreCase) }
+		}
+
+		val POINT = CompletionAsset(system, "POINT", true, listOf(STRING)) {
+			JetData.savedPoints.content.points.map(Point::identity)
+		}.doCheck { input, ignoreCase ->
+			JetData.savedPoints.content.points.any { it.identity.equals(input, ignoreCase) }
 		}
 
 		val MATERIAL = CompletionAsset(system, "MATERIAL", false, listOf(STRING)) {

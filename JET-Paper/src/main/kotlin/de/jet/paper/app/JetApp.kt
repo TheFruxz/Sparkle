@@ -21,7 +21,6 @@ import de.jet.paper.app.component.system.JetAssistiveInterchangesComponent
 import de.jet.paper.app.component.system.JetKeeperComponent
 import de.jet.paper.app.component.world.JetBuildModeComponent
 import de.jet.paper.app.interchange.ComponentInterchange
-import de.jet.paper.app.interchange.DemoCommand
 import de.jet.paper.app.interchange.JETInterchange
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.ui.buildContainer
@@ -156,11 +155,6 @@ class JetApp : App() {
 
 		add(JETInterchange())
 		add(ComponentInterchange())
-
-		DemoCommand().let { cmd ->
-			getCommand("demo")?.setExecutor(cmd)
-			getCommand("demo")?.setTabCompleter(cmd.tabCompleter)
-		}
 
 		buildSandBox(this, "filesystem-live") {
 			JetData.worldStructure.content.visualize()

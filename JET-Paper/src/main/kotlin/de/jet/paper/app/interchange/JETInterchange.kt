@@ -14,16 +14,15 @@ import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.system
 import de.jet.paper.structure.app.App
-import de.jet.paper.structure.command.CompletionVariable
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
-import de.jet.paper.structure.command.buildCompletion
-import de.jet.paper.structure.command.isRequired
+import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.component.CompletionAsset
+import de.jet.paper.structure.command.completion.component.CompletionComponent
+import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.live.InterchangeAccess
-import de.jet.paper.structure.command.next
-import de.jet.paper.structure.command.plus
 import de.jet.paper.tool.display.item.action.ActionCooldown
 import de.jet.paper.tool.display.item.action.ActionCooldownType.JET_INFO
 import de.jet.paper.tool.display.message.Transmission
@@ -37,9 +36,14 @@ class JETInterchange(vendor: App = system) : Interchange(
 	label = "jet",
 	protectedAccess = false,
 	completion = buildCompletion {
-		next("version") + "website" + "repository" + "ping" + "test" isRequired false
-		next("demo-panel") + CompletionVariable(vendor, "message-level", false) {
-			Transmission.Level.values().map { it.name }
+		branch {
+			content(CompletionComponent.static("version", "website", "repository", "ping"))
+		}
+		branch {
+			content(Companion.static("test"))
+			branch {
+				content(Companion.asset(CompletionAsset.TRANSMISSION_LEVEL))
+			}
 		}
 	}
 ) {

@@ -1,6 +1,7 @@
 package de.jet.paper.structure.command
 
 import de.jet.jvm.extension.catchException
+import de.jet.jvm.extension.switchResult
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.lang
@@ -8,6 +9,7 @@ import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.InterchangeAuthorizationType.JET
 import de.jet.paper.structure.command.InterchangeResult.*
 import de.jet.paper.structure.command.InterchangeUserRestriction.*
+import de.jet.paper.structure.command.completion.CompletionBranch
 import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.annotation.LegacyCraftBukkitFeature
 import de.jet.paper.tool.display.message.Transmission.Level.ERROR
@@ -19,6 +21,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
+import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import java.util.logging.Level.WARNING
 
@@ -30,8 +33,10 @@ abstract class Interchange(
 	val userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
 	val accessProtectionType: InterchangeAuthorizationType = JET,
 	val hiddenFromRecommendation: Boolean = false, // todo: seems to be unused, that have to be an enabled feature
-	val completion: Completion = emptyCompletion(),
+	val completion: CompletionBranch = de.jet.paper.structure.command.completion.emptyCompletion(),
 ) : CommandExecutor, VendorsIdentifiable<Interchange>, Logging {
+
+	val tabCompleter = TabCompleter { _, _, _, args -> completion.computeCompletion(args.toList()) }
 
 	final override val sectionLabel = "InterchangeEngine"
 
@@ -79,7 +84,7 @@ abstract class Interchange(
 		receiver: CommandSender,
 	) {
 		lang("interchange.run.issue.wrongUsage")
-			.replace("[usage]", "/$label${completion.buildDisplay().let { completion -> 
+			.replace("[usage]", "/$label${completion.buildSyntax().let { completion -> 
 				if (completion.isNotBlank() && completion.isNotEmpty()) {
 					" $completion"
 				} else
@@ -118,7 +123,7 @@ abstract class Interchange(
 				|| (sender is ConsoleCommandSender && userRestriction == ONLY_CONSOLE)
 			) {
 
-				if (completionCheck(sender, this, parameters)) {
+				if (completion.validateInput(parameters).also { sender.sendMessage(it.switchResult("success", "fail")) }) {
 					val clientType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE
 
 					fun exception(exception: Exception) {
@@ -165,12 +170,6 @@ abstract class Interchange(
 
 		return true
 	}
-
-	val completionEngine = completion.buildCompletion()
-
-	val completionDisplay = completion.buildDisplay()
-
-	val completionCheck = completion.buildCheck()
 
 }
 

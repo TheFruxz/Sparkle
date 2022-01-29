@@ -22,30 +22,10 @@ data class InterchangeAccess(
 
 	fun interchangeLog(level: Level = Level.INFO, message: String) = sectionLog.log(level, message)
 
-	val checkParameter = ValidationData(this)
-
 	val inputLength = parameters.size
 
 	fun inputLength(checkIf: Int) = parameters.size == checkIf
 
 	fun inputParameter(slot: Int) = parameters[slot]
-
-	data class ValidationData(
-		private val access: InterchangeAccess,
-	) {
-
-		/**
-		 * returning, if the parameter/variable was used correctly, or false if there is no parameter!
-		 */
-		operator fun get(slot: Int) = with(access) {
-			val completion = interchange.completion
-			val currentSection = completion.sections.getOrNull(slot)
-
-			return@with currentSection?.inputExpressionCheck?.let { it(parameters.getOrNull(slot) ?: "") }?.debugLog("checkit")
-				?: (completion.infinite && completion.sections.lastIndex < parameters.lastIndex).debugLog("skipit")
-
-		}
-
-	}
 
 }

@@ -7,16 +7,15 @@ import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.getSystemTranslated
 import de.jet.paper.extension.system
 import de.jet.paper.structure.app.App
-import de.jet.paper.structure.command.CompletionVariable
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.jet.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
-import de.jet.paper.structure.command.buildCompletion
+import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.component.CompletionAsset
+import de.jet.paper.structure.command.completion.component.CompletionComponent
+import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.execution
-import de.jet.paper.structure.command.isRequired
-import de.jet.paper.structure.command.mustMatchOutput
-import de.jet.paper.structure.command.next
 import de.jet.paper.tool.display.message.Transmission.Level.*
 import org.bukkit.entity.Player
 
@@ -26,12 +25,16 @@ class PointInterchange(vendor: App) : Interchange(
 	protectedAccess = true,
 	userRestriction = ONLY_PLAYERS,
 	completion = buildCompletion {
-		next("create", "delete", "list", "teleport", "teleportAll") isRequired true mustMatchOutput true
-		next(CompletionVariable(vendor, "<Point>", true, { input, ignoreCase ->
-			JetData.savedPoints.content.points.any { it.identity.equals(input, ignoreCase) }
-		}) {
-			JetData.savedPoints.content.points.map(Point::identity)
-		}) isRequired false mustMatchOutput false
+		branch {
+			content(CompletionComponent.static("list", "teleportAll"))
+		}
+		branch {
+			content(CompletionComponent.static("create", "delete", "teleport"))
+
+			branch {
+				content(Companion.asset(CompletionAsset.POINT))
+			}
+		}
 	}) {
 
 	override val execution = execution {
@@ -56,7 +59,8 @@ class PointInterchange(vendor: App) : Interchange(
 								getSystemTranslated(
 									system,
 									address("interchange.internal.essentials.point.list.stash")
-								).replaceVariables("amount" to points.size).replaceVariables("point-array" to identity) + ", "
+								).replaceVariables("amount" to points.size)
+									.replaceVariables("point-array" to identity) + ", "
 							)
 						}
 					}.removeSuffix(", ").notification(INFO, executor).display()

@@ -11,26 +11,38 @@ import de.jet.paper.extension.o.destroySandBox
 import de.jet.paper.extension.o.getSandBox
 import de.jet.paper.extension.system
 import de.jet.paper.structure.app.App
-import de.jet.paper.structure.command.CompletionVariable
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
-import de.jet.paper.structure.command.buildCompletion
-import de.jet.paper.structure.command.infinite
-import de.jet.paper.structure.command.isRequired
+import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.component.CompletionAsset
+import de.jet.paper.structure.command.completion.component.CompletionComponent
+import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.live.InterchangeAccess
-import de.jet.paper.structure.command.mustMatchOutput
-import de.jet.paper.structure.command.next
 import de.jet.paper.tool.display.message.Transmission.Level.*
 
 class SandboxInterchange(vendor: App = system) :
-	Interchange(vendor, "sandbox", protectedAccess = true, completion = buildCompletion {
-
-		next(listOf("list", "drop", "run", "info", "dropAll", "runAll")) isRequired true mustMatchOutput true
-		next(CompletionVariable.SANDBOX) isRequired false mustMatchOutput true infinite true
-
-	}) {
+	Interchange(
+		vendor = vendor,
+		label = "sandbox",
+		protectedAccess = true,
+		completion = buildCompletion {
+			branch {
+				content(CompletionComponent.static("list", "dropAll", "runAll"))
+			}
+			branch {
+				content(Companion.static("drop", "run", "info"))
+				branch {
+					configure {
+						infiniteSubParameters = true
+						isRequired = false
+					}
+					content(Companion.asset(CompletionAsset.SANDBOX))
+				}
+			}
+		}
+	) {
 
 	override val execution: InterchangeAccess.() -> InterchangeResult = result@{
 

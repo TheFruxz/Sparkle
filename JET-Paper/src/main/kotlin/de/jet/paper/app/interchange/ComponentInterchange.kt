@@ -10,40 +10,52 @@ import de.jet.paper.extension.get
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.system
 import de.jet.paper.structure.app.App
-import de.jet.paper.structure.command.CompletionVariable
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
-import de.jet.paper.structure.command.buildCompletion
-import de.jet.paper.structure.command.isRequired
+import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.component.CompletionAsset
+import de.jet.paper.structure.command.completion.component.CompletionComponent
+import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.live.InterchangeAccess
-import de.jet.paper.structure.command.mustMatchOutput
-import de.jet.paper.structure.command.next
-import de.jet.paper.structure.command.plus
 import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.display.message.Transmission.Level.INFO
 
-class ComponentInterchange(vendor: App = system) : Interchange(vendor, "component", completion = buildCompletion {
-	next("start") + "stop" + "list" + "autostart" isRequired true mustMatchOutput true
-	next(CompletionVariable(vendor, "Component", true) {
-		JetCache.registeredComponents.map { it.identity }
-	}) isRequired false mustMatchOutput true
-}) {
+class ComponentInterchange(vendor: App = system) : Interchange(
+	vendor = vendor,
+	label = "component",
+	completion = buildCompletion {
+		branch {
+			content(CompletionComponent.static("list"))
+		}
+		branch {
+			content(Companion.static("start", "stop", "autostart"))
+			branch {
+				content(Companion.asset(CompletionAsset.COMPONENT))
+			}
+		}
+	}
+) {
 	override val execution: InterchangeAccess.() -> InterchangeResult = {
 
 		if (parameters.size == 1 && parameters.first() == "list") {
 
 			mutableListOf(lang["interchange.internal.component.list.header"]).apply {
-				add(lang["interchange.internal.component.list.description"].replaceVariables(
-					"1" to "⏻/⭘",
-					"2" to "⚡",
-				))
+				add(
+					lang["interchange.internal.component.list.description"].replaceVariables(
+						"1" to "⏻/⭘",
+						"2" to "⚡",
+					)
+				)
 				JetCache.registeredComponents.forEach { component ->
 					add(
 						lang("interchange.internal.component.list.line")
 							.replace(
 								"[component]" to component.identity,
-								"[autoStart]" to if (component.isAutoStarting || JetData.autoStartComponents.content.contains(component.identity)) "§a§o⚡" else "§c§o⚡",
+								"[autoStart]" to if (component.isAutoStarting || JetData.autoStartComponents.content.contains(
+										component.identity
+									)
+								) "§a§o⚡" else "§c§o⚡",
 								"[status]" to if (component.isRunning) "§a⏻" else "§c⭘"
 							)
 					)

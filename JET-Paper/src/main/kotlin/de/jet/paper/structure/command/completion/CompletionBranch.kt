@@ -57,6 +57,9 @@ class CompletionBranch(
 
 	}
 
+	fun content(vararg completionComponents: CompletionComponent) =
+		content(content = completionComponents.toList())
+
 	fun computePossibleLevelCompletion(): List<String> {
 		return content.flatMap { it.completion() }
 	}
@@ -88,7 +91,11 @@ class CompletionBranch(
 			depth++
 		}
 
-		return currentBranches.none { it.subBranches.any { it.configuration.isRequired } }
+		println(currentBranches.size)
+		if (parameters.size > depth && currentBranches.none { it.configuration.infiniteSubParameters }) {
+			return false
+		} else
+			return currentBranches.none { it.subBranches.any { it.configuration.isRequired } }
 	}
 
 	fun computeCompletion(parameters: List<String>): List<String> {
@@ -108,8 +115,6 @@ class CompletionBranch(
 			}
 			depth++
 		}
-
-		println("depth: $depth parameters: ${parameters.size} empty?: ${currentBranches.isEmpty()}")
 
 		return if (parameters.size > depth) {
 			listOf(" ")
@@ -158,3 +163,6 @@ fun buildCompletion(
 	content: List<CompletionComponent> = emptyList(),
 	process: CompletionBranch.() -> Unit,
 ) = CompletionBranch(identity, path, subBranches, configuration, content).apply(process)
+
+fun emptyCompletion() =
+	buildCompletion(process = { })
