@@ -2,9 +2,6 @@
 
 package de.jet.jvm.application.console
 
-import de.jet.jvm.annotation.NotPerfect
-import de.jet.jvm.annotation.NotTested
-import de.jet.jvm.annotation.NotWorking
 import de.jet.jvm.application.console.ArgumentSyntax.ContentType.*
 import de.jet.jvm.application.console.ArgumentSyntax.SyntaxCheck.Companion
 import de.jet.jvm.extension.switchResult
@@ -145,9 +142,6 @@ class ArgumentSyntax(
         }
     }
 
-    @NotPerfect
-    @NotTested
-    @NotWorking
     fun checkInputContentWithFeedback(input: Array<String>): SyntaxCheck {
 
         val processedVariables = ArgumentInput.processVariables(input)
