@@ -1,5 +1,7 @@
 package de.jet.jvm.extension.collection
 
+import java.util.*
+
 /**
  * Returns the [Iterable]<[T]> as a [List] where
  * every element is turned to a [String]. The
@@ -94,3 +96,21 @@ fun <T> Iterable<T>.mapToBoolean() =
 @Suppress("UNCHECKED_CAST")
 fun <T, O> Iterable<T>.mapCast() =
 	map { it as O }
+
+/**
+ * This function returns a list of lowercase strings
+ * of the original [Iterable]<[T]>
+ * @author Fruxz
+ * @since 1.0
+ */
+fun Iterable<String>.mapToLowercase(locale: Locale = Locale.ROOT) =
+	map { it.lowercase(locale) }
+
+/**
+ * This function returns a list of uppercase strings
+ * of the original [Iterable]<[T]>
+ * @author Fruxz
+ * @since 1.0
+ */
+fun Iterable<String>.mapToUppercase(locale: Locale = Locale.ROOT) =
+	map { it.uppercase(locale) }
