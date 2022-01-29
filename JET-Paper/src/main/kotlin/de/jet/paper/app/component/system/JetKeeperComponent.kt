@@ -11,7 +11,7 @@ import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.system
 import de.jet.paper.extension.timing.isOver
 import de.jet.paper.structure.app.App
-import de.jet.paper.structure.app.cache.CacheDepthLevel.CLEAN
+import de.jet.paper.structure.app.cache.CacheDepthLevel.DUMP
 import de.jet.paper.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.jet.paper.structure.component.SmartComponent
 import de.jet.paper.structure.service.Service
@@ -52,7 +52,7 @@ class JetKeeperComponent(vendor: App = system) : SmartComponent(vendor, AUTOSTAR
 
 			registeredApplications.withForEach {
 				try {
-					appCache.dropEverything(CLEAN)
+					appCache.dropEverything(DUMP)
 					debugLog("removed appCache (level: CLEAN) from app $appLabel")
 				} catch (exception: Exception) {
 
