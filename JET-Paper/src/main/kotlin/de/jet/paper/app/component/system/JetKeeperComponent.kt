@@ -52,8 +52,9 @@ class JetKeeperComponent(vendor: App = system) : SmartComponent(vendor, AUTOSTAR
 
 			registeredApplications.withForEach {
 				try {
-					appCache.dropEverything(DUMP)
-					debugLog("removed appCache (level: CLEAN) from app $appLabel")
+					val level = DUMP
+					appCache.dropEverything(level)
+					debugLog("removed appCache (level: ${level.name}) from app $appLabel")
 				} catch (exception: Exception) {
 
 					if (JetApp.debugMode)
