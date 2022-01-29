@@ -7,4 +7,5 @@ package de.jet.jvm.annotation
  * @author Fruxz
  * @since 1.0
  */
+@RequiresOptIn(message = "This feature is marked as 'not working'!", level = RequiresOptIn.Level.ERROR)
 annotation class NotWorking
