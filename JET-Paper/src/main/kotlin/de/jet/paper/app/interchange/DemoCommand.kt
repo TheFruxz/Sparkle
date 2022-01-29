@@ -1,5 +1,6 @@
 package de.jet.paper.app.interchange
 
+import de.jet.jvm.extension.switchResult
 import de.jet.paper.structure.command.completion.buildCompletion
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
@@ -43,7 +44,8 @@ class DemoCommand : CommandExecutor {
 	}
 
 	override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-		TODO("Not yet implemented")
+		println(completion.validateInput(args.toList()).switchResult("§aSUCCESS", "§cFAILED"))
+		return true
 	}
 
 	val tabCompleter = TabCompleter { _, _, _, args ->

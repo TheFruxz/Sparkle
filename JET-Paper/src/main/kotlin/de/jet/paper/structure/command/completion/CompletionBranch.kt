@@ -71,6 +71,26 @@ class CompletionBranch(
 
 	fun computeLocalCompletion() = content.flatMap { it.completion() }
 
+	fun validateInput(parameters: List<String>): Boolean {
+		var currentBranches = listOf(this)
+		var query = parameters.firstOrNull() ?: ""
+		var depth = 0
+
+		for (x in 1..parameters.size) {
+			val nextBranches = currentBranches.flatMap { it.subBranches }
+			query = parameters[x - 1]
+			if (nextBranches.isEmpty()) break
+			currentBranches = nextBranches.filter {
+				query.isBlank()
+						|| it.computeLocalCompletion().mapToLowercase().any { it.contains(query, true) }
+						|| (!it.configuration.mustMatchOutput && it.isInputAllowedByTypes(query))
+			}
+			depth++
+		}
+
+		return currentBranches.none { it.subBranches.any { it.configuration.isRequired } }
+	}
+
 	fun computeCompletion(parameters: List<String>): List<String> {
 
 		var currentBranches = listOf(this)
