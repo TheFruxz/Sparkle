@@ -41,8 +41,8 @@ object JetCache : AppCache {
 	val registeredSandBoxCalls = mutableMapOf<Identity<SandBox>, Int>()
 
 	@GlobalData
-	@DataLevel(KILL)
-	val registeredCompletionVariables = mutableMapOf<String, Set<String>>()
+	@DataLevel(DUMP)
+	val registeredCompletionAssetStateCache = mutableMapOf<String, SortedSet<String>>()
 
 	@GlobalData
 	@DataLevel(KILL)
@@ -132,7 +132,7 @@ object JetCache : AppCache {
 		this::registeredApplications to { registeredApplications.clear() },
 		this::registeredSandBoxes to { registeredSandBoxes.clear() },
 		this::registeredSandBoxCalls to { registeredSandBoxCalls.clear() },
-		this::registeredCompletionVariables to { registeredCompletionVariables.clear() },
+		this::registeredCompletionAssetStateCache to { registeredCompletionAssetStateCache.clear() },
 		this::registeredCachedMutables to { registeredCachedMutables.clear() },
 		this::registeredPreferenceCache to { registeredPreferenceCache.clear() },
 		this::registeredItemClickActions to { registeredItemClickActions.clear() },
@@ -150,7 +150,7 @@ object JetCache : AppCache {
 		this::buildModePlayers to { buildModePlayers.clear() },
 		this::playerMarkerBoxes to { playerMarkerBoxes.clear() },
 		this::featureStates to { featureStates.clear() },
-		this::keyboardRequests to { keyboardRequests.clear() }
+		this::keyboardRequests to { keyboardRequests.clear() },
 	)
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {

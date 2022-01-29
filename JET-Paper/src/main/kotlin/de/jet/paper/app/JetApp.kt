@@ -21,6 +21,7 @@ import de.jet.paper.app.component.system.JetAssistiveInterchangesComponent
 import de.jet.paper.app.component.system.JetKeeperComponent
 import de.jet.paper.app.component.world.JetBuildModeComponent
 import de.jet.paper.app.interchange.ComponentInterchange
+import de.jet.paper.app.interchange.DemoCommand
 import de.jet.paper.app.interchange.JETInterchange
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.ui.buildContainer
@@ -37,6 +38,9 @@ import de.jet.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.AppCompanion
 import de.jet.paper.structure.app.cache.CacheDepthLevel
+import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.component.CompletionAsset
+import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
@@ -153,6 +157,11 @@ class JetApp : App() {
 		add(JETInterchange())
 		add(ComponentInterchange())
 
+		DemoCommand().let { cmd ->
+			getCommand("demo")?.setExecutor(cmd)
+			getCommand("demo")?.setTabCompleter(cmd.tabCompleter)
+		}
+
 		buildSandBox(this, "filesystem-live") {
 			JetData.worldStructure.content.visualize()
 		}
@@ -200,6 +209,61 @@ class JetApp : App() {
 				}
 
 			}
+		}
+
+		buildSandBox(this, "printCompletionTree") {
+			buildCompletion("test") {
+
+				configure {
+					isRequired = true
+				}
+
+				content(listOf(
+					CompletionComponent.asset(CompletionAsset.WORLD_NAME)
+				))
+
+				branch("demo") {
+
+					content(listOf(
+						CompletionComponent.static("test1", "test2", "test3"),
+					))
+
+					addContent(
+						CompletionComponent.asset(CompletionAsset.LONG)
+					)
+
+					configure {
+						isRequired = false
+						mustMatchOutput = false
+						infiniteSubParameters = true
+					}
+
+					branch("joke") {
+						content(listOf(
+							CompletionComponent.static("its", "a", "joke"),
+						))
+					}
+
+					branch("joke2") {
+						branch("demo") {
+							content(listOf(
+								CompletionComponent.static("ItsJoke2 demo"),
+							))
+						}
+						content(listOf(
+							CompletionComponent.static("ItsJoke2"),
+						))
+					}
+
+					branch("joke3") {
+						content(listOf(
+							CompletionComponent.static("ItsJoke3"),
+						))
+					}
+
+				}
+
+			}.computeCompletion(parameters).let(::println)
 		}
 
 	}

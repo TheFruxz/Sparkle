@@ -40,13 +40,13 @@ data class CompletionVariable(
 	val storagePath = "${vendor.identity}:$label"
 
 	fun computeContent() =
-		if (!refreshing && JetCache.registeredCompletionVariables.containsKey(storagePath)) {
-			JetCache.registeredCompletionVariables[storagePath]!!
+		if (!refreshing && JetCache.registeredCompletionAssetStateCache.containsKey(storagePath)) {
+			JetCache.registeredCompletionAssetStateCache[storagePath]!!
 		} else {
-			generator(this).toSet().apply {
+			generator(this).toSortedSet().apply {
 
 				if (!refreshing)
-					JetCache.registeredCompletionVariables[storagePath] = this
+					JetCache.registeredCompletionAssetStateCache[storagePath] = this
 
 			}
 		}
