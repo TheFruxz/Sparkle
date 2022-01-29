@@ -10,4 +10,4 @@ import kotlin.reflect.KClass
 	the required component is running, to avoid exceptions and other critical issues.
 """, WARNING)
 @Repeatable
-annotation class RequiresComponent(val module: KClass<out Component>) // todo: add runtime KSP (kotlin symbol processing) check, if possible
+internal annotation class RequiresComponent(val module: KClass<out Component>)
