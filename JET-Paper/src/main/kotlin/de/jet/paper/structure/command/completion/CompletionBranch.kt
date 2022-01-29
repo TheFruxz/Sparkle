@@ -65,54 +65,38 @@ class CompletionBranch(
 		return subBranches.flatMap { it.computePossibleLevelCompletion() }
 	}
 
-	fun isInputAllowed(input: String) = content.flatMap { if (it is CompletionComponent.Asset) it.asset.supportedInputType else emptyList() }.none { it.check?.let { it1 -> it1(input) } ?: true}
+	fun isInputAllowedByTypes(input: String) =
+		content.flatMap { if (it is CompletionComponent.Asset) it.asset.supportedInputType else emptyList() }
+			.any { it.check?.let { it1 -> it1(input) } ?: true }
+
+	fun computeLocalCompletion() = content.flatMap { it.completion() }
 
 	fun computeCompletion(parameters: List<String>): List<String> {
 
 		var currentBranches = listOf(this)
-		var currentInput = parameters
+		var query = parameters.firstOrNull() ?: ""
 		var depth = 0
 
-		while (currentInput.isNotEmpty()) {
-
-			val query = currentInput.first()
-			val matchingBranches = currentBranches.flatMap {
-				it.subBranches.filter {
-					it.computePossibleLevelCompletion().mapToLowercase().contains(query.lowercase()) || it.isInputAllowed(query)
-				}
-			}.toMutableList()
-
-			if (matchingBranches.size > 1) {
-				matchingBranches.removeAll {
-					it.configuration.supportedInputTypes.none {
-						it.check?.invoke(query) ?: true
-					}
-				}
+		for (x in 1..parameters.size) {
+			val nextBranches = currentBranches.flatMap { it.subBranches }
+			query = parameters[x - 1]
+			if (nextBranches.isEmpty()) break
+			currentBranches = nextBranches.filter {
+				query.isBlank()
+						|| it.computeLocalCompletion().mapToLowercase().any { it.contains(query, true) }
+						|| (!it.configuration.mustMatchOutput && it.isInputAllowedByTypes(query))
 			}
-
-			if (matchingBranches.isEmpty()) {
-				break
-			} else {
-				depth++
-				println("depth: $depth | parameters: ${parameters.size} | currentInput: ${currentInput.size}")
-				if (depth < parameters.size) {
-					currentBranches = matchingBranches
-					currentInput = currentInput.drop(1)
-				} else
-					break
-			}
-
+			depth++
 		}
 
-		val out = currentBranches.flatMap { it.computePossibleFutureLevelCompletions() }
+		println("depth: $depth parameters: ${parameters.size} empty?: ${currentBranches.isEmpty()}")
 
-		return out
-			.filter { it.lowercase().startsWith(currentInput.firstOrNull()?.lowercase() ?: "") }.sorted()
-			.plus(out.filter {
-				it.lowercase().contains(currentInput.firstOrNull()?.lowercase() ?: "") && !it.lowercase()
-					.startsWith(currentInput.firstOrNull()?.lowercase() ?: "")
-			}.sorted())
-
+		return if (parameters.size > depth) {
+			listOf(" ")
+		} else
+			currentBranches.flatMap { it.computeLocalCompletion() }.partition { it.startsWith(query, true) }.let {
+				it.first + it.second.filter { it.contains(query, true) }
+			}
 	}
 
 	fun configure(process: CompletionBranchConfiguration.() -> Unit) {

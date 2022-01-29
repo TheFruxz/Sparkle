@@ -27,8 +27,14 @@ class DemoCommand : CommandExecutor {
 		}
 		branch {
 			addContent(Companion.asset(CompletionAsset.LONG))
+			configure {
+				mustMatchOutput = false
+			}
 			branch {
 				addContent(Companion.asset(CompletionAsset.DOUBLE))
+				configure {
+					mustMatchOutput = false
+				}
 				branch {
 					addContent(Companion.asset(CompletionAsset.ONLINE_PLAYER_NAME))
 				}
