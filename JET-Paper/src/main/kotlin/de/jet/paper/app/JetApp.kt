@@ -3,6 +3,7 @@ package de.jet.paper.app
 import de.jet.jvm.extension.data.addJetJsonModuleModification
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.extension.math.decimalAsPercent
+import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.component.chat.JetChatComponent
 import de.jet.paper.app.component.essentials.EssentialsComponent
@@ -37,9 +38,6 @@ import de.jet.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.AppCompanion
 import de.jet.paper.structure.app.cache.CacheDepthLevel
-import de.jet.paper.structure.command.completion.buildCompletion
-import de.jet.paper.structure.command.completion.component.CompletionAsset
-import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
@@ -205,67 +203,12 @@ class JetApp : App() {
 			}
 		}
 
-		buildSandBox(this, "printCompletionTree") {
-			buildCompletion("test") {
-
-				configure {
-					isRequired = true
-				}
-
-				content(listOf(
-					CompletionComponent.asset(CompletionAsset.WORLD_NAME)
-				))
-
-				branch("demo") {
-
-					content(listOf(
-						CompletionComponent.static("test1", "test2", "test3"),
-					))
-
-					addContent(
-						CompletionComponent.asset(CompletionAsset.LONG)
-					)
-
-					configure {
-						isRequired = false
-						mustMatchOutput = false
-						infiniteSubParameters = true
-					}
-
-					branch("joke") {
-						content(listOf(
-							CompletionComponent.static("its", "a", "joke"),
-						))
-					}
-
-					branch("joke2") {
-						branch("demo") {
-							content(listOf(
-								CompletionComponent.static("ItsJoke2 demo"),
-							))
-						}
-						content(listOf(
-							CompletionComponent.static("ItsJoke2"),
-						))
-					}
-
-					branch("joke3") {
-						content(listOf(
-							CompletionComponent.static("ItsJoke3"),
-						))
-					}
-
-				}
-
-			}.computeCompletion(parameters).let(::println)
-		}
-
 	}
 
 	override fun bye() {
 
 		JetCache.registeredComponents.forEach {
-			it.stop()
+			tryToResult { it.stop() }
 		}
 
 	}
