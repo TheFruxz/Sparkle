@@ -8,6 +8,7 @@ import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.AppCache
 import de.jet.paper.structure.app.cache.CacheDepthLevel
 import de.jet.paper.structure.app.cache.CacheDepthLevel.*
+import de.jet.paper.structure.app.event.EventListener
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.component.Component
 import de.jet.paper.structure.feature.Feature
@@ -71,6 +72,10 @@ object JetCache : AppCache {
 	@GlobalData
 	@DataLevel(KILL)
 	val registeredServices = mutableSetOf<Service>()
+
+	@GlobalData
+	@DataLevel(KILL)
+	val registeredListeners = mutableSetOf<EventListener>()
 
 	@GlobalData
 	@DataLevel(KILL)
@@ -165,6 +170,7 @@ object JetCache : AppCache {
 	}
 
 	override fun dropEverything(dropDepth: CacheDepthLevel) {
+
 		@OptIn(ExperimentalStdlibApi::class)
 		@Suppress("GrazieInspection")
 

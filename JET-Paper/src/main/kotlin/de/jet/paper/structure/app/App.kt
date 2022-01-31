@@ -141,7 +141,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	/**
 	 * Interchange must not be initialized before executing this!
 	 */
-	fun replace(identity: Identity<Interchange>, environment: Interchange) {
+	internal fun replace(identity: Identity<Interchange>, environment: Interchange) {
 		val command = getCommand(identity.identity)
 		debugLog("Command '${identity.identity}' command is ${command?.name} and is ${command?.javaClass}")
 		command?.setExecutor(environment)
@@ -211,6 +211,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			try {
 
 				pluginManager.registerEvents(eventListener as Listener, this)
+				JetCache.registeredListeners.add(eventListener)
 				mainLog(Level.INFO, "registered '${eventListener.listenerIdentity}' listener!")
 
 			} catch (e: Exception) {
