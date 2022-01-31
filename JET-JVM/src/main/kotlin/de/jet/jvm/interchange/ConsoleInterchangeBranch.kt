@@ -9,12 +9,12 @@ import de.jet.jvm.tree.TreeBranch
  * @since 1.0
  */
 class ConsoleInterchangeBranch(
-    override var identity: String,
-    override var path: Address<TreeBranch<ConsoleInterchangeBranch, ((String) -> Unit)?, ConsoleInterchangeBranchType>>,
-    override var subBranches: List<ConsoleInterchangeBranch> = emptyList(),
-    override var branchType: ConsoleInterchangeBranchType = ConsoleInterchangeBranchType.OBJECT,
-    override var content: ((String) -> Unit)?,
-) : TreeBranch<ConsoleInterchangeBranch, ((String) -> Unit)?, ConsoleInterchangeBranchType>(identity, path, branchType, subBranches, content) {
+	override var identity: String,
+	override var address: Address<TreeBranch<ConsoleInterchangeBranch, ((String) -> Unit)?, ConsoleInterchangeBranchType>>,
+	override var subBranches: List<ConsoleInterchangeBranch> = emptyList(),
+	override var branchType: ConsoleInterchangeBranchType = ConsoleInterchangeBranchType.OBJECT,
+	override var content: ((String) -> Unit)?,
+) : TreeBranch<ConsoleInterchangeBranch, ((String) -> Unit)?, ConsoleInterchangeBranchType>(identity, address, branchType, subBranches, content) {
 
     /**
      * This function returns the best matching branch of the [commandInput] input
@@ -28,7 +28,7 @@ class ConsoleInterchangeBranch(
     }
 
     /**
-     * This function returns the best matching branch of the [path] input and the
+     * This function returns the best matching branch of the [address] input and the
      * remaining, not used parameters.
      * @param commandInput The path to match
      * @return The best matching branch + remaining, not used parameters
@@ -50,14 +50,14 @@ class ConsoleInterchangeBranch(
      * @since 1.0
      */
     fun branch(
-        identity: String,
-        path: Address<TreeBranch<ConsoleInterchangeBranch, ((String) -> Unit)?, ConsoleInterchangeBranchType>> = this.path / identity,
-        branchType: ConsoleInterchangeBranchType = ConsoleInterchangeBranchType.OBJECT,
-        process: ConsoleInterchangeBranch.() -> Unit,
+	    identity: String,
+	    path: Address<TreeBranch<ConsoleInterchangeBranch, ((String) -> Unit)?, ConsoleInterchangeBranchType>> = this.address / identity,
+	    branchType: ConsoleInterchangeBranchType = ConsoleInterchangeBranchType.OBJECT,
+	    process: ConsoleInterchangeBranch.() -> Unit,
     ) {
         subBranches += ConsoleInterchangeBranch(
             identity = identity,
-            path = path,
+            address = path,
             subBranches = listOf(),
             branchType = branchType,
             content = null,

@@ -19,6 +19,7 @@ import de.jet.paper.structure.command.completion.buildCompletion
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
+import de.jet.paper.structure.command.completion.infiniteSubParameters
 import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.display.message.Transmission.Level.*
 
@@ -34,10 +35,7 @@ class SandboxInterchange(vendor: App = system) :
 			branch {
 				content(Companion.static("drop", "run", "info"))
 				branch {
-					configure {
-						infiniteSubParameters = true
-						isRequired = false
-					}
+					infiniteSubParameters()
 					content(Companion.asset(CompletionAsset.SANDBOX))
 				}
 			}

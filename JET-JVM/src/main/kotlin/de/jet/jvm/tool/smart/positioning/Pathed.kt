@@ -16,8 +16,8 @@ interface Pathed<T> : Addressable<T> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	override val address: Address<T>
-		get() = path
+	override val addressObject: Address<T>
+		get() = address
 
 	/**
 	 * This is the path of this object, which
@@ -26,7 +26,7 @@ interface Pathed<T> : Addressable<T> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val path: Address<T>
+	val address: Address<T>
 
 	/**
 	 * This value represents the different parts
@@ -37,7 +37,7 @@ interface Pathed<T> : Addressable<T> {
 	val pathParts: List<String>
 		get() {
 			var isDirectory = false
-			var pathString = path.addressString
+			var pathString = address.addressString
 
 			if (pathString.endsWith("/")) {
 				isDirectory = true

@@ -13,16 +13,16 @@ interface Addressable<T> {
 	 * @since 1.0
 	 */
 	val addressString: String
-		get() = address.addressString
+		get() = addressObject.addressString
 
 	/**
 	 * The address of the object as a [Address]
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val address: Address<T>
+	val addressObject: Address<T>
 
 	val isRoot: Boolean
-		get() = !addressString.contains(address.divider) || addressString == address.divider
+		get() = !addressString.contains(addressObject.divider) || addressString == addressObject.divider
 
 }

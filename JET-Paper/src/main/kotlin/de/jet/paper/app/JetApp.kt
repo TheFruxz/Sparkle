@@ -2,7 +2,6 @@ package de.jet.paper.app
 
 import de.jet.jvm.extension.data.addJetJsonModuleModification
 import de.jet.jvm.extension.forceCast
-import de.jet.jvm.extension.math.decimalAsPercent
 import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.component.chat.JetChatComponent
@@ -37,7 +36,8 @@ import de.jet.paper.general.api.mojang.MojangProfileUsernameHistoryEntry
 import de.jet.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.AppCompanion
-import de.jet.paper.structure.app.cache.CacheDepthLevel
+import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
@@ -175,31 +175,38 @@ class JetApp : App() {
 			}.display(executor as Player)
 		}
 
-		buildSandBox(this, "percentage") {
-			executor.sendMessage(parameters.first().toDouble().decimalAsPercent.displayPercentageString("§a|", "§7|", 60))
-		}
-
-		buildSandBox(this, "cleaner") {
-			if (parameters.size >= 2) {
-				val levelDepth = when (parameters[0].uppercase()) {
-					"KILL" -> CacheDepthLevel.KILL
-					"CLEAN" -> CacheDepthLevel.CLEAN
-					"CLEAR" -> CacheDepthLevel.CLEAR
-					"DUMP" -> CacheDepthLevel.DUMP
-					else -> return@buildSandBox
-				}
-
-				when (parameters[1].uppercase()) {
-					"ALL" -> {
-						JetCache.dropEverything(levelDepth)
-						executor.sendMessage("§aCleaned all caches!")
-					}
-					"ENTITY" -> {
-						JetCache.dropEntityData((executor as Player).uniqueId, levelDepth)
-						executor.sendMessage("§aCleaned all entity caches!")
+		buildSandBox(this, "output-branch-trace-result") {
+			buildCompletion(identity = "root") {
+				branch("Hey") {
+					content(CompletionComponent.static("Hey"))
+					addContent(CompletionComponent.static("test"))
+					branch("incomplete") {
+						addContent(CompletionComponent.static("test2"))
 					}
 				}
-
+				branch("hello") {
+					content(CompletionComponent.static("hello"))
+					branch("world") {
+						content(CompletionComponent.static("world"))
+					}
+				}
+				branch("anotherHello") {
+					addContent(CompletionComponent.static("hello"))
+					branch("evenReachable?") {
+						addContent(CompletionComponent.static("evenReachable"))
+					}
+				}
+				branch("world") {
+					content(CompletionComponent.static("world"))
+				}
+			}.trace(parameters).let { result ->
+				println(buildString {
+					appendLine("Trace result:")
+					appendLine("conclusion: ${result.conclusion.name}")
+					appendLine("waysMatching: ${result.waysMatching.map { it.address }}")
+					appendLine("waysIncomplete: ${result.waysIncomplete.map { it.address }}")
+					appendLine("waysImpossible: ${result.waysFailed.map { it.address }}")
+				})
 			}
 		}
 
