@@ -64,14 +64,21 @@ class LanguageSpeaker(
 		"[NONE]" to ChatColor.RESET,
 	)
 
-	fun message(id: String, smartColor: Boolean = true): String {
+	private val basicHTMLmap = mapOf(
+		"<br>" to "\n"
+	)
+
+	fun message(id: String, smartColor: Boolean = true, basicHTML: Boolean = true): String {
 		return if (!error) {
 
 			(cachedLanguageData[id] ?: "LANGUAGE-DATA '$id' UNKNOWN ($baseLang)").let { output ->
-				if (smartColor) {
-					output.replace(smartColors)
-				} else
-					output
+				var outputState = output
+
+				if (smartColor) outputState = outputState.replace(smartColors)
+
+				if (basicHTML) outputState = outputState.replace(basicHTMLmap)
+
+				return outputState
 			}
 
 		} else "LANGUAGE FILE $baseLang NOT CORRECT"
