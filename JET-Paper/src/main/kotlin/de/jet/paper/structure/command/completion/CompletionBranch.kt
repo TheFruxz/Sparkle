@@ -15,6 +15,8 @@ class CompletionBranch(
 	override var subBranches: List<CompletionBranch> = emptyList(),
 	configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
 	override var content: List<CompletionComponent> = emptyList(),
+	val parent: CompletionBranch? = null,
+	private var isBranched: Boolean = false,
 ) : TreeBranch<CompletionBranch, List<CompletionComponent>, TreeBranchType>(
 	identity,
 	path,
@@ -64,10 +66,6 @@ class CompletionBranch(
 		return content.flatMap { it.completion() }
 	}
 
-	fun computePossibleFutureLevelCompletions(): List<String> {
-		return subBranches.flatMap { it.computePossibleLevelCompletion() }
-	}
-
 	fun isInputAllowedByTypes(input: String) =
 		content.flatMap { if (it is CompletionComponent.Asset) it.asset.supportedInputType else emptyList() }
 			.any { it.check?.let { it1 -> it1(input) } ?: true }
@@ -86,16 +84,15 @@ class CompletionBranch(
 			currentBranches = nextBranches.filter {
 				query.isBlank()
 						|| it.computeLocalCompletion().mapToLowercase().any { it.contains(query, true) }
-						|| (!it.configuration.mustMatchOutput && it.isInputAllowedByTypes(query))
+						&& (!it.configuration.mustMatchOutput && it.isInputAllowedByTypes(query))
 			}
 			depth++
 		}
 
-		println(currentBranches.size)
-		if (parameters.size > depth && currentBranches.none { it.configuration.infiniteSubParameters }) {
-			return false
+		return if (parameters.size > depth && currentBranches.none { it.configuration.infiniteSubParameters }) {
+			false
 		} else
-			return currentBranches.none { it.subBranches.any { it.configuration.isRequired } }
+			currentBranches.none { it.subBranches.any { it.configuration.isRequired } }
 	}
 
 	fun computeCompletion(parameters: List<String>): List<String> {
@@ -124,22 +121,42 @@ class CompletionBranch(
 			}
 	}
 
+	/**
+	 * @throws IllegalStateException if the branch already has sub-branches
+	 * @throws IllegalStateException if the parent-branch is non-required, but this branch is configured as required
+	 */
 	fun configure(process: CompletionBranchConfiguration.() -> Unit) {
-		configuration = configuration.apply(process)
+		if (!isBranched) {
+			val newConfiguration = configuration.apply(process)
+
+			if (parent != null && !parent.configuration.isRequired && newConfiguration.isRequired)
+				throw IllegalStateException("Cannot set required on a non-required branch path (parent is non-required)")
+
+			configuration = newConfiguration
+		} else throw IllegalStateException("Cannot configure a branched, that already has sub-branches")
 	}
 
+	/**
+	 * @throws IllegalStateException if the new branch follows an infinite-parameter branch
+	 */
 	fun branch(
 		identity: String = GENERIC_IDENTITY_NAME,
 		path: Address<TreeBranch<CompletionBranch, List<CompletionComponent>, TreeBranchType>> = this.path / identity,
 		configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
 		process: CompletionBranch.() -> Unit,
 	) {
+
+		if (parent != null && parent.configuration.infiniteSubParameters)
+			throw IllegalStateException("Cannot branch a branch with infinite sub-parameters")
+
+		isBranched = true
 		subBranches += CompletionBranch(
 			identity = identity,
 			path = path,
 			subBranches = emptyList(),
 			configuration = configuration,
 			content = emptyList(),
+			parent = this,
 		).apply(process)
 	}
 

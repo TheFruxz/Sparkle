@@ -1,7 +1,6 @@
 package de.jet.paper.structure.command
 
 import de.jet.jvm.extension.catchException
-import de.jet.jvm.extension.switchResult
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.lang
@@ -17,6 +16,8 @@ import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.permission.Approval
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -35,6 +36,12 @@ abstract class Interchange(
 	val hiddenFromRecommendation: Boolean = false, // todo: seems to be unused, that have to be an enabled feature
 	val completion: CompletionBranch = de.jet.paper.structure.command.completion.emptyCompletion(),
 ) : CommandExecutor, VendorsIdentifiable<Interchange>, Logging {
+
+	init {
+
+		completion.identity = label
+
+	}
 
 	val tabCompleter = TabCompleter { _, _, _, args -> completion.computeCompletion(args.toList()) }
 
@@ -84,13 +91,8 @@ abstract class Interchange(
 		receiver: CommandSender,
 	) {
 		lang("interchange.run.issue.wrongUsage")
-			.replace("[usage]", "/$label${completion.buildSyntax().let { completion -> 
-				if (completion.isNotBlank() && completion.isNotEmpty()) {
-					" $completion"
-				} else
-					""
-			}}")
 			.notification(FAIL, receiver).display()
+		receiver.sendMessage(Component.text(completion.buildSyntax(), NamedTextColor.YELLOW))
 	}
 
 	private fun wrongClientFeedback(
@@ -123,7 +125,7 @@ abstract class Interchange(
 				|| (sender is ConsoleCommandSender && userRestriction == ONLY_CONSOLE)
 			) {
 
-				if (completion.validateInput(parameters).also { sender.sendMessage(it.switchResult("success", "fail")) }) {
+				if (completion.validateInput(parameters)) {
 					val clientType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE
 
 					fun exception(exception: Exception) {
@@ -160,7 +162,8 @@ abstract class Interchange(
 						exception(e)
 					}
 
-				}
+				} else
+					wrongUsageFeedback(sender)
 
 			} else
 				wrongClientFeedback(sender)
