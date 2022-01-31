@@ -13,7 +13,9 @@ import java.util.logging.Level
 
 fun <T : Any?> T.debugLog(message: String) = this.also {
 	if (JetApp.debugMode) {
-		mainLog(Level.WARNING, "[DEBUG] $message")
+		message.lines().forEach { line ->
+			mainLog(Level.WARNING, "[DEBUG] $line")
+		}
 	}
 }
 
@@ -29,7 +31,7 @@ fun getSystemTranslated(@Suppress("UNUSED_PARAMETER") vendor: Identifiable<out A
 
 operator fun LanguageSpeaker.get(id: String) = lang(id)
 
-internal fun lang(id: String, smartColor: Boolean = true) = lang.message(id, smartColor)
+internal fun lang(id: String, smartColor: Boolean = true, basicHTML: Boolean = true) = lang.message(id, smartColor, basicHTML)
 
 internal val system: JetApp
 	get() = JET.appInstance
