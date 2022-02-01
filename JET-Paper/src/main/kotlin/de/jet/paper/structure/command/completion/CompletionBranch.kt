@@ -98,30 +98,30 @@ class CompletionBranch(
 
 			if (isValid && (inputQuery.lastIndex <= depth).also { println("lastIndex <= depth: $it") }) {
 
-				if ((inputQuery.lastIndex < depth).also { println("lastIndex < depth: $it") }) {
-					println("[!] branch ${branch.address} incomplete")
-					waysIncomplete.add(PossibleTraceWay(branch.address, branch.computeLocalCompletion(), inputQuery))
-				} else {
 					println("[!] branch ${branch.address} matching")
 					waysMatching.add(PossibleTraceWay(branch.address, branch.computeLocalCompletion(), inputQuery))
-				}
 
-				if (subBranches.isEmpty().also { println("subBranches.isEmpty: $it") }) {
-					// TODO: 31.01.2022 moved from up block to here
-				} else {
+
+				if (subBranches.isNotEmpty().also { println("subBranches.isNotEmpty: $it") }) {
 					subBranches.forEach {
 						demo(it, depth + 1)
 					}
 				}
+
 			} else {
-				println("[!] branch ${branch.address} failed")
-				waysFailed.add(
-					PossibleTraceWay(
-						branch.address,
-						branch.computeLocalCompletion(),
-						inputQuery.take(depth + 1)
+				if ((inputQuery.lastIndex < depth).also { println("lastIndex (${inputQuery.lastIndex}) < depth ($depth): $it") }) {
+					println("[!] branch ${branch.address} incomplete")
+					waysIncomplete.add(PossibleTraceWay(branch.address, branch.computeLocalCompletion(), inputQuery))
+				} else {
+					println("[!] branch ${branch.address} failed")
+					waysFailed.add(
+						PossibleTraceWay(
+							branch.address,
+							branch.computeLocalCompletion(),
+							inputQuery.take(depth + 1)
+						)
 					)
-				)
+				}
 			}
 
 		}
