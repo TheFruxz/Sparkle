@@ -38,6 +38,7 @@ import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.AppCompanion
 import de.jet.paper.structure.command.completion.buildCompletion
 import de.jet.paper.structure.command.completion.component.CompletionComponent
+import de.jet.paper.structure.command.completion.isNotRequired
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
@@ -176,34 +177,37 @@ class JetApp : App() {
 		}
 
 		buildSandBox(this, "output-branch-trace-result") {
-			buildCompletion(identity = "root") {
-				branch("Hey") {
-					content(CompletionComponent.static("Hey"))
-					addContent(CompletionComponent.static("test"))
-					branch("incomplete") {
-						addContent(CompletionComponent.static("test2"))
+			buildCompletion {
+				branch("Tree1") {
+					content(CompletionComponent.static("Content1"))
+					branch("Tree1.1") {
+						isNotRequired()
+						addContent(CompletionComponent.static("Content1.1"))
 					}
 				}
-				branch("hello") {
-					content(CompletionComponent.static("hello"))
-					branch("world") {
-						content(CompletionComponent.static("world"))
+				branch("Tree2") {
+					content(CompletionComponent.static("Content2"))
+					branch("Tree2.1") {
+						isNotRequired()
+						content(CompletionComponent.static("Content2.1"))
 					}
 				}
-				branch("anotherHello") {
-					addContent(CompletionComponent.static("hello"))
-					branch("evenReachable?") {
-						addContent(CompletionComponent.static("evenReachable"))
+				branch("Tree3") {
+					addContent(CompletionComponent.static("Content3"))
+					branch("Tree3.1") {
+						isNotRequired()
+						addContent(CompletionComponent.static("Content3.1"))
 					}
 				}
-				branch("world") {
-					content(CompletionComponent.static("world"))
+				branch("Tree4") {
+					content(CompletionComponent.static("Content4"))
 				}
 			}.trace(parameters).let { result ->
 				println(buildString {
 					appendLine("Trace result:")
 					appendLine("conclusion: ${result.conclusion.name}")
 					appendLine("waysMatching: ${result.waysMatching.map { it.address }}")
+					appendLine("waysOverflow: ${result.waysOverflow.map { it.address }}")
 					appendLine("waysIncomplete: ${result.waysIncomplete.map { it.address }}")
 					appendLine("waysImpossible: ${result.waysFailed.map { it.address }}")
 				})
