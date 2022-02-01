@@ -1,6 +1,5 @@
 package de.jet.paper.structure.command.completion
 
-import de.jet.jvm.extension.collection.mapToLowercase
 import de.jet.jvm.tool.smart.identification.UUID
 import de.jet.jvm.tool.smart.positioning.Address
 import de.jet.jvm.tree.TreeBranch
@@ -9,6 +8,7 @@ import de.jet.paper.extension.debugLog
 import de.jet.paper.structure.command.completion.CompletionBranch.BranchStatus.*
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.tracing.CompletionTraceResult
+import de.jet.paper.structure.command.completion.tracing.CompletionTraceResult.Conclusion.RESULT
 import de.jet.paper.structure.command.completion.tracing.PossibleTraceWay
 
 class CompletionBranch(
@@ -95,11 +95,12 @@ class CompletionBranch(
 	fun computeLocalCompletion() = content.flatMap { it.completion() }
 
 	fun validInput(input: String) =
-		(!configuration.mustMatchOutput || this.computeLocalCompletion().also { println("1::$it") }.any { it.equals(input, configuration.ignoreCase) }).also { println("1 -> $it") }
-				&& configuration.supportedInputTypes.none { !(it.check?.let { it1 -> it1(input) } ?: true) }.also { println("2 -> $it") }
+		(!configuration.mustMatchOutput || this.computeLocalCompletion().also { println("1::$it") }
+			.any { it.equals(input, configuration.ignoreCase) }).also { println("1 -> $it <- '$input'") }
+				&& configuration.supportedInputTypes.none { !(it.check?.let { it1 -> it1(input) } ?: true) }
+			.also { println("2 -> $it") }
 				&& isInputAllowedByTypes(input).also { println("3 -> $it") }
 				&& (!configuration.isRequired || input.isNotBlank()).also { println("4 -> $it") }
-
 
 
 	enum class BranchStatus {
@@ -115,48 +116,13 @@ class CompletionBranch(
 		val waysIncomplete = mutableListOf<PossibleTraceWay>()
 		val waysFailed = mutableListOf<PossibleTraceWay>()
 
-		fun demo(branch: CompletionBranch, depth: Int) {
-			debugLog("tracing branch ${branch.identity}[${branch.address}]")
-			debugLog("=== INPUT: '$inputQuery'")
-
-			val subBranches = branch.subBranches.also { println("size: ${it.size}") }
-			val isValid = branch.validInput((inputQuery.getOrNull(depth) ?: "").also { println("validContent: $it") })
-				.also { println("valid: $it") }
-
-			if (isValid && (inputQuery.lastIndex <= depth).also { println("lastIndex <= depth: $it") }) {
-
-				println("[!] branch ${branch.address} matching")
-				waysMatching.add(PossibleTraceWay(branch.address, branch.computeLocalCompletion(), inputQuery))
-
-			} else {
-				if ((inputQuery.lastIndex < depth).also { println("lastIndex (${inputQuery.lastIndex}) < depth ($depth): $it") }) {
-					println("[!] branch ${branch.address} incomplete")
-					waysIncomplete.add(PossibleTraceWay(branch.address, branch.computeLocalCompletion(), inputQuery))
-				} else {
-					println("[!] branch ${branch.address} failed")
-					waysFailed.add(
-						PossibleTraceWay(
-							branch.address,
-							branch.computeLocalCompletion(),
-							inputQuery.take(depth + 1)
-						)
-					)
-				}
-			}
-
-			if (subBranches.isNotEmpty().also { println("subBranches.isNotEmpty: $it") }) {
-				subBranches.forEach {
-					demo(it, depth + 1)
-				}
-			}
-
-		}
-
 		fun innerTrace(currentBranch: CompletionBranch, currentDepth: Int, parentBranchStatus: BranchStatus) {
 			debugLog("tracing branch ${currentBranch.identity}[${currentBranch.address}] with depth '$currentDepth' from parentStatus $parentBranchStatus")
-			val currentLevelInput = (inputQuery.getOrNull(currentDepth) ?: "").also { println("currentLevelInput: $it") }
+			val currentLevelInput =
+				(inputQuery.getOrNull(currentDepth) ?: "").also { println("currentLevelInput: $it") }
 			val currentSubBranches = currentBranch.subBranches.also { println("SB-size: ${it.size}") }
-			val currentInputValid = currentBranch.validInput(currentLevelInput).also { println("valid: $it -> $currentLevelInput -> $inputQuery") }
+			val currentInputValid = currentBranch.validInput(currentLevelInput)
+				.also { println("valid: $it -> $currentLevelInput -> $inputQuery") }
 			val currentResult: BranchStatus
 
 			// CONTENT START
@@ -166,26 +132,29 @@ class CompletionBranch(
 				INCOMPLETE -> currentResult = INCOMPLETE
 				OVERFLOW, MATCHING -> {
 					if (currentInputValid.also { println("valid: $it") }) {
-						if (currentInputValid) {
-							if (currentBranch.parent?.isRoot == true || (waysMatching + waysOverflow).any { t -> t.address == currentBranch.parent?.address }) {
-								if (currentBranch.subBranches.none { it.configuration.isRequired }) {
-									if (currentDepth >= inputQuery.lastIndex) {
-										currentResult = MATCHING.also { println("case 1") }
-									} else {
-										currentResult = OVERFLOW.also { println("case 1.2") }
-									}
-								} else
-									currentResult = INCOMPLETE.also { println("case 2") }
+						if (currentBranch.parent?.isRoot == true || (waysMatching + waysOverflow).any { t -> t.address == currentBranch.parent?.address }) {
+							if (currentBranch.subBranches.none { it.configuration.isRequired }) {
+								if (currentDepth >= inputQuery.lastIndex) {
+									currentResult = MATCHING.also { println("case 1") }
+								} else {
+									currentResult = OVERFLOW.also { println("case 1.2") }
+								}
+							} else
+								currentResult = INCOMPLETE.also { println("case 2") }
+						} else {
+							if (waysIncomplete.any { t -> t.address == currentBranch.parent?.address }) {
+								currentResult = INCOMPLETE.also { println("case 3") }
 							} else {
-								if (waysIncomplete.any { t -> t.address == currentBranch.parent?.address }) {
-									currentResult = INCOMPLETE.also { println("case 3") }
-								} else
-									currentResult = FAILED.also { println("case 4") }
+								currentResult = FAILED.also { println("case 4") }
 							}
-						} else
-							currentResult = FAILED.also { println("case 5") }
+						}
+
 					} else {
-						currentResult = FAILED.also { println("case 6") }
+						if (((waysMatching + waysOverflow).any { it.address == currentBranch.parent?.address } && currentLevelInput.isBlank()) || (currentBranch.parent?.isRoot == true && inputQuery.isEmpty())) {
+							currentResult = INCOMPLETE.also { println("case 5") }
+						} else {
+							currentResult = FAILED.also { println("case 6") }
+						}
 					}
 				}
 			}
@@ -195,10 +164,38 @@ class CompletionBranch(
 			debugLog("branch ${currentBranch.identity}[${currentBranch.address}] with depth '$currentDepth' from parentStatus $parentBranchStatus is $currentResult")
 
 			when (currentResult) {
-				FAILED -> waysFailed.add(PossibleTraceWay(currentBranch.address, currentBranch.computeLocalCompletion(), inputQuery))
-				OVERFLOW -> waysOverflow.add(PossibleTraceWay(currentBranch.address, currentBranch.computeLocalCompletion(), inputQuery))
-				INCOMPLETE -> waysIncomplete.add(PossibleTraceWay(currentBranch.address, currentBranch.computeLocalCompletion(), inputQuery))
-				MATCHING -> waysMatching.add(PossibleTraceWay(currentBranch.address, currentBranch.computeLocalCompletion(), inputQuery))
+				FAILED -> waysFailed.add(
+					PossibleTraceWay(
+						currentBranch.address,
+						currentBranch.computeLocalCompletion(),
+						currentDepth,
+						inputQuery,
+					)
+				)
+				OVERFLOW -> waysOverflow.add(
+					PossibleTraceWay(
+						currentBranch.address,
+						currentBranch.computeLocalCompletion(),
+						currentDepth,
+						inputQuery,
+					)
+				)
+				INCOMPLETE -> waysIncomplete.add(
+					PossibleTraceWay(
+						currentBranch.address,
+						currentBranch.computeLocalCompletion(),
+						currentDepth,
+						inputQuery,
+					)
+				)
+				MATCHING -> waysMatching.add(
+					PossibleTraceWay(
+						currentBranch.address,
+						currentBranch.computeLocalCompletion(),
+						currentDepth,
+						inputQuery,
+					)
+				)
 			}
 
 			currentSubBranches.forEach {
@@ -221,38 +218,19 @@ class CompletionBranch(
 		)
 	}
 
-	fun validateInput(parameters: List<String>): Boolean {
-		var currentBranches = listOf(this)
-		var query = parameters.firstOrNull() ?: ""
-		var depth = 0
-		for (x in 1..parameters.size) {
-			val nextBranches = currentBranches.flatMap { it.subBranches }
-			query = parameters[x - 1]
-			if (nextBranches.isEmpty()) break
-			currentBranches = nextBranches.filter {
-				(!it.configuration.mustMatchOutput || it.computeLocalCompletion()
-					.any { c -> c.equals(query, it.configuration.ignoreCase) }) // check input/output match
-						&& it.isInputAllowedByTypes(query) // branch type check
-						&& it.subBranches.any { !it.configuration.isRequired } // this branch can be executed, without further input
-			}
-			/*currentBranches = nextBranches.filter {
-				query.isBlank()
-						|| it.computeLocalCompletion().mapToLowercase().any { it.contains(query, true) }
-						&& (!it.configuration.mustMatchOutput && it.isInputAllowedByTypes(query))
-			}*/
-
-			depth++
-		}
-
-		return true || if (parameters.size > depth && currentBranches.none { it.configuration.infiniteSubParameters }) {
-			false
-		} else
-			currentBranches.none { it.subBranches.any { it.configuration.isRequired } }
-	}
+	fun validateInput(parameters: List<String>) =
+		trace(parameters).conclusion == RESULT
 
 	fun computeCompletion(parameters: List<String>): List<String> {
 
-		var currentBranches = listOf(this)
+		val query = (parameters.dropLast(1).lastOrNull() ?: "").also { println("query: $it") }
+
+		return trace(parameters.dropLast(1)).let { return@let (it.waysIncomplete + it.waysMatching) }.filter { it.tracingDepth.also { d -> println("${it.address} -> depth: $d") } == (parameters.size-1).also { println("s->$it") } }.flatMap { it.cachedCompletion }
+			.distinct().partition { it.startsWith(query, true) }.let {
+				it.first + it.second.filter { it.contains(query, true) }
+			}
+
+		/*var currentBranches = listOf(this)
 		var query = parameters.firstOrNull() ?: ""
 		var depth = 0
 
@@ -273,7 +251,7 @@ class CompletionBranch(
 		} else
 			currentBranches.flatMap { it.computeLocalCompletion() }.partition { it.startsWith(query, true) }.let {
 				it.first + it.second.filter { it.contains(query, true) }
-			}
+			}*/
 	}
 
 	/**

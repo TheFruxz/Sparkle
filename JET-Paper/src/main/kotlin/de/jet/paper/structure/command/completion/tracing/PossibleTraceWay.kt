@@ -9,5 +9,6 @@ import de.jet.paper.structure.command.completion.component.CompletionComponent
 data class PossibleTraceWay(
 	val address: Address<TreeBranch<CompletionBranch, List<CompletionComponent>, TreeBranchType>>,
 	val cachedCompletion: List<String>,
+	val tracingDepth: Int,
 	val usedQueryState: List<String>,
 )
