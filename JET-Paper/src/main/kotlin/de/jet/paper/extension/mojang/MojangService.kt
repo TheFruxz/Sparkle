@@ -10,6 +10,13 @@ private fun String.badRequestCheck() = apply {
 	if (contains("Not Found") && contains("404")) throw NullPointerException("Failed to get profile!")
 }
 
-fun getMojangProfile(profileQuery: String) = URL("https://api.ashcon.app/mojang/v2/user/$profileQuery").readText().fromJson<MojangProfile>()
+/**
+ * @throws NullPointerException if no user is found by the [profileQuery]
+ */
+@Throws(NullPointerException::class)
+fun getMojangProfile(profileQuery: String) = URL("https://api.ashcon.app/mojang/v2/user/$profileQuery").readText().let {
+	it.badRequestCheck()
+	return@let it.fromJson<MojangProfile>()
+}
 
 fun getMojangProfile(uuid: UUID) = getMojangProfile("$uuid")
