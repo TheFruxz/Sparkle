@@ -19,6 +19,7 @@ import de.jet.paper.structure.command.completion.buildCompletion
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
+import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.display.message.Transmission.Level.*
 import org.bukkit.OfflinePlayer
@@ -31,11 +32,14 @@ class BuildModeInterchange(vendor: App = system) :
 		protectedAccess = true,
 		completion = buildCompletion {
 			branch {
+				ignoreCase()
 				content(CompletionComponent.static("list", "enableAll", "disableAll"))
 			}
 			branch {
+				ignoreCase()
 				content(Companion.static("enable", "disable", "toggle", "info"))
 				branch {
+					ignoreCase()
 					content(Companion.asset(CompletionAsset.ONLINE_PLAYER_NAME))
 				}
 			}

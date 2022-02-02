@@ -204,7 +204,7 @@ class CompletionBranch(
 
 	fun validateInput(parameters: List<String>): Boolean {
 		val trace = trace(parameters)
-		
+
 		return if (trace.conclusion == EMPTY && parameters.isEmpty()) {
 			true
 		} else
