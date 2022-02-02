@@ -79,6 +79,9 @@ de.jet.paper.structure.app.cache
 de.jet.paper.structure.app.event
 de.jet.paper.structure.app.interchange
 de.jet.paper.structure.command
+de.jet.paper.structure.command.completion
+de.jet.paper.structure.command.completion.component
+de.jet.paper.structure.command.completion.tracing
 de.jet.paper.structure.command.live
 de.jet.paper.structure.component
 de.jet.paper.structure.feature
