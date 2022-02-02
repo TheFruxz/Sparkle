@@ -36,7 +36,6 @@ class BuildModeInterchange(vendor: App = system) :
 			branch {
 				content(Companion.static("enable", "disable", "toggle", "info"))
 				branch {
-					configure { isRequired = false }
 					content(Companion.asset(CompletionAsset.ONLINE_PLAYER_NAME))
 				}
 			}
