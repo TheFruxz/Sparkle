@@ -8,7 +8,6 @@ import de.jet.paper.extension.debugLog
 import de.jet.paper.structure.command.completion.CompletionBranch.BranchStatus.*
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.tracing.CompletionTraceResult
-import de.jet.paper.structure.command.completion.tracing.CompletionTraceResult.Conclusion.RESULT
 import de.jet.paper.structure.command.completion.tracing.PossibleTraceWay
 
 class CompletionBranch(
@@ -131,16 +130,17 @@ class CompletionBranch(
 				FAILED -> currentResult = FAILED
 				INCOMPLETE -> currentResult = INCOMPLETE
 				OVERFLOW, MATCHING -> {
+
 					if (currentInputValid.also { println("valid: $it") }) {
 						if (currentBranch.parent?.isRoot == true || (waysMatching + waysOverflow).any { t -> t.address == currentBranch.parent?.address }) {
-							if (currentBranch.subBranches.none { it.configuration.isRequired }) {
-								if (currentDepth >= inputQuery.lastIndex) {
-									currentResult = MATCHING.also { println("case 1") }
-								} else {
-									currentResult = OVERFLOW.also { println("case 1.2") }
-								}
-							} else
+							if (currentBranch.subBranches.any { it.configuration.isRequired } && (inputQuery.lastIndex.also { print("lastIndex: $it") } < currentDepth.also { print(" : $it") }).also { println(" = $it") }) {
 								currentResult = INCOMPLETE.also { println("case 2") }
+							} else if (currentDepth >= inputQuery.lastIndex || currentBranch.configuration.infiniteSubParameters) {
+								currentResult = MATCHING.also { println("case 1") }
+							} else {
+								currentResult = OVERFLOW.also { println("case 1.2") }
+							}
+
 						} else {
 							if (waysIncomplete.any { t -> t.address == currentBranch.parent?.address }) {
 								currentResult = INCOMPLETE.also { println("case 3") }
@@ -218,8 +218,11 @@ class CompletionBranch(
 		)
 	}
 
-	fun validateInput(parameters: List<String>) =
-		trace(parameters).conclusion == RESULT
+	fun validateInput(parameters: List<String>): Boolean {
+		val trace = trace(parameters)
+
+		return trace.waysMatching.isNotEmpty()
+	}
 
 	fun computeCompletion(parameters: List<String>): List<String> {
 

@@ -20,6 +20,9 @@ fun CompletionBranch.mustMatchOutput() = configure { mustMatchOutput = true }
 
 fun CompletionBranch.mustNotMatchOutput() = configure { mustMatchOutput = false }
 
-fun CompletionBranch.infiniteSubParameters() = configure { infiniteSubParameters = true }
+fun CompletionBranch.infiniteSubParameters() = configure {
+	infiniteSubParameters = true
+	mustMatchOutput = false
+}
 
 fun CompletionBranch.limitedSubParameters() = configure { infiniteSubParameters = false }
