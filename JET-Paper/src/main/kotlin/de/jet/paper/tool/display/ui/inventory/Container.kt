@@ -2,6 +2,7 @@ package de.jet.paper.tool.display.ui.inventory
 
 import de.jet.paper.extension.display.GRAY
 import de.jet.paper.extension.display.ui.item
+import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.paper.createInventory
 import de.jet.paper.extension.tasky.sync
 import de.jet.paper.tool.display.color.ColorType
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import java.util.*
+import java.util.logging.Level
 import kotlin.math.roundToInt
 
 open class Container(
@@ -34,7 +36,7 @@ open class Container(
 				if (key < inventory.size) {
 					inventory.setItem(key, value.produce())
 				} else
-					System.err.println("Failed to produce item: $value to slot $key because it is higher that the size-content max ${inventory.size}!")
+					mainLog(Level.WARNING,"Failed to produce item: $value to slot $key because it is higher that the size-content max ${inventory.size}!")
 			}
 
 			return inventory

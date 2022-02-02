@@ -27,7 +27,7 @@ data class Address<T> internal constructor(
 	 */
 	override fun toString() = addressString
 
-	override val address: Address<T>
+	override val addressObject: Address<T>
 		get() = address(addressString)
 
 	operator fun div(addition: String) = copy(addressString = "$addressString$divider$addition")
@@ -48,7 +48,7 @@ data class Address<T> internal constructor(
 
 		/**
 		 * Generates an [Address]<[T]> from the [Address]'s class internal constructor,
-		 * like the [address] companion function, but uses a '.' as the divider.
+		 * like the [addressObject] companion function, but uses a '.' as the divider.
 		 * @param path the path as a string
 		 * @param divider the divider as a string
 		 * @return the [Address]<[T]>

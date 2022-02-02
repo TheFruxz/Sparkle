@@ -3,6 +3,7 @@ package de.jet.paper.structure.component
 import de.jet.jvm.extension.tryToCatch
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetApp
+import de.jet.paper.app.JetCache
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
 import de.jet.paper.structure.app.App
@@ -42,6 +43,7 @@ abstract class SmartComponent(
 		interchanges.forEach {
 			tryToCatch {
 				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject))
+				JetCache.registeredInterchanges.remove(it)
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 			}
 		}
@@ -53,6 +55,7 @@ abstract class SmartComponent(
 		interchanges.forEach {
 			tryToCatch {
 				vendor.replace(it.thisIdentityObject, it)
+				JetCache.registeredInterchanges.add(it)
 				debugLog("Interchange '${it.identity}' replaced through '$identity' with original interchange-value!")
 			}
 		}
@@ -60,6 +63,7 @@ abstract class SmartComponent(
 		services.forEach {
 			tryToCatch {
 				vendor.register(it)
+				JetCache.registeredServices.add(it)
 				debugLog("Service '${it.identity}' registered through '$identity'!")
 				vendor.start(it)
 				debugLog("Service '${it.identity}' started through '$identity'!")
@@ -69,6 +73,7 @@ abstract class SmartComponent(
 		components.forEach {
 			tryToCatch {
 				vendor.add(it)
+				JetCache.registeredComponents.add(it)
 				debugLog("Component '${it.identity}' added through '$identity'!")
 			}
 		}
@@ -76,6 +81,7 @@ abstract class SmartComponent(
 		listeners.forEach {
 			tryToCatch {
 				vendor.add(it)
+				JetCache.registeredListeners.add(it)
 				debugLog("Listener '${it.identity}' added through '$identity'!")
 			}
 		}
@@ -87,6 +93,7 @@ abstract class SmartComponent(
 		interchanges.forEach {
 			tryToCatch {
 				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject))
+				JetCache.registeredInterchanges.remove(it)
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 			}
 		}
@@ -96,6 +103,7 @@ abstract class SmartComponent(
 				vendor.stop(it)
 				debugLog("Service '${it.identity}' stopped through '$identity'!")
 				vendor.unregister(it)
+				JetCache.registeredServices.remove(it)
 				debugLog("Service '${it.identity}' unregistered through '$identity'!")
 			}
 		}
@@ -103,6 +111,7 @@ abstract class SmartComponent(
 		components.forEach {
 			tryToCatch {
 				vendor.stop(it.identityObject)
+				JetCache.registeredComponents.remove(it)
 				debugLog("Component '${it.identity}' stopped through '$identity'!")
 			}
 		}
@@ -110,6 +119,7 @@ abstract class SmartComponent(
 		listeners.forEach {
 			tryToCatch {
 				vendor.remove(it)
+				JetCache.registeredListeners.remove(it)
 				debugLog("Service '${it.identity}' removed through '$identity'")
 			}
 		}
@@ -120,7 +130,7 @@ abstract class SmartComponent(
 
 	companion object {
 
-		internal fun disabledComponentInterchange(identity: Identity<Component>) = object : Interchange(JetApp.instance, "") {
+		internal fun disabledComponentInterchange(identity: Identity<Component>) = object : Interchange(JetApp.instance, "", ignoreInputValidation = true) {
 			override val execution = execution {
 
 				"§c§lSORRY!§7 The providing component '§e$identity§7' is currently §cdisabled§7!"

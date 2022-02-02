@@ -141,11 +141,11 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	/**
 	 * Interchange must not be initialized before executing this!
 	 */
-	fun replace(identity: Identity<Interchange>, environment: Interchange) {
+	internal fun replace(identity: Identity<Interchange>, environment: Interchange) {
 		val command = getCommand(identity.identity)
 		debugLog("Command '${identity.identity}' command is ${command?.name} and is ${command?.javaClass}")
 		command?.setExecutor(environment)
-		command?.tabCompleter = environment.completionEngine
+		command?.tabCompleter = environment.tabCompleter
 	}
 
 	/**
@@ -167,8 +167,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 				val replace = IssuedInterchange(this, label, aliases)
 
 				command.setExecutor(replace)
-				command.tabCompleter = replace.completionEngine
-				command.usage = replace.completionDisplay
+				command.tabCompleter = replace.tabCompleter
+				command.usage = replace.completion.buildSyntax()
 
 			} else
 				mainLog(Level.WARNING, "FAILED! failed to register fail-interchange for '$label'")
@@ -185,8 +185,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 				if (command != null) {
 
 					command.setExecutor(interchange)
-					command.tabCompleter = interchange.completionEngine
-					command.usage = interchange.completionDisplay
+					command.tabCompleter = interchange.tabCompleter
+					command.usage = interchange.completion.buildSyntax()
 					command.aliases.mutableReplaceWith(aliases)
 
 					JetCache.registeredInterchanges.add(interchange)
@@ -211,6 +211,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			try {
 
 				pluginManager.registerEvents(eventListener as Listener, this)
+				JetCache.registeredListeners.add(eventListener)
 				mainLog(Level.INFO, "registered '${eventListener.listenerIdentity}' listener!")
 
 			} catch (e: Exception) {

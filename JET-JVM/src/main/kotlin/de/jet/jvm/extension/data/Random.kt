@@ -37,7 +37,7 @@ fun randomInt(range: IntRange) = Random.nextInt(range)
  * @author Fruxz
  * @since 1.0
  */
-fun randomTag(size: Int = 5, hashtag: Boolean = true, tagType: RandomTagType = ONLY_UPPERCASE): String {
+fun buildRandomTag(size: Int = 5, hashtag: Boolean = true, tagType: RandomTagType = ONLY_UPPERCASE): String {
 	val letters = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
 		.map { when (tagType) {
 			ONLY_UPPERCASE -> it.uppercase()

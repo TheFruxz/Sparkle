@@ -7,11 +7,11 @@ package de.jet.jvm.extension.collection
  * @author Fruxz
  * @since 1.0
  */
-fun String.replace(map: Map<out Any?, Any?>): String {
+fun String.replace(map: Map<out Any?, Any?>, ignoreCase: Boolean = false): String {
 	var out = this
 
 	map.forEach { (key, value) ->
-		out = out.replace("$key", "$value")
+		out = out.replace("$key", "$value", ignoreCase)
 	}
 
 	return out
@@ -33,7 +33,7 @@ fun String.replace(vararg pairs: Pair<Any?, Any?>) = replace(mapOf(*pairs))
  * @author Fruxz
  * @since 1.0
  */
-fun String.replace(pairs: Collection<Pair<Any?, Any?>>) = replace(*pairs.toTypedArray())
+fun String.replace(pairs: Collection<Pair<Any?, Any?>>, ignoreCase: Boolean = false) = replace(map = pairs.toMap(), ignoreCase = ignoreCase)
 
 /**
  * Replaces all occurrences of the given [Map.keys] surrounded by a `[` and a `]` with the given [Map.values] in this string.
@@ -42,11 +42,11 @@ fun String.replace(pairs: Collection<Pair<Any?, Any?>>) = replace(*pairs.toTyped
  * @author Fruxz
  * @since 1.0
  */
-fun String.replaceVariables(map: Map<out Any?, Any?>): String {
+fun String.replaceVariables(map: Map<out Any?, Any?>, ignoreCase: Boolean = false): String {
 	var out = this
 
 	map.forEach { (key, value) ->
-		out = out.replace("[$key]", "$value")
+		out = out.replace("[$key]", "$value", ignoreCase)
 	}
 
 	return out
@@ -68,7 +68,7 @@ fun String.replaceVariables(vararg pairs: Pair<Any?, Any?>) = replaceVariables(m
  * @author Fruxz
  * @since 1.0
  */
-fun String.replaceVariables(pairs: Collection<Pair<Any?, Any?>>) = replaceVariables(*pairs.toTypedArray())
+fun String.replaceVariables(pairs: Collection<Pair<Any?, Any?>>, ignoreCase: Boolean = false) = replaceVariables(pairs.toMap(), ignoreCase)
 
 /**
  * Generates a new complete empty String without any content or any characters.

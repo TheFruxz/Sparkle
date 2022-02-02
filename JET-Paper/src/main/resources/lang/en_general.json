@@ -18,7 +18,7 @@
     "system.prefix.applied": "§aAPPLIED §8» ",
 
     "interchange.run.issue.wrongApproval": "[GRAY]This action[RED] requires[GRAY] the approval [YELLOW]'[approval]'[GRAY], to be executed!",
-    "interchange.run.issue.wrongUsage": "[GRAY]The input[RED] must[GRAY] follow the instruction '[YELLOW][usage][GRAY]' to be executed!",
+    "interchange.run.issue.wrongUsage": "[GRAY]Follow the [RED]syntax[GRAY], to execute this! See:",
     "interchange.run.issue.wrongClient": "[GRAY]This action[RED] needs[GRAY] you as a '[YELLOW][client][GRAY]' to be executed!",
     "interchange.run.issue.issue": "[RED][BOLD]Oops![GRAY] A[RED] critical error[GRAY] occurred unexpectedly while executing the '[YELLOW][interchange][GRAY]' action! Please report this to a technician!",
     "interchange.run.check.tooShort": "[GRAY]The input [RED]must[GRAY] contain at least [YELLOW][minimumParameters][GRAY] parameters!",

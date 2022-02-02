@@ -39,7 +39,7 @@ fun requestTerminalInterchangeInput(consoleInterchangeConfiguration: ConsoleInte
 
 	with(consoleInterchangeConfiguration) {
 
-		assert(interchanges.all { it.path.isRoot }) { "Not all branches are roots!" }
+		assert(interchanges.all { it.address.isRoot }) { "Not all branches are roots!" }
 
 		println(buildString {
 			if (run == 1) appendLine("Welcome to the custom JET JVM Console Interchange Console!")

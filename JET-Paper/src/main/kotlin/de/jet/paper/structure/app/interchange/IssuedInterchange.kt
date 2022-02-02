@@ -6,7 +6,7 @@ import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
-import de.jet.paper.structure.command.emptyCompletion
+import de.jet.paper.structure.command.completion.emptyCompletion
 import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.display.message.Transmission.Level.ERROR
 

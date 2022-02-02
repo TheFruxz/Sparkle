@@ -11,7 +11,7 @@ import de.jet.jvm.tool.smart.positioning.Pathed
  * @param CONTENT the content, contained & stored in each branch
  * @param BRANCH_TYPE the type of the branch (useful for directories, etc.)
  * @param identity the name of the branch
- * @param path the path of the branch (have to contain the whole path, like 'this/is/a/path')
+ * @param address the path of the branch (have to contain the whole path, like 'this/is/a/path')
  * @param branchType the type of the branch
  * @param subBranches the subbranches of the branch, that is a list of [SUBBRANCH]es
  * @param content the content of the branch, which is a [CONTENT]
@@ -20,7 +20,7 @@ import de.jet.jvm.tool.smart.positioning.Pathed
  */
 open class TreeBranch<SUBBRANCH : TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>, CONTENT, BRANCH_TYPE : TreeBranchType>(
     override var identity: String,
-    override var path: Address<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>> = Address.address(identity),
+    override var address: Address<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>> = Address.address(identity),
     open var branchType: BRANCH_TYPE,
     open var subBranches: List<SUBBRANCH>,
     open var content: CONTENT,
@@ -52,7 +52,7 @@ open class TreeBranch<SUBBRANCH : TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>, C
      * @since 1.0
      */
     fun allKnownBranches(): List<SUBBRANCH> {
-        return ((subBranches.flatMap { it.allKnownBranches() } + this.forceCast<SUBBRANCH>()).distinctBy { it.path })
+        return ((subBranches.flatMap { it.allKnownBranches() } + this.forceCast<SUBBRANCH>()).distinctBy { it.address })
     }
 
     /**
@@ -64,8 +64,8 @@ open class TreeBranch<SUBBRANCH : TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>, C
      */
     fun getBestMatchFromPath(path: Address<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>>): SUBBRANCH? {
         return allKnownBranches()
-            .filter { path.addressString.startsWith(it.path.addressString) }
-            .maxByOrNull { obj -> obj.address.let { address -> return@let address.addressString.split(address.divider) }.let { split -> split.size + split.last().length } }
+            .filter { path.addressString.startsWith(it.address.addressString) }
+            .maxByOrNull { obj -> obj.addressObject.let { address -> return@let address.addressString.split(address.divider) }.let { split -> split.size + split.last().length } }
     }
 
     /**
@@ -82,3 +82,6 @@ open class TreeBranch<SUBBRANCH : TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>, C
     }
 
 }
+
+fun <SUBBRANCH : TREE, CONTENT, BRANCH_TYPE : TreeBranchType, TREE : TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>> TREE.searchBranchByAddress(address: Address<TREE>): SUBBRANCH? =
+    flatSubBranches().firstOrNull { it.address == address }

@@ -61,7 +61,7 @@ data class Transmission(
 		hoverEvent?.let { content.hoverEvent(it) }
 		clickEvent?.let { content.clickEvent(it) }
 
-		val displayObject = (if (prefixByLevel) lang("system.${level.prefixLink.address}").adventureComponent else prefix)
+		val displayObject = (if (prefixByLevel) lang("system.${level.prefixLink.addressObject}").adventureComponent else prefix)
 			.append(content)
 
 		for (participant in participants) {

@@ -13,30 +13,40 @@ import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.system
 import de.jet.paper.structure.app.App
-import de.jet.paper.structure.command.CompletionVariable
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
-import de.jet.paper.structure.command.buildCompletion
-import de.jet.paper.structure.command.isRequired
+import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.component.CompletionAsset
+import de.jet.paper.structure.command.completion.component.CompletionComponent
+import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.live.InterchangeAccess
-import de.jet.paper.structure.command.mustMatchOutput
-import de.jet.paper.structure.command.next
-import de.jet.paper.structure.command.plus
 import de.jet.paper.structure.service.Service
 import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.display.message.Transmission.Level.INFO
 import kotlin.time.Duration.Companion.milliseconds
 
-class ServiceInterchange(vendor: App = system) : Interchange(vendor, "service", protectedAccess = true, completion = buildCompletion {
-	next(setOf("start", "stop", "restart", "list", "unregister", "reset")) isRequired true mustMatchOutput true
-	next(CompletionVariable(vendor, "Service", true) {
-		JetCache.registeredServices.map { it.identity }
-	}) + "*" + CompletionVariable(vendor, "Service-Group", true) {
-		JetCache.registeredApplications.map { "${it.identity}:*" }
-	} mustMatchOutput true isRequired false
-}) {
+class ServiceInterchange(vendor: App = system) : Interchange(
+	vendor = vendor,
+	label = "service",
+	protectedAccess = true,
+	completion = buildCompletion {
+		branch {
+			content(CompletionComponent.static("list"))
+		}
+		branch {
+			content(Companion.static("start", "stop", "restart", "unregister", "reset"))
+			branch {
+				content(Companion.asset(CompletionAsset.SERVICE))
+				addContent(Companion.static("*"))
+				JetCache.registeredApplications.forEach {
+					addContent(Companion.static(it.identity + ":*"))
+				}
+			}
+		}
+	}
+) {
 
 	override val execution: InterchangeAccess.() -> InterchangeResult = interchange@{
 

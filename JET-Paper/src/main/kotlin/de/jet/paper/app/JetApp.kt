@@ -2,7 +2,7 @@ package de.jet.paper.app
 
 import de.jet.jvm.extension.data.addJetJsonModuleModification
 import de.jet.jvm.extension.forceCast
-import de.jet.jvm.extension.math.decimalAsPercent
+import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.component.chat.JetChatComponent
 import de.jet.paper.app.component.essentials.EssentialsComponent
@@ -36,7 +36,6 @@ import de.jet.paper.general.api.mojang.MojangProfileUsernameHistoryEntry
 import de.jet.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.AppCompanion
-import de.jet.paper.structure.app.cache.CacheDepthLevel
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
@@ -108,7 +107,8 @@ class JetApp : App() {
 
 	override fun hello() {
 
-		println("""
+		mainLog(
+			Level.INFO, """
 			JET is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
 			https://www.jetbrains.com/ | https://kotlinlang.org/
 		""".trimIndent())
@@ -174,40 +174,12 @@ class JetApp : App() {
 			}.display(executor as Player)
 		}
 
-		buildSandBox(this, "percentage") {
-			executor.sendMessage(parameters.first().toDouble().decimalAsPercent.displayPercentageString("§a|", "§7|", 60))
-		}
-
-		buildSandBox(this, "cleaner") {
-			if (parameters.size >= 2) {
-				val levelDepth = when (parameters[0].uppercase()) {
-					"KILL" -> CacheDepthLevel.KILL
-					"CLEAN" -> CacheDepthLevel.CLEAN
-					"CLEAR" -> CacheDepthLevel.CLEAR
-					"DUMP" -> CacheDepthLevel.DUMP
-					else -> return@buildSandBox
-				}
-
-				when (parameters[1].uppercase()) {
-					"ALL" -> {
-						JetCache.dropEverything(levelDepth)
-						executor.sendMessage("§aCleaned all caches!")
-					}
-					"ENTITY" -> {
-						JetCache.dropEntityData((executor as Player).uniqueId, levelDepth)
-						executor.sendMessage("§aCleaned all entity caches!")
-					}
-				}
-
-			}
-		}
-
 	}
 
 	override fun bye() {
 
 		JetCache.registeredComponents.forEach {
-			it.stop()
+			tryToResult { it.stop() }
 		}
 
 	}

@@ -60,7 +60,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", protectedAcce
 					label = "§6${renderObject.displayName}"
 					lore = buildString {
 						appendLine("§7Identity: §e${renderObject.identity}")
-						appendLine("§7Path: §e${renderObject.address.address}")
+						appendLine("§7Path: §e${renderObject.addressObject.addressObject}")
 						appendLine()
 						appendLine("§7Status: §aRUNNING")
 						appendLine("§7Labels: §6${renderObject.renderLabels()}")
@@ -102,7 +102,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", protectedAcce
 					label = "§7${renderObject.displayName}"
 					lore = buildString {
 						appendLine("§7Identity: §e${renderObject.identity}")
-						appendLine("§7Path: §e${renderObject.address.address}")
+						appendLine("§7Path: §e${renderObject.addressObject.addressObject}")
 						appendLine()
 						appendLine("§6Status: §cOFFLINE")
 						appendLine("§7Labels: §6${renderObject.renderLabels()}")
@@ -145,7 +145,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", protectedAcce
 				identity = renderObject.identity
 				lore = buildString {
 					appendLine("§7Identity: §e${renderObject.identity}")
-					appendLine("§7Path: §e${renderObject.address.address}")
+					appendLine("§7Path: §e${renderObject.addressObject.addressObject}")
 					appendLine()
 					appendLine("§7Labels: §6${renderObject.renderLabels()}")
 					appendLine("§7Archive: §6${renderObject.renderArchiveStatus()}")
@@ -209,7 +209,7 @@ class WorldInterchange(vendor: App) : Interchange(vendor, "world", protectedAcce
 							lore = buildString {
 
 								appendLine("§7Identity: §e${it.identity}")
-								appendLine("§7Path: §e${it.address.address}")
+								appendLine("§7Path: §e${it.addressObject.addressObject}")
 								appendLine()
 								appendLine("§7Labels: §e${it.renderLabels()}")
 								appendLine("§7Archive: ${it.renderArchiveStatus()}")

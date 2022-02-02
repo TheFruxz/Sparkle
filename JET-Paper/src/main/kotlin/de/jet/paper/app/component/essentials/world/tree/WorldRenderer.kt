@@ -68,7 +68,7 @@ object WorldRenderer {
 		}
 
 		val root: RenderFolder?
-			get() = smashedStructure.firstOrNull { it.address.addressString == "/" } as RenderFolder?
+			get() = smashedStructure.firstOrNull { it.addressObject.addressString == "/" } as RenderFolder?
 
 	}
 
@@ -97,7 +97,7 @@ object WorldRenderer {
 	data class RenderWorld(
 		override val displayName: String,
 		override val identity: String,
-		override val address: Address<RenderObject>,
+		override val addressObject: Address<RenderObject>,
 		override val labels: List<String>,
 		override val archived: Boolean,
 		val visitors: List<String>,
@@ -105,7 +105,7 @@ object WorldRenderer {
 
 		init {
 			// no / at the end, because it is no directory
-			assert(address.addressString.endsWith(identity)) { "value address (path) have to include itself at the end" }
+			assert(addressObject.addressString.endsWith(identity)) { "value address (path) have to include itself at the end" }
 		}
 
 	}
@@ -115,17 +115,17 @@ object WorldRenderer {
 	data class RenderFolder(
 		override val displayName: String,
 		override val identity: String,
-		override val address: Address<RenderObject>,
+		override val addressObject: Address<RenderObject>,
 		override val labels: List<String>,
 		override val archived: Boolean,
 	) : RenderObject {
 
 		init {
 			// / at the end, because it is a directory
-			assert(address.addressString.endsWith("$identity/")) { "value address (path) have to include itself at the end" }
+			assert(addressObject.addressString.endsWith("$identity/")) { "value address (path) have to include itself at the end" }
 		}
 
-		val isRootDirectory = address.addressString == "/"
+		val isRootDirectory = addressObject.addressString == "/"
 
 	}
 
@@ -141,17 +141,17 @@ object WorldRenderer {
 
 		fun structure() = WorldStructure(smash())
 
-		fun getFolder(path: Address<RenderObject>) = renderFolders.firstOrNull { it.address == path }
+		fun getFolder(path: Address<RenderObject>) = renderFolders.firstOrNull { it.addressObject == path }
 
 		fun folderExists(path: Address<RenderObject>) = getFolder(path).isNotNull
 
-		fun getWorld(path: Address<RenderObject>) = renderWorlds.firstOrNull { it.address == path }
+		fun getWorld(path: Address<RenderObject>) = renderWorlds.firstOrNull { it.addressObject == path }
 
 		fun worldExists(path: Address<RenderObject>) = getWorld(path).isNotNull
 
 	}
 
-	fun computeFolderContents(folder: RenderFolder, worldStructure: WorldStructure = JetData.worldStructure.content) = renderWorldStructure(worldStructure, true, folder.address.addressString)
+	fun computeFolderContents(folder: RenderFolder, worldStructure: WorldStructure = JetData.worldStructure.content) = renderWorldStructure(worldStructure, true, folder.addressObject.addressString)
 
 	fun renderBase(base: WorldConfig = JetData.worldConfig.content) =
 		RenderBranchResult("/", renderWorlds = base.importedWorlds.map {
@@ -180,15 +180,15 @@ object WorldRenderer {
 
 		resultWorlds.mutableReplaceWith(resultWorlds.filter {
 			if (onlyBaseFolder) {
-				it.address.addressString == "$basePath${it.identity}"
+				it.addressObject.addressString == "$basePath${it.identity}"
 			} else
-				it.address.addressString.startsWith(basePath)
+				it.addressObject.addressString.startsWith(basePath)
 		})
 		resultFolders.mutableReplaceWith(resultFolders.filter {
 			if (onlyBaseFolder) {
-				it.address.addressString == "$basePath${it.identity}/" && it.address.addressString != basePath
+				it.addressObject.addressString == "$basePath${it.identity}/" && it.addressObject.addressString != basePath
 			} else
-				it.address.addressString.startsWith(basePath) && it.address.addressString != basePath
+				it.addressObject.addressString.startsWith(basePath) && it.addressObject.addressString != basePath
 		})
 
 		return RenderBranchResult("/", resultWorlds, resultFolders)
@@ -235,7 +235,7 @@ object WorldRenderer {
 
 					computeFolderContents(directory).smash().forEach {
 						if (keepContent) {
-							moveObject(it.address, address(
+							moveObject(it.addressObject, address(
 								when (it) {
 									is RenderFolder -> "/$it/"
 									else -> "/$it"
@@ -243,15 +243,15 @@ object WorldRenderer {
 							))
 						} else {
 							when (it) {
-								is RenderWorld -> deleteWorld(it.address)
-								is RenderFolder -> deleteDirectory(it.address)
+								is RenderWorld -> deleteWorld(it.addressObject)
+								is RenderFolder -> deleteDirectory(it.addressObject)
 							}
 						}
 					}
 					// TODO: 25.10.21 EXPERIMENTAL END
 
 					smashedStructure = smashedStructure.toMutableList().apply {
-						removeAll { it.address == path }
+						removeAll { it.addressObject == path }
 					}
 
 				} else

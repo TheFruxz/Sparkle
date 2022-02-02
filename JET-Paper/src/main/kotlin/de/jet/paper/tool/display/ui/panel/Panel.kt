@@ -166,7 +166,7 @@ data class Panel(
 				if (key < inventory.size) {
 					inventory.setItem(key, value.produce())
 				} else
-					System.err.println("Failed to produce item: $value to slot $key because it is higher that the size-content max ${inventory.size}!")
+					sectionLog.warning("Failed to produce item: $value to slot $key because it is higher that the size-content max ${inventory.size}!")
 			}
 
 			return inventory

@@ -27,7 +27,7 @@ interface WorldStructureObject : DataStructureItem {
 data class WorldStructureWorld(
 	override val displayName: String,
 	override val identity: String,
-	override val path: Address<DataStructureItem>,
+	override val address: Address<DataStructureItem>,
 	override val labels: List<String>,
 	override val archived: Boolean,
 	val visitors: List<String>
@@ -38,7 +38,7 @@ data class WorldStructureWorld(
 data class WorldStructureDirectory(
 	override val displayName: String,
 	override val identity: String,
-	override val path: Address<DataStructureItem>,
+	override val address: Address<DataStructureItem>,
 	override val labels: List<String>,
 	override val archived: Boolean
 ) : WorldStructureObject
