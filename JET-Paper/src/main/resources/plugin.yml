@@ -31,5 +31,3 @@ commands:
     description: Manages your points!
   world:
     description: Manages your worlds!
-  demo:
-    description: demo
