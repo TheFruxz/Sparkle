@@ -223,35 +223,19 @@ class CompletionBranch(
 
 	fun computeCompletion(parameters: List<String>): List<String> {
 
-		val query = (parameters.dropLast(1).lastOrNull() ?: "").also { println("query: $it") }
-
-		return trace(parameters.dropLast(1)).let { return@let (it.waysIncomplete + it.waysMatching) }.filter { it.tracingDepth.also { d -> println("${it.address} -> depth: $d") } == (parameters.size-1).also { println("s->$it") } }.flatMap { it.cachedCompletion }
-			.distinct().partition { it.startsWith(query, true) }.let {
-				it.first + it.second.filter { it.contains(query, true) }
-			}
-
-		/*var currentBranches = listOf(this)
-		var query = parameters.firstOrNull() ?: ""
-		var depth = 0
-
-		for (x in 1..parameters.size) {
-			val nextBranches = currentBranches.flatMap { it.subBranches }
-			query = parameters[x - 1]
-			if (nextBranches.isEmpty()) break
-			currentBranches = nextBranches.filter {
-				query.isBlank()
-						|| it.computeLocalCompletion().mapToLowercase().any { it.contains(query, true) }
-						|| (!it.configuration.mustMatchOutput && it.isInputAllowedByTypes(query))
-			}
-			depth++
+		val query = (parameters.lastOrNull() ?: "").also { println("query: $it") }
+		val traceBase = parameters.dropLast(1).also { println("traceBase: $it") }
+		val tracing = trace(traceBase)
+		val tracingContent = tracing.let { return@let (it.waysIncomplete + it.waysMatching) }
+		val filteredContent = tracingContent.filter { it.tracingDepth == parameters.lastIndex }
+		val flattenedContentCompletion = filteredContent.flatMap { it.cachedCompletion }
+		val distinctedCompletion = flattenedContentCompletion.distinct()
+		val partitionedCompletion = distinctedCompletion.partition { it.startsWith(query, true) }
+		val mergedCompletion = partitionedCompletion.let {
+			return@let it.first + it.second.filter { it.contains(query, true) }
 		}
 
-		return if (parameters.size > depth) {
-			listOf(" ")
-		} else
-			currentBranches.flatMap { it.computeLocalCompletion() }.partition { it.startsWith(query, true) }.let {
-				it.first + it.second.filter { it.contains(query, true) }
-			}*/
+		return mergedCompletion
 	}
 
 	/**
