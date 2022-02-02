@@ -130,7 +130,7 @@ abstract class SmartComponent(
 
 	companion object {
 
-		internal fun disabledComponentInterchange(identity: Identity<Component>) = object : Interchange(JetApp.instance, "") {
+		internal fun disabledComponentInterchange(identity: Identity<Component>) = object : Interchange(JetApp.instance, "", ignoreInputValidation = true) {
 			override val execution = execution {
 
 				"§c§lSORRY!§7 The providing component '§e$identity§7' is currently §cdisabled§7!"

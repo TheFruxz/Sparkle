@@ -12,7 +12,17 @@ data class CompletionTraceResult(
 	val executedQuery: List<String>, // the original query, that was used to execute the trace
 ) {
 
-	val conclusion = if (waysMatching.size == 1) RESULT else if (waysMatching.isEmpty()) NO_RESULT else MULTIPLE_RESULTS
+	val conclusion = if (waysMatching.size == 1) {
+		RESULT
+	} else if (waysMatching.isEmpty()) {
+		if (waysIncomplete.isEmpty() && waysOverflow.isEmpty() && waysFailed.isEmpty()) {
+			EMPTY
+		} else {
+			NO_RESULT
+		}
+	} else {
+		MULTIPLE_RESULTS
+	}
 
 	enum class Conclusion {
 
@@ -34,6 +44,10 @@ data class CompletionTraceResult(
 		 */
 		NO_RESULT,
 
+		/**
+		 * No ways to trace found (0 possible ways), only possible if the traceBase has no sub-branches.
+		 */
+		EMPTY;
 
 	}
 

@@ -35,6 +35,7 @@ abstract class Interchange(
 	val accessProtectionType: InterchangeAuthorizationType = JET,
 	val hiddenFromRecommendation: Boolean = false, // todo: seems to be unused, that have to be an enabled feature
 	val completion: CompletionBranch = de.jet.paper.structure.command.completion.emptyCompletion(),
+	val ignoreInputValidation: Boolean = false,
 ) : CommandExecutor, VendorsIdentifiable<Interchange>, Logging {
 
 	init {
@@ -125,7 +126,7 @@ abstract class Interchange(
 				|| (sender is ConsoleCommandSender && userRestriction == ONLY_CONSOLE)
 			) {
 
-				if (completion.validateInput(parameters)) {
+				if (ignoreInputValidation || completion.validateInput(parameters)) {
 					val clientType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE
 
 					fun exception(exception: Exception) {

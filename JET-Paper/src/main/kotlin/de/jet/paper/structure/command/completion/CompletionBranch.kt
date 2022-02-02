@@ -8,6 +8,7 @@ import de.jet.paper.extension.debugLog
 import de.jet.paper.structure.command.completion.CompletionBranch.BranchStatus.*
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.tracing.CompletionTraceResult
+import de.jet.paper.structure.command.completion.tracing.CompletionTraceResult.Conclusion.EMPTY
 import de.jet.paper.structure.command.completion.tracing.PossibleTraceWay
 
 class CompletionBranch(
@@ -218,7 +219,10 @@ class CompletionBranch(
 	fun validateInput(parameters: List<String>): Boolean {
 		val trace = trace(parameters)
 
-		return trace.waysMatching.isNotEmpty()
+		return if (trace.conclusion == EMPTY && parameters.isEmpty()) {
+			true
+		} else
+			trace.waysMatching.isNotEmpty()
 	}
 
 	fun computeCompletion(parameters: List<String>): List<String> {
