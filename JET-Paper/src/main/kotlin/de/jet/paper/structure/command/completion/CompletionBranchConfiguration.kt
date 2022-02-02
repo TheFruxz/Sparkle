@@ -1,7 +1,7 @@
 package de.jet.paper.structure.command.completion
 
 data class CompletionBranchConfiguration(
-	val supportedInputTypes: MutableList<CompletionInputType> = mutableListOf(), // TODO: 31.01.2022 Should be single? //
+	val supportedInputTypes: MutableList<CompletionInputType> = mutableListOf(CompletionInputType.ANY),
 	var isRequired: Boolean = true, //
 	var ignoreCase: Boolean = false, //
 	var mustMatchOutput: Boolean = true, //
@@ -26,3 +26,8 @@ fun CompletionBranch.infiniteSubParameters() = configure {
 }
 
 fun CompletionBranch.limitedSubParameters() = configure { infiniteSubParameters = false }
+
+fun CompletionBranch.onlyAccept(vararg inputTypes: CompletionInputType) = configure {
+	supportedInputTypes.clear()
+	supportedInputTypes.addAll(inputTypes)
+}

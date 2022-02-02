@@ -13,9 +13,7 @@ import de.jet.paper.structure.command.completion.tracing.PossibleTraceWay
 
 class CompletionBranch(
 	override var identity: String = UUID.randomString(),
-	override var address: Address<TreeBranch<CompletionBranch, List<CompletionComponent>, TreeBranchType>> = Address.address(
-		"/"
-	),
+	override var address: Address<TreeBranch<CompletionBranch, List<CompletionComponent>, TreeBranchType>> = Address.address("/"),
 	override var subBranches: List<CompletionBranch> = emptyList(),
 	configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
 	override var content: List<CompletionComponent> = emptyList(),
@@ -87,7 +85,7 @@ class CompletionBranch(
 		content.flatMap { if (it is CompletionComponent.Asset) it.asset.supportedInputType else emptyList() }
 			.let { internal ->
 				if (internal.isNotEmpty()) {
-					return@let internal.any { it.check?.let { it1 -> it1(input) } ?: true }
+					return@let internal.any { it.isValid(input) }
 				} else
 					true
 			}
@@ -97,7 +95,7 @@ class CompletionBranch(
 	fun validInput(input: String) =
 		(!configuration.mustMatchOutput || this.computeLocalCompletion()
 			.any { it.equals(input, configuration.ignoreCase) })
-				&& configuration.supportedInputTypes.none { !(it.check?.let { it1 -> it1(input) } ?: true) }
+				&& configuration.supportedInputTypes.none { !it.isValid(input) }
 				&& isInputAllowedByTypes(input)
 				&& (!configuration.isRequired || input.isNotBlank())
 
