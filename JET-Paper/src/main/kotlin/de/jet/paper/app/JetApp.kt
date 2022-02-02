@@ -36,9 +36,6 @@ import de.jet.paper.general.api.mojang.MojangProfileUsernameHistoryEntry
 import de.jet.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.AppCompanion
-import de.jet.paper.structure.command.completion.buildCompletion
-import de.jet.paper.structure.command.completion.component.CompletionComponent
-import de.jet.paper.structure.command.completion.isNotRequired
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
@@ -110,7 +107,8 @@ class JetApp : App() {
 
 	override fun hello() {
 
-		println("""
+		mainLog(
+			Level.INFO, """
 			JET is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
 			https://www.jetbrains.com/ | https://kotlinlang.org/
 		""".trimIndent())
@@ -174,44 +172,6 @@ class JetApp : App() {
 					set(index, value.let { Keyboard.RenderEngine.renderKey(it) })
 				}
 			}.display(executor as Player)
-		}
-
-		buildSandBox(this, "output-branch-trace-result") {
-			buildCompletion {
-				branch("Tree1") {
-					content(CompletionComponent.static("Content1"))
-					branch("Tree1.1") {
-						isNotRequired()
-						addContent(CompletionComponent.static("Content1.1"))
-					}
-				}
-				branch("Tree2") {
-					content(CompletionComponent.static("Content2"))
-					branch("Tree2.1") {
-						isNotRequired()
-						content(CompletionComponent.static("Content2.1"))
-					}
-				}
-				branch("Tree3") {
-					addContent(CompletionComponent.static("Content3"))
-					branch("Tree3.1") {
-						isNotRequired()
-						addContent(CompletionComponent.static("Content3.1"))
-					}
-				}
-				branch("Tree4") {
-					content(CompletionComponent.static("Content4"))
-				}
-			}.trace(parameters).let { result ->
-				println(buildString {
-					appendLine("Trace result:")
-					appendLine("conclusion: ${result.conclusion.name}")
-					appendLine("waysMatching: ${result.waysMatching.map { it.address }}")
-					appendLine("waysOverflow: ${result.waysOverflow.map { it.address }}")
-					appendLine("waysIncomplete: ${result.waysIncomplete.map { it.address }}")
-					appendLine("waysImpossible: ${result.waysFailed.map { it.address }}")
-				})
-			}
 		}
 
 	}

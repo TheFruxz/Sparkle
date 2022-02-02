@@ -21,6 +21,8 @@ fun <T : Any?> T.debugLog(message: String) = this.also {
 
 internal fun mainLog(level: Level = Level.INFO, message: String) = JetApp.instance.log.log(level, message)
 
+internal val mainLog = JetApp.instance.log
+
 internal val lang: LanguageSpeaker
 	get() = JET.languageSpeaker
 

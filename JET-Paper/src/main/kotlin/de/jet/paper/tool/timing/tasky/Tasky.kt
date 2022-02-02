@@ -1,6 +1,8 @@
 package de.jet.paper.tool.timing.tasky
 
 import de.jet.jvm.extension.catchException
+import de.jet.jvm.extension.data.RandomTagType.MIXED_CASE
+import de.jet.jvm.extension.data.buildRandomTag
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.jvm.tool.timing.calendar.Calendar
@@ -9,23 +11,29 @@ import de.jet.paper.extension.paper.scheduler
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.service.Service
 import de.jet.paper.tool.display.ide.API
+import de.jet.paper.tool.smart.Logging
 import org.bukkit.scheduler.BukkitRunnable
 
-interface Tasky {
+interface Tasky : Logging {
 
 	fun shutdown()
 
 	val taskId: Int
 
+	val internalId: String
+
 	var attempt: Long
 
 	val dieOnError: Boolean
 
-	val vendor: App
+	override val vendor: App
 
 	val temporalAdvice: TemporalAdvice
 
 	val startTime: Calendar
+
+	override val sectionLabel: String
+		get() = "Task: $internalId"
 
 	companion object {
 
@@ -38,6 +46,7 @@ interface Tasky {
 			onCrash: Tasky.() -> Unit = {},
 			serviceVendor: Identity<Service> = Identifiable.custom<Service>("dummy").identityObject,
 			process: Tasky.() -> Unit,
+			internalId: String = buildRandomTag(hashtag = false, tagType = MIXED_CASE)
 		): Tasky {
 			val currentTask = Task(temporalAdvice, true, process)
 			lateinit var output: Tasky
@@ -54,6 +63,7 @@ interface Tasky {
 						override val vendor = vendor
 						override val temporalAdvice = temporalAdvice
 						override val startTime = Calendar.now()
+						override val internalId = internalId
 					}
 
 					override fun run() {
@@ -61,7 +71,7 @@ interface Tasky {
 						controller.attempt++
 
 						if ((Long.MAX_VALUE * .95) < controller.attempt)
-							System.err.println("WARNING! Task #$taskId is running out of attempts, please restart!")
+							controller.sectionLog.warning("WARNING! Task #$taskId is running out of attempts, please restart!")
 
 						try {
 
@@ -121,6 +131,8 @@ interface Tasky {
 						override val temporalAdvice = temporalAdvice
 
 						override val startTime = Calendar.now()
+
+						override val internalId = internalId
 
 					}
 					return@let it

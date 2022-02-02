@@ -2,6 +2,7 @@ package de.jet.paper.extension.o
 
 import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.app.JetCache.registeredSandBoxes
+import de.jet.paper.extension.mainLog
 import de.jet.paper.runtime.sandbox.SandBox
 import de.jet.paper.runtime.sandbox.SandBoxInteraction
 import de.jet.paper.structure.app.App
@@ -29,4 +30,4 @@ fun destroySandBox(sandBox: SandBox) =
 	destroySandBox(sandBox.identity)
 
 fun destroyAllSandBoxes() = registeredSandBoxes.clear()
-	.also { println("WARNING! removing every SandBox!") }
+	.also { mainLog(Level.WARNING, "WARNING! removing every SandBox!") }
