@@ -94,3 +94,21 @@ fun <A, R, T : R> A.tryOrElse(other: T, process: A.() -> R): R {
 fun <A, T> A.tryOrNull(process: A.() -> T): T? {
 	return tryToResult(process).getOrNull()
 }
+
+/**
+ * Try to execute the code specified inside the [process] function.
+ * if an exception is thrown, nothing happens after the exception.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <A> A.tryToIgnore(process: A.() -> Unit) {
+	tryToResult(process).dump()
+}
+
+/**
+ * Try to execute the code specified inside the [process] function.
+ * if an exception is thrown, the stack trace will be printed.
+ */
+fun <A> A.tryToPrint(process: A.() -> Unit) {
+	tryToResult(process).exceptionOrNull()?.printStackTrace()
+}
