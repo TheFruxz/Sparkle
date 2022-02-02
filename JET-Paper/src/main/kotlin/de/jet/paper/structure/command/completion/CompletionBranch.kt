@@ -106,6 +106,7 @@ class CompletionBranch(
 		MATCHING,
 		OVERFLOW,
 		INCOMPLETE,
+		NO_DESTINATION,
 		FAILED;
 	}
 
@@ -114,6 +115,7 @@ class CompletionBranch(
 		val waysOverflow = mutableListOf<PossibleTraceWay>()
 		val waysIncomplete = mutableListOf<PossibleTraceWay>()
 		val waysFailed = mutableListOf<PossibleTraceWay>()
+		val waysNoDestination = mutableListOf<PossibleTraceWay>()
 
 		fun innerTrace(currentBranch: CompletionBranch, currentDepth: Int, parentBranchStatus: BranchStatus) {
 			debugLog("tracing branch ${currentBranch.identity}[${currentBranch.address}] with depth '$currentDepth' from parentStatus $parentBranchStatus")
@@ -127,14 +129,17 @@ class CompletionBranch(
 			when (parentBranchStatus) {
 				FAILED -> currentResult = FAILED
 				INCOMPLETE -> currentResult = INCOMPLETE
-				OVERFLOW, MATCHING -> {
+				NO_DESTINATION, OVERFLOW, MATCHING -> {
 
 					if (currentInputValid) {
-						if (currentBranch.parent?.isRoot == true || (waysMatching + waysOverflow).any { t -> t.address == currentBranch.parent?.address }) {
+						if (currentBranch.parent?.isRoot == true || (waysMatching + waysOverflow + waysNoDestination).any { t -> t.address == currentBranch.parent?.address }) {
 							if (currentBranch.subBranches.any { it.configuration.isRequired } && inputQuery.lastIndex < currentDepth) {
 								currentResult = INCOMPLETE
 							} else if (currentDepth >= inputQuery.lastIndex || currentBranch.configuration.infiniteSubParameters) {
-								currentResult = MATCHING
+								if (currentSubBranches.isNotEmpty() && currentSubBranches.all { it.configuration.isRequired }) {
+									currentResult = NO_DESTINATION // This branch has to be completed with its sub-branches
+								} else
+									currentResult = MATCHING
 							} else {
 								currentResult = OVERFLOW
 							}
@@ -148,7 +153,7 @@ class CompletionBranch(
 						}
 
 					} else {
-						if (((waysMatching + waysOverflow).any { it.address == currentBranch.parent?.address } && currentLevelInput.isBlank()) || (currentBranch.parent?.isRoot == true && inputQuery.isEmpty())) {
+						if (((waysMatching + waysOverflow + waysNoDestination).any { it.address == currentBranch.parent?.address } && currentLevelInput.isBlank()) || (currentBranch.parent?.isRoot == true && inputQuery.isEmpty())) {
 							currentResult = INCOMPLETE
 						} else {
 							currentResult = FAILED
@@ -161,39 +166,19 @@ class CompletionBranch(
 
 			debugLog("branch ${currentBranch.identity}[${currentBranch.address}] with depth '$currentDepth' from parentStatus $parentBranchStatus is $currentResult")
 
+			val outputBuild = PossibleTraceWay(
+				currentBranch.address,
+				currentBranch.computeLocalCompletion(),
+				currentDepth,
+				inputQuery,
+			)
+
 			when (currentResult) {
-				FAILED -> waysFailed.add(
-					PossibleTraceWay(
-						currentBranch.address,
-						currentBranch.computeLocalCompletion(),
-						currentDepth,
-						inputQuery,
-					)
-				)
-				OVERFLOW -> waysOverflow.add(
-					PossibleTraceWay(
-						currentBranch.address,
-						currentBranch.computeLocalCompletion(),
-						currentDepth,
-						inputQuery,
-					)
-				)
-				INCOMPLETE -> waysIncomplete.add(
-					PossibleTraceWay(
-						currentBranch.address,
-						currentBranch.computeLocalCompletion(),
-						currentDepth,
-						inputQuery,
-					)
-				)
-				MATCHING -> waysMatching.add(
-					PossibleTraceWay(
-						currentBranch.address,
-						currentBranch.computeLocalCompletion(),
-						currentDepth,
-						inputQuery,
-					)
-				)
+				FAILED -> waysFailed.add(outputBuild)
+				OVERFLOW -> waysOverflow.add(outputBuild)
+				INCOMPLETE -> waysIncomplete.add(outputBuild)
+				MATCHING -> waysMatching.add(outputBuild)
+				NO_DESTINATION -> waysNoDestination.add(outputBuild)
 			}
 
 			currentSubBranches.forEach {
@@ -211,6 +196,7 @@ class CompletionBranch(
 			waysOverflow = waysOverflow,
 			waysIncomplete = waysIncomplete,
 			waysFailed = waysFailed,
+			waysNoDestination = waysNoDestination,
 			traceBase = this,
 			executedQuery = inputQuery
 		)
@@ -218,7 +204,7 @@ class CompletionBranch(
 
 	fun validateInput(parameters: List<String>): Boolean {
 		val trace = trace(parameters)
-
+		
 		return if (trace.conclusion == EMPTY && parameters.isEmpty()) {
 			true
 		} else
@@ -230,7 +216,7 @@ class CompletionBranch(
 		val query = (parameters.lastOrNull() ?: "")
 		val traceBase = parameters.dropLast(1)
 		val tracing = trace(traceBase)
-		val tracingContent = tracing.let { return@let (it.waysIncomplete + it.waysMatching) }
+		val tracingContent = tracing.let { return@let (it.waysIncomplete + it.waysMatching + it.waysNoDestination) }
 		val filteredContent = tracingContent.filter { it.tracingDepth == parameters.lastIndex }
 		val flattenedContentCompletion = filteredContent.flatMap { it.cachedCompletion }
 		val distinctedCompletion = flattenedContentCompletion.distinct()
