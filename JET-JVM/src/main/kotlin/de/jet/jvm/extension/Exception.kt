@@ -35,21 +35,6 @@ fun <O> doTry(tryBlock: () -> O) =
 /**
  * Try to execute the code specified inside the [process] function.
  * If an exception is thrown, the [catchException] function will be executed.
- * @param process the code to execute
- * @author Fruxz
- * @since 1.0
- */
-fun tryToCatch(process: () -> Unit) {
-	try {
-		process()
-	} catch (e: Exception) {
-		catchException(e)
-	}
-}
-
-/**
- * Try to execute the code specified inside the [process] function.
- * If an exception is thrown, the [catchException] function will be executed.
  * @param A (short for air) is the type of the surrounding block or the object, where it is called from
  * @param process the code to execute
  * @author Fruxz
@@ -73,22 +58,6 @@ fun <A> A.tryToCatch(process: A.() -> Unit) {
  * @since 1.0
  */
 fun <A, T> A.tryToResult(process: A.() -> T): Result<T> {
-	return try {
-		Result.success(process())
-	} catch (e: Exception) {
-		Result.failure(e)
-	}
-}
-
-/**
- * Try return the value and returns the result inside a [Result] object.
- * @param T is the return type of the process
- * @param process the process to execute, returning the normal value as [T]
- * @return the value returned by the [process] as a [Result]
- * @author Fruxz
- * @since 1.0
- */
-fun <T> tryToResult(process: () -> T): Result<T> {
 	return try {
 		Result.success(process())
 	} catch (e: Exception) {
@@ -127,14 +96,19 @@ fun <A, T> A.tryOrNull(process: A.() -> T): T? {
 }
 
 /**
- * Try return the value returning of the [process] or returns null.
- * null-return is triggered by a thrown [Exception]
- * @param T is the return type of the process
- * @param process the process to execute, returning the normal value as [T]
- * @return the value returned by the [process] or null
+ * Try to execute the code specified inside the [process] function.
+ * if an exception is thrown, nothing happens after the exception.
  * @author Fruxz
  * @since 1.0
  */
-fun <T> tryOrNull(process: () -> T): T? {
-	return tryToResult(process).getOrNull()
+fun <A> A.tryToIgnore(process: A.() -> Unit) {
+	tryToResult(process).dump()
+}
+
+/**
+ * Try to execute the code specified inside the [process] function.
+ * if an exception is thrown, the stack trace will be printed.
+ */
+fun <A> A.tryToPrint(process: A.() -> Unit) {
+	tryToResult(process).exceptionOrNull()?.printStackTrace()
 }
