@@ -13,7 +13,11 @@ import kotlinx.serialization.Serializable
 @SerialName("version")
 data class Version(
 	val versionNumber: Double,
-)
+) {
+
+	override fun toString() = "$versionNumber"
+
+}
 
 /**
  * Converts a number to a version, based on a versionNumber, type: [Double]
