@@ -178,3 +178,21 @@ fun <T, C : Iterable<T>> C.get(index: Int, overflow: Boolean = false): T {
 		"Index $index is not inside lists 0..${count() - 1} content and overflow is disabled!"
 	)
 }
+
+/**
+ * Creates a sublist of the [intRange]
+ * @return a new sublist of the [C]
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T, C : Collection<T>> C.take(intRange: IntRange) =
+	toList().subList(intRange.first, intRange.last)
+
+/**
+ * Creates a sublist of the [intRange]
+ * @return a new sublist of the [Array]<[T]>
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T> Array<T>.take(intRange: IntRange) =
+	toList().subList(intRange.first, intRange.last)
