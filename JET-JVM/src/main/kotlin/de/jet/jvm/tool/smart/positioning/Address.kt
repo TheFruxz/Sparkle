@@ -15,6 +15,7 @@ import kotlinx.serialization.Serializable
 data class Address<T> internal constructor(
 	@SerialName("path") override val addressString: String,
 	@SerialName("divider") val divider: String,
+	override val rootCheck: (String) -> Boolean = { !it.contains(divider) || it == divider },
 ) : Addressable<T>, Identifiable<T> {
 
 	override val identity = addressString
