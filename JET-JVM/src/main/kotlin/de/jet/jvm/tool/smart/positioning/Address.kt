@@ -44,8 +44,8 @@ data class Address<T> internal constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun <T> address(path: String, divider: String = "/") =
-			Address<T>(path, divider)
+		fun <T> address(path: String, divider: String = "/", rootCheck: (String) -> Boolean = { !it.contains(divider) || it == divider }) =
+			Address<T>(path, divider, rootCheck)
 
 		/**
 		 * Generates an [Address]<[T]> from the [Address]'s class internal constructor,
@@ -56,8 +56,8 @@ data class Address<T> internal constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun <T> packagedAddress(path: String, divider: String = ".") =
-			Address<T>(path, divider)
+		fun <T> packagedAddress(path: String, divider: String = ".", rootCheck: (String) -> Boolean = { !it.contains(divider) || it == divider }) =
+			Address<T>(path, divider, rootCheck)
 
 	}
 
