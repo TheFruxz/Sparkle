@@ -8,6 +8,7 @@ import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.event.EventListener
 import de.jet.paper.structure.component.Component.RunType.DISABLED
 import de.jet.paper.structure.component.SmartComponent
+import de.jet.paper.tool.annotation.RequiresComponent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
@@ -37,6 +38,7 @@ class JetBuildModeComponent(vendor: App = system) : SmartComponent(vendor, DISAB
 			}
 		}
 
+		@OptIn(RequiresComponent::class)
 		@EventHandler
 		fun onBlockInteract(event: PlayerInteractAtBlockEvent) {
 			if (!event.player.buildMode) {
