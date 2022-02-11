@@ -34,11 +34,11 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 	override val thisIdentity = "feature/PlayerMarkings"
 
 	override fun component() {
-		interchange(MarkingToolInterchange(vendor))
+		interchange(MarkingToolInterchange())
 	}
 
-	private class MarkingToolInterchange(vendor: App) :
-		Interchange(vendor, "markingtool", userRestriction = ONLY_PLAYERS, protectedAccess = true) {
+	private class MarkingToolInterchange :
+		Interchange("markingtool", userRestriction = ONLY_PLAYERS, protectedAccess = true) {
 
 		fun positionData(location: Location) = buildString {
 			append('(')

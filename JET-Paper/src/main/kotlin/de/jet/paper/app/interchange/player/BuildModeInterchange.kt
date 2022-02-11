@@ -9,13 +9,11 @@ import de.jet.paper.extension.lang
 import de.jet.paper.extension.paper.buildMode
 import de.jet.paper.extension.paper.getOfflinePlayer
 import de.jet.paper.extension.paper.onlinePlayers
-import de.jet.paper.extension.system
-import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
-import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
@@ -25,12 +23,11 @@ import de.jet.paper.tool.display.message.Transmission.Level.*
 import org.bukkit.OfflinePlayer
 import java.util.*
 
-class BuildModeInterchange(vendor: App = system) :
+class BuildModeInterchange :
 	Interchange(
-		vendor = vendor,
 		label = "buildmode",
 		protectedAccess = true,
-		completion = buildCompletion {
+		completion = buildInterchangeStructure {
 			branch {
 				ignoreCase()
 				content(CompletionComponent.static("list", "enableAll", "disableAll"))

@@ -8,13 +8,11 @@ import de.jet.paper.extension.lang
 import de.jet.paper.extension.mojang.applySkin
 import de.jet.paper.extension.mojang.resetSkin
 import de.jet.paper.extension.paper.getPlayer
-import de.jet.paper.extension.system
-import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
-import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
@@ -22,12 +20,11 @@ import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.display.message.Transmission.Level.*
 import org.bukkit.entity.Player
 
-class ChangeSkinInterchange(vendor: App = system) : Interchange(
-	vendor = vendor,
+class ChangeSkinInterchange : Interchange(
 	label = "changeskin",
 	protectedAccess = true,
 	userRestriction = ONLY_PLAYERS,
-	completion = buildCompletion {
+	completion = buildInterchangeStructure {
 		branch {
 			content(CompletionComponent.asset(CompletionAsset.ONLINE_PLAYER_NAME))
 			branch {

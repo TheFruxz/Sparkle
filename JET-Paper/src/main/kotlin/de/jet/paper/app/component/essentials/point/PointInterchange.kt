@@ -6,12 +6,11 @@ import de.jet.paper.app.JetData
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.getSystemTranslated
 import de.jet.paper.extension.system
-import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.jet.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
-import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
@@ -19,12 +18,11 @@ import de.jet.paper.structure.command.execution
 import de.jet.paper.tool.display.message.Transmission.Level.*
 import org.bukkit.entity.Player
 
-class PointInterchange(vendor: App) : Interchange(
-	vendor,
-	"point",
+class PointInterchange : Interchange(
+	label = "point",
 	protectedAccess = true,
 	userRestriction = ONLY_PLAYERS,
-	completion = buildCompletion {
+	completion = buildInterchangeStructure {
 		branch {
 			content(CompletionComponent.static("list", "teleportAll"))
 		}

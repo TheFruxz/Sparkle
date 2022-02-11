@@ -1,7 +1,5 @@
 package de.jet.paper.structure.command.live
 
-import de.jet.jvm.tool.smart.identification.Identifiable
-import de.jet.paper.extension.debugLog
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeUserRestriction
@@ -10,12 +8,13 @@ import org.bukkit.command.CommandSender
 import java.util.logging.Level
 
 data class InterchangeAccess(
-	override val vendor: Identifiable<App>,
+	override val vendor: App,
 	val executorType: InterchangeUserRestriction,
 	val executor: CommandSender,
 	val interchange: Interchange,
 	val label: String,
 	val parameters: List<String>,
+	val additionalParameters: List<String>,
 ) : Logging {
 
 	override val sectionLabel = "InterchangeRun/$vendor:$label"

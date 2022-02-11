@@ -5,11 +5,13 @@ import de.jet.jvm.tool.smart.positioning.Address
 import de.jet.jvm.tree.TreeBranch
 import de.jet.jvm.tree.TreeBranchType
 import de.jet.paper.extension.debugLog
+import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.completion.InterchangeStructure.BranchStatus.*
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.tracing.CompletionTraceResult
 import de.jet.paper.structure.command.completion.tracing.CompletionTraceResult.Conclusion.EMPTY
 import de.jet.paper.structure.command.completion.tracing.PossibleTraceWay
+import de.jet.paper.structure.command.live.InterchangeAccess
 
 class InterchangeStructure(
 	override var identity: String = UUID.randomString(),
@@ -19,6 +21,7 @@ class InterchangeStructure(
 	override var content: List<CompletionComponent> = emptyList(),
 	val parent: InterchangeStructure? = null,
 	private var isBranched: Boolean = false,
+	var onExecution: (InterchangeAccess.() -> InterchangeResult)? = null,
 ) : TreeBranch<InterchangeStructure, List<CompletionComponent>, TreeBranchType>(
 	identity,
 	address,
@@ -62,10 +65,12 @@ class InterchangeStructure(
 
 						if (level > 0) {
 							append(")")
+							if (subBranch.isRoot && subBranch.onExecution != null) append("<")
 							if (!branchConfig.isRequired) append("?")
 							if (!branchConfig.ignoreCase) append("^")
 							if (branchConfig.mustMatchOutput) append("=")
 							if (branchConfig.infiniteSubParameters) append("*")
+
 						}
 					})
 				})
@@ -80,6 +85,10 @@ class InterchangeStructure(
 
 	fun content(vararg completionComponents: CompletionComponent) =
 		content(content = completionComponents.toList())
+
+	fun execution(process: (InterchangeAccess.() -> InterchangeResult)?) {
+		onExecution = process
+	}
 
 	private fun isInputAllowedByTypes(input: String) =
 		content.flatMap { if (it is CompletionComponent.Asset) it.asset.supportedInputType else emptyList() }
@@ -108,7 +117,7 @@ class InterchangeStructure(
 		FAILED;
 	}
 
-	fun trace(inputQuery: List<String>): CompletionTraceResult<InterchangeStructure> {
+	fun trace(inputQuery: List<String>, availableExecutionRepresentsSolution: Boolean = true): CompletionTraceResult<InterchangeStructure> {
 		val waysMatching = mutableListOf<PossibleTraceWay<InterchangeStructure>>()
 		val waysOverflow = mutableListOf<PossibleTraceWay<InterchangeStructure>>()
 		val waysIncomplete = mutableListOf<PossibleTraceWay<InterchangeStructure>>()
@@ -121,6 +130,7 @@ class InterchangeStructure(
 			val currentSubBranches = currentBranch.subBranches
 			val currentInputValid = currentBranch.validInput(currentLevelInput)
 			val currentResult: BranchStatus
+			val isAccessTargetValidRoot = currentBranch.isRoot && inputQuery.isEmpty() && availableExecutionRepresentsSolution && currentBranch.onExecution != null
 
 			// CONTENT START
 
@@ -131,30 +141,32 @@ class InterchangeStructure(
 
 					if (currentInputValid) {
 						if (currentBranch.parent?.isRoot == true || (waysMatching + waysOverflow + waysNoDestination).any { t -> t.address == currentBranch.parent?.address }) {
-							if (currentBranch.subBranches.any { it.configuration.isRequired } && inputQuery.lastIndex < currentDepth) {
-								currentResult = INCOMPLETE
+							currentResult = if (currentBranch.subBranches.any { it.configuration.isRequired } && inputQuery.lastIndex < currentDepth) {
+								INCOMPLETE
 							} else if (currentDepth >= inputQuery.lastIndex || currentBranch.configuration.infiniteSubParameters) {
-								if (currentSubBranches.isNotEmpty() && currentSubBranches.all { it.configuration.isRequired }) {
-									currentResult = NO_DESTINATION // This branch has to be completed with its sub-branches
+								if ((currentSubBranches.isNotEmpty() && currentSubBranches.all { it.configuration.isRequired }) && !(availableExecutionRepresentsSolution && currentBranch.onExecution != null)) {
+									NO_DESTINATION // This branch has to be completed with its sub-branches
 								} else
-									currentResult = MATCHING
+									MATCHING
 							} else {
-								currentResult = OVERFLOW
+								OVERFLOW
 							}
 
 						} else {
-							if (waysIncomplete.any { t -> t.address == currentBranch.parent?.address }) {
-								currentResult = INCOMPLETE
+							currentResult = if (waysIncomplete.any { t -> t.address == currentBranch.parent?.address }) {
+								INCOMPLETE
 							} else {
-								currentResult = FAILED
+								FAILED
 							}
 						}
 
+					} else if (isAccessTargetValidRoot) {
+						currentResult = MATCHING
 					} else {
-						if (((waysMatching + waysOverflow + waysNoDestination).any { it.address == currentBranch.parent?.address } && currentLevelInput.isBlank()) || (currentBranch.parent?.isRoot == true && inputQuery.isEmpty())) {
-							currentResult = INCOMPLETE
+						currentResult = if (((waysMatching + waysOverflow + waysNoDestination).any { it.address == currentBranch.parent?.address } && currentLevelInput.isBlank()) || (currentBranch.parent?.isRoot == true && inputQuery.isEmpty())) {
+							INCOMPLETE
 						} else {
-							currentResult = FAILED
+							FAILED
 						}
 					}
 				}
@@ -164,7 +176,7 @@ class InterchangeStructure(
 
 			debugLog("branch ${currentBranch.identity}[${currentBranch.address}] with depth '$currentDepth' from parentStatus $parentBranchStatus is $currentResult")
 
-			val outputBuild = PossibleTraceWay<InterchangeStructure>(
+			val outputBuild = PossibleTraceWay(
 				address = currentBranch.address,
 				branch = currentBranch,
 				cachedCompletion = currentBranch.computeLocalCompletion(),
@@ -180,13 +192,15 @@ class InterchangeStructure(
 				NO_DESTINATION -> waysNoDestination.add(outputBuild)
 			}
 
-			currentSubBranches.forEach {
-				innerTrace(it, currentDepth + 1, currentResult)
+			if (!currentBranch.isRoot) {
+				currentSubBranches.forEach {
+					innerTrace(it, currentDepth + 1, currentResult)
+				}
 			}
 
 		}
 
-		subBranches.forEach {
+		(subBranches + this).forEach {
 			innerTrace(it, 0, MATCHING)
 		}
 
@@ -272,7 +286,7 @@ class InterchangeStructure(
 
 }
 
-fun buildCompletion(
+fun buildInterchangeStructure(
 	path: Address<InterchangeStructure> = Address.address("/"),
 	subBranches: List<InterchangeStructure> = emptyList(),
 	configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
@@ -280,5 +294,5 @@ fun buildCompletion(
 	process: InterchangeStructure.() -> Unit,
 ) = InterchangeStructure("root", path, subBranches, configuration, content).apply(process)
 
-fun emptyCompletion() =
-	buildCompletion(process = { })
+fun emptyInterchangeStructure() =
+	buildInterchangeStructure(process = { })

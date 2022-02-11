@@ -19,7 +19,7 @@ class JetBuildModeComponent(vendor: App = system) : SmartComponent(vendor, DISAB
 
 	override fun component() {
 		listener(BuildModeListener(vendor))
-		interchange(BuildModeInterchange(vendor))
+		interchange(BuildModeInterchange())
 	}
 
 	class BuildModeListener(override val vendor: App) : EventListener {

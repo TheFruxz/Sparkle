@@ -1,6 +1,7 @@
 package de.jet.paper.structure.command
 
 import de.jet.jvm.extension.catchException
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.lang
@@ -33,7 +34,7 @@ abstract class Interchange(
 	val userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
 	val accessProtectionType: InterchangeAuthorizationType = JET,
 	val hiddenFromRecommendation: Boolean = false, // todo: seems to be unused, that have to be an enabled feature
-	val completion: InterchangeStructure = de.jet.paper.structure.command.completion.emptyCompletion(),
+	val completion: InterchangeStructure = de.jet.paper.structure.command.completion.emptyInterchangeStructure(),
 	val ignoreInputValidation: Boolean = false,
 ) : CommandExecutor, VendorsIdentifiable<Interchange>, Logging {
 
@@ -52,9 +53,10 @@ abstract class Interchange(
 
 	override val thisIdentity = label
 
-	final override val vendorIdentity = vendor.identityObject
+	final override val vendorIdentity: Identity<App>
+		get() = vendor.identityObject
 
-	private val requiredApproval = if (protectedAccess) Approval.fromApp(vendor, "interchange.$label") else null
+	private val requiredApproval by lazy { if (protectedAccess) Approval.fromApp(vendor, "interchange.$label") else null }
 
 	// parameters
 

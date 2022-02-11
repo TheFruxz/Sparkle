@@ -2,7 +2,6 @@ package de.jet.paper.structure.component
 
 import de.jet.jvm.extension.tryToCatch
 import de.jet.jvm.tool.smart.identification.Identity
-import de.jet.paper.app.JetApp
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
@@ -42,6 +41,7 @@ abstract class SmartComponent(
 
 		interchanges.forEach {
 			tryToCatch {
+				it.vendor = vendor
 				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject))
 				JetCache.registeredInterchanges.remove(it)
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
@@ -130,7 +130,7 @@ abstract class SmartComponent(
 
 	companion object {
 
-		internal fun disabledComponentInterchange(identity: Identity<Component>) = object : Interchange(JetApp.instance, "", ignoreInputValidation = true) {
+		internal fun disabledComponentInterchange(identity: Identity<Component>) = object : Interchange("", ignoreInputValidation = true) {
 			override val execution = execution {
 
 				"§c§lSORRY!§7 The providing component '§e$identity§7' is currently §cdisabled§7!"

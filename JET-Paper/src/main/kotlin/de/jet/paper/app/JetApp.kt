@@ -152,7 +152,7 @@ class JetApp : App() {
 
 		add(JETInterchange())
 		add(ComponentInterchange())
-
+		
 		buildSandBox(this, "filesystem-live") {
 			JetData.worldStructure.content.visualize()
 		}
