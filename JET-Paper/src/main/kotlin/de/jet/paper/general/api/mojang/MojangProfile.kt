@@ -31,7 +31,7 @@ data class MojangProfile(
     }
 
     fun applySkinToPlayer(target: Player) {
-        edit(target) { setProperty(ProfileProperty("textures", textures.raw.value, textures.raw.signature)) }
+        edit(target) { setProperty(ProfileProperty("textures", this@MojangProfile.textures.raw.value, this@MojangProfile.textures.raw.signature)) }
         refresh(target)
     }
 
@@ -45,7 +45,7 @@ data class MojangProfile(
 	 */
 	fun applySkinToSkullMeta(target: SkullMeta, replaceName: Boolean) {
 		target.playerProfile?.apply {
-			setProperty(ProfileProperty("textures", textures.raw.value, textures.raw.signature))
+			setProperty(ProfileProperty("textures", this@MojangProfile.textures.raw.value, this@MojangProfile.textures.raw.signature))
 			if (replaceName)
 				name = this@MojangProfile.username
 			complete(true, true)
@@ -58,7 +58,7 @@ data class MojangProfile(
 	fun applySkinToSkull(item: Item, replaceName: Boolean) = item.apply {
 		quirk = Quirk.skull {
 			playerProfile?.apply {
-				setProperty(ProfileProperty("textures", textures.raw.value, textures.raw.signature))
+				setProperty(ProfileProperty("textures", this@MojangProfile.textures.raw.value, this@MojangProfile.textures.raw.signature))
 				if (replaceName)
 					name = this@MojangProfile.username
 				complete(true, true)
