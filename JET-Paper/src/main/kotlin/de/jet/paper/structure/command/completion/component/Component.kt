@@ -30,7 +30,7 @@ sealed interface CompletionComponent {
 		) = static(completion.toSet(), displayRequirement, accessApproval)
 
 		fun asset(
-			asset: CompletionAsset,
+			asset: CompletionAsset<*>,
 			displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
 			accessApproval: Approval? = null,
 		) = Asset(asset, displayRequirement, accessApproval)
@@ -54,7 +54,7 @@ sealed interface CompletionComponent {
 	}
 
 	data class Asset(
-		val asset: CompletionAsset,
+		val asset: CompletionAsset<*>,
 		override val displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
 		override val accessApproval: Approval? = null,
 	) : CompletionComponent {

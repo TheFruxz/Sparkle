@@ -1,7 +1,7 @@
 package de.jet.paper.structure.command.completion
 
 data class CompletionBranchConfiguration(
-	val supportedInputTypes: MutableList<InterchangeStructureInputRestriction> = mutableListOf(InterchangeStructureInputRestriction.ANY),
+	val supportedInputTypes: MutableList<InterchangeStructureInputRestriction<*>> = mutableListOf(InterchangeStructureInputRestriction.ANY),
 	var isRequired: Boolean = true, //
 	var ignoreCase: Boolean = false, //
 	var mustMatchOutput: Boolean = true, //
@@ -27,7 +27,7 @@ fun InterchangeStructure.infiniteSubParameters() = configure {
 
 fun InterchangeStructure.limitedSubParameters() = configure { infiniteSubParameters = false }
 
-fun InterchangeStructure.onlyAccept(vararg inputTypes: InterchangeStructureInputRestriction) = configure {
+fun InterchangeStructure.onlyAccept(vararg inputTypes: InterchangeStructureInputRestriction<*>) = configure {
 	supportedInputTypes.clear()
 	supportedInputTypes.addAll(inputTypes)
 }

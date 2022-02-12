@@ -4,11 +4,14 @@ import de.jet.jvm.extension.collection.mapToString
 import de.jet.jvm.extension.collection.withMap
 import de.jet.jvm.extension.math.isDouble
 import de.jet.jvm.extension.math.isLong
+import de.jet.jvm.extension.tryOrNull
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetData
 import de.jet.paper.app.component.essentials.point.Point
+import de.jet.paper.extension.paper.getOfflinePlayer
 import de.jet.paper.extension.paper.getPlayer
+import de.jet.paper.extension.paper.offlinePlayers
 import de.jet.paper.extension.paper.onlinePlayers
 import de.jet.paper.extension.paper.worlds
 import de.jet.paper.extension.system
@@ -23,14 +26,14 @@ import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import java.util.*
 
-data class CompletionAsset(
+data class CompletionAsset<T>(
 	val vendor: Identifiable<out App>,
 	override val thisIdentity: String,
 	val refreshing: Boolean,
-	val supportedInputType: List<InterchangeStructureInputRestriction>,
+	val supportedInputType: List<InterchangeStructureInputRestriction<T>>,
 	var check: ((input:String, ignoreCase: Boolean) -> Boolean)? = null,
-	val generator: CompletionAsset.() -> Collection<String>,
-) : VendorsIdentifiable<CompletionAsset> {
+	val generator: CompletionAsset<T>.() -> Collection<String>,
+) : VendorsIdentifiable<CompletionAsset<T>> {
 
 	override val vendorIdentity = vendor.identityObject
 
@@ -61,14 +64,26 @@ data class CompletionAsset(
 			input.isDouble()
 		}
 
-		val ONLINE_PLAYER_NAME = CompletionAsset(system, "ONLINE_PLAYER_NAME", true, listOf(InterchangeStructureInputRestriction.STRING)) {
+		val ONLINE_PLAYER_NAME = CompletionAsset(system, "ONLINE_PLAYER_NAME", true, listOf(InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
 			onlinePlayers.withMap { name }
 		}.doCheck { input, _ ->
 			getPlayer(input) != null
 		}
 
-		val ONLINE_PLAYER_UUID = CompletionAsset(system, "ONLINE_PLAYER_UUID", true, listOf(InterchangeStructureInputRestriction.STRING)) {
+		val ONLINE_PLAYER_UUID = CompletionAsset(system, "ONLINE_PLAYER_UUID", true, listOf(InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
 			onlinePlayers.withMap { "$uniqueId" }
+		}
+
+		val OFFLINE_PLAYER_NAME = CompletionAsset(system, "OFFLINE_PLAYER_NAME", true, listOf(InterchangeStructureInputRestriction.OFFLINE_PLAYER)) {
+			offlinePlayers.withMap { name }.filterNotNull()
+		}.doCheck { input, _ ->
+			getOfflinePlayer(input).name != null
+		}
+
+		val OFFLINE_PLAYER_UUID = CompletionAsset(system, "OFFLINE_PLAYER_UUID", true, listOf(InterchangeStructureInputRestriction.OFFLINE_PLAYER)) {
+			offlinePlayers.withMap { "$uniqueId" }
+		}.doCheck { input, _ ->
+			tryOrNull { getOfflinePlayer(UUID.fromString(input)).name } != null
 		}
 
 		val ENTITY_TYPE = CompletionAsset(system, "ENTITY_TYPE", false, listOf(InterchangeStructureInputRestriction.STRING)) {
