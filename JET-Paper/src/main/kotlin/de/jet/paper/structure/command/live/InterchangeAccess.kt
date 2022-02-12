@@ -3,6 +3,7 @@ package de.jet.paper.structure.command.live
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeUserRestriction
+import de.jet.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.jet.paper.tool.smart.Logging
 import org.bukkit.command.CommandSender
 import java.util.logging.Level
@@ -25,6 +26,13 @@ data class InterchangeAccess(
 
 	fun inputLength(checkIf: Int) = parameters.size == checkIf
 
-	fun inputParameter(slot: Int) = parameters[slot]
+	fun getInput(slot: Int) = parameters[slot]
+
+	fun <T> getInput(slot: Int, restriction: InterchangeStructureInputRestriction<T>) =
+		if (restriction.isValid(parameters[slot])) {
+			restriction.transformer(parameters[slot])
+		} else {
+			throw IllegalArgumentException("Input restriction not followed!")
+		}
 
 }
