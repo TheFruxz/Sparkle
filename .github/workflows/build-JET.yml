@@ -2,7 +2,7 @@ name: JET-BUILD
 on: [push]
 jobs:
   build:
-    runs-on: macos-11
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 17
@@ -13,4 +13,4 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build -x test --stacktrace --info --debug
+      run: ./gradlew build -x test --stacktrace

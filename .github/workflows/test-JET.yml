@@ -2,7 +2,7 @@ name: JET-TEST
 on: [push]
 jobs:
   build:
-    runs-on: macos-11
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 17
