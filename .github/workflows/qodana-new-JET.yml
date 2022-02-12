@@ -2,7 +2,7 @@ name: JET-QODANA
 on: [workflow_dispatch]
 jobs:
   build:
-    runs-on: macos-11
+    runs-on: macos-latest
     permissions:
       contents: read
       packages: write

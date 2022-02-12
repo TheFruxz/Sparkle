@@ -10,7 +10,7 @@ import de.jet.jvm.tree.TreeBranch
  */
 class ConsoleInterchangeBranch(
 	override var identity: String,
-	override var address: Address<TreeBranch<ConsoleInterchangeBranch, ((String) -> Unit)?, ConsoleInterchangeBranchType>>,
+	override var address: Address<ConsoleInterchangeBranch>,
 	override var subBranches: List<ConsoleInterchangeBranch> = emptyList(),
 	override var branchType: ConsoleInterchangeBranchType = ConsoleInterchangeBranchType.OBJECT,
 	override var content: ((String) -> Unit)?,
@@ -51,7 +51,7 @@ class ConsoleInterchangeBranch(
      */
     fun branch(
 	    identity: String,
-	    path: Address<TreeBranch<ConsoleInterchangeBranch, ((String) -> Unit)?, ConsoleInterchangeBranchType>> = this.address / identity,
+	    path: Address<ConsoleInterchangeBranch> = this.address / identity,
 	    branchType: ConsoleInterchangeBranchType = ConsoleInterchangeBranchType.OBJECT,
 	    process: ConsoleInterchangeBranch.() -> Unit,
     ) {

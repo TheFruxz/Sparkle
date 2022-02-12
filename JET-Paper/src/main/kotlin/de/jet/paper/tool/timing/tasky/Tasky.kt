@@ -1,7 +1,7 @@
 package de.jet.paper.tool.timing.tasky
 
 import de.jet.jvm.extension.catchException
-import de.jet.jvm.extension.data.RandomTagType.MIXED_CASE
+import de.jet.jvm.extension.data.RandomTagType.ONLY_UPPERCASE
 import de.jet.jvm.extension.data.buildRandomTag
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
@@ -46,7 +46,7 @@ interface Tasky : Logging {
 			onCrash: Tasky.() -> Unit = {},
 			serviceVendor: Identity<Service> = Identifiable.custom<Service>("dummy").identityObject,
 			process: Tasky.() -> Unit,
-			internalId: String = buildRandomTag(hashtag = false, tagType = MIXED_CASE)
+			internalId: String = buildRandomTag(hashtag = false, tagType = ONLY_UPPERCASE)
 		): Tasky {
 			val currentTask = Task(temporalAdvice, true, process)
 			lateinit var output: Tasky

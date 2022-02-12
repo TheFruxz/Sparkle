@@ -8,12 +8,10 @@ import de.jet.paper.extension.display.message
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.get
 import de.jet.paper.extension.lang
-import de.jet.paper.extension.system
-import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
-import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
@@ -21,10 +19,9 @@ import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.display.message.Transmission.Level.INFO
 
-class ComponentInterchange(vendor: App = system) : Interchange(
-	vendor = vendor,
+class ComponentInterchange : Interchange(
 	label = "component",
-	completion = buildCompletion {
+	completion = buildInterchangeStructure {
 		branch {
 			content(CompletionComponent.static("list"))
 		}

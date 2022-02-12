@@ -11,13 +11,12 @@ import de.jet.paper.extension.display.RED
 import de.jet.paper.extension.display.message
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.lang
-import de.jet.paper.extension.system
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
-import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
@@ -27,11 +26,10 @@ import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.display.message.Transmission.Level.INFO
 import kotlin.time.Duration.Companion.milliseconds
 
-class ServiceInterchange(vendor: App = system) : Interchange(
-	vendor = vendor,
+class ServiceInterchange : Interchange(
 	label = "service",
 	protectedAccess = true,
-	completion = buildCompletion {
+	completion = buildInterchangeStructure {
 		branch {
 			content(CompletionComponent.static("list"))
 		}

@@ -20,11 +20,11 @@ import de.jet.jvm.tool.smart.positioning.Pathed
  */
 open class TreeBranch<SUBBRANCH : TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>, CONTENT, BRANCH_TYPE : TreeBranchType>(
     override var identity: String,
-    override var address: Address<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>> = Address.address(identity),
+    override var address: Address<SUBBRANCH> = Address.address(identity),
     open var branchType: BRANCH_TYPE,
     open var subBranches: List<SUBBRANCH>,
     open var content: CONTENT,
-) : Identifiable<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>>, Pathed<TreeBranch<SUBBRANCH, CONTENT, BRANCH_TYPE>> {
+) : Identifiable<SUBBRANCH>, Pathed<SUBBRANCH> {
 
     /**
      * This function replaces the current [content] of the branch with the given new [content].

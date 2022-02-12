@@ -42,6 +42,9 @@ val consoleSender: ConsoleCommandSender
 val onlinePlayers: Collection<Player>
 	get() = Bukkit.getOnlinePlayers()
 
+val offlinePlayers: List<OfflinePlayer>
+	get() = Bukkit.getOfflinePlayers().toList()
+
 fun getPlayer(playerName: String) = Bukkit.getPlayer(playerName)
 
 fun getPlayer(uniqueIdentity: UUID) = Bukkit.getPlayer(uniqueIdentity)

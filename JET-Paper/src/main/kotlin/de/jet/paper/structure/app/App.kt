@@ -164,7 +164,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			mainLog(Level.WARNING, "FAILED! try to register fail-interchange '$label' instead...")
 
 			if (command != null) {
-				val replace = IssuedInterchange(this, label, aliases)
+				val replace = IssuedInterchange(label, aliases)
 
 				command.setExecutor(replace)
 				command.tabCompleter = replace.tabCompleter
@@ -181,6 +181,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 				val label = interchange.label
 				val aliases = interchange.aliases
 				val command = getCommand(interchange.label)
+
+				interchange.vendor = companion.instance
 
 				if (command != null) {
 

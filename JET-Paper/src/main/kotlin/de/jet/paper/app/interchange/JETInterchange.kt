@@ -12,13 +12,11 @@ import de.jet.paper.extension.display.ui.buildInteractAction
 import de.jet.paper.extension.display.ui.buildPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.lang
-import de.jet.paper.extension.system
-import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
-import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
@@ -31,11 +29,10 @@ import de.jet.paper.tool.display.message.Transmission.Level.valueOf
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
-class JETInterchange(vendor: App = system) : Interchange(
-	vendor = vendor,
+class JETInterchange : Interchange(
 	label = "jet",
 	protectedAccess = false,
-	completion = buildCompletion {
+	completion = buildInterchangeStructure {
 		branch {
 			content(CompletionComponent.static("version", "website", "repository", "ping"))
 		}

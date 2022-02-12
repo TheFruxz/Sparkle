@@ -1,6 +1,7 @@
 package de.jet.paper.structure.command
 
 import de.jet.jvm.extension.catchException
+import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.lang
@@ -8,7 +9,7 @@ import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.InterchangeAuthorizationType.JET
 import de.jet.paper.structure.command.InterchangeResult.*
 import de.jet.paper.structure.command.InterchangeUserRestriction.*
-import de.jet.paper.structure.command.completion.CompletionBranch
+import de.jet.paper.structure.command.completion.InterchangeStructure
 import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.annotation.LegacyCraftBukkitFeature
 import de.jet.paper.tool.display.message.Transmission.Level.ERROR
@@ -27,14 +28,13 @@ import org.bukkit.entity.Player
 import java.util.logging.Level.WARNING
 
 abstract class Interchange(
-	final override val vendor: App,
 	val label: String,
 	val aliases: Set<String> = emptySet(),
 	val protectedAccess: Boolean = false,
 	val userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
 	val accessProtectionType: InterchangeAuthorizationType = JET,
 	val hiddenFromRecommendation: Boolean = false, // todo: seems to be unused, that have to be an enabled feature
-	val completion: CompletionBranch = de.jet.paper.structure.command.completion.emptyCompletion(),
+	val completion: InterchangeStructure = de.jet.paper.structure.command.completion.emptyInterchangeStructure(),
 	val ignoreInputValidation: Boolean = false,
 ) : CommandExecutor, VendorsIdentifiable<Interchange>, Logging {
 
@@ -44,15 +44,19 @@ abstract class Interchange(
 
 	}
 
+	final override lateinit var vendor: App
+		internal set
+
 	val tabCompleter = TabCompleter { _, _, _, args -> completion.computeCompletion(args.toList()) }
 
 	final override val sectionLabel = "InterchangeEngine"
 
 	override val thisIdentity = label
 
-	final override val vendorIdentity = vendor.identityObject
+	final override val vendorIdentity: Identity<App>
+		get() = vendor.identityObject
 
-	private val requiredApproval = if (protectedAccess) Approval.fromApp(vendor, "interchange.$label") else null
+	private val requiredApproval by lazy { if (protectedAccess) Approval.fromApp(vendor, "interchange.$label") else null }
 
 	// parameters
 
@@ -137,7 +141,7 @@ abstract class Interchange(
 
 					try {
 
-						when (executionProcess()(InterchangeAccess(vendor, clientType, sender, this, label, parameters))) {
+						when (executionProcess()(InterchangeAccess(vendor, clientType, sender, this, label, parameters, emptyList()))) {
 
 							NOT_PERMITTED -> wrongApprovalFeedback(sender)
 							WRONG_CLIENT -> wrongClientFeedback(sender)

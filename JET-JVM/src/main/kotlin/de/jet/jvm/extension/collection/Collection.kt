@@ -1,5 +1,9 @@
 package de.jet.jvm.extension.collection
 
+import de.jet.jvm.extension.math.ceilToInt
+import de.jet.jvm.extension.math.maxTo
+import de.jet.jvm.tool.collection.PageValue
+
 /**
  * # `C.toArrayList()`
  * ## Info
@@ -196,3 +200,38 @@ fun <T, C : Collection<T>> C.take(intRange: IntRange) =
  */
 fun <T> Array<T>.take(intRange: IntRange) =
 	toList().subList(intRange.first, intRange.last)
+
+/**
+ * This function returns a small list of [T] objects, that
+ * are in a simulated page, which is created by the [pageSize]
+ * and the [page] number.
+ * If the requested page is out of range, it will return the last non-empty page.
+ * @param page the page, where the list should be
+ * @param pageSize the size of each individual page
+ * @return the list of [T] objects contained in the page
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T, C : Collection<T>> C.page(page: Int, pageSize: Int): PageValue<T> {
+	if (pageSize < 1) throw IllegalArgumentException("Page size must be greater than 0!")
+	if (page < 0) throw IllegalArgumentException("Page must be greater than or equals 0!")
+
+	val pages = ceilToInt(size.toDouble() / pageSize)
+	val actualPage = (page + 1).maxTo(pages)
+
+	return PageValue(toList().subList(((1+pageSize*(actualPage-1)-1)..(pageSize*actualPage).maxTo(size))), actualPage - 1, pages)
+}
+
+/**
+ * This function returns a small list of [T] objects, that
+ * are in a simulated page, which is created by the [pageSize]
+ * and the [page] number.
+ * If the requested page is out of range, it will return the last non-empty page.
+ * @param page the page, where the list should be
+ * @param pageSize the size of each individual page
+ * @return the list of [T] objects contained in the page
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T> Array<T>.page(page: Int, pageSize: Int) =
+	toList().page(page, pageSize)

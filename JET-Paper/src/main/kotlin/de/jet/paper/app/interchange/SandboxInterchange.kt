@@ -9,13 +9,11 @@ import de.jet.paper.extension.o.allSandBoxes
 import de.jet.paper.extension.o.destroyAllSandBoxes
 import de.jet.paper.extension.o.destroySandBox
 import de.jet.paper.extension.o.getSandBox
-import de.jet.paper.extension.system
-import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
-import de.jet.paper.structure.command.completion.buildCompletion
+import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
@@ -23,12 +21,11 @@ import de.jet.paper.structure.command.completion.infiniteSubParameters
 import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.display.message.Transmission.Level.*
 
-class SandboxInterchange(vendor: App = system) :
+class SandboxInterchange :
 	Interchange(
-		vendor = vendor,
 		label = "sandbox",
 		protectedAccess = true,
-		completion = buildCompletion {
+		completion = buildInterchangeStructure {
 			branch {
 				content(CompletionComponent.static("list", "dropAll", "runAll"))
 			}

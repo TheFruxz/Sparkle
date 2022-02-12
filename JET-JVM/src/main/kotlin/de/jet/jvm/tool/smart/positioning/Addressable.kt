@@ -22,10 +22,7 @@ interface Addressable<T> {
 	 */
 	val addressObject: Address<T>
 
-	val rootCheck: (String) -> Boolean
-		get() = { !it.contains(addressObject.divider) || it == addressObject.divider }
-
 	val isRoot: Boolean
-		get() = rootCheck(addressString)
+		get() = !addressString.contains(addressObject.divider) || addressString == addressObject.divider
 
 }
