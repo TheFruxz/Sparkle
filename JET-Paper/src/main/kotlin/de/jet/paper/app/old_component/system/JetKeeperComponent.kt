@@ -1,4 +1,4 @@
-package de.jet.paper.app.component.system
+package de.jet.paper.app.old_component.system
 
 import de.jet.jvm.extension.catchException
 import de.jet.jvm.extension.collection.withForEach

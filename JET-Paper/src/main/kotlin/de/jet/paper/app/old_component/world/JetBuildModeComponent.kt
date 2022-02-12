@@ -1,4 +1,4 @@
-package de.jet.paper.app.component.world
+package de.jet.paper.app.old_component.world
 
 import de.jet.paper.app.interchange.player.BuildModeInterchange
 import de.jet.paper.extension.paper.buildMode

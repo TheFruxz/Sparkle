@@ -1,4 +1,4 @@
-package de.jet.paper.app.component.essentials.point
+package de.jet.paper.app.old_component.essentials.point
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

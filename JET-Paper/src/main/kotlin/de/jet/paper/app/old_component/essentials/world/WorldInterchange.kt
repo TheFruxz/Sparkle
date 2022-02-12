@@ -1,13 +1,13 @@
-package de.jet.paper.app.component.essentials.world
+package de.jet.paper.app.old_component.essentials.world
 
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.positioning.Address.Companion.address
-import de.jet.paper.app.component.essentials.world.WorldInterchange.WorldPanelViewProperties.ViewType.*
-import de.jet.paper.app.component.essentials.world.tree.WorldRenderer
-import de.jet.paper.app.component.essentials.world.tree.WorldRenderer.FileSystem
-import de.jet.paper.app.component.essentials.world.tree.WorldRenderer.RenderFolder
-import de.jet.paper.app.component.essentials.world.tree.WorldRenderer.RenderObject
-import de.jet.paper.app.component.essentials.world.tree.WorldRenderer.RenderWorld
+import de.jet.paper.app.old_component.essentials.world.WorldInterchange.WorldPanelViewProperties.ViewType.*
+import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer
+import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.FileSystem
+import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderFolder
+import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderObject
+import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderWorld
 import de.jet.paper.extension.display.ui.buildPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.display.ui.skull

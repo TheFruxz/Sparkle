@@ -1,4 +1,4 @@
-package de.jet.paper.app.component.item
+package de.jet.paper.app.old_component.item
 
 import de.jet.jvm.extension.collection.replace
 import de.jet.paper.app.JetCache

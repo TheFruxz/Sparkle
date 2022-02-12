@@ -1,6 +1,6 @@
 package de.jet.paper.runtime.event.interact
 
-import de.jet.paper.app.component.events.JetEventsComponent
+import de.jet.paper.app.component.events.EventsComponent
 import de.jet.paper.tool.annotation.RequiresComponent
 import de.jet.paper.tool.display.item.Item
 import org.bukkit.Material
@@ -12,7 +12,7 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.event.player.PlayerInteractEvent
 
-@RequiresComponent(JetEventsComponent::class)
+@RequiresComponent(EventsComponent::class)
 data class PlayerInteractAtItemEvent(
 	val whoInteract: Player,
 	val item: Item,

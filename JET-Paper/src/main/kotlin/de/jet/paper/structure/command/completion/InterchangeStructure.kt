@@ -6,6 +6,7 @@ import de.jet.jvm.tree.TreeBranch
 import de.jet.jvm.tree.TreeBranchType
 import de.jet.paper.extension.debugLog
 import de.jet.paper.structure.command.InterchangeResult
+import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.completion.InterchangeStructure.BranchStatus.*
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.tracing.CompletionTraceResult
@@ -90,10 +91,20 @@ class InterchangeStructure(
 		onExecution = process
 	}
 
+	@JvmName("executionWithoutReturn")
+	fun smartExecution(process: InterchangeAccess.() -> Unit) {
+		onExecution = {
+			process()
+			SUCCESS
+		}
+	}
+
 	private fun isInputAllowedByTypes(input: String) =
 		content.flatMap { if (it is CompletionComponent.Asset) it.asset.supportedInputType else emptyList() }
 			.let { internal ->
-				if (internal.isNotEmpty()) {
+				if (content.filterIsInstance<CompletionComponent.Static>().isNotEmpty()) {
+					true
+				} else if (internal.isNotEmpty()) {
 					return@let internal.any { it.isValid(input) }
 				} else
 					true
@@ -104,7 +115,7 @@ class InterchangeStructure(
 	fun validInput(input: String) =
 		(!configuration.mustMatchOutput || this.computeLocalCompletion()
 			.any { it.equals(input, configuration.ignoreCase) })
-				&& configuration.supportedInputTypes.none { !it.isValid(input) }
+				&& configuration.supportedInputTypes.any { it.isValid(input) }
 				&& isInputAllowedByTypes(input)
 				&& (!configuration.isRequired || input.isNotBlank())
 

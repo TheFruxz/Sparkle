@@ -18,7 +18,10 @@ fun InterchangeStructure.restrictCase() = configure { ignoreCase = false }
 
 fun InterchangeStructure.mustMatchOutput() = configure { mustMatchOutput = true }
 
-fun InterchangeStructure.mustNotMatchOutput() = configure { mustMatchOutput = false }
+fun InterchangeStructure.mustNotMatchOutput() = configure {
+	mustMatchOutput = false
+	ignoreCase = true
+}
 
 fun InterchangeStructure.infiniteSubParameters() = configure {
 	infiniteSubParameters = true

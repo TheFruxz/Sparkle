@@ -1,4 +1,4 @@
-package de.jet.paper.app.component.essentials.world
+package de.jet.paper.app.old_component.essentials.world
 
 import de.jet.jvm.extension.switchResult
 import de.jet.jvm.structure.DataStructureHolder

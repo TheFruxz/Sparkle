@@ -1,4 +1,4 @@
-package de.jet.paper.app.component.essentials.world.tree
+package de.jet.paper.app.old_component.essentials.world.tree
 
 import de.jet.jvm.extension.collection.mutableReplaceWith
 import de.jet.jvm.extension.isNotNull
@@ -8,7 +8,7 @@ import de.jet.jvm.tool.smart.positioning.Address
 import de.jet.jvm.tool.smart.positioning.Address.Companion.address
 import de.jet.jvm.tool.smart.positioning.Addressable
 import de.jet.paper.app.JetData
-import de.jet.paper.app.component.essentials.world.WorldConfig
+import de.jet.paper.app.old_component.essentials.world.WorldConfig
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit

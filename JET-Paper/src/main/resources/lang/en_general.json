@@ -53,7 +53,7 @@
     "interchange.internal.service.list.header": "[GRAY]List of all registered services:",
     "interchange.internal.service.list.line": "[YELLOW][service][GRAY] -> [enabled][GRAY] ([activeSince]),",
 
-    "interchange.internal.sandbox.list.header": "[GRAY]List of all registered SandBoxes:",
+    "interchange.internal.sandbox.list.header": "[GRAY]List of all registered SandBoxes (Page [p1] of [p2]):",
     "interchange.internal.sandbox.list.line": "[YELLOW][sandbox][GRAY] (from: [vendor])",
     "interchange.internal.sandbox.dropAll": "[LIME]Successfully[GRAY] removed[LIME] [amount][GRAY] SandBoxes!",
     "interchange.internal.sandbox.runAll": "[LIME]Successfully[GRAY] started[LIME] [amount][GRAY] SandBoxes!",

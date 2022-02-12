@@ -1,4 +1,4 @@
-package de.jet.paper.app.component.feature
+package de.jet.paper.app.old_component.feature
 
 import de.jet.jvm.extension.collection.replaceVariables
 import de.jet.jvm.extension.math.shorter

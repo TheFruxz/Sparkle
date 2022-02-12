@@ -1,6 +1,6 @@
-package de.jet.paper.app.component.essentials
+package de.jet.paper.app.old_component.essentials
 
-import de.jet.paper.app.component.essentials.point.PointInterchange
+import de.jet.paper.app.old_component.essentials.point.PointInterchange
 import de.jet.paper.extension.system
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.component.Component.RunType.AUTOSTART_MUTABLE

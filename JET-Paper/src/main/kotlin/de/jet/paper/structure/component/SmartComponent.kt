@@ -5,6 +5,7 @@ import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
+import de.jet.paper.extension.system
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.event.EventListener
 import de.jet.paper.structure.command.Interchange
@@ -131,6 +132,7 @@ abstract class SmartComponent(
 	companion object {
 
 		internal fun disabledComponentInterchange(identity: Identity<Component>) = object : Interchange("", ignoreInputValidation = true) {
+
 			override val execution = execution {
 
 				"§c§lSORRY!§7 The providing component '§e$identity§7' is currently §cdisabled§7!"
@@ -138,6 +140,8 @@ abstract class SmartComponent(
 
 				SUCCESS
 			}
+		}.apply {
+			vendor = system
 		}
 
 	}
