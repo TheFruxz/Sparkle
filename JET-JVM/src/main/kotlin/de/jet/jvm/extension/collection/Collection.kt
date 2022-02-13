@@ -215,6 +215,7 @@ fun <T> Array<T>.take(intRange: IntRange) =
 fun <T, C : Collection<T>> C.page(page: Int, pageSize: Int): PageValue<T> {
 	if (pageSize < 1) throw IllegalArgumentException("Page size must be greater than 0!")
 	if (page < 0) throw IllegalArgumentException("Page must be greater than or equals 0!")
+	if (isNullOrEmpty()) return PageValue(emptyList(), 0, 0)
 
 	val pages = ceilToInt(size.toDouble() / pageSize)
 	val actualPage = (page + 1).maxTo(pages)

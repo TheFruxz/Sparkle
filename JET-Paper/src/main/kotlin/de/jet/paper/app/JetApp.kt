@@ -7,10 +7,12 @@ import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.component.chat.ChatComponent
 import de.jet.paper.app.component.events.EventsComponent
 import de.jet.paper.app.component.experimental.ExperimentalComponent
+import de.jet.paper.app.component.keeper.KeeperComponent
+import de.jet.paper.app.component.point.PointComponent
 import de.jet.paper.app.component.sandbox.SandBoxComponent
+import de.jet.paper.app.component.service.ServiceComponent
 import de.jet.paper.app.interchange.ComponentInterchange
 import de.jet.paper.app.interchange.JETInterchange
-import de.jet.paper.app.old_component.essentials.EssentialsComponent
 import de.jet.paper.app.old_component.essentials.point.Point
 import de.jet.paper.app.old_component.essentials.point.PointConfig
 import de.jet.paper.app.old_component.essentials.world.WorldConfig
@@ -21,8 +23,6 @@ import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.Render
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.WorldStructure
 import de.jet.paper.app.old_component.feature.MarkingFeatureComponent
 import de.jet.paper.app.old_component.item.JetActionComponent
-import de.jet.paper.app.old_component.system.JetAssistiveInterchangesComponent
-import de.jet.paper.app.old_component.system.JetKeeperComponent
 import de.jet.paper.app.old_component.world.JetBuildModeComponent
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.ui.buildContainer
@@ -148,14 +148,14 @@ class JetApp : App() {
 		add(EventsComponent())
 		add(ExperimentalComponent())
 		add(SandBoxComponent())
+		add(ServiceComponent())
+		add(KeeperComponent())
+		add(PointComponent())
 
 		// OLD COMPONENTS
 		add(JetActionComponent())
-		add(JetKeeperComponent())
 		add(JetBuildModeComponent())
 		add(MarkingFeatureComponent())
-		add(JetAssistiveInterchangesComponent())
-		add(EssentialsComponent())
 
 		add(JETInterchange())
 		add(ComponentInterchange())
