@@ -15,7 +15,7 @@ fun task(
 	onStart: Tasky.() -> Unit = {},
 	onStop: Tasky.() -> Unit = {},
 	onCrash: Tasky.() -> Unit = {},
-	serviceVendor: Identity<Service> = Identifiable.custom<Service>("dummy").identityObject,
+	serviceVendor: Identity<Service> = Identity("undefined"),
 	process: Tasky.() -> Unit,
 ) = Tasky.task(vendor, temporalAdvice, killAtError, onStart, onStop, onCrash, serviceVendor, process)
 
@@ -26,7 +26,7 @@ fun sync(
 	onStart: Tasky.() -> Unit = {},
 	onStop: Tasky.() -> Unit = {},
 	onCrash: Tasky.() -> Unit = {},
-	serviceVendor: Identity<Service> = Identifiable.custom<Service>("dummy").identityObject,
+	serviceVendor: Identity<Service> = Identity("undefined"),
 	process: Tasky.() -> Unit,
 ) = Tasky.task(vendor, temporalAdvice, killAtError, onStart, onStop, onCrash, serviceVendor, process)
 
@@ -37,7 +37,7 @@ fun async(
 	onStart: Tasky.() -> Unit = {},
 	onStop: Tasky.() -> Unit = {},
 	onCrash: Tasky.() -> Unit = {},
-	serviceVendor: Identity<Service> = Identifiable.custom<Service>("dummy").identityObject,
+	serviceVendor: Identity<Service> = Identity("undefined"),
 	process: Tasky.() -> Unit,
 ) = Tasky.task(vendor, temporalAdvice, killAtError, onStart, onStop, onCrash, serviceVendor, process)
 
