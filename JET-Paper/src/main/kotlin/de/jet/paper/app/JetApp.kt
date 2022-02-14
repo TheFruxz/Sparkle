@@ -4,6 +4,7 @@ import de.jet.jvm.extension.data.addJetJsonModuleModification
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
+import de.jet.paper.app.component.buildmode.BuildModeComponent
 import de.jet.paper.app.component.chat.ChatComponent
 import de.jet.paper.app.component.events.EventsComponent
 import de.jet.paper.app.component.experimental.ExperimentalComponent
@@ -23,7 +24,6 @@ import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.Render
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.WorldStructure
 import de.jet.paper.app.old_component.feature.MarkingFeatureComponent
 import de.jet.paper.app.old_component.item.JetActionComponent
-import de.jet.paper.app.old_component.world.JetBuildModeComponent
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.ui.buildContainer
 import de.jet.paper.extension.mainLog
@@ -151,10 +151,10 @@ class JetApp : App() {
 		add(ServiceComponent())
 		add(KeeperComponent())
 		add(PointComponent())
+		add(BuildModeComponent())
 
 		// OLD COMPONENTS
 		add(JetActionComponent())
-		add(JetBuildModeComponent())
 		add(MarkingFeatureComponent())
 
 		add(JETInterchange())
