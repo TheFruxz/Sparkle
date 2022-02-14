@@ -72,7 +72,7 @@ internal class ServiceInterchange : BranchedInterchange(
 						.notification(FAIL, executor).display()
 			}
 
-			smartExecution {
+			concludedExecution {
 
 				displayServices(executor, 0)
 
@@ -127,7 +127,7 @@ internal class ServiceInterchange : BranchedInterchange(
 
 					ignoreCase()
 
-					smartExecution {
+					concludedExecution {
 						val service = registeredServices.first { it.identity == getInput(1) }
 
 						try {
@@ -154,7 +154,7 @@ internal class ServiceInterchange : BranchedInterchange(
 
 					ignoreCase()
 
-					smartExecution {
+					concludedExecution {
 						val service = registeredServices.first { it.identity == getInput(1) }
 
 						try {
@@ -181,7 +181,7 @@ internal class ServiceInterchange : BranchedInterchange(
 
 					ignoreCase()
 
-					smartExecution {
+					concludedExecution {
 						val service = registeredServices.first { it.identity == getInput(1) }
 
 						app(service.vendor).restart(service)
@@ -200,7 +200,7 @@ internal class ServiceInterchange : BranchedInterchange(
 
 					ignoreCase()
 
-					smartExecution {
+					concludedExecution {
 						val service = registeredServices.first { it.identity == getInput(1) }
 
 						try {
@@ -227,7 +227,7 @@ internal class ServiceInterchange : BranchedInterchange(
 
 					ignoreCase()
 
-					smartExecution {
+					concludedExecution {
 						val service = registeredServices.first { it.identity == getInput(1) }
 
 						try {

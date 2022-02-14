@@ -100,7 +100,7 @@ internal class BuildModeInterchange : BranchedInterchange(
 						.notification(FAIL, executor).display()
 			}
 
-			smartExecution {
+			concludedExecution {
 
 				displayPlayers(executor, 0)
 
@@ -145,7 +145,7 @@ internal class BuildModeInterchange : BranchedInterchange(
 
 			ignoreCase()
 
-			smartExecution {
+			concludedExecution {
 
 				onlinePlayers.forEach { enableBuildMode(executor, it) }
 
@@ -159,7 +159,7 @@ internal class BuildModeInterchange : BranchedInterchange(
 
 			ignoreCase()
 
-			smartExecution {
+			concludedExecution {
 
 				onlinePlayers.forEach { disableBuildMode(executor, it) }
 
@@ -173,7 +173,7 @@ internal class BuildModeInterchange : BranchedInterchange(
 
 			ignoreCase()
 
-			smartExecution {
+			concludedExecution {
 
 				onlinePlayers.forEach { toggleBuildMode(executor, it) }
 
@@ -197,7 +197,7 @@ internal class BuildModeInterchange : BranchedInterchange(
 
 					ignoreCase()
 
-					smartExecution {
+					concludedExecution {
 						val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
 
 						enableBuildMode(executor, target)
@@ -212,7 +212,7 @@ internal class BuildModeInterchange : BranchedInterchange(
 
 					ignoreCase()
 
-					smartExecution {
+					concludedExecution {
 						val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
 
 						disableBuildMode(executor, target)
@@ -227,7 +227,7 @@ internal class BuildModeInterchange : BranchedInterchange(
 
 					ignoreCase()
 
-					smartExecution {
+					concludedExecution {
 						val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
 
 						toggleBuildMode(executor, target)
@@ -242,7 +242,7 @@ internal class BuildModeInterchange : BranchedInterchange(
 
 					ignoreCase()
 
-					smartExecution {
+					concludedExecution {
 						val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
 
 						lang("interchange.internal.buildmode.info").replaceVariables(

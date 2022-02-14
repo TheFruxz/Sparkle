@@ -33,7 +33,7 @@ internal class SandBoxInterchange : BranchedInterchange("sandbox", buildIntercha
 
 		ignoreCase()
 
-		smartExecution {
+		concludedExecution {
 
 			if (allSandBoxes.isNotEmpty()) {
 
@@ -56,7 +56,7 @@ internal class SandBoxInterchange : BranchedInterchange("sandbox", buildIntercha
 
 		ignoreCase()
 
-		smartExecution {
+		concludedExecution {
 
 			if (allSandBoxes.isNotEmpty()) {
 				allSandBoxes.forEach { sandBox ->
@@ -113,7 +113,7 @@ internal class SandBoxInterchange : BranchedInterchange("sandbox", buildIntercha
 					.notification(FAIL, executor).display()
 		}
 
-		smartExecution {
+		concludedExecution {
 
 			displaySandBoxes(executor, 0)
 
@@ -162,7 +162,7 @@ internal class SandBoxInterchange : BranchedInterchange("sandbox", buildIntercha
 
 				addContent(Companion.static("drop"))
 
-				smartExecution {
+				concludedExecution {
 					val sandBox = getSandBox(getInput(1))!!
 
 					destroySandBox(sandBox)
@@ -179,7 +179,7 @@ internal class SandBoxInterchange : BranchedInterchange("sandbox", buildIntercha
 
 				addContent(Companion.static("run"))
 
-				smartExecution {
+				concludedExecution {
 					val sandBox = getSandBox(getInput(1))!!
 
 					sandBox.execute(executor)
@@ -192,7 +192,7 @@ internal class SandBoxInterchange : BranchedInterchange("sandbox", buildIntercha
 
 				addContent(Companion.static("info"))
 
-				smartExecution {
+				concludedExecution {
 					val sandBox = getSandBox(getInput(1))!!
 
 					buildString {

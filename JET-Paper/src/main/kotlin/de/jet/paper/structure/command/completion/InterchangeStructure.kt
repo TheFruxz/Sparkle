@@ -91,8 +91,16 @@ class InterchangeStructure(
 		onExecution = process
 	}
 
+	/**
+	 * This function represents the [execution] function, but returns
+	 * [SUCCESS] internally as the [InterchangeResult] instead of the
+	 * returned [InterchangeResult] from the [process].
+	 * @param process the code, that the interchange executor triggers
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	@JvmName("executionWithoutReturn")
-	fun smartExecution(process: InterchangeAccess.() -> Unit) {
+	fun concludedExecution(process: InterchangeAccess.() -> Unit) {
 		onExecution = {
 			process()
 			SUCCESS

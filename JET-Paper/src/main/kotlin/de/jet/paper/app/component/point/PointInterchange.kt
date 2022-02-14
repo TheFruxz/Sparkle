@@ -66,7 +66,7 @@ internal class PointInterchange : BranchedInterchange("point", protectedAccess =
 					.notification(FAIL, executor).display()
 		}
 
-		smartExecution {
+		concludedExecution {
 
 			displayServices(executor, 0)
 
@@ -124,7 +124,7 @@ internal class PointInterchange : BranchedInterchange("point", protectedAccess =
 
 				ignoreCase()
 
-				smartExecution {
+				concludedExecution {
 					val points = JetData.savedPoints.content.points.toMutableList()
 					val pointName = getInput(1)
 					val point = points.firstOrNull { it.identity == pointName }
@@ -160,7 +160,7 @@ internal class PointInterchange : BranchedInterchange("point", protectedAccess =
 
 				ignoreCase()
 
-				smartExecution {
+				concludedExecution {
 					val points = JetData.savedPoints.content.points.toMutableList()
 					val point = points.firstOrNull { it.identity == getInput(1) }
 
@@ -189,7 +189,7 @@ internal class PointInterchange : BranchedInterchange("point", protectedAccess =
 
 				ignoreCase()
 
-				smartExecution {
+				concludedExecution {
 					val points = JetData.savedPoints.content.points.toMutableList()
 					val point = points.firstOrNull { it.identity == getInput(1) }
 
