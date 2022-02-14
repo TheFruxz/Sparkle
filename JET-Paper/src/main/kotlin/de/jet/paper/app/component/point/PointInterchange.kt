@@ -10,6 +10,7 @@ import de.jet.paper.app.old_component.essentials.point.Point
 import de.jet.paper.app.old_component.essentials.point.PointConfig
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.getSystemTranslated
+import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.system
 import de.jet.paper.structure.command.BranchedInterchange
@@ -25,7 +26,6 @@ import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.completion.isNotRequired
 import de.jet.paper.structure.command.completion.mustNotMatchOutput
 import de.jet.paper.tool.display.message.Transmission.Level.*
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 internal class PointInterchange : BranchedInterchange("point", protectedAccess = true, userRestriction = ONLY_PLAYERS, structure = buildInterchangeStructure {
@@ -35,7 +35,7 @@ internal class PointInterchange : BranchedInterchange("point", protectedAccess =
 
 		ignoreCase()
 
-		fun displayServices(executor: CommandSender, page: Int) {
+		fun displayServices(executor: InterchangeExecutor, page: Int) {
 			val pageValue = JetData.savedPoints.content.points.page(page, 6)
 
 			if (pageValue.content.isNotEmpty()) {

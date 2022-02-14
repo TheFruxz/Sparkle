@@ -12,6 +12,7 @@ import de.jet.paper.extension.display.BOLD
 import de.jet.paper.extension.display.GREEN
 import de.jet.paper.extension.display.RED
 import de.jet.paper.extension.display.notification
+import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.system
 import de.jet.paper.structure.command.BranchedInterchange
@@ -26,7 +27,6 @@ import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.completion.isNotRequired
 import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.display.message.Transmission.Level.INFO
-import org.bukkit.command.CommandSender
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class ServiceInterchange : BranchedInterchange(
@@ -39,7 +39,7 @@ internal class ServiceInterchange : BranchedInterchange(
 
 			ignoreCase()
 
-			fun displayServices(executor: CommandSender, page: Int) {
+			fun displayServices(executor: InterchangeExecutor, page: Int) {
 				val pageValue = registeredServices.page(page, 6)
 
 				if (pageValue.content.isNotEmpty()) {

@@ -7,6 +7,7 @@ import de.jet.jvm.extension.math.ceilToInt
 import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.notification
+import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.o.allSandBoxes
 import de.jet.paper.extension.o.destroyAllSandBoxes
@@ -24,7 +25,6 @@ import de.jet.paper.structure.command.completion.component.CompletionComponent.C
 import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.completion.isNotRequired
 import de.jet.paper.tool.display.message.Transmission.Level.*
-import org.bukkit.command.CommandSender
 
 internal class SandBoxInterchange : BranchedInterchange("sandbox", buildInterchangeStructure {
 
@@ -81,7 +81,7 @@ internal class SandBoxInterchange : BranchedInterchange("sandbox", buildIntercha
 
 		ignoreCase()
 
-		fun displaySandBoxes(executor: CommandSender, page: Int) {
+		fun displaySandBoxes(executor: InterchangeExecutor, page: Int) {
 			val pageValue = allSandBoxes.page(page, 6)
 
 			if (pageValue.content.isNotEmpty()) {

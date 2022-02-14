@@ -5,13 +5,13 @@ import de.jet.jvm.extension.collection.replaceVariables
 import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.notification
+import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.structure.app.App
 import de.jet.paper.tool.display.message.Transmission.Level.ERROR
 import de.jet.paper.tool.display.message.Transmission.Level.INFO
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
-import org.bukkit.command.CommandSender
 import java.util.logging.Level
 
 data class SandBox(
@@ -26,7 +26,7 @@ data class SandBox(
 
     override val sectionLabel by lazy { identity }
 
-    fun execute(executor: CommandSender, parameters: List<String> = emptyList()) {
+    fun execute(executor: InterchangeExecutor, parameters: List<String> = emptyList()) {
 
         try {
             sectionLog.log(Level.INFO, "Executor '${executor.name}' is starting SandBox '$identity'!")

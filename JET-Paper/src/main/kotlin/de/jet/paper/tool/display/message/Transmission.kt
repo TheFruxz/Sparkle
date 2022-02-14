@@ -3,6 +3,7 @@ package de.jet.paper.tool.display.message
 import de.jet.jvm.tool.smart.positioning.Address
 import de.jet.jvm.tool.smart.positioning.Address.Companion.address
 import de.jet.paper.app.JetData
+import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.paper.adventureComponent
 import de.jet.paper.extension.paper.consoleSender
@@ -15,13 +16,12 @@ import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEventSource
 import net.kyori.adventure.title.Title
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Entity
 
 data class Transmission(
 	var prefix: Component = Component.text(JetData.systemPrefix.content),
 	var content: TextComponent.Builder = Component.text(),
-	var participants: MutableList<CommandSender> = mutableListOf(),
+	var participants: MutableList<InterchangeExecutor> = mutableListOf(),
 	var withoutPrefix: Boolean = false,
 	var displayType: DisplayType = DISPLAY_CHAT,
 	var promptSound: SoundMelody? = null,
@@ -37,9 +37,9 @@ data class Transmission(
 
 	infix fun content(content: TextComponent.Builder) = edit { this.content = content }
 
-	infix fun participants(participants: Collection<CommandSender>) = edit { this.participants = participants.toMutableList() }
+	infix fun participants(participants: Collection<InterchangeExecutor>) = edit { this.participants = participants.toMutableList() }
 
-	infix fun participants(participants: Array<CommandSender>) = participants(participants.toList())
+	infix fun participants(participants: Array<InterchangeExecutor>) = participants(participants.toList())
 
 	infix fun withoutPrefix(withoutPrefix: Boolean) = edit { this.withoutPrefix = withoutPrefix }
 
