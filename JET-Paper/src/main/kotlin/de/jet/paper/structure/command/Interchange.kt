@@ -5,6 +5,7 @@ import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.interchange.InterchangeExecutor
+import de.jet.paper.extension.interchange.Parameters
 import de.jet.paper.extension.lang
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.InterchangeAuthorizationType.JET
@@ -118,7 +119,7 @@ abstract class Interchange(
 
 	// logic
 
-	override fun onCommand(sender: InterchangeExecutor, command: Command, label: String, args: Array<out String>): Boolean {
+	override fun onCommand(sender: InterchangeExecutor, command: Command, label: String, args: Parameters): Boolean {
 		val parameters = args.toList()
 		val executionProcess = this::execution
 
