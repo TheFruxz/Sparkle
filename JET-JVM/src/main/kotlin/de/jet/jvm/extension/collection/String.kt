@@ -1,5 +1,7 @@
 package de.jet.jvm.extension.collection
 
+import java.util.*
+
 /**
  * Replaces all occurrences of the given [Map.keys] with the given [Map.values] in this string.
  * @param map the pairs of keys and values to replace
@@ -77,4 +79,13 @@ fun String.replaceVariables(pairs: Collection<Pair<Any?, Any?>>, ignoreCase: Boo
  * @since 1.0
  */
 fun emptyString() = ""
+
+/**
+ * This function uses the [UUID.fromString] function to generate the
+ * UUID from the given [String] and returns it.
+ * @return the UUID generated from the given [String]
+ * @author Fruxz
+ * @since 1.0
+ */
+fun String.toUUID() = UUID.fromString(this)
 
