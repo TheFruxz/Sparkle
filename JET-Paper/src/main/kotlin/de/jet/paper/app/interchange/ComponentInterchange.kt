@@ -42,6 +42,8 @@ class ComponentInterchange : Interchange(
 					lang["interchange.internal.component.list.description"].replaceVariables(
 						"1" to "⏻/⭘",
 						"2" to "⚡",
+						"3" to "⏹",
+						"4" to "\uD83E\uDDEA",
 					)
 				)
 				JetCache.registeredComponents.forEach { component ->
@@ -52,8 +54,10 @@ class ComponentInterchange : Interchange(
 								"[autoStart]" to if (component.isAutoStarting || JetData.autoStartComponents.content.contains(
 										component.identity
 									)
-								) "§a§o⚡" else "§c§o⚡",
-								"[status]" to if (component.isRunning) "§a⏻" else "§c⭘"
+								) "§a§o⚡" else "§7§o⚡",
+								"[status]" to if (component.isRunning) "§a⏻" else "§7⭘",
+								"[force]" to if (!component.canBeStopped) "§c⏹" else "§7⏹",
+								"[experimental]" to if (component.experimental) "§e\uD83E\uDDEA" else "§7\uD83E\uDDEA",
 							)
 					)
 				}

@@ -157,9 +157,7 @@ class JetApp : App() {
 
 		add(JETInterchange())
 		add(ComponentInterchange())
-
-		repeat(40) { buildSandBox(this, "filesystem-live") { JetData.worldStructure.content.visualize() } }
-
+		
 		buildSandBox(this, "importAllWorlds") {
 			worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld)
 		}

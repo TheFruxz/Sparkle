@@ -39,8 +39,8 @@
     "interchange.internal.component.autoStartAdded": "[GRAY]The component '[YELLOW][component][GRAY]' is [GREEN]now[GRAY] on the AutoStart list!",
     "interchange.internal.component.autoStartStatic": "[GRAY]The component '[YELLOW][component][GRAY]' is [RED]programmed[GRAY] to stay on the AutoStart list!",
     "interchange.internal.component.list.header": "[GRAY]List of all registered components:",
-    "interchange.internal.component.list.description": "[GRAY][1] = Power-On-State; [GRAY][2] = Auto-Start-State",
-    "interchange.internal.component.list.line": "[status] [autoStart] [DARK_GRAY]| [YELLOW][component]",
+    "interchange.internal.component.list.description": "[GRAY][1] Power; [2] Autostart; [3] Forced; [4] Experimental",
+    "interchange.internal.component.list.line": "[status] [autoStart] [force] [experimental] [DARK_GRAY]| [YELLOW][component]",
 
     "interchange.internal.service.serviceStarted": "[GRAY]The service '[YELLOW][id][GRAY]' was started [LIME]successfully[GRAY]!",
     "interchange.internal.service.serviceAlreadyOnline": "[GRAY]The service '[YELLOW][id][GRAY]' is [RED]already[GRAY] active!",
