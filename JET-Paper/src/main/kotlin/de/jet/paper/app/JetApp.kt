@@ -24,7 +24,6 @@ import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.Render
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderObject
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderWorld
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.WorldStructure
-import de.jet.paper.app.old_component.item.JetActionComponent
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.ui.buildContainer
 import de.jet.paper.extension.mainLog
