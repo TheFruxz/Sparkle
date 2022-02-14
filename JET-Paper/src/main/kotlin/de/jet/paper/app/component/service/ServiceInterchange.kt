@@ -25,8 +25,7 @@ import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.completion.isNotRequired
-import de.jet.paper.tool.display.message.Transmission.Level.FAIL
-import de.jet.paper.tool.display.message.Transmission.Level.INFO
+import de.jet.paper.tool.display.message.Transmission.Level.*
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class ServiceInterchange : BranchedInterchange(
@@ -136,7 +135,7 @@ internal class ServiceInterchange : BranchedInterchange(
 
 							lang("interchange.internal.service.serviceStarted")
 								.replace("[id]" to service.identity)
-								.notification(INFO, executor).display()
+								.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {
 							lang("interchange.internal.service.serviceAlreadyOnline")
@@ -163,7 +162,7 @@ internal class ServiceInterchange : BranchedInterchange(
 
 							lang("interchange.internal.service.serviceStopped")
 								.replace("[id]" to service.identity)
-								.notification(INFO, executor).display()
+								.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {
 							lang("interchange.internal.service.serviceAlreadyOffline")
@@ -188,7 +187,7 @@ internal class ServiceInterchange : BranchedInterchange(
 
 						lang("interchange.internal.service.serviceRestarted")
 							.replace("[id]" to service.identity)
-							.notification(INFO, executor).display()
+							.notification(APPLIED, executor).display()
 
 					}
 
@@ -209,7 +208,7 @@ internal class ServiceInterchange : BranchedInterchange(
 
 							lang("interchange.internal.service.serviceUnregistered")
 								.replace("[id]" to service.identity)
-								.notification(INFO, executor).display()
+								.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {
 							lang("interchange.internal.service.serviceNotFound")
@@ -236,7 +235,7 @@ internal class ServiceInterchange : BranchedInterchange(
 
 							lang("interchange.internal.service.serviceReset")
 								.replace("[id]" to service.identity)
-								.notification(INFO, executor).display()
+								.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {
 							lang("interchange.internal.service.serviceNotFound")

@@ -8,8 +8,7 @@ import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.structure.app.App
-import de.jet.paper.tool.display.message.Transmission.Level.ERROR
-import de.jet.paper.tool.display.message.Transmission.Level.INFO
+import de.jet.paper.tool.display.message.Transmission.Level.*
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
 import java.util.logging.Level
@@ -35,7 +34,7 @@ data class SandBox(
 
             lang("interchange.internal.sandbox.run")
                 .replaceVariables("sandbox" to identity)
-                .notification(INFO, executor).display()
+                .notification(APPLIED, executor).display()
 
             process(SandBoxInteraction(this, executor, parameters))
 
