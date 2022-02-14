@@ -28,222 +28,229 @@ import de.jet.paper.tool.annotation.RequiresComponent
 import de.jet.paper.tool.display.message.Transmission.Level.*
 import org.bukkit.OfflinePlayer
 
-internal class BuildModeInterchange : BranchedInterchange("buildmode", protectedAccess = true, structure = @OptIn(RequiresComponent::class) buildInterchangeStructure {
+internal class BuildModeInterchange : BranchedInterchange(
+	label = "buildmode",
+	protectedAccess = true,
+	structure = @OptIn(RequiresComponent::class) buildInterchangeStructure {
 
-	fun enableBuildMode(executor: InterchangeExecutor, target: OfflinePlayer) {
-		if (!target.buildMode) {
-			target.buildMode = true
-			lang("interchange.internal.buildmode.enable")
-				.replaceVariables("player" to target.name)
-				.notification(APPLIED, executor).display()
-		} else
-			lang("interchange.internal.buildmode.stay")
-				.notification(FAIL, executor).display()
-	}
-
-	fun disableBuildMode(executor: InterchangeExecutor, target: OfflinePlayer) {
-		if (target.buildMode) {
-			target.buildMode = false
-			lang("interchange.internal.buildmode.disable")
-				.replaceVariables("player" to target.name)
-				.notification(APPLIED, executor).display()
-		} else
-			lang("interchange.internal.buildmode.stay")
-				.notification(FAIL, executor).display()
-	}
-	
-	fun toggleBuildMode(executor: InterchangeExecutor, target: OfflinePlayer) {
-
-		when (target.buildMode) {
-			true -> disableBuildMode(executor, target)
-			false -> enableBuildMode(executor, target)
-		}
-
-	}
-
-	branch {
-		addContent(CompletionComponent.static("list"))
-
-		ignoreCase()
-
-		fun displayPlayers(executor: InterchangeExecutor, page: Int) {
-			val pageValue = JetCache.buildModePlayers.page(page, 6)
-
-			if (pageValue.content.isNotEmpty()) {
-				buildString {
-
-					appendLine(
-						lang("interchange.internal.buildmode.list.header").replaceVariables(
-							"p1" to pageValue.page + 1,
-							"p2" to pageValue.pages,
-						)
-					)
-
-					pageValue.content.withIndex().forEach {
-						val player = getOfflinePlayer(it.value.identity.toUUID())
-
-						lang("interchange.internal.buildmode.list.line").replaceVariables(
-								"player" to player.name,
-								"statusColor" to player.isOnline.switchResult("§a§l", "§7§l")
-						).let(::appendLine)
-
-					}
-
-				}.notification(INFO, executor).display()
+		fun enableBuildMode(executor: InterchangeExecutor, target: OfflinePlayer) {
+			if (!target.buildMode) {
+				target.buildMode = true
+				lang("interchange.internal.buildmode.enable")
+					.replaceVariables("player" to target.name)
+					.notification(APPLIED, executor).display()
 			} else
-				lang("interchange.internal.buildmode.list.empty")
+				lang("interchange.internal.buildmode.stay")
+					.replaceVariables("player" to target.name)
 					.notification(FAIL, executor).display()
 		}
 
-		smartExecution {
+		fun disableBuildMode(executor: InterchangeExecutor, target: OfflinePlayer) {
+			if (target.buildMode) {
+				target.buildMode = false
+				lang("interchange.internal.buildmode.disable")
+					.replaceVariables("player" to target.name)
+					.notification(APPLIED, executor).display()
+			} else
+				lang("interchange.internal.buildmode.stay")
+					.replaceVariables("player" to target.name)
+					.notification(FAIL, executor).display()
+		}
 
-			displayPlayers(executor, 0)
+		fun toggleBuildMode(executor: InterchangeExecutor, target: OfflinePlayer) {
 
-			SUCCESS
+			when (target.buildMode) {
+				true -> disableBuildMode(executor, target)
+				false -> enableBuildMode(executor, target)
+			}
+
 		}
 
 		branch {
-			addContent(
-				CompletionComponent.asset(
-					CompletionAsset(
-						vendor = system,
-						thisIdentity = "Page",
-						true,
-						listOf(InterchangeStructureInputRestriction.LONG),
-						generator = {
-							(1..ceilToInt(JetCache.buildModePlayers.size.toDouble() / 6)).mapToString()
-						},
+			addContent(CompletionComponent.static("list"))
+
+			ignoreCase()
+
+			fun displayPlayers(executor: InterchangeExecutor, page: Int) {
+				val pageValue = JetCache.buildModePlayers.page(page, 6)
+
+				if (pageValue.content.isNotEmpty()) {
+					buildString {
+
+						appendLine(
+							lang("interchange.internal.buildmode.list.header").replaceVariables(
+								"p1" to pageValue.page + 1,
+								"p2" to pageValue.pages,
+							)
+						)
+
+						pageValue.content.withIndex().forEach {
+							val player = getOfflinePlayer(it.value.identity.toUUID())
+
+							lang("interchange.internal.buildmode.list.line").replaceVariables(
+								"player" to player.name,
+								"statusColor" to player.isOnline.switchResult("§a§l", "§7§l")
+							).let(::appendLine)
+
+						}
+
+					}.notification(INFO, executor).display()
+				} else
+					lang("interchange.internal.buildmode.list.empty")
+						.notification(FAIL, executor).display()
+			}
+
+			smartExecution {
+
+				displayPlayers(executor, 0)
+
+				SUCCESS
+			}
+
+			branch {
+				addContent(
+					CompletionComponent.asset(
+						CompletionAsset(
+							vendor = system,
+							thisIdentity = "Page",
+							true,
+							listOf(InterchangeStructureInputRestriction.LONG),
+							generator = {
+								(1..ceilToInt(JetCache.buildModePlayers.size.toDouble() / 6)).mapToString()
+							},
+						)
 					)
 				)
-			)
 
-			isNotRequired()
+				isNotRequired()
 
-			execution {
-				val page = getInput(1, InterchangeStructureInputRestriction.LONG).toInt() - 1
+				execution {
+					val page = getInput(1, InterchangeStructureInputRestriction.LONG).toInt() - 1
 
-				if (page >= 0) {
-					displayPlayers(executor, page)
-				} else
-					return@execution WRONG_USAGE
+					if (page >= 0) {
+						displayPlayers(executor, page)
+					} else
+						return@execution WRONG_USAGE
 
-				return@execution SUCCESS
+					return@execution SUCCESS
+				}
+
 			}
 
 		}
-
-	}
-
-	branch {
-
-		addContent(CompletionComponent.static("enableAll"))
-
-		ignoreCase()
-
-		smartExecution {
-
-			onlinePlayers.forEach { enableBuildMode(executor, it) }
-
-		}
-
-	}
-
-	branch {
-
-		addContent(Companion.static("disableAll"))
-
-		ignoreCase()
-
-		smartExecution {
-
-			onlinePlayers.forEach { disableBuildMode(executor, it) }
-
-		}
-
-	}
-
-	branch {
-
-		addContent(Companion.static("toggleAll"))
-
-		ignoreCase()
-
-		smartExecution {
-
-			onlinePlayers.forEach { toggleBuildMode(executor, it) }
-
-		}
-
-	}
-
-	branch {
-
-		addContent(CompletionComponent.static("do"))
-
-		ignoreCase()
 
 		branch {
 
-			addContent(CompletionComponent.asset(CompletionAsset.OFFLINE_PLAYER_NAME))
+			addContent(CompletionComponent.static("enableAll"))
 
-			branch {
+			ignoreCase()
 
-				addContent(CompletionComponent.static("enable"))
+			smartExecution {
 
-				ignoreCase()
-
-				smartExecution {
-					val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
-
-					enableBuildMode(executor, target)
-
-				}
+				onlinePlayers.forEach { enableBuildMode(executor, it) }
 
 			}
 
-			branch {
+		}
 
-				addContent(Companion.static("disable"))
+		branch {
 
-				ignoreCase()
+			addContent(Companion.static("disableAll"))
 
-				smartExecution {
-					val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
+			ignoreCase()
 
-					disableBuildMode(executor, target)
+			smartExecution {
 
-				}
-
-			}
-
-			branch {
-
-				addContent(Companion.static("toggle"))
-
-				ignoreCase()
-
-				smartExecution {
-					val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
-
-					toggleBuildMode(executor, target)
-
-				}
+				onlinePlayers.forEach { disableBuildMode(executor, it) }
 
 			}
 
+		}
+
+		branch {
+
+			addContent(Companion.static("toggleAll"))
+
+			ignoreCase()
+
+			smartExecution {
+
+				onlinePlayers.forEach { toggleBuildMode(executor, it) }
+
+			}
+
+		}
+
+		branch {
+
+			addContent(CompletionComponent.static("do"))
+
+			ignoreCase()
+
 			branch {
 
-				addContent(Companion.static("info"))
+				addContent(CompletionComponent.asset(CompletionAsset.OFFLINE_PLAYER_NAME))
 
-				ignoreCase()
+				branch {
 
-				smartExecution {
-					val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
+					addContent(CompletionComponent.static("enable"))
 
-					lang("interchange.internal.buildmode.info").replaceVariables(
-						"state" to target.buildMode.switchResult("§a§lenabled", "§c§ldisabled"),
-						"player" to target.name
-					).notification(INFO, executor).display()
+					ignoreCase()
+
+					smartExecution {
+						val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
+
+						enableBuildMode(executor, target)
+
+					}
+
+				}
+
+				branch {
+
+					addContent(Companion.static("disable"))
+
+					ignoreCase()
+
+					smartExecution {
+						val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
+
+						disableBuildMode(executor, target)
+
+					}
+
+				}
+
+				branch {
+
+					addContent(Companion.static("toggle"))
+
+					ignoreCase()
+
+					smartExecution {
+						val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
+
+						toggleBuildMode(executor, target)
+
+					}
+
+				}
+
+				branch {
+
+					addContent(Companion.static("info"))
+
+					ignoreCase()
+
+					smartExecution {
+						val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
+
+						lang("interchange.internal.buildmode.info").replaceVariables(
+							"state" to target.buildMode.switchResult("§a§lenabled", "§c§ldisabled"),
+							"player" to target.name
+						).notification(INFO, executor).display()
+
+					}
 
 				}
 
@@ -252,5 +259,4 @@ internal class BuildModeInterchange : BranchedInterchange("buildmode", protected
 		}
 
 	}
-
-})
+)

@@ -69,9 +69,9 @@
     "interchange.internal.buildmode.info": "[GRAY]The player '[YELLOW][player][GRAY]'s BuildMode is currently: [GOLD][state][GRAY]!",
     "interchange.internal.buildmode.enable": "[GRAY]The player '[YELLOW][player][GRAY]'s BuildMode is now [GREEN]enabled[GRAY]!",
     "interchange.internal.buildmode.disable": "[GRAY]The player '[YELLOW][player][GRAY]'s BuildMode is now [RED]disabled[GRAY]!",
-    "interchange.internal.buildmode.stay": "[GRAY]There were [RED]no[GRAY] changes made, because it was [YELLOW]already set[GRAY] that way!",
-    "interchange.internal.buildmode.list.empty": "[GRAY]There are currently [RED]no[GRAY] players with the active BuildMode status!",
-    "interchange.internal.buildmode.list.header": "[GRAY]These players are currently in BuildMode (Page [p1] of [p2]):",
+    "interchange.internal.buildmode.stay": "[GRAY]The player '[YELLOW][player][GRAY]' had [RED]already[GRAY] that BuildMode state!",
+    "interchange.internal.buildmode.list.empty": "[GRAY]There are currently [RED]no[GRAY] players with active BuildMode status!",
+    "interchange.internal.buildmode.list.header": "[GRAY]These players have BuildMode enabled (Page [p1] of [p2]):",
     "interchange.internal.buildmode.list.line": "[GRAY]- [statusColor][player]",
 
     "interchange.internal.changeskin.reset": "[LIME]Successfully [GRAY]reset skin of '[YELLOW][player][GRAY]' back to original skin!",
