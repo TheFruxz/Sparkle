@@ -5,4 +5,5 @@ package de.jet.paper.tool.display.ide
  * used at API-Side. This acts as an 'suppress unused', if
  * you set up this annotation as suppressing unused
  */
+@MustBeDocumented
 annotation class API

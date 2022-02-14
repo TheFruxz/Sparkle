@@ -6,4 +6,5 @@ package de.jet.jvm.annotation
  * @author Fruxz
  * @since 1.0
  */
+@MustBeDocumented
 annotation class NotPerfect
