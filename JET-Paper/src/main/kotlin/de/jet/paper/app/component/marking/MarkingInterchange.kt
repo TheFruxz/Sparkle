@@ -1,8 +1,8 @@
-package de.jet.paper.app.old_component.feature
+package de.jet.paper.app.component.marking
 
 import de.jet.jvm.extension.collection.replaceVariables
 import de.jet.jvm.extension.math.shorter
-import de.jet.paper.app.JetCache.playerMarkerBoxes
+import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.BOLD
 import de.jet.paper.extension.display.YELLOW
 import de.jet.paper.extension.display.notification
@@ -11,16 +11,11 @@ import de.jet.paper.extension.get
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.paper.identityObject
 import de.jet.paper.extension.paper.templateLocation
-import de.jet.paper.extension.system
-import de.jet.paper.structure.app.App
-import de.jet.paper.structure.command.Interchange
-import de.jet.paper.structure.command.InterchangeResult
-import de.jet.paper.structure.command.InterchangeResult.SUCCESS
-import de.jet.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
-import de.jet.paper.structure.command.live.InterchangeAccess
-import de.jet.paper.structure.component.Component.RunType.AUTOSTART_MUTABLE
-import de.jet.paper.structure.component.SmartComponent
-import de.jet.paper.tool.display.item.Item
+import de.jet.paper.structure.command.BranchedInterchange
+import de.jet.paper.structure.command.completion.buildInterchangeStructure
+import de.jet.paper.structure.command.completion.component.CompletionComponent
+import de.jet.paper.structure.command.completion.ignoreCase
+import de.jet.paper.tool.annotation.RequiresComponent
 import de.jet.paper.tool.display.message.Transmission.Level.*
 import de.jet.paper.tool.position.LocationBox
 import net.kyori.adventure.text.Component
@@ -29,16 +24,10 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
-class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUTOSTART_MUTABLE) {
-
-	override val thisIdentity = "feature/PlayerMarkings"
-
-	override fun component() {
-		interchange(MarkingToolInterchange())
-	}
-
-	private class MarkingToolInterchange :
-		Interchange("markingtool", userRestriction = ONLY_PLAYERS, protectedAccess = true) {
+internal class MarkingInterchange : BranchedInterchange(
+	label = "markings",
+	protectedAccess = true,
+	structure = @OptIn(RequiresComponent::class) buildInterchangeStructure {
 
 		fun positionData(location: Location) = buildString {
 			append('(')
@@ -47,7 +36,7 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 		}
 
 		val markingTool = Material.GOLDEN_HOE.item.apply {
-			label = "${YELLOW}${BOLD}Marking-Tool"
+			label = "$YELLOW${BOLD}Marking-Tool"
 			identity = "jet:marking_tool"
 			lore = """
 				 
@@ -58,7 +47,7 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 			""".trimIndent()
 			putInteractAction {
 				val targetBlock = whoInteract.rayTraceBlocks(10.0, ALWAYS)?.hitBlock
-				val actualBox = playerMarkerBoxes[player.identityObject]
+				val actualBox = JetCache.playerMarkerBoxes[player.identityObject]
 				val currentBox = actualBox ?: LocationBox(targetBlock?.location ?: templateLocation)
 
 				if (!whoInteract.isSneaking) {
@@ -71,7 +60,7 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 
 								if (actualBox?.first != targetLocation) {
 
-									playerMarkerBoxes[player.identityObject] = currentBox.apply {
+									JetCache.playerMarkerBoxes[player.identityObject] = currentBox.apply {
 										first = targetLocation
 									}
 									lang["component.markingTool.action.set"].replaceVariables(
@@ -103,7 +92,7 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 
 								if (actualBox?.last != targetLocation) {
 
-									playerMarkerBoxes[player.identityObject] = currentBox.apply {
+									JetCache.playerMarkerBoxes[player.identityObject] = currentBox.apply {
 										last = targetLocation
 									}
 									lang["component.markingTool.action.set"].replaceVariables(
@@ -138,7 +127,7 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 
 				} else {
 
-					if (playerMarkerBoxes[player.identityObject] != null) {
+					if (JetCache.playerMarkerBoxes[player.identityObject] != null) {
 						lang["component.markingTool.action.view.detail"].replaceVariables(
 							"1" to positionData(currentBox.first),
 							"2" to positionData(currentBox.last),
@@ -167,19 +156,22 @@ class MarkingFeatureComponent(vendor: App = system) : SmartComponent(vendor, AUT
 			}
 		}
 
-		override val execution: InterchangeAccess.() -> InterchangeResult = {
+		branch {
 
-			(executor as Player).inventory.addItem(markingTool.produce())
+			addContent(CompletionComponent.static("giveItem"))
 
-			lang["component.markingTool.interchange.success"]
-				.notification(APPLIED, executor).display()
+			ignoreCase()
 
-			SUCCESS
+			concludedExecution {
+
+				(executor as Player).inventory.addItem(markingTool.produce())
+
+				lang["component.markingTool.interchange.success"]
+					.notification(APPLIED, executor).display()
+
+			}
+
 		}
 
-		val Item.isMarkingTool: Boolean
-			get() = identity == "jet:marking_tool"
-
 	}
-
-}
+)
