@@ -10,7 +10,7 @@ internal class ExperimentalComponent : SmartComponent(system, DISABLED) {
 
 	override fun component() {
 
-		interchange(ExperimentalChangeSkinInterchange())
+		interchange(ChangeSkinInterchange())
 
 	}
 

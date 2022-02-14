@@ -17,7 +17,7 @@ import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.completion.mustNotMatchOutput
 import de.jet.paper.tool.display.message.Transmission.Level.*
 
-internal class ExperimentalChangeSkinInterchange : BranchedInterchange("changeskin", protectedAccess = true, userRestriction = ONLY_PLAYERS, structure = buildInterchangeStructure {
+internal class ChangeSkinInterchange : BranchedInterchange("changeskin", protectedAccess = true, userRestriction = ONLY_PLAYERS, structure = buildInterchangeStructure {
 
 	branch {
 
