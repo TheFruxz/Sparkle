@@ -8,6 +8,7 @@ import de.jet.paper.app.component.buildmode.BuildModeComponent
 import de.jet.paper.app.component.chat.ChatComponent
 import de.jet.paper.app.component.events.EventsComponent
 import de.jet.paper.app.component.experimental.ExperimentalComponent
+import de.jet.paper.app.component.itemlink.ItemLinkComponent
 import de.jet.paper.app.component.keeper.KeeperComponent
 import de.jet.paper.app.component.marking.MarkingComponent
 import de.jet.paper.app.component.point.PointComponent
@@ -153,9 +154,7 @@ class JetApp : App() {
 		add(PointComponent())
 		add(BuildModeComponent())
 		add(MarkingComponent())
-
-		// OLD COMPONENTS
-		add(JetActionComponent())
+		add(ItemLinkComponent())
 
 		add(JETInterchange())
 		add(ComponentInterchange())
