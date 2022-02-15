@@ -8,7 +8,7 @@ import de.jet.jvm.extension.tryOrNull
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetData
-import de.jet.paper.app.old_component.essentials.point.Point
+import de.jet.paper.app.component.point.Point
 import de.jet.paper.extension.paper.getOfflinePlayer
 import de.jet.paper.extension.paper.getPlayer
 import de.jet.paper.extension.paper.offlinePlayers
