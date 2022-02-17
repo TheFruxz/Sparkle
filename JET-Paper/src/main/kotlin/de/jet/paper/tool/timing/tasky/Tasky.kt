@@ -10,7 +10,6 @@ import de.jet.paper.app.JetCache
 import de.jet.paper.extension.paper.scheduler
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.service.Service
-import de.jet.paper.tool.display.ide.API
 import de.jet.paper.tool.smart.Logging
 import org.bukkit.scheduler.BukkitRunnable
 
@@ -151,7 +150,7 @@ interface Tasky : Logging {
 }
 
 class Task internal constructor(
-	@API val temporalAdvice: TemporalAdvice,
-	@API val killAtError: Boolean = true,
+	val temporalAdvice: TemporalAdvice,
+	val killAtError: Boolean = true,
 	val process: Tasky.() -> Unit,
 )
