@@ -83,9 +83,11 @@ fun emptyString() = ""
 /**
  * This function uses the [UUID.fromString] function to generate the
  * UUID from the given [String] and returns it.
+ * @throws IllegalArgumentException if the given [String] is not a valid UUID
  * @return the UUID generated from the given [String]
  * @author Fruxz
  * @since 1.0
  */
-fun String.toUUID() = UUID.fromString(this)
+@Throws(IllegalArgumentException::class)
+fun String.toUUID() = UUID.fromString(this)!!
 

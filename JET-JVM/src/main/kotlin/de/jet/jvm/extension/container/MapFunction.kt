@@ -99,7 +99,7 @@ fun <T, O> Iterable<T>.mapCast() =
 
 /**
  * This function returns a list of lowercase strings
- * of the original [Iterable]<[T]>
+ * of the original [Iterable]<[String]>
  * @author Fruxz
  * @since 1.0
  */
@@ -108,7 +108,7 @@ fun Iterable<String>.mapToLowercase(locale: Locale = Locale.ROOT) =
 
 /**
  * This function returns a list of uppercase strings
- * of the original [Iterable]<[T]>
+ * of the original [Iterable]<[String]>
  * @author Fruxz
  * @since 1.0
  */

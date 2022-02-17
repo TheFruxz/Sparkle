@@ -8,9 +8,9 @@ import de.jet.jvm.interchange.ConsoleInterchangeConfiguration
 import de.jet.jvm.tool.smart.positioning.Address
 
 /**
- * Constructs a new [ConsoleInterchange] using its [ConsoleInterchange.Builder].
+ * Constructs a new [ConsoleInterchangeBranch].
  * @param name of the future interchange
- * @param process the modification of the [ConsoleInterchange.Builder] state
+ * @param process the modification of the [ConsoleInterchangeBranch] state
  * @author Fruxz
  * @since 1.0
  */

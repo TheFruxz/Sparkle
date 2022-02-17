@@ -10,14 +10,14 @@ import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetData
 import de.jet.paper.extension.display.ui.buildPanel
 import de.jet.paper.extension.display.ui.item
-import de.jet.paper.extension.paper.getOfflinePlayer
 import de.jet.paper.extension.external.texturedSkull
+import de.jet.paper.extension.paper.getOfflinePlayer
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.item.quirk.Quirk.Companion.skullQuirk
 import de.jet.paper.tool.display.ui.panel.Panel
 import de.jet.paper.tool.input.Keyboard.Extension
 import de.jet.paper.tool.input.Keyboard.Type
-import de.jet.paper.tool.input.Keyboard.Type.ANY
+import de.jet.paper.tool.input.Keyboard.Type.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Material
@@ -45,11 +45,11 @@ fun <T : HumanEntity> T.requestKeyboardInput(keyboardType: Type = ANY, message: 
 object Keyboard {
 
 	/**
-	 * @param ANY everything
-	 * @param STRING text-based (no colors, etc.)
-	 * @param INT integers & longs
-	 * @param DOUBLE doubles & floats
-	 * @param MESSAGE text-based (with colors, etc.)
+	 * @property ANY everything
+	 * @property STRING text-based (no colors, etc.)
+	 * @property INT integers & longs
+	 * @property DOUBLE doubles & floats
+	 * @property MESSAGE text-based (with colors, etc.)
 	 */
 	enum class Type {
 		ANY, STRING, INT, DOUBLE, MESSAGE;
