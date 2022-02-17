@@ -19,6 +19,7 @@ import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.permission.Approval
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
+import kotlinx.coroutines.launch
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.Command
@@ -40,9 +41,7 @@ abstract class Interchange(
 ) : CommandExecutor, VendorsIdentifiable<Interchange>, Logging {
 
 	init {
-
 		completion.identity = label
-
 	}
 
 	final override lateinit var vendor: App
@@ -61,7 +60,7 @@ abstract class Interchange(
 
 	// parameters
 
-	abstract val execution: InterchangeAccess.() -> InterchangeResult
+	abstract val execution: suspend InterchangeAccess.() -> InterchangeResult
 
 	// runtime-functions
 
@@ -120,62 +119,67 @@ abstract class Interchange(
 	// logic
 
 	override fun onCommand(sender: InterchangeExecutor, command: Command, label: String, args: Parameters): Boolean {
-		val parameters = args.toList()
-		val executionProcess = this::execution
 
-		if (canExecuteBasePlate(sender)) {
+		vendor.coroutineScope.launch {
 
-			if (
-				(userRestriction == NOT_RESTRICTED)
-				|| (sender is Player && userRestriction == ONLY_PLAYERS)
-				|| (sender is ConsoleCommandSender && userRestriction == ONLY_CONSOLE)
-			) {
+			val parameters = args.toList()
+			val executionProcess = this@Interchange::execution
 
-				if (ignoreInputValidation || completion.validateInput(parameters)) {
-					val clientType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE
+			if (canExecuteBasePlate(sender)) {
 
-					fun exception(exception: Exception) {
-						sectionLog.log(WARNING, "Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!")
-						issueFeedback(sender)
-						catchException(exception)
-					}
+				if (
+					(userRestriction == NOT_RESTRICTED)
+					|| (sender is Player && userRestriction == ONLY_PLAYERS)
+					|| (sender is ConsoleCommandSender && userRestriction == ONLY_CONSOLE)
+				) {
 
-					try {
+					if (ignoreInputValidation || completion.validateInput(parameters)) {
+						val clientType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE
 
-						when (executionProcess()(InterchangeAccess(vendor, clientType, sender, this, label, parameters, emptyList()))) {
-
-							NOT_PERMITTED -> wrongApprovalFeedback(sender)
-							WRONG_CLIENT -> wrongClientFeedback(sender)
-							WRONG_USAGE -> wrongUsageFeedback(sender)
-							InterchangeResult.FAIL -> issueFeedback(sender)
-							SUCCESS -> debugLog(
-								"Executor ${sender.name} as ${clientType.name} successfully executed $label-interchange!"
-							)
-
+						fun exception(exception: Exception) {
+							sectionLog.log(WARNING, "Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!")
+							issueFeedback(sender)
+							catchException(exception)
 						}
 
-					} catch (e: Exception) {
-						issueFeedback(sender)
-						exception(e)
-					} catch (e: java.lang.Exception) {
-						issueFeedback(sender)
-						exception(e)
-					} catch (e: NullPointerException) {
-						issueFeedback(sender)
-						exception(e)
-					} catch (e: NoSuchElementException) {
-						issueFeedback(sender)
-						exception(e)
-					}
+						try {
+
+							when (executionProcess()(InterchangeAccess(vendor, clientType, sender, this@Interchange, label, parameters, emptyList()))) {
+
+								NOT_PERMITTED -> wrongApprovalFeedback(sender)
+								WRONG_CLIENT -> wrongClientFeedback(sender)
+								WRONG_USAGE -> wrongUsageFeedback(sender)
+								InterchangeResult.FAIL -> issueFeedback(sender)
+								SUCCESS -> debugLog(
+									"Executor ${sender.name} as ${clientType.name} successfully executed $label-interchange!"
+								)
+
+							}
+
+						} catch (e: Exception) {
+							issueFeedback(sender)
+							exception(e)
+						} catch (e: java.lang.Exception) {
+							issueFeedback(sender)
+							exception(e)
+						} catch (e: NullPointerException) {
+							issueFeedback(sender)
+							exception(e)
+						} catch (e: NoSuchElementException) {
+							issueFeedback(sender)
+							exception(e)
+						}
+
+					} else
+						wrongUsageFeedback(sender)
 
 				} else
-					wrongUsageFeedback(sender)
+					wrongClientFeedback(sender)
 
 			} else
-				wrongClientFeedback(sender)
+				wrongApprovalFeedback(sender)
 
-		} else
-			wrongApprovalFeedback(sender)
+		}
 
 		return true
 	}
@@ -208,4 +212,4 @@ enum class InterchangeAuthorizationType {
 }
 
 @Suppress("unused") // todo use Interchange as context, when the kotlin context API is ready
-fun Interchange.execution(execution: InterchangeAccess.() -> InterchangeResult) = execution
+fun Interchange.execution(execution: suspend InterchangeAccess.() -> InterchangeResult) = execution

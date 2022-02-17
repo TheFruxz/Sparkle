@@ -27,7 +27,7 @@ abstract class BranchedInterchange(
 	ignoreInputValidation
 ) {
 
-	final override val execution: InterchangeAccess.() -> InterchangeResult = {
+	final override val execution: suspend InterchangeAccess.() -> InterchangeResult = {
 		val trace = structure.trace(parameters)
 
 		when (trace.waysMatching.size.maxTo(2)) {

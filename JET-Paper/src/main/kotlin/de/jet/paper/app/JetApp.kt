@@ -63,7 +63,7 @@ class JetApp : App() {
 	override val appLabel = "JET"
 	override val appCache = JetCache
 
-	override fun preHello() {
+	override suspend fun preHello() {
 
 		addJetJsonModuleModification {
 			polymorphic(Any::class) {
@@ -107,7 +107,7 @@ class JetApp : App() {
 
 	}
 
-	override fun hello() {
+	override suspend fun hello() {
 
 		mainLog(
 			Level.INFO, """
@@ -177,7 +177,7 @@ class JetApp : App() {
 
 	}
 
-	override fun bye() {
+	override suspend fun bye() {
 
 		JetCache.registeredComponents.forEach {
 			tryToResult { it.stop() }

@@ -22,6 +22,7 @@ import de.jet.paper.structure.app.interchange.IssuedInterchange
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.component.Component
 import de.jet.paper.structure.service.Service
+import kotlinx.coroutines.*
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.ConfigurationSerialization
@@ -32,6 +33,7 @@ import java.io.InputStreamReader
 import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.reflect.KClass
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * # `App (abstract)`
@@ -438,6 +440,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	var appRegistrationFile = YamlConfiguration()
 
+	var coroutineScope = CoroutineScope(Dispatchers.Default)
+
 	val log by lazy { createLog(appIdentity) }
 
 	internal fun getResourceFile(path: String) =
@@ -457,7 +461,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	abstract fun preHello()
+	open suspend fun preHello() { }
 
 	/**
 	 * This function is called, when the plugin gets enabled.
@@ -467,7 +471,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	abstract fun hello()
+	abstract suspend fun hello()
 
 	/**
 	 * This function is called, when the plugin gets disabled.
@@ -477,18 +481,37 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	abstract fun bye()
+	open suspend fun bye() { }
+
+	private suspend fun awaitState(waitFor: RunStatus, out: RunStatus, process: suspend () -> Unit) {
+
+		while (runStatus != out) {
+
+			if (runStatus != waitFor) {
+				delay(.1.seconds)
+				continue
+			}
+
+			process()
+
+		}
+
+	}
 
 	final override fun onLoad() {
 		tryToCatch {
 			JetCache.registeredApplications.add(this)
 
-			runStatus = PRE_LOAD
-			classLoader.getResourceAsStream("plugin.yml")?.let { resource ->
-				appRegistrationFile.load(InputStreamReader(resource))
+			coroutineScope.launch {
+
+				runStatus = PRE_LOAD
+				classLoader.getResourceAsStream("plugin.yml")?.let { resource ->
+					appRegistrationFile.load(InputStreamReader(resource))
+				}
+				preHello()
+				runStatus = LOAD
+
 			}
-			preHello()
-			runStatus = LOAD
 
 		}
 	}
@@ -496,9 +519,15 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	final override fun onEnable() {
 		tryToCatch {
 
-			runStatus = PRE_ENABLE
-			hello()
-			runStatus = ENABLE
+			coroutineScope.launch {
+
+				awaitState(LOAD, ENABLE) {
+					runStatus = PRE_ENABLE
+					hello()
+					runStatus = ENABLE
+				}
+
+			}
 
 		}
 	}
@@ -506,9 +535,17 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	final override fun onDisable() {
 		tryToCatch {
 
-			runStatus = SHUTDOWN
-			bye()
-			runStatus = OFFLINE
+			coroutineScope.launch {
+
+				awaitState(ENABLE, OFFLINE) {
+
+					runStatus = SHUTDOWN
+					bye()
+					runStatus = OFFLINE
+
+				}
+
+			}
 
 		}
 	}
