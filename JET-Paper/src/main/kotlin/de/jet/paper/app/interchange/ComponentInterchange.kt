@@ -1,10 +1,9 @@
 package de.jet.paper.app.interchange
 
-import de.jet.jvm.extension.collection.replace
-import de.jet.jvm.extension.collection.replaceVariables
+import de.jet.jvm.extension.container.replace
+import de.jet.jvm.extension.container.replaceVariables
 import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetData
-import de.jet.paper.extension.display.message
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.get
 import de.jet.paper.extension.lang
@@ -16,8 +15,7 @@ import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.live.InterchangeAccess
-import de.jet.paper.tool.display.message.Transmission.Level.FAIL
-import de.jet.paper.tool.display.message.Transmission.Level.INFO
+import de.jet.paper.tool.display.message.Transmission.Level.*
 
 class ComponentInterchange : Interchange(
 	label = "component",
@@ -42,6 +40,8 @@ class ComponentInterchange : Interchange(
 					lang["interchange.internal.component.list.description"].replaceVariables(
 						"1" to "⏻/⭘",
 						"2" to "⚡",
+						"3" to "⏹",
+						"4" to "\uD83E\uDDEA",
 					)
 				)
 				JetCache.registeredComponents.forEach { component ->
@@ -52,13 +52,15 @@ class ComponentInterchange : Interchange(
 								"[autoStart]" to if (component.isAutoStarting || JetData.autoStartComponents.content.contains(
 										component.identity
 									)
-								) "§a§o⚡" else "§c§o⚡",
-								"[status]" to if (component.isRunning) "§a⏻" else "§c⭘"
+								) "§a§o⚡" else "§7§o⚡",
+								"[status]" to if (component.isRunning) "§a⏻" else "§7⭘",
+								"[force]" to if (!component.canBeStopped) "§c⏹" else "§7⏹",
+								"[experimental]" to if (component.experimental) "§e\uD83E\uDDEA" else "§7\uD83E\uDDEA",
 							)
 					)
 				}
 			}.forEach {
-				it.message(executor).display()
+				it.notification(INFO, executor).display()
 			}
 
 			SUCCESS
@@ -79,7 +81,7 @@ class ComponentInterchange : Interchange(
 
 							lang("interchange.internal.component.nowRunning")
 								.replace("[component]", component.identity)
-								.notification(INFO, executor).display()
+								.notification(APPLIED, executor).display()
 
 						} else
 							lang("interchange.internal.component.alreadyRunning")
@@ -96,7 +98,7 @@ class ComponentInterchange : Interchange(
 
 							lang("interchange.internal.component.nowStopped")
 								.replace("[component]", component.identity)
-								.notification(INFO, executor).display()
+								.notification(APPLIED, executor).display()
 
 						} else
 							lang("interchange.internal.component.missingRunning")
@@ -122,7 +124,7 @@ class ComponentInterchange : Interchange(
 									}
 								)
 									.replace("[component]", component.identity)
-									.notification(FAIL, executor).display()
+									.notification(APPLIED, executor).display()
 
 								preference.content = currentState
 							}

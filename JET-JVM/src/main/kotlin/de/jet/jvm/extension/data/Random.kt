@@ -1,7 +1,7 @@
 package de.jet.jvm.extension.data
 
-import de.jet.jvm.extension.collection.mapToString
-import de.jet.jvm.extension.collection.stackRandom
+import de.jet.jvm.extension.container.mapToString
+import de.jet.jvm.extension.container.stackRandom
 import de.jet.jvm.extension.data.RandomTagType.MIXED_CASE
 import de.jet.jvm.extension.data.RandomTagType.ONLY_UPPERCASE
 import de.jet.jvm.extension.switchResult

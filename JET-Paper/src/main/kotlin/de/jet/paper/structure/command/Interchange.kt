@@ -4,6 +4,8 @@ import de.jet.jvm.extension.catchException
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
+import de.jet.paper.extension.interchange.InterchangeExecutor
+import de.jet.paper.extension.interchange.Parameters
 import de.jet.paper.extension.lang
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.InterchangeAuthorizationType.JET
@@ -21,7 +23,6 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
-import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
@@ -64,7 +65,7 @@ abstract class Interchange(
 
 	// runtime-functions
 
-	fun interchangeException(exception: Exception, executor: CommandSender, executorType: InterchangeUserRestriction) {
+	fun interchangeException(exception: Exception, executor: InterchangeExecutor, executorType: InterchangeUserRestriction) {
 		sectionLog.log(
 			WARNING,
 			"Executor ${executor.name} as ${executorType.name} caused an error at execution at ${with(exception.stackTrace[0]) { "$className:$methodName" }}!"
@@ -76,7 +77,7 @@ abstract class Interchange(
 	 * with its approvals. (**Not looking for the parameters and
 	 * its own possible approvals!**)
 	 */
-	fun canExecuteBasePlate(executor: CommandSender) = setOf(
+	fun canExecuteBasePlate(executor: InterchangeExecutor) = setOf(
 		accessProtectionType != JET,
 		requiredApproval == null,
 		requiredApproval?.let { approval -> executor.hasPermission(approval.identity) } ?: true,
@@ -85,7 +86,7 @@ abstract class Interchange(
 	).any()
 
 	private fun wrongApprovalFeedback(
-		receiver: CommandSender,
+		receiver: InterchangeExecutor,
 	) {
 		lang("interchange.run.issue.wrongApproval")
 			.replace("[approval]", "$requiredApproval")
@@ -93,7 +94,7 @@ abstract class Interchange(
 	}
 
 	private fun wrongUsageFeedback(
-		receiver: CommandSender,
+		receiver: InterchangeExecutor,
 	) {
 		lang("interchange.run.issue.wrongUsage")
 			.notification(FAIL, receiver).display()
@@ -101,7 +102,7 @@ abstract class Interchange(
 	}
 
 	private fun wrongClientFeedback(
-		receiver: CommandSender,
+		receiver: InterchangeExecutor,
 	) {
 		lang("interchange.run.issue.wrongClient")
 			.replace("[client]", userRestriction.name)
@@ -109,7 +110,7 @@ abstract class Interchange(
 	}
 
 	private fun issueFeedback(
-		receiver: CommandSender
+		receiver: InterchangeExecutor
 	) {
 		lang("interchange.run.issue.issue")
 			.replace("[interchange]", "Interchange/$label")
@@ -118,7 +119,7 @@ abstract class Interchange(
 
 	// logic
 
-	override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+	override fun onCommand(sender: InterchangeExecutor, command: Command, label: String, args: Parameters): Boolean {
 		val parameters = args.toList()
 		val executionProcess = this::execution
 
@@ -206,4 +207,5 @@ enum class InterchangeAuthorizationType {
 
 }
 
+@Suppress("unused") // todo use Interchange as context, when the kotlin context API is ready
 fun Interchange.execution(execution: InterchangeAccess.() -> InterchangeResult) = execution

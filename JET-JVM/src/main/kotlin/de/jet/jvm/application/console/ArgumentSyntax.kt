@@ -186,7 +186,6 @@ class ArgumentSyntax(
             syntaxVariables.any { it.variableName == entry.key }
         }
 
-    // TODO: 15.11.2021 Additional issue feedback (what was wrong) is coming in future release
     @Suppress("unused")
     fun runWithSyntaxOrNotify(input: Array<String>, code: ActivatedConsoleSyntax.() -> Unit) {
         val checkInput = checkInputContentWithFeedback(input)

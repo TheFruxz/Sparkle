@@ -4,7 +4,7 @@ package de.jet.paper.structure.app
 
 import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.jet.jvm.extension.catchException
-import de.jet.jvm.extension.collection.mutableReplaceWith
+import de.jet.jvm.extension.container.mutableReplaceWith
 import de.jet.jvm.extension.tryToCatch
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity

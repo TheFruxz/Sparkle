@@ -27,7 +27,7 @@ fun <T : Any> T?.trustOrThrow(throwable: Throwable): T = tryOrNull { this!! } ?:
  *
  * If [this] is indeed null, this function throws a detailed direct
  * [NoSuchElementException].
- * If everything is fine and it can be forced to a [NotNull], than
+ * If everything is fine, and it can be forced to a [NotNull], than
  *
  * Internally, the [trustOrThrow] function is called, with the
  * [NoSuchElementException] as the parameter, so internally

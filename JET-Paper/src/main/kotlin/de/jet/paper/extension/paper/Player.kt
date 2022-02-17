@@ -2,6 +2,8 @@ package de.jet.paper.extension.paper
 
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
+import de.jet.paper.app.component.buildMode.BuildModeComponent
+import de.jet.paper.tool.annotation.RequiresComponent
 import de.jet.paper.tool.permission.Approval
 import de.jet.paper.tool.position.LocationBox
 import org.bukkit.OfflinePlayer
@@ -30,6 +32,7 @@ val Player.identityObject: Identity<Player>
 val OfflinePlayer.identityObject: Identity<OfflinePlayer>
 	get() = Identity("$uniqueId")
 
+@RequiresComponent(BuildModeComponent::class)
 var OfflinePlayer.buildMode: Boolean
 	get() = JetCache.buildModePlayers.contains(identityObject)
 	set(value) {

@@ -1,6 +1,6 @@
 package de.jet.paper.app.interchange
 
-import de.jet.jvm.extension.collection.replace
+import de.jet.jvm.extension.container.replace
 import de.jet.paper.extension.display.BOLD
 import de.jet.paper.extension.display.GOLD
 import de.jet.paper.extension.display.GRAY

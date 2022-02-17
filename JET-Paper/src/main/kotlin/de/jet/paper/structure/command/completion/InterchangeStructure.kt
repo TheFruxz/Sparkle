@@ -6,6 +6,7 @@ import de.jet.jvm.tree.TreeBranch
 import de.jet.jvm.tree.TreeBranchType
 import de.jet.paper.extension.debugLog
 import de.jet.paper.structure.command.InterchangeResult
+import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.completion.InterchangeStructure.BranchStatus.*
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.tracing.CompletionTraceResult
@@ -90,10 +91,28 @@ class InterchangeStructure(
 		onExecution = process
 	}
 
+	/**
+	 * This function represents the [execution] function, but returns
+	 * [result] internally as the [InterchangeResult] instead of the
+	 * returned [InterchangeResult] from the [process].
+	 * @param process the code, that the interchange executor triggers
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	@JvmName("executionWithoutReturn")
+	fun concludedExecution(result: InterchangeResult = SUCCESS, process: InterchangeAccess.() -> Unit) {
+		onExecution = {
+			process()
+			result
+		}
+	}
+
 	private fun isInputAllowedByTypes(input: String) =
 		content.flatMap { if (it is CompletionComponent.Asset) it.asset.supportedInputType else emptyList() }
 			.let { internal ->
-				if (internal.isNotEmpty()) {
+				if (content.filterIsInstance<CompletionComponent.Static>().isNotEmpty()) {
+					true
+				} else if (internal.isNotEmpty()) {
 					return@let internal.any { it.isValid(input) }
 				} else
 					true
@@ -104,7 +123,7 @@ class InterchangeStructure(
 	fun validInput(input: String) =
 		(!configuration.mustMatchOutput || this.computeLocalCompletion()
 			.any { it.equals(input, configuration.ignoreCase) })
-				&& configuration.supportedInputTypes.none { !it.isValid(input) }
+				&& configuration.supportedInputTypes.any { it.isValid(input) }
 				&& isInputAllowedByTypes(input)
 				&& (!configuration.isRequired || input.isNotBlank())
 
@@ -232,10 +251,10 @@ class InterchangeStructure(
 		val tracingContent = tracing.let { return@let (it.waysIncomplete + it.waysMatching + it.waysNoDestination) }
 		val filteredContent = tracingContent.filter { it.tracingDepth == parameters.lastIndex }
 		val flattenedContentCompletion = filteredContent.flatMap { it.cachedCompletion }
-		val distinctedCompletion = flattenedContentCompletion.distinct()
-		val partitionedCompletion = distinctedCompletion.partition { it.startsWith(query, true) }
-		val mergedCompletion = partitionedCompletion.let {
-			return@let it.first + it.second.filter { it.contains(query, true) }
+		val distinctCompletion = flattenedContentCompletion.distinct()
+		val partitionedCompletion = distinctCompletion.partition { it.startsWith(query, true) }
+		val mergedCompletion = partitionedCompletion.let { partitioned ->
+			return@let partitioned.first + partitioned.second.filter { it.contains(query, true) }
 		}
 
 		return mergedCompletion

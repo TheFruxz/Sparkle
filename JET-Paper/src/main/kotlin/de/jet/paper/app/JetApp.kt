@@ -4,28 +4,30 @@ import de.jet.jvm.extension.data.addJetJsonModuleModification
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
-import de.jet.paper.app.component.chat.JetChatComponent
-import de.jet.paper.app.component.essentials.EssentialsComponent
-import de.jet.paper.app.component.essentials.point.Point
-import de.jet.paper.app.component.essentials.point.PointConfig
-import de.jet.paper.app.component.essentials.world.WorldConfig
-import de.jet.paper.app.component.essentials.world.tree.WorldRenderer
-import de.jet.paper.app.component.essentials.world.tree.WorldRenderer.RenderFolder
-import de.jet.paper.app.component.essentials.world.tree.WorldRenderer.RenderObject
-import de.jet.paper.app.component.essentials.world.tree.WorldRenderer.RenderWorld
-import de.jet.paper.app.component.essentials.world.tree.WorldRenderer.WorldStructure
-import de.jet.paper.app.component.events.JetEventsComponent
-import de.jet.paper.app.component.feature.MarkingFeatureComponent
-import de.jet.paper.app.component.item.JetActionComponent
-import de.jet.paper.app.component.system.JetAssistiveInterchangesComponent
-import de.jet.paper.app.component.system.JetKeeperComponent
-import de.jet.paper.app.component.world.JetBuildModeComponent
+import de.jet.paper.app.component.buildMode.BuildModeComponent
+import de.jet.paper.app.component.chat.ChatComponent
+import de.jet.paper.app.component.events.EventsComponent
+import de.jet.paper.app.component.experimental.ExperimentalComponent
+import de.jet.paper.app.component.itemLink.ItemLinkComponent
+import de.jet.paper.app.component.keeper.KeeperComponent
+import de.jet.paper.app.component.marking.MarkingComponent
+import de.jet.paper.app.component.point.PointComponent
+import de.jet.paper.app.component.point.asset.Point
+import de.jet.paper.app.component.point.asset.PointConfig
+import de.jet.paper.app.component.sandbox.SandBoxComponent
+import de.jet.paper.app.component.service.ServiceComponent
 import de.jet.paper.app.interchange.ComponentInterchange
 import de.jet.paper.app.interchange.JETInterchange
+import de.jet.paper.app.old_component.essentials.world.WorldConfig
+import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer
+import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderFolder
+import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderObject
+import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderWorld
+import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.WorldStructure
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.ui.buildContainer
 import de.jet.paper.extension.mainLog
-import de.jet.paper.extension.o.buildSandBox
+import de.jet.paper.extension.objectBound.buildSandBox
 import de.jet.paper.extension.paper.worlds
 import de.jet.paper.general.api.mojang.MojangProfile
 import de.jet.paper.general.api.mojang.MojangProfileCape
@@ -141,22 +143,21 @@ class JetApp : App() {
 			}
 		}
 
-		add(JetEventsComponent())
-		add(JetChatComponent())
-		add(JetActionComponent())
-		add(JetKeeperComponent())
-		add(JetBuildModeComponent())
-		add(MarkingFeatureComponent())
-		add(JetAssistiveInterchangesComponent())
-		add(EssentialsComponent())
+		// NEW COMPONENTS
+		add(ChatComponent())
+		add(EventsComponent())
+		add(ExperimentalComponent())
+		add(SandBoxComponent())
+		add(ServiceComponent())
+		add(KeeperComponent())
+		add(PointComponent())
+		add(BuildModeComponent())
+		add(MarkingComponent())
+		add(ItemLinkComponent())
 
 		add(JETInterchange())
 		add(ComponentInterchange())
-
-		buildSandBox(this, "filesystem-live") {
-			JetData.worldStructure.content.visualize()
-		}
-
+		
 		buildSandBox(this, "importAllWorlds") {
 			worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld)
 		}

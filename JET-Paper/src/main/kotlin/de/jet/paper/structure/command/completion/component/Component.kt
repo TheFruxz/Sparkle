@@ -1,7 +1,7 @@
 package de.jet.paper.structure.command.completion.component
 
+import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.tool.permission.Approval
-import org.bukkit.command.CommandSender
 
 sealed interface CompletionComponent {
 
@@ -9,7 +9,7 @@ sealed interface CompletionComponent {
 
 	val label: String
 
-	val displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)?
+	val displayRequirement: ((executor: InterchangeExecutor, parameters: Array<String>, completion: Set<String>) -> Boolean)?
 
 	val inputExpressionCheck: (input: String, ignoreCase: Boolean) -> Boolean
 
@@ -19,19 +19,19 @@ sealed interface CompletionComponent {
 
 		fun static(
 			completion: Set<String>,
-			displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
+			displayRequirement: ((executor: InterchangeExecutor, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
 			accessApproval: Approval? = null,
 		) = Static(completion, displayRequirement, accessApproval)
 
 		fun static(
 			vararg completion: String,
-			displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
+			displayRequirement: ((executor: InterchangeExecutor, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
 			accessApproval: Approval? = null,
 		) = static(completion.toSet(), displayRequirement, accessApproval)
 
 		fun asset(
 			asset: CompletionAsset<*>,
-			displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
+			displayRequirement: ((executor: InterchangeExecutor, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
 			accessApproval: Approval? = null,
 		) = Asset(asset, displayRequirement, accessApproval)
 
@@ -39,7 +39,7 @@ sealed interface CompletionComponent {
 
 	data class Static(
 		val completion: Set<String>,
-		override val displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
+		override val displayRequirement: ((executor: InterchangeExecutor, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
 		override val accessApproval: Approval? = null,
 	) : CompletionComponent {
 
@@ -55,7 +55,7 @@ sealed interface CompletionComponent {
 
 	data class Asset(
 		val asset: CompletionAsset<*>,
-		override val displayRequirement: ((executor: CommandSender, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
+		override val displayRequirement: ((executor: InterchangeExecutor, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
 		override val accessApproval: Approval? = null,
 	) : CompletionComponent {
 

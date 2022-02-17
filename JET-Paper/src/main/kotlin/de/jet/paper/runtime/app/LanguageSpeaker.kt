@@ -1,8 +1,7 @@
 package de.jet.paper.runtime.app
 
-import de.jet.jvm.extension.collection.replace
+import de.jet.jvm.extension.container.replace
 import de.jet.paper.app.JetApp
-import de.jet.paper.tool.display.ide.API
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -52,7 +51,6 @@ class LanguageSpeaker(
 
 	fun dataToJson() = JsonObject(cachedLanguageData.map { it.key to JsonPrimitive(it.value) }.toMap())
 
-	@API
 	val error: Boolean
 		get() = cachedLanguageData["error"] == "yes"
 

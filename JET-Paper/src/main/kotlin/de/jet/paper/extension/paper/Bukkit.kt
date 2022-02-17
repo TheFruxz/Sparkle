@@ -3,6 +3,7 @@
 package de.jet.paper.extension.paper
 
 import com.destroystokyo.paper.entity.ai.MobGoals
+import de.jet.paper.extension.interchange.InterchangeExecutor
 import io.papermc.paper.datapack.DatapackManager
 import net.kyori.adventure.text.Component
 import org.bukkit.*
@@ -13,7 +14,6 @@ import org.bukkit.boss.BarFlag
 import org.bukkit.boss.BarStyle
 import org.bukkit.boss.KeyedBossBar
 import org.bukkit.command.CommandMap
-import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
@@ -119,7 +119,7 @@ fun createProfile(uuid: UUID?, name: String?) = Bukkit.createProfile(uuid, name)
 
 fun createWorld(creator: WorldCreator) = Bukkit.createWorld(creator)
 
-fun dispatchCommand(sender: CommandSender, commandLine: String) = Bukkit.dispatchCommand(sender, commandLine)
+fun dispatchCommand(executor: InterchangeExecutor, commandLine: String) = Bukkit.dispatchCommand(executor, commandLine)
 
 fun getAdvancement(key: NamespacedKey) = Bukkit.getAdvancement(key)
 
@@ -374,7 +374,7 @@ fun resetRecipes() = Bukkit.resetRecipes()
 
 fun savePlayers() = Bukkit.savePlayers()
 
-fun selectEntities(sender: CommandSender, selector: String): List<Entity> = Bukkit.selectEntities(sender, selector)
+fun selectEntities(executor: InterchangeExecutor, selector: String): List<Entity> = Bukkit.selectEntities(executor, selector)
 
 fun setDefaultGameMode(mode: GameMode) = Bukkit.setDefaultGameMode(mode)
 

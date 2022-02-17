@@ -24,7 +24,7 @@ internal var lastKnownJsonModifications = listOf<JsonBuilder.() -> Unit>()
 @Suppress("JSON_FORMAT_REDUNDANT")
 val jsonBase: Json
 	get() {
-		if (jsonBaseState == null
+		if (backingJsonBase == null
 			|| lastKnownJsonModuleModifications != runningJsonModuleModifications
 			|| lastKnownJsonModifications != runningJsonModifications
 		) {
@@ -46,11 +46,11 @@ val jsonBase: Json
 					this.apply(it)
 				}
 			}.let { constructed ->
-				jsonBaseState = constructed
+				backingJsonBase = constructed
 				return constructed
 			}
 		} else
-			return jsonBaseState!!
+			return backingJsonBase!!
 	}
 
 /**
@@ -60,7 +60,7 @@ val jsonBase: Json
  * @author Fruxz
  * @since 1.0
  */
-private var jsonBaseState: Json? = null
+private var backingJsonBase: Json? = null
 
 /**
  * Adds a custom modification to the [SerializersModule] during its build process

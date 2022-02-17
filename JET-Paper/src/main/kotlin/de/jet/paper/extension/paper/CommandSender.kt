@@ -1,7 +1,7 @@
 package de.jet.paper.extension.paper
 
 import de.jet.jvm.tool.smart.identification.Identity
-import org.bukkit.command.CommandSender
+import de.jet.paper.extension.interchange.InterchangeExecutor
 
-val CommandSender.identityObject: Identity<CommandSender>
+val InterchangeExecutor.identityObject: Identity<InterchangeExecutor>
 	get() = Identity(name)

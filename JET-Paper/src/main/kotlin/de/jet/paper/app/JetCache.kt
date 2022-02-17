@@ -1,6 +1,6 @@
 package de.jet.paper.app
 
-import de.jet.jvm.extension.collection.removeAll
+import de.jet.jvm.extension.container.removeAll
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.extension.debugLog
 import de.jet.paper.runtime.sandbox.SandBox
