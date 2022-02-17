@@ -8,7 +8,7 @@ internal class EventsComponent : SmartComponent(system, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "Events"
 
-	override fun component() {
+	override suspend fun component() {
 
 		listener(EventsListener())
 

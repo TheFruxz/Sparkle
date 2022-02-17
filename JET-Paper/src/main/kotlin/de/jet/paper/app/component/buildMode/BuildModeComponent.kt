@@ -7,7 +7,7 @@ internal class BuildModeComponent : SmartComponent(system) {
 
 	override val thisIdentity = "BuildMode"
 
-	override fun component() {
+	override suspend fun component() {
 		listener(BuildModeListener())
 		interchange(BuildModeInterchange())
 	}

@@ -332,19 +332,23 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			if (JetCache.registeredComponents.any { it.identity == component.identity })
 				throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
 
-			component.firstContactHandshake()
+			coroutineScope.launch(context = component.threadContext) {
 
-			JetCache.registeredComponents.add(component)
+				component.firstContactHandshake()
 
-			component.register()
+				JetCache.registeredComponents.add(component)
 
-			mainLog(Level.INFO, "registered '${component.identity}' component!")
+				component.register()
 
-			if (component.isAutoStarting) {
+				mainLog(Level.INFO, "registered '${component.identity}' component!")
 
-				mainLog(Level.INFO, "### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
+				if (component.isAutoStarting) {
 
-				start(component.identityObject)
+					mainLog(Level.INFO, "### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
+
+					start(component.identityObject)
+
+				}
 
 			}
 
@@ -358,11 +362,15 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 			if (!JetCache.runningComponents.contains(componentIdentity)) {
 
-				component.start()
+				coroutineScope.launch(context = component.threadContext) {
 
-				JetCache.runningComponents.add(componentIdentity)
+					component.start()
 
-				mainLog(Level.INFO, "started '${componentIdentity.identity}' component!")
+					JetCache.runningComponents.add(componentIdentity)
+
+					mainLog(Level.INFO, "started '${componentIdentity.identity}' component!")
+
+				}
 
 			} else
 				throw IllegalStateException("The component '$componentIdentity' is already running!")
@@ -381,14 +389,18 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 				if (JetCache.runningComponents.contains(componentIdentity)) {
 
-					component.stop()
+					coroutineScope.launch(context = component.threadContext) {
 
-					JetCache.runningComponents.remove(componentIdentity)
+						component.stop()
 
-					if (unregisterComponent)
-						unregister(componentIdentity)
+						JetCache.runningComponents.remove(componentIdentity)
 
-					mainLog(Level.INFO, "stopped '${component.identity}' component!")
+						if (unregisterComponent)
+							unregister(componentIdentity)
+
+						mainLog(Level.INFO, "stopped '${component.identity}' component!")
+
+					}
 
 				} else
 					throw IllegalStateException("The component '$componentIdentity' is already not running!")

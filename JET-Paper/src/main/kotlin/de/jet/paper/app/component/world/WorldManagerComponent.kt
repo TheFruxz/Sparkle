@@ -7,7 +7,7 @@ class WorldManagerComponent : SmartComponent(system, RunType.AUTOSTART_MUTABLE) 
 
     override val thisIdentity = "WorldManager"
 
-    override fun component() {
+    override suspend fun component() {
 
 
 

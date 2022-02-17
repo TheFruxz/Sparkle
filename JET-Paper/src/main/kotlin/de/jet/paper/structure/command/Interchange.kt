@@ -17,9 +17,12 @@ import de.jet.paper.tool.annotation.LegacyCraftBukkitFeature
 import de.jet.paper.tool.display.message.Transmission.Level.ERROR
 import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.permission.Approval
+import de.jet.paper.tool.smart.ContextualIdentifiable
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.Command
@@ -38,7 +41,7 @@ abstract class Interchange(
 	val hiddenFromRecommendation: Boolean = false, // todo: seems to be unused, that have to be an enabled feature
 	val completion: InterchangeStructure = de.jet.paper.structure.command.completion.emptyInterchangeStructure(),
 	val ignoreInputValidation: Boolean = false,
-) : CommandExecutor, VendorsIdentifiable<Interchange>, Logging {
+) : CommandExecutor, ContextualIdentifiable<Interchange>, Logging {
 
 	init {
 		completion.identity = label
@@ -48,6 +51,11 @@ abstract class Interchange(
 		internal set
 
 	val tabCompleter = TabCompleter { _, _, _, args -> completion.computeCompletion(args.toList()) }
+
+	override val threadContext by lazy {
+		@OptIn(DelicateCoroutinesApi::class)
+		newSingleThreadContext(identity)
+	}
 
 	final override val sectionLabel = "InterchangeEngine"
 
@@ -120,7 +128,7 @@ abstract class Interchange(
 
 	override fun onCommand(sender: InterchangeExecutor, command: Command, label: String, args: Parameters): Boolean {
 
-		vendor.coroutineScope.launch {
+		vendor.coroutineScope.launch(context = threadContext) {
 
 			val parameters = args.toList()
 			val executionProcess = this@Interchange::execution

@@ -8,7 +8,7 @@ internal class ExperimentalComponent : SmartComponent(system, DISABLED, true) {
 
 	override val thisIdentity = "ExperimentalFeatures"
 
-	override fun component() {
+	override suspend fun component() {
 
 		interchange(ChangeSkinInterchange())
 

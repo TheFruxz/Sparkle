@@ -37,7 +37,7 @@ abstract class SmartComponent(
 
 	fun listener(vararg listener: EventListener) = listeners.addAll(listener)
 
-	final override fun register() {
+	final override suspend fun register() {
 
 		component() // register all objects
 
@@ -52,7 +52,7 @@ abstract class SmartComponent(
 
 	}
 
-	final override fun start() {
+	final override suspend fun start() {
 
 		interchanges.forEach {
 			tryToCatch {
@@ -90,7 +90,7 @@ abstract class SmartComponent(
 
 	}
 
-	final override fun stop() {
+	final override suspend fun stop() {
 
 		interchanges.forEach {
 			tryToCatch {
@@ -128,7 +128,7 @@ abstract class SmartComponent(
 
 	}
 
-	abstract fun component()
+	abstract suspend fun component()
 
 	companion object {
 

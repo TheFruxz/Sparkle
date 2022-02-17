@@ -8,7 +8,7 @@ internal class ChatComponent : SmartComponent(system, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "Chat"
 
-	override fun component() {
+	override suspend fun component() {
 
 		listener(ChatListener())
 

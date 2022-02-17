@@ -8,7 +8,7 @@ internal class PointComponent : SmartComponent(system, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "World-Points"
 
-	override fun component() {
+	override suspend fun component() {
 
 		interchange(PointInterchange())
 

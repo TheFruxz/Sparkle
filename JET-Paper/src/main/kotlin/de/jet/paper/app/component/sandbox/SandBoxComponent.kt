@@ -8,7 +8,7 @@ internal class SandBoxComponent : SmartComponent(system, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "Sandboxing"
 
-	override fun component() {
+	override suspend fun component() {
 
 		interchange(SandBoxInterchange())
 

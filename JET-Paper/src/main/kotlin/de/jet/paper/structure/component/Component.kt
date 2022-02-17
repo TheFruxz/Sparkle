@@ -7,15 +7,19 @@ import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.paper.createKey
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.component.Component.RunType.*
+import de.jet.paper.tool.smart.ContextualIdentifiable
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.ExecutorCoroutineDispatcher
+import kotlinx.coroutines.newSingleThreadContext
 import org.bukkit.NamespacedKey
 
 abstract class Component(
 	override val vendor: App,
 	open val behaviour: RunType = DISABLED,
 	open val experimental: Boolean = false
-) : VendorsIdentifiable<Component>, Logging {
+) : ContextualIdentifiable<Component>, Logging {
 
 	override val vendorIdentity: Identity<out App>
 		get() = vendor.identityObject
@@ -28,6 +32,11 @@ abstract class Component(
 
 	val key: NamespacedKey
 		get() = vendor.createKey(thisIdentity)
+
+	override val threadContext by lazy {
+		@OptIn(DelicateCoroutinesApi::class)
+		(newSingleThreadContext(identity))
+	}
 
 	fun firstContactHandshake() {
 		debugLog("starting firstContactHandshake function of component '$identity'!")
@@ -73,11 +82,11 @@ abstract class Component(
 	/**
 	 * Can be overwritten, no origin code!
 	 */
-	open fun register() { }
+	open suspend fun register() { }
 
-	abstract fun start()
+	abstract suspend fun start()
 
-	abstract fun stop()
+	abstract suspend fun stop()
 
 	enum class RunType {
 

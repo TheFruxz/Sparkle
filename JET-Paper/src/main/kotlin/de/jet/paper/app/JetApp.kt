@@ -49,6 +49,9 @@ import de.jet.paper.tool.input.Keyboard
 import de.jet.paper.tool.input.Keyboard.RenderEngine.Key
 import de.jet.paper.tool.input.Keyboard.RenderEngine.KeyConfiguration
 import de.jet.paper.tool.permission.Approval
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.configuration.serialization.ConfigurationSerialization
@@ -157,7 +160,7 @@ class JetApp : App() {
 
 		add(JETInterchange())
 		add(ComponentInterchange())
-		
+
 		buildSandBox(this, "importAllWorlds") {
 			worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld)
 		}
@@ -179,9 +182,19 @@ class JetApp : App() {
 
 	override suspend fun bye() {
 
+        val results = mutableListOf<Deferred<Unit>>()
+
 		JetCache.registeredComponents.forEach {
-			tryToResult { it.stop() }
+			coroutineScope.launch {
+
+                tryToResult {
+                    results.add(async { it.stop() })
+                }
+
+			}
 		}
+
+        debugLog("Force-Cancelled ${results.size} components")
 
 	}
 

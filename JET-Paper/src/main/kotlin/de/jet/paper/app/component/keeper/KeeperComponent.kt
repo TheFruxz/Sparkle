@@ -8,7 +8,7 @@ internal class KeeperComponent : SmartComponent(system, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "iKeeper"
 
-	override fun component() {
+	override suspend fun component() {
 
 		service(KeeperService())
 
