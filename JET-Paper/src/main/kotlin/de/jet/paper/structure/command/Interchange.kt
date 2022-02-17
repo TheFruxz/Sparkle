@@ -207,4 +207,5 @@ enum class InterchangeAuthorizationType {
 
 }
 
+@Suppress("unused") // todo use Interchange as context, when the kotlin context API is ready
 fun Interchange.execution(execution: InterchangeAccess.() -> InterchangeResult) = execution

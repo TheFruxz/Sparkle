@@ -10,9 +10,9 @@ import kotlin.reflect.KFunction1
 
 /**
  * This is a [AppExtension], that runs a DiscordBot using the
- * [runBot] function. It can be attached to a App-Runtime using
+ * [runBot] function. It can be attached to an App-Runtime using
  * the *attach* or *attachWith* function.
- * @property identity is "discordbot"
+ * @property identity is "discordBot"
  * @property parallelRunAllowed is false - parallel runs disallowed
  * @property runtimeAccessor is [runBot] - also a builder for the bot instance
  * @author Fruxz
