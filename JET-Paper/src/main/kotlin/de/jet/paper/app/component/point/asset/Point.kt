@@ -1,4 +1,4 @@
-package de.jet.paper.app.component.point
+package de.jet.paper.app.component.point.asset
 
 import de.jet.jvm.tool.smart.identification.Identifiable
 import kotlinx.serialization.SerialName

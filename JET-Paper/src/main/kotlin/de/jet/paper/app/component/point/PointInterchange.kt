@@ -6,6 +6,8 @@ import de.jet.jvm.extension.collection.replaceVariables
 import de.jet.jvm.extension.math.ceilToInt
 import de.jet.jvm.tool.smart.positioning.Address
 import de.jet.paper.app.JetData
+import de.jet.paper.app.component.point.asset.Point
+import de.jet.paper.app.component.point.asset.PointConfig
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.getSystemTranslated
 import de.jet.paper.extension.interchange.InterchangeExecutor

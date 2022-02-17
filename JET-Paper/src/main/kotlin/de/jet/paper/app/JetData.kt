@@ -6,7 +6,7 @@ import de.jet.paper.app.JetData.File.CONFIG
 import de.jet.paper.app.JetData.File.ESSENTIALS_CONFIG
 import de.jet.paper.app.JetData.File.ESSENTIALS_WORLDS
 import de.jet.paper.app.JetData.File.RAW
-import de.jet.paper.app.component.point.PointConfig
+import de.jet.paper.app.component.point.asset.PointConfig
 import de.jet.paper.app.old_component.essentials.world.WorldConfig
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer
 import de.jet.paper.extension.data.jetPath

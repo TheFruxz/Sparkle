@@ -12,12 +12,12 @@ import de.jet.paper.app.component.itemlink.ItemLinkComponent
 import de.jet.paper.app.component.keeper.KeeperComponent
 import de.jet.paper.app.component.marking.MarkingComponent
 import de.jet.paper.app.component.point.PointComponent
+import de.jet.paper.app.component.point.asset.Point
+import de.jet.paper.app.component.point.asset.PointConfig
 import de.jet.paper.app.component.sandbox.SandBoxComponent
 import de.jet.paper.app.component.service.ServiceComponent
 import de.jet.paper.app.interchange.ComponentInterchange
 import de.jet.paper.app.interchange.JETInterchange
-import de.jet.paper.app.component.point.Point
-import de.jet.paper.app.component.point.PointConfig
 import de.jet.paper.app.old_component.essentials.world.WorldConfig
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderFolder
