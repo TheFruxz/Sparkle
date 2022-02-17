@@ -1,4 +1,4 @@
-package de.jet.jvm.extension.collection
+package de.jet.jvm.extension.container
 
 /**
  * Replaces the content values of [this] with the contents

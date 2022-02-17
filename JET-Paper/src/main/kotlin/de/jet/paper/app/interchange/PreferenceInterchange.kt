@@ -1,7 +1,7 @@
 package de.jet.paper.app.interchange
 
 import de.jet.jvm.annotation.NotWorking
-import de.jet.jvm.extension.collection.second
+import de.jet.jvm.extension.container.second
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.notification
 import de.jet.paper.structure.command.Interchange

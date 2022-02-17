@@ -1,7 +1,7 @@
 package de.jet.paper.runtime.sandbox
 
 import de.jet.jvm.extension.catchException
-import de.jet.jvm.extension.collection.replaceVariables
+import de.jet.jvm.extension.container.replaceVariables
 import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.notification

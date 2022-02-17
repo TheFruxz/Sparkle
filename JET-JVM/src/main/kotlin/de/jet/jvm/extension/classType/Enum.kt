@@ -1,4 +1,4 @@
-package de.jet.jvm.extension.classes
+package de.jet.jvm.extension.classType
 
 import de.jet.jvm.extension.math.limitTo
 

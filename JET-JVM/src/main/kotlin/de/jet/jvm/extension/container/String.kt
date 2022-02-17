@@ -1,4 +1,4 @@
-package de.jet.jvm.extension.collection
+package de.jet.jvm.extension.container
 
 import java.util.*
 

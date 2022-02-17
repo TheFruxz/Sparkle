@@ -1,4 +1,4 @@
-package de.jet.paper.extension.o
+package de.jet.paper.extension.objectBound
 
 import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.app.JetCache.registeredSandBoxes

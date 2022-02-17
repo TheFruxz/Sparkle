@@ -1,4 +1,4 @@
-package de.jet.jvm.extension.collection
+package de.jet.jvm.extension.container
 
 /**
  * Creates a sublist of [this] List<[T]> using the [subList] function

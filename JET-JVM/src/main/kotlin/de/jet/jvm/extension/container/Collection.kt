@@ -1,4 +1,4 @@
-package de.jet.jvm.extension.collection
+package de.jet.jvm.extension.container
 
 import de.jet.jvm.extension.math.ceilToInt
 import de.jet.jvm.extension.math.maxTo

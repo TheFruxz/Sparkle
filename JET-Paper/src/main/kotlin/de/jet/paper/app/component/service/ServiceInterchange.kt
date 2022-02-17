@@ -1,9 +1,9 @@
 package de.jet.paper.app.component.service
 
-import de.jet.jvm.extension.collection.mapToString
-import de.jet.jvm.extension.collection.page
-import de.jet.jvm.extension.collection.replace
-import de.jet.jvm.extension.collection.replaceVariables
+import de.jet.jvm.extension.container.mapToString
+import de.jet.jvm.extension.container.page
+import de.jet.jvm.extension.container.replace
+import de.jet.jvm.extension.container.replaceVariables
 import de.jet.jvm.extension.math.ceilToInt
 import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.app.JetCache.registeredServices

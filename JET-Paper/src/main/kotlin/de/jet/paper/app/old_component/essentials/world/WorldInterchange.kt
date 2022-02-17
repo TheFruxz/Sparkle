@@ -13,7 +13,7 @@ import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.display.ui.skull
 import de.jet.paper.extension.paper.displayString
 import de.jet.paper.extension.paper.getWorld
-import de.jet.paper.extension.special.texturedSkull
+import de.jet.paper.extension.external.texturedSkull
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.execution

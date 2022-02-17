@@ -1,6 +1,6 @@
 package de.jet.paper.app.component.experimental
 
-import de.jet.jvm.extension.collection.replaceVariables
+import de.jet.jvm.extension.container.replaceVariables
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.get
 import de.jet.paper.extension.lang

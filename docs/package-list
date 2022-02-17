@@ -15,8 +15,8 @@ de.jet.jvm.application.runtime
 de.jet.jvm.application.tag
 de.jet.jvm.extension
 de.jet.jvm.extension.app
-de.jet.jvm.extension.classes
-de.jet.jvm.extension.collection
+de.jet.jvm.extension.classType
+de.jet.jvm.extension.container
 de.jet.jvm.extension.data
 de.jet.jvm.extension.display
 de.jet.jvm.extension.input
@@ -39,7 +39,7 @@ de.jet.jvm.tool.smart.identification
 de.jet.jvm.tool.smart.positioning
 de.jet.jvm.tool.smart.type
 de.jet.jvm.tool.timing.calendar
-de.jet.jvm.tool.timing.calendar.timeunit
+de.jet.jvm.tool.timing.calendar.timeUnit
 de.jet.jvm.tool.timing.clock
 de.jet.jvm.tree
 module:JET-Paper
@@ -60,10 +60,10 @@ de.jet.paper.extension.display
 de.jet.paper.extension.display.ui
 de.jet.paper.extension.effect
 de.jet.paper.extension.mojang
-de.jet.paper.extension.o
+de.jet.paper.extension.objectBound
 de.jet.paper.extension.paper
 de.jet.paper.extension.scoreboard
-de.jet.paper.extension.special
+de.jet.paper.extension.external
 de.jet.paper.extension.tasky
 de.jet.paper.extension.timing
 de.jet.paper.general.api.mojang

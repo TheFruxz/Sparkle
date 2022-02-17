@@ -1,6 +1,6 @@
 package de.jet.paper.app.component.marking
 
-import de.jet.jvm.extension.collection.replaceVariables
+import de.jet.jvm.extension.container.replaceVariables
 import de.jet.jvm.extension.math.shorter
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.BOLD

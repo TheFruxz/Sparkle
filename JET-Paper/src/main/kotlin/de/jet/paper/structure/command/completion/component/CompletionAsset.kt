@@ -1,7 +1,7 @@
 package de.jet.paper.structure.command.completion.component
 
-import de.jet.jvm.extension.collection.mapToString
-import de.jet.jvm.extension.collection.withMap
+import de.jet.jvm.extension.container.mapToString
+import de.jet.jvm.extension.container.withMap
 import de.jet.jvm.extension.math.isDouble
 import de.jet.jvm.extension.math.isLong
 import de.jet.jvm.extension.tryOrNull

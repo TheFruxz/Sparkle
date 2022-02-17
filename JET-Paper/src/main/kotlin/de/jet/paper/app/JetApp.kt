@@ -4,11 +4,11 @@ import de.jet.jvm.extension.data.addJetJsonModuleModification
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
-import de.jet.paper.app.component.buildmode.BuildModeComponent
+import de.jet.paper.app.component.buildMode.BuildModeComponent
 import de.jet.paper.app.component.chat.ChatComponent
 import de.jet.paper.app.component.events.EventsComponent
 import de.jet.paper.app.component.experimental.ExperimentalComponent
-import de.jet.paper.app.component.itemlink.ItemLinkComponent
+import de.jet.paper.app.component.itemLink.ItemLinkComponent
 import de.jet.paper.app.component.keeper.KeeperComponent
 import de.jet.paper.app.component.marking.MarkingComponent
 import de.jet.paper.app.component.point.PointComponent
@@ -27,7 +27,7 @@ import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.WorldS
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.ui.buildContainer
 import de.jet.paper.extension.mainLog
-import de.jet.paper.extension.o.buildSandBox
+import de.jet.paper.extension.objectBound.buildSandBox
 import de.jet.paper.extension.paper.worlds
 import de.jet.paper.general.api.mojang.MojangProfile
 import de.jet.paper.general.api.mojang.MojangProfileCape

@@ -1,9 +1,9 @@
-package de.jet.paper.app.component.buildmode
+package de.jet.paper.app.component.buildMode
 
-import de.jet.jvm.extension.collection.mapToString
-import de.jet.jvm.extension.collection.page
-import de.jet.jvm.extension.collection.replaceVariables
-import de.jet.jvm.extension.collection.toUUID
+import de.jet.jvm.extension.container.mapToString
+import de.jet.jvm.extension.container.page
+import de.jet.jvm.extension.container.replaceVariables
+import de.jet.jvm.extension.container.toUUID
 import de.jet.jvm.extension.math.ceilToInt
 import de.jet.jvm.extension.switchResult
 import de.jet.paper.app.JetCache

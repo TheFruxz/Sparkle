@@ -1,10 +1,9 @@
 package de.jet.paper.app.interchange
 
-import de.jet.jvm.extension.collection.replace
-import de.jet.jvm.extension.collection.replaceVariables
+import de.jet.jvm.extension.container.replace
+import de.jet.jvm.extension.container.replaceVariables
 import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetData
-import de.jet.paper.extension.display.message
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.get
 import de.jet.paper.extension.lang

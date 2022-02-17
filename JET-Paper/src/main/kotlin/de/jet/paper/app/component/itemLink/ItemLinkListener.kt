@@ -1,6 +1,6 @@
-package de.jet.paper.app.component.itemlink
+package de.jet.paper.app.component.itemLink
 
-import de.jet.jvm.extension.collection.replace
+import de.jet.jvm.extension.container.replace
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.display.ui.get

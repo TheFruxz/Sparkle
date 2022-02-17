@@ -1,4 +1,4 @@
-package de.jet.jvm.extension.collection
+package de.jet.jvm.extension.container
 
 /**
  * Removes every element from this collection that is contained in the [ints] collection.

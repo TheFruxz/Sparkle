@@ -1,8 +1,8 @@
 package de.jet.paper.app.component.point
 
-import de.jet.jvm.extension.collection.mapToString
-import de.jet.jvm.extension.collection.page
-import de.jet.jvm.extension.collection.replaceVariables
+import de.jet.jvm.extension.container.mapToString
+import de.jet.jvm.extension.container.page
+import de.jet.jvm.extension.container.replaceVariables
 import de.jet.jvm.extension.math.ceilToInt
 import de.jet.jvm.tool.smart.positioning.Address
 import de.jet.paper.app.JetData

@@ -2,9 +2,9 @@ package de.jet.jvm.tool.timing.calendar
 
 import de.jet.jvm.extension.time.prettyPrint
 import de.jet.jvm.tool.smart.Producible
-import de.jet.jvm.tool.timing.calendar.timeunit.TimeUnit
-import de.jet.jvm.tool.timing.calendar.timeunit.TimeUnit.Companion.MILLISECOND
-import de.jet.jvm.tool.timing.calendar.timeunit.TimeUnit.Companion.SECOND
+import de.jet.jvm.tool.timing.calendar.timeUnit.TimeUnit
+import de.jet.jvm.tool.timing.calendar.timeUnit.TimeUnit.Companion.MILLISECOND
+import de.jet.jvm.tool.timing.calendar.timeUnit.TimeUnit.Companion.SECOND
 import kotlinx.serialization.Serializable
 import java.util.*
 import kotlin.time.Duration

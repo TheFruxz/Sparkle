@@ -1,18 +1,18 @@
 package de.jet.paper.app.component.sandbox
 
-import de.jet.jvm.extension.collection.mapToString
-import de.jet.jvm.extension.collection.page
-import de.jet.jvm.extension.collection.replaceVariables
+import de.jet.jvm.extension.container.mapToString
+import de.jet.jvm.extension.container.page
+import de.jet.jvm.extension.container.replaceVariables
 import de.jet.jvm.extension.math.ceilToInt
 import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
-import de.jet.paper.extension.o.allSandBoxes
-import de.jet.paper.extension.o.destroyAllSandBoxes
-import de.jet.paper.extension.o.destroySandBox
-import de.jet.paper.extension.o.getSandBox
+import de.jet.paper.extension.objectBound.allSandBoxes
+import de.jet.paper.extension.objectBound.destroyAllSandBoxes
+import de.jet.paper.extension.objectBound.destroySandBox
+import de.jet.paper.extension.objectBound.getSandBox
 import de.jet.paper.extension.system
 import de.jet.paper.structure.command.BranchedInterchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS

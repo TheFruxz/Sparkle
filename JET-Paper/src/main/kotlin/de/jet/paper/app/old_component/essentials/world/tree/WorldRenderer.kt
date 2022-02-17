@@ -1,6 +1,6 @@
 package de.jet.paper.app.old_component.essentials.world.tree
 
-import de.jet.jvm.extension.collection.mutableReplaceWith
+import de.jet.jvm.extension.container.mutableReplaceWith
 import de.jet.jvm.extension.isNotNull
 import de.jet.jvm.extension.switchResult
 import de.jet.jvm.tool.smart.identification.Identifiable

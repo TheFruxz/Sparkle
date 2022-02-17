@@ -1,4 +1,4 @@
-package de.jet.paper.extension.special
+package de.jet.paper.extension.external
 
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.tool.display.item.Item

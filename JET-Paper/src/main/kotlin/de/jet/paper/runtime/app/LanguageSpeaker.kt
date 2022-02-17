@@ -1,6 +1,6 @@
 package de.jet.paper.runtime.app
 
-import de.jet.jvm.extension.collection.replace
+import de.jet.jvm.extension.container.replace
 import de.jet.paper.app.JetApp
 import de.jet.paper.tool.display.ide.API
 import kotlinx.serialization.SerialName

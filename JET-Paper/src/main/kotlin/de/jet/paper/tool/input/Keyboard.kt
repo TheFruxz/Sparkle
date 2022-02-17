@@ -2,7 +2,7 @@
 
 package de.jet.paper.tool.input
 
-import de.jet.jvm.extension.collection.skip
+import de.jet.jvm.extension.container.skip
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.jvm.tool.smart.type.Breakable
@@ -11,7 +11,7 @@ import de.jet.paper.app.JetData
 import de.jet.paper.extension.display.ui.buildPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.paper.getOfflinePlayer
-import de.jet.paper.extension.special.texturedSkull
+import de.jet.paper.extension.external.texturedSkull
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.item.quirk.Quirk.Companion.skullQuirk
 import de.jet.paper.tool.display.ui.panel.Panel

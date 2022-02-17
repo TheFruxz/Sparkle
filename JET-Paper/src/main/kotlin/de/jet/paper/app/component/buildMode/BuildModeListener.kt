@@ -1,4 +1,4 @@
-package de.jet.paper.app.component.buildmode
+package de.jet.paper.app.component.buildMode
 
 import de.jet.paper.extension.paper.buildMode
 import de.jet.paper.extension.system

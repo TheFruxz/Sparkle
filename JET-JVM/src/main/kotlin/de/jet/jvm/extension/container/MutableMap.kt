@@ -1,4 +1,4 @@
-package de.jet.jvm.extension.collection
+package de.jet.jvm.extension.container
 
 fun <T, E, M : MutableMap<T, E>> M.clone() = mutableMapOf<T, E>().apply {
 	putAll(this@clone)

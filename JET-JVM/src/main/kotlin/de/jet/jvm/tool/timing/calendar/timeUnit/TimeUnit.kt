@@ -1,4 +1,4 @@
-package de.jet.jvm.tool.timing.calendar.timeunit
+package de.jet.jvm.tool.timing.calendar.timeUnit
 
 import java.util.Calendar as JavaUtilCalendar
 
