@@ -27,13 +27,14 @@ import org.bukkit.entity.Player
 internal class MarkingInterchange : BranchedInterchange(
 	label = "markings",
 	protectedAccess = true,
-	structure = @OptIn(RequiresComponent::class) buildInterchangeStructure {
+	structure = buildInterchangeStructure {
 
 		fun positionData(location: Location) = buildString {
 			append('(')
 			append("x=${location.x}, y=${location.y}, z=${location.z}")
 			append(')')
 		}
+
 
 		val markingTool = Material.GOLDEN_HOE.item.apply {
 			label = "$YELLOW${BOLD}Marking-Tool"
@@ -45,6 +46,9 @@ internal class MarkingInterchange : BranchedInterchange(
 				SHIFT-CLICK -> VIEW DATA
 				
 			""".trimIndent()
+
+			@Suppress("UnnecessaryOptInAnnotation")
+			@OptIn(RequiresComponent::class)
 			putInteractAction {
 				val targetBlock = whoInteract.rayTraceBlocks(10.0, ALWAYS)?.hitBlock
 				val actualBox = JetCache.playerMarkerBoxes[player.identityObject]
