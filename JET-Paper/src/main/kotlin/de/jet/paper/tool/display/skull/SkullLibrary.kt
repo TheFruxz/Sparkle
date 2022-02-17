@@ -23,7 +23,7 @@ object SkullLibrary {
 		val description: String,
 	)
 
-	val skulls by lazy {
+	private val skulls by lazy {
 		debugLog("loading skulls CSV data...")
 		debugLog("downloading CSV file...")
 		val data = url(JetData.skullDataURL.content).readText()
@@ -36,7 +36,7 @@ object SkullLibrary {
 						it[1].removeSurrounding("\"").toInt(),
 						it[2].removeSurrounding("\""),
 						Base64.encodeToString(
-							"{\"textures\":{\"SKIN\":{\"url\":\"http://textures.minecraft.net/texture/${it[3]}\"}}}"
+							"{\"textures\":{\"SKIN\":{\"url\":\"https://textures.minecraft.net/texture/${it[3]}\"}}}" //todo check, if https is working
 						),
 						it[4].removeSurrounding("\"").toInt(),
 						it[5].removeSurrounding("\"")
