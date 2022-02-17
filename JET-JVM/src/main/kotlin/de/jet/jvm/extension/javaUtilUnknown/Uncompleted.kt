@@ -1,8 +1,7 @@
-package de.jet.jvm.extension.java
+package de.jet.jvm.extension.javaUtilUnknown
 
 import de.jet.jvm.extension.isNotNull
 import java.util.*
-import kotlin.NoSuchElementException
 
 /**
  * Returns the value of the [Optional] or null if the optional
