@@ -252,5 +252,4 @@ internal class ServiceInterchange : BranchedInterchange(
 		}
 
 	}
-) {
-}
+)

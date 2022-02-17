@@ -79,5 +79,4 @@ internal class ChangeSkinInterchange : BranchedInterchange("changeskin", protect
 
 	}
 
-}) {
-}
+})
