@@ -1,6 +1,5 @@
 package de.jet.paper.extension.tasky
 
-import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.extension.system
 import de.jet.paper.structure.app.App
