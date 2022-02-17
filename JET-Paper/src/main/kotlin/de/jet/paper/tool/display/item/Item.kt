@@ -195,7 +195,7 @@ data class Item(
 	val dataValues: Collection<Any>
 		get() = data.values
 
-	fun dataCompatiblityCheck(any: Any?, allowTransforming: Boolean = true): Boolean {
+	fun dataCompatibilityCheck(any: Any?, allowTransforming: Boolean = true): Boolean {
 		return if (any != null) {
 			when (any) {
 				is Byte, is Short, is Int, is Long, is Float, is Double -> true
@@ -236,7 +236,7 @@ data class Item(
 			return@let it
 		}
 
-		if (dataCompatiblityCheck(transformedData, allowTransforming)) {
+		if (dataCompatibilityCheck(transformedData, allowTransforming)) {
 
 			this.data[path.toString()] = data!!
 

@@ -52,6 +52,7 @@ object JetData {
 
 	// SKULLS
 
+	@Suppress("SpellCheckingInspection")
 	val skullDataURL = Preference(
 		file = CONFIG,
 		path = jetPath("skullData"),

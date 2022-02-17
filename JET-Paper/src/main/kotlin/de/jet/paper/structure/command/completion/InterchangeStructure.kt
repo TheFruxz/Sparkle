@@ -251,10 +251,10 @@ class InterchangeStructure(
 		val tracingContent = tracing.let { return@let (it.waysIncomplete + it.waysMatching + it.waysNoDestination) }
 		val filteredContent = tracingContent.filter { it.tracingDepth == parameters.lastIndex }
 		val flattenedContentCompletion = filteredContent.flatMap { it.cachedCompletion }
-		val distinctedCompletion = flattenedContentCompletion.distinct()
-		val partitionedCompletion = distinctedCompletion.partition { it.startsWith(query, true) }
-		val mergedCompletion = partitionedCompletion.let {
-			return@let it.first + it.second.filter { it.contains(query, true) }
+		val distinctCompletion = flattenedContentCompletion.distinct()
+		val partitionedCompletion = distinctCompletion.partition { it.startsWith(query, true) }
+		val mergedCompletion = partitionedCompletion.let { partitioned ->
+			return@let partitioned.first + partitioned.second.filter { it.contains(query, true) }
 		}
 
 		return mergedCompletion

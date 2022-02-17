@@ -136,7 +136,7 @@ open class Container(
 		}
 	}
 
-	fun <T : Container> T.placeover(content: Map<Int, Item>) = apply {
+	fun <T : Container> T.placeOver(content: Map<Int, Item>) = apply {
 		for ((key, value) in content) {
 			this.content[key] = value
 		}
@@ -254,9 +254,9 @@ open class Container(
 
 	fun <T : Container> T.border(material: Material) = border(item = material.item)
 
-	fun <T : Container> T.placeover(container: Container) = placeover(container.content)
+	fun <T : Container> T.placeOver(container: Container) = placeOver(container.content)
 
-	fun <T : Container> T.placeover(vararg items: Pair<Int, Item>) = placeover(mapOf(*items))
+	fun <T : Container> T.placeOver(vararg items: Pair<Int, Item>) = placeOver(mapOf(*items))
 
 	operator fun <T : Container> T.set(i: Int, value: Item) = place(i, value)
 
