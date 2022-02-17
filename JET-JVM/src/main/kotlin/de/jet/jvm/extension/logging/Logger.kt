@@ -44,7 +44,7 @@ fun getLogger(kclass: KClass<*>) =
  * @author Fruxz
  * @since 1.0
  */
-fun getFactoryLogger(name: String) = LoggerFactory.getLogger(name)
+fun getFactoryLogger(name: String) = LoggerFactory.getLogger(name)!!
 
 /**
  * Creates a logger from the [LoggerFactory] using the given class.
@@ -54,7 +54,7 @@ fun getFactoryLogger(name: String) = LoggerFactory.getLogger(name)
  * @author Fruxz
  * @since 1.0
  */
-fun getFactoryLogger(kclass: KClass<*>) = LoggerFactory.getLogger(kclass.java)
+fun getFactoryLogger(kclass: KClass<*>) = LoggerFactory.getLogger(kclass.java)!!
 
 /**
  * Creates a logger from the [JavaUtilLogger] using the class of the given object.
