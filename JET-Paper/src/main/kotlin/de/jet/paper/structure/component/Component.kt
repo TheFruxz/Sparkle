@@ -14,6 +14,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.newSingleThreadContext
 import org.bukkit.NamespacedKey
+import kotlin.reflect.KClass
 
 abstract class Component(
 	override val vendor: App,
@@ -87,6 +88,14 @@ abstract class Component(
 	abstract suspend fun start()
 
 	abstract suspend fun stop()
+
+	companion object {
+
+		fun getInstance(componentClass: KClass<out Component>): Component {
+			return JetCache.registeredComponents.first { it.identity == componentClass.objectInstance?.identity }
+		}
+
+	}
 
 	enum class RunType {
 
