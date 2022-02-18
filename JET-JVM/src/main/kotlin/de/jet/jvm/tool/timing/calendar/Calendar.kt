@@ -56,7 +56,9 @@ class Calendar constructor(
 	 * @since 1.0
 	 */
 	fun add(timeField: TimeUnit, amount: Int) = apply {
-		origin.add(timeField.javaField, amount)
+		origin = origin.apply {
+			add(timeField.javaField, amount)
+		}
 	}
 
 	/**
@@ -83,7 +85,9 @@ class Calendar constructor(
 	 * @since 1.0
 	 */
 	fun set(timeField: TimeUnit, amount: Int) = apply {
-		origin.set(timeField.javaField, amount)
+		origin = origin.apply {
+			set(timeField.javaField, amount)
+		}
 	}
 
 	/**
@@ -97,7 +101,9 @@ class Calendar constructor(
 	 * @since 1.0
 	 */
 	fun take(timeField: TimeUnit, amount: Int) = apply {
-		origin.add(timeField.javaField, amount * (-1))
+		origin = origin.apply {
+			add(timeField.javaField, amount * (-1))
+		}
 	}
 
 	/**
