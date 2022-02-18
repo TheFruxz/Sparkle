@@ -15,7 +15,7 @@ import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.system
-import de.jet.paper.structure.command.BranchedInterchange
+import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.jet.paper.structure.command.completion.InterchangeStructureInputRestriction
@@ -28,7 +28,7 @@ import de.jet.paper.structure.command.completion.isNotRequired
 import de.jet.paper.tool.display.message.Transmission.Level.*
 import kotlin.time.Duration.Companion.milliseconds
 
-internal class ServiceInterchange : BranchedInterchange(
+internal class ServiceInterchange : StructuredInterchange(
 	label = "service",
 	protectedAccess = true,
 	structure = buildInterchangeStructure {

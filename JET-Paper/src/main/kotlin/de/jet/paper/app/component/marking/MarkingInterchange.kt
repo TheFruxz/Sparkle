@@ -11,7 +11,7 @@ import de.jet.paper.extension.get
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.paper.identityObject
 import de.jet.paper.extension.paper.templateLocation
-import de.jet.paper.structure.command.BranchedInterchange
+import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.ignoreCase
@@ -24,7 +24,7 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
-internal class MarkingInterchange : BranchedInterchange(
+internal class MarkingInterchange : StructuredInterchange(
 	label = "markings",
 	protectedAccess = true,
 	structure = buildInterchangeStructure {

@@ -13,7 +13,7 @@ import de.jet.paper.extension.getSystemTranslated
 import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.system
-import de.jet.paper.structure.command.BranchedInterchange
+import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.jet.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
@@ -28,7 +28,7 @@ import de.jet.paper.structure.command.completion.mustNotMatchOutput
 import de.jet.paper.tool.display.message.Transmission.Level.*
 import org.bukkit.entity.Player
 
-internal class PointInterchange : BranchedInterchange("point", protectedAccess = true, userRestriction = ONLY_PLAYERS, structure = buildInterchangeStructure {
+internal class PointInterchange : StructuredInterchange("point", protectedAccess = true, userRestriction = ONLY_PLAYERS, structure = buildInterchangeStructure {
 
 	branch {
 		addContent(CompletionComponent.static("list"))

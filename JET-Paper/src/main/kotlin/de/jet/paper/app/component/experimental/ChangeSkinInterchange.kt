@@ -6,7 +6,7 @@ import de.jet.paper.extension.get
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.mojang.applySkin
 import de.jet.paper.extension.mojang.resetSkin
-import de.jet.paper.structure.command.BranchedInterchange
+import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
 import de.jet.paper.structure.command.completion.InterchangeStructureInputRestriction
@@ -17,7 +17,7 @@ import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.completion.mustNotMatchOutput
 import de.jet.paper.tool.display.message.Transmission.Level.*
 
-internal class ChangeSkinInterchange : BranchedInterchange("changeskin", protectedAccess = true, userRestriction = ONLY_PLAYERS, structure = buildInterchangeStructure {
+internal class ChangeSkinInterchange : StructuredInterchange("changeskin", protectedAccess = true, userRestriction = ONLY_PLAYERS, structure = buildInterchangeStructure {
 
 	branch {
 
