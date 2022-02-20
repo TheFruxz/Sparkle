@@ -13,10 +13,11 @@ import de.jet.paper.extension.getSystemTranslated
 import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.system
-import de.jet.paper.structure.command.StructuredInterchange
+import de.jet.paper.extension.tasky.sync
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.jet.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
+import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
@@ -197,7 +198,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 					if (point != null) {
 
-						executor.teleport(point.bukkitLocation)
+						sync { executor.teleport(point.bukkitLocation) }
 
 						getSystemTranslated(
 							system,
