@@ -59,8 +59,12 @@ class ComponentInterchange : Interchange(
 							)
 					)
 				}
-			}.forEach {
-				it.notification(INFO, executor).display()
+			}.withIndex().forEach {
+				it.value.notification(INFO, executor).apply {
+					if (it.index != 0) {
+						promptSound(null)
+					}
+				}.display()
 			}
 
 			SUCCESS
