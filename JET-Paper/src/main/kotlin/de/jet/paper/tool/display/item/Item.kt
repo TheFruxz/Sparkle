@@ -14,6 +14,7 @@ import de.jet.paper.extension.paper.legacyString
 import de.jet.paper.extension.system
 import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.paper.structure.app.App
+import de.jet.paper.tool.annotation.RequiresComponent
 import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.item.PostProperty.*
 import de.jet.paper.tool.display.item.action.ItemClickAction
@@ -385,13 +386,14 @@ data class Item(
 		clickAction = null
 	}
 
-
-
 	fun putInteractAction(interactAction: ItemInteractAction) =
 		apply { this.interactAction = interactAction }
 
-	fun putInteractAction(async: Boolean = true, stop: Boolean = true, action: PlayerInteractAtItemEvent.() -> Unit) =
+	fun putInteractAction(async: Boolean = true, stop: Boolean = true, @OptIn(RequiresComponent::class) action: PlayerInteractAtItemEvent.() -> Unit) {
+		@Suppress("UnnecessaryOptInAnnotation")
+		@OptIn(RequiresComponent::class)
 		putInteractAction(ItemInteractAction(action, async, stop))
+	}
 
 	fun hasInteractAction() = interactAction != null
 

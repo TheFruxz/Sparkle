@@ -12,7 +12,7 @@ import de.jet.paper.app.JetCache
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.tasky.task
-import de.jet.paper.extension.tasky.wait
+import de.jet.paper.extension.tasky.waitTask
 import de.jet.paper.runtime.app.LanguageSpeaker
 import de.jet.paper.runtime.app.RunStatus
 import de.jet.paper.runtime.app.RunStatus.*
@@ -22,6 +22,10 @@ import de.jet.paper.structure.app.interchange.IssuedInterchange
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.component.Component
 import de.jet.paper.structure.service.Service
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.ConfigurationSerialization
@@ -32,6 +36,7 @@ import java.io.InputStreamReader
 import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.reflect.KClass
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * # `App (abstract)`
@@ -158,7 +163,11 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 		fun failed() {
 			val label = interchange.label
-			val aliases = try { interchange.aliases } catch (e: Exception) { emptySet() }
+			val aliases = try {
+				interchange.aliases
+			} catch (e: Exception) {
+				emptySet()
+			}
 			val command = getCommand(interchange.label)
 
 			mainLog(Level.WARNING, "FAILED! try to register fail-interchange '$label' instead...")
@@ -298,7 +307,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			mainLog(Level.WARNING, "skipped stop of service '${service.identity}', was already offline!")
 		}
 		mainLog(Level.INFO, "Waiting one second, let the service stop...")
-		wait(20L*1) {
+		waitTask(20L * 1) {
 			start(service)
 		}
 		mainLog(Level.INFO, "Restart of service '${service.identity}' succeed!")
@@ -334,15 +343,19 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 			JetCache.registeredComponents.add(component)
 
-			component.register()
+			coroutineScope.launch(context = component.threadContext) {
 
-			mainLog(Level.INFO, "registered '${component.identity}' component!")
+				component.register()
 
-			if (component.isAutoStarting) {
+				mainLog(Level.INFO, "registered '${component.identity}' component!")
 
-				mainLog(Level.INFO, "### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
+				if (component.isAutoStarting) {
 
-				start(component.identityObject)
+					mainLog(Level.INFO, "### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
+
+					start(component.identityObject)
+
+				}
 
 			}
 
@@ -356,11 +369,15 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 			if (!JetCache.runningComponents.contains(componentIdentity)) {
 
-				component.start()
+				coroutineScope.launch(context = component.threadContext) {
 
-				JetCache.runningComponents.add(componentIdentity)
+					component.start()
 
-				mainLog(Level.INFO, "started '${componentIdentity.identity}' component!")
+					JetCache.runningComponents.add(componentIdentity)
+
+					mainLog(Level.INFO, "started '${componentIdentity.identity}' component!")
+
+				}
 
 			} else
 				throw IllegalStateException("The component '$componentIdentity' is already running!")
@@ -379,14 +396,18 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 				if (JetCache.runningComponents.contains(componentIdentity)) {
 
-					component.stop()
+					coroutineScope.launch(context = component.threadContext) {
 
-					JetCache.runningComponents.remove(componentIdentity)
+						component.stop()
 
-					if (unregisterComponent)
-						unregister(componentIdentity)
+						JetCache.runningComponents.remove(componentIdentity)
 
-					mainLog(Level.INFO, "stopped '${component.identity}' component!")
+						if (unregisterComponent)
+							unregister(componentIdentity)
+
+						mainLog(Level.INFO, "stopped '${component.identity}' component!")
+
+					}
 
 				} else
 					throw IllegalStateException("The component '$componentIdentity' is already not running!")
@@ -438,6 +459,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	var appRegistrationFile = YamlConfiguration()
 
+	var coroutineScope = CoroutineScope(Dispatchers.Default)
+
 	val log by lazy { createLog(appIdentity) }
 
 	internal fun getResourceFile(path: String) =
@@ -457,7 +480,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	abstract fun preHello()
+	open suspend fun preHello() {}
 
 	/**
 	 * This function is called, when the plugin gets enabled.
@@ -467,7 +490,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	abstract fun hello()
+	abstract suspend fun hello()
 
 	/**
 	 * This function is called, when the plugin gets disabled.
@@ -477,18 +500,37 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	abstract fun bye()
+	open suspend fun bye() {}
+
+	private suspend fun awaitState(waitFor: RunStatus, out: RunStatus, process: suspend () -> Unit) {
+
+		while (runStatus != out) {
+
+			if (runStatus != waitFor) {
+				delay(.1.seconds)
+				continue
+			}
+
+			process()
+
+		}
+
+	}
 
 	final override fun onLoad() {
 		tryToCatch {
 			JetCache.registeredApplications.add(this)
 
-			runStatus = PRE_LOAD
-			classLoader.getResourceAsStream("plugin.yml")?.let { resource ->
-				appRegistrationFile.load(InputStreamReader(resource))
+			coroutineScope.launch {
+
+				runStatus = PRE_LOAD
+				classLoader.getResourceAsStream("plugin.yml")?.let { resource ->
+					appRegistrationFile.load(InputStreamReader(resource))
+				}
+				preHello()
+				runStatus = LOAD
+
 			}
-			preHello()
-			runStatus = LOAD
 
 		}
 	}
@@ -496,9 +538,15 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	final override fun onEnable() {
 		tryToCatch {
 
-			runStatus = PRE_ENABLE
-			hello()
-			runStatus = ENABLE
+			coroutineScope.launch {
+
+				awaitState(LOAD, ENABLE) {
+					runStatus = PRE_ENABLE
+					hello()
+					runStatus = ENABLE
+				}
+
+			}
 
 		}
 	}
@@ -506,9 +554,17 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	final override fun onDisable() {
 		tryToCatch {
 
-			runStatus = SHUTDOWN
-			bye()
-			runStatus = OFFLINE
+			coroutineScope.launch {
+
+				awaitState(ENABLE, OFFLINE) {
+
+					runStatus = SHUTDOWN
+					bye()
+					runStatus = OFFLINE
+
+				}
+
+			}
 
 		}
 	}

@@ -20,6 +20,7 @@ import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
+import de.jet.paper.structure.command.execution
 import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.display.item.action.ActionCooldown
 import de.jet.paper.tool.display.item.action.ActionCooldownType.JET_INFO
@@ -44,7 +45,7 @@ class JETInterchange : Interchange(
 		}
 	}
 ) {
-	override val execution: InterchangeAccess.() -> InterchangeResult = {
+	override val execution = execution {
 
 		var success = true
 

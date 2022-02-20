@@ -8,7 +8,7 @@ internal class ServiceComponent : SmartComponent(system, ENABLED) {
 
 	override val thisIdentity = "Service"
 
-	override fun component() {
+	override suspend fun component() {
 
 		interchange(ServiceInterchange())
 

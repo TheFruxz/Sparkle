@@ -7,7 +7,7 @@ import de.jet.paper.structure.command.InterchangeUserRestriction.NOT_RESTRICTED
 import de.jet.paper.structure.command.completion.InterchangeStructure
 import de.jet.paper.structure.command.live.InterchangeAccess
 
-abstract class BranchedInterchange(
+abstract class StructuredInterchange(
 	label: String,
 	val structure: InterchangeStructure,
 	aliases: Set<String> = emptySet(),
@@ -27,7 +27,7 @@ abstract class BranchedInterchange(
 	ignoreInputValidation
 ) {
 
-	final override val execution: InterchangeAccess.() -> InterchangeResult = {
+	final override val execution: suspend InterchangeAccess.() -> InterchangeResult = {
 		val trace = structure.trace(parameters)
 
 		when (trace.waysMatching.size.maxTo(2)) {

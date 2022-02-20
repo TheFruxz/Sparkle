@@ -14,6 +14,7 @@ import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
+import de.jet.paper.structure.command.execution
 import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.display.message.Transmission.Level.*
 
@@ -31,7 +32,7 @@ class ComponentInterchange : Interchange(
 		}
 	}
 ) {
-	override val execution: InterchangeAccess.() -> InterchangeResult = {
+	override val execution = execution {
 
 		if (parameters.size == 1 && parameters.first() == "list") {
 

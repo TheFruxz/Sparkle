@@ -8,7 +8,7 @@ internal class MarkingComponent : SmartComponent(system, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "Markings"
 
-	override fun component() {
+	override suspend fun component() {
 
 		interchange(MarkingInterchange())
 

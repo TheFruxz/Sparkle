@@ -8,7 +8,7 @@ internal class ItemLinkComponent : SmartComponent(system, AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "ItemLink"
 
-	override fun component() {
+	override suspend fun component() {
 
 		listener(ItemLinkListener())
 

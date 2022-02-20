@@ -22,7 +22,7 @@ class InterchangeStructure(
 	override var content: List<CompletionComponent> = emptyList(),
 	val parent: InterchangeStructure? = null,
 	private var isBranched: Boolean = false,
-	var onExecution: (InterchangeAccess.() -> InterchangeResult)? = null,
+	var onExecution: (suspend InterchangeAccess.() -> InterchangeResult)? = null,
 ) : TreeBranch<InterchangeStructure, List<CompletionComponent>, TreeBranchType>(
 	identity,
 	address,
@@ -87,7 +87,7 @@ class InterchangeStructure(
 	fun content(vararg completionComponents: CompletionComponent) =
 		content(content = completionComponents.toList())
 
-	fun execution(process: (InterchangeAccess.() -> InterchangeResult)?) {
+	fun execution(process: (suspend InterchangeAccess.() -> InterchangeResult)?) {
 		onExecution = process
 	}
 

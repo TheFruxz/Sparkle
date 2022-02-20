@@ -21,11 +21,9 @@ commands:
     description: Manages your sandboxes!
   buildmode:
     description: Manages your buildmodes!
-  markingtool:
+  markings:
     description: Gives you the marking tool!
   changeskin:
     description: test skin
   point:
     description: Manages your points!
-  world:
-    description: Manages your worlds!

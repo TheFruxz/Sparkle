@@ -6,6 +6,7 @@ import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.completion.emptyInterchangeStructure
+import de.jet.paper.structure.command.execution
 import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.display.message.Transmission.Level.ERROR
 
@@ -19,7 +20,7 @@ class IssuedInterchange(
 	completion = emptyInterchangeStructure(),
 ) {
 
-	override val execution: InterchangeAccess.() -> InterchangeResult = {
+	override val execution = execution {
 
 		lang("interchange.structure.issue.register")
 			.notification(ERROR, executor)
