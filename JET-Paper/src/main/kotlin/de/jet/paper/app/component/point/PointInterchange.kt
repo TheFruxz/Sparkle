@@ -167,7 +167,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 					if (point != null) {
 
-						points.removeAll { it.identity.equals(parameters.last(), true) }
+						points.removeAll { it.identity.equals(parameters.dropLast(1).last(), true) }
 
 						JetData.savedPoints.content = PointConfig(points)
 
