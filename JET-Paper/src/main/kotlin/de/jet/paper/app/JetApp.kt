@@ -29,6 +29,7 @@ import de.jet.paper.extension.display.ui.buildContainer
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.objectBound.buildSandBox
 import de.jet.paper.extension.paper.worlds
+import de.jet.paper.extension.tasky.sync
 import de.jet.paper.general.api.mojang.MojangProfile
 import de.jet.paper.general.api.mojang.MojangProfileCape
 import de.jet.paper.general.api.mojang.MojangProfileRaw
@@ -51,6 +52,7 @@ import de.jet.paper.tool.input.Keyboard.RenderEngine.KeyConfiguration
 import de.jet.paper.tool.permission.Approval
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
@@ -176,6 +178,26 @@ class JetApp : App() {
 					set(index, value.let { Keyboard.RenderEngine.renderKey(it) })
 				}
 			}.display(executor as Player)
+		}
+
+		buildSandBox(this, "checkAsync") {
+
+			executor.sendMessage("This should be async, Thread: '${Thread.currentThread().name}'")
+
+			sync {
+				executor.sendMessage("This should be sync, Thread: '${Thread.currentThread().name}'")
+			}
+
+		}
+
+		buildSandBox(this, "simulateFreeze") {
+
+			executor.sendMessage("Okay, I'm going to freeze you now!")
+
+			delay(20000L)
+
+			executor.sendMessage("Okay, I'm going to unfreeze you now!")
+
 		}
 
 	}

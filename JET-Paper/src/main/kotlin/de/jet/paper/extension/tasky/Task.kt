@@ -6,7 +6,12 @@ import de.jet.paper.structure.app.App
 import de.jet.paper.structure.service.Service
 import de.jet.paper.tool.timing.tasky.Tasky
 import de.jet.paper.tool.timing.tasky.TemporalAdvice
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
+/**
+ * Exceptions are caught!
+ */
 fun task(
 	temporalAdvice: TemporalAdvice,
 	killAtError: Boolean = true,
@@ -18,6 +23,9 @@ fun task(
 	process: Tasky.() -> Unit,
 ) = Tasky.task(vendor, temporalAdvice, killAtError, onStart, onStop, onCrash, serviceVendor, process)
 
+/**
+ * Exceptions are caught!
+ */
 fun sync(
 	temporalAdvice: TemporalAdvice = TemporalAdvice.instant(async = false),
 	killAtError: Boolean = true,
@@ -29,6 +37,9 @@ fun sync(
 	process: Tasky.() -> Unit,
 ) = Tasky.task(vendor, temporalAdvice, killAtError, onStart, onStop, onCrash, serviceVendor, process)
 
+/**
+ * Exceptions are caught!
+ */
 fun async(
 	temporalAdvice: TemporalAdvice = TemporalAdvice.instant(async = true),
 	killAtError: Boolean = true,
@@ -40,7 +51,12 @@ fun async(
 	process: Tasky.() -> Unit,
 ) = Tasky.task(vendor, temporalAdvice, killAtError, onStart, onStop, onCrash, serviceVendor, process)
 
-fun <T> T.wait(ticks: Long, code: T.() -> Unit): T  {
-	sync(temporalAdvice = TemporalAdvice.delayed(ticks)) { code(this@wait) }
+fun coroutine(
+	vendor: App = system,
+	process: suspend CoroutineScope.() -> Unit,
+) = vendor.coroutineScope.launch(block = process)
+
+fun <T> T.waitTask(ticks: Long, code: T.() -> Unit): T  {
+	sync(temporalAdvice = TemporalAdvice.delayed(ticks)) { code(this@waitTask) }
 	return this
 }

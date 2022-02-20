@@ -12,7 +12,7 @@ import de.jet.paper.app.JetCache
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.tasky.task
-import de.jet.paper.extension.tasky.wait
+import de.jet.paper.extension.tasky.waitTask
 import de.jet.paper.runtime.app.LanguageSpeaker
 import de.jet.paper.runtime.app.RunStatus
 import de.jet.paper.runtime.app.RunStatus.*
@@ -22,7 +22,10 @@ import de.jet.paper.structure.app.interchange.IssuedInterchange
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.component.Component
 import de.jet.paper.structure.service.Service
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.ConfigurationSerialization
@@ -160,7 +163,11 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 		fun failed() {
 			val label = interchange.label
-			val aliases = try { interchange.aliases } catch (e: Exception) { emptySet() }
+			val aliases = try {
+				interchange.aliases
+			} catch (e: Exception) {
+				emptySet()
+			}
 			val command = getCommand(interchange.label)
 
 			mainLog(Level.WARNING, "FAILED! try to register fail-interchange '$label' instead...")
@@ -300,7 +307,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			mainLog(Level.WARNING, "skipped stop of service '${service.identity}', was already offline!")
 		}
 		mainLog(Level.INFO, "Waiting one second, let the service stop...")
-		wait(20L*1) {
+		waitTask(20L * 1) {
 			start(service)
 		}
 		mainLog(Level.INFO, "Restart of service '${service.identity}' succeed!")
@@ -332,11 +339,11 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			if (JetCache.registeredComponents.any { it.identity == component.identity })
 				throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
 
+			component.firstContactHandshake()
+
+			JetCache.registeredComponents.add(component)
+
 			coroutineScope.launch(context = component.threadContext) {
-
-				component.firstContactHandshake()
-
-				JetCache.registeredComponents.add(component)
 
 				component.register()
 
@@ -473,7 +480,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	open suspend fun preHello() { }
+	open suspend fun preHello() {}
 
 	/**
 	 * This function is called, when the plugin gets enabled.
@@ -493,7 +500,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	open suspend fun bye() { }
+	open suspend fun bye() {}
 
 	private suspend fun awaitState(waitFor: RunStatus, out: RunStatus, process: suspend () -> Unit) {
 
