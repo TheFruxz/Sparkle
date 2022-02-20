@@ -7,7 +7,7 @@ import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.mojang.applySkin
 import de.jet.paper.extension.mojang.resetSkin
-import de.jet.paper.structure.command.StructuredInterchange
+import de.jet.paper.extension.tasky.sync
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
 import de.jet.paper.structure.command.StructuredInterchange

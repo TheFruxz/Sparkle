@@ -11,6 +11,7 @@ import de.jet.paper.extension.get
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.paper.identityObject
 import de.jet.paper.extension.paper.templateLocation
+import de.jet.paper.extension.tasky.sync
 import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionComponent
@@ -29,15 +30,15 @@ internal class MarkingInterchange : StructuredInterchange(
 	protectedAccess = true,
 	structure = buildInterchangeStructure {
 
-		fun positionData(location: Location) = buildString {
-			append('(')
-			append("x=${location.x}, y=${location.y}, z=${location.z}")
-			append(')')
-		}
+		branch {
 
+			fun positionData(location: Location) = buildString {
+				append('(')
+				append("x=${location.x}, y=${location.y}, z=${location.z}")
+				append(')')
+			}
 
-		val markingTool by lazy {
-			Material.GOLDEN_HOE.item.apply {
+			fun produceMarkingItem() = Material.GOLDEN_HOE.item.apply {
 				label = "$YELLOW${BOLD}Marking-Tool"
 				identity = "jet:marking_tool"
 				lore = """
@@ -160,9 +161,6 @@ internal class MarkingInterchange : StructuredInterchange(
 
 				}
 			}
-		}
-
-		branch {
 
 			addContent(CompletionComponent.static("giveItem"))
 
@@ -170,7 +168,7 @@ internal class MarkingInterchange : StructuredInterchange(
 
 			concludedExecution {
 
-				sync { (executor as Player).inventory.addItem(markingTool.produce()) }
+				sync { (executor as Player).inventory.addItem(produceMarkingItem().produce()) }
 
 				lang["component.markingTool.interchange.success"]
 					.notification(APPLIED, executor).display()

@@ -11,12 +11,8 @@ import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.component.Component
-import de.jet.paper.tool.display.message.Transmission.Level.*
-=======
-import de.jet.paper.structure.component.Component
 import de.jet.paper.tool.display.message.Transmission.Level.APPLIED
 import de.jet.paper.tool.display.message.Transmission.Level.ERROR
->>>>>>> Stashed changes
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
 import kotlinx.coroutines.launch
