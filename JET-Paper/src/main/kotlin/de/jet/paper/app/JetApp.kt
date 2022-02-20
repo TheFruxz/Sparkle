@@ -164,20 +164,22 @@ class JetApp : App() {
 		add(ComponentInterchange())
 
 		buildSandBox(this, "importAllWorlds") {
-			worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld)
+			sync { worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld) }
 		}
 
 		buildSandBox(this, "keyboard-demo") {
 			executor as Player
-			Keyboard.RenderEngine.renderKeyboard(executor).mainKeyboard.display(executor)
+			sync { Keyboard.RenderEngine.renderKeyboard(executor).mainKeyboard.display(executor) }
 		}
 
 		buildSandBox(this, "renderAllKeys") {
-			buildContainer(lines = 6) {
-				JetData.keyConfig.content.lightModeKeys.withIndex().forEach { (index, value) ->
-					set(index, value.let { Keyboard.RenderEngine.renderKey(it) })
-				}
-			}.display(executor as Player)
+			sync {
+				buildContainer(lines = 6) {
+					JetData.keyConfig.content.lightModeKeys.withIndex().forEach { (index, value) ->
+						set(index, value.let { Keyboard.RenderEngine.renderKey(it) })
+					}
+				}.display(executor as Player)
+			}
 		}
 
 		buildSandBox(this, "checkAsync") {
