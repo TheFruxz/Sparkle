@@ -205,6 +205,7 @@ internal class ServiceInterchange : BranchedInterchange(
 						try {
 
 							app(service.vendor).stop(service)
+							app(service.vendor).unregister(service)
 
 							lang("interchange.internal.service.serviceUnregistered")
 								.replace("[id]" to service.identity)
