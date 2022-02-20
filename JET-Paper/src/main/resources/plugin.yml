@@ -27,5 +27,3 @@ commands:
     description: test skin
   point:
     description: Manages your points!
-  world:
-    description: Manages your worlds!
