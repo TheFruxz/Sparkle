@@ -6,6 +6,7 @@ import de.jet.paper.app.JetData
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.paper.createKey
 import de.jet.paper.structure.app.App
+import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.component.Component.RunType.*
 import de.jet.paper.tool.smart.ContextualIdentifiable
 import de.jet.paper.tool.smart.Logging
@@ -15,10 +16,21 @@ import org.bukkit.NamespacedKey
 import kotlin.reflect.KClass
 
 abstract class Component(
-	override val vendor: App,
 	open val behaviour: RunType = DISABLED,
-	open val experimental: Boolean = false
+	open val experimental: Boolean = false,
+	preferredVendor: App? = null,
 ) : ContextualIdentifiable<Component>, Logging {
+
+	init {
+
+		preferredVendor?.let {
+			vendor = it
+		}
+
+	}
+
+	override lateinit var vendor: App
+		internal set
 
 	override val vendorIdentity: Identity<out App>
 		get() = vendor.identityObject
@@ -36,6 +48,23 @@ abstract class Component(
 		@OptIn(DelicateCoroutinesApi::class)
 		(newSingleThreadContext(identity))
 	}
+
+	/**
+	 * This function replaces the current [vendor] of this [Component]
+	 * with the [newVendor].
+	 * This only happens, if the current [vendor] is not set (not initialized),
+	 * or if [override] is true *(default: false)*.
+	 * @param newVendor the new vendor, which will be used
+	 * @param override defines, if the old vendor (if set) will be replaced with [newVendor]
+	 * @return If the vendor-change happens, true is returned, otherwise false is returned!
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun replaceVendor(newVendor: App, override: Boolean = false) = if (override || !this::vendor.isInitialized) {
+		vendor = newVendor
+		true
+	} else
+		false
 
 	fun firstContactHandshake() {
 		debugLog("starting firstContactHandshake function of component '$identity'!")

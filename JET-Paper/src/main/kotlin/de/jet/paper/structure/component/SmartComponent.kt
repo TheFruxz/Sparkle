@@ -16,10 +16,10 @@ import de.jet.paper.structure.service.Service
 import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 
 abstract class SmartComponent(
-	override val vendor: App,
 	override val behaviour: RunType = DISABLED,
 	override val experimental: Boolean = false,
-) : Component(vendor, behaviour, experimental) {
+	preferredVendor: App? = null,
+) : Component(behaviour, experimental, preferredVendor) {
 
 	val interchanges = mutableSetOf<Interchange>()
 
