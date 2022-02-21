@@ -8,6 +8,7 @@ import de.jet.paper.extension.debugLog
 import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.completion.InterchangeStructure.BranchStatus.*
+import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.tracing.CompletionTraceResult
 import de.jet.paper.structure.command.completion.tracing.CompletionTraceResult.Conclusion.EMPTY
@@ -302,6 +303,12 @@ class InterchangeStructure(
 	fun addContent(vararg components: CompletionComponent) {
 		content += components
 	}
+
+	fun addContent(vararg statics: String) =
+		addContent(CompletionComponent.static(statics.toSet()))
+
+	fun addContent(vararg assets: CompletionAsset<*>) =
+		addContent(components = assets.map { CompletionComponent.asset(it) }.toTypedArray())
 
 }
 

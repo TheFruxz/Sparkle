@@ -67,7 +67,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 		}
 
 		branch {
-			addContent(CompletionComponent.static("list"))
+			addContent("list")
 
 			ignoreCase()
 
@@ -108,19 +108,15 @@ internal class BuildModeInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(
-					CompletionComponent.asset(
-						CompletionAsset(
-							vendor = system,
-							thisIdentity = "Page",
-							true,
-							listOf(InterchangeStructureInputRestriction.LONG),
-							generator = {
-								(1..ceilToInt(JetCache.buildModePlayers.size.toDouble() / 6)).mapToString()
-							},
-						)
-					)
-				)
+				addContent(CompletionAsset(
+					vendor = system,
+					thisIdentity = "Page",
+					true,
+					listOf(InterchangeStructureInputRestriction.LONG),
+					generator = {
+						(1..ceilToInt(JetCache.buildModePlayers.size.toDouble() / 6)).mapToString()
+					},
+				))
 
 				isNotRequired()
 
@@ -141,7 +137,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 		branch {
 
-			addContent(CompletionComponent.static("enableAll"))
+			addContent("enableAll")
 
 			ignoreCase()
 
@@ -155,7 +151,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 		branch {
 
-			addContent(Companion.static("disableAll"))
+			addContent("disableAll")
 
 			ignoreCase()
 
@@ -169,7 +165,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 		branch {
 
-			addContent(Companion.static("toggleAll"))
+			addContent("toggleAll")
 
 			ignoreCase()
 
@@ -183,7 +179,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 		branch {
 
-			addContent(CompletionComponent.static("do"))
+			addContent("do")
 
 			ignoreCase()
 
@@ -193,7 +189,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 				branch {
 
-					addContent(CompletionComponent.static("enable"))
+					addContent("enable")
 
 					ignoreCase()
 
@@ -208,7 +204,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 				branch {
 
-					addContent(Companion.static("disable"))
+					addContent("disable")
 
 					ignoreCase()
 
@@ -223,7 +219,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 				branch {
 
-					addContent(Companion.static("toggle"))
+					addContent("toggle")
 
 					ignoreCase()
 
@@ -238,7 +234,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 				branch {
 
-					addContent(Companion.static("info"))
+					addContent("info")
 
 					ignoreCase()
 

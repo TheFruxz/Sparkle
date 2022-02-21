@@ -35,12 +35,12 @@ class JETInterchange : Interchange(
 	protectedAccess = false,
 	completion = buildInterchangeStructure {
 		branch {
-			content(CompletionComponent.static("version", "website", "repository", "ping"))
+			addContent("version", "website", "repository", "ping")
 		}
 		branch {
-			content(Companion.static("test"))
+			addContent("test")
 			branch {
-				content(Companion.asset(CompletionAsset.TRANSMISSION_LEVEL))
+				addContent(CompletionAsset.TRANSMISSION_LEVEL)
 			}
 		}
 	}

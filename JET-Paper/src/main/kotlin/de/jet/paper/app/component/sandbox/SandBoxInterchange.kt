@@ -32,7 +32,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 	structure = buildInterchangeStructure {
 
 		branch {
-			addContent(CompletionComponent.static("dropAll"))
+			addContent("dropAll")
 
 			ignoreCase()
 
@@ -55,7 +55,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 		}
 
 		branch {
-			addContent(CompletionComponent.static("runAll"))
+			addContent("runAll")
 
 			ignoreCase()
 
@@ -80,8 +80,8 @@ internal class SandBoxInterchange : StructuredInterchange(
 		}
 
 		branch {
-			addContent(CompletionComponent.static("list"))
 
+			addContent("list")
 			ignoreCase()
 
 			fun displaySandBoxes(executor: InterchangeExecutor, page: Int) {
@@ -124,19 +124,15 @@ internal class SandBoxInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(
-					CompletionComponent.asset(
-						CompletionAsset(
-							vendor = system,
-							thisIdentity = "Page",
-							true,
-							listOf(InterchangeStructureInputRestriction.LONG),
-							generator = {
-								(1..ceilToInt(allSandBoxes.size.toDouble() / 6)).mapToString()
-							},
-						)
-					)
-				)
+				addContent(CompletionAsset(
+					vendor = system,
+					thisIdentity = "Page",
+					true,
+					listOf(InterchangeStructureInputRestriction.LONG),
+					generator = {
+						(1..ceilToInt(allSandBoxes.size.toDouble() / 6)).mapToString()
+					},
+				))
 
 				isNotRequired()
 
@@ -157,17 +153,17 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 		branch {
 
-			addContent(CompletionComponent.static("do"))
+			addContent("do")
 
 			ignoreCase()
 
 			branch {
 
-				addContent(Companion.asset(CompletionAsset.SANDBOX))
+				addContent(CompletionAsset.SANDBOX)
 
 				branch {
 
-					addContent(Companion.static("drop"))
+					addContent("drop")
 
 					concludedExecution {
 						val sandBox = getSandBox(getInput(1))!!
@@ -184,7 +180,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 				branch {
 
-					addContent(Companion.static("run"))
+					addContent("run")
 
 					concludedExecution {
 						val sandBox = getSandBox(getInput(1))!!
@@ -197,7 +193,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 				branch {
 
-					addContent(Companion.static("info"))
+					addContent("info")
 
 					concludedExecution {
 						val sandBox = getSandBox(getInput(1))!!

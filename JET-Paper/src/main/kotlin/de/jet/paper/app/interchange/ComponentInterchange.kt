@@ -15,17 +15,16 @@ import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.execution
-import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.display.message.Transmission.Level.*
 
 class ComponentInterchange : Interchange(
 	label = "component",
 	completion = buildInterchangeStructure {
 		branch {
-			content(CompletionComponent.static("list"))
+			addContent("list")
 		}
 		branch {
-			content(Companion.static("start", "stop", "autostart"))
+			addContent("start", "stop", "autostart")
 			branch {
 				content(Companion.asset(CompletionAsset.COMPONENT))
 			}

@@ -32,7 +32,7 @@ import org.bukkit.entity.Player
 internal class PointInterchange : StructuredInterchange("point", protectedAccess = true, userRestriction = ONLY_PLAYERS, structure = buildInterchangeStructure {
 
 	branch {
-		addContent(CompletionComponent.static("list"))
+		addContent("list")
 
 		ignoreCase()
 
@@ -75,19 +75,15 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 		}
 
 		branch {
-			addContent(
-				CompletionComponent.asset(
-					CompletionAsset(
-						vendor = system,
-						thisIdentity = "Page",
-						true,
-						listOf(InterchangeStructureInputRestriction.LONG),
-						generator = {
-							(1..ceilToInt(JetData.savedPoints.content.points.size.toDouble() / 6)).mapToString()
-						},
-					)
-				)
-			)
+			addContent(CompletionAsset(
+				vendor = system,
+				thisIdentity = "Page",
+				true,
+				listOf(InterchangeStructureInputRestriction.LONG),
+				generator = {
+					(1..ceilToInt(JetData.savedPoints.content.points.size.toDouble() / 6)).mapToString()
+				},
+			))
 
 			isNotRequired()
 
@@ -108,20 +104,20 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 	branch {
 
-		addContent(CompletionComponent.static("do"))
+		addContent("do")
 
 		ignoreCase()
 
 		branch {
 
-			addContent(CompletionComponent.static("..."))
-			addContent(Companion.asset(CompletionAsset.POINT))
+			addContent("...")
+			addContent(CompletionAsset.POINT)
 
 			mustNotMatchOutput()
 
 			branch {
 
-				addContent(CompletionComponent.static("create"))
+				addContent("create")
 
 				ignoreCase()
 
@@ -157,7 +153,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 			branch {
 
-				addContent(Companion.static("delete"))
+				addContent("delete")
 
 				ignoreCase()
 
@@ -186,7 +182,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 			branch {
 
-				addContent(Companion.static("teleport"))
+				addContent("teleport")
 
 				ignoreCase()
 

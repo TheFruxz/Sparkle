@@ -46,7 +46,7 @@ internal class ChangeSkinInterchange : StructuredInterchange("changeskin", prote
 
 		branch {
 			addContent(CompletionComponent.asset(CompletionAsset.ONLINE_PLAYER_NAME))
-			addContent(CompletionComponent.static("--reset"))
+			addContent("--reset")
 
 			mustNotMatchOutput()
 			ignoreCase()

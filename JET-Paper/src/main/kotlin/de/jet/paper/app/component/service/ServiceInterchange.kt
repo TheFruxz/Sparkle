@@ -34,7 +34,7 @@ internal class ServiceInterchange : StructuredInterchange(
 	structure = buildInterchangeStructure {
 
 		branch {
-			addContent(CompletionComponent.static("list"))
+			addContent("list")
 
 			ignoreCase()
 
@@ -79,19 +79,15 @@ internal class ServiceInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(
-					CompletionComponent.asset(
-						CompletionAsset(
-							vendor = system,
-							thisIdentity = "Page",
-							true,
-							listOf(InterchangeStructureInputRestriction.LONG),
-							generator = {
-								(1..ceilToInt(registeredServices.size.toDouble() / 6)).mapToString()
-							},
-						)
-					)
-				)
+				addContent(CompletionAsset(
+					vendor = system,
+					thisIdentity = "Page",
+					true,
+					listOf(InterchangeStructureInputRestriction.LONG),
+					generator = {
+						(1..ceilToInt(registeredServices.size.toDouble() / 6)).mapToString()
+					},
+				))
 
 				isNotRequired()
 
@@ -112,7 +108,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 		branch {
 
-			addContent(CompletionComponent.static("do"))
+			addContent("do")
 
 			ignoreCase()
 
@@ -122,7 +118,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 				branch {
 
-					addContent(CompletionComponent.static("start"))
+					addContent("start")
 
 					ignoreCase()
 
@@ -149,7 +145,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 				branch {
 
-					addContent(CompletionComponent.static("stop"))
+					addContent("stop")
 
 					ignoreCase()
 
@@ -176,7 +172,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 				branch {
 
-					addContent(Companion.static("restart"))
+					addContent("restart")
 
 					ignoreCase()
 
@@ -195,7 +191,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 				branch {
 
-					addContent(Companion.static("unregister"))
+					addContent("unregister")
 
 					ignoreCase()
 
@@ -223,7 +219,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 				branch {
 
-					addContent(Companion.static("reset"))
+					addContent("reset")
 
 					ignoreCase()
 

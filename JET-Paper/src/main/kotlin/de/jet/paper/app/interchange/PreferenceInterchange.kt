@@ -19,10 +19,10 @@ class PreferenceInterchange : Interchange(
 	protectedAccess = true,
 	completion = buildInterchangeStructure {
 		branch {
-			content(CompletionComponent.static("list"))
+			addContent("list")
 		}
 		branch {
-			content(Companion.static("reset", "info", "set"))
+			addContent("reset", "info", "set")
 			branch {
 				TODO()
 			}

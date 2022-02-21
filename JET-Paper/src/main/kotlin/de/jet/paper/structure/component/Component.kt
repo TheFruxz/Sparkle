@@ -6,7 +6,6 @@ import de.jet.paper.app.JetData
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.paper.createKey
 import de.jet.paper.structure.app.App
-import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.component.Component.RunType.*
 import de.jet.paper.tool.smart.ContextualIdentifiable
 import de.jet.paper.tool.smart.Logging
@@ -44,10 +43,7 @@ abstract class Component(
 	val key: NamespacedKey
 		get() = vendor.createKey(thisIdentity)
 
-	override val threadContext by lazy {
-		@OptIn(DelicateCoroutinesApi::class)
-		(newSingleThreadContext(identity))
-	}
+	override val threadContext by lazy { @OptIn(DelicateCoroutinesApi::class) newSingleThreadContext(identity) }
 
 	/**
 	 * This function replaces the current [vendor] of this [Component]
