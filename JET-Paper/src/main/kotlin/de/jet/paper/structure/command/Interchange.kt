@@ -31,6 +31,19 @@ import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import java.util.logging.Level.WARNING
 
+/**
+ * @param label is the interchange name, used as /<name> and as the identifier, defined inside your plugin.yml
+ * @param aliases are the supported interchange-aliases, which can be used, to access the interchange
+ * @param protectedAccess defines, if the [InterchangeExecutor] requires to have the permission 'interchange.<label>' to execute this interchange
+ * @param userRestriction defines, which types of [InterchangeExecutor] are allowed, to execute the interchange
+ * @param accessProtectionType defines the system, which is used, to check the [InterchangeExecutor]s ability to execute the interchange
+ * @param hiddenFromRecommendation if enabled, this interchange will not be visible in the tab-recommendations of usable commands
+ * @param completion defines the completions, that the interchange will display, during a [InterchangeExecutor]s input into console/chat
+ * @param ignoreInputValidation defines, if the input of the user should not be checked of correctness
+ * @param preferredVendor if not null, this overrides the automatic extrapolated [vendor] [App] on registering
+ * @author Fruxz
+ * @since 1.0
+ */
 abstract class Interchange(
 	val label: String,
 	val aliases: Set<String> = emptySet(),
@@ -40,7 +53,7 @@ abstract class Interchange(
 	val hiddenFromRecommendation: Boolean = false, // todo: seems to be unused, that have to be an enabled feature
 	val completion: InterchangeStructure = de.jet.paper.structure.command.completion.emptyInterchangeStructure(),
 	val ignoreInputValidation: Boolean = false,
-	val preferredVendor: App? = null,
+	preferredVendor: App? = null,
 ) : CommandExecutor, ContextualIdentifiable<Interchange>, Logging {
 
 	init {
@@ -52,6 +65,12 @@ abstract class Interchange(
 
 	}
 
+	/**
+	 * The [vendor] of this interchange, represents the [App],
+	 * owning / running this interchange.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	final override lateinit var vendor: App
 		private set
 
@@ -72,29 +91,100 @@ abstract class Interchange(
 	} else
 		false
 
+	/**
+	 * This value represents a completely generated / computed completion, which
+	 * get used, to display the user good input recommendations, during the input.
+	 * This tabCompleter is a **not** a computational value, but it contains code,
+	 * that compute its recommendations adaptively to the input and to the changes
+	 * of the containing assets.
+	 * The TabCompleter accesses the [completion] and uses its [InterchangeStructure.computeCompletion]
+	 * function, to compute the current state of adaptive and most fitting recommendations.
+	 * By doing so, the TabCompleter produces new results at every tab-completion call,
+	 * but the tab-completer itself, stays same, without changing it.
+	 * @see InterchangeStructure.computeCompletion
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	val tabCompleter = TabCompleter { _, _, _, args -> completion.computeCompletion(args.toList()) }
 
+	/**
+	 * This value represents the thread context (Kotlin Coroutines) of
+	 * this interchange. It is used, to process and execute the actions
+	 * of this interchange, so that a user cannot freeze the whole server,
+	 * by only using an interchange, that processes simple stuff.
+	 * The [threadContext] basically uses the [newSingleThreadContext]
+	 * function and uses the [identity] of this interchange as the name
+	 * of the bound thread.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	override val threadContext by lazy {
 		@OptIn(DelicateCoroutinesApi::class)
 		newSingleThreadContext(identity)
 	}
 
+	/**
+	 * This value is the section-name of the logger, attached to
+	 * this [Interchange]-Object.
+	 * @see Logging
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	final override val sectionLabel = "InterchangeEngine"
 
+	/**
+	 * This value is the second-part of the identity of this [Interchange],
+	 * used to track and identify this [Interchange], among the other
+	 * [Interchange]s, used by your or other [App]s.
+	 * @see ContextualIdentifiable
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	override val thisIdentity = label
 
+	/**
+	 * This value is the first-part of the identity of this [Interchange],
+	 * used to track and identify this [Interchange], among the other
+	 * [Interchange]s, used by your or other [App]s.
+	 * @see ContextualIdentifiable
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	final override val vendorIdentity: Identity<App>
 		get() = vendor.identityObject
 
+	/**
+	 * This computed [lazy]-initialization value represents the required [Approval],
+	 * to be able to access this [Interchange] as a [InterchangeExecutor].
+	 * This value is computed from the [protectedAccess], [vendor] and [label]
+	 * properties, to generate the [Approval].
+	 * This value can be null, if this [Interchange] does not have any [Approval]-
+	 * Requirements, to access this [Interchange], otherwise, the contained [Approval]-
+	 * Value is required, to use this interchange!
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	private val requiredApproval by lazy { if (protectedAccess) Approval.fromApp(vendor, "interchange.$label") else null }
 
 	// parameters
 
+	/**
+	 * This abstract value defines the execution block, which will be executed, after a
+	 * [InterchangeExecutor]s input, the [Approval] checks (based on [requiredApproval])
+	 * and the completion-Checks (based on [completion]).
+	 * This execution block is a **suspend** block, because it gets executed, from the
+	 * [vendor]s [App.coroutineScope], at a [threadContext] context.
+	 * To easily create your execution block, we recommend you, to use the [execution]
+	 * function!
+	 * @see execution
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	abstract val execution: suspend InterchangeAccess.() -> InterchangeResult
 
 	// runtime-functions
-
-	fun interchangeException(exception: Exception, executor: InterchangeExecutor, executorType: InterchangeUserRestriction) {
+	
+	private fun interchangeException(exception: Exception, executor: InterchangeExecutor, executorType: InterchangeUserRestriction) {
 		sectionLog.log(
 			WARNING,
 			"Executor ${executor.name} as ${executorType.name} caused an error at execution at ${with(exception.stackTrace[0]) { "$className:$methodName" }}!"
