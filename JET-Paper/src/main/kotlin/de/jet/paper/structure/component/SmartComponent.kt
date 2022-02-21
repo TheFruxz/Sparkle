@@ -43,7 +43,7 @@ abstract class SmartComponent(
 
 		interchanges.forEach {
 			tryToCatch {
-				it.vendor = vendor
+				it.replaceVendor(vendor)
 				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject))
 				JetCache.registeredInterchanges.remove(it)
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
@@ -142,7 +142,7 @@ abstract class SmartComponent(
 				SUCCESS
 			}
 		}.apply {
-			vendor = system
+			replaceVendor(system)
 		}
 
 	}

@@ -19,7 +19,6 @@ import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.permission.Approval
 import de.jet.paper.tool.smart.ContextualIdentifiable
 import de.jet.paper.tool.smart.Logging
-import de.jet.paper.tool.smart.VendorsIdentifiable
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
@@ -41,14 +40,37 @@ abstract class Interchange(
 	val hiddenFromRecommendation: Boolean = false, // todo: seems to be unused, that have to be an enabled feature
 	val completion: InterchangeStructure = de.jet.paper.structure.command.completion.emptyInterchangeStructure(),
 	val ignoreInputValidation: Boolean = false,
+	val preferredVendor: App? = null,
 ) : CommandExecutor, ContextualIdentifiable<Interchange>, Logging {
 
 	init {
 		completion.identity = label
+
+		preferredVendor?.let {
+			vendor = it
+		}
+
 	}
 
 	final override lateinit var vendor: App
-		internal set
+		private set
+
+	/**
+	 * This function replaces the current [vendor] of this [Interchange]
+	 * with the [newVendor].
+	 * This only happens, if the current [vendor] is not set (not initialized),
+	 * or if [override] is true *(default: false)*.
+	 * @param newVendor the new vendor, which will be used
+	 * @param override defines, if the old vendor (if set) will be replaced with [newVendor]
+	 * @return If the vendor-change happens, true is returned, otherwise false is returned!
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun replaceVendor(newVendor: App, override: Boolean = false) = if (override || !this::vendor.isInitialized) {
+		vendor = newVendor
+		true
+	} else
+		false
 
 	val tabCompleter = TabCompleter { _, _, _, args -> completion.computeCompletion(args.toList()) }
 

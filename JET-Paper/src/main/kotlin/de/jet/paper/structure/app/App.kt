@@ -191,7 +191,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 				val aliases = interchange.aliases
 				val command = getCommand(interchange.label)
 
-				interchange.vendor = companion.instance
+				interchange.replaceVendor(companion.instance)
 
 				if (command != null) {
 
