@@ -4,7 +4,7 @@ import de.jet.paper.extension.system
 import de.jet.paper.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.jet.paper.structure.component.SmartComponent
 
-internal class SandBoxComponent : SmartComponent(system, AUTOSTART_MUTABLE) {
+internal class SandBoxComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "Sandboxing"
 

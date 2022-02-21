@@ -4,7 +4,7 @@ import de.jet.paper.extension.system
 import de.jet.paper.structure.component.Component.RunType.ENABLED
 import de.jet.paper.structure.component.SmartComponent
 
-internal class ServiceComponent : SmartComponent(system, ENABLED) {
+internal class ServiceComponent : SmartComponent(ENABLED) {
 
 	override val thisIdentity = "Service"
 
