@@ -183,7 +183,7 @@ abstract class Interchange(
 	abstract val execution: suspend InterchangeAccess.() -> InterchangeResult
 
 	// runtime-functions
-	
+
 	private fun interchangeException(exception: Exception, executor: InterchangeExecutor, executorType: InterchangeUserRestriction) {
 		sectionLog.log(
 			WARNING,
