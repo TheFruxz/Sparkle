@@ -221,6 +221,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 			try {
 
+				eventListener.replaceVendor(this)
+
 				pluginManager.registerEvents(eventListener as Listener, this)
 				JetCache.registeredListeners.add(eventListener)
 				mainLog(Level.INFO, "registered '${eventListener.listenerIdentity}' listener!")

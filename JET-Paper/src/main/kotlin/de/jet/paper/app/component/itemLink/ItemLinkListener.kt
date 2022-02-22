@@ -34,9 +34,7 @@ import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 
-internal class ItemLinkListener : EventListener {
-
-	override val vendor = system
+internal class ItemLinkListener : EventListener() {
 
 	private fun hasNoCooldown(player: Player, action: ItemAction<*>, item: Item): Boolean {
 		return !player.isCooldownDecaying("item:${item.identity}:${action.eventClass.simpleName}")

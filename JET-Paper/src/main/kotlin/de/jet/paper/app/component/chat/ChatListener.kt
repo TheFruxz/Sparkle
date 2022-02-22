@@ -4,7 +4,6 @@ import de.jet.paper.extension.display.buildTextComponent
 import de.jet.paper.extension.paper.getPlayer
 import de.jet.paper.extension.paper.legacyString
 import de.jet.paper.extension.paper.onlinePlayers
-import de.jet.paper.extension.system
 import de.jet.paper.structure.app.event.EventListener
 import io.papermc.paper.event.player.AsyncChatEvent
 import net.kyori.adventure.sound.Sound
@@ -16,9 +15,7 @@ import org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING
 import org.bukkit.event.EventHandler
 import java.util.*
 
-internal class ChatListener : EventListener {
-
-	override val vendor = system
+internal class ChatListener : EventListener() {
 
 	@EventHandler
 	fun onChat(event: AsyncChatEvent) {

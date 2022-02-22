@@ -9,6 +9,7 @@ import de.jet.paper.structure.app.App
 import de.jet.paper.structure.component.Component.RunType.*
 import de.jet.paper.tool.smart.ContextualIdentifiable
 import de.jet.paper.tool.smart.Logging
+import de.jet.paper.tool.smart.VendorOnDemand
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import org.bukkit.NamespacedKey
@@ -17,8 +18,8 @@ import kotlin.reflect.KClass
 abstract class Component(
 	open val behaviour: RunType = DISABLED,
 	open val experimental: Boolean = false,
-	preferredVendor: App? = null,
-) : ContextualIdentifiable<Component>, Logging {
+	final override val preferredVendor: App? = null,
+) : ContextualIdentifiable<Component>, VendorOnDemand, Logging {
 
 	init {
 
@@ -56,7 +57,7 @@ abstract class Component(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun replaceVendor(newVendor: App, override: Boolean = false) = if (override || !this::vendor.isInitialized) {
+	override fun replaceVendor(newVendor: App, override: Boolean) = if (override || !this::vendor.isInitialized) {
 		vendor = newVendor
 		true
 	} else

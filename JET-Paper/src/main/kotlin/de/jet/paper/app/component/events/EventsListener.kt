@@ -3,7 +3,6 @@ package de.jet.paper.app.component.events
 import de.jet.jvm.extension.all
 import de.jet.jvm.extension.forceCast
 import de.jet.paper.extension.display.ui.item
-import de.jet.paper.extension.system
 import de.jet.paper.runtime.event.PlayerDamageByPlayerEvent
 import de.jet.paper.runtime.event.interact.PlayerInteractAtBlockEvent
 import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
@@ -14,9 +13,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 
-internal class EventsListener : EventListener {
-
-	override val vendor = system
+internal class EventsListener : EventListener() {
 
 	@EventHandler
 	@OptIn(RequiresComponent::class)

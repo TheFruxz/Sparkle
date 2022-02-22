@@ -19,6 +19,7 @@ import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.permission.Approval
 import de.jet.paper.tool.smart.ContextualIdentifiable
 import de.jet.paper.tool.smart.Logging
+import de.jet.paper.tool.smart.VendorOnDemand
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
@@ -53,8 +54,8 @@ abstract class Interchange(
 	val hiddenFromRecommendation: Boolean = false, // todo: seems to be unused, that have to be an enabled feature
 	val completion: InterchangeStructure = de.jet.paper.structure.command.completion.emptyInterchangeStructure(),
 	val ignoreInputValidation: Boolean = false,
-	preferredVendor: App? = null,
-) : CommandExecutor, ContextualIdentifiable<Interchange>, Logging {
+	final override val preferredVendor: App? = null,
+) : CommandExecutor, ContextualIdentifiable<Interchange>, VendorOnDemand, Logging {
 
 	init {
 		completion.identity = label
@@ -85,7 +86,7 @@ abstract class Interchange(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun replaceVendor(newVendor: App, override: Boolean = false) = if (override || !this::vendor.isInitialized) {
+	override fun replaceVendor(newVendor: App, override: Boolean) = if (override || !this::vendor.isInitialized) {
 		vendor = newVendor
 		true
 	} else

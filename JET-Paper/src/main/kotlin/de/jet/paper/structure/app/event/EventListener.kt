@@ -1,14 +1,32 @@
 package de.jet.paper.structure.app.event
 
-import de.jet.paper.structure.app.App
 import de.jet.jvm.tool.smart.identification.Identity
+import de.jet.paper.structure.app.App
+import de.jet.paper.tool.smart.VendorOnDemand
 import de.jet.paper.tool.smart.VendorsIdentifiable
 import org.bukkit.event.Listener
 import java.util.*
 
-interface EventListener : Listener, VendorsIdentifiable<EventListener> {
+abstract class EventListener(
+	final override val preferredVendor: App? = null
+) : Listener, VendorsIdentifiable<EventListener>, VendorOnDemand {
 
-	val vendor: App
+	init {
+
+		preferredVendor?.let {
+			vendor = it
+		}
+
+	}
+
+	override fun replaceVendor(newVendor: App, override: Boolean) = if (override || !this::vendor.isInitialized) {
+		vendor = newVendor
+		true
+	} else
+		false
+
+	lateinit var vendor: App
+		internal set
 
 	val listenerIdentity: String
 		get() = this::class.simpleName ?: "${UUID.randomUUID()}"
