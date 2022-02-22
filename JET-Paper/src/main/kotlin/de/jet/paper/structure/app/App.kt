@@ -336,10 +336,10 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	fun add(component: Component) {
 		tryToCatch {
 
+			component.replaceVendor(this)
+
 			if (JetCache.registeredComponents.any { it.identity == component.identity })
 				throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
-
-			component.replaceVendor(this)
 
 			component.firstContactHandshake()
 
