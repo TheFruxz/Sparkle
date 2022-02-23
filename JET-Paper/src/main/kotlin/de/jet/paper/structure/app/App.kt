@@ -8,6 +8,7 @@ import de.jet.jvm.extension.container.mutableReplaceWith
 import de.jet.jvm.extension.tryToCatch
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
+import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.mainLog
@@ -377,7 +378,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 					component.start()
 
-					JetCache.runningComponents.add(componentIdentity)
+					JetCache.runningComponents[componentIdentity] = Calendar.now()
 
 					mainLog(Level.INFO, "started '${componentIdentity.identity}' component!")
 

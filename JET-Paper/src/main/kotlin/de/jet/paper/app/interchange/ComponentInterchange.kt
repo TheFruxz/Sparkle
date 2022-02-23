@@ -79,64 +79,19 @@ class ComponentInterchange : Interchange(
 
 					"start" -> {
 
-						if (!component.isRunning) {
 
-							component.vendor.start(component.identityObject)
-
-							lang("interchange.internal.component.nowRunning")
-								.replace("[component]", component.identity)
-								.notification(APPLIED, executor).display()
-
-						} else
-							lang("interchange.internal.component.alreadyRunning")
-								.replace("[component]", component.identity)
-								.notification(FAIL, executor).display()
 
 						SUCCESS
 					}
 
 					"stop" -> {
-						if (component.isRunning) {
 
-							component.vendor.stop(component.identityObject)
-
-							lang("interchange.internal.component.nowStopped")
-								.replace("[component]", component.identity)
-								.notification(APPLIED, executor).display()
-
-						} else
-							lang("interchange.internal.component.missingRunning")
-								.replace("[component]", component.identity)
-								.notification(FAIL, executor).display()
 
 					}
 
 					"autostart" -> {
 
-						if (!component.canBeAutoStartToggled) {
 
-							JetData.autoStartComponents.let { preference ->
-								val currentState = preference.content.toMutableSet()
-
-								lang(
-									if (currentState.contains(component.identity)) {
-										currentState.remove(component.identity)
-										"interchange.internal.component.autoStartRemoved"
-									} else {
-										currentState.add(component.identity)
-										"interchange.internal.component.autoStartAdded"
-									}
-								)
-									.replace("[component]", component.identity)
-									.notification(APPLIED, executor).display()
-
-								preference.content = currentState
-							}
-
-						} else
-							lang("interchange.internal.component.autoStartStatic")
-								.replace("[component]", component.identity)
-								.notification(FAIL, executor).display()
 
 					}
 

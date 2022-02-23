@@ -6,6 +6,7 @@ import de.jet.paper.app.JetCache
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.system
+import de.jet.paper.runtime.sandbox.SandBox
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.event.EventListener
 import de.jet.paper.structure.command.Interchange
@@ -36,6 +37,10 @@ abstract class SmartComponent(
 	val listeners = mutableSetOf<EventListener>()
 
 	fun listener(vararg listener: EventListener) = listeners.addAll(listener)
+
+	val sandboxes = mutableSetOf<SandBox>()
+
+	fun sandbox(vararg sandbox: SandBox) = sandboxes.add
 
 	final override suspend fun register() {
 

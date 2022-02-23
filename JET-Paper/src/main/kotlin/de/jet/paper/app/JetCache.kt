@@ -1,7 +1,9 @@
 package de.jet.paper.app
 
+import de.jet.jvm.extension.classType.UUID
 import de.jet.jvm.extension.container.removeAll
 import de.jet.jvm.tool.smart.identification.Identity
+import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.extension.debugLog
 import de.jet.paper.runtime.sandbox.SandBox
 import de.jet.paper.structure.app.App
@@ -24,7 +26,6 @@ import de.jet.paper.tool.timing.cooldown.Cooldown
 import de.jet.paper.tool.timing.tasky.Tasky
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.HumanEntity
-import java.util.*
 import kotlin.reflect.full.findAnnotations
 
 object JetCache : AppCache {
@@ -43,7 +44,7 @@ object JetCache : AppCache {
 
 	@GlobalData
 	@DataLevel(DUMP)
-	val registeredCompletionAssetStateCache = mutableMapOf<String, SortedSet<String>>()
+	val registeredCompletionAssetStateCache = mutableMapOf<String, Set<String>>() // todo was sorted set, why java.util.SortedSet?
 
 	@GlobalData
 	@DataLevel(KILL)
@@ -79,7 +80,7 @@ object JetCache : AppCache {
 
 	@GlobalData
 	@DataLevel(KILL)
-	val runningComponents = mutableSetOf<Identity<Component>>()
+	val runningComponents = mutableMapOf<Identity<Component>, Calendar>()
 
 	@GlobalData
 	@DataLevel(KILL)
