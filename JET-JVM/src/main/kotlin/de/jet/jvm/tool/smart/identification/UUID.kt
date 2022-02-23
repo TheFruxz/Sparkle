@@ -1,5 +1,6 @@
 package de.jet.jvm.tool.smart.identification
 
+import de.jet.jvm.extension.classType.UUID
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.util.UUID as UtilUUID
