@@ -5,6 +5,8 @@ import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
+import de.jet.paper.extension.objectBound.buildSandBox
+import de.jet.paper.extension.objectBound.destroySandBox
 import de.jet.paper.extension.system
 import de.jet.paper.runtime.sandbox.SandBox
 import de.jet.paper.structure.app.App
@@ -40,7 +42,7 @@ abstract class SmartComponent(
 
 	val sandboxes = mutableSetOf<SandBox>()
 
-	fun sandbox(vararg sandbox: SandBox) = sandboxes.add
+	fun sandbox(vararg sandbox: SandBox) = sandboxes.addAll(sandbox)
 
 	final override suspend fun register() {
 
@@ -93,6 +95,12 @@ abstract class SmartComponent(
 			}
 		}
 
+		sandboxes.forEach {
+			tryToCatch {
+				buildSandBox(this@SmartComponent.vendor, it.identity, it.process)
+			}
+		}
+
 	}
 
 	final override suspend fun stop() {
@@ -128,6 +136,12 @@ abstract class SmartComponent(
 				vendor.remove(it)
 				JetCache.registeredListeners.remove(it)
 				debugLog("Service '${it.identity}' removed through '$identity'")
+			}
+		}
+
+		sandboxes.forEach {
+			tryToCatch {
+				destroySandBox(it.identity)
 			}
 		}
 

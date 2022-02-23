@@ -37,7 +37,7 @@ data class CompletionAsset<T>(
 
 	override val vendorIdentity = vendor.identityObject
 
-	val computedContent: SortedSet<String>
+	val computedContent: Set<String>
 		get() = if (!refreshing && JetCache.registeredCompletionAssetStateCache.containsKey(identity)) {
 			JetCache.registeredCompletionAssetStateCache[identity]!!
 		} else {

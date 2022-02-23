@@ -7,7 +7,6 @@ import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.paper.createKey
 import de.jet.paper.extension.runIfAutoRegister
-import de.jet.paper.runtime.exception.IllegalActionException
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.component.Component.RunType.*
 import de.jet.paper.tool.smart.ContextualIdentifiable
@@ -117,29 +116,6 @@ abstract class Component(
 	abstract suspend fun start()
 
 	abstract suspend fun stop()
-
-	fun controllerStart() {
-		if (isRunning) {
-
-			vendor.start(identityObject)
-
-		} else
-			throw IllegalActionException("The component '$identity' is already running!")
-	}
-
-	fun controllerStop(unregisterComponent: Boolean = false) {
-		if (!isRunning) {
-
-			vendor.stop(identityObject, unregisterComponent)
-
-		} else
-			throw IllegalActionException("The component '$identity' is not running!")
-	}
-
-	fun controllerRestart() {
-		controllerStop()
-		controllerStart()
-	}
 
 	fun controllerReset(executor: InterchangeExecutor? = null) {
 
