@@ -14,30 +14,4 @@ interface VendorOnDemand {
 
 	fun replaceVendor(newVendor: App, override: Boolean = false): Boolean
 
-	@Suppress("FINAL_UPPER_BOUND")
-	@OptIn(ExperimentalRegistrationApi::class)
-	fun <T : AutoRegister> runIfAutoRegister(any: T) {
-		if (any::class.hasAnnotation<AutoRegister>() && any is VendorOnDemand) {
-			if (preferredVendor != null) {
-
-				when (any) {
-
-					is Component -> {
-						preferredVendor?.add(any)
-					}
-
-					is Interchange -> {
-						preferredVendor?.add(any)
-					}
-
-					is EventListener -> {
-						preferredVendor?.add(any)
-					}
-
-				}
-
-			}
-		}
-	}
-
 }

@@ -9,7 +9,14 @@ import de.jet.paper.app.JetCache
 import de.jet.paper.runtime.app.LanguageSpeaker
 import de.jet.paper.runtime.lang.LanguageData
 import de.jet.paper.structure.app.App
+import de.jet.paper.structure.app.event.EventListener
+import de.jet.paper.structure.command.Interchange
+import de.jet.paper.structure.component.Component
+import de.jet.paper.tool.annotation.AutoRegister
+import de.jet.paper.tool.annotation.ExperimentalRegistrationApi
+import de.jet.paper.tool.smart.VendorOnDemand
 import java.util.logging.Level
+import kotlin.reflect.full.hasAnnotation
 
 fun <T : Any?> T.debugLog(message: String) = this.also {
 	if (JetApp.debugMode) {
@@ -49,3 +56,32 @@ fun app(vendorIdentity: Identity<out App>) = JetCache.registeredApplications.fir
 
 @Throws(NoSuchElementException::class)
 fun Identifiable<out App>.getApp() = app(identity)
+
+@Suppress("FINAL_UPPER_BOUND")
+@OptIn(ExperimentalRegistrationApi::class)
+fun <T : VendorOnDemand> T.runIfAutoRegister() {
+	if (this::class.hasAnnotation<AutoRegister>()) {
+		if (preferredVendor != null) {
+
+			when (this) {
+
+				is Component -> {
+					JetCache.initializationProcesses.add { preferredVendor?.add(this) }
+					debugLog(this::class.simpleName + " added to Component-AutoRegister")
+				}
+
+				is Interchange -> {
+					JetCache.initializationProcesses.add { preferredVendor?.add(this) }
+					debugLog(this::class.simpleName + " added to Interchange-AutoRegister")
+				}
+
+				is EventListener -> {
+					JetCache.initializationProcesses.add { preferredVendor?.add(this) }
+					debugLog(this::class.simpleName + " added to EventListener-AutoRegister")
+				}
+
+			}
+
+		}
+	}
+}

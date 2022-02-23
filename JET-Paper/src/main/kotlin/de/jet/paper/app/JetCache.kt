@@ -126,6 +126,10 @@ object JetCache : AppCache {
 	@DataLevel(KILL)
 	internal val tmp_initSetupPreferences = mutableSetOf<Preference<*>>()
 
+	@GlobalData
+	@DataLevel(KILL)
+	internal val initializationProcesses = mutableListOf<() -> Unit>()
+
 	private fun entityCleanerObjects(entity: UUID) = mapOf(
 		this::runningKeyboards to { runningKeyboards.removeAll { key, _ -> key.player == entity } },
 		this::buildModePlayers to { buildModePlayers.removeAll { it.identity == "" + entity } },

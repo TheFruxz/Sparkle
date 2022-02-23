@@ -5,6 +5,7 @@ import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetData
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.paper.createKey
+import de.jet.paper.extension.runIfAutoRegister
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.component.Component.RunType.*
 import de.jet.paper.tool.smart.ContextualIdentifiable
@@ -26,6 +27,8 @@ abstract class Component(
 		preferredVendor?.let {
 			vendor = it
 		}
+
+		runIfAutoRegister()
 
 	}
 
