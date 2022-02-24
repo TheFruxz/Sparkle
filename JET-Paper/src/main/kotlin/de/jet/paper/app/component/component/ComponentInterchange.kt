@@ -14,6 +14,7 @@ import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.mustNotMatchOutput
 import de.jet.paper.structure.component.Component
 import de.jet.paper.tool.display.message.Transmission
+import kotlin.reflect.KFunction
 
 internal class ComponentInterchange : StructuredInterchange("component", protectedAccess = true, structure = buildInterchangeStructure {
 
@@ -90,6 +91,10 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
         }
     }
 
+    fun info(component: Component, executor: InterchangeExecutor) {
+
+    }
+
     branch {
         addContent(
             "list",
@@ -117,6 +122,12 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 
         concludedExecution {
 
+            fun processAllComponents(function: KFunction<Unit>) {
+                JetCache.registeredComponents.forEach {
+                    function.call(it, executor)
+                }
+            }
+
             when (getInput(0)) {
 
                 "list" -> {
@@ -124,23 +135,23 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
                 }
 
                 "stopAll" -> {
-
+                    processAllComponents(::stop)
                 }
 
                 "startAll" -> {
-
+                    processAllComponents(::start)
                 }
 
                 "restartAll" -> {
-
+                    processAllComponents(::restart)
                 }
 
                 "autostartAll" -> {
-
+                    processAllComponents(::toggleAutostart)
                 }
 
                 "resetAll" -> {
-
+                    processAllComponents(::reset)
                 }
 
             }
@@ -169,31 +180,23 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 
                 if (resultComponent != null) {
 
+                    fun processComponent(function: KFunction<Unit>) {
+                        function.call(resultComponent, executor)
+                    }
+
                     when (getInput(0)) {
 
-                        "start" -> {
+                        "start" -> processComponent(::start)
 
-                        }
+                        "stop" -> processComponent(::stop)
 
-                        "stop" -> {
+                        "autostart" -> processComponent(::toggleAutostart)
 
-                        }
+                        "restart" -> processComponent(::restart)
 
-                        "autostart" -> {
+                        "reset" -> processComponent(::reset)
 
-                        }
-
-                        "restart" -> {
-
-                        }
-
-                        "reset" -> {
-
-                        }
-
-                        "info" -> {
-
-                        }
+                        "info" -> processComponent(::info)
 
                     }
 
