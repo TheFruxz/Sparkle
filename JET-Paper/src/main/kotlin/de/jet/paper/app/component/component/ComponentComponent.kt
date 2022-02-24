@@ -8,7 +8,7 @@ internal class ComponentComponent : SmartComponent(RunType.ENABLED) {
 
     override suspend fun component() {
 
-
+        interchange(ComponentInterchange())
 
     }
 

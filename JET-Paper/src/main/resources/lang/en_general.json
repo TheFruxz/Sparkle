@@ -38,7 +38,7 @@
     "interchange.internal.component.autoStartRemoved": "[GRAY]The component '[YELLOW][component][GRAY]' is [RED]no longer[GRAY] on the AutoStart list!",
     "interchange.internal.component.autoStartAdded": "[GRAY]The component '[YELLOW][component][GRAY]' is [GREEN]now[GRAY] on the AutoStart list!",
     "interchange.internal.component.autoStartStatic": "[GRAY]The component '[YELLOW][component][GRAY]' is [RED]programmed[GRAY] to stay on the AutoStart list!",
-    "interchange.internal.component.list.header": "[GRAY]List of all registered components:",
+    "interchange.internal.component.list.header": "[GRAY]List of all registered components [YELLOW](Page [p1] of [p2])[GRAY]:",
     "interchange.internal.component.list.description": "[GRAY][1] Power; [2] Autostart; [3] Forced; [4] Experimental",
     "interchange.internal.component.list.line": "[status] [autoStart] [force] [experimental] [DARK_GRAY]| [YELLOW][component]",
 
@@ -50,10 +50,10 @@
     "interchange.internal.service.serviceUnregistered": "[GRAY]The service '[YELLOW][id][GRAY]' was unregistered [LIME]successfully[GRAY]!",
     "interchange.internal.service.serviceReset": "[GRAY]The service '[YELLOW][id][GRAY]' got a reset [LIME]successfully[GRAY]!",
     "interchange.internal.service.serviceNotFound": "[GRAY]There are [RED]no[GRAY] services with the group or id '[YELLOW][id][GRAY]' registered!",
-    "interchange.internal.service.list.header": "[GRAY]List of all registered services (Page [p1] of [p2]):",
+    "interchange.internal.service.list.header": "[GRAY]List of all registered services [YELLOW](Page [p1] of [p2])[GRAY]:",
     "interchange.internal.service.list.line": "[YELLOW][service][GRAY] -> [enabled][GRAY] ([activeSince]),",
 
-    "interchange.internal.sandbox.list.header": "[GRAY]List of all registered SandBoxes (Page [p1] of [p2]):",
+    "interchange.internal.sandbox.list.header": "[GRAY]List of all registered SandBoxes [YELLOW](Page [p1] of [p2])[GRAY]:",
     "interchange.internal.sandbox.list.line": "[YELLOW][sandbox][GRAY] (from: [vendor])",
     "interchange.internal.sandbox.dropAll": "[LIME]Successfully[GRAY] removed[LIME] [amount][GRAY] SandBoxes!",
     "interchange.internal.sandbox.runAll": "[LIME]Successfully[GRAY] started[LIME] [amount][GRAY] SandBoxes!",
@@ -71,7 +71,7 @@
     "interchange.internal.buildmode.disable": "[GRAY]The player '[YELLOW][player][GRAY]'s BuildMode is now [RED]disabled[GRAY]!",
     "interchange.internal.buildmode.stay": "[GRAY]The player '[YELLOW][player][GRAY]' had [RED]already[GRAY] that BuildMode state!",
     "interchange.internal.buildmode.list.empty": "[GRAY]There are currently [RED]no[GRAY] players with active BuildMode status!",
-    "interchange.internal.buildmode.list.header": "[GRAY]These players have BuildMode enabled (Page [p1] of [p2]):",
+    "interchange.internal.buildmode.list.header": "[GRAY]These players have BuildMode enabled [YELLOW](Page [p1] of [p2])[GRAY]:",
     "interchange.internal.buildmode.list.line": "[GRAY]- [statusColor][player]",
 
     "interchange.internal.changeskin.reset": "[LIME]Successfully [GRAY]reset skin of '[YELLOW][player][GRAY]' back to original skin!",
@@ -96,7 +96,7 @@
     "interchange.internal.preference.list.stash": "[GRAY][preference-array]",
 
     "interchange.internal.essentials.point.list.empty": "[GRAY]There are currently [RED]no[GRAY] points saved!",
-    "interchange.internal.essentials.point.list.header": "[GRAY]List of all saved points (Page [p1] of [p2]):",
+    "interchange.internal.essentials.point.list.header": "[GRAY]List of all saved points [YELLOW](Page [p1] of [p2])[GRAY]:",
     "interchange.internal.essentials.point.list.entry": "[GRAY]- [YELLOW][point][GRAY] [LIGHT_PURPLE][x] | [y] | [z]",
     "interchange.internal.essentials.point.edit.removed": "[GREEN]Successfully [GRAY]removed the Point '[YELLOW][point][GRAY]'!",
     "interchange.internal.essentials.point.edit.created": "[GRAY]A Point called '[YELLOW][point][GRAY]' got [GREEN]successfully[GRAY] created!",
