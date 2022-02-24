@@ -15,14 +15,13 @@ import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.system
-import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
+import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
-import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.completion.isNotRequired
 import de.jet.paper.tool.display.message.Transmission.Level.*
@@ -54,14 +53,12 @@ internal class ServiceInterchange : StructuredInterchange(
 						pageValue.content.withIndex().forEach {
 							val service = it.value
 
-							lang("interchange.internal.service.list.line")
-								.replace("[service]", service.identity)
-								.replace("[enabled]" to if (service.isRunning) "$GREEN${BOLD}ONLINE" else "$RED${BOLD}OFFLINE")
-								.replace(
-									"[activeSince]" to (Calendar.now().timeInMilliseconds - (service.controller?.startTime
-										?: Calendar.now()).timeInMilliseconds).milliseconds.toString()
-								)
-								.let { appendLine(it) }
+							appendLine(lang("interchange.internal.service.list.line").replaceVariables(
+								"service" to service.identity,
+								"enabled" to if (service.isRunning) "$GREEN${BOLD}ONLINE" else "$RED${BOLD}OFFLINE",
+								"[activeSince]" to (Calendar.now().timeInMilliseconds - (service.controller?.startTime
+									?: Calendar.now()).timeInMilliseconds).milliseconds.toString(),
+							))
 
 						}
 
