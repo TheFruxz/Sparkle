@@ -6,6 +6,7 @@ import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.component.buildMode.BuildModeComponent
 import de.jet.paper.app.component.chat.ChatComponent
+import de.jet.paper.app.component.component.ComponentComponent
 import de.jet.paper.app.component.events.EventsComponent
 import de.jet.paper.app.component.experimental.ExperimentalComponent
 import de.jet.paper.app.component.itemLink.ItemLinkComponent
@@ -16,7 +17,6 @@ import de.jet.paper.app.component.point.asset.Point
 import de.jet.paper.app.component.point.asset.PointConfig
 import de.jet.paper.app.component.sandbox.SandBoxComponent
 import de.jet.paper.app.component.service.ServiceComponent
-import de.jet.paper.app.interchange.ComponentInterchange
 import de.jet.paper.app.interchange.JETInterchange
 import de.jet.paper.app.old_component.essentials.world.WorldConfig
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer
@@ -159,9 +159,9 @@ class JetApp : App() {
 		add(BuildModeComponent())
 		add(MarkingComponent())
 		add(ItemLinkComponent())
+		add(ComponentComponent())
 
 		add(JETInterchange())
-		add(ComponentInterchange())
 
 		buildSandBox(this, "importAllWorlds") {
 			sync { worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld) }
