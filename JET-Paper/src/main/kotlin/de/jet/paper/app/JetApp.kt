@@ -26,6 +26,8 @@ import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.Render
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.WorldStructure
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.ui.buildContainer
+import de.jet.paper.extension.display.ui.buildPanel
+import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.objectBound.buildSandBox
 import de.jet.paper.extension.paper.worlds
@@ -56,6 +58,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import org.bukkit.Material
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
 import java.util.logging.Level
@@ -162,6 +165,22 @@ class JetApp : App() {
 		add(ComponentComponent())
 
 		add(JETInterchange())
+
+		buildSandBox(this, "testInventory") {
+			sync {
+				buildPanel {
+
+					placeInner(0, Material.STONE.item.putClickAction {
+						whoClicked.sendMessage("Hello, Mr. Clicky")
+					})
+
+					placeInner(1, Material.SADDLE.item.putClickAction {
+						isCancelled = true
+					})
+
+				}.display(executor as Player)
+			}
+		}
 
 		buildSandBox(this, "importAllWorlds") {
 			sync { worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld) }
