@@ -25,6 +25,7 @@ import de.jet.paper.structure.component.Component
 import de.jet.paper.structure.service.Service
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.bukkit.configuration.file.YamlConfiguration
@@ -565,6 +566,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 					runStatus = SHUTDOWN
 					bye()
+					coroutineScope.cancel("App '$identity' is now disabled!")
 					runStatus = OFFLINE
 
 				}
