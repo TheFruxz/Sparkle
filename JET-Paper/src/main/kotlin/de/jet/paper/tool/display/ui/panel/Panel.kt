@@ -61,8 +61,7 @@ data class Panel(
 			   
 		""".trimIndent()
 	},
-	var overridingBorderProtection: Boolean = false,
-	var singleViewLimitation: Boolean = false,
+	var overridingBorderProtection: Boolean = true,
 ) : Cloneable, Logging, Container(label = label, size = lines * 9, theme = theme, openSound = openSound) {
 
 	init {
