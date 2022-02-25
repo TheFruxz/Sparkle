@@ -9,9 +9,12 @@ import de.jet.paper.structure.app.App
 import java.util.logging.Level
 
 @Suppress("NOTHING_TO_INLINE") // required, because of the Throwable
-inline fun buildSandBox(vendor: App, identity: String, noinline action: suspend SandBoxInteraction.() -> Unit) =
-	registeredSandBoxes.add(SandBox(vendor, identity, Calendar.now(), with(Throwable().stackTrace[0]) { "$className.$methodName()" }, action))
-		.also { vendor.log.log(Level.INFO, "registering SandBox '$identity'!") }
+inline fun buildSandBox(vendor: App, identity: String, noinline action: suspend SandBoxInteraction.() -> Unit): SandBox {
+	return SandBox(vendor, identity, Calendar.now(), with(Throwable().stackTrace[0]) { "$className.$methodName()" }, action).also {sandBox ->
+		registeredSandBoxes.add(sandBox)
+		sandBox.vendor.log.info("registering SandBox '$identity'!")
+	}
+}
 
 val allSandBoxes: Set<SandBox>
 	get() = registeredSandBoxes
