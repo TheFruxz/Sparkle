@@ -53,10 +53,10 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 
                 content.forEach { element ->
                     appendLine(lang("interchange.internal.component.list.line").replaceVariables(
-                        "status" to if (element.isRunning) "§a${icons[1]}§7" else icons[0],
-                        "autoStart" to if (element.isAutoStarting) "§a${icons[2]}§7" else icons[2],
-                        "force" to if (!element.canBeStopped) "§e${icons[3]}§7" else icons[3],
-                        "experimental" to if (element.experimental) "§e${icons[4]}§7" else icons[4],
+                        "status" to if (element.isRunning) "§a${icons[1]}§7" else "§7${icons[0]}",
+                        "autoStart" to if (element.isAutoStarting) "§a${icons[2]}§7" else "§7${icons[2]}",
+                        "force" to if (!element.canBeStopped) "§e${icons[3]}§7" else "§7${icons[3]}",
+                        "experimental" to if (element.experimental) "§e${icons[4]}§7" else "§7${icons[4]}",
                         "component" to element.identity,
                     ))
                 }
