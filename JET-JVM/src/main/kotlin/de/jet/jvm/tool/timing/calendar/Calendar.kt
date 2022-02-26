@@ -1,11 +1,13 @@
 package de.jet.jvm.tool.timing.calendar
 
-import de.jet.jvm.extension.time.prettyPrint
 import de.jet.jvm.tool.smart.Producible
+import de.jet.jvm.tool.timing.calendar.Calendar.FormatStyle.FULL
+import de.jet.jvm.tool.timing.calendar.Calendar.FormatStyle.MEDIUM
 import de.jet.jvm.tool.timing.calendar.timeUnit.TimeUnit
 import de.jet.jvm.tool.timing.calendar.timeUnit.TimeUnit.Companion.MILLISECOND
 import de.jet.jvm.tool.timing.calendar.timeUnit.TimeUnit.Companion.SECOND
 import kotlinx.serialization.Serializable
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -314,7 +316,10 @@ class Calendar constructor(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	override fun toString() = "Calendar($prettyPrint)"
+	override fun toString() = getFormatted()
+
+	fun getFormatted(locale: Locale = Locale.getDefault(), dateStyle: FormatStyle = FULL, timeStyle: FormatStyle = MEDIUM) =
+		SimpleDateFormat.getDateTimeInstance(dateStyle.ordinal, timeStyle.ordinal, locale).format(javaDate)
 
 	/**
 	 * This function returns, if the [JavaUtilCalendar.getTimeInMillis] of this == [other].
@@ -412,6 +417,10 @@ class Calendar constructor(
 		 */
 		fun fromLegacy(calendar: JavaUtilCalendar) = now(instance = calendar)
 
+	}
+
+	enum class FormatStyle {
+		FULL, HUGE, MEDIUM, SHORT;
 	}
 
 }
