@@ -103,7 +103,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
     }
 
     fun toggleAutostart(component: Component, executor: InterchangeExecutor) {
-        if (!component.canBeAutoStartToggled) {
+        if (component.canBeAutoStartToggled) {
 
             JetData.autoStartComponents.let { preference ->
                 val currentState = preference.content.toMutableSet()

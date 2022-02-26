@@ -1,10 +1,11 @@
 package de.jet.paper.structure.component
 
+import de.jet.jvm.extension.container.toggle
+import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetData
 import de.jet.paper.extension.debugLog
-import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.paper.createKey
 import de.jet.paper.extension.runIfAutoRegister
 import de.jet.paper.structure.app.App
@@ -92,7 +93,7 @@ abstract class Component(
 			debugLog("Component '$identity' was already in touch with this system!")
 	}
 
-	val isAutoStarting: Boolean
+	var isAutoStarting: Boolean
 		get() = when (behaviour) {
 			ENABLED, AUTOSTART_IMMUTABLE -> {
 				true
@@ -101,12 +102,20 @@ abstract class Component(
 				JetData.autoStartComponents.content.contains(identity)
 			}
 		}
+		internal set(value) {
+			if (canBeAutoStartToggled) {
+
+				JetData.autoStartComponents.content.toMutableSet().toggle(identity, value)
+
+			} else
+				throw IllegalArgumentException("Component '$identity' cannot be toggled!")
+		}
 
 	val canBeStopped: Boolean
 		get() = behaviour != ENABLED
 
 	val canBeAutoStartToggled: Boolean
-		get() = setOf(ENABLED, AUTOSTART_IMMUTABLE).contains(behaviour)
+		get() = !setOf(ENABLED, AUTOSTART_IMMUTABLE).contains(behaviour)
 
 	/**
 	 * Can be overwritten, no origin code!
@@ -117,11 +126,62 @@ abstract class Component(
 
 	abstract suspend fun stop()
 
-	fun controllerReset(executor: InterchangeExecutor? = null) {
+	fun requestStart(): ComponentRequestAnswer {
+		var hasChanged = false
+		return tryToResult {
+			if (!isRunning) {
+
+				vendor.start(identityObject)
+				hasChanged = true
+
+			}
+		}.let { return@let ComponentRequestAnswer(hasChanged, it.exceptionOrNull()) }
+	}
+
+	fun requestStop(): ComponentRequestAnswer {
+		var hasChanged = false
+		return tryToResult {
+			if (isRunning && canBeStopped) {
+
+				vendor.stop(identityObject)
+				hasChanged = true
+
+			}
+		}.let { return@let ComponentRequestAnswer(hasChanged, it.exceptionOrNull()) }
+	}
+
+	fun requestRestart(): ComponentRequestAnswer {
+		var hasChanged = false
+		var exception: Throwable?
+
+		if (isRunning) {
+			requestStop().let {
+				hasChanged = it.hasStateChanged
+				exception = it.exception
+			}
+		}
+
+		requestStart().let {
+			hasChanged = it.hasStateChanged || hasChanged
+			exception = it.exception
+		}
+
+		return ComponentRequestAnswer(hasChanged, exception)
+	}
+
+	fun requestChangeAutoStart(autoStart: Boolean): ComponentRequestAnswer {
+		var hasChanged = false
+
+		return tryToResult {
+			if (canBeAutoStartToggled) {
+				isAutoStarting = autoStart
+				hasChanged = true
+			}
+		}.let { return@let ComponentRequestAnswer(hasChanged, it.exceptionOrNull()) }
 
 	}
 
-	fun controllerAutoStartToggle(executor: InterchangeExecutor? = null) {
+	fun requestReset() {
 
 	}
 
@@ -132,6 +192,11 @@ abstract class Component(
 		}
 
 	}
+
+	data class ComponentRequestAnswer(
+		val hasStateChanged: Boolean,
+		val exception: Throwable? = null,
+	)
 
 	enum class RunType {
 

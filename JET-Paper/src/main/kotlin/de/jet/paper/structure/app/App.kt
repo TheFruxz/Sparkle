@@ -355,7 +355,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 				mainLog(Level.INFO, "registered '${component.identity}' component!")
 
-				if (component.isAutoStarting) {
+ 				if (component.isAutoStarting) {
 
 					mainLog(Level.INFO, "### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
 

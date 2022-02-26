@@ -1,6 +1,7 @@
 package de.jet.paper.app
 
 import de.jet.jvm.extension.data.addJetJsonModuleModification
+import de.jet.jvm.extension.data.buildRandomTag
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
@@ -219,6 +220,20 @@ class JetApp : App() {
 			delay(20000L)
 
 			executor.sendMessage("Okay, I'm going to unfreeze you now!")
+
+		}
+
+		buildAndRegisterSandBox(this, "simulateAutoStartManipulation") {
+
+			JetData.autoStartComponents.content.toMutableSet().add(buildRandomTag())
+
+		}
+
+		buildAndRegisterSandBox(this, "simulateAutoStartManipulation2") {
+
+			JetData.autoStartComponents.content = JetData.autoStartComponents.content.toMutableSet().apply {
+				add(buildRandomTag().also { println("adding $it") })
+			}.also { println("set to $it") }
 
 		}
 

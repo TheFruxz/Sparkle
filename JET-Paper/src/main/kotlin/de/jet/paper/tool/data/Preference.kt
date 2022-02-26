@@ -5,8 +5,11 @@ import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetCache.registeredPreferenceCache
 import de.jet.paper.extension.debugLog
+import de.jet.paper.extension.tasky.async
+import de.jet.paper.extension.tasky.sync
 import de.jet.paper.extension.tasky.task
 import de.jet.paper.tool.timing.tasky.TemporalAdvice.Companion.instant
+import java.util.concurrent.CompletableFuture
 
 /**
  * @param inputType null if automatic
@@ -58,7 +61,7 @@ data class Preference<SHELL : Any>(
 	var content: SHELL
 		get() {
 			var out: SHELL = default
-			val process = {
+			val process = process@{
 				val currentCacheValue = registeredPreferenceCache[inFilePath]
 
 				if (useCache && currentCacheValue != null) {
@@ -89,16 +92,27 @@ data class Preference<SHELL : Any>(
 					}
 
 				}
+
+				return@process out
 			}
 
 			if (async || forceUseOfTasks) {
-				task(instant(async = async)) {
-					process()
-				}
-			} else
-				process()
+				val future = CompletableFuture<SHELL>()
 
-			return out
+				async {
+					future.complete(process())
+				}
+
+				return future.get()
+			} else {
+				val future = CompletableFuture<SHELL>()
+
+				sync {
+					future.complete(process())
+				}
+
+				return future.get()
+			}
 		}
 		set(value) {
 			debugLog("Try to save in ($identity) the value: '$value'")

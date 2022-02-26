@@ -1,7 +1,7 @@
 package de.jet.paper.app
 
 import de.jet.jvm.tool.data.Base64.decodeToString
-import de.jet.paper.app.JetData.File.BRAIN
+import de.jet.paper.app.JetData.File.COMPONENTS
 import de.jet.paper.app.JetData.File.CONFIG
 import de.jet.paper.app.JetData.File.ESSENTIALS_CONFIG
 import de.jet.paper.app.JetData.File.ESSENTIALS_WORLDS
@@ -39,13 +39,13 @@ object JetData {
 	)
 
 	val autoStartComponents = Preference(
-		file = CONFIG,
+		file = COMPONENTS,
 		path = jetPath("autoStartComponents"),
 		default = setOf<String>(),
 	).transformer(DataTransformer.setCollection())
 
 	val touchedComponents = Preference(
-		file = BRAIN,
+		file = COMPONENTS,
 		path = jetPath("touchedComponents"),
 		default = setOf<String>()
 	).transformer(DataTransformer.setCollection())
@@ -285,6 +285,7 @@ object JetData {
 		val CONFIG = JetYamlFile.rootFile("system-config")
 		val RAW = JetYamlFile.rootFile("system-raw-data")
 		val BRAIN = JetYamlFile.rootFile("system-memory")
+		val COMPONENTS = JetYamlFile.rootFile("system-components")
 
 		val ESSENTIALS_CONFIG = JetYamlFile.dummyComponentFile("Essentials", "JET", "config")
 		val ESSENTIALS_WORLDS = JetYamlFile.dummyComponentFile("Essentials", "JET", "worlds")
