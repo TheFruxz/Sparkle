@@ -1,4 +1,4 @@
-package de.jet.jvm.extension.javaUtilUnknown
+package de.jet.jvm.extension.javaUtil
 
 import de.jet.jvm.extension.tryOrNull
 import java.util.concurrent.CompletableFuture

@@ -20,7 +20,7 @@ de.jet.jvm.extension.container
 de.jet.jvm.extension.data
 de.jet.jvm.extension.display
 de.jet.jvm.extension.input
-de.jet.jvm.extension.javaUtilUnknown
+de.jet.jvm.extension.javaUtil
 de.jet.jvm.extension.logging
 de.jet.jvm.extension.math
 de.jet.jvm.extension.objects

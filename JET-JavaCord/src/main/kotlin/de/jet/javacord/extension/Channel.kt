@@ -1,6 +1,6 @@
 package de.jet.javacord.extension
 
-import de.jet.jvm.extension.javaUtilUnknown.getOrNull
+import de.jet.jvm.extension.javaUtil.getOrNull
 import org.javacord.api.DiscordApi
 import org.javacord.api.entity.channel.Channel
 import org.javacord.api.entity.channel.TextChannel
