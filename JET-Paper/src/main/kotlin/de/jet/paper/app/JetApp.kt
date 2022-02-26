@@ -29,6 +29,7 @@ import de.jet.paper.extension.display.ui.buildContainer
 import de.jet.paper.extension.display.ui.buildPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.mainLog
+import de.jet.paper.extension.objectBound.buildAndRegisterSandBox
 import de.jet.paper.extension.objectBound.buildSandBox
 import de.jet.paper.extension.paper.worlds
 import de.jet.paper.extension.tasky.sync
@@ -182,16 +183,16 @@ class JetApp : App() {
 			}
 		}
 
-		buildSandBox(this, "importAllWorlds") {
+		buildAndRegisterSandBox(this, "importAllWorlds") {
 			sync { worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld) }
 		}
 
-		buildSandBox(this, "keyboard-demo") {
+		buildAndRegisterSandBox(this, "keyboard-demo") {
 			executor as Player
 			sync { Keyboard.RenderEngine.renderKeyboard(executor).mainKeyboard.display(executor) }
 		}
 
-		buildSandBox(this, "renderAllKeys") {
+		buildAndRegisterSandBox(this, "renderAllKeys") {
 			sync {
 				buildContainer(lines = 6) {
 					JetData.keyConfig.content.lightModeKeys.withIndex().forEach { (index, value) ->
@@ -201,7 +202,7 @@ class JetApp : App() {
 			}
 		}
 
-		buildSandBox(this, "checkAsync") {
+		buildAndRegisterSandBox(this, "checkAsync") {
 
 			executor.sendMessage("This should be async, Thread: '${Thread.currentThread().name}'")
 
@@ -211,7 +212,7 @@ class JetApp : App() {
 
 		}
 
-		buildSandBox(this, "simulateFreeze") {
+		buildAndRegisterSandBox(this, "simulateFreeze") {
 
 			executor.sendMessage("Okay, I'm going to freeze you now!")
 
