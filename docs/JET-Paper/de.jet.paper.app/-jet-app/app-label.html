@@ -13,7 +13,7 @@ if(savedDarkMode === true){
     <div class="navigation-wrapper" id="navigation-wrapper">
       <div id="leftToggler"><span class="icon-toggler"></span></div>
       <div class="library-name"><a href="../../../index.html"><span>JET</span></a></div>
-      <div>1.0-PRE-1</div>
+      <div>1.0-PRE-2</div>
       <div class="pull-right d-flex"><button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
       </div>
@@ -29,32 +29,39 @@ if(savedDarkMode === true){
             <h1 class="cover"><span>app</span><wbr><span><span>Label</span></span></h1>
           </div>
           <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":JET-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="app-label.html">appLabel</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h1 class=""><code class="lang-kotlin">App.appLabel</code></h1><h2 class=""> Info</h2><p class="paragraph">This value defines the display-name of this app, which will be displayed in app-lists and information with the app included. Can be duplicated, but try to avoid duplicated display names with other apps!</p><h2 class=""> Use</h2><p class="paragraph">Use this value to tell your customers &amp; visitors that your app is running, there some possible ways to do that:</p><ul><li><p class="paragraph">On Minecraft-Networks: Tell the players the name of your network</p></li><li><p class="paragraph">On Publishing: Tell the players the name of your app (where they can find it)</p></li><li><p class="paragraph">On private use: Tell yourself, that this app is this app</p></li></ul><p class="paragraph">But you can use this like you like!</p><h2 class=""> Relations</h2><p class="paragraph">The label is not related to some crucial read/save system or something else, in this cases <a href="app-identity.html">appIdentity</a> is used!</p><h4 class="">Author</h4><p class="paragraph">Fruxz (@TheFruxz)</p><h4 class="">Since</h4><p class="paragraph">1.0-BETA-2 (preview)</p><h2 class="">Samples</h2><div class="sample-container"><pre><code class="runnablesample monospace block lang-kotlin" theme="idea">import de.jet.jvm.extension.data.addJetJsonModuleModification
+import de.jet.jvm.extension.data.buildRandomTag
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
-import de.jet.paper.app.old_component.chat.JetChatComponent
-import de.jet.paper.app.old_component.essentials.EssentialsComponent
+import de.jet.paper.app.component.buildMode.BuildModeComponent
+import de.jet.paper.app.component.chat.ChatComponent
+import de.jet.paper.app.component.component.ComponentComponent
+import de.jet.paper.app.component.events.EventsComponent
+import de.jet.paper.app.component.experimental.ExperimentalComponent
+import de.jet.paper.app.component.itemLink.ItemLinkComponent
+import de.jet.paper.app.component.keeper.KeeperComponent
+import de.jet.paper.app.component.marking.MarkingComponent
+import de.jet.paper.app.component.point.PointComponent
 import de.jet.paper.app.component.point.asset.Point
 import de.jet.paper.app.component.point.asset.PointConfig
+import de.jet.paper.app.component.sandbox.SandBoxComponent
+import de.jet.paper.app.component.service.ServiceComponent
+import de.jet.paper.app.interchange.JETInterchange
 import de.jet.paper.app.old_component.essentials.world.WorldConfig
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderFolder
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderObject
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderWorld
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.WorldStructure
-import de.jet.paper.app.old_component.events.JetEventsComponent
-import de.jet.paper.app.old_component.feature.MarkingFeatureComponent
-import de.jet.paper.app.old_component.item.JetActionComponent
-import de.jet.paper.app.old_component.system.JetAssistiveInterchangesComponent
-import de.jet.paper.app.old_component.system.JetKeeperComponent
-import de.jet.paper.app.old_component.world.JetBuildModeComponent
-import de.jet.paper.app.interchange.ComponentInterchange
-import de.jet.paper.app.interchange.JETInterchange
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.ui.buildContainer
+import de.jet.paper.extension.display.ui.buildPanel
+import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.mainLog
+import de.jet.paper.extension.objectBound.buildAndRegisterSandBox
 import de.jet.paper.extension.objectBound.buildSandBox
 import de.jet.paper.extension.paper.worlds
+import de.jet.paper.extension.tasky.sync
 import de.jet.paper.general.api.mojang.MojangProfile
 import de.jet.paper.general.api.mojang.MojangProfileCape
 import de.jet.paper.general.api.mojang.MojangProfileRaw
@@ -75,8 +82,13 @@ import de.jet.paper.tool.input.Keyboard
 import de.jet.paper.tool.input.Keyboard.RenderEngine.Key
 import de.jet.paper.tool.input.Keyboard.RenderEngine.KeyConfiguration
 import de.jet.paper.tool.permission.Approval
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import org.bukkit.Material
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
 import java.util.logging.Level
