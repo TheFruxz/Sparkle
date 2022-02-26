@@ -8,6 +8,8 @@ import de.jet.jvm.tool.timing.calendar.timeUnit.TimeUnit.Companion.MILLISECOND
 import de.jet.jvm.tool.timing.calendar.timeUnit.TimeUnit.Companion.SECOND
 import kotlinx.serialization.Serializable
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZonedDateTime
 import java.util.*
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -35,6 +37,11 @@ class Calendar constructor(
 	constructor(
 		origin: JavaUtilCalendar
 	) : this(origin.timeInMillis, origin.timeZone.id)
+
+	constructor(
+		instant: Instant,
+		timeZone: TimeZone,
+	) : this(origin = GregorianCalendar.from(ZonedDateTime.from(instant.atZone(timeZone.toZoneId()))))
 
 	private var origin: JavaUtilCalendar
 		set(value) {
@@ -210,6 +217,14 @@ class Calendar constructor(
 	 */
 	val javaCalendar: JavaUtilCalendar
 		get() = produce()
+
+	/**
+	 * This value returns this calendar as a [Instant].
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val javaInstant: Instant
+		get() = Instant.ofEpochMilli(origin.timeInMillis)
 
 	/**
 	 * This value returns this calendar time, represented as
