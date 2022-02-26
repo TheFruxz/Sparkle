@@ -20,7 +20,6 @@ import de.jet.paper.structure.command.completion.isNotRequired
 import de.jet.paper.structure.component.Component
 import de.jet.paper.tool.display.message.Transmission
 import de.jet.paper.tool.display.message.Transmission.Level.INFO
-import kotlin.reflect.KFunction
 
 internal class ComponentInterchange : StructuredInterchange("component", protectedAccess = true, structure = buildInterchangeStructure {
 
@@ -228,8 +227,8 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 
                 if (resultComponent != null) {
 
-                    fun processComponent(function: KFunction<Unit>) {
-                        function.call(resultComponent, executor)
+                    fun processComponent(function: (Component, InterchangeExecutor) -> Unit) {
+                        function(resultComponent, executor)
                     }
 
                     when (getInput(0)) {
