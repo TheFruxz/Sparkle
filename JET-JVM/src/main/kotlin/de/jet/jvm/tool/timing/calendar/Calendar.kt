@@ -318,6 +318,19 @@ class Calendar constructor(
 	 */
 	override fun toString() = getFormatted()
 
+	/**
+	 * Returns the current [Calendar]-Time as a localized String,
+	 * using the [locale], a [dateStyle] and a [timeStyle].
+	 * This function gives the ability, to easily and quickly
+	 * create a usable String, which can be displayed to average
+	 * customers or in the front-end.
+	 * @param locale in which language & language-format it should be generated
+	 * @param dateStyle the style & length of the date
+	 * @param timeStyle the style & length of the time
+	 * @return A locale-based formatted [String] of the [javaDate]
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun getFormatted(locale: Locale = Locale.getDefault(), dateStyle: FormatStyle = FULL, timeStyle: FormatStyle = MEDIUM) =
 		SimpleDateFormat.getDateTimeInstance(dateStyle.ordinal, timeStyle.ordinal, locale).format(javaDate)
 
