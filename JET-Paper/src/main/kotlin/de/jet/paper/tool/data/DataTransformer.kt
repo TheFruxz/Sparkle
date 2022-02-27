@@ -1,8 +1,11 @@
 package de.jet.paper.tool.data
 
+import de.jet.jvm.extension.container.flipped
+import de.jet.jvm.extension.container.replace
 import de.jet.jvm.extension.container.toArrayList
 import de.jet.jvm.extension.data.fromJson
 import de.jet.jvm.extension.data.toJson
+import de.jet.paper.runtime.app.LanguageSpeaker
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.world.SimpleLocation
 import org.bukkit.Location
@@ -38,7 +41,7 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 		// colors
 
 		fun simpleColorCode() =
-			DataTransformer<String, String>({ replace("§", "COLOR>") }, { replace("COLOR>", "§") })
+			DataTransformer<String, String>({ replace(LanguageSpeaker.smartColorReplace.flipped()) }, { replace(LanguageSpeaker.smartColorReplace) })
 
 		// simple location
 
