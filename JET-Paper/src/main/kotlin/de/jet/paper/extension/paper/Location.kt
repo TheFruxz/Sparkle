@@ -71,6 +71,34 @@ fun Location.getNearbyBlocks(radius: Int) = mutableListOf<Block>().apply {
 }.toSet()
 
 /**
+ * This functions takes a ([Number] to [Number] to [Number]) [Triple],
+ * to use the values as the parameters of the [Location].
+ * - the *first* value is the `x-coordinate`
+ * - the *second* value is the `y-coordinate`
+ * - the *third* value is the `z-coordinate`
+ * @param world the world, where the location-data is located at
+ * @return the generated Location-object
+ * @author Fruxz
+ * @since 1.0
+ */
+fun Pair<Pair<Number, Number>, Number>.asLocation(world: World) =
+	Location(world, first.first.toDouble(), first.second.toDouble(), second.toDouble())
+
+/**
+ * This functions takes a ([Number] to [Number] to [Number]) [Triple],
+ * to use the values as the parameters of the [Location].
+ * - the *first* value is the `x-coordinate`
+ * - the *second* value is the `y-coordinate`
+ * - the *third* value is the `z-coordinate`
+ * @param worldName the name of the world, where the location data is located at
+ * @return the generated Location-object, or null if the world does not exist
+ * @author Fruxz
+ * @since 1.0
+ */
+fun Pair<Pair<Number, Number>, Number>.asLocation(worldName: String) =
+	getWorld(worldName)?.let { asLocation(it) }
+
+/**
  * This function creates a new [LocationBox] object, representing
  * a range from one to another [Location]. This function is defined
  * as a [rangeTo] operator function. This function uses the [this]
