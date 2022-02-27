@@ -35,22 +35,6 @@ class InterchangeStructure(
 	var configuration = configuration
 		private set
 
-	fun branchesBackToOriginParent(): List<InterchangeStructure> {
-		val parents = mutableListOf<InterchangeStructure>()
-
-		fun inner(branch: InterchangeStructure) {
-			val innerParent = branch.parent
-			if (innerParent != null) {
-				parents.add(innerParent)
-				innerParent.branchesBackToOriginParent()
-			}
-		}
-
-		inner(this)
-
-		return parents
-	}
-
 	fun buildSyntax() = buildString {
 		fun construct(level: Int = 0, subBranches: List<InterchangeStructure>) {
 			subBranches.forEach { subBranch ->
@@ -119,9 +103,9 @@ class InterchangeStructure(
 					true
 			}
 
-	fun computeLocalCompletion() = content.flatMap { it.completion() }
+	private fun computeLocalCompletion() = content.flatMap { it.completion() }
 
-	fun validInput(input: String) =
+	private fun validInput(input: String) =
 		(!configuration.mustMatchOutput || this.computeLocalCompletion()
 			.any { it.equals(input, configuration.ignoreCase) })
 				&& configuration.supportedInputTypes.any { it.isValid(input) }
