@@ -111,13 +111,13 @@ class JetApp : App() {
 
 		// TODO: 19.10.2021 load language files to the lang-folder
 
-		debugMode = JetData.debugMode.content
-
 		debugLog("DebugMode preference loaded & set from file!")
 
 	}
 
 	override suspend fun hello() {
+
+		debugMode = JetData.debugMode.content
 
 		mainLog(
 			Level.INFO, """
