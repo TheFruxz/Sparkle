@@ -54,14 +54,6 @@ class LanguageSpeaker(
 	val error: Boolean
 		get() = cachedLanguageData["error"] == "yes"
 
-	private val smartColors = ChatColor.values().associateBy {
-		"[${it.name}]"
-	} + mapOf(
-		"[LIME]" to ChatColor.GREEN,
-		"[ORANGE]" to ChatColor.GOLD,
-		"[NONE]" to ChatColor.RESET,
-	)
-
 	private val basicHTMLmap = mapOf(
 		"<br>" to "\n"
 	)
@@ -80,6 +72,20 @@ class LanguageSpeaker(
 			}
 
 		} else "LANGUAGE FILE $baseLang NOT CORRECT"
+	}
+
+	companion object {
+
+		val smartColors = ChatColor.values().associateBy {
+			"[${it.name}]"
+		} + mapOf(
+			"[LIME]" to ChatColor.GREEN,
+			"[ORANGE]" to ChatColor.GOLD,
+			"[NONE]" to ChatColor.RESET,
+		)
+
+		val smartColorReplace = smartColors.mapValues { "§${it.value.char}" }
+
 	}
 
 }
