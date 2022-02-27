@@ -50,6 +50,7 @@
     "interchange.internal.service.serviceUnregistered": "[GRAY]The service '[YELLOW][id][GRAY]' was unregistered [LIME]successfully[GRAY]!",
     "interchange.internal.service.serviceReset": "[GRAY]The service '[YELLOW][id][GRAY]' got a reset [LIME]successfully[GRAY]!",
     "interchange.internal.service.serviceNotFound": "[GRAY]There are [RED]no[GRAY] services with the group or id '[YELLOW][id][GRAY]' registered!",
+    "interchange.internal.service.noServices": "[GRAY]There are [RED]no[GRAY] services registered!",
     "interchange.internal.service.list.header": "[GRAY]List of all registered services [YELLOW](Page [p1] of [p2])[GRAY]:",
     "interchange.internal.service.list.line": "[YELLOW][service][GRAY] -> [enabled][GRAY] ([activeSince]),",
 

@@ -1,5 +1,6 @@
 package de.jet.paper.structure.app.event
 
+import de.jet.jvm.extension.tryOrNull
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.structure.app.App
 import de.jet.paper.tool.smart.VendorOnDemand
@@ -29,7 +30,7 @@ abstract class EventListener(
 		internal set
 
 	val listenerIdentity: String
-		get() = this::class.simpleName ?: "${UUID.randomUUID()}"
+		get() = tryOrNull { this::class.simpleName } ?: "${UUID.randomUUID()}"
 
 	override val vendorIdentity: Identity<App>
 		get() = vendor.identityObject

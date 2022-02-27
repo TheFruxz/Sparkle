@@ -64,7 +64,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 					}.notification(INFO, executor).display()
 				} else
-					lang("interchange.internal.sandbox.noFound")
+					lang("interchange.internal.service.noServices")
 						.notification(FAIL, executor).display()
 			}
 
