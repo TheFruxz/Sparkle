@@ -56,7 +56,7 @@ internal class ServiceInterchange : StructuredInterchange(
 							appendLine(lang("interchange.internal.service.list.line").replaceVariables(
 								"service" to service.identity,
 								"enabled" to if (service.isRunning) "$GREEN${BOLD}ONLINE" else "$RED${BOLD}OFFLINE",
-								"[activeSince]" to (Calendar.now().timeInMilliseconds - (service.controller?.startTime
+								"activeSince" to (Calendar.now().timeInMilliseconds - (service.controller?.startTime
 									?: Calendar.now()).timeInMilliseconds).milliseconds.toString(),
 							))
 
