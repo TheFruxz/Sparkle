@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.JavaVersion.VERSION_17
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -24,24 +25,25 @@ dependencies {
     // Internal
 
     implementation(project(":JET-JVM"))
+    shadow(project(":JET-JVM"))
 
     // Kotlin
 
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
+    shadow(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
 
     // External
 
     implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
-    compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") // Head-Database
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT") // PaperMC
 
-}
+    compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") // Head-Database
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
 }
 
 java {
@@ -49,10 +51,6 @@ java {
     targetCompatibility = VERSION_17
     withJavadocJar()
     withSourcesJar()
-}
-
-tasks.processResources {
-    expand("version" to project.version, "name" to project.name, "website" to "https://$host")
 }
 
 val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
@@ -99,10 +97,27 @@ publishing {
     }
 }
 
-tasks.shadowJar {
-    archiveClassifier.set("Runnable")
-}
+tasks {
 
-tasks.test {
-    useJUnitPlatform()
+    build {
+        dependsOn(shadowJar)
+    }
+
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "17"
+    }
+
+    named<ShadowJar>("shadowJar") {
+        archiveClassifier.set("Runnable")
+        configurations = listOf(project.configurations.shadow.get())
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    processResources {
+        expand("version" to project.version, "name" to project.name, "website" to "https://$host")
+    }
+
 }

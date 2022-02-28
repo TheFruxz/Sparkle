@@ -147,5 +147,13 @@ Of course, you can also participate in JET and contribute to the development. Ho
 
 If you have any questions, suggestions or other items you would like to contribute to JET or just discuss, check out the Discussions section of this repository, where you will find the respective areas where you can create your own questions or join in discussions on other things. 
 
+## Sidenotes
+
+- JET-Paper-Runnable includes these dependencies
+  - Kotlin Reflect
+  - KotlinX Serialization JSON
+  - KotlinX Coroutines
+
+
 ###### We build & use JET on Java 17 - [Eclipse Temurin](https://adoptium.net/).
 ###### Also build & run JET with [Eclipse Temurin](https://adoptium.net/) to get the best possible experience!
