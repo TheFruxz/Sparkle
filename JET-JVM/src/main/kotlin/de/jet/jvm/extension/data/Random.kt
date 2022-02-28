@@ -31,13 +31,13 @@ fun randomInt(range: IntRange) = Random.nextInt(range)
  * random letters & numbers.
  * The template of the Tag is '#[letters & numbers]'.
  * @param size the amount of mixed letters & numbers, which the Tag should have ([size]+1 == tag.length)
- * @param hashtag if true, the Tag will start with a '#'
+ * @param hash if true, the Tag will start with a '#'
  * @param tagType the type of the Tag creation (if uppercase, lowercase or mixed-case)
  * @return a random Tag with the # at the start of the generated Tag
  * @author Fruxz
  * @since 1.0
  */
-fun buildRandomTag(size: Int = 5, hashtag: Boolean = true, tagType: RandomTagType = ONLY_UPPERCASE): String {
+fun buildRandomTag(size: Int = 5, hash: Boolean = true, tagType: RandomTagType = ONLY_UPPERCASE): String {
 	val letters = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
 		.map { when (tagType) {
 			ONLY_UPPERCASE -> it.uppercase()
@@ -45,7 +45,7 @@ fun buildRandomTag(size: Int = 5, hashtag: Boolean = true, tagType: RandomTagTyp
 			else -> it
 		} }
 
-	return hashtag.switchResult("#", "") + (letters + (0..9))
+	return hash.switchResult("#", "") + (letters + (0..9))
 		.mapToString()
 		.stackRandom(size)
 }

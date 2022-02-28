@@ -45,7 +45,7 @@ interface Tasky : Logging {
 			onCrash: Tasky.() -> Unit = {},
 			serviceVendor: Identity<Service> = Identifiable.custom<Service>("dummy").identityObject,
 			process: Tasky.() -> Unit,
-			internalId: String = buildRandomTag(hashtag = false, tagType = ONLY_UPPERCASE)
+			internalId: String = buildRandomTag(hash = false, tagType = ONLY_UPPERCASE)
 		): Tasky {
 			val currentTask = Task(temporalAdvice, true, process)
 			lateinit var output: Tasky
