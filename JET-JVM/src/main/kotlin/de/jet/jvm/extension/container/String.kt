@@ -91,3 +91,52 @@ fun emptyString() = ""
 @Throws(IllegalArgumentException::class)
 fun String.toUUID() = UUID.fromString(this)!!
 
+/**
+ * Replaces the first [oldValue] with the [newValue] (respecting the [ignoreCase]),
+ * if the String [startsWith] the [oldValue].
+ * @param oldValue the text which gets replaced
+ * @param newValue the text which gets placed instead
+ * @param ignoreCase if the case is ignored at check & replace
+ * @return the replaced string
+ * @see replaceFirst
+ * @author Fruxz
+ * @since 1.0
+ */
+fun String.replacePrefix(oldValue: String, newValue: String, ignoreCase: Boolean = false) = if (startsWith(oldValue, ignoreCase)) {
+	replaceFirst(oldValue, newValue, ignoreCase)
+} else
+	this
+
+/**
+ * Replaces the last [oldValue] with the [newValue] (respecting the [ignoreCase]),
+ * if the String [endsWith] the [oldValue].
+ * @param oldValue the text which gets replaced
+ * @param newValue the text which gets placed instead
+ * @param ignoreCase if the case is ignored at check & replace
+ * @return the replaced string
+ * @author Fruxz
+ * @since 1.0
+ */
+fun String.replaceSuffix(oldValue: String, newValue: String, ignoreCase: Boolean = false) = if (endsWith(oldValue, ignoreCase)) {
+	split(oldValue).dropLast(1).joinToString(oldValue) + newValue
+} else
+	this
+
+/**
+ * Replaces the first and last [oldValue] with the [newValue] (respecting the [ignoreCase]),
+ * if the String [startsWith] or/and [endsWith] the [oldValue].
+ * If only one side (start or end) starts or ends with the [oldValue],
+ * then only this will get replaced, but there is no error, that the other
+ * side is not found!
+ * @param oldValue the text which gets replaced
+ * @param newValue the text which gets placed instead
+ * @param ignoreCase if the case is ignored at check & replace
+ * @return the replaced string
+ * @see replacePrefix
+ * @see replaceSuffix
+ * @author Fruxz
+ * @since 1.0
+ */
+fun String.replaceSurrounding(oldValue: String, newValue: String, ignoreCase: Boolean = false) =
+	replacePrefix(oldValue, newValue, ignoreCase)
+		.replaceSuffix(oldValue, newValue, ignoreCase)
