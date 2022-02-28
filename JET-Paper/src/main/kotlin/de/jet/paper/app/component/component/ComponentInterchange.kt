@@ -19,7 +19,7 @@ import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.isNotRequired
 import de.jet.paper.structure.component.Component
 import de.jet.paper.tool.display.message.Transmission
-import de.jet.paper.tool.display.message.Transmission.Level.INFO
+import de.jet.paper.tool.display.message.Transmission.Level.*
 
 internal class ComponentInterchange : StructuredInterchange("component", protectedAccess = true, structure = buildInterchangeStructure {
 
@@ -72,27 +72,34 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
             component.vendor.start(component.identityObject)
 
             lang("interchange.internal.component.nowRunning")
-                .replace("[component]", component.identity)
+                .replaceVariables("component" to component.identity)
                 .notification(Transmission.Level.APPLIED, executor).display()
 
         } else
             lang("interchange.internal.component.alreadyRunning")
-                .replace("[component]", component.identity)
+                .replaceVariables("component" to component.identity)
                 .notification(Transmission.Level.FAIL, executor).display()
     }
 
     fun stop(component: Component, executor: InterchangeExecutor) {
         if (component.isRunning) {
 
-            component.vendor.stop(component.identityObject)
+            if (component.canBeStopped) {
 
-            lang("interchange.internal.component.nowStopped")
-                .replace("[component]", component.identity)
-                .notification(Transmission.Level.APPLIED, executor).display()
+                component.vendor.stop(component.identityObject)
+
+                lang("interchange.internal.component.nowStopped")
+                    .replace("[component]", component.identity)
+                    .notification(Transmission.Level.APPLIED, executor).display()
+
+            } else
+                lang("interchange.internal.component.runningStatic")
+                    .replaceVariables("component" to component.identity)
+                    .notification(FAIL, executor).display()
 
         } else
             lang("interchange.internal.component.missingRunning")
-                .replace("[component]", component.identity)
+                .replaceVariables("component" to component.identity)
                 .notification(Transmission.Level.FAIL, executor).display()
     }
 
@@ -116,7 +123,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
                         "interchange.internal.component.autoStartAdded"
                     }
                 )
-                    .replace("[component]", component.identity)
+                    .replaceVariables("component" to component.identity)
                     .notification(Transmission.Level.APPLIED, executor).display()
 
                 preference.content = currentState
@@ -124,7 +131,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 
         } else
             lang("interchange.internal.component.autoStartStatic")
-                .replace("[component]", component.identity)
+                .replaceVariables("component" to component.identity)
                 .notification(Transmission.Level.FAIL, executor).display()
     }
 
@@ -133,6 +140,9 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
             if (containsKey(component.identityObject))
                 this[component.identityObject] = Calendar.now()
         }
+        lang("interchange.internal.component.reset")
+            .replaceVariables("component" to component.identity)
+            .notification(APPLIED, executor).display()
     }
 
     fun info(component: Component, executor: InterchangeExecutor) {
