@@ -104,7 +104,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 	branch {
 
-		addContent("do")
+		addContent("at", "@")
 
 		ignoreCase()
 

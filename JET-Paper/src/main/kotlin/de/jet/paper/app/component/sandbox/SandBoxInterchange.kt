@@ -153,7 +153,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 		branch {
 
-			addContent("do")
+			addContent("at", "@")
 
 			ignoreCase()
 

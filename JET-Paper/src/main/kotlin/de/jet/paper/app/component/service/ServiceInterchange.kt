@@ -105,7 +105,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 		branch {
 
-			addContent("do")
+			addContent("at", "@")
 
 			ignoreCase()
 

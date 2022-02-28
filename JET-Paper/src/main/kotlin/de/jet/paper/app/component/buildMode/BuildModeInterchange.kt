@@ -179,7 +179,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 		branch {
 
-			addContent("do")
+			addContent("at", "@")
 
 			ignoreCase()
 
