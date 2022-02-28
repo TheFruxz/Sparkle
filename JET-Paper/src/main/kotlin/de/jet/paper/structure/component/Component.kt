@@ -3,6 +3,7 @@ package de.jet.paper.structure.component
 import de.jet.jvm.extension.container.toggle
 import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
+import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetData
 import de.jet.paper.extension.debugLog
@@ -116,6 +117,9 @@ abstract class Component(
 
 	val canBeAutoStartToggled: Boolean
 		get() = !setOf(ENABLED, AUTOSTART_IMMUTABLE).contains(behaviour)
+
+	val runningSince: Calendar?
+		get() = JetCache.runningComponents[identityObject]
 
 	/**
 	 * Can be overwritten, no origin code!

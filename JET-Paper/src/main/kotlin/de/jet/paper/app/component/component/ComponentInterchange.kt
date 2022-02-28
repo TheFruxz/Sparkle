@@ -146,7 +146,26 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
     }
 
     fun info(component: Component, executor: InterchangeExecutor) {
+        buildString {
 
+            appendLine(lang("interchange.internal.component.info.header").replaceVariables("component" to component.identity))
+
+            fun Boolean.toDisplay() = if (this) lang("interchange.internal.component.info.dict.true") else lang("interchange.internal.component.info.dict.false")
+            mapOf(
+                lang("interchange.internal.component.info.dict.name") to component.identity,
+                lang("interchange.internal.component.info.dict.running") to component.isRunning.toDisplay(),
+                lang("interchange.internal.component.info.dict.vendor") to component.vendorIdentity.identity,
+                lang("interchange.internal.component.info.dict.configuration") to component.behaviour.name,
+                lang("interchange.internal.component.info.dict.isAutoStart") to component.isAutoStarting.toDisplay(),
+                lang("interchange.internal.component.info.dict.isExperimental") to component.experimental.toDisplay(),
+                lang("interchange.internal.component.info.dict.runningSince") to (component.runningSince?.durationToNow()?.toString() ?: "-/-")
+            ).forEach { (key, value) ->
+                append("\n${lang("interchange.internal.component.info.list").replaceVariables(
+                    "key" to key,
+                    "value" to value,
+                )}")
+            }
+        }.notification(INFO, executor).display()
     }
 
     branch {
