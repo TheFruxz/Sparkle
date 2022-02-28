@@ -236,3 +236,47 @@ fun <T, C : Collection<T>> C.page(page: Int, pageSize: Int): PageValue<T> {
  */
 fun <T> Array<T>.page(page: Int, pageSize: Int) =
 	toList().page(page, pageSize)
+
+/**
+ * This function returns, if the current [Collection]
+ * has some duplicates in it. The decision is made
+ * by the [distinct] function.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T, C : Collection<T>> C.hasDuplicates() =
+	size > distinct().size
+
+/**
+ * This function returns, if the current [Collection]
+ * has some duplicates in it. The decision is made
+ * by the [distinct] function.
+ * @param process defines the value, with whic
+ * object the differentiation is made
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T, C : Collection<T>, K> C.hasDuplicates(process: (T) -> K) =
+	size > distinctBy(process).size
+
+/**
+ * This function returns, if the current [Array]
+ * has some duplicates in it. The decision is made
+ * by the [distinct] function.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T> Array<T>.hasDuplicates() =
+	size > distinct().size
+
+/**
+ * This function returns, if the current [Array]
+ * has some duplicates in it. The decision is made
+ * by the [distinct] function.
+ * @param process defines the value, with whic
+ * object the differentiation is made
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T, K> Array<T>.hasDuplicates(process: (T) -> K) =
+	size > distinctBy(process).size
