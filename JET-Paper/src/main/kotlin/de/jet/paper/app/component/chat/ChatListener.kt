@@ -1,6 +1,7 @@
 package de.jet.paper.app.component.chat
 
 import de.jet.paper.extension.display.buildTextComponent
+import de.jet.paper.extension.paper.consoleSender
 import de.jet.paper.extension.paper.getPlayer
 import de.jet.paper.extension.paper.legacyString
 import de.jet.paper.extension.paper.onlinePlayers
@@ -12,6 +13,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import java.util.*
 
@@ -52,11 +54,11 @@ internal class ChatListener : EventListener() {
 			append(message)
 
 		}.let { result ->
-			onlinePlayers.forEach { receiver ->
+			(onlinePlayers + consoleSender).forEach { receiver ->
 
 				receiver.sendMessage(result)
 
-				if (notify.contains(receiver.uniqueId))
+				if (receiver is Player && notify.contains(receiver.uniqueId))
 					receiver.playSound(Sound.sound(BLOCK_NOTE_BLOCK_PLING, MASTER, 1F, 2F))
 
 			}
