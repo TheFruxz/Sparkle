@@ -1,4 +1,4 @@
-package de.jet.paper.app.component.itemLink
+package de.jet.paper.app.component.linking
 
 import de.jet.jvm.extension.container.replace
 import de.jet.paper.app.JetCache

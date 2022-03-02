@@ -10,8 +10,8 @@ import de.jet.paper.app.component.chat.ChatComponent
 import de.jet.paper.app.component.component.ComponentComponent
 import de.jet.paper.app.component.events.EventsComponent
 import de.jet.paper.app.component.experimental.ExperimentalComponent
-import de.jet.paper.app.component.itemLink.ItemLinkComponent
 import de.jet.paper.app.component.keeper.KeeperComponent
+import de.jet.paper.app.component.linking.ContainerLinkComponent
 import de.jet.paper.app.component.marking.MarkingComponent
 import de.jet.paper.app.component.point.PointComponent
 import de.jet.paper.app.component.point.asset.Point
@@ -65,6 +65,7 @@ import org.bukkit.Material
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
 import java.util.logging.Level
+import kotlin.time.Duration.Companion.seconds
 
 class JetApp : App() {
 
@@ -166,7 +167,7 @@ class JetApp : App() {
 		add(PointComponent())
 		add(BuildModeComponent())
 		add(MarkingComponent())
-		add(ItemLinkComponent())
+		add(ContainerLinkComponent())
 		add(ComponentComponent())
 
 		add(JETInterchange())
@@ -238,6 +239,22 @@ class JetApp : App() {
 				add(buildRandomTag().also { println("adding $it") })
 			}.also { println("set to $it") }
 
+		}
+
+		buildAndRegisterSandBox(this, "clickAction") {
+			buildPanel {
+				this[20] = {
+
+					println("You clicked me!")
+
+					delay(2.seconds)
+
+					sync {
+						executor.sendMessage("You clicked me sync!")
+					}
+
+				}
+			}.display(executor as Player)
 		}
 
 	}

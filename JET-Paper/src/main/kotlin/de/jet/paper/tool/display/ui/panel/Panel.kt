@@ -1,5 +1,6 @@
 package de.jet.paper.tool.display.ui.panel
 
+import de.jet.jvm.extension.container.removeAll
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
@@ -11,12 +12,15 @@ import de.jet.paper.extension.paper.createKey
 import de.jet.paper.extension.paper.legacyString
 import de.jet.paper.extension.system
 import de.jet.paper.extension.tasky.sync
+import de.jet.paper.runtime.event.PanelClickEvent
 import de.jet.paper.structure.app.App
 import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.item.Item
+import de.jet.paper.tool.display.ui.UI
 import de.jet.paper.tool.display.ui.inventory.Container
 import de.jet.paper.tool.effect.sound.SoundMelody
 import de.jet.paper.tool.smart.Logging
+import de.jet.paper.tool.smart.VendorsIdentifiable
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
@@ -62,18 +66,25 @@ data class Panel(
 		""".trimIndent()
 	},
 	var overridingBorderProtection: Boolean = true,
-) : Cloneable, Logging, Container(label = label, size = lines * 9, theme = theme, openSound = openSound) {
+) : Cloneable, Logging, Container(label = label, size = lines * 9, theme = theme, openSound = openSound), VendorsIdentifiable<UI> {
 
 	init {
 		if (content.isEmpty()) { // do not write a border, if already content is inside
 			content = content.apply {
+				val borderKey = system.createKey("panelBorder")
+
 				border(theme.stainedGlassPane.item.blankLabel().apply {
 					if (overridingBorderProtection)
-						dataPut(system.createKey("panelBorder"), 1)
+						dataPut(borderKey, 1)
 				})
+
 			}
 		}
 	}
+
+	override val vendorIdentity = vendor.identityObject
+
+	override val thisIdentity = "PLACEHOLDER"
 
 	override val sectionLabel = "Panel/$identity"
 
@@ -100,6 +111,29 @@ data class Panel(
 	fun onReceive(onReceive: PanelReceiveData.() -> Unit) = apply {
 		onReceiveEvent = onReceive
 	}
+
+	/**
+	 * running async
+	 */
+	fun addSlotAction(slot: Int, action: suspend (PanelClickEvent) -> Unit) {
+		JetCache.panelInteractions[identityObject] = (JetCache.panelInteractions[identityObject] ?: mutableMapOf()).apply {
+			this[slot] = ((this[slot] ?: mutableListOf()) + action).toMutableList()
+		}
+	}
+
+	fun removeSlotActions(slots: IntRange) {
+		JetCache.panelInteractions[identityObject]?.removeAll { key, _ -> key in slots }
+	}
+
+	fun removeSlotActions(slot: Int) {
+		JetCache.panelInteractions[identityObject]?.remove(slot)
+	}
+
+	/**
+	 * running async
+	 */
+	operator fun set(slot: Int, action: suspend (PanelClickEvent) -> Unit) =
+		addSlotAction(slot, action)
 
 	fun placeInner(slot: Int, item: Item) {
 		content[computedInnerSlots[slot]] = item
@@ -173,6 +207,10 @@ data class Panel(
 
 	override fun clone() = copy()
 
+	fun complete() = apply {
+		JetCache.completedPanels.add(this)
+	}
+
 	override fun display(humanEntity: HumanEntity) {
 		display(humanEntity, emptyMap())
 	}
@@ -183,6 +221,8 @@ data class Panel(
 
 	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>): Unit = with(copy()) {
 		val previousState = this@Panel.content.toMap()
+
+		complete()
 
 		this@with.content = this@with.content.apply {
 			set(4, this@with.icon.apply {

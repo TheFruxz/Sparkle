@@ -5,6 +5,7 @@ import de.jet.jvm.extension.container.removeAll
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.extension.debugLog
+import de.jet.paper.runtime.event.PanelClickEvent
 import de.jet.paper.runtime.sandbox.SandBox
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.app.AppCache
@@ -18,6 +19,8 @@ import de.jet.paper.structure.service.Service
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.display.item.action.ItemClickAction
 import de.jet.paper.tool.display.item.action.ItemInteractAction
+import de.jet.paper.tool.display.ui.UI
+import de.jet.paper.tool.display.ui.panel.Panel
 import de.jet.paper.tool.display.ui.panel.PanelFlag
 import de.jet.paper.tool.input.Keyboard
 import de.jet.paper.tool.input.Keyboard.RunningEngine.PlayerKeyboardPort
@@ -131,6 +134,14 @@ object JetCache : AppCache {
 	@DataLevel(KILL)
 	internal val initializationProcesses = mutableListOf<() -> Unit>()
 
+	@GlobalData
+	@DataLevel(CLEAR)
+	internal val completedPanels = mutableSetOf<Panel>()
+
+	@GlobalData
+	@DataLevel(CLEAR)
+	internal val panelInteractions = mutableMapOf<Identity<UI>, MutableMap<Int, MutableList<suspend PanelClickEvent.() -> Unit>>>()
+
 	private fun entityCleanerObjects(entity: UUID) = mapOf(
 		this::runningKeyboards to { runningKeyboards.removeAll { key, _ -> key.player == entity } },
 		this::buildModePlayers to { buildModePlayers.removeAll { it.identity == "" + entity } },
@@ -161,6 +172,9 @@ object JetCache : AppCache {
 		this::playerMarkerBoxes to { playerMarkerBoxes.clear() },
 		this::featureStates to { featureStates.clear() },
 		this::keyboardRequests to { keyboardRequests.clear() },
+		this::tmp_initSetupPreferences to { tmp_initSetupPreferences.clear() },
+		this::initializationProcesses to { initializationProcesses.clear() },
+		this::panelInteractions to { panelInteractions.clear() },
 	)
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
