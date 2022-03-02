@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.SkullMeta
 
 @Serializable
 @SerialName("MojangProfile")
+@Suppress("DEPRECATION")
 data class MojangProfile(
 	val created_at: String?,
 	val textures: MojangProfileTextures,

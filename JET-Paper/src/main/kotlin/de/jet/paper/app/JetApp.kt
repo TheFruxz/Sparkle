@@ -58,6 +58,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Material
@@ -76,6 +77,8 @@ class JetApp : App() {
 	override suspend fun preHello() {
 
 		addJetJsonModuleModification {
+
+			@OptIn(ExperimentalSerializationApi::class)
 			polymorphic(Any::class) {
 
 				subclass(Point::class)

@@ -14,24 +14,22 @@ import de.jet.paper.extension.paper.buildMode
 import de.jet.paper.extension.paper.getOfflinePlayer
 import de.jet.paper.extension.paper.onlinePlayers
 import de.jet.paper.extension.system
-import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
+import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.completion.component.CompletionComponent
-import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.completion.isNotRequired
-import de.jet.paper.tool.annotation.RequiresComponent
 import de.jet.paper.tool.display.message.Transmission.Level.*
 import org.bukkit.OfflinePlayer
 
 internal class BuildModeInterchange : StructuredInterchange(
 	label = "buildmode",
 	protectedAccess = true,
-	structure = @OptIn(RequiresComponent::class) buildInterchangeStructure {
+	structure = buildInterchangeStructure {
 
 		fun enableBuildMode(executor: InterchangeExecutor, target: OfflinePlayer) {
 			if (!target.buildMode) {

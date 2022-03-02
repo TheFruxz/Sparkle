@@ -15,7 +15,6 @@ import de.jet.paper.extension.timing.isCooldownDecaying
 import de.jet.paper.extension.timing.setCooldown
 import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.paper.structure.app.event.EventListener
-import de.jet.paper.tool.annotation.RequiresComponent
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.item.action.ActionCooldownType.BUKKIT_MATERIAL
 import de.jet.paper.tool.display.item.action.ActionCooldownType.JET_INFO
@@ -155,7 +154,6 @@ internal class ItemLinkListener : EventListener() {
 	}
 
 	@EventHandler(priority = HIGH)
-	@OptIn(RequiresComponent::class)
 	fun playerInteractAtItem(event: PlayerInteractAtItemEvent) {
 		with(event) {
 			item.interactAction?.let { action ->

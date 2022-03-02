@@ -7,7 +7,6 @@ import de.jet.paper.runtime.event.PlayerDamageByPlayerEvent
 import de.jet.paper.runtime.event.interact.PlayerInteractAtBlockEvent
 import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.paper.structure.app.event.EventListener
-import de.jet.paper.tool.annotation.RequiresComponent
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -16,7 +15,6 @@ import org.bukkit.event.player.PlayerInteractEvent
 internal class EventsListener : EventListener() {
 
 	@EventHandler
-	@OptIn(RequiresComponent::class)
 	fun onEntityDamageByEntity(event: EntityDamageByEntityEvent) {
 		if (all(event.entity, event.damager) { this is Player }) {
 			val internal = PlayerDamageByPlayerEvent(
@@ -33,7 +31,6 @@ internal class EventsListener : EventListener() {
 	}
 
 	@EventHandler
-	@OptIn(RequiresComponent::class)
 	fun onPlayerInteract(event: PlayerInteractEvent) {
 		val player = event.player
 		val item = event.item?.item

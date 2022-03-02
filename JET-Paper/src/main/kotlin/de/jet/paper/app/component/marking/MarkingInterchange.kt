@@ -14,9 +14,7 @@ import de.jet.paper.extension.paper.templateLocation
 import de.jet.paper.extension.tasky.sync
 import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.completion.buildInterchangeStructure
-import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.ignoreCase
-import de.jet.paper.tool.annotation.RequiresComponent
 import de.jet.paper.tool.display.message.Transmission.Level.*
 import de.jet.paper.tool.position.LocationBox
 import net.kyori.adventure.text.Component
@@ -50,7 +48,6 @@ internal class MarkingInterchange : StructuredInterchange(
 			""".trimIndent()
 
 				@Suppress("UnnecessaryOptInAnnotation")
-				@OptIn(RequiresComponent::class)
 				putInteractAction {
 					val targetBlock = whoInteract.rayTraceBlocks(10.0, ALWAYS)?.hitBlock
 					val actualBox = JetCache.playerMarkerBoxes[player.identityObject]

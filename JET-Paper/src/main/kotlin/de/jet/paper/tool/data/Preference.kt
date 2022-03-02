@@ -60,7 +60,7 @@ data class Preference<SHELL : Any>(
 	@Suppress("UNCHECKED_CAST")
 	var content: SHELL
 		get() {
-			var out: SHELL = default
+			var out: SHELL
 			val process = process@{
 				val currentCacheValue = registeredPreferenceCache[inFilePath]
 

@@ -1,10 +1,9 @@
 package de.jet.paper.extension.paper
 
 import de.jet.paper.runtime.event.interact.PlayerInteractAtBlockEvent
-import de.jet.paper.tool.annotation.RequiresComponent
 import org.bukkit.Location
 import org.bukkit.event.block.Action
-import org.bukkit.event.block.Action.*
+import org.bukkit.event.block.Action.PHYSICAL
 import org.bukkit.event.player.PlayerInteractEvent
 
 /**
@@ -21,7 +20,6 @@ val Action.isPhysical: Boolean
  * gets returned of the possible/futuristic block-location of the newly appearing/
  * placed block.
  */
-@OptIn(RequiresComponent::class)
 val PlayerInteractAtBlockEvent.realAffectedBlock: Location
 	get() = block.location.toBlockLocation().add(origin.blockFace.direction)
 
