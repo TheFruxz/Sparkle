@@ -156,4 +156,5 @@ If you have any questions, suggestions or other items you would like to contribu
 
 
 ###### We build & use JET on Java 17 - [Eclipse Temurin](https://adoptium.net/).
+###### During the release of version 1.0, JET transforms into MoltenKT
 ###### Also build & run JET with [Eclipse Temurin](https://adoptium.net/) to get the best possible experience!
