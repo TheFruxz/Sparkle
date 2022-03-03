@@ -1,11 +1,9 @@
 package de.jet.paper.extension.display.ui
 
-import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.paper.createKey
 import de.jet.paper.extension.system
 import de.jet.paper.tool.display.item.Item
-import de.jet.paper.tool.display.ui.UI
 import de.jet.paper.tool.display.ui.inventory.Container
 import de.jet.paper.tool.display.ui.panel.Panel
 import org.bukkit.inventory.Inventory
@@ -33,6 +31,6 @@ internal val panelIdentificationKey = system.createKey("panelId")
  * @author Fruxz
  * @since 1.0
  */
-fun <T : Inventory> T.getPanel() = this[4]?.item?.dataGet(panelIdentificationKey)?.let { Identity<UI>("$it") }.let { panelIdentity ->
-	JetCache.completedPanels.lastOrNull { it.identity == panelIdentity?.identity }
+fun <T : Inventory> T.getPanel() = this[4]?.item?.dataGet(panelIdentificationKey)?.let { panelIdentity ->
+	JetCache.completedPanels.lastOrNull { it.identity == "$panelIdentity" }
 }
