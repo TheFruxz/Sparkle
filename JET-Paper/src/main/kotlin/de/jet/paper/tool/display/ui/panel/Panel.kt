@@ -7,6 +7,7 @@ import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.BOLD
 import de.jet.paper.extension.display.YELLOW
 import de.jet.paper.extension.display.ui.item
+import de.jet.paper.extension.display.ui.panelIdentificationKey
 import de.jet.paper.extension.paper.createInventory
 import de.jet.paper.extension.paper.createKey
 import de.jet.paper.extension.paper.legacyString
@@ -229,10 +230,10 @@ data class Panel(
 
 				label = this@with.label.legacyString
 
-				dataPut(system.createKey("panelId"), this@with.identity, true)
+				dataPut(panelIdentificationKey, this@with.identity, true)
 
 				if (overridingBorderProtection) {
-					dataPut(system.createKey("panelBorder"), 1)
+					dataPut(panelIdentificationKey, 1)
 				}
 
 			})

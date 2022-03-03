@@ -2,36 +2,21 @@ package de.jet.paper.app.component.events
 
 import de.jet.jvm.extension.all
 import de.jet.jvm.extension.forceCast
-import de.jet.jvm.tool.smart.identification.Identity
-import de.jet.paper.app.JetCache
-import de.jet.paper.extension.display.ui.get
+import de.jet.paper.extension.display.ui.getPanel
 import de.jet.paper.extension.display.ui.item
-import de.jet.paper.extension.paper.createKey
-import de.jet.paper.extension.system
 import de.jet.paper.runtime.event.PanelClickEvent
 import de.jet.paper.runtime.event.PlayerDamageByPlayerEvent
 import de.jet.paper.runtime.event.interact.PlayerInteractAtBlockEvent
 import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.paper.structure.app.event.EventListener
-import de.jet.paper.tool.display.ui.UI
-import de.jet.paper.tool.display.ui.panel.Panel
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority.HIGHEST
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.Inventory
 
 internal class EventsListener : EventListener() {
-
-	val panelIdKey = system.createKey("panelId")
-
-	private fun computePanel(inventory: Inventory): Panel? {
-		val panelIdentity = inventory[4]?.item?.dataGet(panelIdKey)?.let { Identity<UI>("$it") }
-
-		return JetCache.completedPanels.lastOrNull { it.identity == panelIdentity?.identity }
-	}
 
 	@EventHandler(priority = HIGHEST)
 	fun onInventoryClick(event: InventoryClickEvent) {
@@ -43,7 +28,7 @@ internal class EventsListener : EventListener() {
 		val slotType = event.slotType
 
 		if (inventory != null) {
-			val panel = computePanel(inventory)
+			val panel = inventory.getPanel()
 
 			if (panel != null) {
 
