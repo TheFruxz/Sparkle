@@ -11,11 +11,11 @@ import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
 import de.jet.paper.extension.system
-import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
+import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.completion.isNotRequired
 import de.jet.paper.structure.component.Component
 import de.jet.paper.tool.display.message.Transmission
@@ -151,6 +151,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
             appendLine(lang("interchange.internal.component.info.header").replaceVariables("component" to component.identity))
 
             fun Boolean.toDisplay() = if (this) lang("interchange.internal.component.info.dict.true") else lang("interchange.internal.component.info.dict.false")
+
             mapOf(
                 lang("interchange.internal.component.info.dict.name") to component.identity,
                 lang("interchange.internal.component.info.dict.running") to component.isRunning.toDisplay(),
@@ -160,7 +161,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
                 lang("interchange.internal.component.info.dict.isExperimental") to component.experimental.toDisplay(),
                 lang("interchange.internal.component.info.dict.runningSince") to (component.runningSince?.durationToNow()?.toString() ?: "-/-")
             ).forEach { (key, value) ->
-                append("\n${lang("interchange.internal.component.info.list").replaceVariables(
+                append("\n- ${lang("interchange.internal.component.info.line").replaceVariables(
                     "key" to key,
                     "value" to value,
                 )}")
@@ -181,7 +182,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 
         branch {
 
-            addContent(CompletionAsset(system, "componentPage", true, listOf(InterchangeStructureInputRestriction.LONG), generator = {
+            addContent(CompletionAsset<Long>(system, "componentPage", true, listOf(InterchangeStructureInputRestriction.LONG), generator = {
                 (1..ceilToInt(JetCache.registeredComponents.size.toDouble() / 6)).mapToString()
             }))
             isNotRequired()
@@ -237,48 +238,97 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
     }
 
     branch {
-        addContent(
-            "start",
-            "stop",
-            "autostart",
-            "restart",
-            "reset",
-            "info",
-        )
+
+        addContent("at", "@")
+
+        ignoreCase()
 
         branch {
+
             addContent(CompletionAsset.COMPONENT)
 
-            execution {
-                val resultComponent = JetCache.registeredComponents.firstOrNull {
-                    it.identity == getInput(1)
+            branch {
+
+                addContent("start")
+
+                ignoreCase()
+
+                concludedExecution {
+
+                    start(getInput(1, CompletionAsset.COMPONENT), executor)
+
                 }
 
-                if (resultComponent != null) {
+            }
 
-                    fun processComponent(function: (Component, InterchangeExecutor) -> Unit) {
-                        function(resultComponent, executor)
-                    }
+            branch {
 
-                    when (getInput(0)) {
+                addContent("stop")
 
-                        "start" -> processComponent(::start)
+                ignoreCase()
 
-                        "stop" -> processComponent(::stop)
+                concludedExecution {
 
-                        "autostart" -> processComponent(::toggleAutostart)
+                    stop(getInput(1, CompletionAsset.COMPONENT), executor)
 
-                        "restart" -> processComponent(::restart)
+                }
 
-                        "reset" -> processComponent(::reset)
+            }
 
-                        "info" -> processComponent(::info)
+            branch {
 
-                    }
+                addContent("restart")
 
-                    InterchangeResult.SUCCESS
-                } else
-                    InterchangeResult.WRONG_USAGE
+                ignoreCase()
+
+                concludedExecution {
+
+                    restart(getInput(1, CompletionAsset.COMPONENT), executor)
+
+                }
+
+            }
+
+            branch {
+
+                addContent("reset")
+
+                ignoreCase()
+
+                concludedExecution {
+
+                    reset(getInput(1, CompletionAsset.COMPONENT), executor)
+
+                }
+
+            }
+
+            branch {
+
+                addContent("autostart")
+
+                ignoreCase()
+
+                concludedExecution {
+
+                    toggleAutostart(getInput(1, CompletionAsset.COMPONENT), executor)
+
+                }
+
+            }
+
+            branch {
+
+                addContent("info")
+
+                ignoreCase()
+
+                concludedExecution {
+
+                    info(getInput(1, CompletionAsset.COMPONENT), executor)
+
+                }
+
             }
 
         }
