@@ -257,7 +257,7 @@ class JetApp : App() {
 
 	}
 
-	override suspend fun bye() {
+	override fun bye() {
 
 		coroutineScope.apply {
 			coroutineContext.cancelChildren()

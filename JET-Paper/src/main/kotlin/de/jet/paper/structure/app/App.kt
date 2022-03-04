@@ -506,7 +506,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	open suspend fun bye() {}
+	open fun bye() {}
 
 	private suspend fun awaitState(waitFor: RunStatus, out: RunStatus, process: suspend () -> Unit) {
 
@@ -560,19 +560,11 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	final override fun onDisable() {
 		tryToCatch {
 
-			coroutineScope.launch {
+			runStatus = SHUTDOWN
+			bye()
+			coroutineScope.cancel("App '$identity' is now disabled!")
 
-				awaitState(ENABLE, OFFLINE) {
-
-					runStatus = SHUTDOWN
-					bye()
-					coroutineScope.cancel("App '$identity' is now disabled!")
-
-					runStatus = OFFLINE
-
-				}
-
-			}
+			runStatus = OFFLINE
 
 		}
 	}
