@@ -3,6 +3,7 @@ package de.jet.paper.app
 import de.jet.jvm.extension.data.addJetJsonModuleModification
 import de.jet.jvm.extension.data.buildRandomTag
 import de.jet.jvm.extension.forceCast
+import de.jet.jvm.extension.tryToIgnore
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.component.buildMode.BuildModeComponent
 import de.jet.paper.app.component.chat.ChatComponent
@@ -56,9 +57,11 @@ import de.jet.paper.tool.permission.Approval
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
@@ -258,6 +261,28 @@ class JetApp : App() {
 	}
 
 	override fun bye() {
+
+		JetCache.registeredServices.forEach {
+			if (it.vendor.identity == this.identity) {
+				it.shutdown()
+			}
+		}
+
+		JetCache.registeredComponents.forEach {
+			if (it.vendor.identity == this.identity) {
+				tryToIgnore { runBlocking { it.stop() } }
+			}
+		}
+
+		description.commands.keys.forEach {
+			getCommand(it)?.apply {
+				setExecutor(null)
+				tabCompleter = null
+				unregister(Bukkit.getCommandMap())
+			}
+
+			mainLog(Level.INFO, "Command '$it' disabled")
+		}
 
 		coroutineScope.apply {
 			coroutineContext.cancelChildren()
