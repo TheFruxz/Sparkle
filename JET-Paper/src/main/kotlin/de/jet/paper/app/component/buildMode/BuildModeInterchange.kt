@@ -1,6 +1,5 @@
 package de.jet.paper.app.component.buildMode
 
-import de.jet.jvm.extension.container.mapToString
 import de.jet.jvm.extension.container.page
 import de.jet.jvm.extension.container.replaceVariables
 import de.jet.jvm.extension.container.toUUID
@@ -13,7 +12,6 @@ import de.jet.paper.extension.lang
 import de.jet.paper.extension.paper.buildMode
 import de.jet.paper.extension.paper.getOfflinePlayer
 import de.jet.paper.extension.paper.onlinePlayers
-import de.jet.paper.extension.system
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.jet.paper.structure.command.StructuredInterchange
@@ -106,15 +104,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(CompletionAsset(
-					vendor = system,
-					thisIdentity = "Page",
-					true,
-					listOf(InterchangeStructureInputRestriction.LONG),
-					generator = {
-						(1..ceilToInt(JetCache.buildModePlayers.size.toDouble() / 6)).mapToString()
-					},
-				))
+				addContent(CompletionAsset.PAGES { ceilToInt(JetCache.buildModePlayers.size.toDouble() / 6) })
 
 				isNotRequired()
 

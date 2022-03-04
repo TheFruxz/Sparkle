@@ -1,6 +1,5 @@
 package de.jet.paper.app.component.sandbox
 
-import de.jet.jvm.extension.container.mapToString
 import de.jet.jvm.extension.container.page
 import de.jet.jvm.extension.container.replaceVariables
 import de.jet.jvm.extension.math.ceilToInt
@@ -13,15 +12,12 @@ import de.jet.paper.extension.objectBound.allSandBoxes
 import de.jet.paper.extension.objectBound.destroyAllSandBoxes
 import de.jet.paper.extension.objectBound.destroySandBox
 import de.jet.paper.extension.objectBound.getSandBox
-import de.jet.paper.extension.system
-import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
+import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
-import de.jet.paper.structure.command.completion.component.CompletionComponent
-import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.completion.isNotRequired
 import de.jet.paper.tool.display.message.Transmission.Level.*
@@ -124,15 +120,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(CompletionAsset(
-					vendor = system,
-					thisIdentity = "Page",
-					true,
-					listOf(InterchangeStructureInputRestriction.LONG),
-					generator = {
-						(1..ceilToInt(allSandBoxes.size.toDouble() / 6)).mapToString()
-					},
-				))
+				addContent(CompletionAsset.PAGES { ceilToInt(allSandBoxes.size.toDouble() / 6) })
 
 				isNotRequired()
 

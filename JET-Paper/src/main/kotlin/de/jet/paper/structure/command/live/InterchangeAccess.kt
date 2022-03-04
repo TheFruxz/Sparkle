@@ -5,6 +5,7 @@ import de.jet.paper.structure.app.App
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeUserRestriction
 import de.jet.paper.structure.command.completion.InterchangeStructureInputRestriction
+import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.tool.smart.Logging
 import java.util.logging.Level
 
@@ -34,5 +35,16 @@ data class InterchangeAccess(
 		} else {
 			throw IllegalArgumentException("Input restriction not followed!")
 		}
+
+	/**
+	 * @throws IllegalArgumentException if the asset has no transformer configured
+	 * @throws IllegalStateException if the asset produces a null value
+	 */
+	fun <T : Any> getInput(slot: Int, restrictiveAsset: CompletionAsset<T>): T {
+		if (restrictiveAsset.transformer == null) throw IllegalArgumentException("Asset '${restrictiveAsset.identity}' provides no transformer!")
+
+		return getInput(slot).let { input -> restrictiveAsset.transformer?.invoke(input) ?: throw IllegalStateException("Asset '${restrictiveAsset.identity}' transformer produces null at input '$input'!") }
+
+	}
 
 }

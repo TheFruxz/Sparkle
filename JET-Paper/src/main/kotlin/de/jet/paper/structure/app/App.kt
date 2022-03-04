@@ -567,6 +567,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 					runStatus = SHUTDOWN
 					bye()
 					coroutineScope.cancel("App '$identity' is now disabled!")
+
 					runStatus = OFFLINE
 
 				}

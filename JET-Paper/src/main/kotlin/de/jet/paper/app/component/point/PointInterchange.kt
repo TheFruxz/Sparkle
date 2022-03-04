@@ -1,6 +1,5 @@
 package de.jet.paper.app.component.point
 
-import de.jet.jvm.extension.container.mapToString
 import de.jet.jvm.extension.container.page
 import de.jet.jvm.extension.container.replaceVariables
 import de.jet.jvm.extension.math.ceilToInt
@@ -21,8 +20,6 @@ import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
-import de.jet.paper.structure.command.completion.component.CompletionComponent
-import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.completion.isNotRequired
 import de.jet.paper.structure.command.completion.mustNotMatchOutput
@@ -75,15 +72,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 		}
 
 		branch {
-			addContent(CompletionAsset(
-				vendor = system,
-				thisIdentity = "Page",
-				true,
-				listOf(InterchangeStructureInputRestriction.LONG),
-				generator = {
-					(1..ceilToInt(JetData.savedPoints.content.points.size.toDouble() / 6)).mapToString()
-				},
-			))
+			addContent(CompletionAsset.PAGES { ceilToInt(JetData.savedPoints.content.points.size.toDouble() / 6) })
 
 			isNotRequired()
 
