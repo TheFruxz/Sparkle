@@ -3,7 +3,6 @@ package de.jet.paper.app
 import de.jet.jvm.extension.data.addJetJsonModuleModification
 import de.jet.jvm.extension.data.buildRandomTag
 import de.jet.jvm.extension.forceCast
-import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.component.buildMode.BuildModeComponent
 import de.jet.paper.app.component.chat.ChatComponent
@@ -54,10 +53,9 @@ import de.jet.paper.tool.input.Keyboard
 import de.jet.paper.tool.input.Keyboard.RenderEngine.Key
 import de.jet.paper.tool.input.Keyboard.RenderEngine.KeyConfiguration
 import de.jet.paper.tool.permission.Approval
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
@@ -261,19 +259,10 @@ class JetApp : App() {
 
 	override suspend fun bye() {
 
-        val results = mutableListOf<Deferred<Unit>>()
-
-		JetCache.registeredComponents.forEach {
-			coroutineScope.launch {
-
-                tryToResult {
-                    results.add(async { it.stop() })
-                }
-
-			}
+		coroutineScope.apply {
+			coroutineContext.cancelChildren()
+			cancel("JET is shutting down!")
 		}
-
-        debugLog("Force-Cancelled ${results.size} components")
 
 	}
 
