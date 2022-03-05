@@ -3,6 +3,7 @@ package de.jet.paper.app
 import de.jet.jvm.extension.data.addJetJsonModuleModification
 import de.jet.jvm.extension.data.buildRandomTag
 import de.jet.jvm.extension.forceCast
+import de.jet.jvm.extension.tryToIgnore
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.component.buildMode.BuildModeComponent
 import de.jet.paper.app.component.chat.ChatComponent
@@ -56,10 +57,12 @@ import de.jet.paper.tool.permission.Approval
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Material
+import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
 import java.util.logging.Level
@@ -257,7 +260,33 @@ class JetApp : App() {
 
 	}
 
-	override suspend fun bye() {
+	override fun bye() {
+
+		val disabledAppExecutor = CommandExecutor { sender, _, _, _ ->
+			sender.sendMessage("§cThis vendor app of this command is currenty disabled!")
+			true
+		}
+
+		JetCache.registeredServices.forEach {
+			if (it.vendor.identity == this.identity) {
+				it.shutdown()
+			}
+		}
+
+		JetCache.registeredComponents.forEach {
+			if (it.vendor.identity == this.identity) {
+				tryToIgnore { runBlocking { it.stop() } }
+			}
+		}
+
+		description.commands.keys.forEach {
+			getCommand(it)?.apply {
+				setExecutor(disabledAppExecutor)
+				tabCompleter = null
+			}
+
+			mainLog(Level.INFO, "Command '$it' disabled")
+		}
 
 		coroutineScope.apply {
 			coroutineContext.cancelChildren()
@@ -265,7 +294,7 @@ class JetApp : App() {
 		}
 
 	}
-
+	
 	companion object : AppCompanion<JetApp>() {
 
 		override val predictedIdentity = Identity<JetApp>("JET")
