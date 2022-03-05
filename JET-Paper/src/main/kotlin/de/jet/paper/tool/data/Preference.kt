@@ -1,15 +1,19 @@
 package de.jet.paper.tool.data
 
 import de.jet.jvm.extension.forceCast
+import de.jet.jvm.extension.tryOrElse
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetCache.registeredPreferenceCache
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.tasky.async
-import de.jet.paper.extension.tasky.sync
 import de.jet.paper.extension.tasky.task
 import de.jet.paper.tool.timing.tasky.TemporalAdvice.Companion.instant
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import java.util.concurrent.CompletableFuture
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * @param inputType null if automatic
@@ -25,6 +29,7 @@ data class Preference<SHELL : Any>(
 	var forceUseOfTasks: Boolean = false,
 	var initTriggerSetup: Boolean = true,
 	var inputType: InputType? = null,
+	val timeOut: Duration = 10.seconds
 ) : Identifiable<Preference<SHELL>> {
 
 	override val identity = "${file.file}:${path.identity}"
@@ -96,22 +101,20 @@ data class Preference<SHELL : Any>(
 				return@process out
 			}
 
-			if (async || forceUseOfTasks) {
+			return if (async || forceUseOfTasks) {
 				val future = CompletableFuture<SHELL>()
 
 				async {
 					future.complete(process())
 				}
 
-				return future.get()
+				future.get()
 			} else {
-				val future = CompletableFuture<SHELL>()
-
-				sync {
-					future.complete(process())
+				tryOrElse(default) {
+					runBlocking { withTimeout(timeOut) {
+						process()
+					} }
 				}
-
-				return future.get()
 			}
 		}
 		set(value) {
