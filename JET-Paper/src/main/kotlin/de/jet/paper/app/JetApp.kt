@@ -61,8 +61,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
 import java.util.logging.Level
@@ -262,6 +262,11 @@ class JetApp : App() {
 
 	override fun bye() {
 
+		val disabledAppExecutor = CommandExecutor { sender, _, _, _ ->
+			sender.sendMessage("§cThis vendor app of this command is currenty disabled!")
+			true
+		}
+
 		JetCache.registeredServices.forEach {
 			if (it.vendor.identity == this.identity) {
 				it.shutdown()
@@ -276,9 +281,8 @@ class JetApp : App() {
 
 		description.commands.keys.forEach {
 			getCommand(it)?.apply {
-				setExecutor(null)
+				setExecutor(disabledAppExecutor)
 				tabCompleter = null
-				unregister(Bukkit.getCommandMap())
 			}
 
 			mainLog(Level.INFO, "Command '$it' disabled")
@@ -290,7 +294,7 @@ class JetApp : App() {
 		}
 
 	}
-
+	
 	companion object : AppCompanion<JetApp>() {
 
 		override val predictedIdentity = Identity<JetApp>("JET")
