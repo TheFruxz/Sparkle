@@ -1,6 +1,7 @@
 package de.jet.paper.tool.data
 
 import de.jet.jvm.extension.forceCast
+import de.jet.jvm.extension.tryOrElse
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetCache.registeredPreferenceCache
@@ -109,9 +110,11 @@ data class Preference<SHELL : Any>(
 
 				future.get()
 			} else {
-				runBlocking { withTimeout(timeOut) {
-					process()
-				} }
+				tryOrElse(default) {
+					runBlocking { withTimeout(timeOut) {
+						process()
+					} }
+				}
 			}
 		}
 		set(value) {
