@@ -1,7 +1,7 @@
 package de.jet.paper.tool.data
 
 import de.jet.jvm.extension.forceCast
-import de.jet.jvm.extension.tryOrElse
+import de.jet.jvm.extension.tryOrNull
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetCache.registeredPreferenceCache
@@ -103,18 +103,23 @@ data class Preference<SHELL : Any>(
 				return@process out
 			}
 
-			return if (async || forceUseOfTasks) {
+			if (async || forceUseOfTasks) {
 				val future = CompletableFuture<SHELL>()
 
 				async { future.complete(process()) }
 
-				return tryOrElse(default) { future.get(timeOut.inWholeSeconds, SECONDS)}
+				return tryOrNull { future.get(timeOut.inWholeSeconds, SECONDS) } ?: default.also {
+					debugLog("Preference access (async) failed for $identity with default $default")
+				}
+
 			} else {
 				val future = CompletableFuture<SHELL>()
 
 				sync { future.complete(process()) }
 
-				return tryOrElse(default) { future.get(timeOut.inWholeSeconds, SECONDS)}
+				return tryOrNull { future.get(timeOut.inWholeSeconds, SECONDS) } ?: default.also {
+					debugLog("Preference access (sync) failed for $identity with default $default")
+				}
 			}
 		}
 		set(value) {
