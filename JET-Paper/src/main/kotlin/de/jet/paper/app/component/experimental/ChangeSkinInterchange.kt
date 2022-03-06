@@ -22,9 +22,10 @@ import java.io.FileNotFoundException
 
 internal class ChangeSkinInterchange : StructuredInterchange("changeskin", protectedAccess = true, userRestriction = ONLY_PLAYERS, structure = buildInterchangeStructure {
 
-	fun tryProcess(executor: InterchangeExecutor, parameters: List<String>, process: () -> Unit) {
+	fun tryProcess(executor: InterchangeExecutor, parameters: List<String>, process: () -> Unit): Boolean {
 		try {
 			process()
+			return true
 		} catch (exception: Exception) {
 
 			lang["interchange.internal.changeskin.failed"]
@@ -38,6 +39,7 @@ internal class ChangeSkinInterchange : StructuredInterchange("changeskin", prote
 				.notification(FAIL, executor).display()
 
 		}
+		return false
 	}
 
 	branch {
@@ -77,14 +79,14 @@ internal class ChangeSkinInterchange : StructuredInterchange("changeskin", prote
 						val skinHolder = getInput(1)
 
 						sync {
-							tryProcess(executor, parameters) {
+							if (tryProcess(executor, parameters) {
 								target.applySkin(skinHolder)
+							}) {
+								lang["interchange.internal.changeskin.change"]
+									.replaceVariables("skin" to parameters.last(), "player" to target.name)
+									.notification(APPLIED, executor).display()
 							}
 						}
-
-						lang["interchange.internal.changeskin.change"]
-							.replaceVariables("skin" to parameters.last(), "player" to target.name)
-							.notification(APPLIED, executor).display()
 
 						notifyTarget()
 
