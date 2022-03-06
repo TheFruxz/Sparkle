@@ -7,11 +7,11 @@ import de.jet.paper.app.JetCache
 import de.jet.paper.app.JetCache.registeredPreferenceCache
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.tasky.async
+import de.jet.paper.extension.tasky.sync
 import de.jet.paper.extension.tasky.task
 import de.jet.paper.tool.timing.tasky.TemporalAdvice.Companion.instant
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeout
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.TimeUnit.SECONDS
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -29,7 +29,7 @@ data class Preference<SHELL : Any>(
 	var forceUseOfTasks: Boolean = false,
 	var initTriggerSetup: Boolean = true,
 	var inputType: InputType? = null,
-	val timeOut: Duration = 10.seconds
+	val timeOut: Duration = 4.seconds
 ) : Identifiable<Preference<SHELL>> {
 
 	override val identity = "${file.file}:${path.identity}"
@@ -80,9 +80,11 @@ data class Preference<SHELL : Any>(
 				} else {
 					file.load()
 					fun toShellTransformer() = transformer.toShell as Any.() -> SHELL
-					val currentFileValue = file.get<SHELL>(inFilePath)?.let { toShellTransformer()(it).also { core ->
-						debugLog("transformed '$it'(shell) from '$core'(core)")
-					} }
+					val currentFileValue = file.get<SHELL>(inFilePath)?.let {
+						toShellTransformer()(it).also { core ->
+							debugLog("transformed '$it'(shell) from '$core'(core)")
+						}
+					}
 					val newContent = if (file.contains(inFilePath) && currentFileValue != null) {
 						currentFileValue
 					} else default
@@ -104,17 +106,15 @@ data class Preference<SHELL : Any>(
 			return if (async || forceUseOfTasks) {
 				val future = CompletableFuture<SHELL>()
 
-				async {
-					future.complete(process())
-				}
+				async { future.complete(process()) }
 
-				future.get()
+				return tryOrElse(default) { future.get(timeOut.inWholeSeconds, SECONDS)}
 			} else {
-				tryOrElse(default) {
-					runBlocking { withTimeout(timeOut) {
-						process()
-					} }
-				}
+				val future = CompletableFuture<SHELL>()
+
+				sync { future.complete(process()) }
+
+				return tryOrElse(default) { future.get(timeOut.inWholeSeconds, SECONDS)}
 			}
 		}
 		set(value) {
@@ -163,7 +163,8 @@ data class Preference<SHELL : Any>(
 		content = default
 	}
 
-	fun insertFromString(string: String) = inputType?.fromStringConverter()?.let { content = it(string).forceCast() } ?: throw IllegalArgumentException("String not accepted!")
+	fun insertFromString(string: String) = inputType?.fromStringConverter()?.let { content = it(string).forceCast() }
+		?: throw IllegalArgumentException("String not accepted!")
 
 	enum class InputType {
 
@@ -173,12 +174,24 @@ data class Preference<SHELL : Any>(
 		 * Null if failed to transform
 		 */
 		fun fromStringConverter(): (String) -> Any? = when (this) {
-			STRING -> { { it } }
-			INT -> { { it.toIntOrNull() } }
-			DOUBLE -> { { it.toDoubleOrNull() } }
-			FLOAT -> { { it.toFloatOrNull() } }
-			LONG -> { { it.toLongOrNull() } }
-			BOOLEAN -> { { it.toBooleanStrictOrNull() } }
+			STRING -> {
+				{ it }
+			}
+			INT -> {
+				{ it.toIntOrNull() }
+			}
+			DOUBLE -> {
+				{ it.toDoubleOrNull() }
+			}
+			FLOAT -> {
+				{ it.toFloatOrNull() }
+			}
+			LONG -> {
+				{ it.toLongOrNull() }
+			}
+			BOOLEAN -> {
+				{ it.toBooleanStrictOrNull() }
+			}
 		}
 
 	}
