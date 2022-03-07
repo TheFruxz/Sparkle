@@ -40,7 +40,7 @@ dependencies {
     // External
 
     implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
-    compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT") // PaperMC
+    compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT") // PaperMC
 
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") // Head-Database
 
