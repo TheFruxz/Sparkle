@@ -7,15 +7,16 @@ import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryType.SlotType
+import org.bukkit.event.player.PlayerEvent
 
 class PanelClickEvent(
-	val player: Player,
+	player: Player,
 	val panel: Panel,
 	val action: InventoryAction,
 	val clickedSlot: Int,
 	val clickedSlotType: SlotType,
 	val clickedItem: Item?,
-) : Event() {
+) : PlayerEvent(player) {
 
 	override fun getHandlers() = handlerList
 

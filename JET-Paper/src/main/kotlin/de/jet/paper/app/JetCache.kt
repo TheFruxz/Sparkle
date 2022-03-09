@@ -17,6 +17,7 @@ import de.jet.paper.structure.component.Component
 import de.jet.paper.structure.feature.Feature
 import de.jet.paper.structure.service.Service
 import de.jet.paper.tool.data.Preference
+import de.jet.paper.tool.display.item.action.ItemAction
 import de.jet.paper.tool.display.item.action.ItemClickAction
 import de.jet.paper.tool.display.item.action.ItemInteractAction
 import de.jet.paper.tool.display.ui.UI
@@ -29,6 +30,8 @@ import de.jet.paper.tool.timing.cooldown.Cooldown
 import de.jet.paper.tool.timing.tasky.Tasky
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.HumanEntity
+import org.bukkit.event.Event
+import org.bukkit.event.player.PlayerEvent
 import kotlin.reflect.full.findAnnotations
 
 object JetCache : AppCache {
@@ -141,6 +144,10 @@ object JetCache : AppCache {
 	@GlobalData
 	@DataLevel(CLEAR)
 	internal val panelInteractions = mutableMapOf<Identity<UI>, MutableMap<Int, MutableList<suspend PanelClickEvent.() -> Unit>>>()
+
+	@GlobalData
+	@DataLevel(CLEAR)
+	internal val itemActions = mutableListOf<de.jet.paper.tool.display.item.action.tagged.ItemAction<out Event>>()
 
 	private fun entityCleanerObjects(entity: UUID) = mapOf(
 		this::runningKeyboards to { runningKeyboards.removeAll { key, _ -> key.player == entity } },

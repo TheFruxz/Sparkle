@@ -18,6 +18,7 @@ import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.item.PostProperty.*
 import de.jet.paper.tool.display.item.action.ItemClickAction
 import de.jet.paper.tool.display.item.action.ItemInteractAction
+import de.jet.paper.tool.display.item.action.tagged.ItemActionTag
 import de.jet.paper.tool.display.item.quirk.Quirk
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
@@ -54,6 +55,7 @@ data class Item(
 	override var identity: String = "${UUID.randomUUID()}",
 	private var data: MutableMap<String, Any> = mutableMapOf(),
 	var itemMetaBase: ItemMeta? = null,
+	var itemActionTags: Set<ItemActionTag<*>> = emptySet(),
 ) : Identifiable<Item>, Producible<ItemStack>, HoverEventSource<ShowItem> {
 
 	constructor(source: Material) : this(material = source)
