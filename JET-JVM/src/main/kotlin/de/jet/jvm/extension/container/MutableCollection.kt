@@ -47,3 +47,17 @@ fun <T> MutableSet<T>.toggle(o: T, addToContainer: Boolean = !contains(o)) {
 fun <T> MutableList<T>.toggle(o: T, addToContainer: Boolean = !contains(o)) {
 	if (addToContainer) add(o) else remove(o)
 }
+
+fun <C : MutableCollection<T>, T> C.addIf(element: T, check: (element: T, currentState: C) -> Boolean) {
+	if (check(element, this)) add(element)
+}
+
+fun <C : MutableCollection<T>, T> C.addIfNot(element: T, check: (element: T, currentState: C) -> Boolean) =
+	addIf(element) { it, c -> !check(it, c) }
+
+fun <C : MutableCollection<T>, T> C.addIfContained(element: T) =
+	addIf(element) { _, currentState -> currentState.contains(element) }
+
+fun <C : MutableCollection<T>, T> C.addIfNotContained(element: T) =
+	addIfNot(element) { _, currentState -> currentState.contains(element) }
+
