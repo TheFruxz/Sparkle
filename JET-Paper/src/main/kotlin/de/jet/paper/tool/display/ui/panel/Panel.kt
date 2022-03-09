@@ -1,6 +1,5 @@
 package de.jet.paper.tool.display.ui.panel
 
-import de.jet.jvm.extension.container.removeAll
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
@@ -17,7 +16,6 @@ import de.jet.paper.runtime.event.PanelClickEvent
 import de.jet.paper.structure.app.App
 import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.item.Item
-import de.jet.paper.tool.display.ui.UI
 import de.jet.paper.tool.display.ui.inventory.Container
 import de.jet.paper.tool.effect.sound.SoundMelody
 import de.jet.paper.tool.smart.Logging
@@ -67,7 +65,7 @@ data class Panel(
 		""".trimIndent()
 	},
 	var overridingBorderProtection: Boolean = true,
-) : Cloneable, Logging, Container(label = label, size = lines * 9, theme = theme, openSound = openSound), VendorsIdentifiable<UI> {
+) : Cloneable, Logging, Container<Panel>(label = label, size = lines * 9, theme = theme, openSound = openSound), VendorsIdentifiable<Panel> {
 
 	init {
 		if (content.isEmpty()) { // do not write a border, if already content is inside
@@ -109,32 +107,20 @@ data class Panel(
 	 */
 	val innerSlots by lazy { 0..computedInnerSlots.lastIndex }
 
-	fun onReceive(onReceive: PanelReceiveData.() -> Unit) = apply {
+	fun onReceive(onReceive: PanelReceiveData.() -> Unit) {
 		onReceiveEvent = onReceive
 	}
 
-	/**
-	 * running async
-	 */
-	fun addSlotAction(slot: Int, action: suspend (PanelClickEvent) -> Unit) {
-		JetCache.panelInteractions[identityObject] = (JetCache.panelInteractions[identityObject] ?: mutableMapOf()).apply {
-			this[slot] = ((this[slot] ?: mutableListOf()) + action).toMutableList()
-		}
+	fun onClick(onClick: suspend (PanelClickEvent) -> Unit) {
+		JetCache.panelInteractions[identityObject] = (JetCache.panelInteractions[identityObject] ?: mutableListOf()).apply { add(onClick) }
 	}
 
-	fun removeSlotActions(slots: IntRange) {
-		JetCache.panelInteractions[identityObject]?.removeAll { key, _ -> key in slots }
-	}
-
-	fun removeSlotActions(slot: Int) {
-		JetCache.panelInteractions[identityObject]?.remove(slot)
-	}
-
-	/**
-	 * running async
-	 */
 	operator fun set(slot: Int, action: suspend (PanelClickEvent) -> Unit) =
-		addSlotAction(slot, action)
+		onClick { event -> if (event.clickedSlot == slot) action(event) }
+
+	fun placeInner(slot: Int, action: suspend (PanelClickEvent) -> Unit) {
+		this[computedInnerSlots[slot]] = action
+	}
 
 	fun placeInner(slot: Int, item: Item) {
 		content[computedInnerSlots[slot]] = item
@@ -144,52 +130,76 @@ data class Panel(
 
 	fun placeInner(slot: Int, material: Material) = placeInner(slot = slot, item = Item(material))
 
-	fun placeInner(rangeSlots: IntRange, item: Item) = rangeSlots.forEach {
-		placeInner(it, item)
+	fun placeInner(rangeSlots: IntRange, item: Item) {
+		rangeSlots.forEach {
+			placeInner(it, item)
+		}
 	}
 
-	fun placeInner(rangeSlots: IntRange, itemStack: ItemStack) = rangeSlots.forEach {
-		placeInner(it, itemStack)
+	fun placeInner(rangeSlots: IntRange, itemStack: ItemStack) {
+		rangeSlots.forEach {
+			placeInner(it, itemStack)
+		}
 	}
 
-	fun placeInner(rangeSlots: IntRange, material: Material) = rangeSlots.forEach {
-		placeInner(it, material)
+	fun placeInner(rangeSlots: IntRange, material: Material) {
+		rangeSlots.forEach {
+			placeInner(it, material)
+		}
 	}
 
-	fun placeInner(arraySlots: Array<Int>, item: Item) = arraySlots.forEach {
-		placeInner(it, item)
+	fun placeInner(arraySlots: Array<Int>, item: Item) {
+		arraySlots.forEach {
+			placeInner(it, item)
+		}
 	}
 
-	fun placeInner(arraySlots: Array<Int>, itemStack: ItemStack) = arraySlots.forEach {
-		placeInner(it, itemStack)
+	fun placeInner(arraySlots: Array<Int>, itemStack: ItemStack) {
+		arraySlots.forEach {
+			placeInner(it, itemStack)
+		}
 	}
 
-	fun placeInner(arraySlots: Array<Int>, material: Material) = arraySlots.forEach {
-		placeInner(it, material)
+	fun placeInner(arraySlots: Array<Int>, material: Material) {
+		arraySlots.forEach {
+			placeInner(it, material)
+		}
 	}
 
-	fun placeInner(arraySlots: Collection<Int>, item: Item) = arraySlots.forEach {
-		placeInner(it, item)
+	fun placeInner(arraySlots: Collection<Int>, item: Item) {
+		arraySlots.forEach {
+			placeInner(it, item)
+		}
 	}
 
-	fun placeInner(arraySlots: Collection<Int>, itemStack: ItemStack) = arraySlots.forEach {
-		placeInner(it, itemStack)
+	fun placeInner(arraySlots: Collection<Int>, itemStack: ItemStack) {
+		arraySlots.forEach {
+			placeInner(it, itemStack)
+		}
 	}
 
-	fun placeInner(arraySlots: Collection<Int>, material: Material) = arraySlots.forEach {
-		placeInner(it, material)
+	fun placeInner(arraySlots: Collection<Int>, material: Material) {
+		arraySlots.forEach {
+			placeInner(it, material)
+		}
 	}
 
-	fun placeInner(listSlots: List<Int>, item: Item) = listSlots.forEach {
-		placeInner(it, item)
+	fun placeInner(listSlots: List<Int>, item: Item) {
+		listSlots.forEach {
+			placeInner(it, item)
+		}
 	}
 
-	fun placeInner(listSlots: List<Int>, material: Material) = listSlots.forEach {
-		placeInner(it, material)
+	fun placeInner(listSlots: List<Int>, material: Material) {
+		listSlots.forEach {
+			placeInner(it, material)
+		}
 	}
 
-	fun placeInner(map: Map<Int, Item>) = map.forEach { (key, value) ->
-		placeInner(key, value)
+	fun placeInner(map: Map<Int, Item>) {
+		map.forEach { (key, value) ->
+			placeInner(key, value)
+		}
 	}
 
 	override val rawInventory: Inventory
@@ -208,19 +218,18 @@ data class Panel(
 
 	override fun clone() = copy()
 
-	fun complete() = apply {
+	fun complete() {
 		JetCache.completedPanels.add(this)
 	}
 
-	override fun display(humanEntity: HumanEntity) {
+	override fun display(humanEntity: HumanEntity) =
 		display(humanEntity, emptyMap())
-	}
 
 	override fun display(receiver: Player) =
 		display(humanEntity = receiver)
 
 
-	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>): Unit = with(copy()) {
+	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>) { with(copy()) {
 		val previousState = this@Panel.content.toMap()
 
 		complete()
@@ -264,7 +273,7 @@ data class Panel(
 
 		this@Panel.content = previousState.toMutableMap()
 
-	}
+	} }
 
 	override fun display(receiver: Player, specificParameters: Map<String, Any>) =
 		display(humanEntity = receiver, specificParameters)

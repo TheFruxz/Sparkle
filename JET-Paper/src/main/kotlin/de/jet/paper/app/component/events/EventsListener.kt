@@ -32,7 +32,7 @@ internal class EventsListener : EventListener() {
 
 			if (panel != null) {
 
-				PanelClickEvent(player, panel, action, slot, slotType, item).callEvent()
+				event.isCancelled = PanelClickEvent(player, panel, action, slot, slotType, item, event.isCancelled).callEvent()
 
 			}
 

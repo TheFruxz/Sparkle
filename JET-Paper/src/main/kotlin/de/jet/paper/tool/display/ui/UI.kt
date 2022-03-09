@@ -4,7 +4,7 @@ import de.jet.jvm.tool.smart.identification.Identifiable
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 
-interface UI : Identifiable<UI> {
+interface UI<T : UI<T>> : Identifiable<T> {
 
 	fun display(receiver: Player)
 

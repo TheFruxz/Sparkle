@@ -19,7 +19,6 @@ import de.jet.paper.structure.service.Service
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.display.item.action.ItemClickAction
 import de.jet.paper.tool.display.item.action.ItemInteractAction
-import de.jet.paper.tool.display.ui.UI
 import de.jet.paper.tool.display.ui.panel.Panel
 import de.jet.paper.tool.display.ui.panel.PanelFlag
 import de.jet.paper.tool.input.Keyboard
@@ -140,7 +139,7 @@ object JetCache : AppCache {
 
 	@GlobalData
 	@DataLevel(CLEAR)
-	internal val panelInteractions = mutableMapOf<Identity<UI>, MutableMap<Int, MutableList<suspend PanelClickEvent.() -> Unit>>>()
+	internal val panelInteractions = mutableMapOf<Identity<*>, MutableList<suspend PanelClickEvent.() -> Unit>>()
 
 	private fun entityCleanerObjects(entity: UUID) = mapOf(
 		this::runningKeyboards to { runningKeyboards.removeAll { key, _ -> key.player == entity } },
