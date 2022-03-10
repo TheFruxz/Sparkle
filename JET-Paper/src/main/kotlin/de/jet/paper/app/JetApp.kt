@@ -31,7 +31,6 @@ import de.jet.paper.extension.display.ui.buildPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.objectBound.buildAndRegisterSandBox
-import de.jet.paper.extension.objectBound.buildSandBox
 import de.jet.paper.extension.paper.player
 import de.jet.paper.extension.paper.worlds
 import de.jet.paper.extension.tasky.sync
@@ -174,7 +173,7 @@ class JetApp : App() {
 
 		add(JETInterchange())
 
-		buildSandBox(this, "testInventory") {
+		buildAndRegisterSandBox(this, "testInventory") {
 			sync {
 				buildPanel {
 
