@@ -139,7 +139,7 @@ object JetCache : AppCache {
 
 	@GlobalData
 	@DataLevel(CLEAR)
-	internal val panelInteractions = mutableMapOf<Identity<*>, MutableList<suspend PanelClickEvent.() -> Unit>>()
+	internal val panelInteractions = mutableMapOf<Identity<out Panel>, MutableList<suspend PanelClickEvent.() -> Unit>>()
 
 	private fun entityCleanerObjects(entity: UUID) = mapOf(
 		this::runningKeyboards to { runningKeyboards.removeAll { key, _ -> key.player == entity } },
