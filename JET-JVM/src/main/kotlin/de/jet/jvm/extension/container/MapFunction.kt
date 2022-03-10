@@ -94,7 +94,7 @@ fun <T> Iterable<T>.mapToBoolean() =
  * @since 1.0
  */
 @Suppress("UNCHECKED_CAST")
-fun <T, O> Iterable<T>.mapCast() =
+fun <O> Iterable<*>.mapCast() =
 	map { it as O }
 
 /**
