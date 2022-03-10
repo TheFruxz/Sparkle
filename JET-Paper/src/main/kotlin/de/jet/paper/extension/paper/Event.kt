@@ -2,8 +2,10 @@ package de.jet.paper.extension.paper
 
 import de.jet.paper.runtime.event.interact.PlayerInteractAtBlockEvent
 import org.bukkit.Location
+import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.Action.PHYSICAL
+import org.bukkit.event.inventory.InventoryInteractEvent
 import org.bukkit.event.player.PlayerInteractEvent
 
 /**
@@ -31,3 +33,11 @@ val PlayerInteractAtBlockEvent.realAffectedBlock: Location
  */
 val PlayerInteractEvent.realAffectedBlock: Location?
 	get() = clickedBlock?.location?.toBlockLocation()?.add(blockFace.direction)
+
+/**
+ * Returns the [InventoryInteractEvent.getWhoClicked] cast to [Player].
+ * @author Fruxz
+ * @since 1.0
+ */
+val <T : InventoryInteractEvent> T.player
+	get() = whoClicked as Player

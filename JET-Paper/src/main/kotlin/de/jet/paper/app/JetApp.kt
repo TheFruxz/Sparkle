@@ -32,6 +32,7 @@ import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.objectBound.buildAndRegisterSandBox
 import de.jet.paper.extension.objectBound.buildSandBox
+import de.jet.paper.extension.paper.player
 import de.jet.paper.extension.paper.worlds
 import de.jet.paper.extension.tasky.sync
 import de.jet.paper.general.api.mojang.MojangProfile
@@ -47,6 +48,9 @@ import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
 import de.jet.paper.tool.display.item.Modification
+import de.jet.paper.tool.display.item.action.tagged.ItemClickAction
+import de.jet.paper.tool.display.item.action.tagged.ItemDropAction
+import de.jet.paper.tool.display.item.action.tagged.ItemInteractAction
 import de.jet.paper.tool.display.world.SimpleLocation
 import de.jet.paper.tool.effect.sound.SoundData
 import de.jet.paper.tool.effect.sound.SoundMelody
@@ -256,6 +260,27 @@ class JetApp : App() {
 
 				}
 			}.display(executor as Player)
+		}
+
+		buildAndRegisterSandBox(this, "itemActions") {
+			(executor as Player).inventory.addItem(Material.IRON_PICKAXE.item.apply {
+
+				label = "MyItem"
+
+				ItemClickAction("testClick") {
+					player.sendMessage("You clicked me!")
+				}.let { attachActions(it.registrationTag) }
+
+				ItemInteractAction("testInteract") {
+					player.sendMessage("You interacted me!")
+				}.let { attachActions(it.registrationTag) }
+
+				ItemDropAction("testDrop") {
+					player.sendMessage("You dropped me!")
+					isCancelled = true
+				}.let { attachActions(it.registrationTag) }
+
+			}.produce())
 		}
 
 	}

@@ -31,7 +31,6 @@ import org.bukkit.Material.*
 import org.bukkit.NamespacedKey
 import org.bukkit.block.data.BlockData
 import org.bukkit.enchantments.Enchantment
-import org.bukkit.event.Event
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS
@@ -75,7 +74,7 @@ data class Item(
 		quirk = Quirk.empty // using itemMetaBase instead of quirks
 		data = readItemDataStorage(itemStack).toMutableMap()
 		itemMetaBase = itemStack.itemMeta
-		itemActionTags = itemStack.itemMeta.persistentDataContainer.getOrDefault(actionsNamespace, PersistentDataType.STRING, "").split("|").map { ItemActionTag(it) }.toSet()
+		itemActionTags = itemStack.takeIf { it.hasItemMeta() }?.itemMeta?.persistentDataContainer?.getOrDefault(actionsNamespace, PersistentDataType.STRING, "")?.split("|")?.map { ItemActionTag(it) }?.toSet() ?: emptySet()
 		this.identity = (itemStack.itemMeta?.persistentDataContainer?.get(identityNamespace, PersistentDataType.STRING) ?: "").let {
 				if (it.isNotBlank()) {
 					return@let it

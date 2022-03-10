@@ -6,8 +6,8 @@ import org.bukkit.event.inventory.InventoryClickEvent
 
 class ItemClickAction(
     override val identity: String,
-    override val executionProcess: InventoryClickEvent.() -> Unit,
-    override val type: ItemActionType = ItemActionType.CLICK
+    override val type: ItemActionType = ItemActionType.CLICK,
+    override val executionProcess: InventoryClickEvent.() -> Unit
 ) : ItemAction<InventoryClickEvent> {
 
     init {

@@ -21,7 +21,7 @@ internal class ItemTagListener : EventListener() {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onInventoryClick(event: InventoryClickEvent) {
         val actions = getAllActions<InventoryClickEvent>(ItemActionType.CLICK)
-        val item = event.currentItem?.item
+        val item = event.currentItem?.takeIf { it.hasItemMeta() }?.item ?: event.cursor?.takeIf { it.hasItemMeta() }?.item
 
         if (item != null) {
             val itemActions = item.itemActionTags
