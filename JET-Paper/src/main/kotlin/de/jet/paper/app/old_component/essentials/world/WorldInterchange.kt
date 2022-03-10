@@ -195,40 +195,41 @@ class WorldInterchange : Interchange(
 		set(42, texturedSkull(46454).apply {
 			label = "Import"
 		})
-	}.onReceive {
-		assert(receiveParameters["view"] != null) { "view-property not exist!" }
-		val view = receiveParameters["view"] as WorldPanelViewProperties
-		val viewContent = WorldRenderer.renderOverview(view.path).let {
-			return@let when (view.viewType) {
-				ALL -> it.renderFolders + it.renderWorlds
-				DIRECTORIES -> it.renderFolders
-				WORLDS -> it.renderWorlds
+
+		onReceive {
+			assert(receiveParameters["view"] != null) { "view-property not exist!" }
+			val view = receiveParameters["view"] as WorldPanelViewProperties
+			val viewContent = WorldRenderer.renderOverview(view.path).let {
+				return@let when (view.viewType) {
+					ALL -> it.renderFolders + it.renderWorlds
+					DIRECTORIES -> it.renderFolders
+					WORLDS -> it.renderWorlds
+				}
 			}
-		}
 
-		editPanel {
+			editPanel {
 
-			if (view.path != "/")
-				set(2, FileSystem.getDirectory(address(view.path))!!.let {
-					return@let (if (it.archived) {
-						texturedSkull(4465)
-					} else
-						texturedSkull(4459))
-						.apply {
+				if (view.path != "/")
+					set(2, FileSystem.getDirectory(address(view.path))!!.let {
+						return@let (if (it.archived) {
+							texturedSkull(4465)
+						} else
+							texturedSkull(4459))
+							.apply {
 
-							label = "§3Inside Directory: ${it.displayName}"
-							lore = buildString {
+								label = "§3Inside Directory: ${it.displayName}"
+								lore = buildString {
 
-								appendLine("§7Identity: §e${it.identity}")
-								appendLine("§7Path: §e${it.addressObject.addressObject}")
-								appendLine()
-								appendLine("§7Labels: §e${it.renderLabels()}")
-								appendLine("§7Archive: ${it.renderArchiveStatus()}")
-								appendLine()
-								appendLine("§a§lLEFT-CLICK§7 - go to parent directory")
-								appendLine("§a§lRIGHT-CLICK§7 - edit this directory")
+									appendLine("§7Identity: §e${it.identity}")
+									appendLine("§7Path: §e${it.addressObject.addressObject}")
+									appendLine()
+									appendLine("§7Labels: §e${it.renderLabels()}")
+									appendLine("§7Archive: ${it.renderArchiveStatus()}")
+									appendLine()
+									appendLine("§a§lLEFT-CLICK§7 - go to parent directory")
+									appendLine("§a§lRIGHT-CLICK§7 - edit this directory")
 
-							}
+								}
 
 							onClickWith {
 								sync {
@@ -247,31 +248,34 @@ class WorldInterchange : Interchange(
 										else -> whoClicked.sendMessage("nothing")
 									}
 								}
+
 							}
+					})
 
-						}
+				if (getWorld("testy") == null)
+					FileSystem.createWorld(
+						"testy",
+						NETHER,
+						AMPLIFIED,
+						RenderWorld("testy", "testy", address("/test/testy"), emptyList(), false, emptyList())
+					)
+
+				panelFlags = setOf(NOT_CLICK_ABLE, NOT_MOVE_ABLE, NOT_DRAG_ABLE)
+
+				innerSlots.forEach { innerSlot ->
+					val viewContentSlot = (innerSlot + (innerSlots.last * (view.page - 1)))
+					val item = viewContent.getOrNull(viewContentSlot)
+
+					if (item != null) {
+						placeInner(innerSlot, renderItem(view, item))
+					}// else
+					// TODO	placeInner(innerSlot, Material.RED_WOOL.item)
+
+				}
+
+				set(18, skull("MHF_ArrowLeft").blankLabel().putClickAction {
+					displayPanel(whoClicked, "view" to view.copy(page = view.page - 1))
 				})
-
-			if (getWorld("testy") == null)
-				FileSystem.createWorld(
-					"testy",
-					NETHER,
-					AMPLIFIED,
-					RenderWorld("testy", "testy", address("/test/testy"), emptyList(), false, emptyList())
-				)
-
-			panelFlags = setOf(NOT_CLICK_ABLE, NOT_MOVE_ABLE, NOT_DRAG_ABLE)
-
-			innerSlots.forEach { innerSlot ->
-				val viewContentSlot = (innerSlot + (innerSlots.last * (view.page - 1)))
-				val item = viewContent.getOrNull(viewContentSlot)
-
-				if (item != null) {
-					placeInner(innerSlot, renderItem(view, item))
-				}// else
-				// TODO	placeInner(innerSlot, Material.RED_WOOL.item)
-
-			}
 
 			set(18, skull("MHF_ArrowLeft").blankLabel().onClickWith {
 				displayPanel(whoClicked, "view" to view.copy(page = view.page - 1))
@@ -281,14 +285,11 @@ class WorldInterchange : Interchange(
 				displayPanel(whoClicked, "view" to view.copy(page = view.page + 1))
 			})
 
-			set(6, Material.PAPER.item.apply {
-				label = "Seite ${view.page}"
-				size = view.page
-			})
+				set(40, Material.HOPPER.item.apply {
+					label = "Filter"
+				})
 
-			set(40, Material.HOPPER.item.apply {
-				label = "Filter"
-			})
+			}
 
 		}
 
