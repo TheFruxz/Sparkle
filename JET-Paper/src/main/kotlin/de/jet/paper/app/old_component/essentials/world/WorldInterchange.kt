@@ -1,3 +1,4 @@
+/*
 package de.jet.paper.app.old_component.essentials.world
 
 import de.jet.jvm.tool.smart.identification.Identifiable
@@ -309,4 +310,4 @@ class WorldInterchange : Interchange(
 		SUCCESS
 	}
 
-}
+}*/
