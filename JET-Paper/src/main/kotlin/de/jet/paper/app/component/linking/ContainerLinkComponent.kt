@@ -11,6 +11,7 @@ internal class ContainerLinkComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 		listener(ItemLinkListener())
 		listener(PanelLinkListener())
+		listener(ItemTagListener())
 
 	}
 

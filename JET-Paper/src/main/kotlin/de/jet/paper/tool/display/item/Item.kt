@@ -18,6 +18,7 @@ import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.item.PostProperty.*
 import de.jet.paper.tool.display.item.action.ItemClickAction
 import de.jet.paper.tool.display.item.action.ItemInteractAction
+import de.jet.paper.tool.display.item.action.tagged.ItemAction
 import de.jet.paper.tool.display.item.action.tagged.ItemActionTag
 import de.jet.paper.tool.display.item.quirk.Quirk
 import net.kyori.adventure.text.Component
@@ -30,6 +31,7 @@ import org.bukkit.Material.*
 import org.bukkit.NamespacedKey
 import org.bukkit.block.data.BlockData
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.event.Event
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS
@@ -55,7 +57,7 @@ data class Item(
 	override var identity: String = "${UUID.randomUUID()}",
 	private var data: MutableMap<String, Any> = mutableMapOf(),
 	var itemMetaBase: ItemMeta? = null,
-	var itemActionTags: Set<ItemActionTag<*>> = emptySet(),
+	var itemActionTags: Set<ItemActionTag> = emptySet(),
 ) : Identifiable<Item>, Producible<ItemStack>, HoverEventSource<ShowItem> {
 
 	constructor(source: Material) : this(material = source)
@@ -73,8 +75,8 @@ data class Item(
 		quirk = Quirk.empty // using itemMetaBase instead of quirks
 		data = readItemDataStorage(itemStack).toMutableMap()
 		itemMetaBase = itemStack.itemMeta
-		this.identity =
-			(itemStack.itemMeta?.persistentDataContainer?.get(identityNamespace, PersistentDataType.STRING) ?: "").let {
+		itemActionTags = itemStack.itemMeta.persistentDataContainer.getOrDefault(actionsNamespace, PersistentDataType.STRING, "").split("|").map { ItemActionTag(it) }.toSet()
+		this.identity = (itemStack.itemMeta?.persistentDataContainer?.get(identityNamespace, PersistentDataType.STRING) ?: "").let {
 				if (it.isNotBlank()) {
 					return@let it
 				} else
@@ -96,6 +98,8 @@ data class Item(
 	}
 
 	val identityNamespace = NamespacedKey(system, "itemIdentity")
+
+	val actionsNamespace = NamespacedKey(system, "itemActions")
 
 	var clickAction: ItemClickAction?
 		get() = JetCache.registeredItemClickActions[this.identity]
@@ -172,6 +176,8 @@ data class Item(
 				itemMeta.persistentDataContainer.apply { itemStoreApplier() }
 
 			if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
+
+			if (itemActionTags.isNotEmpty()) itemMeta.persistentDataContainer.set(actionsNamespace, PersistentDataType.STRING, itemActionTags.joinToString("|") { it.identity })
 
 			itemStack.itemMeta = itemMeta
 
@@ -401,6 +407,13 @@ data class Item(
 		interactAction = null
 	}
 
+	fun attachActions(vararg itemActionTags: ItemActionTag) {
+		this.itemActionTags += itemActionTags
+	}
+
+	fun attachActions(vararg itemActions: ItemAction<*>) =
+		attachActions(itemActionTags = itemActions.map { it.registrationTag }.toTypedArray())
+
 	// stupid-modify functions
 
 	fun putMaterial(material: Material) =
@@ -470,6 +483,7 @@ data class Item(
 		ignoreLore: Boolean = false,
 		ignoreModifications: Boolean = false,
 		ignoreFlags: Boolean = false,
+		ignoreActionTags: Boolean = false,
 
 		): Boolean {
 		var isOtherItem = false
@@ -518,6 +532,12 @@ data class Item(
 
 		if (!ignoreFlags) {
 			if (this.flags != other.flags) {
+				isOtherItem = true
+			}
+		}
+
+		if (!ignoreActionTags) {
+			if (this.itemActionTags != other.itemActionTags) {
 				isOtherItem = true
 			}
 		}
