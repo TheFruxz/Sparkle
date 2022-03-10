@@ -1,10 +1,12 @@
+@file:Suppress("DeprecatedCallableAddReplaceWith")
+
 package de.jet.paper.tool.display.item
 
 import de.jet.jvm.extension.asString
+import de.jet.jvm.extension.data.buildRandomTag
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.tool.smart.Producible
 import de.jet.jvm.tool.smart.identification.Identifiable
-import de.jet.paper.app.JetCache
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.WHITE
 import de.jet.paper.extension.display.ui.changeColor
@@ -16,7 +18,10 @@ import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.paper.structure.app.App
 import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.item.PostProperty.*
+import de.jet.paper.tool.display.item.action.ItemAction
+import de.jet.paper.tool.display.item.action.ItemActionTag
 import de.jet.paper.tool.display.item.action.ItemClickAction
+import de.jet.paper.tool.display.item.action.ItemDropAction
 import de.jet.paper.tool.display.item.action.ItemInteractAction
 import de.jet.paper.tool.display.item.quirk.Quirk
 import net.kyori.adventure.text.Component
@@ -30,6 +35,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.block.data.BlockData
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS
 import org.bukkit.inventory.ItemStack
@@ -54,6 +60,7 @@ data class Item(
 	override var identity: String = "${UUID.randomUUID()}",
 	private var data: MutableMap<String, Any> = mutableMapOf(),
 	var itemMetaBase: ItemMeta? = null,
+	var itemActionTags: Set<ItemActionTag> = emptySet(),
 ) : Identifiable<Item>, Producible<ItemStack>, HoverEventSource<ShowItem> {
 
 	constructor(source: Material) : this(material = source)
@@ -71,8 +78,8 @@ data class Item(
 		quirk = Quirk.empty // using itemMetaBase instead of quirks
 		data = readItemDataStorage(itemStack).toMutableMap()
 		itemMetaBase = itemStack.itemMeta
-		this.identity =
-			(itemStack.itemMeta?.persistentDataContainer?.get(identityNamespace, PersistentDataType.STRING) ?: "").let {
+		itemActionTags = itemStack.takeIf { it.hasItemMeta() }?.itemMeta?.persistentDataContainer?.getOrDefault(actionsNamespace, PersistentDataType.STRING, "")?.split("|")?.map { ItemActionTag(it) }?.toSet() ?: emptySet()
+		this.identity = (itemStack.itemMeta?.persistentDataContainer?.get(identityNamespace, PersistentDataType.STRING) ?: "").let {
 				if (it.isNotBlank()) {
 					return@let it
 				} else
@@ -95,23 +102,7 @@ data class Item(
 
 	val identityNamespace = NamespacedKey(system, "itemIdentity")
 
-	var clickAction: ItemClickAction?
-		get() = JetCache.registeredItemClickActions[this.identity]
-		set(value) {
-			if (value != null) {
-				JetCache.registeredItemClickActions[this.identity] = value
-			} else
-				JetCache.registeredItemClickActions.remove(this.identity)
-		}
-
-	var interactAction: ItemInteractAction?
-		get() = JetCache.registeredItemInteractActions[this.identity]
-		set(value) {
-			if (value != null) {
-				JetCache.registeredItemInteractActions[this.identity] = value
-			} else
-				JetCache.registeredItemInteractActions.remove(this.identity)
-		}
+	val actionsNamespace = NamespacedKey(system, "itemActions")
 
 	val displayObject: Component
 		get() = Component.text()
@@ -170,6 +161,8 @@ data class Item(
 				itemMeta.persistentDataContainer.apply { itemStoreApplier() }
 
 			if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
+
+			if (itemActionTags.isNotEmpty()) itemMeta.persistentDataContainer.set(actionsNamespace, PersistentDataType.STRING, itemActionTags.joinToString("|") { it.identity })
 
 			itemStack.itemMeta = itemMeta
 
@@ -371,33 +364,30 @@ data class Item(
 	fun dropPostProperties(vararg postProperties: PostProperty) =
 		apply { this.postProperties.removeAll(postProperties.toSet()) }
 
+	fun onClick(identity: String = "click_${buildRandomTag()}_${this.identity}", process: suspend (InventoryClickEvent) -> Unit) =
+		attachActions(ItemClickAction(identity, executionProcess = process).also { it.register() })
 
+	fun onClickWith(identity: String = "click_${buildRandomTag()}_${this.identity}", process: suspend InventoryClickEvent.() -> Unit) =
+		onClick(identity, process)
 
-	fun putClickAction(clickAction: ItemClickAction) =
-		apply { this.clickAction = clickAction }
+	fun onInteract(identity: String = "interact_${buildRandomTag()}_${this.identity}", process: suspend (PlayerInteractAtItemEvent) -> Unit) =
+		attachActions(ItemInteractAction(identity, executionProcess = process).also { it.register() })
 
-	fun putClickAction(async: Boolean = true, stop: Boolean = true, action: InventoryClickEvent.() -> Unit) =
-		putClickAction(ItemClickAction(action, async, stop))
+	fun onInteractWith(identity: String = "interact_${buildRandomTag()}_${this.identity}", process: suspend PlayerInteractAtItemEvent.() -> Unit) =
+		onInteract(identity, process)
 
-	fun hasClickAction() = clickAction != null
+	fun onDrop(identity: String = "click_${buildRandomTag()}_${this.identity}", process: suspend (PlayerDropItemEvent) -> Unit) =
+		attachActions(ItemDropAction(identity, executionProcess = process).also { it.register() })
 
-	fun dropClickAction() {
-		clickAction = null
+	fun onDropWith(identity: String = "click_${buildRandomTag()}_${this.identity}", process: suspend PlayerDropItemEvent.() -> Unit) =
+		onDrop(identity, process)
+
+	fun attachActions(vararg itemActionTags: ItemActionTag) = apply {
+		this.itemActionTags += itemActionTags
 	}
 
-	fun putInteractAction(interactAction: ItemInteractAction) =
-		apply { this.interactAction = interactAction }
-
-	fun putInteractAction(async: Boolean = true, stop: Boolean = true, action: PlayerInteractAtItemEvent.() -> Unit) {
-		@Suppress("UnnecessaryOptInAnnotation")
-		putInteractAction(ItemInteractAction(action, async, stop))
-	}
-
-	fun hasInteractAction() = interactAction != null
-
-	fun dropInteractAction() {
-		interactAction = null
-	}
+	fun attachActions(vararg itemActions: ItemAction<*>) =
+		attachActions(itemActionTags = itemActions.map { it.registrationTag }.toTypedArray())
 
 	// stupid-modify functions
 
@@ -468,6 +458,7 @@ data class Item(
 		ignoreLore: Boolean = false,
 		ignoreModifications: Boolean = false,
 		ignoreFlags: Boolean = false,
+		ignoreActionTags: Boolean = false,
 
 		): Boolean {
 		var isOtherItem = false
@@ -516,6 +507,12 @@ data class Item(
 
 		if (!ignoreFlags) {
 			if (this.flags != other.flags) {
+				isOtherItem = true
+			}
+		}
+
+		if (!ignoreActionTags) {
+			if (this.itemActionTags != other.itemActionTags) {
 				isOtherItem = true
 			}
 		}

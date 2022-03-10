@@ -31,7 +31,7 @@ import de.jet.paper.extension.display.ui.buildPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.objectBound.buildAndRegisterSandBox
-import de.jet.paper.extension.objectBound.buildSandBox
+import de.jet.paper.extension.paper.player
 import de.jet.paper.extension.paper.worlds
 import de.jet.paper.extension.tasky.sync
 import de.jet.paper.general.api.mojang.MojangProfile
@@ -175,15 +175,15 @@ class JetApp : App() {
 
 		add(JETInterchange())
 
-		buildSandBox(this, "testInventory") {
+		buildAndRegisterSandBox(this, "testInventory") {
 			sync {
 				buildPanel {
 
-					placeInner(0, Material.STONE.item.putClickAction {
+					placeInner(0, Material.STONE.item.onClickWith {
 						whoClicked.sendMessage("Hello, Mr. Clicky")
 					})
 
-					placeInner(1, Material.SADDLE.item.putClickAction {
+					placeInner(1, Material.SADDLE.item.onClickWith {
 						isCancelled = true
 					})
 
@@ -258,6 +258,26 @@ class JetApp : App() {
 
 				}
 			}.display(executor as Player)
+		}
+
+		buildAndRegisterSandBox(this, "itemActions") {
+			(executor as Player).inventory.addItem(Material.IRON_PICKAXE.item.apply {
+
+				label = "MyItem"
+
+				onClickWith {
+					player.sendMessage("You clicked me!")
+				}
+
+				onInteractWith {
+					player.sendMessage("You interacted me!")
+				}
+
+				onDropWith {
+					player.sendMessage("You dropped me!")
+				}
+
+			}.produce())
 		}
 
 		buildAndRegisterSandBox(this, "panelGlobalClickAction") {

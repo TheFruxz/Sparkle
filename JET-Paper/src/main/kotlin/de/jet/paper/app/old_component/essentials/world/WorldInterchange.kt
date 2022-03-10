@@ -1,3 +1,4 @@
+/*
 package de.jet.paper.app.old_component.essentials.world
 
 import de.jet.jvm.tool.smart.identification.Identifiable
@@ -14,6 +15,7 @@ import de.jet.paper.extension.display.ui.skull
 import de.jet.paper.extension.external.texturedSkull
 import de.jet.paper.extension.paper.displayString
 import de.jet.paper.extension.paper.getWorld
+import de.jet.paper.extension.tasky.sync
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.execution
@@ -78,25 +80,27 @@ class WorldInterchange : Interchange(
 						appendLine("§a§lRIGHT-CLICK§7 - edit this world")
 					}
 
-					putClickAction(async = false) {
+					onClickWith {
 						val identity =
 							Identifiable.custom<RenderWorld>(lore.lines().first().removePrefix("§7Identity: §e"))
 						//val address = address<RenderObject>(lore.lines()[1].removePrefix("§7Path: §e"))
 
-						when (click) {
-							LEFT, SHIFT_LEFT -> {
-								whoClicked.teleport(getWorld(identity.identity)!!.spawnLocation)
+						sync {
+							when (click) {
+								LEFT, SHIFT_LEFT -> {
+									whoClicked.teleport(getWorld(identity.identity)!!.spawnLocation)
+								}
+								MIDDLE -> {
+									whoClicked.sendMessage("unloading...")
+									Bukkit.unloadWorld(identity.identity, true)
+									whoClicked.sendMessage("unloaded!")
+									displayPanel(whoClicked, WorldPanelViewProperties())
+								}
+								RIGHT, SHIFT_RIGHT -> {
+									whoClicked.sendMessage("edit")
+								}
+								else -> {}
 							}
-							MIDDLE -> {
-								whoClicked.sendMessage("unloading...")
-								Bukkit.unloadWorld(identity.identity, true)
-								whoClicked.sendMessage("unloaded!")
-								displayPanel(whoClicked, WorldPanelViewProperties())
-							}
-							RIGHT, SHIFT_RIGHT -> {
-								whoClicked.sendMessage("edit")
-							}
-							else -> {}
 						}
 
 					}
@@ -117,22 +121,24 @@ class WorldInterchange : Interchange(
 						appendLine("§a§lRIGHT-CLICK§7 - edit this world")
 					}
 
-					putClickAction(async = false) {
+					onClickWith {
 						val identity =
 							Identifiable.custom<RenderWorld>(lore.lines().first().removePrefix("§7Identity: §e"))
 						//val address = address<RenderObject>(lore.lines()[1].removePrefix("§7Path: §e"))
 
-						when (click) {
-							LEFT, SHIFT_LEFT -> {
-								whoClicked.sendMessage("loading...")
-								Bukkit.createWorld(WorldCreator.name(identity.identity))
-								whoClicked.sendMessage("loaded!")
-								displayPanel(whoClicked, WorldPanelViewProperties())
+						sync {
+							when (click) {
+								LEFT, SHIFT_LEFT -> {
+									whoClicked.sendMessage("loading...")
+									Bukkit.createWorld(WorldCreator.name(identity.identity))
+									whoClicked.sendMessage("loaded!")
+									displayPanel(whoClicked, WorldPanelViewProperties())
+								}
+								RIGHT, SHIFT_RIGHT -> {
+									whoClicked.sendMessage("edit")
+								}
+								else -> {}
 							}
-							RIGHT, SHIFT_RIGHT -> {
-								whoClicked.sendMessage("edit")
-							}
-							else -> {}
 						}
 
 					}
@@ -158,16 +164,18 @@ class WorldInterchange : Interchange(
 					appendLine("§a§lRIGHT-CLICK§7 - edit this directory")
 				}
 
-				putClickAction(async = false) {
-					when (click) {
-						LEFT, SHIFT_LEFT -> {
-							displayPanel(whoClicked, view.copy(path = renderObject.addressString))
-						}
-						RIGHT, SHIFT_RIGHT -> {
-							whoClicked.sendMessage("edit")
-						}
-						else -> {
-							whoClicked.sendMessage("nothing")
+				onClickWith {
+					sync {
+						when (click) {
+							LEFT, SHIFT_LEFT -> {
+								displayPanel(whoClicked, view.copy(path = renderObject.addressString))
+							}
+							RIGHT, SHIFT_RIGHT -> {
+								whoClicked.sendMessage("edit")
+							}
+							else -> {
+								whoClicked.sendMessage("nothing")
+							}
 						}
 					}
 				}
@@ -224,7 +232,8 @@ class WorldInterchange : Interchange(
 
 								}
 
-								putClickAction {
+							onClickWith {
+								sync {
 									when (click) {
 										RIGHT, SHIFT_RIGHT -> whoClicked.sendMessage("edit")
 										LEFT, SHIFT_LEFT -> {
@@ -269,14 +278,13 @@ class WorldInterchange : Interchange(
 					displayPanel(whoClicked, "view" to view.copy(page = view.page - 1))
 				})
 
-				set(26, skull("MHF_ArrowRight").blankLabel().putClickAction {
-					displayPanel(whoClicked, "view" to view.copy(page = view.page + 1))
-				})
+			set(18, skull("MHF_ArrowLeft").blankLabel().onClickWith {
+				displayPanel(whoClicked, "view" to view.copy(page = view.page - 1))
+			})
 
-				set(6, Material.PAPER.item.apply {
-					label = "Seite ${view.page}"
-					size = view.page
-				})
+			set(26, skull("MHF_ArrowRight").blankLabel().onClickWith {
+				displayPanel(whoClicked, "view" to view.copy(page = view.page + 1))
+			})
 
 				set(40, Material.HOPPER.item.apply {
 					label = "Filter"
@@ -302,4 +310,4 @@ class WorldInterchange : Interchange(
 		SUCCESS
 	}
 
-}
+}*/

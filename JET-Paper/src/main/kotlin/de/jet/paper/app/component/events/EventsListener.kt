@@ -21,7 +21,7 @@ internal class EventsListener : EventListener() {
 	@EventHandler(priority = HIGHEST)
 	fun onInventoryClick(event: InventoryClickEvent) {
 		val player = event.whoClicked as Player
-		val item = event.currentItem?.item
+		val item = event.currentItem?.takeIf { it.hasItemMeta() }?.item ?: event.cursor?.takeIf { it.hasItemMeta() }?.item
 		val inventory = event.clickedInventory
 		val action = event.action
 		val slot = event.slot

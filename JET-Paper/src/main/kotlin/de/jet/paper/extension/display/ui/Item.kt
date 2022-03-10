@@ -1,18 +1,13 @@
 package de.jet.paper.extension.display.ui
 
 import de.jet.paper.extension.paper.getOfflinePlayer
-import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.color.DyeableMaterial
 import de.jet.paper.tool.display.item.Item
-import de.jet.paper.tool.display.item.action.ActionCooldown
-import de.jet.paper.tool.display.item.action.ItemClickAction
-import de.jet.paper.tool.display.item.action.ItemInteractAction
 import de.jet.paper.tool.display.item.quirk.Quirk
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
@@ -68,9 +63,3 @@ fun skull(owner: String) = Material.PLAYER_HEAD.item.putQuirk(Quirk.skull { owni
 fun skull(owner: UUID) = Material.PLAYER_HEAD.item.putQuirk(Quirk.skull { owningPlayer = getOfflinePlayer(owner) })
 
 fun skull(owner: OfflinePlayer) = Material.PLAYER_HEAD.item.putQuirk(Quirk.skull { owningPlayer = owner })
-
-fun buildClickAction(async: Boolean = true, stop: Boolean = true, cooldown: ActionCooldown? = null, action: InventoryClickEvent.() -> Unit) =
-	ItemClickAction(action, async, stop, cooldown)
-
-fun buildInteractAction(async: Boolean = true, stop: Boolean = true, cooldown: ActionCooldown? = null, action: PlayerInteractAtItemEvent.() -> Unit) =
-	ItemInteractAction(action, async, stop, cooldown)

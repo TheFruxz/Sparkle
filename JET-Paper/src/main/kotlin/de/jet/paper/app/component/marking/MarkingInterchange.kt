@@ -48,7 +48,7 @@ internal class MarkingInterchange : StructuredInterchange(
 			""".trimIndent()
 
 				@Suppress("UnnecessaryOptInAnnotation")
-				putInteractAction {
+				onInteractWith {
 					val targetBlock = whoInteract.rayTraceBlocks(10.0, ALWAYS)?.hitBlock
 					val actualBox = JetCache.playerMarkerBoxes[player.identityObject]
 					val currentBox = actualBox ?: LocationBox(targetBlock?.location ?: templateLocation)
