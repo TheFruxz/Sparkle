@@ -9,7 +9,7 @@ import de.jet.paper.tool.display.ui.panel.Panel
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
-fun buildContainer(lines: Int = 3, action: Container.() -> Unit) = Container(size = lines*9).apply(action)
+fun buildContainer(lines: Int = 3, action: Container<*>.() -> Unit) = Container(size = lines*9).apply(action)
 
 fun emptyContainer(lines: Int = 3) = Container(size = lines*9)
 

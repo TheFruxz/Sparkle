@@ -46,6 +46,7 @@ import de.jet.paper.structure.app.AppCompanion
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
+import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.item.Modification
 import de.jet.paper.tool.display.world.SimpleLocation
 import de.jet.paper.tool.effect.sound.SoundData
@@ -62,6 +63,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Material
+import org.bukkit.Material.STONE
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
@@ -256,6 +258,27 @@ class JetApp : App() {
 
 				}
 			}.display(executor as Player)
+		}
+
+		buildAndRegisterSandBox(this, "panelGlobalClickAction") {
+
+			buildPanel {
+
+				placeInner(5, STONE)
+				place(3, Item(Material.GRAVEL))
+
+				onClick { event ->
+
+					event.player.sendMessage("Clicked ${event.clickedSlot}")
+
+				}
+
+			}.let { panel ->
+				sync {
+					panel.display(executor as Player)
+				}
+			}
+
 		}
 
 	}
