@@ -16,8 +16,6 @@ import de.jet.paper.extension.timing.setCooldown
 import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.paper.structure.app.event.EventListener
 import de.jet.paper.tool.display.item.Item
-import de.jet.paper.tool.display.item.action.ActionCooldownType.BUKKIT_MATERIAL
-import de.jet.paper.tool.display.item.action.ActionCooldownType.JET_INFO
 import de.jet.paper.tool.display.item.action.ItemAction
 import de.jet.paper.tool.display.message.Transmission.Level.FAIL
 import de.jet.paper.tool.display.ui.panel.PanelFlag

@@ -11,9 +11,10 @@ import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.Render
 import de.jet.paper.extension.display.ui.buildPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.display.ui.skull
+import de.jet.paper.extension.external.texturedSkull
 import de.jet.paper.extension.paper.displayString
 import de.jet.paper.extension.paper.getWorld
-import de.jet.paper.extension.external.texturedSkull
+import de.jet.paper.extension.tasky.sync
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.execution
@@ -78,25 +79,27 @@ class WorldInterchange : Interchange(
 						appendLine("§a§lRIGHT-CLICK§7 - edit this world")
 					}
 
-					putClickAction(async = false) {
+					onClickWith {
 						val identity =
 							Identifiable.custom<RenderWorld>(lore.lines().first().removePrefix("§7Identity: §e"))
 						//val address = address<RenderObject>(lore.lines()[1].removePrefix("§7Path: §e"))
 
-						when (click) {
-							LEFT, SHIFT_LEFT -> {
-								whoClicked.teleport(getWorld(identity.identity)!!.spawnLocation)
+						sync {
+							when (click) {
+								LEFT, SHIFT_LEFT -> {
+									whoClicked.teleport(getWorld(identity.identity)!!.spawnLocation)
+								}
+								MIDDLE -> {
+									whoClicked.sendMessage("unloading...")
+									Bukkit.unloadWorld(identity.identity, true)
+									whoClicked.sendMessage("unloaded!")
+									displayPanel(whoClicked, WorldPanelViewProperties())
+								}
+								RIGHT, SHIFT_RIGHT -> {
+									whoClicked.sendMessage("edit")
+								}
+								else -> {}
 							}
-							MIDDLE -> {
-								whoClicked.sendMessage("unloading...")
-								Bukkit.unloadWorld(identity.identity, true)
-								whoClicked.sendMessage("unloaded!")
-								displayPanel(whoClicked, WorldPanelViewProperties())
-							}
-							RIGHT, SHIFT_RIGHT -> {
-								whoClicked.sendMessage("edit")
-							}
-							else -> {}
 						}
 
 					}

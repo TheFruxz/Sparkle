@@ -1,10 +1,12 @@
+@file:Suppress("DeprecatedCallableAddReplaceWith")
+
 package de.jet.paper.tool.display.item
 
 import de.jet.jvm.extension.asString
+import de.jet.jvm.extension.data.buildRandomTag
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.tool.smart.Producible
 import de.jet.jvm.tool.smart.identification.Identifiable
-import de.jet.paper.app.JetCache
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.WHITE
 import de.jet.paper.extension.display.ui.changeColor
@@ -16,10 +18,11 @@ import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.paper.structure.app.App
 import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.item.PostProperty.*
+import de.jet.paper.tool.display.item.action.ItemAction
+import de.jet.paper.tool.display.item.action.ItemActionTag
 import de.jet.paper.tool.display.item.action.ItemClickAction
+import de.jet.paper.tool.display.item.action.ItemDropAction
 import de.jet.paper.tool.display.item.action.ItemInteractAction
-import de.jet.paper.tool.display.item.action.tagged.ItemAction
-import de.jet.paper.tool.display.item.action.tagged.ItemActionTag
 import de.jet.paper.tool.display.item.quirk.Quirk
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
@@ -32,6 +35,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.block.data.BlockData
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS
 import org.bukkit.inventory.ItemStack
@@ -99,24 +103,6 @@ data class Item(
 	val identityNamespace = NamespacedKey(system, "itemIdentity")
 
 	val actionsNamespace = NamespacedKey(system, "itemActions")
-
-	var clickAction: ItemClickAction?
-		get() = JetCache.registeredItemClickActions[this.identity]
-		set(value) {
-			if (value != null) {
-				JetCache.registeredItemClickActions[this.identity] = value
-			} else
-				JetCache.registeredItemClickActions.remove(this.identity)
-		}
-
-	var interactAction: ItemInteractAction?
-		get() = JetCache.registeredItemInteractActions[this.identity]
-		set(value) {
-			if (value != null) {
-				JetCache.registeredItemInteractActions[this.identity] = value
-			} else
-				JetCache.registeredItemInteractActions.remove(this.identity)
-		}
 
 	val displayObject: Component
 		get() = Component.text()
@@ -378,35 +364,25 @@ data class Item(
 	fun dropPostProperties(vararg postProperties: PostProperty) =
 		apply { this.postProperties.removeAll(postProperties.toSet()) }
 
+	fun onClick(identity: String = "click_${buildRandomTag()}_${this.identity}", process: suspend (InventoryClickEvent) -> Unit) =
+		attachActions(ItemClickAction(identity, executionProcess = process).also { it.register() })
 
+	fun onClickWith(identity: String = "click_${buildRandomTag()}_${this.identity}", process: suspend InventoryClickEvent.() -> Unit) =
+		onClick(identity, process)
 
-	fun putClickAction(clickAction: ItemClickAction) =
-		apply { this.clickAction = clickAction }
+	fun onInteract(identity: String = "interact_${buildRandomTag()}_${this.identity}", process: suspend (PlayerInteractAtItemEvent) -> Unit) =
+		attachActions(ItemInteractAction(identity, executionProcess = process).also { it.register() })
 
-	fun putClickAction(async: Boolean = true, stop: Boolean = true, action: InventoryClickEvent.() -> Unit) =
-		putClickAction(ItemClickAction(action, async, stop))
+	fun onInteractWith(identity: String = "interact_${buildRandomTag()}_${this.identity}", process: suspend PlayerInteractAtItemEvent.() -> Unit) =
+		onInteract(identity, process)
 
-	fun hasClickAction() = clickAction != null
+	fun onDrop(identity: String = "click_${buildRandomTag()}_${this.identity}", process: suspend (PlayerDropItemEvent) -> Unit) =
+		attachActions(ItemDropAction(identity, executionProcess = process).also { it.register() })
 
-	fun dropClickAction() {
-		clickAction = null
-	}
+	fun onDropWith(identity: String = "click_${buildRandomTag()}_${this.identity}", process: suspend PlayerDropItemEvent.() -> Unit) =
+		onDrop(identity, process)
 
-	fun putInteractAction(interactAction: ItemInteractAction) =
-		apply { this.interactAction = interactAction }
-
-	fun putInteractAction(async: Boolean = true, stop: Boolean = true, action: PlayerInteractAtItemEvent.() -> Unit) {
-		@Suppress("UnnecessaryOptInAnnotation")
-		putInteractAction(ItemInteractAction(action, async, stop))
-	}
-
-	fun hasInteractAction() = interactAction != null
-
-	fun dropInteractAction() {
-		interactAction = null
-	}
-
-	fun attachActions(vararg itemActionTags: ItemActionTag) {
+	fun attachActions(vararg itemActionTags: ItemActionTag) = apply {
 		this.itemActionTags += itemActionTags
 	}
 

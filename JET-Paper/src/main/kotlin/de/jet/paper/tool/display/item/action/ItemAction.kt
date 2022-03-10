@@ -1,54 +1,23 @@
 package de.jet.paper.tool.display.item.action
 
-import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
-import de.jet.paper.tool.display.item.action.ActionCooldownType.JET_SILENT
+import de.jet.jvm.extension.container.addIfNotContained
+import de.jet.jvm.tool.smart.identification.Identifiable
+import de.jet.paper.app.JetCache
 import org.bukkit.event.Event
-import org.bukkit.event.inventory.InventoryClickEvent
-import kotlin.reflect.KClass
 
-// Cooldown
+sealed interface ItemAction<T : Event> : Identifiable<ItemAction<T>> {
 
-enum class ActionCooldownType {
-	BUKKIT_MATERIAL, JET_SILENT, JET_INFO;
-}
+    val registrationTag: ItemActionTag
+        get() = ItemActionTag(identity)
 
-data class ActionCooldown(
-	val ticks: ULong,
-	val type: ActionCooldownType = JET_SILENT,
-) {
+    val executionProcess: suspend T.() -> Unit
 
-	constructor(ticks: Number, type: ActionCooldownType = JET_SILENT) : this(ticks.toLong().toULong(), type)
+    val type: ItemActionType
 
-}
+    fun register() = JetCache.itemActions.addIfNotContained(this)
 
-// ItemAction
+    fun unregister() = JetCache.itemActions.remove(this)
 
-sealed interface ItemAction<T : Event> {
-
-	val eventClass: KClass<T>
-
-	var action: T.() -> Unit
-
-	var async: Boolean
-
-	var stop: Boolean
-
-	var cooldown: ActionCooldown?
+    fun isRegistered() = JetCache.itemActions.contains(this)
 
 }
-
-data class ItemClickAction(
-	override var action: InventoryClickEvent.() -> Unit,
-	override var async: Boolean = true,
-	override var stop: Boolean = true,
-	override var cooldown: ActionCooldown? = null,
-	override val eventClass: KClass<InventoryClickEvent> = InventoryClickEvent::class
-) : ItemAction<InventoryClickEvent>
-
-data class ItemInteractAction(
-	override var action: PlayerInteractAtItemEvent.() -> Unit,
-	override var async: Boolean = true,
-	override var stop: Boolean = true,
-	override var cooldown: ActionCooldown? = null,
-	override val eventClass: KClass<PlayerInteractAtItemEvent> = PlayerInteractAtItemEvent::class,
-) : ItemAction<PlayerInteractAtItemEvent>

@@ -31,7 +31,6 @@ import de.jet.paper.tool.timing.tasky.Tasky
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.HumanEntity
 import org.bukkit.event.Event
-import org.bukkit.event.player.PlayerEvent
 import kotlin.reflect.full.findAnnotations
 
 object JetCache : AppCache {
@@ -147,7 +146,7 @@ object JetCache : AppCache {
 
 	@GlobalData
 	@DataLevel(CLEAR)
-	internal val itemActions = mutableListOf<de.jet.paper.tool.display.item.action.tagged.ItemAction<out Event>>()
+	internal val itemActions = mutableListOf<ItemAction<out Event>>()
 
 	private fun entityCleanerObjects(entity: UUID) = mapOf(
 		this::runningKeyboards to { runningKeyboards.removeAll { key, _ -> key.player == entity } },

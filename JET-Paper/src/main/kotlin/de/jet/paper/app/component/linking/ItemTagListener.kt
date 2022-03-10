@@ -5,8 +5,9 @@ import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.paper.structure.app.event.EventListener
-import de.jet.paper.tool.display.item.action.tagged.ItemAction
-import de.jet.paper.tool.display.item.action.tagged.ItemActionType
+import de.jet.paper.tool.display.item.action.ItemAction
+import de.jet.paper.tool.display.item.action.ItemActionType
+import kotlinx.coroutines.launch
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -29,7 +30,9 @@ internal class ItemTagListener : EventListener() {
 
                 if (itemActions.any { it == action.registrationTag }) {
 
-                    action.executionProcess(event)
+                    vendor.coroutineScope.launch {
+                        action.executionProcess(event)
+                    }
 
                 }
 
@@ -48,7 +51,9 @@ internal class ItemTagListener : EventListener() {
 
             if (itemActions.any { it == action.registrationTag }) {
 
-                action.executionProcess(event)
+                vendor.coroutineScope.launch {
+                    action.executionProcess(event)
+                }
 
             }
 
@@ -65,7 +70,9 @@ internal class ItemTagListener : EventListener() {
 
             if (itemActions.any { it == action.registrationTag }) {
 
-                action.executionProcess(event)
+                vendor.coroutineScope.launch {
+                    action.executionProcess(event)
+                }
 
             }
 

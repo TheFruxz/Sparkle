@@ -13,15 +13,11 @@ import de.jet.paper.extension.display.ui.buildPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.lang
 import de.jet.paper.structure.command.Interchange
-import de.jet.paper.structure.command.InterchangeResult
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
-import de.jet.paper.structure.command.completion.component.CompletionComponent
-import de.jet.paper.structure.command.completion.component.CompletionComponent.Companion
 import de.jet.paper.structure.command.execution
-import de.jet.paper.structure.command.live.InterchangeAccess
 import de.jet.paper.tool.display.item.action.ActionCooldown
 import de.jet.paper.tool.display.item.action.ActionCooldownType.JET_INFO
 import de.jet.paper.tool.display.message.Transmission

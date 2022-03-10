@@ -1,4 +1,4 @@
-package de.jet.paper.tool.display.item.action.tagged
+package de.jet.paper.tool.display.item.action
 
 /**
  * This enum defines the type of actions, you can track

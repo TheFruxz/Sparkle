@@ -48,9 +48,6 @@ import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
 import de.jet.paper.tool.display.item.Modification
-import de.jet.paper.tool.display.item.action.tagged.ItemClickAction
-import de.jet.paper.tool.display.item.action.tagged.ItemDropAction
-import de.jet.paper.tool.display.item.action.tagged.ItemInteractAction
 import de.jet.paper.tool.display.world.SimpleLocation
 import de.jet.paper.tool.effect.sound.SoundData
 import de.jet.paper.tool.effect.sound.SoundMelody
@@ -181,11 +178,11 @@ class JetApp : App() {
 			sync {
 				buildPanel {
 
-					placeInner(0, Material.STONE.item.putClickAction {
+					placeInner(0, Material.STONE.item.onClickWith {
 						whoClicked.sendMessage("Hello, Mr. Clicky")
 					})
 
-					placeInner(1, Material.SADDLE.item.putClickAction {
+					placeInner(1, Material.SADDLE.item.onClickWith {
 						isCancelled = true
 					})
 
@@ -267,18 +264,17 @@ class JetApp : App() {
 
 				label = "MyItem"
 
-				ItemClickAction("testClick") {
+				onClickWith {
 					player.sendMessage("You clicked me!")
-				}.let { attachActions(it.registrationTag) }
+				}
 
-				ItemInteractAction("testInteract") {
+				onInteractWith {
 					player.sendMessage("You interacted me!")
-				}.let { attachActions(it.registrationTag) }
+				}
 
-				ItemDropAction("testDrop") {
+				onDropWith {
 					player.sendMessage("You dropped me!")
-					isCancelled = true
-				}.let { attachActions(it.registrationTag) }
+				}
 
 			}.produce())
 		}
