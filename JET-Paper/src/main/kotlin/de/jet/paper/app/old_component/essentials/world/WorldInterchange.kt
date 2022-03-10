@@ -120,22 +120,24 @@ class WorldInterchange : Interchange(
 						appendLine("§a§lRIGHT-CLICK§7 - edit this world")
 					}
 
-					putClickAction(async = false) {
+					onClickWith {
 						val identity =
 							Identifiable.custom<RenderWorld>(lore.lines().first().removePrefix("§7Identity: §e"))
 						//val address = address<RenderObject>(lore.lines()[1].removePrefix("§7Path: §e"))
 
-						when (click) {
-							LEFT, SHIFT_LEFT -> {
-								whoClicked.sendMessage("loading...")
-								Bukkit.createWorld(WorldCreator.name(identity.identity))
-								whoClicked.sendMessage("loaded!")
-								displayPanel(whoClicked, WorldPanelViewProperties())
+						sync {
+							when (click) {
+								LEFT, SHIFT_LEFT -> {
+									whoClicked.sendMessage("loading...")
+									Bukkit.createWorld(WorldCreator.name(identity.identity))
+									whoClicked.sendMessage("loaded!")
+									displayPanel(whoClicked, WorldPanelViewProperties())
+								}
+								RIGHT, SHIFT_RIGHT -> {
+									whoClicked.sendMessage("edit")
+								}
+								else -> {}
 							}
-							RIGHT, SHIFT_RIGHT -> {
-								whoClicked.sendMessage("edit")
-							}
-							else -> {}
 						}
 
 					}
@@ -161,16 +163,18 @@ class WorldInterchange : Interchange(
 					appendLine("§a§lRIGHT-CLICK§7 - edit this directory")
 				}
 
-				putClickAction(async = false) {
-					when (click) {
-						LEFT, SHIFT_LEFT -> {
-							displayPanel(whoClicked, view.copy(path = renderObject.addressString))
-						}
-						RIGHT, SHIFT_RIGHT -> {
-							whoClicked.sendMessage("edit")
-						}
-						else -> {
-							whoClicked.sendMessage("nothing")
+				onClickWith {
+					sync {
+						when (click) {
+							LEFT, SHIFT_LEFT -> {
+								displayPanel(whoClicked, view.copy(path = renderObject.addressString))
+							}
+							RIGHT, SHIFT_RIGHT -> {
+								whoClicked.sendMessage("edit")
+							}
+							else -> {
+								whoClicked.sendMessage("nothing")
+							}
 						}
 					}
 				}
@@ -226,20 +230,22 @@ class WorldInterchange : Interchange(
 
 							}
 
-							putClickAction {
-								when (click) {
-									RIGHT, SHIFT_RIGHT -> whoClicked.sendMessage("edit")
-									LEFT, SHIFT_LEFT -> {
-										displayPanel(
-											whoClicked,
-											view.copy(
-												path = view.path.removeSurrounding("/").split("/").dropLast(1)
-													.joinToString("/", prefix = "/", postfix = "/")
-													.replaceFirst("//", "/")
+							onClickWith {
+								sync {
+									when (click) {
+										RIGHT, SHIFT_RIGHT -> whoClicked.sendMessage("edit")
+										LEFT, SHIFT_LEFT -> {
+											displayPanel(
+												whoClicked,
+												view.copy(
+													path = view.path.removeSurrounding("/").split("/").dropLast(1)
+														.joinToString("/", prefix = "/", postfix = "/")
+														.replaceFirst("//", "/")
+												)
 											)
-										)
+										}
+										else -> whoClicked.sendMessage("nothing")
 									}
-									else -> whoClicked.sendMessage("nothing")
 								}
 							}
 
@@ -267,11 +273,11 @@ class WorldInterchange : Interchange(
 
 			}
 
-			set(18, skull("MHF_ArrowLeft").blankLabel().putClickAction {
+			set(18, skull("MHF_ArrowLeft").blankLabel().onClickWith {
 				displayPanel(whoClicked, "view" to view.copy(page = view.page - 1))
 			})
 
-			set(26, skull("MHF_ArrowRight").blankLabel().putClickAction {
+			set(26, skull("MHF_ArrowRight").blankLabel().onClickWith {
 				displayPanel(whoClicked, "view" to view.copy(page = view.page + 1))
 			})
 

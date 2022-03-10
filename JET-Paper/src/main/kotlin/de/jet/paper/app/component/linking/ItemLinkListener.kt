@@ -13,7 +13,6 @@ import de.jet.paper.extension.tasky.task
 import de.jet.paper.extension.timing.getCooldown
 import de.jet.paper.extension.timing.isCooldownDecaying
 import de.jet.paper.extension.timing.setCooldown
-import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.paper.structure.app.event.EventListener
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.item.action.ItemAction
@@ -22,7 +21,6 @@ import de.jet.paper.tool.display.ui.panel.PanelFlag
 import de.jet.paper.tool.display.ui.panel.PanelFlag.*
 import de.jet.paper.tool.timing.tasky.TemporalAdvice
 import org.bukkit.entity.Player
-import org.bukkit.event.Event.Result.DENY
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority.HIGH
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -149,31 +147,6 @@ internal class ItemLinkListener : EventListener() {
 	fun inventoryMove(event: InventoryMoveItemEvent) {
 		if ((getFlags(event.destination[4]?.item) + getFlags(event.initiator[4]?.item)).contains(NOT_MOVE_ABLE))
 			event.isCancelled = true
-	}
-
-	@EventHandler(priority = HIGH)
-	fun playerInteractAtItem(event: PlayerInteractAtItemEvent) {
-		with(event) {
-			item.interactAction?.let { action ->
-				if (hasNoCooldown(player, action, item)) {
-					if (action.stop) {
-						event.interactedItem = DENY
-						event.interactedBlock = DENY
-					}
-					produceActionCooldown(item, player, action)
-					task(TemporalAdvice.instant(async = action.async), vendor = vendor) {
-						action.action(event)
-					}
-				} else {
-					event.isCancelled = true
-					event.origin.isCancelled = true
-					event.interactedItem = DENY
-					event.interactedBlock = DENY
-					reactToActionCooldown(item, player, action)
-				}
-
-			}
-		}
 	}
 
 }

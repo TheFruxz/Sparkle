@@ -7,19 +7,16 @@ import de.jet.paper.extension.display.GRAY
 import de.jet.paper.extension.display.YELLOW
 import de.jet.paper.extension.display.message
 import de.jet.paper.extension.display.notification
-import de.jet.paper.extension.display.ui.buildClickAction
-import de.jet.paper.extension.display.ui.buildInteractAction
 import de.jet.paper.extension.display.ui.buildPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.lang
+import de.jet.paper.extension.paper.player
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.command.InterchangeResult.SUCCESS
 import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.component.CompletionAsset
 import de.jet.paper.structure.command.execution
-import de.jet.paper.tool.display.item.action.ActionCooldown
-import de.jet.paper.tool.display.item.action.ActionCooldownType.JET_INFO
 import de.jet.paper.tool.display.message.Transmission
 import de.jet.paper.tool.display.message.Transmission.Level.GENERAL
 import de.jet.paper.tool.display.message.Transmission.Level.valueOf
@@ -117,12 +114,12 @@ class JETInterchange : Interchange(
 								lore = """
 									Click me!
 								""".trimIndent()
-								putClickAction(buildClickAction(stop = false, cooldown = ActionCooldown(20*5)) {
-									whoClicked.sendMessage("clicked item: ${whoClicked.name}")
-								})
-								putInteractAction(buildInteractAction(stop = false, cooldown = ActionCooldown(20*3, JET_INFO)) {
-									player.sendMessage("interacted item: ${player.name}")
-								})
+								onClickWith {
+									player.sendMessage("clicked item: ${currentItem?.type?.name}")
+								}
+								onInteractWith {
+									player.sendMessage("interacted item: ${item.material.name}")
+								}
 							})
 						}.display(executor as Player)
 
