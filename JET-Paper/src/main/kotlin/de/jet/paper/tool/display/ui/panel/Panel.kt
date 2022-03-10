@@ -1,5 +1,7 @@
 package de.jet.paper.tool.display.ui.panel
 
+import de.jet.jvm.extension.container.and
+import de.jet.jvm.extension.container.orEmptyMutableList
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
@@ -112,7 +114,7 @@ data class Panel(
 	}
 
 	fun onClick(onClick: suspend (PanelClickEvent) -> Unit) {
-		JetCache.panelInteractions[identityObject] = (JetCache.panelInteractions[identityObject] ?: mutableListOf()).apply { add(onClick) }
+		JetCache.panelInteractions[identityObject] = JetCache.panelInteractions[identityObject].orEmptyMutableList() and onClick
 	}
 
 	operator fun set(slot: Int, action: suspend (PanelClickEvent) -> Unit) =
@@ -241,9 +243,11 @@ data class Panel(
 
 				dataPut(panelIdentificationKey, this@with.identity, true)
 
-				if (overridingBorderProtection) {
-					dataPut(panelIdentificationKey, 1)
-				}
+//				if (overridingBorderProtection) {
+//					dataPut(panelIdentificationKey, 1)
+//				}
+
+				// TODO check if the above is needed, because it may causes problems with the indicator
 
 			})
 		}
