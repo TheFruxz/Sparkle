@@ -69,10 +69,11 @@ data class Panel(
 	var overridingBorderProtection: Boolean = true,
 ) : Cloneable, Logging, Container<Panel>(label = label, size = lines * 9, theme = theme, openSound = openSound), VendorsIdentifiable<Panel> {
 
+	val borderKey = system.createKey("panelBorder")
+
 	init {
 		if (content.isEmpty()) { // do not write a border, if already content is inside
 			content = content.apply {
-				val borderKey = system.createKey("panelBorder")
 
 				border(theme.stainedGlassPane.item.blankLabel().apply {
 					if (overridingBorderProtection)
@@ -243,9 +244,10 @@ data class Panel(
 
 				dataPut(panelIdentificationKey, this@with.identity, true)
 
-//				if (overridingBorderProtection) {
-//					dataPut(panelIdentificationKey, 1)
-//				}
+				if (overridingBorderProtection) {
+					dataPut(panelIdentificationKey, 1)
+					dataPut(borderKey, 1)
+				}
 
 				// TODO check if the above is needed, because it may causes problems with the indicator
 

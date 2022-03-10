@@ -13,9 +13,7 @@ internal class PanelLinkListener : EventListener() {
 	@EventHandler
 	fun onPanelClick(event: PanelClickEvent) {
 		with(event) {
-			JetCache.panelInteractions.firstOrNull { it.key.identity.also { println("||| first: $it") } == event.panel.identity.also { println("second: $it") } }?.also {
-				println("--- found: $it")
-			}?.value?.forEach { clickAction ->
+			JetCache.panelInteractions.firstOrNull { it.key.identity == event.panel.identity }?.value?.forEach { clickAction ->
 				app(event.panel.vendor).coroutineScope.launch {
 					clickAction(this@with)
 				}
