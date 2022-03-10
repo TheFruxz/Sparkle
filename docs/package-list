@@ -99,6 +99,7 @@ de.jet.paper.tool.display.ui.panel
 de.jet.paper.tool.display.world
 de.jet.paper.tool.effect
 de.jet.paper.tool.effect.sound
+de.jet.paper.tool.event
 de.jet.paper.tool.input
 de.jet.paper.tool.permission
 de.jet.paper.tool.position

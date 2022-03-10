@@ -13,7 +13,7 @@ if(savedDarkMode === true){
     <div class="navigation-wrapper" id="navigation-wrapper">
       <div id="leftToggler"><span class="icon-toggler"></span></div>
       <div class="library-name"><a href="../../../index.html"><span>JET</span></a></div>
-      <div>1.0-PRE-2.3</div>
+      <div>1.0-PRE-3</div>
       <div class="pull-right d-flex"><button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
       </div>
@@ -59,7 +59,7 @@ import de.jet.paper.extension.display.ui.buildPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.objectBound.buildAndRegisterSandBox
-import de.jet.paper.extension.objectBound.buildSandBox
+import de.jet.paper.extension.paper.player
 import de.jet.paper.extension.paper.worlds
 import de.jet.paper.extension.tasky.sync
 import de.jet.paper.general.api.mojang.MojangProfile
@@ -74,6 +74,7 @@ import de.jet.paper.structure.app.AppCompanion
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
+import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.item.Modification
 import de.jet.paper.tool.display.world.SimpleLocation
 import de.jet.paper.tool.effect.sound.SoundData
@@ -90,6 +91,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Material
+import org.bukkit.Material.STONE
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
