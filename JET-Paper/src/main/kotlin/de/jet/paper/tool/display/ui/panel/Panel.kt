@@ -110,13 +110,19 @@ data class Panel(
 	 */
 	val innerSlots by lazy { 0..computedInnerSlots.lastIndex }
 
-	fun onReceive(onReceive: PanelReceiveData.() -> Unit) {
+	fun onReceive(onReceive: (PanelReceiveData) -> Unit) {
 		onReceiveEvent = onReceive
 	}
+
+	fun onReceiveWith(onReceive: PanelReceiveData.() -> Unit) =
+		onReceive(onReceive)
 
 	fun onClick(onClick: suspend (PanelClickEvent) -> Unit) {
 		JetCache.panelInteractions[identityObject] = JetCache.panelInteractions[identityObject].orEmptyMutableList() and onClick
 	}
+
+	fun onClickWith(onClick: suspend PanelClickEvent.() -> Unit) =
+		onClick(onClick)
 
 	operator fun set(slot: Int, action: suspend (PanelClickEvent) -> Unit) =
 		onClick { event -> if (event.clickedSlot == slot) action(event) }
