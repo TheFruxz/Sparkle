@@ -32,7 +32,19 @@ internal class EventsListener : EventListener() {
 
 			if (panel != null) {
 
-				event.isCancelled = !PanelClickEvent(player, panel, action, slot, slotType, item, event.isCancelled).callEvent()
+				event.isCancelled = !PanelClickEvent(
+					player = player,
+					panel = panel,
+					action = action,
+					clickedSlot = slot,
+					inventoryView = event.view,
+					clickedSlotType = slotType,
+					clickedItem = item,
+					clickType = event.click,
+					clickedItemStack = event.currentItem,
+					eventCancelled = event.isCancelled,
+					origin = event,
+				).callEvent()
 
 			}
 
