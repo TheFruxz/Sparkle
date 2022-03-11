@@ -245,7 +245,6 @@ data class Panel(
 				dataPut(panelIdentificationKey, this@with.identity, true)
 
 				if (overridingBorderProtection) {
-					dataPut(panelIdentificationKey, 1)
 					dataPut(borderKey, 1)
 				}
 
