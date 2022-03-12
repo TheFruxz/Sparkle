@@ -61,6 +61,7 @@ data class Item(
 	private var data: MutableMap<String, Any> = mutableMapOf(),
 	var itemMetaBase: ItemMeta? = null,
 	var itemActionTags: Set<ItemActionTag> = emptySet(),
+	val productionPlugins: MutableSet<(ItemStack) -> Unit> = mutableSetOf(),
 ) : Identifiable<Item>, Producible<ItemStack>, HoverEventSource<ShowItem> {
 
 	constructor(source: Material) : this(material = source)
@@ -171,6 +172,10 @@ data class Item(
 		itemStack = itemStack.apply(quirk.itemStackProcessing)
 
 		if (postProperties.contains(BLANK_DATA)) itemStack.addItemFlags(*ItemFlag.values())
+
+		productionPlugins.forEach {
+			itemStack = itemStack.apply(it)
+		}
 
 		return itemStack
 	}
