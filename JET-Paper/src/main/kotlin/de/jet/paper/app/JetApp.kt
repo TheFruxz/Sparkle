@@ -68,7 +68,6 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
 import java.util.logging.Level
-import kotlin.time.Duration.Companion.seconds
 
 class JetApp : App() {
 
@@ -242,22 +241,6 @@ class JetApp : App() {
 				add(buildRandomTag().also { println("adding $it") })
 			}.also { println("set to $it") }
 
-		}
-
-		buildAndRegisterSandBox(this, "clickAction") {
-			buildPanel {
-				this[20] = {
-
-					println("You clicked me!")
-
-					delay(2.seconds)
-
-					sync {
-						executor.sendMessage("You clicked me sync!")
-					}
-
-				}
-			}.display(executor as Player)
 		}
 
 		buildAndRegisterSandBox(this, "itemActions") {

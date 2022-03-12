@@ -117,17 +117,17 @@ data class Panel(
 	fun onReceiveWith(onReceive: PanelReceiveData.() -> Unit) =
 		onReceive(onReceive)
 
-	fun onClick(onClick: suspend (PanelClickEvent) -> Unit) {
+	fun onClick(onClick: (PanelClickEvent) -> Unit) {
 		JetCache.panelInteractions[identityObject] = JetCache.panelInteractions[identityObject].orEmptyMutableList() and onClick
 	}
 
-	fun onClickWith(onClick: suspend PanelClickEvent.() -> Unit) =
+	fun onClickWith(onClick: PanelClickEvent.() -> Unit) =
 		onClick(onClick)
 
-	operator fun set(slot: Int, action: suspend (PanelClickEvent) -> Unit) =
+	operator fun set(slot: Int, action: (PanelClickEvent) -> Unit) =
 		onClick { event -> if (event.clickedSlot == slot) action(event) }
 
-	fun placeInner(slot: Int, action: suspend (PanelClickEvent) -> Unit) {
+	fun placeInner(slot: Int, action: (PanelClickEvent) -> Unit) {
 		this[computedInnerSlots[slot]] = action
 	}
 

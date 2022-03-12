@@ -141,7 +141,7 @@ object JetCache : AppCache {
 
 	@GlobalData
 	@DataLevel(CLEAR)
-	internal val panelInteractions = mutableMapOf<Identity<out Panel>, MutableList<suspend PanelClickEvent.() -> Unit>>()
+	internal val panelInteractions = mutableMapOf<Identity<out Panel>, MutableList<PanelClickEvent.() -> Unit>>()
 
 	@GlobalData
 	@DataLevel(CLEAR)
