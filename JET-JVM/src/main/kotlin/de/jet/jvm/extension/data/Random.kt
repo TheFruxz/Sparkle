@@ -14,7 +14,7 @@ import kotlin.random.nextInt
  * @author Fruxz
  * @since 1.0
  */
-fun randomBoolean() = (Random.nextInt(1, 2) == 1)
+fun randomBoolean() = (randomInt(1..2) == 1)
 
 /**
  * Creates a new random integer, which is inside the given
