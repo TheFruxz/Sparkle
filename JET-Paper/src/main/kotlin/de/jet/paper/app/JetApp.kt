@@ -2,6 +2,7 @@ package de.jet.paper.app
 
 import de.jet.jvm.extension.data.addJetJsonModuleModification
 import de.jet.jvm.extension.data.buildRandomTag
+import de.jet.jvm.extension.data.randomBoolean
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.extension.tryToIgnore
 import de.jet.jvm.tool.smart.identification.Identity
@@ -281,6 +282,31 @@ class JetApp : App() {
 					panel.display(executor as Player)
 				}
 			}
+
+		}
+
+		buildAndRegisterSandBox(this, "panelCloseAndOpenEvents") {
+
+			buildPanel {
+
+				placeInner(5, STONE)
+
+				onOpenWith {
+					player.sendMessage("Opened!")
+
+					if (randomBoolean()) {
+						player.sendMessage("I'm going to close you now!")
+						isCancelled = true
+					} else
+						player.sendMessage("I'm going to let it open!")
+
+				}
+
+				onCloseWith {
+					player.sendMessage("Closed!")
+				}
+
+			}.display(executor as Player)
 
 		}
 

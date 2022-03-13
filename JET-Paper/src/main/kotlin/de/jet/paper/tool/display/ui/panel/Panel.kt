@@ -15,6 +15,8 @@ import de.jet.paper.extension.paper.legacyString
 import de.jet.paper.extension.system
 import de.jet.paper.extension.tasky.sync
 import de.jet.paper.runtime.event.PanelClickEvent
+import de.jet.paper.runtime.event.PanelCloseEvent
+import de.jet.paper.runtime.event.PanelOpenEvent
 import de.jet.paper.structure.app.App
 import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.item.Item
@@ -57,6 +59,8 @@ data class Panel(
 	override var identity: String = "${UUID.randomUUID()}",
 	override var vendor: Identifiable<App> = system,
 	var onReceiveEvent: PanelReceiveData.() -> Unit = { },
+	var onOpenEvent: PanelOpenEvent.() -> Unit = { },
+	var onCloseEvent: PanelCloseEvent.() -> Unit = { },
 	var icon: Item = theme.wool.item.apply {
 		lore = """
 			
@@ -126,6 +130,20 @@ data class Panel(
 
 	operator fun set(slot: Int, action: (PanelClickEvent) -> Unit) =
 		onClick { event -> if (event.clickedSlot == slot) action(event) }
+
+	fun onOpen(onOpen: (PanelOpenEvent) -> Unit) {
+		onOpenEvent = onOpen
+	}
+
+	fun onOpenWith(onOpen: PanelOpenEvent.() -> Unit) =
+		onOpen(onOpen)
+
+	fun onClose(onClose: (PanelCloseEvent) -> Unit) {
+		onCloseEvent = onClose
+	}
+
+	fun onCloseWith(onClose: PanelCloseEvent.() -> Unit) =
+		onClose(onClose)
 
 	fun placeInner(slot: Int, action: (PanelClickEvent) -> Unit) {
 		this[computedInnerSlots[slot]] = action

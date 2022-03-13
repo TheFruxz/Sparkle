@@ -5,6 +5,8 @@ import de.jet.jvm.extension.forceCast
 import de.jet.paper.extension.display.ui.getPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.runtime.event.PanelClickEvent
+import de.jet.paper.runtime.event.PanelCloseEvent
+import de.jet.paper.runtime.event.PanelOpenEvent
 import de.jet.paper.runtime.event.PlayerDamageByPlayerEvent
 import de.jet.paper.runtime.event.interact.PlayerInteractAtBlockEvent
 import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
@@ -14,6 +16,8 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority.HIGHEST
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryCloseEvent
+import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.event.player.PlayerInteractEvent
 
 internal class EventsListener : EventListener() {
@@ -50,6 +54,22 @@ internal class EventsListener : EventListener() {
 
 		}
 
+	}
+
+	@EventHandler
+	fun onInventoryOpen(event: InventoryOpenEvent) {
+		event.inventory.getPanel()?.let { panel ->
+			event.isCancelled = !PanelOpenEvent(
+				event, panel, event.isCancelled
+			).callEvent()
+		}
+	}
+
+	@EventHandler
+	fun onInventoryClose(event: InventoryCloseEvent) {
+		event.inventory.getPanel()?.let { panel ->
+			PanelCloseEvent(event, panel).callEvent()
+		}
 	}
 
 	@EventHandler(priority = HIGHEST)
