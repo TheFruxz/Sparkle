@@ -19,7 +19,7 @@ import net.kyori.adventure.title.Title
 import org.bukkit.entity.Entity
 
 data class Transmission(
-	var prefix: Component = Component.text(JetData.systemPrefix.content),
+	var prefix: Component? = null,
 	var content: TextComponent.Builder = Component.text(),
 	var participants: MutableList<InterchangeExecutor> = mutableListOf(),
 	var withoutPrefix: Boolean = false,
@@ -61,8 +61,7 @@ data class Transmission(
 		hoverEvent?.let { content.hoverEvent(it) }
 		clickEvent?.let { content.clickEvent(it) }
 
-		val displayObject = (if (prefixByLevel) lang("system.${level.prefixLink.addressObject}").adventureComponent else prefix)
-			.append(content)
+		val displayObject = (if (prefixByLevel) lang("system.${level.prefixLink.addressObject}").adventureComponent else prefix ?: Component.text(JetData.systemPrefix.content)).append(content)
 
 		for (participant in participants) {
 
