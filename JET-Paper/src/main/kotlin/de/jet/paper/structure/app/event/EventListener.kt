@@ -29,6 +29,9 @@ abstract class EventListener(
 	lateinit var vendor: App
 		internal set
 
+	val isVendorCurrentlySet: Boolean
+		get() = this::vendor.isInitialized
+
 	val listenerIdentity: String
 		get() = tryOrNull { this::class.simpleName } ?: "${UUID.randomUUID()}"
 

@@ -38,6 +38,9 @@ abstract class Component(
 	override lateinit var vendor: App
 		internal set
 
+	val isVendorCurrentlySet: Boolean
+		get() = this::vendor.isInitialized
+
 	override val vendorIdentity: Identity<out App>
 		get() = vendor.identityObject
 

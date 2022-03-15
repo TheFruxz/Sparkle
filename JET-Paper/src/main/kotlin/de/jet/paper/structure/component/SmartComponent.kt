@@ -1,6 +1,7 @@
 package de.jet.paper.structure.component
 
 import de.jet.jvm.extension.tryToCatch
+import de.jet.jvm.extension.tryToIgnore
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.debugLog
@@ -109,17 +110,21 @@ abstract class SmartComponent(
 			tryToCatch {
 				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject))
 				JetCache.registeredInterchanges.remove(it)
-				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
+				tryToIgnore { debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!") }
 			}
 		}
 
 		services.forEach {
 			tryToCatch {
-				vendor.stop(it)
-				debugLog("Service '${it.identity}' stopped through '$identity'!")
+
+				if (it.isRunning) {
+					vendor.stop(it)
+					tryToIgnore { debugLog("Service '${it.identity}' stopped through '$identity'!") }
+				}
+
 				vendor.unregister(it)
-				JetCache.registeredServices.remove(it)
-				debugLog("Service '${it.identity}' unregistered through '$identity'!")
+
+				tryToIgnore { debugLog("Service '${it.identity}' unregistered through '$identity'!") }
 			}
 		}
 
@@ -127,16 +132,15 @@ abstract class SmartComponent(
 			tryToCatch {
 				vendor.stop(it.identityObject)
 				JetCache.registeredComponents.remove(it)
-				debugLog("Component '${it.identity}' stopped through '$identity'!")
+				tryToIgnore { debugLog("Component '${it.identity}' stopped through '$identity'!") }
 			}
 		}
 
 		listeners.forEach {
-			tryToCatch {
-				vendor.remove(it)
-				JetCache.registeredListeners.remove(it)
-				debugLog("Service '${it.identity}' removed through '$identity'")
-			}
+				tryToCatch {
+					vendor.remove(it)
+					tryToIgnore { debugLog("Service '${it.identity}' removed through '$identity'") }
+				}
 		}
 
 		sandboxes.forEach {
