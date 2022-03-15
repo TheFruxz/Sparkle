@@ -1,5 +1,6 @@
 package de.jet.paper.extension.display.ui
 
+import de.jet.jvm.extension.tryOrNull
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.paper.createKey
 import de.jet.paper.extension.system
@@ -17,7 +18,7 @@ fun buildPanel(lines: Int = 3, action: Panel.() -> Unit) = Panel(lines = lines).
 
 fun emptyPanel(lines: Int = 3) = Panel(lines = lines)
 
-operator fun <T : Inventory> T.get(slot: Int) = getItem(slot)
+operator fun <T : Inventory> T.get(slot: Int) = tryOrNull { getItem(slot) }
 
 operator fun <T : Inventory> T.set(slot: Int, itemStack: ItemStack) = setItem(slot, itemStack)
 
@@ -31,6 +32,6 @@ internal val panelIdentificationKey = system.createKey("panelId")
  * @author Fruxz
  * @since 1.0
  */
-fun <T : Inventory> T.getPanel() = this[4]?.item?.dataGet(panelIdentificationKey)?.let { panelIdentity ->
+fun <T : Inventory> T.getPanel() = tryOrNull { this[4]?.item?.dataGet(panelIdentificationKey)?.let { panelIdentity ->
 	JetCache.completedPanels.lastOrNull { it.identity == "$panelIdentity" }
-}
+} }
