@@ -95,51 +95,50 @@ internal class EventsListener : EventListener() {
 		val material = event.material
 		val block = event.clickedBlock
 
-		when {
-			event.hasItem() && item != null -> {
+		if (event.hasItem() && item != null) {
 
-				@Suppress("DEPRECATION") val internal = PlayerInteractAtItemEvent(
-					whoInteract = player,
-					item = item,
-					material = material,
-					action = event.action,
-					isCancelled = event.isCancelled,
-					origin = event,
-					interactedBlock = event.useInteractedBlock(),
-					interactedItem = event.useItemInHand(),
-				)
+			@Suppress("DEPRECATION") val internal = PlayerInteractAtItemEvent(
+				whoInteract = player,
+				item = item,
+				material = material,
+				action = event.action,
+				isCancelled = event.isCancelled,
+				origin = event,
+				interactedBlock = event.useInteractedBlock(),
+				interactedItem = event.useItemInHand(),
+			)
 
-				if (internal.callEvent()) {
-					event.isCancelled = internal.isCancelled
+			if (internal.callEvent()) {
+				event.isCancelled = internal.isCancelled
 
-					event.setUseInteractedBlock(internal.interactedBlock)
-					event.setUseItemInHand(internal.interactedItem)
-
-				}
+				event.setUseInteractedBlock(internal.interactedBlock)
+				event.setUseItemInHand(internal.interactedItem)
 
 			}
-			event.hasBlock() && block != null -> {
 
-				@Suppress("DEPRECATION") val internal = PlayerInteractAtBlockEvent(
-					whoInteract = player,
-					block = block,
-					material = material,
-					action = event.action,
-					isCancelled = event.isCancelled,
-					origin = event,
-					interactedBlock = event.useInteractedBlock(),
-					interactedItem = event.useItemInHand(),
-				)
+		}
 
-				if (internal.callEvent()) {
-					event.isCancelled = internal.isCancelled
+		if (event.hasBlock() && block != null) {
 
-					event.setUseInteractedBlock(internal.interactedBlock)
-					event.setUseItemInHand(internal.interactedItem)
+			@Suppress("DEPRECATION") val internal = PlayerInteractAtBlockEvent(
+				whoInteract = player,
+				block = block,
+				material = material,
+				action = event.action,
+				isCancelled = event.isCancelled,
+				origin = event,
+				interactedBlock = event.useInteractedBlock(),
+				interactedItem = event.useItemInHand(),
+			)
 
-				}
+			if (internal.callEvent()) {
+				event.isCancelled = internal.isCancelled
+
+				event.setUseInteractedBlock(internal.interactedBlock)
+				event.setUseItemInHand(internal.interactedItem)
 
 			}
+
 		}
 	}
 
