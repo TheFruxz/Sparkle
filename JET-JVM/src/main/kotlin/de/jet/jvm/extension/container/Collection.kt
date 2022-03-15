@@ -3,6 +3,8 @@ package de.jet.jvm.extension.container
 import de.jet.jvm.extension.math.ceilToInt
 import de.jet.jvm.extension.math.maxTo
 import de.jet.jvm.tool.collection.PageValue
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * # `C.toArrayList()`
@@ -280,3 +282,13 @@ fun <T> Array<T>.hasDuplicates() =
  */
 fun <T, K> Array<T>.hasDuplicates(process: (T) -> K) =
 	size > distinctBy(process).size
+
+/**
+ * This function returns the average time, out of the multiple times
+ * provided by the [Collection].
+ * @return the average duration, determined by milliseconds
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <C : Collection<Duration>> C.average(): Duration =
+	map(Duration::inWholeMilliseconds).sum().div(size).milliseconds
