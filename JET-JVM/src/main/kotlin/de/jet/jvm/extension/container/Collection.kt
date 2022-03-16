@@ -284,7 +284,7 @@ fun <T, K> Array<T>.hasDuplicates(process: (T) -> K) =
 	size > distinctBy(process).size
 
 /**
- * This function returns the average time, out of the multiple times
+ * This function returns the average duration, out of the multiple duration
  * provided by the [Collection].
  * @return the average duration, determined by milliseconds
  * @author Fruxz
@@ -292,3 +292,35 @@ fun <T, K> Array<T>.hasDuplicates(process: (T) -> K) =
  */
 fun <C : Collection<Duration>> C.average(): Duration =
 	map(Duration::inWholeMilliseconds).sum().div(size).milliseconds
+
+/**
+ * This function returns the summary duration, out of the multiple duration
+ * provided by the [Collection].
+ * @return the summary duration, determined by milliseconds
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <C : Collection<Duration>> C.sum(): Duration =
+	map(Duration::inWholeMilliseconds).sum().milliseconds
+
+/**
+ * This function returns the largest duration, out of the multiple durations
+ * provided by the [Collection].
+ * @return the largest duration, determined by milliseconds
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <C : Collection<Duration>> C.max(): Duration =
+	map(Duration::inWholeMilliseconds).maxOf { it }.milliseconds
+
+/**
+ * This function returns the smallest duration, out of the multiple durations
+ * provided by the [Collection].
+ * @return the smallest duration, determined by milliseconds
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <C : Collection<Duration>> C.min(): Duration =
+	map(Duration::inWholeMilliseconds).minOf { it }.milliseconds
+
+
