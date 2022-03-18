@@ -44,11 +44,20 @@ fun ItemStack.changeColor(newColorType: ColorType) = type.changeColor(newColorTy
 val Material.item: Item
 	get() = Item(this)
 
+fun Material.item(process: Item.() -> Unit) =
+	item.apply(process)
+
 val Material.itemStack: ItemStack
 	get() = ItemStack(this)
 
+fun Material.itemStack(process: ItemStack.() -> Unit) =
+	itemStack.apply(process)
+
 val ItemStack.item: Item
 	get() = Item(this)
+
+fun ItemStack.item(process: Item.() -> Unit) =
+	item.apply(process)
 
 fun Material.spawnEntity(location: Location, amount: Int = 1) = item.putSize(amount).spawn(location)
 
