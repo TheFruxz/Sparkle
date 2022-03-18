@@ -35,3 +35,11 @@ internal val panelIdentificationKey = system.createKey("panelId")
 fun <T : Inventory> T.getPanel() = tryOrNull { this[4]?.item?.dataGet(panelIdentificationKey)?.let { panelIdentity ->
 	JetCache.completedPanels.lastOrNull { it.identity == "$panelIdentity" }
 } }
+
+/**
+ * Returns the slot id of the inventory, where the best center is located.
+ * If the inventory does not have a center, a near-center slot is returned.
+ * @author Fruxz
+ * @since 1.0
+ */
+val Inventory.center: Int get() = (size / 2) - 1
