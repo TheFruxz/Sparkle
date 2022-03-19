@@ -100,21 +100,3 @@ fun Pair<Pair<Number, Number>, Number>.asLocation(world: World) =
  */
 fun Pair<Pair<Number, Number>, Number>.asLocation(worldName: String) =
 	getWorld(worldName)?.let { asLocation(it) }
-
-/**
- * This function creates a new [LocationBox] object, representing
- * a range from one to another [Location]. This function is defined
- * as a [rangeTo] operator function. This function uses the [this]
- * [Location] as the first [Location] ([LocationBox.component1])
- * and the [other] [Location] ([LocationBox.second]) as the
- * second [Location] inside the [LocationBox].
- * @param other is the second location used to define the range.
- * @return a new [LocationBox] object.
- * @see LocationBox
- * @see Location
- * @see rangeTo
- * @author Fruxz
- * @since 1.0
- */
-operator fun Location.rangeTo(other: Location) =
-	LocationBox(this to other)
