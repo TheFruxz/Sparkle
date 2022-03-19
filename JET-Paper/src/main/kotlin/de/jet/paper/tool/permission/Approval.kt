@@ -30,3 +30,10 @@ data class Approval(
 	}
 
 }
+
+fun Permissible.hasApproval(approval: Approval) =
+	approval.hasApproval(this)
+
+@Deprecated("Use hasApproval(Approval) instead", ReplaceWith("hasApproval(approval)"))
+fun Permissible.hasPermission(approval: Approval) =
+	hasApproval(approval)
