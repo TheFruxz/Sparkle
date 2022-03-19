@@ -2,6 +2,7 @@ package de.jet.paper.tool.position
 
 import de.jet.jvm.extension.math.difference
 import de.jet.jvm.tool.smart.Producible
+import de.jet.paper.extension.paper.directionVectorVelocity
 import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.entity.Entity
@@ -11,7 +12,7 @@ import org.bukkit.util.Vector
 
 data class LocationBox(
 	var first: Location,
-	var last: Location,
+	var second: Location,
 ) : Producible<BoundingBox> {
 
 	constructor(both: Location) : this(both, both)
@@ -48,15 +49,18 @@ data class LocationBox(
 	}
 
 	fun updateLastLocation(newLocation: Location) = apply {
-		last = newLocation
+		second = newLocation
 	}
 
 	val blockVolume: Double
-		get() = (first.x.difference(last.x)+1) * (first.y.difference(last.y)+1) * (first.z.difference(last.z)+1)
+		get() = (first.x.difference(second.x)+1) * (first.y.difference(second.y)+1) * (first.z.difference(second.z)+1)
 
 	val distance: Double
-		get() = first.distance(last)
+		get() = first.distance(second)
 
-	override fun produce() = BoundingBox.of(first, last)
+	val directionVelocity: Vector
+		get() = directionVectorVelocity(first, second)
+
+	override fun produce() = BoundingBox.of(first, second)
 
 }

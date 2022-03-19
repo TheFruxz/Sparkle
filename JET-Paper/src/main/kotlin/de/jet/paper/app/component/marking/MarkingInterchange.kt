@@ -74,7 +74,7 @@ internal class MarkingInterchange : StructuredInterchange(
 												buildString {
 													appendLine(
 														lang["component.markingTool.action.view.distance.other"].replaceVariables(
-															"distance" to targetLocation.distance(currentBox.last).shorter
+															"distance" to targetLocation.distance(currentBox.second).shorter
 														)
 													)
 													append(
@@ -93,10 +93,10 @@ internal class MarkingInterchange : StructuredInterchange(
 								action.isRightClick -> {
 									denyInteraction()
 
-									if (actualBox?.last != targetLocation) {
+									if (actualBox?.second != targetLocation) {
 
 										JetCache.playerMarkerBoxes[player.identityObject] = currentBox.apply {
-											last = targetLocation
+											second = targetLocation
 										}
 										lang["component.markingTool.action.set"].replaceVariables(
 											"n" to 2,
@@ -133,7 +133,7 @@ internal class MarkingInterchange : StructuredInterchange(
 						if (JetCache.playerMarkerBoxes[player.identityObject] != null) {
 							lang["component.markingTool.action.view.detail"].replaceVariables(
 								"1" to positionData(currentBox.first),
-								"2" to positionData(currentBox.last),
+								"2" to positionData(currentBox.second),
 							).notification(INFO, whoInteract).hover(
 								Component.text(
 									buildString {
