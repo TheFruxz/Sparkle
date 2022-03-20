@@ -21,7 +21,7 @@ fun <T> mutableOf(o: T) = Mutable.default(o)
  * @author Fruxz
  * @since 1.0
  */
-fun <T : Any?> T.intoMutable() = mutableOf(this)
+fun <T : Any?> T.toMutable() = mutableOf(this)
 
 fun <T> computationalMutableOf(o: T, onSet: (T) -> Unit, onGet: () -> T) = Mutable.computational(o, onSet, onGet)
 
