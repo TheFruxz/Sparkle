@@ -23,6 +23,7 @@ import de.jet.paper.structure.app.interchange.IssuedInterchange
 import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.component.Component
 import de.jet.paper.structure.service.Service
+import de.jet.paper.tool.data.JetYamlFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
@@ -35,6 +36,7 @@ import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.InputStreamReader
+import java.nio.file.Path
 import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.reflect.KClass
@@ -486,6 +488,9 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	val languageSpeaker by lazy { LanguageSpeaker(/*JetData.systemLanguage.content*/"en_general") }
 
 	private val pluginManager = server.pluginManager
+
+	val appFolder: Path
+		get() = JetYamlFile.appPath(this)
 
 	// override base-mechanics
 
