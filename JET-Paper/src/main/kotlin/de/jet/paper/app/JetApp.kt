@@ -351,7 +351,7 @@ class JetApp : App() {
 
 		override val predictedIdentity = Identity<JetApp>("JET")
 
-		var debugMode: Boolean = false
+		var debugMode: Boolean = trued
 
 	}
 
