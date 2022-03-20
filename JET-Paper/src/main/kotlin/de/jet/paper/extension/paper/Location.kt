@@ -29,7 +29,7 @@ fun Location.displayString(
 			"$x $y $z" + if (withRotation) "$displayYaw: ${yaw.roundToInt()} $displayPitch: ${pitch.roundToInt()}" else ""
 	}
 
-fun LocationBox.displayString() = "${first.displayString()} to ${last.displayString()}"
+fun LocationBox.displayString() = "${first.displayString()} to ${second.displayString()}"
 
 fun BoundingBox.contains(location: Location) = this.contains(location.toVector())
 
@@ -41,7 +41,10 @@ fun BoundingBox.contains(block: Block) = this.contains(block.location)
 
 fun box(location1: Location, location2: Location) = BoundingBox.of(location1, location2)
 
-fun directionVectorVelocity(from: Location, to: Location) = to.toVector().subtract(from.toVector())
+fun directionVectorVelocity(start: Location, destination: Location) =
+	directionVectorVelocity(start.toVector(), destination.toVector())
+
+fun directionVectorVelocity(start: Vector, destination: Vector) = destination.subtract(start)
 
 val Block.safeBoundingBox: BoundingBox
 	get() = BoundingBox.of(location, location.clone().add(Vector(1.0, 1.0, 1.0)))
@@ -97,21 +100,3 @@ fun Pair<Pair<Number, Number>, Number>.asLocation(world: World) =
  */
 fun Pair<Pair<Number, Number>, Number>.asLocation(worldName: String) =
 	getWorld(worldName)?.let { asLocation(it) }
-
-/**
- * This function creates a new [LocationBox] object, representing
- * a range from one to another [Location]. This function is defined
- * as a [rangeTo] operator function. This function uses the [this]
- * [Location] as the first [Location] ([LocationBox.component1])
- * and the [other] [Location] ([LocationBox.component2]) as the
- * second [Location] inside the [LocationBox].
- * @param other is the second location used to define the range.
- * @return a new [LocationBox] object.
- * @see LocationBox
- * @see Location
- * @see rangeTo
- * @author Fruxz
- * @since 1.0
- */
-operator fun Location.rangeTo(other: Location) =
-	LocationBox(this to other)

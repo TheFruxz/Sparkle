@@ -7,6 +7,14 @@ import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 
+/**
+ * This object represents a non-directional location on a [World], by using the
+ * [world]-name, the [x]-coordinate, the [y]-coordinate and the [z]-coordinate.
+ * This class can be used inside yaml and json files, using the common
+ * [ConfigurationSerializable] interface or the [Serializable] annotation.
+ * @author Fruxz
+ * @since 1.0
+ */
 @Serializable
 @SerialName("WorldSimpleLocation")
 data class SimpleLocation(
@@ -25,6 +33,12 @@ data class SimpleLocation(
 
 	constructor(map: Map<String, Any>) : this("" + map["world"], ("" + map["x"]).toDouble(), ("" + map["y"]).toDouble(), ("" + map["z"]).toDouble())
 
+	/**
+	 * This value computes this [SimpleLocation] as a [Location] on the [World]
+	 * This requires the [World] with the [world]-name to be existent.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	val bukkit: Location
 		get() = Location(getWorld(world), x, y, z)
 
@@ -37,6 +51,12 @@ data class SimpleLocation(
 
 	companion object {
 
+		/**
+		 * This function creates a [SimpleLocation] from a [Location] parameter
+		 * and the constructor of [SimpleLocation].
+		 * @author Fruxz
+		 * @since 1.0
+		 */
 		fun ofBukkit(location: Location) =
 			with(location) { SimpleLocation(world.name, x, y, z) }
 

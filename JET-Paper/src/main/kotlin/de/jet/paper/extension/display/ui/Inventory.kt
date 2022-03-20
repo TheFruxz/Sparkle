@@ -7,6 +7,7 @@ import de.jet.paper.extension.system
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.ui.inventory.Container
 import de.jet.paper.tool.display.ui.panel.Panel
+import org.bukkit.Material
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
@@ -23,6 +24,8 @@ operator fun <T : Inventory> T.get(slot: Int) = tryOrNull { getItem(slot) }
 operator fun <T : Inventory> T.set(slot: Int, itemStack: ItemStack) = setItem(slot, itemStack)
 
 operator fun <T : Inventory> T.set(slot: Int, item: Item) = setItem(slot, item.produce())
+
+operator fun <T : Inventory> T.set(slot: Int, material: Material) = setItem(slot, material.itemStack)
 
 internal val panelIdentificationKey = system.createKey("panelId")
 

@@ -69,11 +69,17 @@ interface JetYamlFile : JetFile {
 				Path("JETData", "#${vendor.identity}", "$fileName.$extension")
 			)
 
+		fun rootPath() =
+			Path("JETData") / "ROOT"
+
 		fun rootFile(fileName: String, extension: String = "yml") =
-			generateYaml(Path("JETData") / "ROOT" / "$fileName.$extension")
+			generateYaml(rootPath() / "$fileName.$extension")
+
+		fun componentPath(component: VendorsIdentifiable<Component>) =
+			Path("JETData") / "#${component.identity}@${component.vendorIdentity.identity}"
 
 		fun componentFile(component: VendorsIdentifiable<Component>, fileName: String, extension: String = "yml"): JetFile =
-			generateYaml(Path("JETData") / "#${component.identity}@${component.vendorIdentity.identity}" / "$fileName.$extension")
+			generateYaml(componentPath(component) / "$fileName.$extension")
 
 		internal fun dummyComponentFile(dataA: String, dataB: String, fileName: String, extension: String = "yml"): JetFile =
 			generateYaml(Path("JETData") / "#$dataA@$dataB" / "$fileName.$extension")
