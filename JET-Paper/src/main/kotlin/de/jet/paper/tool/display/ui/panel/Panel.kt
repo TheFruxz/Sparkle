@@ -72,6 +72,7 @@ data class Panel(
 		""".trimIndent()
 	},
 	var overridingBorderProtection: Boolean = true,
+	val generateBorder: Boolean = true,
 ) : Cloneable, Logging, Container<Panel>(label = label, size = lines * 9, theme = theme, openSound = openSound), VendorsIdentifiable<Panel> {
 
 	/**
@@ -84,7 +85,7 @@ data class Panel(
 	val borderKey = system.createKey("panelBorder")
 
 	init {
-		if (content.isEmpty()) { // do not write a border, if already content is inside
+		if (generateBorder && content.isEmpty()) { // do not write a border, if already content is inside or not enabled
 			content = content.apply {
 
 				border(theme.stainedGlassPane.item.blankLabel().apply {
