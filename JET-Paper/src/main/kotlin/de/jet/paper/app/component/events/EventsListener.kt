@@ -2,7 +2,6 @@ package de.jet.paper.app.component.events
 
 import de.jet.jvm.extension.all
 import de.jet.jvm.extension.forceCast
-import de.jet.paper.extension.display.ui.getPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.runtime.event.PanelClickEvent
 import de.jet.paper.runtime.event.PanelCloseEvent
@@ -11,6 +10,7 @@ import de.jet.paper.runtime.event.PlayerDamageByPlayerEvent
 import de.jet.paper.runtime.event.interact.PlayerInteractAtBlockEvent
 import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.paper.structure.app.event.EventListener
+import de.jet.paper.tool.display.ui.panel.Panel.Companion.getPanel
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority.HIGHEST

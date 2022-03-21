@@ -1,7 +1,7 @@
 package de.jet.paper.runtime.event
 
-import de.jet.paper.extension.display.ui.getPanel
 import de.jet.paper.tool.display.ui.panel.Panel
+import de.jet.paper.tool.display.ui.panel.Panel.Companion.getPanel
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryEvent
