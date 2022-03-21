@@ -7,6 +7,7 @@ import de.jet.paper.extension.system
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.ui.inventory.Container
 import de.jet.paper.tool.display.ui.panel.Panel
+import de.jet.paper.tool.display.ui.panel.Panel.Companion.panelIdentity
 import org.bukkit.Material
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
@@ -28,16 +29,6 @@ operator fun <T : Inventory> T.set(slot: Int, item: Item) = setItem(slot, item.p
 operator fun <T : Inventory> T.set(slot: Int, material: Material) = setItem(slot, material.itemStack)
 
 internal val panelIdentificationKey = system.createKey("panelId")
-
-/**
- * Returns the panel, if the provided inventory is registered as a panel.
- * @return the panel, or null if it is not a completed panel
- * @author Fruxz
- * @since 1.0
- */
-fun <T : Inventory> T.getPanel() = tryOrNull { this[4]?.item?.dataGet(panelIdentificationKey)?.let { panelIdentity ->
-	JetCache.completedPanels.lastOrNull { it.identity == "$panelIdentity" }
-} }
 
 /**
  * Returns the slot id of the inventory, where the best center is located.

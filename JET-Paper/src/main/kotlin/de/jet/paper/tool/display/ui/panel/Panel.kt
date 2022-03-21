@@ -2,11 +2,13 @@ package de.jet.paper.tool.display.ui.panel
 
 import de.jet.jvm.extension.container.and
 import de.jet.jvm.extension.container.orEmptyMutableList
+import de.jet.jvm.extension.tryOrNull
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.BOLD
 import de.jet.paper.extension.display.YELLOW
+import de.jet.paper.extension.display.ui.getPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.display.ui.panelIdentificationKey
 import de.jet.paper.extension.paper.createInventory
@@ -21,6 +23,7 @@ import de.jet.paper.structure.app.App
 import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.ui.inventory.Container
+import de.jet.paper.tool.display.ui.panel.Panel.Companion.panelIdentity
 import de.jet.paper.tool.effect.sound.SoundMelody
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
@@ -307,6 +310,10 @@ data class Panel(
 	override fun display(receiver: Player, specificParameters: Map<String, Any>) =
 		display(humanEntity = receiver, specificParameters)
 
+	fun isPanel(inventory: Inventory) = inventory.panelIdentity?.identity == this.identity
+
+	fun isPanel(panel: Panel) = panel.identity == this.identity
+
 	companion object {
 
 		val InventoryView.panelIdentity: Identifiable<Panel>?
@@ -314,6 +321,16 @@ data class Panel(
 
 		val Inventory.panelIdentity: Identity<Panel>?
 			get() = getItem(4)?.item?.identityObject?.change()
+
+		/**
+		 * Returns the panel, if the provided inventory is registered as a panel.
+		 * @return the panel, or null if it is not a completed panel
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		fun <T : Inventory> T.getPanel() = tryOrNull { panelIdentity?.let { panelIdentity ->
+			JetCache.completedPanels.lastOrNull { it.identity == "$panelIdentity" }
+		} }
 
 	}
 
