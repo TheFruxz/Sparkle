@@ -461,7 +461,7 @@ data class Panel(
 		 * @since 1.0
 		 */
 		val Inventory.panelIdentity: Identity<Panel>?
-			get() = getItem(4)?.item?.identityObject?.change()
+			get() = Identity("" + getItem(4)?.item?.dataGet(panelIdentificationKey))
 
 		/**
 		 * Returns the panel, if the provided inventory is registered as a panel.
@@ -470,7 +470,7 @@ data class Panel(
 		 * @since 1.0
 		 */
 		fun <T : Inventory> T.getPanel() = tryOrNull { panelIdentity?.let { panelIdentity ->
-			JetCache.completedPanels.lastOrNull { it.identity == "$panelIdentity" }
+			JetCache.completedPanels.lastOrNull { it.identityObject.also { print("id: '$it' ") } == panelIdentity.also { println(" with '$it'") } }
 		} }
 
 	}
