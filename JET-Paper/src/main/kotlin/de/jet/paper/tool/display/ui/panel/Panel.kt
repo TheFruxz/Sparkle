@@ -8,7 +8,6 @@ import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
 import de.jet.paper.extension.display.BOLD
 import de.jet.paper.extension.display.YELLOW
-import de.jet.paper.extension.display.ui.getPanel
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.display.ui.panelIdentificationKey
 import de.jet.paper.extension.paper.createInventory
@@ -23,7 +22,6 @@ import de.jet.paper.structure.app.App
 import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.ui.inventory.Container
-import de.jet.paper.tool.display.ui.panel.Panel.Companion.panelIdentity
 import de.jet.paper.tool.effect.sound.SoundMelody
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
@@ -76,6 +74,13 @@ data class Panel(
 	var overridingBorderProtection: Boolean = true,
 ) : Cloneable, Logging, Container<Panel>(label = label, size = lines * 9, theme = theme, openSound = openSound), VendorsIdentifiable<Panel> {
 
+	/**
+	 * This value represents the used key, to identify the border
+	 * items, used in the base of the panel. This key is mostly
+	 * used, to cancel a click, onto the border of the panel.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	val borderKey = system.createKey("panelBorder")
 
 	init {
@@ -97,12 +102,24 @@ data class Panel(
 
 	override val sectionLabel = "Panel/$identity"
 
+	/**
+	 * The flags, that modify the user-experience of the panel.
+	 * @see PanelFlag
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	var panelFlags: Set<PanelFlag>
 		get() = JetCache.registeredPanelFlags[identity] ?: emptySet()
 		set(value) {
 			JetCache.registeredPanelFlags[identity] = value
 		}
 
+	/**
+	 * The identities of the inner slots, that are used to identify
+	 * the slots, without the border surrounding it.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	private val computedInnerSlots: List<Int> by lazy {
 		mutableListOf<Int>().apply {
 			for (x in 1..(lines - 2)) {
@@ -113,41 +130,110 @@ data class Panel(
 	}
 
 	/**
-	 * Available inner slots to set items into
+	 * The available inner slots, that can be used to place inner.
+	 * It's like the size of the inventory, but without the border.
+	 * @author Fruxz
+	 * @since 1.0
 	 */
 	val innerSlots by lazy { 0..computedInnerSlots.lastIndex }
 
+	/**
+	 * This function replaces the onReceiveEvent, that is used to
+	 * handle the first-look, of the player, onto the panel.
+	 * This function can modify the receiving data, to change the
+	 * panel, that is displayed to the player.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun onReceive(onReceive: (PanelReceiveData) -> Unit) {
 		onReceiveEvent = onReceive
 	}
 
+	/**
+	 * This function replaces the onReceiveEvent, that is used to
+	 * handle the first-look, of the player, onto the panel.
+	 * This function can modify the receiving data, to change the
+	 * panel, that is displayed to the player.
+	 * This function uses the this-perspective, to handle the
+	 * panel-receive-event.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun onReceiveWith(onReceive: PanelReceiveData.() -> Unit) =
 		onReceive(onReceive)
 
+	/**
+	 * This function adds a new click handler, that is used to
+	 * handle the click-event, of the player, onto the panel.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun onClick(onClick: (PanelClickEvent) -> Unit) {
 		JetCache.panelInteractions[identityObject] = JetCache.panelInteractions[identityObject].orEmptyMutableList() and onClick
 	}
 
+	/**
+	 * This function adds a new click handler, that is used to
+	 * handle the click-event, of the player, onto the panel.
+	 * This function uses the this-perspective, to handle the
+	 * panel-click-event.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun onClickWith(onClick: PanelClickEvent.() -> Unit) =
 		onClick(onClick)
 
+	/**
+	 * This function adds a new [onClick], which only looks at the
+	 * slot [slot]. If [slot] is clicked, [action] will be executed.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	operator fun set(slot: Int, action: (PanelClickEvent) -> Unit) =
 		onClick { event -> if (event.clickedSlot == slot) action(event) }
 
+	/**
+	 * This function replaces the [onOpenEvent], that is used to
+	 * handle the open-event, of the player, onto the panel.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun onOpen(onOpen: (PanelOpenEvent) -> Unit) {
 		onOpenEvent = onOpen
 	}
 
+	/**
+	 * This function replaces the [onOpenEvent], that is used to
+	 * handle the open-event, of the player, onto the panel.
+	 * This function uses the this-perspective, to handle the
+	 * panel-open-event.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun onOpenWith(onOpen: PanelOpenEvent.() -> Unit) =
 		onOpen(onOpen)
 
+	/**
+	 * This function replaces the [onCloseEvent], that is used to
+	 * handle the close-event, of the player, onto the panel.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun onClose(onClose: (PanelCloseEvent) -> Unit) {
 		onCloseEvent = onClose
 	}
 
+	/**
+	 * This function replaces the [onCloseEvent], that is used to
+	 * handle the close-event, of the player, onto the panel.
+	 * This function uses the this-perspective, to handle the
+	 * panel-close-event.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun onCloseWith(onClose: PanelCloseEvent.() -> Unit) =
 		onClose(onClose)
-
+	
 	fun placeInner(slot: Int, action: (PanelClickEvent) -> Unit) {
 		this[computedInnerSlots[slot]] = action
 	}
@@ -232,6 +318,13 @@ data class Panel(
 		}
 	}
 
+	/**
+	 * This computational value produces the inventory of this
+	 * panel, by creating a new inventory and placing every item,
+	 * configured in this panel, into it.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	override val rawInventory: Inventory
 		get() {
 			val inventory = createInventory(null, size, label)
@@ -246,8 +339,28 @@ data class Panel(
 			return inventory
 		}
 
+	/**
+	 * This function creates a copy of this panel, by using
+	 * the [copy] function of this [Panel] data class.
+	 * It is recommended, to directly use the [copy] function
+	 * instead, but for overriding reasons, this exists.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	override fun clone() = copy()
 
+	/**
+	 * This function adds the current panel to the [JetCache.completedPanels],
+	 * so that the identification of a panel can be easily done.
+	 * The identification of [getPanel] only uses the completed panels as a
+	 * reference, so this function is required, to be identified as a real
+	 * panel.
+	 * This function is automatically called when the panel is created.
+	 * @see getPanel
+	 * @see JetCache.completedPanels
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun complete() {
 		JetCache.completedPanels.add(this)
 	}
@@ -310,15 +423,42 @@ data class Panel(
 	override fun display(receiver: Player, specificParameters: Map<String, Any>) =
 		display(humanEntity = receiver, specificParameters)
 
+	/**
+	 * This function returns, if the [inventory] is (via the identity) a
+	 * panel and also if the [inventory]-panel has the same panel identity,
+	 * as this Panels [identity].
+	 * @param inventory that gets checked
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun isPanel(inventory: Inventory) = inventory.panelIdentity?.identity == this.identity
 
+	/**
+	 * This function returns, if the [panel] is (via the identity)
+	 * the same panel, as this [Panel]. True, if the identity is the same.
+	 * @param panel that gets checked
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	fun isPanel(panel: Panel) = panel.identity == this.identity
 
 	companion object {
 
+		/**
+		 * Returns the identity of the panel, that the [InventoryView.getTopInventory]
+		 * inventory represents, or null, if there is no panel identity linked.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
 		val InventoryView.panelIdentity: Identifiable<Panel>?
 			get() = topInventory.panelIdentity
 
+		/**
+		 * Returns the identity of the panel, that this [Inventory]
+		 * represents, or null, if there is no panel identity linked.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
 		val Inventory.panelIdentity: Identity<Panel>?
 			get() = getItem(4)?.item?.identityObject?.change()
 
