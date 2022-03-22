@@ -120,19 +120,17 @@ internal class EventsListener : EventListener() {
 
 		if (event.hasBlock() && block != null) {
 
-			@Suppress("DEPRECATION") val internal = PlayerInteractAtBlockEvent(
+			val internal = PlayerInteractAtBlockEvent(
 				whoInteract = player,
 				block = block,
 				material = material,
 				action = event.action,
-				isCancelled = event.isCancelled,
 				origin = event,
 				interactedBlock = event.useInteractedBlock(),
 				interactedItem = event.useItemInHand(),
 			)
 
 			if (internal.callEvent()) {
-				event.isCancelled = internal.isCancelled
 
 				event.setUseInteractedBlock(internal.interactedBlock)
 				event.setUseItemInHand(internal.interactedItem)
