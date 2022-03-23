@@ -25,17 +25,17 @@ dependencies {
     // Internal
 
     implementation(project(":JET-JVM"))
-    shadow(project(":JET-JVM"))
+
+    shadow(project(":JET-JVM")) {
+        isTransitive = false
+    }
 
     // Kotlin
 
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
-    shadow(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
-    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
 
     // External
 
