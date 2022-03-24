@@ -2,7 +2,7 @@ import org.gradle.api.JavaVersion.VERSION_17
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.6.20-RC"
     kotlin("plugin.serialization") version "1.6.10"
     id("org.jetbrains.dokka") version "1.6.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
@@ -12,7 +12,7 @@ plugins {
 
 allprojects {
 
-    version = "1.0-PRE-3.3.2"
+    version = "1.0-PRE-3.3.3"
     group = "de.jet"
 
     repositories {

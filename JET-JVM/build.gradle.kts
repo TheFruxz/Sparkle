@@ -18,11 +18,9 @@ dependencies {
 
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
+    implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-
     implementation("org.slf4j:slf4j-api:2.0.0-alpha7")
-
-    // External
 
 }
 

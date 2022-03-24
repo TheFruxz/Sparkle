@@ -25,24 +25,32 @@ dependencies {
     // Internal
 
     implementation(project(":JET-JVM"))
-    shadow(project(":JET-JVM"))
+
+    shadow(project(":JET-JVM")) {
+        isTransitive = false
+    }
 
     // Kotlin
 
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
-    shadow(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
-    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
 
     // External
 
     implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
     compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT") // PaperMC
-
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") // Head-Database
+
+    // Shadow
+
+    shadow(kotlin("stdlib"))
+    shadow(kotlin("stdlib-jdk8"))
+    shadow(kotlin("reflect"))
+    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+    shadow("org.slf4j:slf4j-api:2.0.0-alpha7")
 
 }
 
