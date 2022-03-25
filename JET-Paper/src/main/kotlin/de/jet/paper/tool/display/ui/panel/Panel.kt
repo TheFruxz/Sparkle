@@ -544,7 +544,7 @@ data class Panel(
 		 * @since 1.0
 		 */
 		fun <T : Inventory> T.getPanel() = tryOrNull { panelIdentity?.let { panelIdentity ->
-			JetCache.completedPanels.lastOrNull { it.identityObject.also { print("id: '$it' ") } == panelIdentity.also { println(" with '$it'") } }
+			JetCache.completedPanels.lastOrNull { it.identityObject == panelIdentity }
 		} }
 
 	}
