@@ -150,6 +150,28 @@ data class Panel(
 	}
 
 	/**
+	 * This function replaces the panel [label] with an
+	 * empty component.
+	 * @see Component.empty
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun emptyLabel() {
+		label = Component.empty()
+	}
+
+	/**
+	 * This function replaces the panel [label] with a
+	 * component, that contains a space.
+	 * @see Component.space
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun blankLabel() {
+		label = Component.space()
+	}
+
+	/**
 	 * The identities of the inner slots, that are used to identify
 	 * the slots, without the border surrounding it.
 	 * @author Fruxz
@@ -431,7 +453,9 @@ data class Panel(
 		this@with.content = this@with.content.apply {
 			set(4, this@with.icon.apply {
 
-				label = this@with.label.legacyString
+				if (label.isEmpty()) {
+					label = this@with.label.legacyString
+				}
 
 				dataPut(panelIdentificationKey, this@with.identity, true)
 
