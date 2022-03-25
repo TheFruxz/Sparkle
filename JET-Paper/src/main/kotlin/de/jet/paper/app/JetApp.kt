@@ -49,6 +49,7 @@ import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.item.Modification
+import de.jet.paper.tool.display.ui.panel.PanelFlag
 import de.jet.paper.tool.display.world.SimpleLocation
 import de.jet.paper.tool.effect.sound.SoundData
 import de.jet.paper.tool.effect.sound.SoundMelody
@@ -262,6 +263,28 @@ class JetApp : App() {
 				}
 
 			}.produce())
+		}
+
+		buildAndRegisterSandBox(this, "panelNotClose") {
+
+			buildPanel {
+				this[1] = Material.STONE.item
+
+				panelFlags = panelFlags + PanelFlag.NO_CLOSE
+
+			}.display(executor as Player)
+
+		}
+
+		buildAndRegisterSandBox(this, "panelFlagsTest") {
+
+			buildPanel {
+				this[1] = Material.STONE.item
+
+				placeInner(1, Material.GRAVEL)
+
+			}.display(executor as Player)
+
 		}
 
 		buildAndRegisterSandBox(this, "panelGlobalClickAction") {

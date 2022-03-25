@@ -9,37 +9,38 @@ package de.jet.paper.tool.display.ui.panel
 enum class PanelFlag {
 
 	/**
-	 * This flag defines, that no item is movable.
+	 * This flag defines, that the panel border is not click-protected.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	NOT_MOVE_ABLE,
+	NO_BORDER_PROTECTION,
 
 	/**
-	 * This flag defines, that no item can be dragged.
+	 * This flag defines, that no panel interactions are possible.
+	 * (only panel interactions, not item interactions)
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	NOT_DRAG_ABLE,
+	NO_INTERACT,
 
 	/**
-	 * This flag defines, that no item can be clicked.
+	 * This flag defines, that every item grab is cancelled.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	NOT_CLICK_ABLE,
+	NO_GRAB,
 
 	/**
 	 * This flag defines, that the panel cannot be closed.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	NOT_CLOSE_ABLE,
+	NO_CLOSE,
 
 	/**
 	 * This flag defines, that the panel cannot be opened.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	NOT_OPEN_ABLE;
+	NO_OPEN;
 }

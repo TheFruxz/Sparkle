@@ -6,25 +6,47 @@ import de.jet.paper.runtime.event.PanelClickEvent
 import de.jet.paper.runtime.event.PanelCloseEvent
 import de.jet.paper.runtime.event.PanelOpenEvent
 import de.jet.paper.structure.app.event.EventListener
+import de.jet.paper.tool.display.ui.panel.PanelFlag.*
 import org.bukkit.event.EventHandler
 
 internal class PanelLinkListener : EventListener() {
 
 	@EventHandler
 	fun onPanelClick(event: PanelClickEvent) {
-		JetCache.panelInteractions
-			.firstOrNull { it.key.identity == event.panel.identity }?.value
-			?.forEach { clickAction -> event.apply(clickAction) }
+		val panel = event.panel
+		val flags = panel.panelFlags
+
+		if (flags.contains(NO_GRAB) || (!flags.contains(NO_BORDER_PROTECTION) && (panel.isBorder(event.clickedSlot) || panel.isBorder(event.clickedItem)))) {
+			event.isCancelled = true
+		}
+
+		if (!flags.contains(NO_INTERACT)) {
+			JetCache.panelInteractions
+				.firstOrNull { it.key.identity == panel.identity }?.value
+				?.forEach { clickAction -> event.apply(clickAction) }
+		}
+
 	}
 
 	@EventHandler
 	fun onPanelOpen(event: PanelOpenEvent) {
-		event.panel.onOpenEvent(event)
+		val panel = event.panel
+
+		if (!panel.panelFlags.contains(NO_OPEN)) {
+			panel.onOpenEvent(event)
+		} else
+			event.isCancelled = true
+
 	}
 
 	@EventHandler
 	fun onPanelClose(event: PanelCloseEvent) {
-		event.panel.onCloseEvent(event)
+		val panel = event.panel
+
+		if (!panel.panelFlags.contains(NO_CLOSE)) {
+			event.panel.onCloseEvent(event)
+		} else
+			event.player.openInventory(event.inventory)
 	}
 
 }

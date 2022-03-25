@@ -104,7 +104,8 @@ data class Panel(
 	override val sectionLabel = "Panel/$identity"
 
 	/**
-	 * The flags, that modify the user-experience of the panel.
+	 * This computational variable represents the flags,
+	 * that modify the user-experience of the panel.
 	 * @see PanelFlag
 	 * @author Fruxz
 	 * @since 1.0
@@ -114,6 +115,39 @@ data class Panel(
 		set(value) {
 			JetCache.registeredPanelFlags[identity] = value
 		}
+
+	/**
+	 * This function adds the [flags] to the panel.
+	 * Using the [panelFlags] variable.
+	 * @see panelFlags
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun addPanelFlags(vararg flags: PanelFlag) {
+		panelFlags = panelFlags.plus(flags)
+	}
+
+	/**
+	 * This function removes the [flags] from the panel.
+	 * Using the [panelFlags] variable.
+	 * @see panelFlags
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun takePanelFlags(vararg flags: PanelFlag) {
+		panelFlags = panelFlags.minus(flags)
+	}
+
+	/**
+	 * This function replaces the current [panelFlags]
+	 * with the [flags].
+	 * @see panelFlags
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun setPanelFlags(vararg flags: PanelFlag) {
+		panelFlags = flags.toSet()
+	}
 
 	/**
 	 * The identities of the inner slots, that are used to identify
@@ -362,9 +396,25 @@ data class Panel(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun complete() {
+	private fun complete() {
 		JetCache.completedPanels.add(this)
 	}
+
+	/**
+	 * This function returns, if the [slot] appears in the
+	 * [borderSlots], or not (and if [generatedCheck] is true).
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun isBorder(slot: Int, generatedCheck: Boolean = generateBorder) = generatedCheck && slot in borderSlots
+
+	/**
+	 * This function returns, if the [item] is tagged with
+	 * the border-tag, or not (and if [generatedCheck] is true).
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun isBorder(item: Item?, generatedCheck: Boolean = generateBorder) = generatedCheck && item?.dataGet(borderKey) == 1
 
 	override fun display(humanEntity: HumanEntity) =
 		display(humanEntity, emptyMap())

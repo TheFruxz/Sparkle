@@ -9,7 +9,6 @@ internal class ContainerLinkComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 	override suspend fun component() {
 
-		listener(ItemLinkListener())
 		listener(PanelLinkListener())
 		listener(ItemTagListener())
 

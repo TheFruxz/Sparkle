@@ -222,6 +222,31 @@ open class Container<T : Container<T>>(
 
 	fun fill(vararg materials: Material) = fill(*materials.map { Item(it) }.toTypedArray())
 
+	val borderSlots: Array<Int>
+		get() {
+
+			val fullBorders = size >= 9 * 2
+			val sideRows = if (fullBorders) {
+				(size.toDouble() / 9.0).let {
+					if (it >= 3) {
+						it.roundToInt()
+					} else
+						0
+				}
+			} else
+				0
+			val sideSlots = mutableListOf<Int>()
+
+			if (sideRows > 0) {
+				for ((index, _) in (1..(sideRows - (if (fullBorders) 2 else 0))).withIndex()) {
+					sideSlots.addAll(setOf(9 + (index * 9), 17 + (index * 9)))
+				}
+			}
+
+			return emptyArray<Int>() + (0..8).toList() + (size - 9 until size).toList() + sideSlots
+
+		}
+
 	fun border(item: Item, schemaArray: Array<Int>) {
 		schemaArray.forEach { position ->
 			content[position] = item
@@ -231,25 +256,8 @@ open class Container<T : Container<T>>(
 	fun border(material: Material, schemaArray: Array<Int>) = border(item = Item(material), schemaArray = schemaArray)
 
 	fun border(item: Item) {
-		val fullBorders = size >= 9 * 2
-		val sideRows = if (fullBorders) {
-			(size.toDouble() / 9.0).let {
-				if (it >= 3) {
-					it.roundToInt()
-				} else
-					0
-			}
-		} else
-			0
-		val sideSlots = mutableListOf<Int>()
 
-		if (sideRows > 0) {
-			for ((index, _) in (1..(sideRows - (if (fullBorders) 2 else 0))).withIndex()) {
-				sideSlots.addAll(setOf(9 + (index * 9), 17 + (index * 9)))
-			}
-		}
-
-		border(item, emptyArray<Int>() + (0..8).toList() + (size - 9 until size).toList() + sideSlots)
+		border(item, borderSlots)
 
 	}
 
