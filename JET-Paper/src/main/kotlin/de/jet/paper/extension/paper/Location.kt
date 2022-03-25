@@ -100,3 +100,27 @@ fun Pair<Pair<Number, Number>, Number>.asLocation(world: World) =
  */
 fun Pair<Pair<Number, Number>, Number>.asLocation(worldName: String) =
 	getWorld(worldName)?.let { asLocation(it) }
+
+/**
+ * This function adds the given [x], [y] and [z] values to the current [Location].
+ * @param x the x-coordinate to add
+ * @param y the y-coordinate to add
+ * @param z the z-coordinate to add
+ * @return the modified Location-object
+ * @author Fruxz
+ * @since 1.0
+ */
+fun Location.add(x: Number = 0, y: Number = 0, z: Number = 0) =
+	add(x.toDouble(), y.toDouble(), z.toDouble())
+
+/**
+ * This function subtracts the given [x], [y] and [z] values from the current [Location].
+ * @param x the x-coordinate to subtract
+ * @param y the y-coordinate to subtract
+ * @param z the z-coordinate to subtract
+ * @return the modified Location-object
+ * @author Fruxz
+ * @since 1.0
+ */
+fun Location.subtract(x: Number = 0, y: Number = 0, z: Number = 0) =
+	subtract(x.toDouble(), y.toDouble(), z.toDouble())
