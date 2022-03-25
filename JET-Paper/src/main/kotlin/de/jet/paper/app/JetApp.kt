@@ -1,8 +1,6 @@
 package de.jet.paper.app
 
 import de.jet.jvm.extension.data.addJetJsonModuleModification
-import de.jet.jvm.extension.data.buildRandomTag
-import de.jet.jvm.extension.data.randomBoolean
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.extension.tryToIgnore
 import de.jet.jvm.tool.smart.identification.Identity
@@ -28,11 +26,8 @@ import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.Render
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.WorldStructure
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.ui.buildContainer
-import de.jet.paper.extension.display.ui.buildPanel
-import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.objectBound.buildAndRegisterSandBox
-import de.jet.paper.extension.paper.player
 import de.jet.paper.extension.paper.worlds
 import de.jet.paper.extension.tasky.sync
 import de.jet.paper.general.api.mojang.MojangProfile
@@ -47,9 +42,7 @@ import de.jet.paper.structure.app.AppCompanion
 import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
-import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.item.Modification
-import de.jet.paper.tool.display.ui.panel.PanelFlag
 import de.jet.paper.tool.display.world.SimpleLocation
 import de.jet.paper.tool.effect.sound.SoundData
 import de.jet.paper.tool.effect.sound.SoundMelody
@@ -59,13 +52,10 @@ import de.jet.paper.tool.input.Keyboard.RenderEngine.KeyConfiguration
 import de.jet.paper.tool.permission.Approval
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import org.bukkit.Material
-import org.bukkit.Material.STONE
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
@@ -176,22 +166,6 @@ class JetApp : App() {
 
 		add(JETInterchange())
 
-		buildAndRegisterSandBox(this, "testInventory") {
-			sync {
-				buildPanel {
-
-					placeInner(0, Material.STONE.item.onClickWith {
-						whoClicked.sendMessage("Hello, Mr. Clicky")
-					})
-
-					placeInner(1, Material.SADDLE.item.onClickWith {
-						isCancelled = true
-					})
-
-				}.display(executor as Player)
-			}
-		}
-
 		buildAndRegisterSandBox(this, "importAllWorlds") {
 			sync { worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld) }
 		}
@@ -209,142 +183,6 @@ class JetApp : App() {
 					}
 				}.display(executor as Player)
 			}
-		}
-
-		buildAndRegisterSandBox(this, "checkAsync") {
-
-			executor.sendMessage("This should be async, Thread: '${Thread.currentThread().name}'")
-
-			sync {
-				executor.sendMessage("This should be sync, Thread: '${Thread.currentThread().name}'")
-			}
-
-		}
-
-		buildAndRegisterSandBox(this, "simulateFreeze") {
-
-			executor.sendMessage("Okay, I'm going to freeze you now!")
-
-			delay(20000L)
-
-			executor.sendMessage("Okay, I'm going to unfreeze you now!")
-
-		}
-
-		buildAndRegisterSandBox(this, "simulateAutoStartManipulation") {
-
-			JetData.autoStartComponents.content.toMutableSet().add(buildRandomTag())
-
-		}
-
-		buildAndRegisterSandBox(this, "simulateAutoStartManipulation2") {
-
-			JetData.autoStartComponents.content = JetData.autoStartComponents.content.toMutableSet().apply {
-				add(buildRandomTag().also { println("adding $it") })
-			}.also { println("set to $it") }
-
-		}
-
-		buildAndRegisterSandBox(this, "itemActions") {
-			(executor as Player).inventory.addItem(Material.IRON_PICKAXE.item.apply {
-
-				label = "MyItem"
-
-				onClickWith {
-					player.sendMessage("You clicked me!")
-				}
-
-				onInteractWith {
-					player.sendMessage("You interacted me!")
-				}
-
-				onDropWith {
-					player.sendMessage("You dropped me!")
-				}
-
-			}.produce())
-		}
-
-		buildAndRegisterSandBox(this, "panelNotClose") {
-
-			buildPanel {
-				this[1] = Material.STONE.item
-
-				panelFlags = panelFlags + PanelFlag.NO_CLOSE
-
-			}.display(executor as Player)
-
-		}
-
-		buildAndRegisterSandBox(this, "panelFlagsTest") {
-
-			buildPanel {
-				this[1] = Material.STONE.item
-
-				placeInner(1, Material.GRAVEL)
-
-			}.display(executor as Player)
-
-		}
-
-		buildAndRegisterSandBox(this, "panelGlobalClickAction") {
-
-			buildPanel {
-
-				placeInner(5, STONE)
-				place(3, Item(Material.GRAVEL))
-
-				onClick { event ->
-
-					event.player.sendMessage("Clicked ${event.clickedSlot}")
-
-				}
-
-			}.let { panel ->
-				sync {
-					panel.display(executor as Player)
-				}
-			}
-
-		}
-
-		buildAndRegisterSandBox(this, "backgroundTest") {
-
-			buildPanel {
-
-				this[4] = Material.STONE.item
-				this[14] = Material.COBBLED_DEEPSLATE
-				this[13] = Material.DIAMOND
-
-				background(Material.GRAVEL)
-
-			}.display(executor as Player)
-
-		}
-
-		buildAndRegisterSandBox(this, "panelCloseAndOpenEvents") {
-
-			buildPanel {
-
-				placeInner(5, STONE)
-
-				onOpenWith {
-					player.sendMessage("Opened!")
-
-					if (randomBoolean()) {
-						player.sendMessage("I'm going to close you now!")
-						isCancelled = true
-					} else
-						player.sendMessage("I'm going to let it open!")
-
-				}
-
-				onCloseWith {
-					player.sendMessage("Closed!")
-				}
-
-			}.display(executor as Player)
-
 		}
 
 	}
