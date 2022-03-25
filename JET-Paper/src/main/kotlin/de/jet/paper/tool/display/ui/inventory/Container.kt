@@ -12,6 +12,7 @@ import de.jet.paper.tool.display.ui.UI
 import de.jet.paper.tool.effect.sound.SoundMelody
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
+import org.bukkit.Material.AIR
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -42,6 +43,59 @@ open class Container<T : Container<T>>(
 
 			return inventory
 		}
+
+	val borderSlots: Array<Int>
+		get() {
+
+			val fullBorders = size >= 9 * 2
+			val sideRows = if (fullBorders) {
+				(size.toDouble() / 9.0).let {
+					if (it >= 3) {
+						it.roundToInt()
+					} else
+						0
+				}
+			} else
+				0
+			val sideSlots = mutableListOf<Int>()
+
+			if (sideRows > 0) {
+				for ((index, _) in (1..(sideRows - (if (fullBorders) 2 else 0))).withIndex()) {
+					sideSlots.addAll(setOf(9 + (index * 9), 17 + (index * 9)))
+				}
+			}
+
+			return emptyArray<Int>() + (0..8).toList() + (size - 9 until size).toList() + sideSlots
+
+		}
+
+	/**
+	 * This computational value is the last usable slot
+	 * of this [Container].
+	 * It is calculated by the size of the [Container].
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val lastSlot: Int
+		get() = size - 1
+
+	/**
+	 * This computational value is every usable slot
+	 * of this [Container].
+	 * It is calculated by the size of the [Container].
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val slots: IntRange
+		get() = firstSlot .. lastSlot
+
+	/**
+	 * This value is the last usable slot
+	 * (Hint: it's always 0)
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val firstSlot = 0
 
 	override fun display(receiver: Player) = display(humanEntity = receiver)
 
@@ -210,9 +264,20 @@ open class Container<T : Container<T>>(
 		content = out
 	}
 
-	fun background(item: Item) = replace(Material.AIR, item)
+	fun background(item: Item, replaceAir: Boolean = true) {
+		slots.forEach {
+			val content = content[it]?.material
 
-	fun background(material: Material) = background(Item(material))
+			if (content == null || (replaceAir && content == AIR)) {
+				place(it, item)
+			}
+
+		}
+	}
+
+	fun background(material: Material, replaceAir: Boolean = true) = background(Item(material), replaceAir)
+
+	fun background(itemStack: ItemStack, replaceAir: Boolean = true) = background(itemStack.item, replaceAir)
 
 	fun fill(vararg items: Item) {
 		(0 until size).forEach { slot ->
@@ -221,31 +286,6 @@ open class Container<T : Container<T>>(
 	}
 
 	fun fill(vararg materials: Material) = fill(*materials.map { Item(it) }.toTypedArray())
-
-	val borderSlots: Array<Int>
-		get() {
-
-			val fullBorders = size >= 9 * 2
-			val sideRows = if (fullBorders) {
-				(size.toDouble() / 9.0).let {
-					if (it >= 3) {
-						it.roundToInt()
-					} else
-						0
-				}
-			} else
-				0
-			val sideSlots = mutableListOf<Int>()
-
-			if (sideRows > 0) {
-				for ((index, _) in (1..(sideRows - (if (fullBorders) 2 else 0))).withIndex()) {
-					sideSlots.addAll(setOf(9 + (index * 9), 17 + (index * 9)))
-				}
-			}
-
-			return emptyArray<Int>() + (0..8).toList() + (size - 9 until size).toList() + sideSlots
-
-		}
 
 	fun border(item: Item, schemaArray: Array<Int>) {
 		schemaArray.forEach { position ->

@@ -308,6 +308,20 @@ class JetApp : App() {
 
 		}
 
+		buildAndRegisterSandBox(this, "backgroundTest") {
+
+			buildPanel {
+
+				this[4] = Material.STONE.item
+				this[14] = Material.COBBLED_DEEPSLATE
+				this[13] = Material.DIAMOND
+
+				background(Material.GRAVEL)
+
+			}.display(executor as Player)
+
+		}
+
 		buildAndRegisterSandBox(this, "panelCloseAndOpenEvents") {
 
 			buildPanel {
