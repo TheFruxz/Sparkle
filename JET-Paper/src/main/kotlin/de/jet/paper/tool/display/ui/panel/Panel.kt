@@ -135,7 +135,7 @@ data class Panel(
 	 * @since 1.0
 	 */
 	fun takePanelFlags(vararg flags: PanelFlag) {
-		panelFlags = panelFlags.minus(flags)
+		panelFlags = panelFlags.minus(flags.toSet())
 	}
 
 	/**
