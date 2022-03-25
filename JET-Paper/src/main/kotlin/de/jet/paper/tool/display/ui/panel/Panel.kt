@@ -535,7 +535,7 @@ data class Panel(
 		 * @since 1.0
 		 */
 		val Inventory.panelIdentity: Identity<Panel>?
-			get() = Identity("" + getItem(4)?.item?.dataGet(panelIdentificationKey))
+			get() = getItem(4)?.item?.dataGet(panelIdentificationKey)?.let { Identity("" + it ) }
 
 		/**
 		 * Returns the panel, if the provided inventory is registered as a panel.
