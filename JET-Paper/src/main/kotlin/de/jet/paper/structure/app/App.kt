@@ -25,7 +25,6 @@ import de.jet.paper.structure.component.Component
 import de.jet.paper.structure.service.Service
 import de.jet.paper.tool.data.JetYamlFile
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -478,7 +477,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	var appRegistrationFile = YamlConfiguration()
 
-	var coroutineScope = CoroutineScope(SupervisorJob())
+	val coroutineScope: CoroutineScope
+		get() = companion.coroutineScope
 
 	val log by lazy { createLog(appIdentity) }
 

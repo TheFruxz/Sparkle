@@ -4,6 +4,8 @@ import de.jet.jvm.extension.forceCast
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 
 abstract class AppCompanion<T : App> : Identifiable<App> {
 
@@ -19,6 +21,16 @@ abstract class AppCompanion<T : App> : Identifiable<App> {
 	 */
 	val instance: T
 		get() = JetCache.registeredApplications.first { it.identity == predictedIdentity.identity }.forceCast()
+
+	/**
+	 * This value represents the coroutine scope of the [App], that
+	 * holds this instance of the [AppCompanion].
+	 * It's a [SupervisorJob], so it can be used to cancel all coroutines
+	 * and does not crash the application on heavy issues.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val coroutineScope = CoroutineScope(SupervisorJob())
 
 	/**
 	 * This value represents the identity of this [App].
