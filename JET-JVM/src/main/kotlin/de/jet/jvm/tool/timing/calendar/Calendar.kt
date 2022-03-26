@@ -9,6 +9,7 @@ import de.jet.jvm.tool.timing.calendar.timeUnit.TimeUnit.Companion.SECOND
 import kotlinx.serialization.Serializable
 import java.text.SimpleDateFormat
 import java.time.Instant
+import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.util.*
 import kotlin.time.Duration
@@ -31,7 +32,7 @@ class Calendar constructor(
 
 	constructor(
 		timeInMillis: Long,
-		timeZone: TimeZone,
+		timeZone: TimeZone = TimeZone.getDefault(),
 	) : this(timeInMillis, timeZone.id)
 
 	constructor(
@@ -40,8 +41,13 @@ class Calendar constructor(
 
 	constructor(
 		instant: Instant,
-		timeZone: TimeZone,
+		timeZone: TimeZone = TimeZone.getDefault(),
 	) : this(origin = GregorianCalendar.from(ZonedDateTime.from(instant.atZone(timeZone.toZoneId()))))
+
+	constructor(
+		localDateTime: LocalDateTime,
+		timeZone: TimeZone = TimeZone.getDefault(),
+	) : this(origin = GregorianCalendar.from(ZonedDateTime.of(localDateTime, timeZone.toZoneId())))
 
 	private var origin: JavaUtilCalendar
 		set(value) {
@@ -192,7 +198,7 @@ class Calendar constructor(
 		get() = isBefore(now())
 
 	/**
-	 * This value returns this calendar as a [Date]
+	 * This computational value returns this calendar as a [Date]
 	 * object.
 	 * @author Fruxz
 	 * @since 1.0
@@ -201,7 +207,7 @@ class Calendar constructor(
 		get() = origin.time
 
 	/**
-	 * This value returns the timezone of this
+	 * This computational value returns the timezone of this
 	 * calendar, using the [javaCalendar].
 	 * @author Fruxz
 	 * @since 1.0
@@ -210,7 +216,7 @@ class Calendar constructor(
 		get() = javaCalendar.timeZone
 
 	/**
-	 * This value returns this calendar as a [JavaUtilCalendar]
+	 * This computational value returns this calendar as a [JavaUtilCalendar]
 	 * object.
 	 * @author Fruxz
 	 * @since 1.0
@@ -219,12 +225,20 @@ class Calendar constructor(
 		get() = produce()
 
 	/**
-	 * This value returns this calendar as a [Instant].
+	 * This computational value returns this calendar as a [Instant].
 	 * @author Fruxz
 	 * @since 1.0
 	 */
 	val javaInstant: Instant
 		get() = Instant.ofEpochMilli(origin.timeInMillis)
+
+	/**
+	 * This computational value returns this calendar as a [LocalDateTime].
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val javaLocalDateTime: LocalDateTime
+		get() = LocalDateTime.ofInstant(javaInstant, timeZone.toZoneId())
 
 	/**
 	 * This value returns this calendar time, represented as
