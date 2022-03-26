@@ -1,5 +1,11 @@
 package de.jet.jvm.tool.smart.identification
 
+import de.jet.jvm.tool.smart.identification.Identity.IdentityColumnType
+import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.ColumnType
+import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.vendors.currentDialect
+
 /**
  * This data class represents an identity, which
  * should be (in the most cases) unique inside
@@ -34,4 +40,23 @@ data class Identity<T> constructor(
 	 */
 	fun <O> change() = Identity<O>(identity)
 
+	class IdentityColumnType<T> : ColumnType() {
+
+		override fun sqlType() = currentDialect.dataTypeProvider.textType()
+
+		override fun valueFromDB(value: Any) = Identity<T>("$value")
+
+		override fun valueToDB(value: Any?) = when (value) {
+			is String -> value
+			is Identity<*> -> value.identity
+			is Identifiable<*> -> value.identity
+			else -> "$value"
+		}
+
+		override fun notNullValueToDB(value: Any) = valueToDB(value)
+
+	}
+
 }
+
+fun <T> Table.identity(name: String): Column<Identity<T>> = registerColumn(name, IdentityColumnType<T>())
