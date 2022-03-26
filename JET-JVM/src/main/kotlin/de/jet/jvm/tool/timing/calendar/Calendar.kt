@@ -1,12 +1,21 @@
 package de.jet.jvm.tool.timing.calendar
 
+import de.jet.jvm.extension.data.fromJson
+import de.jet.jvm.extension.data.toJson
+import de.jet.jvm.extension.tryOrNull
 import de.jet.jvm.tool.smart.Producible
 import de.jet.jvm.tool.timing.calendar.Calendar.FormatStyle.FULL
 import de.jet.jvm.tool.timing.calendar.Calendar.FormatStyle.MEDIUM
+import de.jet.jvm.tool.timing.calendar.Calendar.JETCalendarColumnType
 import de.jet.jvm.tool.timing.calendar.timeUnit.TimeUnit
 import de.jet.jvm.tool.timing.calendar.timeUnit.TimeUnit.Companion.MILLISECOND
 import de.jet.jvm.tool.timing.calendar.timeUnit.TimeUnit.Companion.SECOND
 import kotlinx.serialization.Serializable
+import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.ColumnType
+import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.vendors.currentDialect
+import java.sql.ResultSet
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
@@ -465,4 +474,34 @@ class Calendar constructor(
 		FULL, HUGE, MEDIUM, SHORT;
 	}
 
+	class JETCalendarColumnType : ColumnType() {
+		override fun sqlType() = currentDialect.dataTypeProvider.textType()
+
+		override fun nonNullValueToString(value: Any) = when (value) {
+			is String -> value
+			is Calendar -> value.toJson()
+			is Long -> Calendar(value).toJson()
+			is Number -> Calendar(value.toLong()).toJson()
+			else -> throw IllegalArgumentException("Value is not a Calendar")
+		}
+
+		override fun valueFromDB(value: Any) = when (value) {
+			is String -> value.fromJson()
+			is JavaUtilCalendar -> Calendar(value)
+			is Long -> Calendar(value)
+			is Calendar -> value
+			else -> "$value".fromJson()
+		}
+
+		override fun readObject(rs: ResultSet, index: Int) =
+			tryOrNull { rs.getString(index).takeIf { !it.isNullOrBlank() }?.fromJson<Calendar>() }
+
+		companion object {
+			internal val INSTANCE = JETCalendarColumnType()
+		}
+
+	}
+
 }
+
+fun Table.calendar(name: String): Column<Calendar> = registerColumn(name, JETCalendarColumnType())
