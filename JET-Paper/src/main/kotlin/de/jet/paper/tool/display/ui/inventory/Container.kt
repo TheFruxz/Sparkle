@@ -192,7 +192,7 @@ open class Container<T : Container<T>>(
 	}
 
 	fun placeOver(slotToItemMap: Map<Int, Item>) {
-		for ((key, value) in content) {
+		slotToItemMap.forEach { (key, value) ->
 			content[key] = value
 		}
 	}
