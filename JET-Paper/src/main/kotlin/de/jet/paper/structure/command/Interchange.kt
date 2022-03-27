@@ -165,7 +165,9 @@ abstract class Interchange(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	private val requiredApproval by lazy { if (protectedAccess) Approval.fromApp(vendor, "interchange.$label") else null }
+	private val requiredApproval by lazy {
+		Approval.fromApp(vendor, "interchange.$label").takeIf { protectedAccess }
+	}
 
 	// parameters
 
@@ -197,19 +199,14 @@ abstract class Interchange(
 	 * with its approvals. (**Not looking for the parameters and
 	 * its own possible approvals!**)
 	 */
-	fun canExecuteBasePlate(executor: InterchangeExecutor) = setOf(
-		accessProtectionType != JET,
-		requiredApproval == null,
-		requiredApproval?.let { approval -> executor.hasPermission(approval.identity) } ?: true,
-		executor.hasPermission("${vendor.identity}.*"),
-		executor.hasPermission("*"),
-	).any()
+	private fun canExecuteBasePlate(executor: InterchangeExecutor) =
+		accessProtectionType != JET || requiredApproval == null || requiredApproval?.hasApproval(executor) ?: true
 
 	private fun wrongApprovalFeedback(
 		receiver: InterchangeExecutor,
 	) {
 		lang("interchange.run.issue.wrongApproval")
-			.replace("[approval]", "$requiredApproval")
+			.replace("[approval]", "${requiredApproval?.identity}")
 			.notification(FAIL, receiver).display()
 	}
 

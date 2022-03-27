@@ -11,7 +11,7 @@ abstract class StructuredInterchange(
 	label: String,
 	val structure: InterchangeStructure,
 	aliases: Set<String> = emptySet(),
-	protectedAccess: Boolean = false,
+	protectedAccess: Boolean = true,
 	userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
 	accessProtectionType: InterchangeAuthorizationType = JET,
 	hiddenFromRecommendation: Boolean = false,
