@@ -3,8 +3,11 @@ package de.jet.paper.tool.position
 import de.jet.jvm.extension.math.difference
 import de.jet.jvm.tool.smart.Producible
 import de.jet.paper.extension.paper.directionVectorVelocity
+import de.jet.paper.extension.paper.toSimpleLocation
+import de.jet.paper.tool.display.world.SimpleLocation
 import org.bukkit.Location
 import org.bukkit.block.Block
+import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.entity.Entity
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
@@ -21,10 +24,13 @@ import org.bukkit.util.Vector
  * @author Fruxz
  * @since 1.0
  */
+@kotlinx.serialization.Serializable
 data class LocationBox(
-	var first: Location,
-	var second: Location,
-) : Producible<BoundingBox> {
+	var first: SimpleLocation,
+	var second: SimpleLocation,
+) : Producible<BoundingBox>, ConfigurationSerializable {
+
+	constructor(first: Location, second: Location) : this(first.toSimpleLocation(), second.toSimpleLocation())
 
 	constructor(both: Location) : this(both, both)
 
@@ -33,6 +39,42 @@ data class LocationBox(
 	constructor(locationEntry: Map.Entry<Location, Location>) : this(locationEntry.key, locationEntry.value)
 
 	constructor(vararg locations: Location) : this(locations.first(), locations.last())
+
+	constructor(map: Map<String, Any?>) : this(map["first"] as SimpleLocation, map["second"] as SimpleLocation)
+
+	/**
+	 * Both locations [first] and [second] represented as
+	 * a [Pair] of [Location]s.
+	 * @return A [Pair] of [Location]s.
+	 * @since 1.0
+	 * @author Fruxz
+	 */
+	val locations: Pair<Location, Location>
+		get() = Pair(first.bukkit, second.bukkit)
+
+	/**
+	 * The first location represented as a bukkit location.
+	 * @return The first location represented as a bukkit location.
+	 * @since 1.0
+	 * @author Fruxz
+	 */
+	var firstLocation: Location
+		get() = first.bukkit
+		set(value) {
+			first = value.toSimpleLocation()
+		}
+
+	/**
+	 * The second location represented as a bukkit location
+	 * @return The second location represented as a bukkit location
+	 * @since 1.0
+	 * @author Fruxz
+	 */
+	var secondLocation: Location
+		get() = second.bukkit
+		set(value) {
+			second = value.toSimpleLocation()
+		}
 
 	/**
 	 * This function returns the center of the box.
@@ -57,7 +99,7 @@ data class LocationBox(
 	 * @since 1.0
 	 */
 	val centerLocation: Location
-		get() = produce().center.toLocation(first.world)
+		get() = produce().center.toLocation(first.bukkit.world)
 
 	/**
 	 * This function returns, if the provided [vector] is
@@ -153,7 +195,7 @@ data class LocationBox(
 	 * @since 1.0
 	 */
 	fun updateFirstLocation(newLocation: Location) = apply {
-		first = newLocation
+		first = newLocation.toSimpleLocation()
 	}
 
 	/**
@@ -166,7 +208,7 @@ data class LocationBox(
 	 * @since 1.0
 	 */
 	fun updateSecondLocation(newLocation: Location) = apply {
-		second = newLocation
+		second = newLocation.toSimpleLocation()
 	}
 
 	/**
@@ -185,7 +227,7 @@ data class LocationBox(
 	 * @since 1.0
 	 */
 	val distance: Double
-		get() = first.distance(second)
+		get() = first.bukkit.distance(second.bukkit)
 
 	/**
 	 * This computational value computes the required velocity,
@@ -196,7 +238,7 @@ data class LocationBox(
 	 * @since 1.0
 	 */
 	val directionVelocity: Vector
-		get() = directionVectorVelocity(first, second)
+		get() = directionVectorVelocity(first.bukkit, second.bukkit)
 
 	/**
 	 * This function creates a [BoundingBox] from the provided
@@ -204,7 +246,12 @@ data class LocationBox(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	override fun produce() = BoundingBox.of(first, second)
+	override fun produce() = BoundingBox.of(first.bukkit, second.bukkit)
+
+	override fun serialize() = mapOf(
+		"first" to first,
+		"second" to second,
+	)
 
 }
 

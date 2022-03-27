@@ -1,6 +1,7 @@
 package de.jet.paper.extension.paper
 
 import com.destroystokyo.paper.ParticleBuilder
+import de.jet.paper.tool.display.world.SimpleLocation
 import de.jet.paper.tool.position.LocationBox
 import org.bukkit.Location
 import org.bukkit.World
@@ -29,7 +30,7 @@ fun Location.displayString(
 			"$x $y $z" + if (withRotation) "$displayYaw: ${yaw.roundToInt()} $displayPitch: ${pitch.roundToInt()}" else ""
 	}
 
-fun LocationBox.displayString() = "${first.displayString()} to ${second.displayString()}"
+fun LocationBox.displayString() = with(locations) { "${first.displayString()} to ${second.displayString()}" }
 
 fun BoundingBox.contains(location: Location) = this.contains(location.toVector())
 
@@ -124,3 +125,11 @@ fun Location.add(x: Number = 0, y: Number = 0, z: Number = 0) =
  */
 fun Location.subtract(x: Number = 0, y: Number = 0, z: Number = 0) =
 	subtract(x.toDouble(), y.toDouble(), z.toDouble())
+
+/**
+ * This function creates a new simple location object,
+ * with this location data.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun Location.toSimpleLocation() = with(this) { SimpleLocation(world.name, x, y, z) }
