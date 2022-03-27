@@ -46,6 +46,7 @@ de.jet.jvm.tree
 module:JET-Paper
 de.jet.paper
 de.jet.paper.app
+de.jet.paper.app.component.app
 de.jet.paper.app.component.point.asset
 de.jet.paper.app.component.world
 de.jet.paper.app.interchange
