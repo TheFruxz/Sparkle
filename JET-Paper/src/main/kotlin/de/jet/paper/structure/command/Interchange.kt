@@ -106,7 +106,9 @@ abstract class Interchange(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val tabCompleter = TabCompleter { _, _, _, args -> completion.computeCompletion(args.toList()) }
+	val tabCompleter = TabCompleter { executor, _, _, args ->
+		completion.computeCompletion(args.toList()).takeIf { canExecuteBasePlate(executor)} ?: listOf(" ")
+	}
 
 	/**
 	 * This value represents the thread context (Kotlin Coroutines) of
