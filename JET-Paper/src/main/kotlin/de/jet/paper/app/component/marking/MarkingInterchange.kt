@@ -61,10 +61,10 @@ internal class MarkingInterchange : StructuredInterchange(
 								action.isLeftClick -> {
 									denyInteraction()
 
-									if (actualBox?.first != targetLocation) {
+									if (actualBox?.firstLocation != targetLocation) {
 
 										JetCache.playerMarkerBoxes[player.identityObject] = currentBox.apply {
-											first = targetLocation
+											firstLocation = targetLocation
 										}
 										lang["component.markingTool.action.set"].replaceVariables(
 											"n" to 1,
@@ -74,7 +74,7 @@ internal class MarkingInterchange : StructuredInterchange(
 												buildString {
 													appendLine(
 														lang["component.markingTool.action.view.distance.other"].replaceVariables(
-															"distance" to targetLocation.distance(currentBox.second).shorter
+															"distance" to targetLocation.distance(currentBox.secondLocation).shorter
 														)
 													)
 													append(
@@ -93,10 +93,10 @@ internal class MarkingInterchange : StructuredInterchange(
 								action.isRightClick -> {
 									denyInteraction()
 
-									if (actualBox?.second != targetLocation) {
+									if (actualBox?.secondLocation != targetLocation) {
 
 										JetCache.playerMarkerBoxes[player.identityObject] = currentBox.apply {
-											second = targetLocation
+											secondLocation = targetLocation
 										}
 										lang["component.markingTool.action.set"].replaceVariables(
 											"n" to 2,
@@ -106,7 +106,7 @@ internal class MarkingInterchange : StructuredInterchange(
 												buildString {
 													appendLine(
 														lang["component.markingTool.action.view.distance.other"].replaceVariables(
-															"distance" to targetLocation.distance(currentBox.first).shorter
+															"distance" to targetLocation.distance(currentBox.firstLocation).shorter
 														)
 													)
 													append(
@@ -132,8 +132,8 @@ internal class MarkingInterchange : StructuredInterchange(
 
 						if (JetCache.playerMarkerBoxes[player.identityObject] != null) {
 							lang["component.markingTool.action.view.detail"].replaceVariables(
-								"1" to positionData(currentBox.first),
-								"2" to positionData(currentBox.second),
+								"1" to positionData(currentBox.firstLocation),
+								"2" to positionData(currentBox.secondLocation),
 							).notification(INFO, whoInteract).hover(
 								Component.text(
 									buildString {
