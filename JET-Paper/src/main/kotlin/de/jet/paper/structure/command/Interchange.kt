@@ -167,7 +167,7 @@ abstract class Interchange(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	private val requiredApproval by lazy {
+	val requiredApproval by lazy {
 		Approval.fromApp(vendor, "interchange.$label").takeIf { protectedAccess }
 	}
 
