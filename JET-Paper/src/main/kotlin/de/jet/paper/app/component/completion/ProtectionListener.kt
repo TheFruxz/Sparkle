@@ -1,6 +1,7 @@
 package de.jet.paper.app.component.completion
 
 import de.jet.paper.extension.interchange.getInterchange
+import de.jet.paper.extension.interchange.getServerCommand
 import de.jet.paper.extension.paper.getPluginCommand
 import de.jet.paper.structure.app.event.EventListener
 import org.bukkit.event.EventHandler
@@ -15,7 +16,7 @@ internal class ProtectionListener : EventListener() {
         event.commands.toList().forEach { completion ->
             val permission =
                 getInterchange(completion)?.requiredApproval?.identity
-                    ?: getPluginCommand(completion)?.permission
+                    ?: getServerCommand(completion)?.permission
 
             if (permission?.let { !player.hasPermission(permission) } == true) event.commands.remove(completion)
 
