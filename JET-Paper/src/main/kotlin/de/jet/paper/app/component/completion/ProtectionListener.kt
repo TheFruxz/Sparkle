@@ -2,14 +2,14 @@ package de.jet.paper.app.component.completion
 
 import de.jet.paper.extension.interchange.getInterchange
 import de.jet.paper.extension.interchange.getServerCommand
-import de.jet.paper.extension.paper.getPluginCommand
 import de.jet.paper.structure.app.event.EventListener
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority.HIGHEST
 import org.bukkit.event.player.PlayerCommandSendEvent
 
 internal class ProtectionListener : EventListener() {
 
-    @EventHandler
+    @EventHandler(priority = HIGHEST)
     fun onCommandsReceive(event: PlayerCommandSendEvent) {
         val player = event.player
 
