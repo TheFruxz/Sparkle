@@ -30,12 +30,6 @@ class JETInterchange : Interchange(
 		branch {
 			addContent("version", "website", "repository", "ping")
 		}
-		branch {
-			addContent("test")
-			branch {
-				addContent(CompletionAsset.TRANSMISSION_LEVEL)
-			}
-		}
 	}
 ) {
 	override val execution = execution {
@@ -84,53 +78,6 @@ class JETInterchange : Interchange(
 					else -> {
 						success = false
 					}
-
-				}
-
-			}
-
-			parameters.size == 2 && parameters.first().equals("test", true) -> {
-				val levels = Transmission.Level.values()
-
-				when (parameters.last().lowercase()) {
-
-					"demo-panel" -> {
-
-						buildPanel {
-							set(5, Material.STONE.item.apply {
-								label = "5"
-								lore = """
-									This is on slot 5!
-								""".trimIndent()
-							})
-							placeInner(5, Material.GOLDEN_AXE.item.apply {
-								label = "inner-5"
-								lore = """
-									This is on inner slot 5!
-								""".trimIndent()
-							})
-							placeInner(6, Material.COBBLED_DEEPSLATE.item.apply {
-								label = "interact"
-								lore = """
-									Click me!
-								""".trimIndent()
-								onClickWith {
-									player.sendMessage("clicked item: ${currentItem?.type?.name}")
-								}
-								onInteractWith {
-									player.sendMessage("interacted item: ${item.material.name}")
-								}
-							})
-						}.display(executor as Player)
-
-					}
-
-				}
-
-				if (levels.any { it.name == parameters.last().uppercase() }) {
-
-					"This is the notification!"
-						.notification(valueOf(parameters.last().uppercase()), executor).display()
 
 				}
 

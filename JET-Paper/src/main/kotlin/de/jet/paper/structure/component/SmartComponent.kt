@@ -1,5 +1,6 @@
 package de.jet.paper.structure.component
 
+import de.jet.jvm.extension.tryOrNull
 import de.jet.jvm.extension.tryToCatch
 import de.jet.jvm.extension.tryToIgnore
 import de.jet.jvm.tool.smart.identification.Identity
@@ -18,6 +19,7 @@ import de.jet.paper.structure.command.execution
 import de.jet.paper.structure.component.Component.RunType.DISABLED
 import de.jet.paper.structure.service.Service
 import de.jet.paper.tool.display.message.Transmission.Level.FAIL
+import de.jet.paper.tool.permission.Approval
 
 abstract class SmartComponent(
 	override val behaviour: RunType = DISABLED,
@@ -52,8 +54,8 @@ abstract class SmartComponent(
 		interchanges.forEach {
 			tryToCatch {
 				it.replaceVendor(vendor)
-				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject))
-				JetCache.registeredInterchanges.remove(it)
+				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval }))
+				JetCache.registeredInterchanges.add(it)
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 			}
 		}
@@ -108,7 +110,7 @@ abstract class SmartComponent(
 
 		interchanges.forEach {
 			tryToCatch {
-				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject))
+				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval }))
 				JetCache.registeredInterchanges.remove(it)
 				tryToIgnore { debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!") }
 			}
@@ -155,7 +157,7 @@ abstract class SmartComponent(
 
 	companion object {
 
-		internal fun disabledComponentInterchange(identity: Identity<Component>) = object : Interchange("", ignoreInputValidation = true) {
+		internal fun disabledComponentInterchange(identity: Identity<Component>, requiredApproval: Approval? = null) = object : Interchange("", ignoreInputValidation = true, forcedApproval = requiredApproval) {
 
 			override val execution = execution {
 

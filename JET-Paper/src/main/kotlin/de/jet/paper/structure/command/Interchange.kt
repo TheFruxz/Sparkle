@@ -54,6 +54,7 @@ abstract class Interchange(
 	val hiddenFromRecommendation: Boolean = false, // todo: seems to be unused, that have to be an enabled feature
 	val completion: InterchangeStructure = de.jet.paper.structure.command.completion.emptyInterchangeStructure(),
 	val ignoreInputValidation: Boolean = false,
+	var forcedApproval: Approval? = null,
 	final override val preferredVendor: App? = null,
 ) : CommandExecutor, ContextualIdentifiable<Interchange>, VendorOnDemand, Logging {
 
@@ -164,11 +165,13 @@ abstract class Interchange(
 	 * This value can be null, if this [Interchange] does not have any [Approval]-
 	 * Requirements, to access this [Interchange], otherwise, the contained [Approval]-
 	 * Value is required, to use this interchange!
+	 * **if [forcedApproval] is not null (null is default), then the [forcedApproval]
+	 * is returned, instead of the computed value!**
 	 * @author Fruxz
 	 * @since 1.0
 	 */
 	val requiredApproval by lazy {
-		Approval.fromApp(vendor, "interchange.$label").takeIf { protectedAccess }
+		forcedApproval ?: Approval.fromApp(vendor, "interchange.$label").takeIf { protectedAccess }
 	}
 
 	// parameters

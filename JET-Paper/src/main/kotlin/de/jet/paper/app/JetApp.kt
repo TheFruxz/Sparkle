@@ -6,6 +6,7 @@ import de.jet.jvm.extension.tryToIgnore
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.component.buildMode.BuildModeComponent
 import de.jet.paper.app.component.chat.ChatComponent
+import de.jet.paper.app.component.completion.ProtectionComponent
 import de.jet.paper.app.component.component.ComponentComponent
 import de.jet.paper.app.component.events.EventsComponent
 import de.jet.paper.app.component.experimental.ExperimentalComponent
@@ -163,6 +164,7 @@ class JetApp : App() {
 		add(MarkingComponent())
 		add(ContainerLinkComponent())
 		add(ComponentComponent())
+		add(ProtectionComponent())
 
 		add(JETInterchange())
 
