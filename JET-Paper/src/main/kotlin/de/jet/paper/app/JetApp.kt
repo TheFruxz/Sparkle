@@ -192,7 +192,7 @@ class JetApp : App() {
 	override fun bye() {
 
 		val disabledAppExecutor = CommandExecutor { sender, _, _, _ ->
-			sender.sendMessage("§cThis vendor app of this command is currenty disabled!")
+			sender.sendMessage("§cThis vendor app of this command is currently disabled!")
 			true
 		}
 
