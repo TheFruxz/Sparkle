@@ -47,10 +47,6 @@ interface Service : VendorsIdentifiable<Service>, Logging {
 	val key: NamespacedKey
 		get() = app(vendor).createKey(thisIdentity)
 
-	fun boot() {
-		app(vendor).start(this)
-	}
-
 	fun shutdown() {
 		val state = controller
 
