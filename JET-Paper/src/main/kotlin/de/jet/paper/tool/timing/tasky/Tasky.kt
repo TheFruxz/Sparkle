@@ -47,7 +47,7 @@ interface Tasky : Logging {
 			process: Tasky.() -> Unit,
 			internalId: String = buildRandomTag(hash = false, tagType = ONLY_UPPERCASE)
 		): Tasky {
-			val currentTask = Task(temporalAdvice, true, process)
+			val currentTask = Task(temporalAdvice, killAtError, process)
 			lateinit var output: Tasky
 
 			temporalAdvice.run(
