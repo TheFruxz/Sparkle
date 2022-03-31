@@ -72,7 +72,7 @@ data class Panel(
 		""".trimIndent()
 	},
 	var overridingBorderProtection: Boolean = true,
-	var generateBorder: Boolean = true,
+	val generateBorder: Boolean = true,
 ) : Cloneable, Logging, Container<Panel>(label = label, size = lines * 9, theme = theme, openSound = openSound), VendorsIdentifiable<Panel> {
 
 	/**
