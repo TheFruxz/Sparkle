@@ -2,9 +2,12 @@ package de.jet.paper.general.api.mojang
 
 import com.destroystokyo.paper.profile.PlayerProfile
 import com.destroystokyo.paper.profile.ProfileProperty
+import de.jet.paper.extension.paper.getOfflinePlayer
+import de.jet.paper.extension.system
 import de.jet.paper.extension.tasky.async
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.item.quirk.Quirk
+import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.entity.Player
@@ -41,27 +44,32 @@ data class MojangProfile(
         refresh(target)
     }
 
-	/**
-	 * WARNING! owningPlayer have to be set!
-	 */
-	fun applySkinToSkullMeta(target: SkullMeta, replaceName: Boolean) {
-		target.playerProfile?.apply {
-			setProperty(ProfileProperty("textures", this@MojangProfile.textures.raw.value, this@MojangProfile.textures.raw.signature))
-			if (replaceName)
-				name = this@MojangProfile.username
-			complete(true, true)
-		}
-	}
+	fun applySkinToSkullMeta(target: SkullMeta, replaceName: Boolean = true) {
 
-	/**
-	 * WARNING! current quirk will be overwritten!
-	 */
-	fun applySkinToSkull(item: Item, replaceName: Boolean) = item.apply {
+		target.owningPlayer = getOfflinePlayer(username)
+
+		target.playerProfile = target.playerProfile?.apply {
+
+			setProperty(ProfileProperty("textures", this@MojangProfile.textures.raw.value, this@MojangProfile.textures.raw.signature))
+
+			if (replaceName) name = this@MojangProfile.username
+
+		}
+
+		system.coroutineScope.launch {
+			target.playerProfile?.complete()
+		}
+
+	}
+	
+	fun applySkinToSkull(item: Item, replaceName: Boolean = true) = item.apply {
 		quirk = Quirk.skull {
-			playerProfile?.apply {
+			playerProfile = playerProfile?.apply {
+
 				setProperty(ProfileProperty("textures", this@MojangProfile.textures.raw.value, this@MojangProfile.textures.raw.signature))
-				if (replaceName)
-					name = this@MojangProfile.username
+
+				if (replaceName) name = this@MojangProfile.username
+
 				complete(true, true)
 			}
 		}

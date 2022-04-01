@@ -10,8 +10,8 @@ fun Player.applySkin(from: UUID) = applySkin("$from")
 
 fun Player.resetSkin() = getMojangProfile(name).applySkinToPlayer(this)
 
-fun SkullMeta.applySkin(from: String, replaceName: Boolean = false) =
+fun SkullMeta.applySkin(from: String, replaceName: Boolean = true) =
     getMojangProfile(from).applySkinToSkullMeta(this, replaceName)
 
-fun SkullMeta.applySkin(from: UUID, replaceName: Boolean = false) =
+fun SkullMeta.applySkin(from: UUID, replaceName: Boolean = true) =
     applySkin("$from", replaceName)
