@@ -61,7 +61,7 @@ data class MojangProfile(
 		}
 
 	}
-	
+
 	fun applySkinToSkull(item: Item, replaceName: Boolean = true) = item.apply {
 		quirk = Quirk.skull {
 			playerProfile = playerProfile?.apply {
