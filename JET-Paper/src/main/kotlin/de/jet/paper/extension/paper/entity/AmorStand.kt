@@ -20,6 +20,17 @@ var ArmorStand.gravity: Boolean
     }
 
 /**
+ * This var represents the [ArmorStand.hasArms] and [ArmorStand.setArms] functions.
+ * @author Fruxz
+ * @since 1.0
+ */
+var ArmorStand.arms: Boolean
+    get() = hasArms()
+    set(value) {
+        setArms(value)
+    }
+
+/**
  * This function sets the item of the [ArmorStand] at the given [equipmentSlot].
  * This function utilizes the [ArmorStand.setItem] function.
  * @author Fruxz
