@@ -4,16 +4,17 @@ import de.jet.paper.extension.display.ui.itemStack
 import de.jet.paper.tool.display.item.Item
 import org.bukkit.Material
 import org.bukkit.entity.ArmorStand
+import org.bukkit.entity.Entity
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 /**
- * This var represents the [ArmorStand.hasGravity] and
- * the [ArmorStand.setGravity] functions.
+ * This var represents the [Entity.hasGravity] and
+ * the [Entity.setGravity] functions.
  * @author Fruxz
  * @since 1.0
  */
-var ArmorStand.gravity: Boolean
+var Entity.gravity: Boolean
     get() = hasGravity()
     set(value) {
         setGravity(value)
