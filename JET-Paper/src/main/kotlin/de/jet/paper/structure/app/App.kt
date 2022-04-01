@@ -379,11 +379,11 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 			if (!JetCache.runningComponents.contains(componentIdentity)) {
 
+				JetCache.runningComponents[componentIdentity] = Calendar.now()
+
 				coroutineScope.launch(context = component.threadContext) {
 
 					component.start()
-
-					JetCache.runningComponents[componentIdentity] = Calendar.now()
 
 					mainLog(Level.INFO, "started '${componentIdentity.identity}' component!")
 
