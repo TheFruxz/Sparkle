@@ -22,9 +22,17 @@ operator fun <T : Inventory> T.get(slot: Int) = tryOrNull { getItem(slot) }
 
 operator fun <T : Inventory> T.set(slot: Int, itemStack: ItemStack) = setItem(slot, itemStack)
 
+operator fun <T : Inventory> T.set(slots: Iterable<Int>, itemStack: ItemStack) = slots.forEach { set(it, itemStack) }
+
+operator fun <T : Inventory> T.set(slots: Iterable<Int>, process: (slot: Int) -> ItemStack) = slots.forEach { set(it, process(it)) }
+
 operator fun <T : Inventory> T.set(slot: Int, item: Item) = setItem(slot, item.produce())
 
+operator fun <T : Inventory> T.set(slots: Iterable<Int>, item: Item) = slots.forEach { set(it, item) }
+
 operator fun <T : Inventory> T.set(slot: Int, material: Material) = setItem(slot, material.itemStack)
+
+operator fun <T : Inventory> T.set(slots: Iterable<Int>, material: Material) = slots.forEach { set(it, material.itemStack) }
 
 internal val panelIdentificationKey = system.createKey("panelId")
 
