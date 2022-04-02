@@ -149,7 +149,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	/**
 	 * Interchange must not be initialized before executing this!
 	 */
-	internal fun replace(identity: Identity<Interchange>, environment: Interchange) {
+	internal fun replace(identity: Identity<out Interchange>, environment: Interchange) {
 		val command = getCommand(identity.identity)
 		debugLog("Command '${identity.identity}' command is ${command?.name} and is ${command?.javaClass}")
 		command?.setExecutor(environment)
@@ -372,7 +372,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 		}
 	}
 
-	fun start(componentIdentity: Identity<Component>) = tryToCatch {
+	fun start(componentIdentity: Identity<out Component>) = tryToCatch {
 		val component = JetCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 		if (component != null) {
@@ -397,7 +397,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	}
 
-	fun stop(componentIdentity: Identity<Component>, unregisterComponent: Boolean = false) = tryToCatch {
+	fun stop(componentIdentity: Identity<out Component>, unregisterComponent: Boolean = false) = tryToCatch {
 		val component = JetCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 		if (component != null) {
@@ -435,7 +435,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	}
 
-	fun unregister(componentIdentity: Identity<Component>) {
+	fun unregister(componentIdentity: Identity<out Component>) {
 		tryToCatch {
 			val component = JetCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
