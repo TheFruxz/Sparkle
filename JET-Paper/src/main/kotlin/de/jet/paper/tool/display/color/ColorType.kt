@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package de.jet.paper.tool.display.color
 
 import de.jet.jvm.annotation.NotPerfect
