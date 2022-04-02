@@ -59,4 +59,4 @@ data class Identity<T> constructor(
 
 }
 
-fun <T> Table.identity(name: String): Column<Identity<T>> = registerColumn(name, IdentityColumnType<T>())
+fun <T> Table.identity(name: String): Column<Identity<out T>> = registerColumn(name, IdentityColumnType<T>())
