@@ -3,6 +3,8 @@
 package de.jet.paper.extension.paper
 
 import com.destroystokyo.paper.entity.ai.MobGoals
+import de.jet.jvm.extension.classType.UUID
+import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.extension.interchange.InterchangeExecutor
 import io.papermc.paper.datapack.DatapackManager
 import net.kyori.adventure.text.Component
@@ -32,7 +34,6 @@ import org.bukkit.scoreboard.ScoreboardManager
 import org.bukkit.util.CachedServerIcon
 import java.awt.image.BufferedImage
 import java.io.File
-import java.util.*
 import java.util.function.Consumer
 import java.util.logging.Logger
 
@@ -49,10 +50,14 @@ fun getPlayer(playerName: String) = Bukkit.getPlayer(playerName)
 
 fun getPlayer(uniqueIdentity: UUID) = Bukkit.getPlayer(uniqueIdentity)
 
+fun getPlayer(identity: Identifiable<out OfflinePlayer>) = getPlayer(UUID.fromString(identity.identity))
+
 @Suppress("DEPRECATION")
 fun getOfflinePlayer(playerName: String) = Bukkit.getOfflinePlayer(playerName)
 
 fun getOfflinePlayer(uniqueIdentity: UUID) = Bukkit.getOfflinePlayer(uniqueIdentity)
+
+fun getOfflinePlayer(identity: Identifiable<out OfflinePlayer>) = getOfflinePlayer(UUID.fromString(identity.identity))
 
 fun Plugin.createKey(key: String) = NamespacedKey(this, key)
 
