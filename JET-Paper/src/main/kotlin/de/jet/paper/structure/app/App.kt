@@ -379,7 +379,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 			if (!JetCache.runningComponents.contains(componentIdentity)) {
 
-				JetCache.runningComponents[componentIdentity] = Calendar.now()
+				JetCache.runningComponents[componentIdentity.change()] = Calendar.now()
 
 				coroutineScope.launch(context = component.threadContext) {
 
