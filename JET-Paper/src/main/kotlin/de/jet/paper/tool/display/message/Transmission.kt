@@ -5,12 +5,12 @@ import de.jet.jvm.tool.smart.positioning.Address.Companion.address
 import de.jet.paper.app.JetData
 import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
-import de.jet.paper.extension.paper.adventureComponent
 import de.jet.paper.extension.paper.consoleSender
 import de.jet.paper.extension.paper.onlinePlayers
 import de.jet.paper.tool.display.message.DisplayType.*
 import de.jet.paper.tool.effect.sound.SoundLibrary
 import de.jet.paper.tool.effect.sound.SoundMelody
+import de.jet.unfold.extension.adventureComponent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.event.ClickEvent

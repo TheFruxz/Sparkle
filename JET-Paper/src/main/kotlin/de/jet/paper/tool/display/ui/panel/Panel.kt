@@ -12,7 +12,6 @@ import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.display.ui.panelIdentificationKey
 import de.jet.paper.extension.paper.createInventory
 import de.jet.paper.extension.paper.createKey
-import de.jet.paper.extension.paper.legacyString
 import de.jet.paper.extension.system
 import de.jet.paper.extension.tasky.sync
 import de.jet.paper.runtime.event.PanelClickEvent
@@ -25,6 +24,7 @@ import de.jet.paper.tool.display.ui.inventory.Container
 import de.jet.paper.tool.effect.sound.SoundMelody
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
+import de.jet.unfold.extension.legacyString
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity

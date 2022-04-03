@@ -51,6 +51,7 @@ import de.jet.paper.tool.input.Keyboard
 import de.jet.paper.tool.input.Keyboard.RenderEngine.Key
 import de.jet.paper.tool.input.Keyboard.RenderEngine.KeyConfiguration
 import de.jet.paper.tool.permission.Approval
+import de.jet.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
@@ -185,6 +186,10 @@ class JetApp : App() {
 					}
 				}.display(executor as Player)
 			}
+		}
+
+		buildAndRegisterSandBox(this, "colorDemo") {
+			executor.sendMessage(text("<yellow>Woo: <gradient:#5e4fa2:#f79459:red>||||||||||||||||||||||||</gradient>!"))
 		}
 
 	}

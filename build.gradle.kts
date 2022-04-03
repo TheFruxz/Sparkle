@@ -12,7 +12,7 @@ plugins {
 
 allprojects {
 
-    version = "1.0-PRE-5.1"
+    version = "1.0-PRE-6"
     group = "de.jet"
 
     repositories {

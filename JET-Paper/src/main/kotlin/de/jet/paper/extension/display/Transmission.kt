@@ -1,9 +1,9 @@
 package de.jet.paper.extension.display
 
 import de.jet.paper.extension.interchange.InterchangeExecutor
-import de.jet.paper.extension.paper.adventureComponent
 import de.jet.paper.tool.display.message.Transmission
 import de.jet.paper.tool.display.message.Transmission.Level
+import de.jet.unfold.extension.adventureComponent
 
 fun String.message(vararg participants: InterchangeExecutor) =
 	Transmission(content = this.adventureComponent.toBuilder())

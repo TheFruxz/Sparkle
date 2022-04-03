@@ -12,7 +12,6 @@ import de.jet.paper.extension.display.WHITE
 import de.jet.paper.extension.display.ui.changeColor
 import de.jet.paper.extension.paper.createBlockData
 import de.jet.paper.extension.paper.itemFactory
-import de.jet.paper.extension.paper.legacyString
 import de.jet.paper.extension.system
 import de.jet.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.jet.paper.structure.app.App
@@ -24,6 +23,7 @@ import de.jet.paper.tool.display.item.action.ItemClickAction
 import de.jet.paper.tool.display.item.action.ItemDropAction
 import de.jet.paper.tool.display.item.action.ItemInteractAction
 import de.jet.paper.tool.display.item.quirk.Quirk
+import de.jet.unfold.extension.legacyString
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
 import net.kyori.adventure.text.event.HoverEventSource
