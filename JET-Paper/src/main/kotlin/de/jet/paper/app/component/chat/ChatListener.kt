@@ -3,9 +3,9 @@ package de.jet.paper.app.component.chat
 import de.jet.paper.extension.display.buildTextComponent
 import de.jet.paper.extension.paper.consoleSender
 import de.jet.paper.extension.paper.getPlayer
-import de.jet.paper.extension.paper.legacyString
 import de.jet.paper.extension.paper.onlinePlayers
 import de.jet.paper.structure.app.event.EventListener
+import de.jet.unfold.extension.legacyString
 import io.papermc.paper.event.player.AsyncChatEvent
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.sound.Sound.Source.MASTER

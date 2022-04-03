@@ -15,8 +15,8 @@ var host = "github.com/TheFruxz/JET"
 
 repositories {
 
+    maven("https://jitpack.io")
     maven("https://papermc.io/repo/repository/maven-public/") // PaperMC
-    maven("https://mvn.intellectualsites.com/content/repositories/thirdparty/")
 
 }
 
@@ -25,8 +25,12 @@ dependencies {
     // Internal
 
     implementation(project(":JET-JVM"))
+    implementation(project(":JET-Unfold"))
 
     shadow(project(":JET-JVM")) {
+        isTransitive = false
+    }
+    shadow(project(":JET-Unfold")) {
         isTransitive = false
     }
 
@@ -54,6 +58,12 @@ dependencies {
     shadow("org.jetbrains.exposed:exposed-core:0.37.3")
     shadow("org.jetbrains.exposed:exposed-dao:0.37.3")
     shadow("org.jetbrains.exposed:exposed-jdbc:0.37.3")
+
+    shadow("com.github.CoasterFreakDE:minecraft-spigot-rgb-chat-support:1.0.5")
+
+    shadow("net.kyori:adventure-api:4.10.1")
+    shadow("net.kyori:adventure-text-serializer-legacy:4.10.1")
+    shadow("net.kyori:adventure-text-minimessage:4.10.1")
 
 }
 

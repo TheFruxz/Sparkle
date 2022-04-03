@@ -6,6 +6,8 @@ import com.destroystokyo.paper.entity.ai.MobGoals
 import de.jet.jvm.extension.classType.UUID
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.extension.interchange.InterchangeExecutor
+import de.jet.unfold.extension.adventureComponent
+import de.jet.unfold.extension.legacyString
 import io.papermc.paper.datapack.DatapackManager
 import net.kyori.adventure.text.Component
 import org.bukkit.*
