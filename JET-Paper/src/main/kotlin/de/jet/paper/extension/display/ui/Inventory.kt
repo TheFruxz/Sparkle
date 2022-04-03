@@ -1,13 +1,11 @@
 package de.jet.paper.extension.display.ui
 
 import de.jet.jvm.extension.tryOrNull
-import de.jet.paper.app.JetCache
 import de.jet.paper.extension.paper.createKey
 import de.jet.paper.extension.system
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.ui.inventory.Container
 import de.jet.paper.tool.display.ui.panel.Panel
-import de.jet.paper.tool.display.ui.panel.Panel.Companion.panelIdentity
 import org.bukkit.Material
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
@@ -16,17 +14,25 @@ fun buildContainer(lines: Int = 3, action: Container<*>.() -> Unit) = Container(
 
 fun emptyContainer(lines: Int = 3) = Container(size = lines*9)
 
-fun buildPanel(lines: Int = 3, action: Panel.() -> Unit) = Panel(lines = lines).apply(action)
+fun buildPanel(lines: Int = 3, generateBorder: Boolean = true, action: Panel.() -> Unit) = Panel(lines = lines, generateBorder = generateBorder).apply(action)
 
-fun emptyPanel(lines: Int = 3) = Panel(lines = lines)
+fun emptyPanel(lines: Int = 3, generateBorder: Boolean = true) = Panel(lines = lines, generateBorder = generateBorder)
 
 operator fun <T : Inventory> T.get(slot: Int) = tryOrNull { getItem(slot) }
 
 operator fun <T : Inventory> T.set(slot: Int, itemStack: ItemStack) = setItem(slot, itemStack)
 
+operator fun <T : Inventory> T.set(slots: Iterable<Int>, itemStack: ItemStack) = slots.forEach { set(it, itemStack) }
+
+operator fun <T : Inventory> T.set(slots: Iterable<Int>, process: (slot: Int) -> ItemStack) = slots.forEach { set(it, process(it)) }
+
 operator fun <T : Inventory> T.set(slot: Int, item: Item) = setItem(slot, item.produce())
 
+operator fun <T : Inventory> T.set(slots: Iterable<Int>, item: Item) = slots.forEach { set(it, item) }
+
 operator fun <T : Inventory> T.set(slot: Int, material: Material) = setItem(slot, material.itemStack)
+
+operator fun <T : Inventory> T.set(slots: Iterable<Int>, material: Material) = slots.forEach { set(it, material.itemStack) }
 
 internal val panelIdentificationKey = system.createKey("panelId")
 

@@ -61,6 +61,7 @@ de.jet.paper.extension.interchange
 de.jet.paper.extension.mojang
 de.jet.paper.extension.objectBound
 de.jet.paper.extension.paper
+de.jet.paper.extension.paper.entity
 de.jet.paper.extension.scoreboard
 de.jet.paper.extension.tasky
 de.jet.paper.extension.timing

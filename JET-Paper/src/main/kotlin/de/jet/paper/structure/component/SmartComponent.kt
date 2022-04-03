@@ -157,7 +157,7 @@ abstract class SmartComponent(
 
 	companion object {
 
-		internal fun disabledComponentInterchange(identity: Identity<Component>, requiredApproval: Approval? = null) = object : Interchange("", ignoreInputValidation = true, forcedApproval = requiredApproval) {
+		internal fun disabledComponentInterchange(identity: Identity<out Component>, requiredApproval: Approval? = null) = object : Interchange("", ignoreInputValidation = true, forcedApproval = requiredApproval) {
 
 			override val execution = execution {
 
