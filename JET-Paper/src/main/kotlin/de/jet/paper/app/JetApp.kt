@@ -231,8 +231,10 @@ class JetApp : App() {
 	
 	companion object : AppCompanion<JetApp>() {
 
+		@JvmStatic
 		override val predictedIdentity = Identity<JetApp>("JET")
 
+		@JvmStatic
 		var debugMode: Boolean = true
 
 	}

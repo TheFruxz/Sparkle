@@ -36,6 +36,7 @@ interface Tasky : Logging {
 
 	companion object {
 
+		@JvmStatic
 		fun task(
 			vendor: App,
 			temporalAdvice: TemporalAdvice,

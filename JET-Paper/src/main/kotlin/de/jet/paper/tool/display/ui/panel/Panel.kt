@@ -525,6 +525,7 @@ data class Panel(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		val InventoryView.panelIdentity: Identifiable<Panel>?
 			get() = topInventory.panelIdentity
 
@@ -534,6 +535,7 @@ data class Panel(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		val Inventory.panelIdentity: Identity<Panel>?
 			get() = getItem(4)?.item?.dataGet(panelIdentificationKey)?.let { Identity("" + it ) }
 
@@ -543,6 +545,7 @@ data class Panel(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun <T : Inventory> T.getPanel() = tryOrNull { panelIdentity?.let { panelIdentity ->
 			JetCache.completedPanels.lastOrNull { it.identityObject == panelIdentity }
 		} }

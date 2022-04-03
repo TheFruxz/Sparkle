@@ -29,13 +29,14 @@ enum class DyeableMaterial(
 
 	companion object {
 
+		@JvmStatic
 		fun fromMaterial(material: Material) = try {
 			valueOf(material.name.substringAfter('_'))
 		} catch (exception: IllegalArgumentException) {
 			null
 		}
 
-		// WOOL#WHITE
+		@JvmStatic
 		fun materialFromMaterialCode(materialCode: String): Material? {
 			val code = materialCode.lowercase().removePrefix("minecraft:").removePrefix("jet:").uppercase()
 			val output = if (code.contains('#')) {

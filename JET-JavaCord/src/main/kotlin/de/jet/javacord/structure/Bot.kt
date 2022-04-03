@@ -32,6 +32,7 @@ data class Bot(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		lateinit var instance: DiscordApi
 			internal set
 

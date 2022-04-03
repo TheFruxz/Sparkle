@@ -76,6 +76,7 @@ class LanguageSpeaker(
 
 	companion object {
 
+		@JvmStatic
 		val smartColors = ChatColor.values().associateBy {
 			"[${it.name}]"
 		} + mapOf(
@@ -84,6 +85,7 @@ class LanguageSpeaker(
 			"[NONE]" to ChatColor.RESET,
 		)
 
+		@JvmStatic
 		val smartColorReplace = smartColors.mapValues { "§${it.value.char}" }
 
 	}

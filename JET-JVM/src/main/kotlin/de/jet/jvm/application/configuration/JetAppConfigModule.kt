@@ -29,6 +29,7 @@ data class JetAppConfigModule(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun autoGenerateFromApp(app: JetApp) =
 			JetAppConfigModule(app.identity, "APP_${app.identity}/")
 

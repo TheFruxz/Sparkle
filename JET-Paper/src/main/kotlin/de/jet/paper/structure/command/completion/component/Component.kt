@@ -17,18 +17,21 @@ sealed interface CompletionComponent {
 
 	companion object {
 
+		@JvmStatic
 		fun static(
 			completion: Set<String>,
 			displayRequirement: ((executor: InterchangeExecutor, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
 			accessApproval: Approval? = null,
 		) = Static(completion, displayRequirement, accessApproval)
 
+		@JvmStatic
 		fun static(
 			vararg completion: String,
 			displayRequirement: ((executor: InterchangeExecutor, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,
 			accessApproval: Approval? = null,
 		) = static(completion.toSet(), displayRequirement, accessApproval)
 
+		@JvmStatic
 		fun asset(
 			asset: CompletionAsset<*>,
 			displayRequirement: ((executor: InterchangeExecutor, parameters: Array<String>, completion: Set<String>) -> Boolean)? = null,

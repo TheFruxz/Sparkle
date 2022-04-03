@@ -42,6 +42,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		val empty = object : Quirk {
 			override val itemStackProcessing: ItemStack.() -> Unit =
 				{ }
@@ -53,6 +54,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun <T : ItemMeta> custom(process: T.() -> Unit) = processor(process)
 
 		/**
@@ -61,6 +63,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun <T : ItemMeta> Item.customQuirk(process: T.() -> Unit) = putQuirk(custom(process))
 
 		/**
@@ -68,6 +71,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun banner(process: BannerMeta.() -> Unit) = processor(process)
 
 		/**
@@ -76,6 +80,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun Item.bannerQuirk(process: BannerMeta.() -> Unit) = putQuirk(banner(process))
 
 		/**
@@ -83,6 +88,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun book(process: BookMeta.() -> Unit) = processor(process)
 
 		/**
@@ -91,6 +97,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun Item.bookQuirk(process: BookMeta.() -> Unit) = putQuirk(book(process))
 
 		/**
@@ -98,6 +105,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun compass(process: CompassMeta.() -> Unit) = processor(process)
 
 		/**
@@ -106,6 +114,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun Item.compassQuirk(process: CompassMeta.() -> Unit) = putQuirk(compass(process))
 
 		/**
@@ -113,6 +122,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun crossbow(process: CrossbowMeta.() -> Unit) = processor(process)
 
 		/**
@@ -121,6 +131,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun Item.crossbowQuirk(process: CrossbowMeta.() -> Unit) = putQuirk(crossbow(process))
 
 		/**
@@ -128,6 +139,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun firework(process: FireworkMeta.() -> Unit) = processor(process)
 
 		/**
@@ -136,6 +148,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun Item.fireworkQuirk(process: FireworkMeta.() -> Unit) = putQuirk(firework(process))
 
 		/**
@@ -143,6 +156,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun leatherArmor(process: LeatherArmorMeta.() -> Unit) = processor(process)
 
 		/**
@@ -151,6 +165,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun Item.leatherArmorQuirk(process: LeatherArmorMeta.() -> Unit) = putQuirk(leatherArmor(process))
 
 		/**
@@ -158,6 +173,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun map(process: MapMeta.() -> Unit) = processor(process)
 
 		/**
@@ -166,6 +182,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun Item.mapQuirk(process: MapMeta.() -> Unit) = putQuirk(map(process))
 
 		/**
@@ -173,6 +190,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun skull(process: SkullMeta.() -> Unit) = processor(process)
 
 		/**
@@ -181,6 +199,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun Item.skullQuirk(process: SkullMeta.() -> Unit) = putQuirk(skull(process))
 
 		/**
@@ -188,6 +207,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun potion(process: PotionMeta.() -> Unit) = processor(process)
 
 		/**
@@ -196,6 +216,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun Item.potionQuirk(process: PotionMeta.() -> Unit) = putQuirk(potion(process))
 
 		/**
@@ -203,6 +224,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun spawnEgg(process: SpawnEggMeta.() -> Unit) = processor(process)
 
 		/**
@@ -211,6 +233,7 @@ interface Quirk {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun Item.spawnEggQuirk(process: SpawnEggMeta.() -> Unit) = putQuirk(spawnEgg(process))
 
 	}

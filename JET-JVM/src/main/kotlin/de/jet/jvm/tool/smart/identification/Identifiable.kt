@@ -34,6 +34,7 @@ interface Identifiable<T> {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun empty() = object : Identifiable<Any> {
 			override val identity = ""
 		}
@@ -47,6 +48,7 @@ interface Identifiable<T> {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun <T> custom(id: String) = object : Identifiable<T> {
 			override val identity = id
 		}
