@@ -18,8 +18,10 @@ import de.jet.paper.tool.display.ui.panel.Panel
 import de.jet.paper.tool.input.Keyboard.Extension
 import de.jet.paper.tool.input.Keyboard.Type
 import de.jet.paper.tool.input.Keyboard.Type.*
+import de.jet.unfold.text
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import java.util.*
@@ -124,15 +126,13 @@ object Keyboard {
 
 		fun renderKey(keyObject: Key): Item {
 			return texturedSkull(keyObject.textureIdentity).apply {
-				label = "§7Key: §6${keyObject.displayTitle}"
-				lore = buildString {
-
-					appendLine()
-					appendLine("§7The §e${keyObject.displayTitle}§7 Key inserts")
-					appendLine("§7a new '§6${keyObject.displayInline}§7'!")
-					appendLine()
-					append("§8${keyObject.identity}")
-
+				label = text("§7Key: §6${keyObject.displayTitle}")
+				lore = buildList {
+					add(Component.empty())
+					add(text("§7The §e${keyObject.displayTitle}§7 Key inserts"))
+					add(text("§7a new '§6${keyObject.displayInline}§7'!"))
+					add(Component.empty())
+					add(text("§8${keyObject.identity}"))
 				}
 			}
 		}

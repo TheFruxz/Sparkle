@@ -22,6 +22,9 @@ import de.jet.unfold.newline
 import de.jet.unfold.plus
 import de.jet.unfold.text
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.Style
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.FluidCollisionMode.ALWAYS
 import org.bukkit.Location
 import org.bukkit.Material
@@ -41,15 +44,15 @@ internal class MarkingInterchange : StructuredInterchange(
 			}
 
 			fun produceMarkingItem() = Material.GOLDEN_HOE.item.apply {
-				label = "$YELLOW${BOLD}Marking-Tool"
+				label = text("Marking-Tool").style(Style.style(NamedTextColor.YELLOW, TextDecoration.BOLD))
 				identity = "jet:marking_tool"
-				lore = """
-				 
-				LEFT-CLICK -> Position-1
-				RIGHT-CLICK -> Position-2
-				SHIFT-CLICK -> VIEW DATA
-				
-			""".trimIndent()
+				lore = listOf(
+					Component.empty(),
+					text("LEFT-CLICK -> Position-1"),
+					text("RIGHT-CLICK -> Position-2"),
+					text("SHIFT-CLICK -> VIEW DATA"),
+					Component.empty(),
+				)
 
 				@Suppress("UnnecessaryOptInAnnotation")
 				onInteractWith {
