@@ -2,7 +2,7 @@ import org.gradle.api.JavaVersion.VERSION_17
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.6.20-RC2"
+    kotlin("jvm") version "1.6.20"
     kotlin("plugin.serialization") version "1.6.10"
     id("org.jetbrains.dokka") version "1.6.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
