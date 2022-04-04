@@ -5,7 +5,7 @@ import de.jet.paper.extension.paper.consoleSender
 import de.jet.paper.extension.paper.getPlayer
 import de.jet.paper.extension.paper.onlinePlayers
 import de.jet.paper.structure.app.event.EventListener
-import de.jet.unfold.extension.legacyString
+import de.jet.unfold.extension.asString
 import io.papermc.paper.event.player.AsyncChatEvent
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.sound.Sound.Source.MASTER
@@ -24,13 +24,13 @@ internal class ChatListener : EventListener() {
 		val player = event.player
 		val notify = mutableSetOf<UUID>()
 		val message = buildTextComponent {
-			event.message().legacyString.split(" ").forEach { snipped ->
+			event.message().asString.split(" ").forEach { snipped ->
 				val tagged = getPlayer(snipped.removePrefix("@"))
 
 				append(Component.text(" "))
 
 				if (snipped.startsWith("@") && snipped.length > 2 && tagged != null && !notify.contains(tagged.uniqueId)) {
-					append(Component.text("@${tagged.displayName().legacyString}", NamedTextColor.YELLOW))
+					append(Component.text("@${tagged.displayName().asString}", NamedTextColor.YELLOW))
 					notify.add(tagged.uniqueId)
 				} else if (snipped.startsWith("#") && snipped.length > 1) {
 					append(Component.text(snipped, NamedTextColor.YELLOW))

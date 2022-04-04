@@ -88,7 +88,7 @@ object WorldRenderer {
 		} else
 			labels.joinToString()
 
-		fun renderArchiveStatus() = if (archived) "§bArchived" else "§aActive"
+		fun renderArchiveStatus() = if (archived) "<aqua>Archived" else "<green>Active"
 
 	}
 

@@ -10,32 +10,33 @@ import de.jet.paper.extension.paper.onlinePlayers
 import de.jet.paper.tool.display.message.DisplayType.*
 import de.jet.paper.tool.effect.sound.SoundLibrary
 import de.jet.paper.tool.effect.sound.SoundMelody
-import de.jet.unfold.extension.adventureComponent
+import de.jet.unfold.extension.asString
+import de.jet.unfold.extension.asStyledComponent
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.TextComponent
-import net.kyori.adventure.text.event.ClickEvent
-import net.kyori.adventure.text.event.HoverEventSource
+import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.title.Title
 import org.bukkit.entity.Entity
 
 data class Transmission(
 	var prefix: Component? = null,
-	var content: TextComponent.Builder = Component.text(),
+	var content: Component = Component.empty(),
 	var participants: MutableList<InterchangeExecutor> = mutableListOf(),
 	var withoutPrefix: Boolean = false,
 	var displayType: DisplayType = DISPLAY_CHAT,
 	var promptSound: SoundMelody? = null,
 	var level: Level = Level.GENERAL,
 	var prefixByLevel: Boolean = true,
-	var hoverEvent: HoverEventSource<*>? = null,
-	var clickEvent: ClickEvent? = null,
 ) {
+
+	constructor(legacyMessage: String) : this(content = legacyMessage.asStyledComponent)
+
+	constructor(componentLike: ComponentLike) : this(content = componentLike.asComponent())
 
 	infix fun edit(action: Transmission.() -> Unit) = apply(action)
 
 	infix fun prefix(prefix: Component) = edit { this.prefix = prefix }
 
-	infix fun content(content: TextComponent.Builder) = edit { this.content = content }
+	infix fun content(content: Component) = edit { this.content = content }
 
 	infix fun participants(participants: Collection<InterchangeExecutor>) = edit { this.participants = participants.toMutableList() }
 
@@ -47,21 +48,10 @@ data class Transmission(
 
 	infix fun promptSound(soundMelody: SoundMelody?) = edit { this.promptSound = soundMelody }
 
-	infix fun hoverEvent(hoverEvent: HoverEventSource<*>?) = edit { this.hoverEvent = hoverEvent }
-
-	infix fun hover(hover: HoverEventSource<*>?) = hoverEvent(hover)
-
-	infix fun clickEvent(clickEvent: ClickEvent?) = edit { this.clickEvent = clickEvent }
-
-	infix fun click(click: ClickEvent?) = clickEvent(click)
-
 	fun display(): Transmission {
 		val nextRound = mutableSetOf<Entity>()
 
-		hoverEvent?.let { content.hoverEvent(it) }
-		clickEvent?.let { content.clickEvent(it) }
-
-		val displayObject = (if (prefixByLevel) lang("system.${level.prefixLink.addressObject}").adventureComponent else prefix ?: Component.text(JetData.systemPrefix.content)).append(content)
+		val displayObject = (if (prefixByLevel) lang("system.${level.prefixLink.addressObject}").asStyledComponent else prefix ?: JetData.systemPrefix.content.asStyledComponent).append(content)
 
 		for (participant in participants) {
 
@@ -86,7 +76,7 @@ data class Transmission(
 		.participants(onlinePlayers + consoleSender)
 		.display()
 
-	override fun toString() = content.content()
+	override fun toString() = content.asString
 
 	enum class Level(
 		val promptSound: SoundMelody?,

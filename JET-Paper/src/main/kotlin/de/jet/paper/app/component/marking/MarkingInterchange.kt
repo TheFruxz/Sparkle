@@ -17,6 +17,10 @@ import de.jet.paper.structure.command.completion.buildInterchangeStructure
 import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.tool.display.message.Transmission.Level.*
 import de.jet.paper.tool.position.LocationBox
+import de.jet.unfold.extension.asStyledComponent
+import de.jet.unfold.newline
+import de.jet.unfold.plus
+import de.jet.unfold.text
 import net.kyori.adventure.text.Component
 import org.bukkit.FluidCollisionMode.ALWAYS
 import org.bukkit.Location
@@ -66,25 +70,23 @@ internal class MarkingInterchange : StructuredInterchange(
 										JetCache.playerMarkerBoxes[player.identityObject] = currentBox.apply {
 											firstLocation = targetLocation
 										}
+
 										lang["component.markingTool.action.set"].replaceVariables(
 											"n" to 1,
-											"pos" to targetPrint
-										).notification(APPLIED, whoInteract).hover(
-											Component.text(
-												buildString {
-													appendLine(
-														lang["component.markingTool.action.view.distance.other"].replaceVariables(
-															"distance" to targetLocation.distance(currentBox.secondLocation).shorter
-														)
-													)
-													append(
-														lang["component.markingTool.action.view.distance.volume"].replaceVariables(
-															"volume" to currentBox.blockVolume
-														)
-													)
-												}
-											)
-										).display()
+											"pos" to targetPrint,
+										).asStyledComponent
+											.hoverEvent(text {
+												text(lang["component.markingTool.action.view.distance.other"].replaceVariables(
+													"distance" to targetLocation.distance(currentBox.secondLocation).shorter
+												))
+												newline()
+												text(lang["component.markingTool.action.view.distance.volume"].replaceVariables(
+													"volume" to currentBox.blockVolume
+												))
+											})
+											.notification(APPLIED, whoInteract)
+											.display()
+
 									} else
 										lang["component.markingTool.action.duplicate"].replaceVariables(
 											"pos" to targetPrint
@@ -98,25 +100,23 @@ internal class MarkingInterchange : StructuredInterchange(
 										JetCache.playerMarkerBoxes[player.identityObject] = currentBox.apply {
 											secondLocation = targetLocation
 										}
+
 										lang["component.markingTool.action.set"].replaceVariables(
 											"n" to 2,
-											"pos" to targetPrint
-										).notification(APPLIED, whoInteract).hover(
-											Component.text(
-												buildString {
-													appendLine(
-														lang["component.markingTool.action.view.distance.other"].replaceVariables(
-															"distance" to targetLocation.distance(currentBox.firstLocation).shorter
-														)
-													)
-													append(
-														lang["component.markingTool.action.view.distance.volume"].replaceVariables(
-															"volume" to currentBox.blockVolume
-														)
-													)
-												}
-											)
-										).display()
+											"pos" to targetPrint,
+										).asStyledComponent
+											.hoverEvent(text {
+												text(lang["component.markingTool.action.view.distance.other"].replaceVariables(
+													"distance" to targetLocation.distance(currentBox.firstLocation).shorter
+												))
+												newline()
+												text(lang["component.markingTool.action.view.distance.volume"].replaceVariables(
+													"volume" to currentBox.blockVolume
+												))
+											})
+											.notification(APPLIED, whoInteract)
+											.display()
+
 									} else
 										lang["component.markingTool.action.duplicate"].replaceVariables(
 											"pos" to targetPrint
@@ -131,25 +131,20 @@ internal class MarkingInterchange : StructuredInterchange(
 					} else {
 
 						if (JetCache.playerMarkerBoxes[player.identityObject] != null) {
+
 							lang["component.markingTool.action.view.detail"].replaceVariables(
 								"1" to positionData(currentBox.firstLocation),
 								"2" to positionData(currentBox.secondLocation),
-							).notification(INFO, whoInteract).hover(
-								Component.text(
-									buildString {
-										appendLine(
-											lang["component.markingTool.action.view.distance.both"].replaceVariables(
-												"distance" to currentBox.distance.shorter
-											)
-										)
-										append(
-											lang["component.markingTool.action.view.distance.volume"].replaceVariables(
-												"volume" to currentBox.blockVolume
-											)
-										)
-									}
-								)
-							).display()
+							).asStyledComponent
+								.hoverEvent(text {
+									text(lang["component.markingTool.action.view.distance.both"].replaceVariables(
+										"distance" to currentBox.distance.shorter
+									))
+									newline()
+									text(lang["component.markingTool.action.view.distance.volume"].replaceVariables(
+										"volume" to currentBox.blockVolume
+									))
+								})
 
 						} else
 							lang["component.markingTool.action.view.notSet"]

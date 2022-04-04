@@ -24,7 +24,7 @@ import de.jet.paper.tool.display.ui.inventory.Container
 import de.jet.paper.tool.effect.sound.SoundMelody
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
-import de.jet.unfold.extension.legacyString
+import de.jet.unfold.extension.asString
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
@@ -454,7 +454,7 @@ data class Panel(
 			set(4, this@with.icon.apply {
 
 				if (label.isEmpty()) {
-					label = this@with.label.legacyString
+					label = this@with.label.asString
 				}
 
 				dataPut(panelIdentificationKey, this@with.identity, true)

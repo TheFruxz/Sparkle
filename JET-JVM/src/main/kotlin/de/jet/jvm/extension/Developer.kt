@@ -1,14 +1,6 @@
 package de.jet.jvm.extension
 
 /**
- * Using the [toString] function to convert this [Any] to a string.
- * @author Fruxz
- * @since 1.0
- */
-val Any.asString: String
-	get() = toString()
-
-/**
  * Executes a check, if all [objects] are passing the [check] check.
  * @param objects The objects to check.
  * @param check The check to execute.

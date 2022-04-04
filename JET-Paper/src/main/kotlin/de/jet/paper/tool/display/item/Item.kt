@@ -2,7 +2,6 @@
 
 package de.jet.paper.tool.display.item
 
-import de.jet.jvm.extension.asString
 import de.jet.jvm.extension.data.buildRandomTag
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.tool.smart.Producible
@@ -23,7 +22,7 @@ import de.jet.paper.tool.display.item.action.ItemClickAction
 import de.jet.paper.tool.display.item.action.ItemDropAction
 import de.jet.paper.tool.display.item.action.ItemInteractAction
 import de.jet.paper.tool.display.item.quirk.Quirk
-import de.jet.unfold.extension.legacyString
+import de.jet.unfold.extension.asString
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
 import net.kyori.adventure.text.event.HoverEventSource
@@ -68,9 +67,9 @@ data class Item(
 
 	constructor(itemStack: ItemStack) : this() {
 		material = itemStack.type
-		label = try { itemStack.itemMeta.displayName()?.legacyString ?: "" } catch (e: NullPointerException) { "" }
+		label = try { itemStack.itemMeta.displayName()?.asString ?: "" } catch (e: NullPointerException) { "" }
 		size = itemStack.amount
-		lore = itemStack.lore()?.joinToString("\n") { it.legacyString } ?: ""
+		lore = itemStack.lore()?.joinToString("\n") { it.asString } ?: ""
 		damage = if (itemStack.itemMeta is Damageable) {
 			(itemStack.itemMeta as Damageable).damage
 		} else 0
@@ -220,7 +219,7 @@ data class Item(
 		else -> throw IllegalArgumentException("The data '$any' is not compatible with the data-cache")
 	}
 
-	fun dataGet(path: NamespacedKey) = dataGet(path.asString)
+	fun dataGet(path: NamespacedKey) = dataGet(path.toString())
 
 	fun dataGet(location: String) = data[location]
 
@@ -318,7 +317,6 @@ data class Item(
 		apply { this.modifications.removeAll(modifications.toSet()) }
 
 
-
 	fun annexFlags(flags: Collection<ItemFlag>) =
 		apply { this.flags.addAll(flags) }
 
@@ -342,7 +340,6 @@ data class Item(
 
 	fun dropFlags(vararg flags: ItemFlag) =
 		apply { this.flags.removeAll(flags.toSet()) }
-
 
 
 	fun annexPostProperties(postProperties: Collection<PostProperty>) =
@@ -559,7 +556,7 @@ data class Item(
 				persistentDataContainer.keys.forEach {
 					persistentDataTypes.forEach { type ->
 						try {
-							persistentDataContainer[it, type]?.let { it1 -> put(it.asString, it1) }
+							persistentDataContainer[it, type]?.let { it1 -> put(it.toString(), it1) }
 						} catch (e: NullPointerException) {
 							throw NoSuchElementException("Element '$it' is not contained!")
 						} catch (ignore: IllegalArgumentException) {
