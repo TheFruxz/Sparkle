@@ -19,6 +19,7 @@ import de.jet.paper.app.component.point.asset.Point
 import de.jet.paper.app.component.point.asset.PointConfig
 import de.jet.paper.app.component.sandbox.SandBoxComponent
 import de.jet.paper.app.component.service.ServiceComponent
+import de.jet.paper.app.interchange.DebugModeInterchange
 import de.jet.paper.app.interchange.JETInterchange
 import de.jet.paper.app.old_component.essentials.world.WorldConfig
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer
@@ -177,6 +178,7 @@ class JetApp : App() {
 		add(ProtectionComponent())
 
 		add(JETInterchange())
+		add(DebugModeInterchange())
 
 		buildAndRegisterSandBox(this, "importAllWorlds") {
 			sync { worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld) }
