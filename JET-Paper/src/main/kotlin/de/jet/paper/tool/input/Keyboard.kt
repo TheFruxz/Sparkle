@@ -22,6 +22,7 @@ import de.jet.unfold.text
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import java.util.*
@@ -126,13 +127,40 @@ object Keyboard {
 
 		fun renderKey(keyObject: Key): Item {
 			return texturedSkull(keyObject.textureIdentity).apply {
-				label = text("§7Key: §6${keyObject.displayTitle}")
+				label = text {
+					text("Key: ") {
+						color(NamedTextColor.GRAY)
+					}
+					text(keyObject.displayTitle) {
+						color(NamedTextColor.GOLD)
+					}
+				}
 				lore = buildList {
 					add(Component.empty())
-					add(text("§7The §e${keyObject.displayTitle}§7 Key inserts"))
-					add(text("§7a new '§6${keyObject.displayInline}§7'!"))
+					add(text {
+						text("The ") {
+							color(NamedTextColor.GRAY)
+						}
+						text(keyObject.displayTitle) {
+							color(NamedTextColor.YELLOW)
+						}
+						text(" Key inserts ") {
+							color(NamedTextColor.GRAY)
+						}
+					})
+					add(text {
+						text("a new '") {
+							color(NamedTextColor.GRAY)
+						}
+						text(keyObject.displayInline) {
+							color(NamedTextColor.YELLOW)
+						}
+						text("'!") {
+							color(NamedTextColor.GRAY)
+						}
+					})
 					add(Component.empty())
-					add(text("§8${keyObject.identity}"))
+					add(text(keyObject.identity).color(NamedTextColor.DARK_GRAY))
 				}
 			}
 		}

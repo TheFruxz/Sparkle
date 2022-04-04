@@ -13,6 +13,7 @@ import de.jet.paper.tool.display.item.quirk.Quirk.Companion.skullQuirk
 import de.jet.unfold.extension.asComponent
 import de.jet.unfold.text
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
 
 object SkullLibrary {
@@ -67,7 +68,14 @@ object SkullLibrary {
 			add(Component.empty())
 			add(text("Categories:"))
 			skull?.description?.split("|")?.forEach { category ->
-				add(text("§7- §e$category"))
+				add(text {
+					text("- ") {
+						color(NamedTextColor.GRAY)
+					}
+					text(category) {
+						color(NamedTextColor.YELLOW)
+					}
+				})
 			} ?: add(text("Unknown"))
 			add(Component.empty())
 		}
