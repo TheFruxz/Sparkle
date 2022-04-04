@@ -27,3 +27,5 @@ commands:
     description: test skin
   point:
     description: Manages your points!
+  debugmode:
+    description: Manages the servers debug mode!
