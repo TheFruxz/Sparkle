@@ -43,6 +43,7 @@ data class Address<T> internal constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun <T> address(path: String, divider: String = "/") =
 			Address<T>(path, divider)
 
@@ -55,6 +56,7 @@ data class Address<T> internal constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun <T> packagedAddress(path: String, divider: String = ".") =
 			Address<T>(path, divider)
 

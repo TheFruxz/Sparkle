@@ -26,6 +26,7 @@ interface Mutable<T> {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun <T> default(value: T) =
 			FlexibleMutable(value)
 
@@ -36,6 +37,7 @@ interface Mutable<T> {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun <T> computational(value: T, onSet: (T) -> Unit, onGet: () -> T) =
 			ComputationalMutable(value, onSet, onGet)
 

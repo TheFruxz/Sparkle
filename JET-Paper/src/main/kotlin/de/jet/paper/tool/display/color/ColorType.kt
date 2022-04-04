@@ -189,15 +189,16 @@ enum class ColorType : RGBLike {
 
 	companion object {
 
+		@JvmStatic
 		fun fromMaterial(material: Material) = try {
 			valueOf(material.name.split("_").first())
 		} catch (exception: IllegalArgumentException) {
 			null
 		}
 
+		@JvmStatic
 		fun materialFromMaterialCode(materialCode: String) =
 			DyeableMaterial.materialFromMaterialCode(materialCode)
-
 
 	}
 

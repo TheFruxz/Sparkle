@@ -83,24 +83,27 @@ interface JetJsonFile : JetFile {
 
 			}
 
+		@JvmStatic
 		fun appFile(
 			vendor: Identifiable<App>,
 			fileName: String,
 			extension: String = "json"
-		) =
-			generateJson(
+		) = generateJson(
 				Path("JETData", "#${vendor.identity}", "$fileName.$extension")
 			)
 
+		@JvmStatic
 		fun rootFile(fileName: String, extension: String = "json") =
 			generateJson(Path("JETData") / "ROOT" / "$fileName.$extension")
 
+		@JvmStatic
 		fun componentFile(component: VendorsIdentifiable<Component>, fileName: String, extension: String = "json"): JetJsonFile =
 			generateJson(Path("JETData") / "#${component.identity}@${component.vendorIdentity.identity}" / "$fileName.$extension")
 
 		internal fun dummyComponentFile(dataA: String, dataB: String, fileName: String, extension: String = "json"): JetJsonFile =
 			generateJson(Path("JETData") / "#$dataA@$dataB" / "$fileName.$extension")
 
+		@JvmStatic
 		fun versionFile(fileName: String, extension: String = "json") =
 			generateJson(Path("JETData") / bukkitVersion / "$fileName.$extension")
 

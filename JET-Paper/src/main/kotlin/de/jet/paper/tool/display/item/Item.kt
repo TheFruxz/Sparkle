@@ -527,6 +527,7 @@ data class Item(
 
 	companion object {
 
+		@JvmStatic
 		fun produceByJson(json: String) = JsonItemStack.fromJson(json)?.let { Item(it) }
 
 		private fun enchantmentsToModifications(map: Map<Enchantment, Int>) = map.map {

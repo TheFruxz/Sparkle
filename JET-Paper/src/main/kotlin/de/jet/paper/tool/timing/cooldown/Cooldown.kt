@@ -34,14 +34,17 @@ data class Cooldown(
 		internal fun sectioning(section: String) =
 			if (section.isBlank()) "" else "$section:"
 
+		@JvmStatic
 		fun isCooldownRunning(identity: String, section: String = CooldownSection.general()) = livingCooldowns.any {
 			it.key == "${sectioning(section)}$identity" && it.value.destination.isBefore(Calendar.now())
 		}
 
+		@JvmStatic
 		fun getCooldown(identity: String, section: String = CooldownSection.general()) = livingCooldowns.toList().firstOrNull {
 			it.first == "${sectioning(section)}$identity"
 		}?.second
 
+		@JvmStatic
 		fun launchCooldown(identity: String, ticks: Int, section: String = CooldownSection.general()): Cooldown {
 
 			if (isCooldownRunning(identity, section))

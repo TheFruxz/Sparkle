@@ -194,6 +194,7 @@ abstract class Component(
 
 	companion object {
 
+		@JvmStatic
 		fun getInstance(componentClass: KClass<out Component>): Component {
 			return JetCache.registeredComponents.first { it::class == componentClass }
 		}

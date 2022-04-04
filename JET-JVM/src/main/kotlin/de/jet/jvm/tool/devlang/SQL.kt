@@ -17,8 +17,11 @@ data class SQL(
 		value
 
 	companion object : Constructable<SQL> {
+
+		@JvmStatic
 		override fun constructor(vararg parameters: Any?): SQL =
 			SQL("" + parameters.first())
+
 	}
 
 }

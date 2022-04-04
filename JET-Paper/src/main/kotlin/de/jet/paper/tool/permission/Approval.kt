@@ -55,6 +55,7 @@ data class Approval(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun fromApp(vendor: Identifiable<App>, subPermission: String) =
 			Approval("${vendor.identity}.$subPermission")
 

@@ -7,7 +7,10 @@ open class TreeBranchType(override val identity: String = UUID.randomString()) :
 
     companion object {
 
+        @JvmStatic
         val OBJECT = TreeBranchType("OBJECT")
+
+        @JvmStatic
         val DIRECTORY = TreeBranchType("DIRECTORY")
 
     }

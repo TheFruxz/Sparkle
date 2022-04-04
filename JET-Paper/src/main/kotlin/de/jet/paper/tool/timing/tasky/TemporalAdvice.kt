@@ -22,6 +22,7 @@ interface TemporalAdvice {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun instant(async: Boolean = false) = object : TemporalAdvice {
 			override fun run(runnable: BukkitRunnable) {
 				if (async) {
@@ -40,6 +41,7 @@ interface TemporalAdvice {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun delayed(delay: Long, async: Boolean = false) = object : TemporalAdvice {
 			override fun run(runnable: BukkitRunnable) {
 				if (async) {
@@ -58,6 +60,7 @@ interface TemporalAdvice {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun delayed(delay: Duration, async: Boolean = false) =
 			delayed(delay.inWholeMinecraftTicks, async)
 
@@ -72,6 +75,7 @@ interface TemporalAdvice {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun ticking(delay: Long, distance: Long, async: Boolean = false) = object : TemporalAdvice {
 			override fun run(runnable: BukkitRunnable) {
 				if (async) {
@@ -92,6 +96,7 @@ interface TemporalAdvice {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun ticking(delay: Duration, distance: Duration, async: Boolean = false) =
 			ticking(delay.inWholeMinecraftTicks, distance.inWholeMinecraftTicks, async)
 
@@ -106,6 +111,7 @@ interface TemporalAdvice {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun ticking(tickDistance: Duration, startWithDistance: Boolean = false, async: Boolean = false) =
 			ticking(if (startWithDistance) tickDistance else 0.seconds, tickDistance, async)
 

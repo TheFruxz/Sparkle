@@ -57,6 +57,7 @@ data class SimpleLocation(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun ofBukkit(location: Location) =
 			with(location) { SimpleLocation(world.name, x, y, z) }
 

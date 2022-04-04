@@ -17,8 +17,11 @@ data class YAML(
 		value
 
 	companion object : Constructable<YAML> {
+
+		@JvmStatic
 		override fun constructor(vararg parameters: Any?): YAML =
 			YAML("" + parameters.first())
+
 	}
 
 }

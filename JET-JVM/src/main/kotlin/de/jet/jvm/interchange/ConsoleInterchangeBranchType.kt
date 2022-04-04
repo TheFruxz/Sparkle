@@ -17,6 +17,7 @@ class ConsoleInterchangeBranchType(identity: String = UUID.randomString()) : Tre
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		val OBJECT = ConsoleInterchangeBranchType("OBJECT")
 
 		/**
@@ -24,6 +25,7 @@ class ConsoleInterchangeBranchType(identity: String = UUID.randomString()) : Tre
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		val BRIDGE = ConsoleInterchangeBranchType("BRIDGE")
 
 	}

@@ -587,6 +587,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	companion object {
 
+		@JvmStatic
 		fun createLog(app: String, section: String = "main"): Logger =
 			(PaperPluginLogger.getLogger("JET/$app // $section") ?: Logger.getLogger("JET/$app // $section"))
 

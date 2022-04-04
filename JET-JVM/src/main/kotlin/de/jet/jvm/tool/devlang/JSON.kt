@@ -25,6 +25,8 @@ data class JSON(
 		value
 
 	companion object : Constructable<JSON> {
+
+		@JvmStatic
 		override fun constructor(vararg parameters: Any?): JSON =
 			JSON(parameters.first() as String)
 	}

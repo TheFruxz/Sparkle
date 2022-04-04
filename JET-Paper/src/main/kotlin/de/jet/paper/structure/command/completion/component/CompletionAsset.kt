@@ -66,6 +66,7 @@ data class CompletionAsset<T>(
 
 	companion object {
 
+		@JvmStatic
 		val LONG = CompletionAsset<Long>(system, "LONG", false, listOf(InterchangeStructureInputRestriction.LONG)) {
 			(0..99).mapToString()
 		}.doCheck { input, _ ->
@@ -74,6 +75,7 @@ data class CompletionAsset<T>(
 			input.toLong()
 		}
 
+		@JvmStatic
 		val DOUBLE = CompletionAsset<Double>(system, "DOUBLE", false, listOf(InterchangeStructureInputRestriction.DOUBLE)) {
 			setOf(.0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0).mapToString()
 		}.doCheck { input, _ ->
@@ -82,6 +84,7 @@ data class CompletionAsset<T>(
 			input.toDouble()
 		}
 
+		@JvmStatic
 		val ONLINE_PLAYER_NAME = CompletionAsset<Player>(system, "ONLINE_PLAYER_NAME", true, listOf(InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
 			onlinePlayers.withMap { name }
 		}.doCheck { input, _ ->
@@ -90,6 +93,7 @@ data class CompletionAsset<T>(
 			getPlayer(input)
 		}
 
+		@JvmStatic
 		val ONLINE_PLAYER_UUID = CompletionAsset<Player>(system, "ONLINE_PLAYER_UUID", true, listOf(InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
 			onlinePlayers.withMap { "$uniqueId" }
 		}.doCheck { input, _ ->
@@ -98,6 +102,7 @@ data class CompletionAsset<T>(
 			tryOrNull { getPlayer(UUID.fromString(input)) }
 		}
 
+		@JvmStatic
 		val OFFLINE_PLAYER_NAME = CompletionAsset<OfflinePlayer>(system, "OFFLINE_PLAYER_NAME", true, listOf(InterchangeStructureInputRestriction.OFFLINE_PLAYER)) {
 			offlinePlayers.withMap { name }.filterNotNull()
 		}.doCheck { input, _ ->
@@ -106,6 +111,7 @@ data class CompletionAsset<T>(
 			getOfflinePlayer(input)
 		}
 
+		@JvmStatic
 		val OFFLINE_PLAYER_UUID = CompletionAsset<OfflinePlayer>(system, "OFFLINE_PLAYER_UUID", true, listOf(InterchangeStructureInputRestriction.OFFLINE_PLAYER)) {
 			offlinePlayers.withMap { "$uniqueId" }
 		}.doCheck { input, _ ->
@@ -114,6 +120,7 @@ data class CompletionAsset<T>(
 			tryOrNull { getOfflinePlayer(UUID.fromString(input)) }
 		}
 
+		@JvmStatic
 		val ENTITY_TYPE = CompletionAsset<EntityType>(system, "ENTITY_TYPE", false) {
 			EntityType.values().withMap { name }
 		}.doCheck { input, ignoreCase ->
@@ -122,6 +129,7 @@ data class CompletionAsset<T>(
 			EntityType.valueOf(input)
 		}
 
+		@JvmStatic
 		val WORLD_NAME = CompletionAsset<World>(system, "WORLD_NAME", true) {
 			worlds.withMap { name }
 		}.doCheck { input, ignoreCase ->
@@ -130,6 +138,7 @@ data class CompletionAsset<T>(
 			Bukkit.getWorld(input)
 		}
 
+		@JvmStatic
 		val APP = CompletionAsset<App>(system, "APP", true) {
 			JetCache.registeredApplications.withMap { identity }
 		}.doCheck { input, ignoreCase ->
@@ -138,6 +147,7 @@ data class CompletionAsset<T>(
 			JetCache.registeredApplications.firstOrNull { it.identity == input }
 		}
 
+		@JvmStatic
 		val INTERCHANGE = CompletionAsset<Interchange>(system, "INTERCHANGE", true) {
 			JetCache.registeredInterchanges.withMap { identity }
 		}.doCheck { input, ignoreCase ->
@@ -146,6 +156,7 @@ data class CompletionAsset<T>(
 			JetCache.registeredInterchanges.firstOrNull { it.identity == input }
 		}
 
+		@JvmStatic
 		val SERVICE = CompletionAsset<Service>(system, "SERVICE", true) {
 			JetCache.registeredServices.withMap { identity }
 		}.doCheck { input, ignoreCase ->
@@ -154,6 +165,7 @@ data class CompletionAsset<T>(
 			JetCache.registeredServices.firstOrNull { it.identity == input }
 		}
 
+		@JvmStatic
 		val COMPONENT = CompletionAsset<Component>(system, "COMPONENT", true, listOf(InterchangeStructureInputRestriction.STRING)) {
 			JetCache.registeredComponents.withMap { identity }
 		}.doCheck { input, ignoreCase ->
@@ -162,6 +174,7 @@ data class CompletionAsset<T>(
 			JetCache.registeredComponents.firstOrNull { it.identity == input }
 		}
 
+		@JvmStatic
 		val SANDBOX = CompletionAsset<SandBox>(system, "SANDBOX", true, listOf(InterchangeStructureInputRestriction.STRING)) {
 			JetCache.registeredSandBoxes.withMap { identity }
 		}.doCheck { input, ignoreCase ->
@@ -170,6 +183,7 @@ data class CompletionAsset<T>(
 			JetCache.registeredSandBoxes.firstOrNull { it.identity == input }
 		}
 
+		@JvmStatic
 		val PREFERENCE = CompletionAsset<Preference<*>>(system, "PREFERENCE", true, listOf(InterchangeStructureInputRestriction.STRING)) {
 			JetCache.registeredPreferences.keys.withMap { identity }
 		}.doCheck { input, ignoreCase ->
@@ -178,6 +192,7 @@ data class CompletionAsset<T>(
 			JetCache.registeredPreferences.toList().firstOrNull { it.first.identity == input }?.second
 		}
 
+		@JvmStatic
 		val CACHE_DEPTH_LEVEL = CompletionAsset<CacheDepthLevel>(system, "CACHE_DEPTH_LEVEL", false, listOf(InterchangeStructureInputRestriction.STRING)) {
 			CacheDepthLevel.values().withMap { name }
 		}.doCheck { input, ignoreCase ->
@@ -186,6 +201,7 @@ data class CompletionAsset<T>(
 			tryOrNull { CacheDepthLevel.valueOf(input) }
 		}
 
+		@JvmStatic
 		val TRANSMISSION_LEVEL = CompletionAsset<Transmission.Level>(system, "TRANSMISSION_LEVEL", false, listOf(InterchangeStructureInputRestriction.STRING)) {
 			Transmission.Level.values().withMap { name }
 		}.doCheck { input, ignoreCase ->
@@ -194,6 +210,7 @@ data class CompletionAsset<T>(
 			tryOrNull { Transmission.Level.valueOf(input) }
 		}
 
+		@JvmStatic
 		val POINT = CompletionAsset<Point>(system, "POINT", true, listOf(InterchangeStructureInputRestriction.STRING)) {
 			JetData.savedPoints.content.points.map(Point::identity)
 		}.doCheck { input, ignoreCase ->
@@ -202,6 +219,7 @@ data class CompletionAsset<T>(
 			JetData.savedPoints.content.points.firstOrNull { it.identity == input }
 		}
 
+		@JvmStatic
 		val MATERIAL = CompletionAsset<Material>(system, "MATERIAL", false, listOf(InterchangeStructureInputRestriction.STRING)) {
 			Material.values().withMap { name }
 		}.doCheck { input, ignoreCase ->
@@ -210,6 +228,7 @@ data class CompletionAsset<T>(
 			tryOrNull { Material.valueOf(input) }
 		}
 
+		@JvmStatic
 		val MATERIAL_VARIANT = CompletionAsset<Material>(system, "MATERIAL_VARIANT", false, listOf(InterchangeStructureInputRestriction.STRING)) {
 			buildSet {
 				DyeableMaterial.values().forEach { flex ->
@@ -225,6 +244,7 @@ data class CompletionAsset<T>(
 			DyeableMaterial.materialFromMaterialCode(input)
 		}
 
+		@JvmStatic
 		val MATERIAL_CODE = CompletionAsset<Material>(system, "MATERIAL_CODE", false, listOf(InterchangeStructureInputRestriction.STRING)) {
 			buildSet {
 
@@ -243,6 +263,7 @@ data class CompletionAsset<T>(
 			DyeableMaterial.materialFromMaterialCode(input)
 		}
 
+		@JvmStatic
 		fun PAGES(pages: () -> Number) = CompletionAsset<Number>(
 			vendor = system,
 			thisIdentity = "Page",

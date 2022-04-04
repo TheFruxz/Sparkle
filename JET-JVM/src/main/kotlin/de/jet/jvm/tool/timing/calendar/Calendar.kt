@@ -411,7 +411,17 @@ class Calendar constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun now(instance: JavaUtilCalendar = JavaUtilCalendar.getInstance()) = Calendar(instance)
+		@JvmStatic
+		fun now() = Calendar(JavaUtilCalendar.getInstance())
+
+		/**
+		 * This function returns the current date and time.
+		 * @return the current date and time
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		@JvmStatic
+		fun now(instance: JavaUtilCalendar) = Calendar(instance)
 
 		/**
 		 * This function returns the current date and time.
@@ -420,6 +430,7 @@ class Calendar constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun now(timeZone: TimeZone) = now(instance = JavaUtilCalendar.getInstance(timeZone))
 
 		/**
@@ -429,6 +440,7 @@ class Calendar constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun now(locale: Locale) = now(instance = JavaUtilCalendar.getInstance(locale))
 
 		/**
@@ -438,6 +450,7 @@ class Calendar constructor(
 		 * @return the current date and time of [timeZone] and [locale]
 		 * @author Fruxz
 		 */
+		@JvmStatic
 		fun now(locale: Locale, timeZone: TimeZone) = now(instance = JavaUtilCalendar.getInstance(timeZone, locale))
 
 		/**
@@ -447,6 +460,7 @@ class Calendar constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun fromNow(duration: Duration) = now().plus(duration)
 
 		/**
@@ -457,6 +471,7 @@ class Calendar constructor(
 		 * @since 1.0
 		 */
 		@ExperimentalTime
+		@JvmStatic
 		fun durationSince(duration: Duration) = now().minus(duration)
 
 		/**
@@ -467,6 +482,7 @@ class Calendar constructor(
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun fromLegacy(calendar: JavaUtilCalendar) = now(instance = calendar)
 
 	}

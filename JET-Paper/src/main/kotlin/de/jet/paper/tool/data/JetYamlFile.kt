@@ -60,29 +60,37 @@ interface JetYamlFile : JetFile {
 
 			}
 
+		@JvmStatic
 		fun appPath(vendor: Identifiable<App>) = Path("JETData", "#${vendor.identity}")
 
+		@JvmStatic
 		fun appFile(
 			vendor: Identifiable<App>,
 			fileName: String,
 			extension: String = "yml"
 		) = generateYaml(appPath(vendor) / "$fileName.$extension")
 
+		@JvmStatic
 		fun rootPath() =
 			Path("JETData") / "ROOT"
 
+		@JvmStatic
 		fun rootFile(fileName: String, extension: String = "yml") =
 			generateYaml(rootPath() / "$fileName.$extension")
 
+		@JvmStatic
 		fun componentPath(component: VendorsIdentifiable<Component>) =
 			Path("JETData") / "#${component.identity}@${component.vendorIdentity.identity}"
 
+		@JvmStatic
 		fun componentFile(component: VendorsIdentifiable<Component>, fileName: String, extension: String = "yml"): JetFile =
 			generateYaml(componentPath(component) / "$fileName.$extension")
 
+		@JvmStatic
 		fun versionPath(version: String = bukkitVersion) =
 			Path("JETData") / version
 
+		@JvmStatic
 		fun versionFile(fileName: String, extension: String = "yml") =
 			generateYaml(versionPath() / "$fileName.$extension")
 
