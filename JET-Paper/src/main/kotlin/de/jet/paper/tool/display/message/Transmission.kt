@@ -10,8 +10,10 @@ import de.jet.paper.extension.paper.onlinePlayers
 import de.jet.paper.tool.display.message.DisplayType.*
 import de.jet.paper.tool.effect.sound.SoundLibrary
 import de.jet.paper.tool.effect.sound.SoundMelody
+import de.jet.unfold.extension.asComponent
 import de.jet.unfold.extension.asString
 import de.jet.unfold.extension.asStyledComponent
+import de.jet.unfold.extension.joinToComponent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.title.Title
@@ -19,7 +21,7 @@ import org.bukkit.entity.Entity
 
 data class Transmission(
 	var prefix: Component? = null,
-	var content: Component = Component.empty(),
+	var content: List<Component> = listOf(Component.empty()),
 	var participants: MutableList<InterchangeExecutor> = mutableListOf(),
 	var withoutPrefix: Boolean = false,
 	var displayType: DisplayType = DISPLAY_CHAT,
@@ -28,15 +30,26 @@ data class Transmission(
 	var prefixByLevel: Boolean = true,
 ) {
 
-	constructor(legacyMessage: String) : this(content = legacyMessage.asStyledComponent)
+	constructor(legacyMessage: String) : this(content = listOf(legacyMessage.asStyledComponent))
 
-	constructor(componentLike: ComponentLike) : this(content = componentLike.asComponent())
+	constructor(componentLike: ComponentLike) : this(content = listOf(componentLike.asComponent()))
+
+	constructor(legacyMessageLines: Array<String>) : this(content = legacyMessageLines.map { it.asComponent })
+
+	constructor(componentLikeLines: List<ComponentLike>) : this(content = componentLikeLines.map { it.asComponent() })
 
 	infix fun edit(action: Transmission.() -> Unit) = apply(action)
 
 	infix fun prefix(prefix: Component) = edit { this.prefix = prefix }
 
-	infix fun content(content: Component) = edit { this.content = content }
+	infix fun content(content: ComponentLike) = edit { this.content = listOf(content.asComponent()) }
+
+	infix fun content(content: String) = edit { this.content = listOf(content.asComponent) }
+
+	infix fun content(content: List<Component>) = edit { this.content = content }
+
+	@JvmName("contentStrings")
+	infix fun content(content: List<String>) = edit { this.content = content.map { it.asComponent } }
 
 	infix fun participants(participants: Collection<InterchangeExecutor>) = edit { this.participants = participants.toMutableList() }
 
@@ -51,15 +64,23 @@ data class Transmission(
 	fun display(): Transmission {
 		val nextRound = mutableSetOf<Entity>()
 
-		val displayObject = (if (prefixByLevel) lang("system.${level.prefixLink.addressObject}").asStyledComponent else prefix ?: JetData.systemPrefix.content.asStyledComponent).append(content)
+		val prefix = if (prefixByLevel) {
+			lang("system.${level.prefixLink.addressObject}").asStyledComponent
+		} else {
+			prefix ?: JetData.systemPrefix.content.asStyledComponent
+		}
+
+		val displayObject = content.map {
+			prefix.append(it)
+		}
 
 		for (participant in participants) {
 
 			when (displayType) {
-				DISPLAY_CHAT -> participant.sendMessage(displayObject)
-				DISPLAY_ACTIONBAR -> participant.sendActionBar(displayObject)
-				DISPLAY_TITLE -> participant.showTitle(Title.title(displayObject, Component.empty()))
-				DISPLAY_SUBTITLE -> participant.showTitle(Title.title(Component.empty(), displayObject))
+				DISPLAY_CHAT -> displayObject.forEach { participant.sendMessage(it) }
+				DISPLAY_ACTIONBAR -> participant.sendActionBar(displayObject.first())
+				DISPLAY_TITLE -> participant.showTitle(Title.title(displayObject.first(), Component.empty()))
+				DISPLAY_SUBTITLE -> participant.showTitle(Title.title(Component.empty(), displayObject.first()))
 			}
 
 			if (participant is Entity)
@@ -76,7 +97,7 @@ data class Transmission(
 		.participants(onlinePlayers + consoleSender)
 		.display()
 
-	override fun toString() = content.asString
+	override fun toString() = content.map(Component::asString).joinToString("\n")
 
 	enum class Level(
 		val promptSound: SoundMelody?,
