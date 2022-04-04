@@ -10,6 +10,10 @@ import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.paper.getOfflinePlayer
 import de.jet.paper.tool.display.item.quirk.Quirk.Companion.skullQuirk
+import de.jet.unfold.extension.asComponent
+import de.jet.unfold.text
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
 
 object SkullLibrary {
@@ -59,13 +63,21 @@ object SkullLibrary {
 			}
 		}
 
-		label = skull?.displayName ?: "Unknown Head"
-		lore = buildString {
-			appendLine()
-			appendLine("Categories:")
+		label = (skull?.displayName ?: "Unknown Head").asComponent
+		lore = buildList {
+			add(Component.empty())
+			add(text("Categories:"))
 			skull?.description?.split("|")?.forEach { category ->
-				appendLine("§7- §e$category")
-			} ?: appendLine("Unknown")
+				add(text {
+					text("- ") {
+						color(NamedTextColor.GRAY)
+					}
+					text(category) {
+						color(NamedTextColor.YELLOW)
+					}
+				})
+			} ?: add(text("Unknown"))
+			add(Component.empty())
 		}
 	}
 

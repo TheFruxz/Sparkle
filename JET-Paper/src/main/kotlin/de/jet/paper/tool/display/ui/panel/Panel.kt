@@ -24,7 +24,8 @@ import de.jet.paper.tool.display.ui.inventory.Container
 import de.jet.paper.tool.effect.sound.SoundMelody
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
-import de.jet.unfold.extension.legacyString
+import de.jet.unfold.extension.asString
+import de.jet.unfold.extension.isEmpty
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
@@ -63,13 +64,13 @@ data class Panel(
 	var onOpenEvent: PanelOpenEvent.() -> Unit = { },
 	var onCloseEvent: PanelCloseEvent.() -> Unit = { },
 	var icon: Item = theme.wool.item.apply {
-		lore = """
-			
-			This panel has no icon, override
-			this example by replacing the
-			icon variable at your panel.
-			   
-		""".trimIndent()
+		lore = buildList {
+			add(Component.empty())
+			add(Component.text("This panel has no icon, override"))
+			add(Component.text("this example by replacing the"))
+			add(Component.text("icon variable at your panel."))
+			add(Component.empty())
+		}
 	},
 	var overridingBorderProtection: Boolean = true,
 	val generateBorder: Boolean = true,
@@ -454,7 +455,7 @@ data class Panel(
 			set(4, this@with.icon.apply {
 
 				if (label.isEmpty()) {
-					label = this@with.label.legacyString
+					label = this@with.label
 				}
 
 				dataPut(panelIdentificationKey, this@with.identity, true)

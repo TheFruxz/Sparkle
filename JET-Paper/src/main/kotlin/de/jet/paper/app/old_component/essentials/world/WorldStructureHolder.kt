@@ -18,7 +18,7 @@ interface WorldStructureObject : DataStructureItem {
 
 	fun renderLabels() = with(labels) { isEmpty().switchResult("No Labels", joinToString())}
 
-	fun renderArchiveStatus() = archived.switchResult("§bArchived", "§aActive")
+	fun renderArchiveStatus() = archived.switchResult("<aqua>Archived", "<green>Active")
 
 }
 

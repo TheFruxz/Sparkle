@@ -29,7 +29,7 @@ object JetData {
 		file = CONFIG,
 		useCache = true,
 		path = jetPath("prefix"),
-		default = "§6JET §8» ",
+		default = "<gold>JET <dark_gray>» ",
 	).transformer(DataTransformer.simpleColorCode())
 
 	val systemLanguage = Preference(

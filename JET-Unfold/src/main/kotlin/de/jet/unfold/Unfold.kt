@@ -18,7 +18,7 @@ fun text(build: TextComponent.Builder.() -> Unit) =
 	Component.text().apply(build).build()
 
 fun text(componentContent: String) =
-	Component.text().append(componentContent.transform())
+	Component.text().append(componentContent.transform()).build()
 
 fun space() = Component.space()
 

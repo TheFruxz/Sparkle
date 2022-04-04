@@ -85,7 +85,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 							lang("interchange.internal.buildmode.list.line").replaceVariables(
 								"player" to player.name,
-								"statusColor" to player.isOnline.switchResult("§a§l", "§7§l")
+								"statusColor" to player.isOnline.switchResult("<green>", "<gray>")
 							).let(::appendLine)
 
 						}
@@ -230,7 +230,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 						val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
 
 						lang("interchange.internal.buildmode.info").replaceVariables(
-							"state" to target.buildMode.switchResult("§a§lenabled", "§c§ldisabled"),
+							"state" to target.buildMode.switchResult("<green><bold>enabled</bold>", "<red><bold>disabled</bold>"),
 							"player" to target.name
 						).notification(INFO, executor).display()
 

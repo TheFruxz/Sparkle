@@ -6,8 +6,8 @@ import com.destroystokyo.paper.entity.ai.MobGoals
 import de.jet.jvm.extension.classType.UUID
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.extension.interchange.InterchangeExecutor
-import de.jet.unfold.extension.adventureComponent
-import de.jet.unfold.extension.legacyString
+import de.jet.unfold.extension.asComponent
+import de.jet.unfold.extension.asString
 import io.papermc.paper.datapack.DatapackManager
 import net.kyori.adventure.text.Component
 import org.bukkit.*
@@ -75,9 +75,9 @@ fun banIP(address: String) = Bukkit.banIP(address)
 
 fun broadcast(message: Component, permission: String) = Bukkit.broadcast(message, permission)
 
-fun broadcast(message: String, permission: String) = broadcast(message.adventureComponent, permission)
+fun broadcast(message: String, permission: String) = broadcast(message.asComponent, permission)
 
-fun broadcastMessage(message: String) = Bukkit.broadcast(message.adventureComponent, "")
+fun broadcastMessage(message: String) = Bukkit.broadcast(message.asComponent, "")
 
 fun clearRecipes() = Bukkit.clearRecipes()
 
@@ -101,19 +101,19 @@ fun createExplorerMap(world: World, location: Location, structureType: Structure
 
 fun createInventory(owner: InventoryHolder?, size: Int) = Bukkit.createInventory(owner, size)
 
-fun createInventory(owner: InventoryHolder?, size: Int, title: String) = createInventory(owner, size, title.adventureComponent)
+fun createInventory(owner: InventoryHolder?, size: Int, title: String) = createInventory(owner, size, title.asComponent)
 
 fun createInventory(owner: InventoryHolder?, size: Int, title: Component) = Bukkit.createInventory(owner, size, title)
 
 fun createInventory(owner: InventoryHolder?, type: InventoryType) = Bukkit.createInventory(owner, type)
 
-fun createInventory(owner: InventoryHolder?, type: InventoryType, title: String) = createInventory(owner, type, title.adventureComponent)
+fun createInventory(owner: InventoryHolder?, type: InventoryType, title: String) = createInventory(owner, type, title.asComponent)
 
 fun createInventory(owner: InventoryHolder?, type: InventoryType, title: Component) = Bukkit.createInventory(owner, type, title)
 
 fun createMap(world: World) = Bukkit.createMap(world)
 
-fun createMerchant(title: String) = createMerchant(title.adventureComponent)
+fun createMerchant(title: String) = createMerchant(title.asComponent)
 
 fun createMerchant(title: Component) = Bukkit.createMerchant(title)
 
@@ -227,7 +227,7 @@ val mobGoals: MobGoals
 val monsterSpawnLimit: Int
 	get() = Bukkit.getMonsterSpawnLimit()
 
-fun getMessageOfTheDay() = motd.legacyString
+fun getMessageOfTheDay() = motd.asString
 
 val motd: Component
 	get() = Bukkit.motd()
@@ -272,7 +272,7 @@ val serverIcon: CachedServerIcon?
 val servicesManager: ServicesManager
 	get() = Bukkit.getServicesManager()
 
-fun getShutdownMessage() = shutdownMessage?.legacyString
+fun getShutdownMessage() = shutdownMessage?.asString
 
 val shutdownMessage: Component?
 	get() = Bukkit.shutdownMessage()

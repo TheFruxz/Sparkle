@@ -88,6 +88,9 @@ class LanguageSpeaker(
 		@JvmStatic
 		val smartColorReplace = smartColors.mapValues { "§${it.value.char}" }
 
+
+		// TODO rework this whole stuff, because of the MiniMessage legacy stuff
+
 	}
 
 }

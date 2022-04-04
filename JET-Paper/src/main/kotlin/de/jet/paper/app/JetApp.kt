@@ -1,6 +1,7 @@
 package de.jet.paper.app
 
 import de.jet.jvm.extension.data.addJetJsonModuleModification
+import de.jet.jvm.extension.div
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.extension.tryToIgnore
 import de.jet.jvm.tool.smart.identification.Identity
@@ -26,6 +27,7 @@ import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.Render
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderWorld
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.WorldStructure
 import de.jet.paper.extension.debugLog
+import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.display.ui.buildContainer
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.objectBound.buildAndRegisterSandBox
@@ -44,6 +46,7 @@ import de.jet.paper.tool.data.Preference
 import de.jet.paper.tool.data.json.JsonConfiguration
 import de.jet.paper.tool.data.json.JsonFileDataElement
 import de.jet.paper.tool.display.item.Modification
+import de.jet.paper.tool.display.message.Transmission.Level.ERROR
 import de.jet.paper.tool.display.world.SimpleLocation
 import de.jet.paper.tool.effect.sound.SoundData
 import de.jet.paper.tool.effect.sound.SoundMelody
@@ -51,6 +54,7 @@ import de.jet.paper.tool.input.Keyboard
 import de.jet.paper.tool.input.Keyboard.RenderEngine.Key
 import de.jet.paper.tool.input.Keyboard.RenderEngine.KeyConfiguration
 import de.jet.paper.tool.permission.Approval
+import de.jet.unfold.extension.asStyledComponent
 import de.jet.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
@@ -58,10 +62,15 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
 import java.util.logging.Level
+import kotlin.io.path.createDirectories
+import kotlin.io.path.createFile
+import kotlin.io.path.exists
+import kotlin.io.path.readText
 
 class JetApp : App() {
 
@@ -192,12 +201,29 @@ class JetApp : App() {
 			executor.sendMessage(text("<yellow>Woo: <gradient:#5e4fa2:#f79459:red>||||||||||||||||||||||||</gradient>!"))
 		}
 
+		buildAndRegisterSandBox(this, "renderDemo") {
+			val file = appFolder / "render.txt"
+
+			if (!file.exists()) {
+				file.parent.createDirectories()
+				file.createFile()
+			}
+
+			executor.sendMessage(file.readText().asStyledComponent)
+
+		}
+
 	}
 
 	override fun bye() {
 
 		val disabledAppExecutor = CommandExecutor { sender, _, _, _ ->
-			sender.sendMessage("§cThis vendor app of this command is currently disabled!")
+
+			text("This vendor app of this command is currently disabled!")
+				.color(NamedTextColor.RED)
+				.notification(ERROR, sender)
+				.display()
+
 			true
 		}
 

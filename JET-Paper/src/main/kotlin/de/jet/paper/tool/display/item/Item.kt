@@ -2,7 +2,6 @@
 
 package de.jet.paper.tool.display.item
 
-import de.jet.jvm.extension.asString
 import de.jet.jvm.extension.data.buildRandomTag
 import de.jet.jvm.extension.forceCast
 import de.jet.jvm.tool.smart.Producible
@@ -23,7 +22,7 @@ import de.jet.paper.tool.display.item.action.ItemClickAction
 import de.jet.paper.tool.display.item.action.ItemDropAction
 import de.jet.paper.tool.display.item.action.ItemInteractAction
 import de.jet.paper.tool.display.item.quirk.Quirk
-import de.jet.unfold.extension.legacyString
+import de.jet.unfold.extension.*
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
 import net.kyori.adventure.text.event.HoverEventSource
@@ -49,9 +48,9 @@ import java.util.function.UnaryOperator
 
 data class Item(
 	var material: Material = STONE,
-	var label: String = "",
+	var label: Component = Component.empty(),
 	var size: Int = 1,
-	var lore: String = "",
+	var lore: List<Component> = emptyList(),
 	var damage: Int = 0,
 	var modifications: MutableSet<Modification> = mutableSetOf(),
 	var flags: MutableSet<ItemFlag> = mutableSetOf(),
@@ -68,9 +67,9 @@ data class Item(
 
 	constructor(itemStack: ItemStack) : this() {
 		material = itemStack.type
-		label = try { itemStack.itemMeta.displayName()?.legacyString ?: "" } catch (e: NullPointerException) { "" }
+		label = itemStack.itemMeta.displayName() ?: Component.empty()
 		size = itemStack.amount
-		lore = itemStack.lore()?.joinToString("\n") { it.legacyString } ?: ""
+		lore = itemStack.lore() ?: emptyList()
 		damage = if (itemStack.itemMeta is Damageable) {
 			(itemStack.itemMeta as Damageable).damage
 		} else 0
@@ -109,8 +108,8 @@ data class Item(
 		get() = Component.text()
 			.append(Component.text("[", NamedTextColor.WHITE))
 			.append(
-				(if (label.isNotBlank()) {
-					Component.text(label, NamedTextColor.WHITE)
+				(if (label.asStyledString.isNotBlank()) {
+					label.color(NamedTextColor.WHITE)
 				} else
 					Component.translatable(material.translationKey(), NamedTextColor.WHITE))
 					.hoverEvent(this)
@@ -123,15 +122,12 @@ data class Item(
 
 			label.let {
 				if (it.isNotEmpty()) {
-					@Suppress("RemoveSingleExpressionStringTemplate")
 					displayName(Component.text("$it"))
 				}
 			}
 
-			if (this@Item.lore.isNotBlank() && this@Item.lore.isNotEmpty())
-				lore(this@Item.lore.lines().map {
-					Component.text("$WHITE$it").asComponent()
-				}.toList())
+			if (this@Item.lore.isNotEmpty() && this@Item.lore.any { it.isNotBlank() } )
+				lore(this@Item.lore)
 
 			if (flags.isNotEmpty())
 				addItemFlags(*flags.toTypedArray())
@@ -220,7 +216,7 @@ data class Item(
 		else -> throw IllegalArgumentException("The data '$any' is not compatible with the data-cache")
 	}
 
-	fun dataGet(path: NamespacedKey) = dataGet(path.asString)
+	fun dataGet(path: NamespacedKey) = dataGet(path.toString())
 
 	fun dataGet(location: String) = data[location]
 
@@ -318,7 +314,6 @@ data class Item(
 		apply { this.modifications.removeAll(modifications.toSet()) }
 
 
-
 	fun annexFlags(flags: Collection<ItemFlag>) =
 		apply { this.flags.addAll(flags) }
 
@@ -342,7 +337,6 @@ data class Item(
 
 	fun dropFlags(vararg flags: ItemFlag) =
 		apply { this.flags.removeAll(flags.toSet()) }
-
 
 
 	fun annexPostProperties(postProperties: Collection<PostProperty>) =
@@ -400,12 +394,25 @@ data class Item(
 		apply { this.material = material }
 
 	fun putLabel(label: String) =
+		apply { this.label = label.asComponent }
+
+	fun putLabel(label: Component) =
 		apply { this.label = label }
 
 	fun putSize(size: Int) =
 		apply { this.size = size }
 
 	fun putLore(lore: String) =
+		apply { this.lore = listOf(lore.asComponent) }
+
+	fun putLore(lore: List<String>) =
+		apply { this.lore = lore.map { it.asComponent } }
+
+	fun putLore(lore: Component) =
+		apply { this.lore = listOf(lore) }
+
+	@JvmName("putLoreComponents")
+	fun putLore(lore: List<Component>) =
 		apply { this.lore = lore }
 
 	fun putDamage(damage: Int) =
@@ -438,7 +445,7 @@ data class Item(
 		apply { postProperties.remove(BLANK_LABEL) }
 
 	fun emptyLabel() =
-		apply { label = "" }
+		apply { label = Component.empty() }
 
 	// computation
 
@@ -559,7 +566,7 @@ data class Item(
 				persistentDataContainer.keys.forEach {
 					persistentDataTypes.forEach { type ->
 						try {
-							persistentDataContainer[it, type]?.let { it1 -> put(it.asString, it1) }
+							persistentDataContainer[it, type]?.let { it1 -> put(it.toString(), it1) }
 						} catch (e: NullPointerException) {
 							throw NoSuchElementException("Element '$it' is not contained!")
 						} catch (ignore: IllegalArgumentException) {

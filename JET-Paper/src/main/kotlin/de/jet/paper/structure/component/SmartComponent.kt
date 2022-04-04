@@ -161,7 +161,7 @@ abstract class SmartComponent(
 
 			override val execution = execution {
 
-				"§c§lSORRY!§7 The providing component '§e$identity§7' is currently §cdisabled§7!"
+				"<red><bold>SORRY!</bold><gray> The providing component '<yellow>$identity<gray>' is currently <red>disabled<gray>!"
 					.notification(FAIL, executor).display()
 
 				SUCCESS
