@@ -1,20 +1,11 @@
 package de.jet.paper.app.interchange
 
-import de.jet.jvm.extension.container.replace
 import de.jet.jvm.extension.container.replaceVariables
-import de.jet.paper.extension.display.BOLD
-import de.jet.paper.extension.display.GOLD
-import de.jet.paper.extension.display.GRAY
-import de.jet.paper.extension.display.YELLOW
 import de.jet.paper.extension.display.message
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.lang
-import de.jet.paper.structure.command.Interchange
-import de.jet.paper.structure.command.InterchangeResult.SUCCESS
-import de.jet.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.jet.paper.structure.command.StructuredInterchange
 import de.jet.paper.structure.command.completion.buildInterchangeStructure
-import de.jet.paper.structure.command.execution
 import de.jet.paper.tool.display.message.Transmission.Level.GENERAL
 import de.jet.paper.tool.display.message.Transmission.Level.INFO
 import de.jet.unfold.newline
@@ -23,7 +14,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style.style
 import net.kyori.adventure.text.format.TextDecoration
 
-class JETInterchange : StructuredInterchange("jet", buildInterchangeStructure {
+class JETInterchange : StructuredInterchange("jet", protectedAccess = false, structure = buildInterchangeStructure {
 
 	concludedExecution {
 
