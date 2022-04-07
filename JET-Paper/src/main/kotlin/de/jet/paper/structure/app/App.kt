@@ -338,13 +338,18 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			}
 
 		} else
-			mainLog(Level.WARNING, "skipped unregistering '${eventListener.listenerIdentity}' listener, app disabled or vendor unreachable!")
+			mainLog(
+				Level.WARNING,
+				"skipped unregistering '${eventListener.listenerIdentity}' listener, app disabled or vendor unreachable!"
+			)
 	}
 
 	fun add(component: Component) {
 		tryToCatch {
 
 			component.replaceVendor(this)
+
+//			if (!component.isBlocked) {
 
 			if (JetCache.registeredComponents.any { it.identity == component.identity })
 				throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
@@ -359,7 +364,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 				mainLog(Level.INFO, "registered '${component.identity}' component!")
 
- 				if (component.isAutoStarting) {
+				if (component.isAutoStarting) {
 
 					mainLog(Level.INFO, "### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
 
@@ -369,6 +374,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 			}
 
+//			} else
+//				mainLog.warning("Component '${component.identity}' is blocked at components.json!")
 		}
 	}
 
@@ -377,11 +384,11 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 		if (component != null) {
 
-			if (!JetCache.runningComponents.contains(componentIdentity)) {
+			if (!component.isBlocked) {
 
-				JetCache.runningComponents[componentIdentity.change()] = Calendar.now()
+				if (!JetCache.runningComponents.contains(componentIdentity)) {
 
-				if (!component.isBlocked) {
+					JetCache.runningComponents[componentIdentity.change()] = Calendar.now()
 
 					coroutineScope.launch(context = component.threadContext) {
 
@@ -392,10 +399,10 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 					}
 
 				} else
-					mainLog.warning("Component '${componentIdentity.identity}' is blocked at components.json!")
+					throw IllegalStateException("The component '$componentIdentity' is already running!")
 
 			} else
-				throw IllegalStateException("The component '$componentIdentity' is already running!")
+				mainLog.warning("Component '${componentIdentity.identity}' is blocked at components.json!")
 
 		} else
 			throw NoSuchElementException("The component '$componentIdentity' is currently not registered! ADD IT!")
@@ -433,7 +440,10 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 					throw IllegalActionException("The component '$componentIdentity' can't be stopped, due to its behavior '${component.behaviour}'!")
 
 			} else
-				mainLog(Level.WARNING, "skipped stopping '${component.identity}' component, app disabled or vendor unreachable!")
+				mainLog(
+					Level.WARNING,
+					"skipped stopping '${component.identity}' component, app disabled or vendor unreachable!"
+				)
 
 		} else
 			throw NoSuchElementException("The component '$componentIdentity' is currently not registered! ADD IT!")
@@ -449,7 +459,10 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 				if (component.isVendorCurrentlySet) {
 					JetCache.registeredComponents.remove(component)
 				} else
-					mainLog(Level.WARNING, "skipped unregistering '${component.identity}' component, app disabled or vendor unreachable!")
+					mainLog(
+						Level.WARNING,
+						"skipped unregistering '${component.identity}' component, app disabled or vendor unreachable!"
+					)
 
 			} else
 				throw NoSuchElementException("The component '$componentIdentity' is already not registered!")

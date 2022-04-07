@@ -30,7 +30,8 @@ internal class ComponentInterchange :
 			"⏻",
 			"⚡",
 			"⏹",
-			"\uD83E\uDDEA"
+			"\uD83E\uDDEA",
+			"❌"
 		)
 
 		fun list(page: Int, executor: InterchangeExecutor) {
@@ -59,7 +60,7 @@ internal class ComponentInterchange :
 					content.forEach { element ->
 						appendLine(
 							lang("interchange.internal.component.list.line").replaceVariables(
-								"status" to if (element.isRunning) "<green>${icons[1]}<gray>" else "<gray>${icons[0]}",
+								"status" to if (element.isBlocked) "<red>${icons[5]}<gray>" else if (element.isRunning) "<green>${icons[1]}<gray>" else "<gray>${icons[0]}",
 								"autoStart" to if (element.isAutoStarting) "<green>${icons[2]}<gray>" else "<gray>${icons[2]}",
 								"force" to if (!element.canBeStopped) "<yellow>${icons[3]}<gray>" else "<gray>${icons[3]}",
 								"experimental" to if (element.experimental) "<yellow>${icons[4]}<gray>" else "<gray>${icons[4]}",
