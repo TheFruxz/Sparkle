@@ -7,14 +7,9 @@ package de.jet.jvm.tool.smart.identification
  * @author Fruxz
  * @since 1.0
  */
-interface Identifiable<T> {
+interface Identifiable<T> : AnonymousIdentifiable {
 
-	/**
-	 * Represents the identity of the object as a [String].
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	val identity: String
+	override val identity: String
 
 	/**
 	 * Represents the identity of the object as an [Identity]
