@@ -7,7 +7,6 @@ import de.jet.jvm.extension.forceCast
 import de.jet.jvm.tool.smart.Producible
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.extension.debugLog
-import de.jet.paper.extension.display.WHITE
 import de.jet.paper.extension.display.ui.changeColor
 import de.jet.paper.extension.paper.createBlockData
 import de.jet.paper.extension.paper.itemFactory
@@ -22,7 +21,10 @@ import de.jet.paper.tool.display.item.action.ItemClickAction
 import de.jet.paper.tool.display.item.action.ItemDropAction
 import de.jet.paper.tool.display.item.action.ItemInteractAction
 import de.jet.paper.tool.display.item.quirk.Quirk
-import de.jet.unfold.extension.*
+import de.jet.unfold.extension.asComponent
+import de.jet.unfold.extension.asStyledString
+import de.jet.unfold.extension.isNotBlank
+import de.jet.unfold.extension.isNotEmpty
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
 import net.kyori.adventure.text.event.HoverEventSource
