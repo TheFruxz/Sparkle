@@ -79,3 +79,14 @@ val jetArtificialPath = ArtificialPath(arrayOf(
  * @since 1.0
  */
 fun getFileViaArtificialPath(path: String) = jetArtificialPath.getFile(path)
+
+/**
+ * This function creates the parent folders and the file
+ * itself, if the file doesn't exist.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun File.generateFileAndPath() {
+    parentFile.mkdirs()
+    createNewFile()
+}
