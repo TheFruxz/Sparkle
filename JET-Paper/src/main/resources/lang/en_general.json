@@ -32,7 +32,7 @@
     "interchange.internal.jet.ping": "<gold><bold><italic>PONG!</italic></bold>",
 
     "interchange.internal.component.alreadyRunning": "<gray>The component '<yellow>[component]<gray>' is <red>already<gray> running!",
-    "interchange.internal.component.blocked": "<gray>The component '<yellow>[component]<gray>' is <red>blocked<gray> in the components.json!",
+    "interchange.internal.component.blocked": "<gray>The component '<yellow>[component]<gray>' is <red>blocked<gray> inside the components.json!",
     "interchange.internal.component.nowRunning": "<gray>The component '<yellow>[component]<gray>' got <green>successfully<gray> started!",
     "interchange.internal.component.missingRunning": "<gray>The component '<yellow>[component]<gray>' is <red>not<gray> running!",
     "interchange.internal.component.nowStopped": "<gray>The component '<yellow>[component]<gray>' got <green>successfully<gray> stopped!",
