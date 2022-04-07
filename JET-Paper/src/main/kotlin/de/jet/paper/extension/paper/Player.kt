@@ -4,13 +4,17 @@ import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.paper.app.JetCache
 import de.jet.paper.app.component.buildMode.BuildModeComponent
 import de.jet.paper.tool.annotation.RequiresComponent
-import de.jet.paper.tool.permission.Approval
 import de.jet.paper.tool.position.LocationBox
 import org.bukkit.OfflinePlayer
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
-import org.bukkit.permissions.Permissible
+
+val OfflinePlayer.identityObject: Identity<OfflinePlayer>
+	get() = Identity("$uniqueId")
+
+val Player.identityObject : Identity<Player>
+	get() = Identity("$uniqueId")
 
 @Suppress("DEPRECATION")
 var LivingEntity.quickMaxHealth: Double
@@ -22,12 +26,6 @@ var LivingEntity.quickMaxHealth: Double
 fun LivingEntity.maxOutHealth() {
 	health = quickMaxHealth
 }
-
-val Player.identityObject: Identity<Player>
-	get() = Identity("$uniqueId")
-
-val OfflinePlayer.identityObject: Identity<OfflinePlayer>
-	get() = Identity("$uniqueId")
 
 @RequiresComponent(BuildModeComponent::class)
 var OfflinePlayer.buildMode: Boolean

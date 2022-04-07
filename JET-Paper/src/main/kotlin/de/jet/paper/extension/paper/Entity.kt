@@ -3,7 +3,7 @@ package de.jet.paper.extension.paper
 import de.jet.jvm.tool.smart.identification.Identity
 import org.bukkit.entity.Entity
 
-val Entity.identityObject: Identity<Entity>
+val <T : Entity> T.identityObject: Identity<T>
 	get() = Identity("$uniqueId")
 
 /**
