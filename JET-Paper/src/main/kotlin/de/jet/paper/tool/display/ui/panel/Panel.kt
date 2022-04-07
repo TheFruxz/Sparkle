@@ -24,9 +24,9 @@ import de.jet.paper.tool.display.ui.inventory.Container
 import de.jet.paper.tool.effect.sound.SoundMelody
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
-import de.jet.unfold.extension.asString
 import de.jet.unfold.extension.isEmpty
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.ComponentLike
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
@@ -170,6 +170,15 @@ data class Panel(
 	 */
 	fun blankLabel() {
 		label = Component.space()
+	}
+
+	/**
+	 * This function replaces the [Panel.label] with the provided [label] component.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun label(label: ComponentLike) {
+		this.label = label.asComponent()
 	}
 
 	/**
