@@ -1,16 +1,15 @@
 package de.jet.paper.structure.component
 
-import de.jet.jvm.extension.container.toggle
 import de.jet.jvm.extension.tryToResult
 import de.jet.jvm.tool.smart.identification.Identity
 import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.app.JetCache
-import de.jet.paper.app.JetData
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.paper.createKey
 import de.jet.paper.extension.runIfAutoRegister
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.component.Component.RunType.*
+import de.jet.paper.structure.component.file.ComponentManager
 import de.jet.paper.tool.smart.ContextualIdentifiable
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorOnDemand
@@ -74,25 +73,12 @@ abstract class Component(
 
 	fun firstContactHandshake() {
 		debugLog("starting firstContactHandshake function of component '$identity'!")
-		if (!JetData.touchedComponents.content.contains(identity)) {
+		val component = ComponentManager.getComponent(identityObject)
+		if (component == null) {
 			debugLog("result: never touched '$identity'!")
-			if (setOf(AUTOSTART_IMMUTABLE, AUTOSTART_MUTABLE).contains(behaviour)) {
 
-				if (behaviour == AUTOSTART_MUTABLE) {
-					debugLog("Component-Behaviour of '$identity' is AUTOSTART_MUTABLE; Checking if not auto-start...")
-					if (!JetData.autoStartComponents.content.contains(identity)) {
-						debugLog("Adding Component '$identity' to auto-start set; was not known and want auto-start!")
-						JetData.autoStartComponents.content = JetData.autoStartComponents.content.toMutableSet().apply {
-							add(identity)
-						}
-					}
-				}
+			ComponentManager.registerComponent(this)
 
-				JetData.touchedComponents.content += identity
-				debugLog("Remembering: I've stayed in touch with the '$identity'-component!")
-
-			} else
-				debugLog("AutoStart setup was not required, '$identity' does not request auto-start!")
 		} else
 			debugLog("Component '$identity' was already in touch with this system!")
 	}
@@ -103,13 +89,13 @@ abstract class Component(
 				true
 			}
 			else -> {
-				JetData.autoStartComponents.content.contains(identity)
+				ComponentManager.getComponent(identityObject)?.isAutoStart == true
 			}
 		}
 		internal set(value) {
 			if (canBeAutoStartToggled) {
 
-				JetData.autoStartComponents.content.toMutableSet().toggle(identity, value)
+				ComponentManager.editComponent(identityObject, isAutoStart = value)
 
 			} else
 				throw IllegalArgumentException("Component '$identity' cannot be toggled!")
@@ -123,6 +109,9 @@ abstract class Component(
 
 	val runningSince: Calendar?
 		get() = JetCache.runningComponents[identityObject]
+
+	val isBlocked: Boolean
+		get() = ComponentManager.getComponent(identityObject)?.isBlocked == true
 
 	/**
 	 * Can be overwritten, no origin code!
@@ -260,6 +249,9 @@ abstract class Component(
 		 *
 		 */
 		ENABLED;
+
+		val defaultIsAutoStart: Boolean
+			get() = this != DISABLED
 
 	}
 

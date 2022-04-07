@@ -381,13 +381,18 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 				JetCache.runningComponents[componentIdentity.change()] = Calendar.now()
 
-				coroutineScope.launch(context = component.threadContext) {
+				if (!component.isBlocked) {
 
-					component.start()
+					coroutineScope.launch(context = component.threadContext) {
 
-					mainLog(Level.INFO, "started '${componentIdentity.identity}' component!")
+						component.start()
 
-				}
+						mainLog(Level.INFO, "started '${componentIdentity.identity}' component!")
+
+					}
+
+				} else
+					mainLog.warning("Component '${componentIdentity.identity}' is blocked at components.json!")
 
 			} else
 				throw IllegalStateException("The component '$componentIdentity' is already running!")
