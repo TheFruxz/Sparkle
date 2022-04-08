@@ -4,7 +4,6 @@ import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.paper.extension.paper.bukkitVersion
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.component.Component
-import de.jet.paper.tool.smart.VendorsIdentifiable
 import org.bukkit.configuration.file.YamlConfiguration
 import java.nio.file.Path
 import kotlin.io.path.Path
@@ -79,11 +78,14 @@ interface JetYamlFile : JetFile {
 			generateYaml(rootPath() / "$fileName.$extension")
 
 		@JvmStatic
-		fun componentPath(component: VendorsIdentifiable<Component>) =
-			Path("JETData") / "#${component.identity}@${component.vendorIdentity.identity}"
+		fun componentPath(component: Identifiable<out Component>) =
+			Path("JETData") / "#${
+				with(component.identity.split(":")) {
+					"${this[1]}@${this[0]}"
+				}}"
 
 		@JvmStatic
-		fun componentFile(component: VendorsIdentifiable<Component>, fileName: String, extension: String = "yml"): JetFile =
+		fun componentFile(component: Identifiable<out Component>, fileName: String, extension: String = "yml"): JetFile =
 			generateYaml(componentPath(component) / "$fileName.$extension")
 
 		@JvmStatic

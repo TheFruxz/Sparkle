@@ -25,7 +25,7 @@ dependencies {
     // Internal
 
     implementation(project(":JET-JVM"))
-    implementation(project(":JET-Unfold"))
+    api(project(":JET-Unfold"))
 
     shadow(project(":JET-JVM")) {
         isTransitive = false

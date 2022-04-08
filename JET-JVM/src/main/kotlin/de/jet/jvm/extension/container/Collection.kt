@@ -323,4 +323,18 @@ fun <C : Collection<Duration>> C.max(): Duration =
 fun <C : Collection<Duration>> C.min(): Duration =
 	map(Duration::inWholeMilliseconds).minOf { it }.milliseconds
 
+/**
+ * This function returns, if the current [Iterable] contains the
+ * [element] provided. (compared with [ignoreCase] in mind)
+ */
+fun <C : Iterable<String>> C.contains(element: String, ignoreCase: Boolean = false) =
+	any { it.equals(element, ignoreCase) }
+
+/**
+ * This function returns, if the current [Iterable] contains all
+ * the [elements] provided. (compared with [ignoreCase] in mind)
+ */
+fun <C : Iterable<String>> C.containsAll(elements: Iterable<String>, ignoreCase: Boolean = false) =
+	elements.all { contains(it, ignoreCase) }
+
 
