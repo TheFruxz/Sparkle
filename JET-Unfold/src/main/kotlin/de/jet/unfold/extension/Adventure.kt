@@ -53,6 +53,28 @@ val String.asComponent: TextComponent
 	get() = adventureSerializer.deserializeOr(this, Component.text("FAILED", NamedTextColor.RED))!!
 
 /**
+ * This computational value converts this [String] into a [TextComponent]
+ * list (every list entry is a line) by using the [LegacyComponentSerializer],
+ * provided by the [adventureSerializer] value.
+ * @see adventureSerializer
+ * @author Fruxz
+ * @since 1.0
+ */
+val String.asComponents: List<TextComponent>
+	get() = this.lines().asComponents
+
+/**
+ * This computational value converts this [Iterable] into a [TextComponent]
+ * list (every list entry is a line) by using the [LegacyComponentSerializer],
+ * provided by the [adventureSerializer] value.
+ * @see adventureSerializer
+ * @author Fruxz
+ * @since 1.0
+ */
+val Iterable<String>.asComponents: List<TextComponent>
+	get() = map { it.asComponent }
+
+/**
  * This computational value converts this [ComponentLike]
  * into a [String] by using the [MiniMessage], provided by the
  * [miniMessageSerializer] value.
@@ -75,3 +97,27 @@ val ComponentLike.asStyledString: String
  */
 val String.asStyledComponent: TextComponent
 	get() = Component.text().append(miniMessageSerializer.deserializeOr(this, Component.text("FAILED", NamedTextColor.RED))!!).build()
+
+/**
+ * This computational value converts this [String] into a [TextComponent]
+ * list (every entry represents a line) by using the [MiniMessage], provided by the
+ * [miniMessageSerializer] value.
+ * This is especially adding the [String]-features like `<rainbow>`!
+ * @see miniMessageSerializer
+ * @author Fruxz
+ * @since 1.0
+ */
+val String.asStyledComponents: List<TextComponent>
+	get() = this.lines().asStyledComponents
+
+/**
+ * This computational value converts this [Iterable] into a [TextComponent]
+ * list (every entry represents a line) by using the [MiniMessage], provided by the
+ * [miniMessageSerializer] value.
+ * This is especially adding the [String]-features like `<rainbow>`!
+ * @see miniMessageSerializer
+ * @author Fruxz
+ * @since 1.0
+ */
+val Iterable<String>.asStyledComponents: List<TextComponent>
+	get() = map { it.asStyledComponent }
