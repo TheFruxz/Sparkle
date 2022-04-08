@@ -17,18 +17,18 @@ import org.bukkit.event.block.Action.LEFT_CLICK_BLOCK
 import org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
-import org.bukkit.event.entity.EntityDropItemEvent
 import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.player.PlayerBucketEmptyEvent
 import org.bukkit.event.player.PlayerBucketEntityEvent
 import org.bukkit.event.player.PlayerBucketFillEvent
+import org.bukkit.event.player.PlayerDropItemEvent
 
 internal class BuildModeListener : EventListener() {
 
 	private fun Cancellable.buildModeCancel(entity: Entity, action: BuildModeConfiguration.ProtectedAction, affected: Material?) {
 		val configState = BuildModeManager.state
 
-		if (entity is Player && !entity.buildMode && configState.protectedActions.contains(action) && !configState.ignoredMaterials.contains(affected?.name)) {
+		if (entity is Player && !entity.buildMode && configState.protectedActions.also { println("protected? ($it) -> ") }.contains(action.also { println("e: $it") }).also { println(it) } && !configState.ignoredMaterials.contains(affected?.name)) {
 			this.isCancelled = true
 		}
 	}
@@ -58,8 +58,8 @@ internal class BuildModeListener : EventListener() {
 		event.buildModeCancel(event.entity, PICKUP_ITEM, event.item.itemStack.type)
 
 	@EventHandler
-	fun onItemDrop(event: EntityDropItemEvent) =
-		event.buildModeCancel(event.entity, DROP_ITEM, event.itemDrop.itemStack.type)
+	fun onItemDrop(event: PlayerDropItemEvent) =
+		event.buildModeCancel(event.player, DROP_ITEM, event.itemDrop.itemStack.type)
 
 	@EventHandler
 	fun onBlockInteract(event: PlayerInteractAtBlockEvent) {
