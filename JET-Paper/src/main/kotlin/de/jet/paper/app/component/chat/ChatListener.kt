@@ -1,5 +1,6 @@
 package de.jet.paper.app.component.chat
 
+import de.jet.jvm.extension.container.replacePrefix
 import de.jet.paper.extension.display.buildTextComponent
 import de.jet.paper.extension.paper.consoleSender
 import de.jet.paper.extension.paper.getPlayer
@@ -11,6 +12,7 @@ import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.sound.Sound.Source.MASTER
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
+import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING
 import org.bukkit.entity.Player
@@ -24,7 +26,7 @@ internal class ChatListener : EventListener() {
 		val player = event.player
 		val notify = mutableSetOf<UUID>()
 		val message = buildTextComponent {
-			event.message().asString.split(" ").forEach { snipped ->
+			event.message().asString.replacePrefix("./", "/").split(" ").forEach { snipped ->
 				val tagged = getPlayer(snipped.removePrefix("@"))
 
 				append(Component.text(" "))
@@ -34,6 +36,8 @@ internal class ChatListener : EventListener() {
 					notify.add(tagged.uniqueId)
 				} else if (snipped.startsWith("#") && snipped.length > 1) {
 					append(Component.text(snipped, NamedTextColor.YELLOW))
+				} else if (snipped.startsWith("/") && snipped.length > 1) {
+					append(Component.text(snipped, NamedTextColor.AQUA).clickEvent(ClickEvent.suggestCommand(snipped)))
 				} else if (snipped.equals("[item]", true)) {
 					append(player.inventory.itemInMainHand.displayName().hoverEvent(player.inventory.itemInMainHand).color(
 						NamedTextColor.GRAY))
