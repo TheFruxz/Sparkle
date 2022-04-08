@@ -25,7 +25,7 @@ dependencies {
     // Internal
 
     implementation(project(":JET-JVM"))
-    api(project(":JET-Unfold"))
+    implementation(project(":JET-Unfold"))
 
     shadow(project(":JET-JVM")) {
         isTransitive = false
@@ -44,6 +44,12 @@ dependencies {
     // External
 
     implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
+
+    implementation("io.ktor:ktor-client-core-jvm:2.0.0") // Ktor
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
+    implementation("io.ktor:ktor-client-cio:2.0.0")
+    implementation("io.ktor:ktor-client-content-negotiation:2.0.0")
+
     compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT") // PaperMC
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") // Head-Database
 
@@ -59,7 +65,10 @@ dependencies {
     shadow("org.jetbrains.exposed:exposed-dao:0.37.3")
     shadow("org.jetbrains.exposed:exposed-jdbc:0.37.3")
 
-    shadow("com.github.CoasterFreakDE:minecraft-spigot-rgb-chat-support:1.0.5")
+    shadow("io.ktor:ktor-client-core-jvm:2.0.0") // Ktor
+    shadow("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
+    shadow("io.ktor:ktor-client-cio:2.0.0")
+    shadow("io.ktor:ktor-client-content-negotiation:2.0.0")
 
     shadow("net.kyori:adventure-api:4.10.1")
     shadow("net.kyori:adventure-text-serializer-legacy:4.10.1")
