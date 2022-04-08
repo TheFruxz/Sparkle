@@ -5,6 +5,7 @@ package de.jet.paper.structure.app
 import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.jet.jvm.extension.catchException
 import de.jet.jvm.extension.container.mutableReplaceWith
+import de.jet.jvm.extension.data.jsonBase
 import de.jet.jvm.extension.tryToCatch
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
@@ -24,6 +25,10 @@ import de.jet.paper.structure.command.Interchange
 import de.jet.paper.structure.component.Component
 import de.jet.paper.structure.service.Service
 import de.jet.paper.tool.data.JetYamlFile
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -497,6 +502,20 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	val coroutineScope: CoroutineScope
 		get() = companion.coroutineScope
+
+	/**
+	 * This [lazy] value represents a [HttpClient] via Ktor.
+	 * It's not occupied at default, so you can use it freely!
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val httpClient by lazy {
+		HttpClient(CIO) {
+			install(ContentNegotiation) {
+				json(jsonBase)
+			}
+		}
+	}
 
 	val log by lazy { createLog(appIdentity) }
 

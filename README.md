@@ -149,10 +149,24 @@ If you have any questions, suggestions or other items you would like to contribu
 
 ## Sidenotes
 
-- JET-Paper-Runnable includes these dependencies
+JET-Paper-Runnable includes these small amount of dependencies
+
+  - Kotlin Standard Library
+  - Kotlin Standard Library JDK8
   - Kotlin Reflect
   - KotlinX Serialization JSON
-  - KotlinX Coroutines
+  - KotlinX Coroutines Core
+  - SLF4J
+  - JetBrains Exposed Core
+  - JetBrains Exposed DAO
+  - JetBrains Exposed JDBC
+  - Ktor Client Core JVM
+  - Ktor Serialization KotlinX JSON
+  - Ktor Client CIO
+  - Ktor Client Content Negotiation
+  - Adventure API
+  - Adventure text Serializer Legacy
+  - Adventure text MiniMessage
 
 
 ###### We build & use JET on Java 17 - [Eclipse Temurin](https://adoptium.net/).
