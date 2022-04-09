@@ -1,10 +1,13 @@
 package de.jet.paper.extension.display.ui
 
+import de.jet.jvm.extension.data.url
+import de.jet.jvm.extension.tryOrNull
+import de.jet.paper.extension.mojang.getMojangProfile
 import de.jet.paper.extension.paper.getOfflinePlayer
 import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.color.DyeableMaterial
 import de.jet.paper.tool.display.item.Item
-import de.jet.paper.tool.display.item.quirk.Quirk
+import de.jet.paper.tool.display.item.quirk.Quirk.Companion.skullQuirk
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
@@ -67,8 +70,56 @@ fun item(material: Material) = material.item
 
 fun item(itemStack: ItemStack) = itemStack.item
 
-fun skull(owner: String) = Material.PLAYER_HEAD.item.putQuirk(Quirk.skull { owningPlayer = getOfflinePlayer(owner) })
+fun skull(owner: String) = Material.PLAYER_HEAD.item.apply {
+	skullQuirk {
+		val ownerProfile = tryOrNull { getMojangProfile(owner) }
 
-fun skull(owner: UUID) = Material.PLAYER_HEAD.item.putQuirk(Quirk.skull { owningPlayer = getOfflinePlayer(owner) })
+		owningPlayer = getOfflinePlayer("MHF_Question")
 
-fun skull(owner: OfflinePlayer) = Material.PLAYER_HEAD.item.putQuirk(Quirk.skull { owningPlayer = owner })
+		if (ownerProfile != null) {
+			playerProfile = playerProfile!!.apply {
+				setTextures(textures.apply {
+					this.skin = url(ownerProfile.textures.skin.url)
+					this.cape = url(ownerProfile.textures.cape.url)
+				})
+			}
+			playerProfile!!.complete(true, true)
+		}
+	}
+}
+
+fun skull(owner: UUID) = Material.PLAYER_HEAD.item.apply {
+	skullQuirk {
+		val ownerProfile = tryOrNull { getMojangProfile(owner) }
+
+		owningPlayer = getOfflinePlayer("MHF_Question")
+
+		if (ownerProfile != null) {
+			playerProfile = playerProfile!!.apply {
+				setTextures(textures.apply {
+					this.skin = url(ownerProfile.textures.skin.url)
+					this.cape = url(ownerProfile.textures.cape.url)
+				})
+			}
+			playerProfile!!.complete(true, true)
+		}
+	}
+}
+
+fun skull(owner: OfflinePlayer) = Material.PLAYER_HEAD.item.apply {
+	skullQuirk {
+		val ownerProfile = tryOrNull { getMojangProfile(owner.uniqueId) }
+
+		owningPlayer = getOfflinePlayer("MHF_Question")
+
+		if (ownerProfile != null) {
+			playerProfile = playerProfile!!.apply {
+				setTextures(textures.apply {
+					this.skin = url(ownerProfile.textures.skin.url)
+					this.cape = url(ownerProfile.textures.cape.url)
+				})
+			}
+			playerProfile!!.complete(true, true)
+		}
+	}
+}
