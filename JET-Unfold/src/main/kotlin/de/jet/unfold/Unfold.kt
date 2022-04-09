@@ -2,23 +2,23 @@
 
 package de.jet.unfold
 
+import de.jet.unfold.extension.asStyledComponent
 import io.ktor.http.*
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEventSource
-import net.kyori.adventure.text.minimessage.MiniMessage
 import java.io.File
 import java.net.URL
 import java.nio.file.Path
 
-private fun String.transform() = Component.text().append(MiniMessage.miniMessage().deserialize(this)).build()
+private fun String.transform() = this.asStyledComponent
 
 fun text(build: TextComponent.Builder.() -> Unit) =
 	Component.text().apply(build).build()
 
 fun text(componentContent: String) =
-	Component.text().append(componentContent.transform()).build()
+	componentContent.transform()
 
 fun space() = Component.space()
 
