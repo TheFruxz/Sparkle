@@ -5,9 +5,8 @@ import de.jet.jvm.extension.container.orEmptyMutableList
 import de.jet.jvm.extension.tryOrNull
 import de.jet.jvm.tool.smart.identification.Identifiable
 import de.jet.jvm.tool.smart.identification.Identity
+import de.jet.paper.app.JetApp
 import de.jet.paper.app.JetCache
-import de.jet.paper.extension.display.BOLD
-import de.jet.paper.extension.display.YELLOW
 import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.display.ui.panelIdentificationKey
 import de.jet.paper.extension.paper.createInventory
@@ -25,8 +24,13 @@ import de.jet.paper.tool.effect.sound.SoundMelody
 import de.jet.paper.tool.smart.Logging
 import de.jet.paper.tool.smart.VendorsIdentifiable
 import de.jet.unfold.extension.isEmpty
+import de.jet.unfold.text
+import kotlinx.coroutines.launch
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.Style
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
@@ -54,8 +58,8 @@ data class PanelReceiveData(
 
 data class Panel(
 	override var content: MutableMap<Int, Item> = mutableMapOf(),
-	override var label: Component = Component.text("$YELLOW${BOLD}Panel"),
-	val lines: Int = 3,
+	override var label: Component = text("Panel").style(Style.style(NamedTextColor.YELLOW, TextDecoration.BOLD)).asComponent(),
+	val lines: Int = 5,
 	override var theme: ColorType = ColorType.GRAY,
 	override var openSound: SoundMelody? = null,
 	override var identity: String = "${UUID.randomUUID()}",
@@ -74,6 +78,7 @@ data class Panel(
 	},
 	var overridingBorderProtection: Boolean = true,
 	val generateBorder: Boolean = true,
+	var useSplashScreen: Boolean = true,
 ) : Cloneable, Logging, Container<Panel>(label = label, size = lines * 9, theme = theme, openSound = openSound), VendorsIdentifiable<Panel> {
 
 	/**
@@ -428,7 +433,7 @@ data class Panel(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	private fun complete() {
+	fun complete() {
 		JetCache.completedPanels.add(this)
 	}
 
@@ -448,12 +453,35 @@ data class Panel(
 	 */
 	fun isBorder(item: Item?, generatedCheck: Boolean = generateBorder) = generatedCheck && item?.dataGet(borderKey) == 1
 
+	fun produceState() = with(copy()) {
+
+		complete()
+
+		this@with.content = this@with.content.apply {
+			set(4, this@with.icon.apply {
+
+				if (label.isEmpty()) {
+					label = this@with.label
+				}
+
+				dataPut(panelIdentificationKey, this@with.identity, true)
+
+				if (overridingBorderProtection) {
+					dataPut(borderKey, 1)
+				}
+
+			})
+		}
+
+		return@with rawInventory
+
+	}
+
 	override fun display(humanEntity: HumanEntity) =
 		display(humanEntity, emptyMap())
 
 	override fun display(receiver: Player) =
 		display(humanEntity = receiver)
-
 
 	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>) { with(copy()) {
 		val previousState = this@Panel.content.toMap()
@@ -496,7 +524,18 @@ data class Panel(
 
 			}
 
-			sync { humanEntity.openInventory(editedPanel.rawInventory) }
+			val openingJob = JetApp.coroutineScope.launch {
+				val rawInventory = editedPanel.rawInventory
+				sync {
+					humanEntity.openInventory(rawInventory)
+				}
+			}
+
+			if (useSplashScreen) {
+				sync {
+					JetCache.splashScreens[humanEntity] = openingJob
+				}
+			}
 
 		} else
 			super.display(humanEntity, specificParameters)

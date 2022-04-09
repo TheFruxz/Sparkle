@@ -25,6 +25,9 @@ import de.jet.unfold.extension.asComponent
 import de.jet.unfold.extension.asStyledString
 import de.jet.unfold.extension.isNotBlank
 import de.jet.unfold.extension.isNotEmpty
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
 import net.kyori.adventure.text.event.HoverEventSource
@@ -124,7 +127,7 @@ data class Item(
 
 			label.let {
 				if (it.isNotEmpty()) {
-					displayName(Component.text("$it"))
+					displayName(it)
 				}
 			}
 
@@ -139,43 +142,52 @@ data class Item(
 
 	fun produceJson() = JsonItemStack.toJson(produce())
 
-	override fun produce(): ItemStack {
-		@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
-		val itemMeta = produceItemMeta()
+	override fun produce(): ItemStack = runBlocking {
+		withContext(Dispatchers.IO) {
+			@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
+			val itemMeta = produceItemMeta()
 
-		if (itemMeta != null) {
+			if (itemMeta != null) {
 
-			modificationsToEnchantments(modifications).forEach { (key, value) ->
-				itemMeta.addEnchant(key, value, true)
+				modificationsToEnchantments(modifications).forEach { (key, value) ->
+					itemMeta.addEnchant(key, value, true)
+				}
+
+				if (postProperties.contains(NO_ENCHANTMENTS)) itemMeta.addItemFlags(HIDE_ENCHANTS)
+
+				itemMeta.addItemFlags(*flags.toTypedArray())
+
+				if (!postProperties.contains(NO_IDENTITY))
+					itemMeta.persistentDataContainer.set(
+						identityNamespace,
+						PersistentDataType.STRING,
+						this@Item.identity
+					)
+
+				if (!postProperties.contains(NO_DATA) && data.isNotEmpty())
+					itemMeta.persistentDataContainer.apply { itemStoreApplier() }
+
+				if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
+
+				if (itemActionTags.isNotEmpty()) itemMeta.persistentDataContainer.set(
+					actionsNamespace,
+					PersistentDataType.STRING,
+					itemActionTags.joinToString("|") { it.identity })
+
+				itemStack.itemMeta = itemMeta
+
 			}
 
-			if (postProperties.contains(NO_ENCHANTMENTS)) itemMeta.addItemFlags(HIDE_ENCHANTS)
+			itemStack = itemStack.apply(quirk.itemStackProcessing)
 
-			itemMeta.addItemFlags(*flags.toTypedArray())
+			if (postProperties.contains(BLANK_DATA)) itemStack.addItemFlags(*ItemFlag.values())
 
-			if (!postProperties.contains(NO_IDENTITY))
-				itemMeta.persistentDataContainer.set(identityNamespace, PersistentDataType.STRING, this.identity)
+			productionPlugins.forEach {
+				itemStack = itemStack.apply(it)
+			}
 
-			if (!postProperties.contains(NO_DATA) && data.isNotEmpty())
-				itemMeta.persistentDataContainer.apply { itemStoreApplier() }
-
-			if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
-
-			if (itemActionTags.isNotEmpty()) itemMeta.persistentDataContainer.set(actionsNamespace, PersistentDataType.STRING, itemActionTags.joinToString("|") { it.identity })
-
-			itemStack.itemMeta = itemMeta
-
+			itemStack
 		}
-
-		itemStack = itemStack.apply(quirk.itemStackProcessing)
-
-		if (postProperties.contains(BLANK_DATA)) itemStack.addItemFlags(*ItemFlag.values())
-
-		productionPlugins.forEach {
-			itemStack = itemStack.apply(it)
-		}
-
-		return itemStack
 	}
 
 	fun spawn(location: Location) = location.world.dropItem(location, produce())

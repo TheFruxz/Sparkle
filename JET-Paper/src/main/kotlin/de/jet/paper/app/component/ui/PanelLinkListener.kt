@@ -1,4 +1,4 @@
-package de.jet.paper.app.component.linking
+package de.jet.paper.app.component.ui
 
 import de.jet.jvm.extension.container.firstOrNull
 import de.jet.paper.app.JetCache

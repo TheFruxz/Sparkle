@@ -7,9 +7,6 @@ import de.jet.jvm.extension.math.ceilToInt
 import de.jet.jvm.tool.timing.calendar.Calendar
 import de.jet.paper.app.JetCache.registeredServices
 import de.jet.paper.extension.app
-import de.jet.paper.extension.display.BOLD
-import de.jet.paper.extension.display.GREEN
-import de.jet.paper.extension.display.RED
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.interchange.InterchangeExecutor
 import de.jet.paper.extension.lang
@@ -53,7 +50,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 							appendLine(lang("interchange.internal.service.list.line").replaceVariables(
 								"service" to service.identity,
-								"enabled" to if (service.isRunning) "$GREEN${BOLD}ONLINE" else "$RED${BOLD}OFFLINE",
+								"enabled" to if (service.isRunning) "<green><bold>ONLINE</bold>" else "<red><bold>OFFLINE</bold>",
 								"activeSince" to (Calendar.now().timeInMilliseconds - (service.controller?.startTime
 									?: Calendar.now()).timeInMilliseconds).milliseconds.toString(),
 							))

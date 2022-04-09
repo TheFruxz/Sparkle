@@ -36,6 +36,8 @@ dependencies {
 
     // Kotlin
 
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("stdlib-jdk8"))
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")

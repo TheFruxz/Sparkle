@@ -13,14 +13,12 @@ repositories {
 
 dependencies {
 
-    compileOnly(project(":JET-JVM"))
-    testImplementation(kotlin("test"))
-    implementation(kotlin("reflect"))
+    api(project(":JET-JVM"))
 
-	compileOnly("net.kyori:adventure-api:4.10.1")
-    compileOnly("net.kyori:adventure-text-serializer-legacy:4.10.1")
-    compileOnly("net.kyori:adventure-text-minimessage:4.10.1")
-	compileOnly("io.ktor:ktor-client-core-jvm:2.0.0")
+    api("net.kyori:adventure-api:4.10.1")
+    api("net.kyori:adventure-text-serializer-legacy:4.10.1")
+    api("net.kyori:adventure-text-minimessage:4.10.1")
+    api("io.ktor:ktor-client-core-jvm:2.0.0")
 
 }
 
