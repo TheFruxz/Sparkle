@@ -18,13 +18,14 @@ import de.jet.paper.structure.command.completion.component.CompletionComponent
 import de.jet.paper.structure.command.completion.ignoreCase
 import de.jet.paper.structure.command.completion.mustNotMatchOutput
 import de.jet.paper.tool.display.message.Transmission.Level.*
+import kotlinx.coroutines.runBlocking
 import java.io.FileNotFoundException
 
 internal class ChangeSkinInterchange : StructuredInterchange("changeskin", protectedAccess = true, userRestriction = ONLY_PLAYERS, structure = buildInterchangeStructure {
 
-	fun tryProcess(executor: InterchangeExecutor, parameters: List<String>, process: () -> Unit): Boolean {
+	fun tryProcess(executor: InterchangeExecutor, parameters: List<String>, process: suspend () -> Unit): Boolean {
 		try {
-			process()
+			runBlocking { process() }
 			return true
 		} catch (exception: Exception) {
 
@@ -66,7 +67,7 @@ internal class ChangeSkinInterchange : StructuredInterchange("changeskin", prote
 					if (getInput(1).equals("--reset", true)) {
 
 						sync {
-							tryProcess(executor, parameters, target::resetSkin)
+							runBlocking { tryProcess(executor, parameters, target::resetSkin) }
 						}
 
 						lang["interchange.internal.changeskin.reset"]

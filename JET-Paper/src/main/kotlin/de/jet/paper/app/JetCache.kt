@@ -27,8 +27,10 @@ import de.jet.paper.tool.input.Keyboard.RunningEngine.PlayerKeyboardPort
 import de.jet.paper.tool.position.LocationBox
 import de.jet.paper.tool.timing.cooldown.Cooldown
 import de.jet.paper.tool.timing.tasky.Tasky
+import kotlinx.coroutines.Job
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.HumanEntity
+import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import kotlin.reflect.full.findAnnotations
 
@@ -146,6 +148,10 @@ object JetCache : AppCache {
 	@GlobalData
 	@DataLevel(CLEAR)
 	internal val itemActions = mutableListOf<ItemAction<out Event>>()
+
+	@EntityData
+	@DataLevel(CLEAR)
+	internal val splashScreens = mutableMapOf<Player, Job>()
 
 	private fun entityCleanerObjects(entity: UUID) = mapOf(
 		this::runningKeyboards to { runningKeyboards.removeAll { key, _ -> key.player == entity } },

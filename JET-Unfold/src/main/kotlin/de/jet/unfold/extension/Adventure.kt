@@ -87,7 +87,7 @@ val ComponentLike.asStyledString: String
 	get() = miniMessageSerializer.serialize(asComponent())
 
 /**
- * This computational value converts this [String]into a [TextComponent]
+ * This computational value converts this [String] into a [TextComponent]
  * by using the [MiniMessage], provided by the
  * [miniMessageSerializer] value.
  * This is especially adding the [String]-features like `<rainbow>`!

@@ -14,9 +14,9 @@ fun buildContainer(lines: Int = 3, action: Container<*>.() -> Unit) = Container(
 
 fun emptyContainer(lines: Int = 3) = Container(size = lines*9)
 
-fun buildPanel(lines: Int = 3, generateBorder: Boolean = true, action: Panel.() -> Unit) = Panel(lines = lines, generateBorder = generateBorder).apply(action)
+fun buildPanel(lines: Int = 5, generateBorder: Boolean = true, action: Panel.() -> Unit) = Panel(lines = lines, generateBorder = generateBorder).apply(action)
 
-fun emptyPanel(lines: Int = 3, generateBorder: Boolean = true) = Panel(lines = lines, generateBorder = generateBorder)
+fun emptyPanel(lines: Int = 5, generateBorder: Boolean = true) = Panel(lines = lines, generateBorder = generateBorder)
 
 operator fun <T : Inventory> T.get(slot: Int) = tryOrNull { getItem(slot) }
 

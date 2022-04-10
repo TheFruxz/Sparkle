@@ -17,6 +17,8 @@
     "system.prefix.payment": "<dark_aqua>PAYMENT <dark_gray>» ",
     "system.prefix.applied": "<dark_green>APPLIED <dark_gray>» ",
 
+    "splashscreen.loading": "<bold><gradient:yellow:#eb6b34>Loading...</gradient></bold>",
+
     "interchange.run.issue.wrongApproval": "<gray>This action<red> requires<gray> the approval <yellow>'[approval]'<gray>, to be executed!",
     "interchange.run.issue.wrongUsage": "<gray>Follow the <red>syntax<gray>, to execute this! See:",
     "interchange.run.issue.wrongClient": "<gray>This action<red> needs<gray> you as a '<yellow>[client]<gray>' to be executed!",

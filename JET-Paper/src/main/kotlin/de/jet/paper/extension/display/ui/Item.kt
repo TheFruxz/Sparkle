@@ -8,6 +8,9 @@ import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.color.DyeableMaterial
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.item.quirk.Quirk.Companion.skullQuirk
+import de.jet.unfold.text
+import kotlinx.coroutines.runBlocking
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
@@ -71,8 +74,11 @@ fun item(material: Material) = material.item
 fun item(itemStack: ItemStack) = itemStack.item
 
 fun skull(owner: String) = Material.PLAYER_HEAD.item.apply {
+
+	getOfflinePlayer(owner).name?.let { label = text(it).color(NamedTextColor.YELLOW) }
+
 	skullQuirk {
-		val ownerProfile = tryOrNull { getMojangProfile(owner) }
+		val ownerProfile = tryOrNull { runBlocking { getMojangProfile(owner) } }
 
 		owningPlayer = getOfflinePlayer("MHF_Question")
 
@@ -80,7 +86,6 @@ fun skull(owner: String) = Material.PLAYER_HEAD.item.apply {
 			playerProfile = playerProfile!!.apply {
 				setTextures(textures.apply {
 					this.skin = url(ownerProfile.textures.skin.url)
-					this.cape = url(ownerProfile.textures.cape.url)
 				})
 			}
 			playerProfile!!.complete(true, true)
@@ -89,8 +94,11 @@ fun skull(owner: String) = Material.PLAYER_HEAD.item.apply {
 }
 
 fun skull(owner: UUID) = Material.PLAYER_HEAD.item.apply {
+
+	getOfflinePlayer(owner).name?.let { label = text(it).color(NamedTextColor.YELLOW) }
+
 	skullQuirk {
-		val ownerProfile = tryOrNull { getMojangProfile(owner) }
+		val ownerProfile = tryOrNull { runBlocking { getMojangProfile(owner) } }
 
 		owningPlayer = getOfflinePlayer("MHF_Question")
 
@@ -98,7 +106,6 @@ fun skull(owner: UUID) = Material.PLAYER_HEAD.item.apply {
 			playerProfile = playerProfile!!.apply {
 				setTextures(textures.apply {
 					this.skin = url(ownerProfile.textures.skin.url)
-					this.cape = url(ownerProfile.textures.cape.url)
 				})
 			}
 			playerProfile!!.complete(true, true)
@@ -107,8 +114,11 @@ fun skull(owner: UUID) = Material.PLAYER_HEAD.item.apply {
 }
 
 fun skull(owner: OfflinePlayer) = Material.PLAYER_HEAD.item.apply {
+
+	owner.name?.let { label = text(it).color(NamedTextColor.YELLOW) }
+
 	skullQuirk {
-		val ownerProfile = tryOrNull { getMojangProfile(owner.uniqueId) }
+		val ownerProfile = tryOrNull { runBlocking { getMojangProfile(owner.uniqueId) } }
 
 		owningPlayer = getOfflinePlayer("MHF_Question")
 
@@ -116,7 +126,6 @@ fun skull(owner: OfflinePlayer) = Material.PLAYER_HEAD.item.apply {
 			playerProfile = playerProfile!!.apply {
 				setTextures(textures.apply {
 					this.skin = url(ownerProfile.textures.skin.url)
-					this.cape = url(ownerProfile.textures.cape.url)
 				})
 			}
 			playerProfile!!.complete(true, true)

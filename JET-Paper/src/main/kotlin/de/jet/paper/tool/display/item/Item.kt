@@ -1,5 +1,3 @@
-@file:Suppress("DeprecatedCallableAddReplaceWith")
-
 package de.jet.paper.tool.display.item
 
 import de.jet.jvm.extension.data.buildRandomTag
@@ -25,10 +23,16 @@ import de.jet.unfold.extension.asComponent
 import de.jet.unfold.extension.asStyledString
 import de.jet.unfold.extension.isNotBlank
 import de.jet.unfold.extension.isNotEmpty
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
 import net.kyori.adventure.text.event.HoverEventSource
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration.ITALIC
+import net.kyori.adventure.text.format.TextDecoration.State.FALSE
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Material.*
@@ -47,7 +51,9 @@ import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 import java.util.function.UnaryOperator
+import kotlin.time.Duration.Companion.seconds
 
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 data class Item(
 	var material: Material = STONE,
 	var label: Component = Component.empty(),
@@ -124,7 +130,7 @@ data class Item(
 
 			label.let {
 				if (it.isNotEmpty()) {
-					displayName(Component.text("$it"))
+					displayName(it.decoration(ITALIC, FALSE))
 				}
 			}
 
@@ -139,43 +145,64 @@ data class Item(
 
 	fun produceJson() = JsonItemStack.toJson(produce())
 
-	override fun produce(): ItemStack {
-		@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
+	override fun produce(): ItemStack = runBlocking {
 		val itemMeta = produceItemMeta()
 
-		if (itemMeta != null) {
+		withContext(Dispatchers.Default) {
+			@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
+			val persistentData = mutableMapOf<Pair<NamespacedKey, PersistentDataType<*, *>>, Any>()
 
-			modificationsToEnchantments(modifications).forEach { (key, value) ->
-				itemMeta.addEnchant(key, value, true)
+			if (itemMeta != null) {
+
+				modificationsToEnchantments(modifications).forEach { (key, value) ->
+					itemMeta.addEnchant(key, value, true)
+				}
+
+				if (postProperties.contains(NO_ENCHANTMENTS)) itemMeta.addItemFlags(HIDE_ENCHANTS)
+
+				itemMeta.addItemFlags(*flags.toTypedArray())
+
+				if (!postProperties.contains(NO_IDENTITY))
+					persistentData[identityNamespace to PersistentDataType.STRING] = this@Item.identity
+
+				if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
+
+				if (itemActionTags.isNotEmpty()) persistentData[actionsNamespace to PersistentDataType.STRING] =
+					itemActionTags.joinToString("|") { it.identity }
+
+				fun <I, O : Any> place(namespacedKey: NamespacedKey, persistentDataType: PersistentDataType<I, O>, value: Any) {
+					runBlocking {
+						try {
+							itemMeta.persistentDataContainer.set(namespacedKey, persistentDataType, value.forceCast())
+						} catch (e: ConcurrentModificationException) {
+							debugLog("Saving data '$value' under '$namespacedKey' in item '$identity' failed, (PRODUCING) retrying in 0.1 seconds...")
+							delay(.1.seconds)
+							place(namespacedKey, persistentDataType, value)
+						}
+					}
+				}
+
+				persistentData.forEach { (key, value) ->
+					place(key.first, key.second, value)
+				}
+
+				if (!postProperties.contains(NO_DATA) && data.isNotEmpty())
+					itemMeta.persistentDataContainer.apply(itemStoreApplier)
+
+				itemStack.itemMeta = itemMeta
+
 			}
 
-			if (postProperties.contains(NO_ENCHANTMENTS)) itemMeta.addItemFlags(HIDE_ENCHANTS)
+			itemStack = itemStack.apply(quirk.itemStackProcessing)
 
-			itemMeta.addItemFlags(*flags.toTypedArray())
+			if (postProperties.contains(BLANK_DATA)) itemStack.addItemFlags(*ItemFlag.values())
 
-			if (!postProperties.contains(NO_IDENTITY))
-				itemMeta.persistentDataContainer.set(identityNamespace, PersistentDataType.STRING, this.identity)
+			productionPlugins.forEach {
+				itemStack = itemStack.apply(it)
+			}
 
-			if (!postProperties.contains(NO_DATA) && data.isNotEmpty())
-				itemMeta.persistentDataContainer.apply { itemStoreApplier() }
-
-			if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
-
-			if (itemActionTags.isNotEmpty()) itemMeta.persistentDataContainer.set(actionsNamespace, PersistentDataType.STRING, itemActionTags.joinToString("|") { it.identity })
-
-			itemStack.itemMeta = itemMeta
-
+			itemStack
 		}
-
-		itemStack = itemStack.apply(quirk.itemStackProcessing)
-
-		if (postProperties.contains(BLANK_DATA)) itemStack.addItemFlags(*ItemFlag.values())
-
-		productionPlugins.forEach {
-			itemStack = itemStack.apply(it)
-		}
-
-		return itemStack
 	}
 
 	fun spawn(location: Location) = location.world.dropItem(location, produce())
@@ -255,7 +282,7 @@ data class Item(
 
 	fun dataContains(location: String) = dataGet(location) != null
 
-	val itemStoreApplier: PersistentDataContainer.() -> Unit = {
+	val itemStoreApplier: (PersistentDataContainer) -> Unit = { container ->
 
 		debugLog("producing persistentDataContainer for item '${this@Item.identity}' started... ")
 
@@ -263,11 +290,25 @@ data class Item(
 
 			fun <T : Any> run() {
 				(dataContentType(value) to value).let { valueData ->
-					set(
-						NamespacedKey.fromString(key)!!,
-						valueData.first.forceCast<PersistentDataType<T, T>>(),
-						valueData.second.forceCast()
-					)
+
+					fun tryPut() {
+						runBlocking {
+							try {
+								container.set(
+									NamespacedKey.fromString(key)!!,
+									valueData.first.forceCast<PersistentDataType<T, T>>(),
+									valueData.second.forceCast()
+								)
+							} catch (e: ConcurrentModificationException) {
+								debugLog("Saving data '$value' under '$key' in item '$identity' failed, retrying in 0.1 seconds...")
+								delay(.1.seconds)
+								tryPut()
+							}
+						}
+					}
+
+					tryPut()
+
 					debugLog("|> produced $value into items-data container '${this@Item.identity}'")
 				}
 			}

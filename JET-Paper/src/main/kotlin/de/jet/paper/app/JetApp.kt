@@ -11,28 +11,23 @@ import de.jet.paper.app.component.component.ComponentComponent
 import de.jet.paper.app.component.events.EventsComponent
 import de.jet.paper.app.component.experimental.ExperimentalComponent
 import de.jet.paper.app.component.keeper.KeeperComponent
-import de.jet.paper.app.component.linking.ContainerLinkComponent
 import de.jet.paper.app.component.marking.MarkingComponent
 import de.jet.paper.app.component.point.PointComponent
 import de.jet.paper.app.component.point.asset.Point
 import de.jet.paper.app.component.point.asset.PointConfig
 import de.jet.paper.app.component.sandbox.SandBoxComponent
 import de.jet.paper.app.component.service.ServiceComponent
+import de.jet.paper.app.component.ui.UIComponent
 import de.jet.paper.app.interchange.DebugModeInterchange
 import de.jet.paper.app.interchange.JETInterchange
 import de.jet.paper.app.old_component.essentials.world.WorldConfig
-import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderFolder
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderObject
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderWorld
 import de.jet.paper.app.old_component.essentials.world.tree.WorldRenderer.WorldStructure
 import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
-import de.jet.paper.extension.display.ui.buildContainer
 import de.jet.paper.extension.mainLog
-import de.jet.paper.extension.objectBound.buildAndRegisterSandBox
-import de.jet.paper.extension.paper.worlds
-import de.jet.paper.extension.tasky.sync
 import de.jet.paper.general.api.mojang.MojangProfile
 import de.jet.paper.general.api.mojang.MojangProfileCape
 import de.jet.paper.general.api.mojang.MojangProfileRaw
@@ -50,7 +45,6 @@ import de.jet.paper.tool.display.message.Transmission.Level.ERROR
 import de.jet.paper.tool.display.world.SimpleLocation
 import de.jet.paper.tool.effect.sound.SoundData
 import de.jet.paper.tool.effect.sound.SoundMelody
-import de.jet.paper.tool.input.Keyboard
 import de.jet.paper.tool.input.Keyboard.RenderEngine.Key
 import de.jet.paper.tool.input.Keyboard.RenderEngine.KeyConfiguration
 import de.jet.paper.tool.permission.Approval
@@ -64,7 +58,6 @@ import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
-import org.bukkit.entity.Player
 import java.util.logging.Level
 
 class JetApp : App() {
@@ -167,31 +160,12 @@ class JetApp : App() {
 		add(PointComponent())
 		add(BuildModeComponent())
 		add(MarkingComponent())
-		add(ContainerLinkComponent())
+		add(UIComponent())
 		add(ComponentComponent())
 		add(ProtectionComponent())
 
 		add(JETInterchange())
 		add(DebugModeInterchange())
-
-		buildAndRegisterSandBox(this, "importAllWorlds") {
-			sync { worlds.map { it.name }.forEach(WorldRenderer.FileSystem::importWorld) }
-		}
-
-		buildAndRegisterSandBox(this, "keyboard-demo") {
-			executor as Player
-			sync { Keyboard.RenderEngine.renderKeyboard(executor).mainKeyboard.display(executor) }
-		}
-
-		buildAndRegisterSandBox(this, "renderAllKeys") {
-			sync {
-				buildContainer(lines = 6) {
-					JetData.keyConfig.content.lightModeKeys.withIndex().forEach { (index, value) ->
-						set(index, value.let { Keyboard.RenderEngine.renderKey(it) })
-					}
-				}.display(executor as Player)
-			}
-		}
 
 	}
 
