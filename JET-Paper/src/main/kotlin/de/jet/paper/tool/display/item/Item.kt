@@ -31,6 +31,8 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
 import net.kyori.adventure.text.event.HoverEventSource
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration.ITALIC
+import net.kyori.adventure.text.format.TextDecoration.State.FALSE
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Material.*
@@ -169,7 +171,15 @@ data class Item(
 					itemActionTags.joinToString("|") { it.identity }
 
 				fun <I, O : Any> place(namespacedKey: NamespacedKey, persistentDataType: PersistentDataType<I, O>, value: Any) {
-					itemMeta.persistentDataContainer.set(namespacedKey, persistentDataType, value.forceCast())
+					runBlocking {
+						try {
+							itemMeta.persistentDataContainer.set(namespacedKey, persistentDataType, value.forceCast())
+						} catch (e: ConcurrentModificationException) {
+							debugLog("Saving data '$value' under '$namespacedKey' in item '$identity' failed, (PRODUCING) retrying in 0.1 seconds...")
+							delay(.1.seconds)
+							place(namespacedKey, persistentDataType, value)
+						}
+					}
 				}
 
 				persistentData.forEach { (key, value) ->
