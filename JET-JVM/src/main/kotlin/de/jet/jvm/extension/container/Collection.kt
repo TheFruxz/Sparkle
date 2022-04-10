@@ -1,7 +1,9 @@
 package de.jet.jvm.extension.container
 
 import de.jet.jvm.extension.math.ceilToInt
+import de.jet.jvm.extension.math.floorToInt
 import de.jet.jvm.extension.math.maxTo
+import de.jet.jvm.extension.math.minTo
 import de.jet.jvm.tool.collection.PageValue
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -336,5 +338,36 @@ fun <C : Iterable<String>> C.contains(element: String, ignoreCase: Boolean = fal
  */
 fun <C : Iterable<String>> C.containsAll(elements: Iterable<String>, ignoreCase: Boolean = false) =
 	elements.all { contains(it, ignoreCase) }
+
+/**
+ * This function creates a list of fragments of the origin list.
+ * Example:
+ * - (1, 2, 3).fragmented(2, true) -> [(1, 2), (3)]
+ * - (1, 2, 3).fragmented(2, false) -> [(1, 2)]
+ * @param fragments the number of fragments
+ * @param keepOverflow if the last incomplete fragment should be kept
+ * @return the list of fragments
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T, C : Collection<T>> C.fragmented(fragments: Int = 2, keepOverflow: Boolean = true): List<List<T>> {
+	if (fragments < 1 || isEmpty()) return emptyList()
+	if (fragments == size) return listOf(toList())
+
+	val elementsPerFragment = floorToInt(size.toDouble() / fragments).minTo(1)
+
+	val output = mutableListOf<List<T>>()
+	var currentFragment = mutableListOf<T>()
+
+	forEach {
+		currentFragment.add(it)
+		if (currentFragment.size == elementsPerFragment || (keepOverflow && output.sumOf { entry -> entry.size } + currentFragment.size >= size)) {
+			output.add(currentFragment.toList())
+			currentFragment = mutableListOf()
+		}
+	}
+
+	return output
+}
 
 
