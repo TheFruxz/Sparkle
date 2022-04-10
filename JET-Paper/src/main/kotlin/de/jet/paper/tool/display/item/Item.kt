@@ -128,7 +128,7 @@ data class Item(
 
 			label.let {
 				if (it.isNotEmpty()) {
-					displayName(it)
+					displayName(it.decoration(ITALIC, FALSE))
 				}
 			}
 
