@@ -1,5 +1,3 @@
-@file:Suppress("DeprecatedCallableAddReplaceWith")
-
 package de.jet.paper.tool.display.item
 
 import de.jet.jvm.extension.data.buildRandomTag
@@ -26,6 +24,7 @@ import de.jet.unfold.extension.asStyledString
 import de.jet.unfold.extension.isNotBlank
 import de.jet.unfold.extension.isNotEmpty
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import net.kyori.adventure.text.Component
@@ -50,7 +49,9 @@ import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 import java.util.function.UnaryOperator
+import kotlin.time.Duration.Companion.seconds
 
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 data class Item(
 	var material: Material = STONE,
 	var label: Component = Component.empty(),
@@ -176,7 +177,7 @@ data class Item(
 				}
 
 				if (!postProperties.contains(NO_DATA) && data.isNotEmpty())
-					itemMeta.persistentDataContainer.apply { itemStoreApplier() }
+					itemMeta.persistentDataContainer.apply(itemStoreApplier)
 
 				itemStack.itemMeta = itemMeta
 
@@ -271,7 +272,7 @@ data class Item(
 
 	fun dataContains(location: String) = dataGet(location) != null
 
-	val itemStoreApplier: PersistentDataContainer.() -> Unit = {
+	val itemStoreApplier: (PersistentDataContainer) -> Unit = { container ->
 
 		debugLog("producing persistentDataContainer for item '${this@Item.identity}' started... ")
 
@@ -279,11 +280,25 @@ data class Item(
 
 			fun <T : Any> run() {
 				(dataContentType(value) to value).let { valueData ->
-					set(
-						NamespacedKey.fromString(key)!!,
-						valueData.first.forceCast<PersistentDataType<T, T>>(),
-						valueData.second.forceCast()
-					)
+
+					fun tryPut() {
+						runBlocking {
+							try {
+								container.set(
+									NamespacedKey.fromString(key)!!,
+									valueData.first.forceCast<PersistentDataType<T, T>>(),
+									valueData.second.forceCast()
+								)
+							} catch (e: ConcurrentModificationException) {
+								debugLog("Saving data '$value' under '$key' in item '$identity' failed, retrying in 0.1 seconds...")
+								delay(.1.seconds)
+								tryPut()
+							}
+						}
+					}
+
+					tryPut()
+
 					debugLog("|> produced $value into items-data container '${this@Item.identity}'")
 				}
 			}
