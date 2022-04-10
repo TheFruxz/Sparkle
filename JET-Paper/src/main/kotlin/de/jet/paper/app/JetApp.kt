@@ -52,7 +52,6 @@ import de.jet.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.text.format.NamedTextColor
@@ -72,7 +71,6 @@ class JetApp : App() {
 
 		addJetJsonModuleModification {
 
-			@OptIn(ExperimentalSerializationApi::class)
 			polymorphic(Any::class) {
 
 				subclass(Point::class)
