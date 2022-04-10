@@ -143,9 +143,11 @@ data class Item(
 	fun produceJson() = JsonItemStack.toJson(produce())
 
 	override fun produce(): ItemStack = runBlocking {
-		withContext(Dispatchers.IO) {
+		val itemMeta = produceItemMeta()
+
+		withContext(Dispatchers.Default) {
 			@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
-			val itemMeta = produceItemMeta()
+			val persistentData = mutableMapOf<Pair<NamespacedKey, PersistentDataType<*, *>>, Any>()
 
 			if (itemMeta != null) {
 
@@ -158,21 +160,23 @@ data class Item(
 				itemMeta.addItemFlags(*flags.toTypedArray())
 
 				if (!postProperties.contains(NO_IDENTITY))
-					itemMeta.persistentDataContainer.set(
-						identityNamespace,
-						PersistentDataType.STRING,
-						this@Item.identity
-					)
-
-				if (!postProperties.contains(NO_DATA) && data.isNotEmpty())
-					itemMeta.persistentDataContainer.apply { itemStoreApplier() }
+					persistentData[identityNamespace to PersistentDataType.STRING] = this@Item.identity
 
 				if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
 
-				if (itemActionTags.isNotEmpty()) itemMeta.persistentDataContainer.set(
-					actionsNamespace,
-					PersistentDataType.STRING,
-					itemActionTags.joinToString("|") { it.identity })
+				if (itemActionTags.isNotEmpty()) persistentData[actionsNamespace to PersistentDataType.STRING] =
+					itemActionTags.joinToString("|") { it.identity }
+
+				fun <I, O : Any> place(namespacedKey: NamespacedKey, persistentDataType: PersistentDataType<I, O>, value: Any) {
+					itemMeta.persistentDataContainer.set(namespacedKey, persistentDataType, value.forceCast())
+				}
+
+				persistentData.forEach { (key, value) ->
+					place(key.first, key.second, value)
+				}
+
+				if (!postProperties.contains(NO_DATA) && data.isNotEmpty())
+					itemMeta.persistentDataContainer.apply { itemStoreApplier() }
 
 				itemStack.itemMeta = itemMeta
 

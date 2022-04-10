@@ -30,9 +30,11 @@ import de.jet.paper.extension.debugLog
 import de.jet.paper.extension.display.notification
 import de.jet.paper.extension.display.ui.buildContainer
 import de.jet.paper.extension.display.ui.buildPanel
+import de.jet.paper.extension.display.ui.item
 import de.jet.paper.extension.display.ui.skull
 import de.jet.paper.extension.mainLog
 import de.jet.paper.extension.objectBound.buildAndRegisterSandBox
+import de.jet.paper.extension.paper.player
 import de.jet.paper.extension.paper.worlds
 import de.jet.paper.extension.tasky.sync
 import de.jet.paper.general.api.mojang.MojangProfile
@@ -67,6 +69,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.Material
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.enchantments.Enchantment
@@ -222,6 +225,22 @@ class JetApp : App() {
 
 		buildAndRegisterSandBox(this, "triggerSplashScreen") {
 			JetCache.splashScreens[executor as Player] = coroutineScope.launch { delay(30.seconds) }
+		}
+
+		buildAndRegisterSandBox(this, "itemDemo") {
+			buildPanel {
+
+				placeInner(1, Material.GRAVEL.item {
+
+					onClick {
+
+						it.player.sendMessage("clicked")
+
+					}
+
+				})
+
+			}.display(executor as Player)
 		}
 
 	}
