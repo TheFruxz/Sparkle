@@ -130,12 +130,12 @@ data class Item(
 
 			label.let {
 				if (it.isNotEmpty()) {
-					displayName(it.decoration(ITALIC, FALSE))
+					displayName(Component.text().decoration(ITALIC, FALSE).append(it).build())
 				}
 			}
 
 			if (this@Item.lore.isNotEmpty() && this@Item.lore.any { it.isNotBlank() } )
-				lore(this@Item.lore)
+				lore(this@Item.lore.map { Component.text().decoration(ITALIC, FALSE).append(it).build() })
 
 			if (flags.isNotEmpty())
 				addItemFlags(*flags.toTypedArray())
