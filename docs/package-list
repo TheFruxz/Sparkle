@@ -46,6 +46,7 @@ de.jet.jvm.tree
 module:JET-Paper
 de.jet.paper
 de.jet.paper.app
+de.jet.paper.app.component.buildMode.config
 de.jet.paper.app.component.point.asset
 de.jet.paper.app.component.world
 de.jet.paper.app.interchange
@@ -83,6 +84,7 @@ de.jet.paper.structure.command.completion.component
 de.jet.paper.structure.command.completion.tracing
 de.jet.paper.structure.command.live
 de.jet.paper.structure.component
+de.jet.paper.structure.component.file
 de.jet.paper.structure.feature
 de.jet.paper.structure.service
 de.jet.paper.tool.annotation
@@ -107,3 +109,6 @@ de.jet.paper.tool.position
 de.jet.paper.tool.smart
 de.jet.paper.tool.timing.cooldown
 de.jet.paper.tool.timing.tasky
+module:JET-Unfold
+de.jet.unfold
+de.jet.unfold.extension
