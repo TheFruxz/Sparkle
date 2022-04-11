@@ -78,7 +78,7 @@ data class Panel(
 	},
 	var overridingBorderProtection: Boolean = true,
 	val generateBorder: Boolean = true,
-	var useSplashScreen: Boolean = true,
+	var useSplashScreen: Boolean = false,
 ) : Cloneable, Logging, Container<Panel>(label = label, size = lines * 9, theme = theme, openSound = openSound), VendorsIdentifiable<Panel> {
 
 	/**
