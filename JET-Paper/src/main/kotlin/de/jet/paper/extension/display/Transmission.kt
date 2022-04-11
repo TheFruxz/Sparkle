@@ -19,6 +19,6 @@ fun ComponentLike.message(vararg participant: InterchangeExecutor) = listOf(this
 
 fun ComponentLike.notification(level: Level, vararg participant: InterchangeExecutor) = listOf(this).notification(level, *participant)
 
-fun String.message(vararg participants: InterchangeExecutor) = asStyledComponent.message(*participants)
+fun String.message(vararg participants: InterchangeExecutor) = lines().map(String::asStyledComponent).message(*participants)
 
-fun String.notification(level: Level, vararg participants: InterchangeExecutor) = asStyledComponent.notification(level, *participants)
+fun String.notification(level: Level, vararg participants: InterchangeExecutor) = lines().map(String::asStyledComponent).notification(level, *participants)
