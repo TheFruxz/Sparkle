@@ -64,7 +64,7 @@ dependencies {
     shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
     shadow("org.slf4j:slf4j-api:2.0.0-alpha7")
     shadow("org.jetbrains.exposed:exposed-core:0.37.3")
-    shadow("org.jetbrains.exposed:exposed-dao:0.37.3")
+    shadow("org.jetbrains.exposed:exposed-dao:0.38.1")
     shadow("org.jetbrains.exposed:exposed-jdbc:0.37.3")
 
     shadow("io.ktor:ktor-client-core-jvm:2.0.0") // Ktor
