@@ -22,7 +22,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("org.slf4j:slf4j-api:2.0.0-alpha7")
 
-    implementation("org.jetbrains.exposed:exposed-core:0.37.3")
+    implementation("org.jetbrains.exposed:exposed-core:0.38.1")
     implementation("org.jetbrains.exposed:exposed-dao:0.38.1")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.37.3")
 
