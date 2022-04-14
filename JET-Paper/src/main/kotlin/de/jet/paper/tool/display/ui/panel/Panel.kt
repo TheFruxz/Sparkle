@@ -90,6 +90,8 @@ data class Panel(
 	 */
 	val borderKey = system.createKey("panelBorder")
 
+	// SPLASHSCREEN FEATURE
+
 	var useSplashScreen: Boolean = false
 		private set
 
@@ -97,6 +99,20 @@ data class Panel(
 	fun useSplashScreen(use: Boolean = !useSplashScreen) {
 		useSplashScreen = use
 	}
+
+	// END SPLASHSCREEN FEATURE
+
+	// ASYNC FEATURE
+
+	var asyncEngine: Boolean = false
+		private set
+
+	@Prototype
+	fun asyncEngine(use: Boolean = !asyncEngine) {
+		asyncEngine = use
+	}
+
+	// END ASYNC FEATURE
 
 	init {
 		if (generateBorder && content.isEmpty()) { // do not write a border, if already content is inside or not enabled
@@ -532,17 +548,23 @@ data class Panel(
 
 			}
 
-			val openingJob = JetApp.coroutineScope.launch {
-				val rawInventory = editedPanel.rawInventory
-				sync {
-					humanEntity.openInventory(rawInventory)
-				}
-			}
+			if (useSplashScreen || asyncEngine) {
 
-			if (useSplashScreen) {
-				sync {
-					JetCache.splashScreens[humanEntity] = openingJob
+				val openingJob = JetApp.coroutineScope.launch {
+					val rawInventory = editedPanel.rawInventory
+					sync {
+						humanEntity.openInventory(rawInventory)
+					}
 				}
+
+				if (useSplashScreen) {
+					sync {
+						JetCache.splashScreens[humanEntity] = openingJob
+					}
+				}
+
+			} else {
+				humanEntity.openInventory(editedPanel.rawInventory)
 			}
 
 		} else
