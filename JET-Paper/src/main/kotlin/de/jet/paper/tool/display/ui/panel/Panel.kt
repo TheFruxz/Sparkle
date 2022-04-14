@@ -17,6 +17,7 @@ import de.jet.paper.runtime.event.PanelClickEvent
 import de.jet.paper.runtime.event.PanelCloseEvent
 import de.jet.paper.runtime.event.PanelOpenEvent
 import de.jet.paper.structure.app.App
+import de.jet.paper.tool.annotation.Prototype
 import de.jet.paper.tool.display.color.ColorType
 import de.jet.paper.tool.display.item.Item
 import de.jet.paper.tool.display.ui.inventory.Container
@@ -67,7 +68,7 @@ data class Panel(
 	var onReceiveEvent: PanelReceiveData.() -> Unit = { },
 	var onOpenEvent: PanelOpenEvent.() -> Unit = { },
 	var onCloseEvent: PanelCloseEvent.() -> Unit = { },
-	var icon: Item = theme.wool.item.apply {
+	var icon: Item = theme.wool.item {
 		lore = buildList {
 			add(Component.empty())
 			add(Component.text("This panel has no icon, override"))
@@ -78,7 +79,6 @@ data class Panel(
 	},
 	var overridingBorderProtection: Boolean = true,
 	val generateBorder: Boolean = true,
-	var useSplashScreen: Boolean = false,
 ) : Cloneable, Logging, Container<Panel>(label = label, size = lines * 9, theme = theme, openSound = openSound), VendorsIdentifiable<Panel> {
 
 	/**
@@ -89,6 +89,14 @@ data class Panel(
 	 * @since 1.0
 	 */
 	val borderKey = system.createKey("panelBorder")
+
+	var useSplashScreen: Boolean = false
+		private set
+
+	@Prototype
+	fun useSplashScreen(use: Boolean = !useSplashScreen) {
+		useSplashScreen = use
+	}
 
 	init {
 		if (generateBorder && content.isEmpty()) { // do not write a border, if already content is inside or not enabled
