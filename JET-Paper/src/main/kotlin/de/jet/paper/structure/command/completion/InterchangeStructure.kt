@@ -264,7 +264,7 @@ class InterchangeStructure(
 	 * @throws IllegalStateException if the new branch follows an infinite-parameter branch
 	 */
 	fun branch(
-		identity: String = UUID.randomString(),
+		identity: String = (parent?.identity ?: "") + "/way-${parent?.subBranches ?: 0}",
 		path: Address<InterchangeStructure> = this.address / identity,
 		configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
 		process: InterchangeStructure.() -> Unit,
