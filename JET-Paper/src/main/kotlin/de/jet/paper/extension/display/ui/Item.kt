@@ -73,62 +73,87 @@ fun item(material: Material) = material.item
 
 fun item(itemStack: ItemStack) = itemStack.item
 
-fun skull(owner: String) = Material.PLAYER_HEAD.item.apply {
+/**
+ * This function creates a new [Item] with a [Material.PLAYER_HEAD].
+ * If the [httpRequest] parameter is set to true, the player's skin will be fetched from the Mojang API.
+ * If the [httpRequest] parameter is set to false, the player's skin will be fetched from the server.
+ * @see getMojangProfile
+ * @param owner the name or uuid of the player
+ * @param httpRequest if true, the player's skin will be fetched from the Mojang API, otherwise from the server
+ * @return the created [Item]
+ * @author Fruxz
+ * @since 1.0
+ */
+fun skull(owner: String, httpRequest: Boolean = true) = Material.PLAYER_HEAD.item {
 
 	getOfflinePlayer(owner).name?.let { label = text(it).color(NamedTextColor.YELLOW) }
 
 	skullQuirk {
-		val ownerProfile = tryOrNull { runBlocking { getMojangProfile(owner) } }
 
-		owningPlayer = getOfflinePlayer("MHF_Question")
+		if (httpRequest) {
+			val ownerProfile = tryOrNull { runBlocking { getMojangProfile(owner) } }
 
-		if (ownerProfile != null) {
-			playerProfile = playerProfile!!.apply {
-				setTextures(textures.apply {
-					this.skin = url(ownerProfile.textures.skin.url)
-				})
+			owningPlayer = getOfflinePlayer("MHF_Question")
+
+			if (ownerProfile != null) {
+				playerProfile = playerProfile!!.apply {
+					setTextures(textures.apply {
+						this.skin = url(ownerProfile.textures.skin.url)
+					})
+				}
+				playerProfile!!.complete(true, true)
 			}
-			playerProfile!!.complete(true, true)
-		}
+		} else
+			owningPlayer = getOfflinePlayer(owner)
+
 	}
 }
 
-fun skull(owner: UUID) = Material.PLAYER_HEAD.item.apply {
+/**
+ * This function creates a new [Item] with a [Material.PLAYER_HEAD].
+ * If the [httpRequest] parameter is set to true, the player's skin will be fetched from the Mojang API.
+ * If the [httpRequest] parameter is set to false, the player's skin will be fetched from the server.
+ * @see getMojangProfile
+ * @param owner the uuid of the player
+ * @param httpRequest if true, the player's skin will be fetched from the Mojang API, otherwise from the server
+ * @return the created [Item]
+ * @author Fruxz
+ * @since 1.0
+ */
+fun skull(owner: UUID, httpRequest: Boolean = true) = Material.PLAYER_HEAD.item {
 
 	getOfflinePlayer(owner).name?.let { label = text(it).color(NamedTextColor.YELLOW) }
 
 	skullQuirk {
-		val ownerProfile = tryOrNull { runBlocking { getMojangProfile(owner) } }
 
-		owningPlayer = getOfflinePlayer("MHF_Question")
+		if (httpRequest) {
+			val ownerProfile = tryOrNull { runBlocking { getMojangProfile(owner) } }
 
-		if (ownerProfile != null) {
-			playerProfile = playerProfile!!.apply {
-				setTextures(textures.apply {
-					this.skin = url(ownerProfile.textures.skin.url)
-				})
+			owningPlayer = getOfflinePlayer("MHF_Question")
+
+			if (ownerProfile != null) {
+				playerProfile = playerProfile!!.apply {
+					setTextures(textures.apply {
+						this.skin = url(ownerProfile.textures.skin.url)
+					})
+				}
+				playerProfile!!.complete(true, true)
 			}
-			playerProfile!!.complete(true, true)
-		}
+		} else
+			owningPlayer = getOfflinePlayer(owner)
 	}
 }
 
-fun skull(owner: OfflinePlayer) = Material.PLAYER_HEAD.item.apply {
-
-	owner.name?.let { label = text(it).color(NamedTextColor.YELLOW) }
-
-	skullQuirk {
-		val ownerProfile = tryOrNull { runBlocking { getMojangProfile(owner.uniqueId) } }
-
-		owningPlayer = getOfflinePlayer("MHF_Question")
-
-		if (ownerProfile != null) {
-			playerProfile = playerProfile!!.apply {
-				setTextures(textures.apply {
-					this.skin = url(ownerProfile.textures.skin.url)
-				})
-			}
-			playerProfile!!.complete(true, true)
-		}
-	}
-}
+/**
+ * This function creates a new [Item] with a [Material.PLAYER_HEAD].
+ * If the [httpRequest] parameter is set to true, the player's skin will be fetched from the Mojang API.
+ * If the [httpRequest] parameter is set to false, the player's skin will be fetched from the server.
+ * @see getMojangProfile
+ * @param owner the player
+ * @param httpRequest if true, the player's skin will be fetched from the Mojang API, otherwise from the server
+ * @return the created [Item]
+ * @author Fruxz
+ * @since 1.0
+ */
+fun skull(owner: OfflinePlayer, httpRequest: Boolean = true) =
+	skull(owner.uniqueId, httpRequest)
