@@ -11,6 +11,7 @@ import de.jet.paper.extension.system
 import de.jet.paper.extension.tasky.sync
 import de.jet.paper.structure.app.App
 import de.jet.paper.structure.service.Service
+import de.jet.paper.tool.annotation.Prototype
 import de.jet.paper.tool.display.ui.panel.Panel.Companion.panelIdentity
 import de.jet.paper.tool.display.ui.panel.PanelFlag
 import de.jet.paper.tool.display.ui.panel.PanelFlag.NO_INTERACT
@@ -63,7 +64,8 @@ internal class SplashScreenService(override val vendor: Identifiable<App> = syst
 
 			icon = Material.CLOCK.item
 
-			useSplashScreen = false
+			@OptIn(Prototype::class)
+			useSplashScreen(false)
 
 			placeInner(9..11, GRAY_WOOL.item.blankLabel())
 
