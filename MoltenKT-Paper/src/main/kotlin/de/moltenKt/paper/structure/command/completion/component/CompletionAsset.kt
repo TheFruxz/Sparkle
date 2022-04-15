@@ -207,7 +207,7 @@ data class CompletionAsset<T>(
 		}.doCheck { input, ignoreCase ->
 			Transmission.Level.values().any { it.name.equals(input, ignoreCase) }
 		}.transformer { input ->
-			tryOrNull { Transmission.Level.valueOf(input) }
+			Transmission.Level.values().firstOrNull { it.name.equals(input, true) }
 		}
 
 		@JvmStatic
