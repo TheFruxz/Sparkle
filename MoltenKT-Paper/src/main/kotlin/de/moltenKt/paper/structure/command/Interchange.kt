@@ -262,7 +262,6 @@ abstract class Interchange(
 
 						fun exception(exception: Exception) {
 							sectionLog.log(WARNING, "Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!")
-							issueFeedback(sender)
 							catchException(exception)
 						}
 
@@ -273,7 +272,7 @@ abstract class Interchange(
 								NOT_PERMITTED -> wrongApprovalFeedback(sender)
 								WRONG_CLIENT -> wrongClientFeedback(sender)
 								WRONG_USAGE -> wrongUsageFeedback(sender)
-								InterchangeResult.FAIL -> issueFeedback(sender)
+								FAIL -> issueFeedback(sender)
 								SUCCESS -> debugLog(
 									"Executor ${sender.name} as ${clientType.name} successfully executed $label-interchange!"
 								)
