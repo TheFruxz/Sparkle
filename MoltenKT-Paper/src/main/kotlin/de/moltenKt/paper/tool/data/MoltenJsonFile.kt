@@ -30,7 +30,8 @@ interface MoltenJsonFile : MoltenFile {
 
 	companion object {
 
-		private fun generateJson(path: Path) =
+		@JvmStatic
+		fun generateJson(path: Path) =
 			object : MoltenJsonFile {
 
 				override val file =
@@ -82,30 +83,6 @@ interface MoltenJsonFile : MoltenFile {
 				}
 
 			}
-
-		@JvmStatic
-		fun appFile(
-			vendor: Identifiable<App>,
-			fileName: String,
-			extension: String = "json"
-		) = generateJson(
-				Path("MoltenApps", "#${vendor.identity}", "$fileName.$extension")
-			)
-
-		@JvmStatic
-		fun rootFile(fileName: String, extension: String = "json") =
-			generateJson(Path("MoltenApps") / "MoltenKT" / "$fileName.$extension")
-
-		@JvmStatic
-		fun componentFile(component: VendorsIdentifiable<Component>, fileName: String, extension: String = "json"): MoltenJsonFile =
-			generateJson(Path("MoltenApps") / "#${component.identity}@${component.vendorIdentity.identity}" / "$fileName.$extension")
-
-		internal fun dummyComponentFile(dataA: String, dataB: String, fileName: String, extension: String = "json"): MoltenJsonFile =
-			generateJson(Path("MoltenApps") / "#$dataA@$dataB" / "$fileName.$extension")
-
-		@JvmStatic
-		fun versionFile(fileName: String, extension: String = "json") =
-			generateJson(Path("MoltenApps") / bukkitVersion / "$fileName.$extension")
 
 	}
 

@@ -25,6 +25,7 @@ import de.moltenKt.paper.structure.command.Interchange
 import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.data.MoltenYamlFile
+import de.moltenKt.paper.tool.data.file.MoltenFileSystem
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -527,7 +528,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	private val pluginManager = server.pluginManager
 
 	val appFolder: Path
-		get() = MoltenYamlFile.appPath(this)
+		get() = MoltenFileSystem.appPath(this)
 
 	// override base-mechanics
 

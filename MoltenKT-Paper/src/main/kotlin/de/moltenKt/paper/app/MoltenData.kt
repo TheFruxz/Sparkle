@@ -1,16 +1,16 @@
 package de.moltenKt.paper.app
 
 import de.moltenKt.jvm.tool.data.Base64.decodeToString
+import de.moltenKt.jvm.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenData.File.CONFIG
 import de.moltenKt.paper.app.MoltenData.File.ESSENTIALS_CONFIG
-import de.moltenKt.paper.app.MoltenData.File.ESSENTIALS_WORLDS
 import de.moltenKt.paper.app.component.point.asset.PointConfig
-import de.moltenKt.paper.app.old_component.essentials.world.WorldConfig
-import de.moltenKt.paper.app.old_component.essentials.world.tree.WorldRenderer
 import de.moltenKt.paper.extension.data.moltenPath
 import de.moltenKt.paper.tool.data.DataTransformer
 import de.moltenKt.paper.tool.data.MoltenYamlFile
 import de.moltenKt.paper.tool.data.Preference
+import de.moltenKt.paper.tool.data.file.MoltenFileSystem
+import kotlin.io.path.div
 
 object MoltenData {
 
@@ -57,24 +57,11 @@ object MoltenData {
 		default = PointConfig(emptyList()),
 	).transformer(DataTransformer.json())
 
-	val worldConfig = Preference(
-		file = ESSENTIALS_WORLDS,
-		path = moltenPath("worldConfig"),
-		default = WorldConfig(emptyList(), emptyList()),
-	).transformer(DataTransformer.json())
-
-	val worldStructure = Preference(
-		file = ESSENTIALS_WORLDS,
-		path = moltenPath("worldStructure"),
-		default = WorldRenderer.renderBase(worldConfig.content).structure(),
-	).transformer(DataTransformer.json())
-
 	object File {
 
-		val CONFIG = MoltenYamlFile.rootFile("setup")
+		val CONFIG = MoltenYamlFile.generateYaml(MoltenFileSystem.homePath / "setup.yml")
 
-		val ESSENTIALS_CONFIG = MoltenYamlFile.dummyComponentFile("Essentials", "MoltenKT", "config")
-		val ESSENTIALS_WORLDS = MoltenYamlFile.dummyComponentFile("Essentials", "MoltenKT", "worlds")
+		val ESSENTIALS_CONFIG = MoltenYamlFile.generateYaml(MoltenFileSystem.componentPath(Identifiable.custom("MoltenKT:World-Points")))
 
 	}
 

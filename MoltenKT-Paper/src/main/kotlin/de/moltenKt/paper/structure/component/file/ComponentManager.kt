@@ -8,12 +8,13 @@ import de.moltenKt.jvm.extension.tryOrNull
 import de.moltenKt.jvm.tool.smart.identification.Identity
 import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.tool.data.MoltenYamlFile
+import de.moltenKt.paper.tool.data.file.MoltenFileSystem
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 object ComponentManager {
 
-	val path = MoltenYamlFile.rootPath() / "components.json"
+	val path = MoltenFileSystem.homePath / "components.json"
 
 	private var _state: ComponentConfiguration? = null
 

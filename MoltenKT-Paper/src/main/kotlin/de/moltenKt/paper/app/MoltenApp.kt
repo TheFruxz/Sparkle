@@ -21,11 +21,6 @@ import de.moltenKt.paper.app.component.ui.UIComponent
 import de.moltenKt.paper.app.interchange.DebugModeInterchange
 import de.moltenKt.paper.app.interchange.MoltenKtInterchange
 import de.moltenKt.paper.app.interchange.PlaygroundInterchange
-import de.moltenKt.paper.app.old_component.essentials.world.WorldConfig
-import de.moltenKt.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderFolder
-import de.moltenKt.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderObject
-import de.moltenKt.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderWorld
-import de.moltenKt.paper.app.old_component.essentials.world.tree.WorldRenderer.WorldStructure
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
@@ -74,8 +69,6 @@ class MoltenApp : App() {
 
 				subclass(Point::class)
 				subclass(PointConfig::class)
-				subclass(WorldConfig::class)
-				subclass(WorldStructure::class)
 				subclass(MojangProfile::class)
 				subclass(MojangProfileCape::class)
 				subclass(MojangProfileRaw::class)
@@ -90,11 +83,6 @@ class MoltenApp : App() {
 				subclass(SoundData::class)
 				subclass(SoundMelody::class)
 				subclass(Approval::class)
-
-				polymorphic(RenderObject::class) {
-					subclass(RenderWorld::class)
-					subclass(RenderFolder::class)
-				}
 
 			}
 		}

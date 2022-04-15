@@ -7,12 +7,13 @@ import de.moltenKt.jvm.extension.generateFileAndPath
 import de.moltenKt.jvm.extension.tryOrNull
 import de.moltenKt.jvm.tool.smart.identification.Identifiable
 import de.moltenKt.paper.tool.data.MoltenYamlFile
+import de.moltenKt.paper.tool.data.file.MoltenFileSystem
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 object BuildModeManager {
 
-	private val path = MoltenYamlFile.componentPath(Identifiable.custom("MoltenKT:BuildMode")) / "config.json"
+	private val path = MoltenFileSystem.componentPath(Identifiable.custom("MoltenKT:BuildMode")) / "config.json"
 
 	private var _state: BuildModeConfiguration? = null
 
