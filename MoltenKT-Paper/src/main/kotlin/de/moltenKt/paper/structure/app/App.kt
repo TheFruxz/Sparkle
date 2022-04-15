@@ -626,7 +626,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 		@JvmStatic
 		fun createLog(app: String, section: String = "main"): Logger =
-			(PaperPluginLogger.getLogger("MoltenKT/$app // $section") ?: Logger.getLogger("MoltenKT/$app // $section"))
+			(PaperPluginLogger.getLogger("$app//$section") ?: Logger.getLogger("$app//$section"))
 
 	}
 

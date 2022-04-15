@@ -3,6 +3,7 @@ package de.moltenKt.paper.extension
 import de.moltenKt.jvm.tool.smart.identification.Identifiable
 import de.moltenKt.jvm.tool.smart.identification.Identity
 import de.moltenKt.jvm.tool.smart.positioning.Address
+import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.runtime.app.LanguageSpeaker
 import de.moltenKt.paper.runtime.lang.LanguageData
@@ -17,16 +18,16 @@ import java.util.logging.Level
 import kotlin.reflect.full.hasAnnotation
 
 fun <T : Any?> T.debugLog(message: String) = this.also {
-	if (de.moltenKt.paper.app.MoltenApp.debugMode) {
+	if (MoltenApp.debugMode) {
 		message.lines().forEach { line ->
 			mainLog(Level.WARNING, "[DEBUG] $line")
 		}
 	}
 }
 
-fun mainLog(level: Level = Level.INFO, message: String) = de.moltenKt.paper.app.MoltenApp.instance.log.log(level, message)
+fun mainLog(level: Level = Level.INFO, message: String) = MoltenApp.instance.log.log(level, message)
 
-val mainLog = de.moltenKt.paper.app.MoltenApp.instance.log
+val mainLog = MoltenApp.instance.log
 
 internal val lang: LanguageSpeaker
 	get() = de.moltenKt.paper.MoltenEngine.languageSpeaker
@@ -40,7 +41,7 @@ operator fun LanguageSpeaker.get(id: String) = lang(id)
 
 internal fun lang(id: String, smartColor: Boolean = true, basicHTML: Boolean = true) = lang.message(id, smartColor, basicHTML)
 
-internal val system: de.moltenKt.paper.app.MoltenApp
+internal val system: MoltenApp
 	get() = de.moltenKt.paper.MoltenEngine.appInstance
 
 @Throws(NoSuchElementException::class)

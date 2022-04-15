@@ -563,7 +563,9 @@ data class Panel(
 				}
 
 			} else {
-				humanEntity.openInventory(editedPanel.rawInventory)
+				sync {
+					humanEntity.openInventory(editedPanel.rawInventory)
+				}
 			}
 
 		} else
