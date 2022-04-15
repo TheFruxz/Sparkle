@@ -133,7 +133,11 @@ internal class ComponentInterchange :
 					"interchange.internal.component.autoStartRemoved"
 				}
 
-				lang[key].notification(APPLIED, executor).display()
+				lang[key]
+					.replaceVariables(
+						"component" to component.identity,
+					)
+					.notification(APPLIED, executor).display()
 
 			} else
 				lang("interchange.internal.component.autoStartStatic")
