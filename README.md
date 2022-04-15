@@ -1,10 +1,10 @@
-[![JitPack](https://jitpack.io/v/TheFruxz/JET.svg?style=flat-square)](https://jitpack.io/#TheFruxz/JET)
-[![MoltenKT-Build](https://github.com/TheFruxz/JET/actions/workflows/build-JET.yml/badge.svg)](https://github.com/TheFruxz/JET/actions/workflows/build-JET.yml)
-[![MoltenKT-Test](https://github.com/TheFruxz/JET/actions/workflows/test-JET.yml/badge.svg)](https://github.com/TheFruxz/JET/actions/workflows/test-JET.yml)
-[![MoltenKT-Publish](https://github.com/TheFruxz/JET/actions/workflows/publish-JET.yml/badge.svg)](https://github.com/TheFruxz/JET/actions/workflows/publish-JET.yml)
+[![JitPack](https://jitpack.io/v/TheFruxz/MoltenKT.svg?style=flat-square)](https://jitpack.io/#TheFruxz/MoltenKT)
+[![MoltenKT-Build](https://github.com/TheFruxz/MoltenKT/actions/workflows/build-MoltenKT.yml/badge.svg)](https://github.com/TheFruxz/MoltenKT/actions/workflows/build-MoltenKT.yml)
+[![MoltenKT-Test](https://github.com/TheFruxz/MoltenKT/actions/workflows/test-MoltenKT.yml/badge.svg)](https://github.com/TheFruxz/MoltenKT/actions/workflows/test-MoltenKT.yml)
+[![MoltenKT-Publish](https://github.com/TheFruxz/MoltenKT/actions/workflows/publish-MoltenKT.yml/badge.svg)](https://github.com/TheFruxz/MoltenKT/actions/workflows/publish-MoltenKT.yml)
 
-[![Open Source](https://forthebadge.com/images/badges/open-source.svg)](https://github.com/TheFruxz/JET/blob/main/LICENSE)
-[![Built by developers](https://forthebadge.com/images/badges/built-by-developers.svg)](https://github.com/TheFruxz/JET/graphs/contributors)
+[![Open Source](https://forthebadge.com/images/badges/open-source.svg)](https://github.com/TheFruxz/MoltenKT/blob/main/LICENSE)
+[![Built by developers](https://forthebadge.com/images/badges/built-by-developers.svg)](https://github.com/TheFruxz/MoltenKT/graphs/contributors)
 [![Written in Kotlin](https://forthebadge.com/images/badges/makes-people-smile.svg)](https://github.com/JetBrains/kotlin)
 
 <br>
@@ -61,14 +61,14 @@ maven("https://jitpack.io")
 ##### Dependency
 ```kotlin
 implementation("com.github.TheFruxz.MoltenKT:moltenkt-core:[version]")
-implementation("com.github.TheFruxz.MoltenKT:moltenkt-javacord:[version]") // optional add JET-JavaCord
-implementation("com.github.TheFruxz.MoltenKT:moltenkt-paper:[version]") // or JET-Minecraft
+implementation("com.github.TheFruxz.MoltenKT:moltenkt-javacord:[version]") // optional add MoltenKT-JavaCord
+implementation("com.github.TheFruxz.MoltenKT:moltenkt-paper:[version]") // or MoltenKT-Minecraft
 ```
 
 #### Using GitHub Packages
 ##### Repository 
 ```kotlin
-maven("https://maven.pkg.github.com/TheFruxz/JET") {
+maven("https://maven.pkg.github.com/TheFruxz/MoltenKT") {
         credentials {
             credentials {
                 username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
@@ -80,9 +80,9 @@ maven("https://maven.pkg.github.com/TheFruxz/JET") {
 
 ##### Dependency
 ```kotlin
-implementation("de.jet:moltenkt-core:[version]")
-implementation("de.jet:moltenkt-javacord:[version]") // optional add JET-JavaCord
-implementation("de.jet:moltenkt-paper:[version]") // or JET-Minecraft
+implementation("de.moltenKT:moltenkt-core:[version]")
+implementation("de.moltenKT:moltenkt-javacord:[version]") // optional add MoltenKT-JavaCord
+implementation("de.moltenKT:moltenkt-paper:[version]") // or MoltenKT-Minecraft
 ```
 
 #### Auth
