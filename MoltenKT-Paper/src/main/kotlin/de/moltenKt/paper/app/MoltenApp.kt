@@ -20,6 +20,7 @@ import de.moltenKt.paper.app.component.service.ServiceComponent
 import de.moltenKt.paper.app.component.ui.UIComponent
 import de.moltenKt.paper.app.interchange.DebugModeInterchange
 import de.moltenKt.paper.app.interchange.MoltenKtInterchange
+import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.app.old_component.essentials.world.WorldConfig
 import de.moltenKt.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderFolder
 import de.moltenKt.paper.app.old_component.essentials.world.tree.WorldRenderer.RenderObject
@@ -160,6 +161,7 @@ class MoltenApp : App() {
 
 		add(MoltenKtInterchange())
 		add(DebugModeInterchange())
+		add(PlaygroundInterchange())
 
 	}
 

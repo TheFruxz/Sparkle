@@ -13,6 +13,8 @@ website: ${website}
 commands:
   moltenkt:
     description: Discover more info about MoltenKT-Paper!
+  playground:
+    description: Discover more about MoltenKT by trying out!
   component:
     description: Manages your components!
   service:
