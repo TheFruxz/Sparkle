@@ -1,0 +1,590 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Component</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../index.html">
+<span>MoltenKT</span>            </a>    </div>
+    <div>1.0-PRE-7
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="MoltenKT-Paper::de.moltenKt.paper.structure.component/Component///PointingToDeclaration//-2141326931">
+  <div class="breadcrumbs"><a href="../../index.html">MoltenKT-Paper</a><span class="delimiter">/</span><a href="../index.html">de.moltenKt.paper.structure.component</a><span class="delimiter">/</span><a href="index.html">Component</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Component</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">Component</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>behaviour<span class="token operator">: </span><a href="-run-type/index.html">Component.RunType</a><span class="token operator"> = </span>DISABLED<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>experimental<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>preferredVendor<span class="token operator">: </span><a href="../../de.moltenKt.paper.structure.app/-app/index.html">App</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span> : <a href="../../de.moltenKt.paper.tool.smart/-contextual-identifiable/index.html">ContextualIdentifiable</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">Component</a><span class="token operator">&gt; </span>, <a href="../../de.moltenKt.paper.tool.smart/-vendor-on-demand/index.html">VendorOnDemand</a>, <a href="../../de.moltenKt.paper.tool.smart/-logging/index.html">Logging</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
+    <div class="tabs-section-body">
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="871400329%2FConstructors%2F-2141326931" anchor-label="Component" id="871400329%2FConstructors%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-component.html"><span><span>Component</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="871400329%2FConstructors%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-component.html"><span class="token function">Component</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;behaviour<span class="token operator">: </span><a href="-run-type/index.html">Component.RunType</a><span class="token operator"> = </span>DISABLED<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;experimental<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;preferredVendor<span class="token operator">: </span><a href="../../de.moltenKt.paper.structure.app/-app/index.html">App</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="238063466%2FClasslikes%2F-2141326931" anchor-label="Companion" id="238063466%2FClasslikes%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="238063466%2FClasslikes%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="2092306524%2FClasslikes%2F-2141326931" anchor-label="ComponentRequestAnswer" id="2092306524%2FClasslikes%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-component-request-answer/index.html"><span>Component</span><wbr><span>Request</span><wbr><span><span>Answer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2092306524%2FClasslikes%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-component-request-answer/index.html">ComponentRequestAnswer</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>hasStateChanged<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>exception<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-2078251663%2FClasslikes%2F-2141326931" anchor-label="RunType" id="-2078251663%2FClasslikes%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-run-type/index.html"><span>Run</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2078251663%2FClasslikes%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-run-type/index.html">RunType</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-run-type/index.html">Component.RunType</a><span class="token operator">&gt; </span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="148674684%2FFunctions%2F-2141326931" anchor-label="firstContactHandshake" id="148674684%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="first-contact-handshake.html"><span>first</span><wbr><span>Contact</span><wbr><span><span>Handshake</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="148674684%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="first-contact-handshake.html"><span class="token function">firstContactHandshake</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-445701292%2FFunctions%2F-2141326931" anchor-label="register" id="-445701292%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="register.html"><span><span>register</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-445701292%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="register.html"><span class="token function">register</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Can be overwritten, no origin code!</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="983730843%2FFunctions%2F-2141326931" anchor-label="replaceVendor" id="983730843%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="replace-vendor.html"><span>replace</span><wbr><span><span>Vendor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="983730843%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="replace-vendor.html"><span class="token function">replaceVendor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">newVendor<span class="token operator">: </span><a href="../../de.moltenKt.paper.structure.app/-app/index.html">App</a><span class="token punctuation">, </span></span><span class="parameter ">override<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function replaces the current <a href="vendor.html">vendor</a> of this <a href="index.html">Component</a> with the <a href="replace-vendor.html">newVendor</a>. This only happens, if the current <a href="vendor.html">vendor</a> is not set (not initialized), or if <a href="replace-vendor.html">override</a> is true <i>(default: false)</i>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1802854408%2FFunctions%2F-2141326931" anchor-label="requestChangeAutoStart" id="1802854408%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="request-change-auto-start.html"><span>request</span><wbr><span>Change</span><wbr><span>Auto</span><wbr><span><span>Start</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1802854408%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="request-change-auto-start.html"><span class="token function">requestChangeAutoStart</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">autoStart<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-component-request-answer/index.html">Component.ComponentRequestAnswer</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-774984809%2FFunctions%2F-2141326931" anchor-label="requestReset" id="-774984809%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="request-reset.html"><span>request</span><wbr><span><span>Reset</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-774984809%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="request-reset.html"><span class="token function">requestReset</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1729489769%2FFunctions%2F-2141326931" anchor-label="requestRestart" id="-1729489769%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="request-restart.html"><span>request</span><wbr><span><span>Restart</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1729489769%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="request-restart.html"><span class="token function">requestRestart</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-component-request-answer/index.html">Component.ComponentRequestAnswer</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="949293028%2FFunctions%2F-2141326931" anchor-label="requestStart" id="949293028%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="request-start.html"><span>request</span><wbr><span><span>Start</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="949293028%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="request-start.html"><span class="token function">requestStart</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-component-request-answer/index.html">Component.ComponentRequestAnswer</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1880225426%2FFunctions%2F-2141326931" anchor-label="requestStop" id="1880225426%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="request-stop.html"><span>request</span><wbr><span><span>Stop</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1880225426%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="request-stop.html"><span class="token function">requestStop</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-component-request-answer/index.html">Component.ComponentRequestAnswer</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-527929599%2FFunctions%2F-2141326931" anchor-label="start" id="-527929599%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="start.html"><span><span>start</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-527929599%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="start.html"><span class="token function">start</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-522731563%2FFunctions%2F-2141326931" anchor-label="stop" id="-522731563%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="stop.html"><span><span>stop</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-522731563%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="stop.html"><span class="token function">stop</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="-2103868410%2FProperties%2F-2141326931" anchor-label="behaviour" id="-2103868410%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="behaviour.html">behaviour</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2103868410%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-2103868410%2FProperties%2F-2141326931" anchor-label="behaviour" id="-2103868410%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="behaviour.html">behaviour</a><span class="token operator">: </span><a href="-run-type/index.html">Component.RunType</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1405367117%2FProperties%2F-2141326931" anchor-label="canBeAutoStartToggled" id="-1405367117%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="can-be-auto-start-toggled.html">canBeAutoStartToggled</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1405367117%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-1405367117%2FProperties%2F-2141326931" anchor-label="canBeAutoStartToggled" id="-1405367117%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="can-be-auto-start-toggled.html">canBeAutoStartToggled</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1544295101%2FProperties%2F-2141326931" anchor-label="canBeStopped" id="1544295101%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="can-be-stopped.html">canBeStopped</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1544295101%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1544295101%2FProperties%2F-2141326931" anchor-label="canBeStopped" id="1544295101%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="can-be-stopped.html">canBeStopped</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="926654383%2FProperties%2F-2141326931" anchor-label="experimental" id="926654383%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="experimental.html">experimental</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="926654383%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="926654383%2FProperties%2F-2141326931" anchor-label="experimental" id="926654383%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="experimental.html">experimental</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1458277796%2FProperties%2F-2141326931" anchor-label="identity" id="-1458277796%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../de.moltenKt.paper.tool.smart/-vendors-identifiable/identity.html">identity</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1458277796%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-1458277796%2FProperties%2F-2141326931" anchor-label="identity" id="-1458277796%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../de.moltenKt.paper.tool.smart/-vendors-identifiable/identity.html">identity</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1706940223%2FProperties%2F-2141326931" anchor-label="identityObject" id="1706940223%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../de.moltenKt.paper.tool.timing.cooldown/-cooldown/index.html#1706940223%2FProperties%2F-2141326931">identityObject</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1706940223%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1706940223%2FProperties%2F-2141326931" anchor-label="identityObject" id="1706940223%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../de.moltenKt.paper.tool.timing.cooldown/-cooldown/index.html#1706940223%2FProperties%2F-2141326931">identityObject</a><span class="token operator">: </span><a href="../../../MoltenKT-Core/de.molten-kt.jvm.tool.smart.identification/-identity/index.html">Identity</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">Component</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1336322526%2FProperties%2F-2141326931" anchor-label="isAutoStarting" id="1336322526%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="is-auto-starting.html">isAutoStarting</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1336322526%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1336322526%2FProperties%2F-2141326931" anchor-label="isAutoStarting" id="1336322526%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="is-auto-starting.html">isAutoStarting</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1347127041%2FProperties%2F-2141326931" anchor-label="isBlocked" id="1347127041%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="is-blocked.html">isBlocked</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1347127041%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1347127041%2FProperties%2F-2141326931" anchor-label="isBlocked" id="1347127041%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="is-blocked.html">isBlocked</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="2097428110%2FProperties%2F-2141326931" anchor-label="isRunning" id="2097428110%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="is-running.html">isRunning</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2097428110%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="2097428110%2FProperties%2F-2141326931" anchor-label="isRunning" id="2097428110%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="is-running.html">isRunning</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1149616279%2FProperties%2F-2141326931" anchor-label="isVendorCurrentlySet" id="-1149616279%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="is-vendor-currently-set.html">isVendorCurrentlySet</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1149616279%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-1149616279%2FProperties%2F-2141326931" anchor-label="isVendorCurrentlySet" id="-1149616279%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="is-vendor-currently-set.html">isVendorCurrentlySet</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1575681316%2FProperties%2F-2141326931" anchor-label="key" id="1575681316%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="key.html">key</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1575681316%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1575681316%2FProperties%2F-2141326931" anchor-label="key" id="1575681316%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="key.html">key</a><span class="token operator">: </span><span data-unresolved-link="org.bukkit/NamespacedKey///PointingToDeclaration/">NamespacedKey</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="71225498%2FProperties%2F-2141326931" anchor-label="preferredVendor" id="71225498%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="preferred-vendor.html">preferredVendor</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="71225498%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="71225498%2FProperties%2F-2141326931" anchor-label="preferredVendor" id="71225498%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">override </span><span class="token keyword">val </span><a href="preferred-vendor.html">preferredVendor</a><span class="token operator">: </span><a href="../../de.moltenKt.paper.structure.app/-app/index.html">App</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-680643780%2FProperties%2F-2141326931" anchor-label="runningSince" id="-680643780%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="running-since.html">runningSince</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-680643780%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-680643780%2FProperties%2F-2141326931" anchor-label="runningSince" id="-680643780%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="running-since.html">runningSince</a><span class="token operator">: </span><a href="../../../MoltenKT-Core/de.molten-kt.jvm.tool.timing.calendar/-calendar/index.html">Calendar</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1414672536%2FProperties%2F-2141326931" anchor-label="sectionLabel" id="-1414672536%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="section-label.html">sectionLabel</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1414672536%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-1414672536%2FProperties%2F-2141326931" anchor-label="sectionLabel" id="-1414672536%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="section-label.html">sectionLabel</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-116174951%2FProperties%2F-2141326931" anchor-label="sectionLog" id="-116174951%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../de.moltenKt.paper.tool.smart/-logging/section-log.html">sectionLog</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-116174951%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-116174951%2FProperties%2F-2141326931" anchor-label="sectionLog" id="-116174951%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../de.moltenKt.paper.tool.smart/-logging/section-log.html">sectionLog</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/logging/Logger.html">Logger</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-904308514%2FProperties%2F-2141326931" anchor-label="thisIdentity" id="-904308514%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../de.moltenKt.paper.tool.smart/-vendors-identifiable/this-identity.html">thisIdentity</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-904308514%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-904308514%2FProperties%2F-2141326931" anchor-label="thisIdentity" id="-904308514%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../de.moltenKt.paper.tool.smart/-vendors-identifiable/this-identity.html">thisIdentity</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1127900575%2FProperties%2F-2141326931" anchor-label="thisIdentityObject" id="1127900575%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../de.moltenKt.paper.tool.smart/-vendors-identifiable/this-identity-object.html">thisIdentityObject</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1127900575%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1127900575%2FProperties%2F-2141326931" anchor-label="thisIdentityObject" id="1127900575%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../de.moltenKt.paper.tool.smart/-vendors-identifiable/this-identity-object.html">thisIdentityObject</a><span class="token operator">: </span><a href="../../../MoltenKT-Core/de.molten-kt.jvm.tool.smart.identification/-identity/index.html">Identity</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">Component</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-651115906%2FProperties%2F-2141326931" anchor-label="threadContext" id="-651115906%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="thread-context.html">threadContext</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-651115906%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-651115906%2FProperties%2F-2141326931" anchor-label="threadContext" id="-651115906%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="thread-context.html">threadContext</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/ExecutorCoroutineDispatcher///PointingToDeclaration/">ExecutorCoroutineDispatcher</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1884393777%2FProperties%2F-2141326931" anchor-label="vendor" id="-1884393777%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="vendor.html">vendor</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1884393777%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-1884393777%2FProperties%2F-2141326931" anchor-label="vendor" id="-1884393777%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">lateinit override </span><span class="token keyword">val </span><a href="vendor.html">vendor</a><span class="token operator">: </span><a href="../../de.moltenKt.paper.structure.app/-app/index.html">App</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="5045681%2FProperties%2F-2141326931" anchor-label="vendorIdentity" id="5045681%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="vendor-identity.html">vendorIdentity</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="5045681%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="5045681%2FProperties%2F-2141326931" anchor-label="vendorIdentity" id="5045681%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="vendor-identity.html">vendorIdentity</a><span class="token operator">: </span><a href="../../../MoltenKT-Core/de.molten-kt.jvm.tool.smart.identification/-identity/index.html">Identity</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="../../de.moltenKt.paper.structure.app/-app/index.html">App</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Inheritors</h2>
+      <div class="table" data-togglable="Inheritors"><a data-name="1441085161%2FInheritors%2F-2141326931" anchor-label="SmartComponent" id="1441085161%2FInheritors%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../-smart-component/index.html">SmartComponent</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1441085161%2FInheritors%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+

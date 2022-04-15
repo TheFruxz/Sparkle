@@ -1,0 +1,322 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>TreeBranch</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../index.html">
+<span>MoltenKT</span>            </a>    </div>
+    <div>1.0-PRE-7
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="MoltenKT-Core::de.moltenKt.jvm.tree/TreeBranch///PointingToDeclaration//-1175639926">
+  <div class="breadcrumbs"><a href="../../index.html">MoltenKT-Core</a><span class="delimiter">/</span><a href="../index.html">de.moltenKt.jvm.tree</a><span class="delimiter">/</span><a href="index.html">TreeBranch</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Tree</span><wbr><span><span>Branch</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">TreeBranch</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator"> : </span><a href="index.html">TreeBranch</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">CONTENT</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">BRANCH_TYPE</a><span class="token operator">&gt;</span><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">CONTENT</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">BRANCH_TYPE</a><span class="token operator"> : </span><a href="../-tree-branch-type/index.html">TreeBranchType</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">var </span>identity<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">var </span>address<span class="token operator">: </span><a href="../../de.moltenKt.jvm.tool.smart.positioning/-address/index.html">Address</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Address.address(identity)<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">var </span>branchType<span class="token operator">: </span><a href="index.html">BRANCH_TYPE</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">var </span>subBranches<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">var </span>content<span class="token operator">: </span><a href="index.html">CONTENT</a></span></span><span class="token punctuation">)</span> : <a href="../../de.moltenKt.jvm.tool.smart.identification/-identifiable/index.html">Identifiable</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">&gt; </span>, <a href="../../de.moltenKt.jvm.tool.smart.positioning/-pathed/index.html">Pathed</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">&gt; </span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">This open class represents a branch of a tree, containing and based on another branches.</p><h4 class="">Author</h4><p class="paragraph">Fruxz</p><h4 class="">Since</h4><p class="paragraph">1.0</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Parameters">Parameters</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Parameters</h2>
+      <div data-togglable="Parameters">
+        <div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="Parameters"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>SUBBRANCH</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">the type of the subbranches, have to be the same as this origin branch type!</p></div></div></div></div></div><div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>CONTENT</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">the content, contained &amp; stored in each branch</p></div></div></div></div></div><div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>BRANCH_TYPE</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">the type of the branch (useful for directories, etc.)</p></div></div></div></div></div><div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>identity</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">the name of the branch</p></div></div></div></div></div><div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>address</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">the path of the branch (have to contain the whole path, like 'this/is/a/path')</p></div></div></div></div></div><div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span>branch</span><wbr><span><span>Type</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">the type of the branch</p></div></div></div></div></div><div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span>sub</span><wbr><span><span>Branches</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">the subbranches of the branch, that is a list of <a href="index.html">SUBBRANCH</a>es</p></div></div></div></div></div><div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>content</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">the content of the branch, which is a <a href="index.html">CONTENT</a></p></div></div></div></div></div></div></div></div></div>
+      </div>
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="-1757306269%2FConstructors%2F-1175639926" anchor-label="TreeBranch" id="-1757306269%2FConstructors%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-tree-branch.html"><span>Tree</span><wbr><span><span>Branch</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1757306269%2FConstructors%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator"> : </span><a href="index.html">TreeBranch</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">CONTENT</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">BRANCH_TYPE</a><span class="token operator">&gt;</span><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">CONTENT</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">BRANCH_TYPE</a><span class="token operator"> : </span><a href="../-tree-branch-type/index.html">TreeBranchType</a><span class="token operator">&gt; </span><a href="-tree-branch.html"><span class="token function">TreeBranch</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;identity<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;address<span class="token operator">: </span><a href="../../de.moltenKt.jvm.tool.smart.positioning/-address/index.html">Address</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Address.address(identity)<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;branchType<span class="token operator">: </span><a href="index.html">BRANCH_TYPE</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;subBranches<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;content<span class="token operator">: </span><a href="index.html">CONTENT</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="-2000825957%2FFunctions%2F-1175639926" anchor-label="allKnownBranches" id="-2000825957%2FFunctions%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="all-known-branches.html"><span>all</span><wbr><span>Known</span><wbr><span><span>Branches</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2000825957%2FFunctions%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="all-known-branches.html"><span class="token function">allKnownBranches</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function returns every subbranch, and its subranches, and so on in a single list, additionally with this branch.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="958747594%2FFunctions%2F-1175639926" anchor-label="content" id="958747594%2FFunctions%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="content.html"><span><span>content</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="958747594%2FFunctions%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="content.html"><span class="token function">content</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">content<span class="token operator">: </span><a href="index.html">CONTENT</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">TreeBranch</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">CONTENT</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">BRANCH_TYPE</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function replaces the current <a href="content.html">content</a> of the branch with the given new <a href="content.html">content</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-376980746%2FFunctions%2F-1175639926" anchor-label="flatSubBranches" id="-376980746%2FFunctions%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="flat-sub-branches.html"><span>flat</span><wbr><span>Sub</span><wbr><span><span>Branches</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-376980746%2FFunctions%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="flat-sub-branches.html"><span class="token function">flatSubBranches</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function returns every subbranch, and its subranches, and so on in a single list.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1788908637%2FFunctions%2F-1175639926" anchor-label="getBestMatchFromPath" id="1788908637%2FFunctions%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="get-best-match-from-path.html"><span>get</span><wbr><span>Best</span><wbr><span>Match</span><wbr><span>From</span><wbr><span><span>Path</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1788908637%2FFunctions%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-best-match-from-path.html"><span class="token function">getBestMatchFromPath</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="../../de.moltenKt.jvm.tool.smart.positioning/-address/index.html">Address</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">TreeBranch</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">CONTENT</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">BRANCH_TYPE</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">SUBBRANCH</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function returns the <a href="index.html">SUBBRANCH</a>, which fits the most to the given <a href="identity.html">identity</a>, or null, if there is no branch with the given <a href="identity.html">identity</a>, that fits correctly at all.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="715063417%2FFunctions%2F-1175639926" anchor-label="getBestMatchFromPathWithRemaining" id="715063417%2FFunctions%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="get-best-match-from-path-with-remaining.html"><span>get</span><wbr><span>Best</span><wbr><span>Match</span><wbr><span>From</span><wbr><span>Path</span><wbr><span>With</span><wbr><span><span>Remaining</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="715063417%2FFunctions%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-best-match-from-path-with-remaining.html"><span class="token function">getBestMatchFromPathWithRemaining</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="../../de.moltenKt.jvm.tool.smart.positioning/-address/index.html">Address</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">TreeBranch</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">CONTENT</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">BRANCH_TYPE</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">?</span><span class="token punctuation">, </span><span class="token keyword"></span><a href="../../de.moltenKt.jvm.tool.smart.positioning/-address/index.html">Address</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">TreeBranch</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">CONTENT</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="index.html">BRANCH_TYPE</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function returns the <a href="index.html">SUBBRANCH</a>, which fits the most to the given <a href="identity.html">identity</a>, or null, if there is no branch with the given <a href="identity.html">identity</a>, that fits correctly at all. Additionally, this function returns the not used / remaining parts of the given <a href="get-best-match-from-path-with-remaining.html">path</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="407551129%2FProperties%2F-1175639926" anchor-label="address" id="407551129%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="address.html">address</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="407551129%2FProperties%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><a data-name="407551129%2FProperties%2F-1175639926" anchor-label="address" id="407551129%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="address.html">address</a><span class="token operator">: </span><a href="../../de.moltenKt.jvm.tool.smart.positioning/-address/index.html">Address</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="2032684790%2FProperties%2F-1175639926" anchor-label="addressObject" id="2032684790%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../de.moltenKt.jvm.tool.smart.positioning/-pathed/address-object.html">addressObject</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2032684790%2FProperties%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><a data-name="2032684790%2FProperties%2F-1175639926" anchor-label="addressObject" id="2032684790%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../de.moltenKt.jvm.tool.smart.positioning/-pathed/address-object.html">addressObject</a><span class="token operator">: </span><a href="../../de.moltenKt.jvm.tool.smart.positioning/-address/index.html">Address</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="2032684790%2FProperties%2F-1175639926" anchor-label="addressObject" id="2032684790%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><p class="paragraph">This is the path of this object, which represents the address of the object inside the pathed structure.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="102005112%2FProperties%2F-1175639926" anchor-label="addressString" id="102005112%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../de.moltenKt.jvm.tool.smart.positioning/-addressable/address-string.html">addressString</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="102005112%2FProperties%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><a data-name="102005112%2FProperties%2F-1175639926" anchor-label="addressString" id="102005112%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../de.moltenKt.jvm.tool.smart.positioning/-addressable/address-string.html">addressString</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="102005112%2FProperties%2F-1175639926" anchor-label="addressString" id="102005112%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><p class="paragraph">The address of the object as a <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-784936207%2FProperties%2F-1175639926" anchor-label="branchType" id="-784936207%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="branch-type.html">branchType</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-784936207%2FProperties%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><a data-name="-784936207%2FProperties%2F-1175639926" anchor-label="branchType" id="-784936207%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">var </span><a href="branch-type.html">branchType</a><span class="token operator">: </span><a href="index.html">BRANCH_TYPE</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1263424436%2FProperties%2F-1175639926" anchor-label="content" id="1263424436%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="content.html">content</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1263424436%2FProperties%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><a data-name="1263424436%2FProperties%2F-1175639926" anchor-label="content" id="1263424436%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">var </span><a href="content.html">content</a><span class="token operator">: </span><a href="index.html">CONTENT</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1756818321%2FProperties%2F-1175639926" anchor-label="identity" id="-1756818321%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="identity.html">identity</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1756818321%2FProperties%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><a data-name="-1756818321%2FProperties%2F-1175639926" anchor-label="identity" id="-1756818321%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="identity.html">identity</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1706940223%2FProperties%2F-1175639926" anchor-label="identityObject" id="1706940223%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../de.moltenKt.jvm.tool.smart.identification/-identifiable/identity-object.html">identityObject</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1706940223%2FProperties%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><a data-name="1706940223%2FProperties%2F-1175639926" anchor-label="identityObject" id="1706940223%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../de.moltenKt.jvm.tool.smart.identification/-identifiable/identity-object.html">identityObject</a><span class="token operator">: </span><a href="../../de.moltenKt.jvm.tool.smart.identification/-identity/index.html">Identity</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1706940223%2FProperties%2F-1175639926" anchor-label="identityObject" id="1706940223%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><p class="paragraph">Represents the identity of the object as an <a href="../../de.moltenKt.jvm.tool.smart.identification/-identity/index.html">Identity</a> type <a href="../../de.moltenKt.jvm.tool.smart.identification/-identifiable/index.html">T</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1478001873%2FProperties%2F-1175639926" anchor-label="isRoot" id="1478001873%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../de.moltenKt.jvm.tool.smart.positioning/-addressable/is-root.html">isRoot</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1478001873%2FProperties%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><a data-name="1478001873%2FProperties%2F-1175639926" anchor-label="isRoot" id="1478001873%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../de.moltenKt.jvm.tool.smart.positioning/-addressable/is-root.html">isRoot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1771239566%2FProperties%2F-1175639926" anchor-label="pathParts" id="1771239566%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../de.moltenKt.jvm.tool.smart.positioning/-pathed/path-parts.html">pathParts</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1771239566%2FProperties%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><a data-name="1771239566%2FProperties%2F-1175639926" anchor-label="pathParts" id="1771239566%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../de.moltenKt.jvm.tool.smart.positioning/-pathed/path-parts.html">pathParts</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1771239566%2FProperties%2F-1175639926" anchor-label="pathParts" id="1771239566%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><p class="paragraph">This value represents the different parts of the paths of this object.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1570703395%2FProperties%2F-1175639926" anchor-label="subBranches" id="-1570703395%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="sub-branches.html">subBranches</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1570703395%2FProperties%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Core:dokkaHtmlPartial/main"><a data-name="-1570703395%2FProperties%2F-1175639926" anchor-label="subBranches" id="-1570703395%2FProperties%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">var </span><a href="sub-branches.html">subBranches</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">SUBBRANCH</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Inheritors</h2>
+      <div class="table" data-togglable="Inheritors"><a data-name="1179399589%2FInheritors%2F-1175639926" anchor-label="ConsoleInterchangeBranch" id="1179399589%2FInheritors%2F-1175639926" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Core:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Core:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../de.moltenKt.jvm.interchange/-console-interchange-branch/index.html">ConsoleInterchangeBranch</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1179399589%2FInheritors%2F-1175639926"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+

@@ -4,20 +4,18 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.6.20"
     kotlin("plugin.serialization") version "1.6.20"
-    id("org.jetbrains.dokka") version "1.6.10"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("org.jetbrains.qodana") version "0.1.13"
+    id("org.jetbrains.dokka") version "1.6.20"
     `maven-publish`
+}
+
+repositories {
+    mavenCentral()
 }
 
 allprojects {
 
-    version = "1.0-PRE-6.0.1"
-    group = "de.jet"
-
-    repositories {
-        mavenCentral()
-    }
+    version = "1.0-PRE-7"
+    group = "de.moltenKt"
 
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
@@ -32,10 +30,14 @@ java {
     withSourcesJar()
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
-}
+tasks {
 
-tasks.dokkaHtmlMultiModule.configure {
-    outputDirectory.set(buildDir.resolve("../docs/"))
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "17"
+    }
+
+    dokkaHtmlMultiModule.configure {
+        outputDirectory.set(buildDir.resolve("../docs/"))
+    }
+
 }

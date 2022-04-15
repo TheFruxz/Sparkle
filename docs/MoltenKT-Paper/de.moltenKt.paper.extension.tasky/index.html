@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>de.moltenKt.paper.extension.tasky</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../index.html">
+<span>MoltenKT</span>            </a>    </div>
+    <div>1.0-PRE-7
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="MoltenKT-Paper::de.moltenKt.paper.extension.tasky////PointingToDeclaration//-2141326931">
+  <div class="breadcrumbs"><a href="../index.html">MoltenKT-Paper</a><span class="delimiter">/</span><a href="index.html">de.moltenKt.paper.extension.tasky</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Package de.</span><wbr><span>moltenKt.</span><wbr><span>paper.</span><wbr><span>extension.</span><wbr><span>tasky</span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Functions">Functions</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="460373309%2FFunctions%2F-2141326931" anchor-label="async" id="460373309%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="async.html"><span><span>async</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="460373309%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="async.html"><span class="token function">async</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;temporalAdvice<span class="token operator">: </span><a href="../de.moltenKt.paper.tool.timing.tasky/-temporal-advice/index.html">TemporalAdvice</a><span class="token operator"> = </span>TemporalAdvice.instant(async = true)<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;killAtError<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;vendor<span class="token operator">: </span><a href="../de.moltenKt.paper.structure.app/-app/index.html">App</a><span class="token operator"> = </span>system<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;onStart<span class="token operator">: </span><span class="token keyword"></span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;onStop<span class="token operator">: </span><span class="token keyword"></span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;onCrash<span class="token operator">: </span><span class="token keyword"></span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;serviceVendor<span class="token operator">: </span><a href="../../MoltenKT-Core/de.molten-kt.jvm.tool.smart.identification/-identity/index.html">Identity</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../de.moltenKt.paper.structure.service/-service/index.html">Service</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Identity("undefined")<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;process<span class="token operator">: </span><span class="token keyword"></span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Exceptions are caught!</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-731112968%2FFunctions%2F-2141326931" anchor-label="coroutine" id="-731112968%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="coroutine.html"><span><span>coroutine</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-731112968%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="coroutine.html"><span class="token function">coroutine</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">vendor<span class="token operator">: </span><a href="../de.moltenKt.paper.structure.app/-app/index.html">App</a><span class="token operator"> = </span>system<span class="token punctuation">, </span></span><span class="parameter ">process<span class="token operator">: </span><span class="token keyword">suspend </span><span class="token keyword"></span><span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/Job///PointingToDeclaration/">Job</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1382585624%2FFunctions%2F-2141326931" anchor-label="sync" id="1382585624%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="sync.html"><span><span>sync</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1382585624%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="sync.html"><span class="token function">sync</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;temporalAdvice<span class="token operator">: </span><a href="../de.moltenKt.paper.tool.timing.tasky/-temporal-advice/index.html">TemporalAdvice</a><span class="token operator"> = </span>TemporalAdvice.instant(async = false)<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;killAtError<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;vendor<span class="token operator">: </span><a href="../de.moltenKt.paper.structure.app/-app/index.html">App</a><span class="token operator"> = </span>system<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;onStart<span class="token operator">: </span><span class="token keyword"></span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;onStop<span class="token operator">: </span><span class="token keyword"></span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;onCrash<span class="token operator">: </span><span class="token keyword"></span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;serviceVendor<span class="token operator">: </span><a href="../../MoltenKT-Core/de.molten-kt.jvm.tool.smart.identification/-identity/index.html">Identity</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../de.moltenKt.paper.structure.service/-service/index.html">Service</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Identity("undefined")<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;process<span class="token operator">: </span><span class="token keyword"></span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Exceptions are caught!</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-207363454%2FFunctions%2F-2141326931" anchor-label="task" id="-207363454%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="task.html"><span><span>task</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-207363454%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="task.html"><span class="token function">task</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;temporalAdvice<span class="token operator">: </span><a href="../de.moltenKt.paper.tool.timing.tasky/-temporal-advice/index.html">TemporalAdvice</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;killAtError<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;vendor<span class="token operator">: </span><a href="../de.moltenKt.paper.structure.app/-app/index.html">App</a><span class="token operator"> = </span>system<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;onStart<span class="token operator">: </span><span class="token keyword"></span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;onStop<span class="token operator">: </span><span class="token keyword"></span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;onCrash<span class="token operator">: </span><span class="token keyword"></span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;serviceVendor<span class="token operator">: </span><a href="../../MoltenKT-Core/de.molten-kt.jvm.tool.smart.identification/-identity/index.html">Identity</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../de.moltenKt.paper.structure.service/-service/index.html">Service</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Identity("undefined")<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;process<span class="token operator">: </span><span class="token keyword"></span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../de.moltenKt.paper.tool.timing.tasky/-tasky/index.html">Tasky</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Exceptions are caught!</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="479455710%2FFunctions%2F-2141326931" anchor-label="waitTask" id="479455710%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="wait-task.html"><span>wait</span><wbr><span><span>Task</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="479455710%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="wait-task.html">T</a><span class="token operator">&gt; </span><a href="wait-task.html">T</a><span class="token punctuation">.</span><a href="wait-task.html"><span class="token function">waitTask</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">ticks<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">code<span class="token operator">: </span><span class="token keyword"></span><a href="wait-task.html">T</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="wait-task.html">T</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+

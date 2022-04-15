@@ -1,5 +1,5 @@
-rootProject.name = "JET"
-include("JET-JVM")
-include("JET-JavaCord")
-include("JET-Paper")
-include("JET-Unfold")
+rootProject.name = "MoltenKT"
+include("MoltenKT-Core")
+include("MoltenKT-JavaCord")
+include("MoltenKT-Paper")
+include("MoltenKT-Unfold")
