@@ -71,7 +71,7 @@ object MoltenData {
 
 	object File {
 
-		val CONFIG = MoltenYamlFile.rootFile("system-config")
+		val CONFIG = MoltenYamlFile.rootFile("setup")
 
 		val ESSENTIALS_CONFIG = MoltenYamlFile.dummyComponentFile("Essentials", "MoltenKT", "config")
 		val ESSENTIALS_WORLDS = MoltenYamlFile.dummyComponentFile("Essentials", "MoltenKT", "worlds")
