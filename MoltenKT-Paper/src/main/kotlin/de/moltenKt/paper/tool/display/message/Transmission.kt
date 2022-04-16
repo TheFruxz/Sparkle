@@ -39,7 +39,10 @@ data class Transmission(
 
 	infix fun edit(action: Transmission.() -> Unit) = apply(action)
 
-	infix fun prefix(prefix: Component) = edit { this.prefix = prefix }
+	infix fun prefix(prefix: Component) = edit {
+		prefixByLevel = false
+		this.prefix = prefix
+	}
 
 	infix fun content(content: ComponentLike) = edit { this.content = listOf(content.asComponent()) }
 
