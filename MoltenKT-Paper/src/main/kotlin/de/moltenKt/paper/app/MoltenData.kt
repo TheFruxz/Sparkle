@@ -10,7 +10,7 @@ import de.moltenKt.paper.tool.data.DataTransformer
 import de.moltenKt.paper.tool.data.MoltenYamlFile
 import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem
-import java.util.Locale
+import java.util.*
 import kotlin.io.path.div
 
 object MoltenData {
@@ -60,7 +60,7 @@ object MoltenData {
 
 	object File {
 
-		val CONFIG = MoltenYamlFile.generateYaml(MoltenFileSystem.homePath / "setup.yml")
+		val CONFIG = MoltenYamlFile.generateYaml(MoltenFileSystem.rootPath() / "setup.yml")
 
 		val ESSENTIALS_CONFIG = MoltenYamlFile.generateYaml(MoltenFileSystem.componentPath(Identifiable.custom("MoltenKT:World-Points")) / "points.yml")
 

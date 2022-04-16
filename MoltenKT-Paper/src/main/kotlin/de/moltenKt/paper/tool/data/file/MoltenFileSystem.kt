@@ -19,7 +19,7 @@ object MoltenFileSystem {
 
     fun componentPath(component: Identifiable<out Component>) =
         homePath / with(component.identity.split(":")) {
-            "${this[0]}@${this[1]}"
+            "${this[1]}@${this[0]}"
         }
 
 }
