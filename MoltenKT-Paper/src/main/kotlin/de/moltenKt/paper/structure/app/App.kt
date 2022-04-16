@@ -7,6 +7,7 @@ import de.moltenKt.core.extension.catchException
 import de.moltenKt.core.extension.container.mutableReplaceWith
 import de.moltenKt.core.extension.data.jsonBase
 import de.moltenKt.core.extension.tryToCatch
+import de.moltenKt.core.extension.tryToPrint
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
@@ -238,7 +239,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			} catch (e: Exception) {
 
 				mainLog(Level.WARNING, "Error during adding handler")
-				catchException(e)
+
+				tryToPrint { catchException(e) }
 
 			}
 
