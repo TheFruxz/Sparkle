@@ -225,12 +225,20 @@ data class Panel(
 	}
 
 	/**
+	 * This computational value represents the real slots, where the inner slots are located.
+	 * *example: { innerSlots[0] == 10 } <- the first inner slot is in real slot 10*
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val innerSlots = computedInnerSlots
+
+	/**
 	 * The available inner slots, that can be used to place inner.
 	 * It's like the size of the inventory, but without the border.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val innerSlots by lazy { 0..computedInnerSlots.lastIndex }
+	val availableInnerSlots by lazy { 0..computedInnerSlots.lastIndex }
 
 	/**
 	 * This function replaces the onReceiveEvent, that is used to
