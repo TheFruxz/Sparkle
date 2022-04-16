@@ -1,5 +1,6 @@
 package de.moltenKt.paper.runtime.event
 
+import de.moltenKt.paper.extension.display.ui.item
 import de.moltenKt.paper.tool.display.item.Item
 import de.moltenKt.paper.tool.display.ui.panel.Panel
 import de.moltenKt.paper.tool.event.KCancellable
@@ -10,21 +11,23 @@ import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType.SlotType
 import org.bukkit.event.player.PlayerEvent
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryView
 import org.bukkit.inventory.ItemStack
 
 class PanelClickEvent(
 	player: Player,
-	val panel: Panel,
-	val action: InventoryAction,
-	val clickedSlot: Int,
-	val inventoryView: InventoryView,
-	val clickedSlotType: SlotType,
-	val clickedItem: Item?,
-	val clickedItemStack: ItemStack?,
-	val clickType: ClickType,
 	val origin: InventoryClickEvent,
-	override var eventCancelled: Boolean,
+	val panel: Panel,
+	val action: InventoryAction = origin.action,
+	val clickedSlot: Int = origin.slot,
+	val inventoryView: InventoryView = origin.view,
+	val clickedSlotType: SlotType = origin.slotType,
+	val clickedItem: Item? = origin.currentItem?.item,
+	val clickedItemStack: ItemStack? = origin.currentItem,
+	val clickType: ClickType = origin.click,
+	val clickedInventory: Inventory? = origin.clickedInventory,
+	override var eventCancelled: Boolean = false,
 ) : PlayerEvent(player), KCancellable {
 
 	override fun getHandlers() = handlerList
