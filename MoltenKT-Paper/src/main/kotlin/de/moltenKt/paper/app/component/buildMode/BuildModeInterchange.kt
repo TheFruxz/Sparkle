@@ -32,11 +32,11 @@ internal class BuildModeInterchange : StructuredInterchange(
 		fun enableBuildMode(executor: InterchangeExecutor, target: OfflinePlayer) {
 			if (!target.buildMode) {
 				target.buildMode = true
-				lang("interchange.internal.buildmode.enable")
+				lang["interchange.internal.buildmode.enable"]
 					.replaceVariables("player" to target.name)
 					.notification(APPLIED, executor).display()
 			} else
-				lang("interchange.internal.buildmode.stay")
+				lang["interchange.internal.buildmode.stay"]
 					.replaceVariables("player" to target.name)
 					.notification(FAIL, executor).display()
 		}
@@ -44,11 +44,11 @@ internal class BuildModeInterchange : StructuredInterchange(
 		fun disableBuildMode(executor: InterchangeExecutor, target: OfflinePlayer) {
 			if (target.buildMode) {
 				target.buildMode = false
-				lang("interchange.internal.buildmode.disable")
+				lang["interchange.internal.buildmode.disable"]
 					.replaceVariables("player" to target.name)
 					.notification(APPLIED, executor).display()
 			} else
-				lang("interchange.internal.buildmode.stay")
+				lang["interchange.internal.buildmode.stay"]
 					.replaceVariables("player" to target.name)
 					.notification(FAIL, executor).display()
 		}
@@ -74,7 +74,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 					buildString {
 
 						appendLine(
-							lang("interchange.internal.buildmode.list.header").replaceVariables(
+							lang["interchange.internal.buildmode.list.header"].replaceVariables(
 								"p1" to pageValue.page + 1,
 								"p2" to pageValue.pages,
 							)
@@ -83,7 +83,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 						pageValue.content.withIndex().forEach {
 							val player = getOfflinePlayer(it.value.identity.toUUID())
 
-							lang("interchange.internal.buildmode.list.line").replaceVariables(
+							lang["interchange.internal.buildmode.list.line"].replaceVariables(
 								"player" to player.name,
 								"statusColor" to player.isOnline.switchResult("<green>", "<gray>")
 							).let(::appendLine)
@@ -92,7 +92,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 					}.notification(INFO, executor).display()
 				} else
-					lang("interchange.internal.buildmode.list.empty")
+					lang["interchange.internal.buildmode.list.empty"]
 						.notification(FAIL, executor).display()
 			}
 
@@ -229,7 +229,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 					concludedExecution {
 						val target = getInput(1, InterchangeStructureInputRestriction.OFFLINE_PLAYER)
 
-						lang("interchange.internal.buildmode.info").replaceVariables(
+						lang["interchange.internal.buildmode.info"].replaceVariables(
 							"state" to target.buildMode.switchResult("<green><bold>enabled</bold>", "<red><bold>disabled</bold>"),
 							"player" to target.name
 						).notification(INFO, executor).display()

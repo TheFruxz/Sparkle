@@ -5,6 +5,7 @@ import de.moltenKt.jvm.tool.smart.identification.Identity
 import de.moltenKt.jvm.tool.smart.positioning.Address
 import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.app.MoltenCache
+import de.moltenKt.paper.app.MoltenLanguage
 import de.moltenKt.paper.runtime.app.LanguageSpeaker
 import de.moltenKt.paper.runtime.lang.LanguageData
 import de.moltenKt.paper.structure.app.App
@@ -29,17 +30,11 @@ fun mainLog(level: Level = Level.INFO, message: String) = MoltenApp.instance.log
 
 val mainLog = MoltenApp.instance.log
 
-internal val lang: LanguageSpeaker
-	get() = de.moltenKt.paper.MoltenEngine.languageSpeaker
+internal val lang: MoltenLanguage.MoltenLanguageContainer
+	get() = MoltenLanguage.container
 
-// TODO: 12.10.21 LanguageSpeaker bei Address austauschen mit sinnvoller, erst dann existierender Klasse
-fun getSystemTranslated(@Suppress("UNUSED_PARAMETER") vendor: Identifiable<out App>, address: Address<LanguageData>): String {
-	return lang(id = address.addressString) //todo replace with real system
-}
-
-operator fun LanguageSpeaker.get(id: String) = lang(id)
-
-internal fun lang(id: String, smartColor: Boolean = true, basicHTML: Boolean = true) = lang.message(id, smartColor, basicHTML)
+@Deprecated("", level = DeprecationLevel.ERROR, replaceWith = ReplaceWith("lang[key]"))
+internal fun lang(key: String) = lang[key]
 
 internal val system: MoltenApp
 	get() = de.moltenKt.paper.MoltenEngine.appInstance

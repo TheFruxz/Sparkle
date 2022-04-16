@@ -64,7 +64,7 @@ data class Transmission(
 		val nextRound = mutableSetOf<Entity>()
 
 		val prefix = if (prefixByLevel) {
-			lang("system.${level.prefixLink.addressObject}").asStyledComponent
+			lang["system.${level.prefixLink.addressObject}"].asStyledComponent
 		} else {
 			prefix ?: MoltenData.systemPrefix.content.asStyledComponent
 		}

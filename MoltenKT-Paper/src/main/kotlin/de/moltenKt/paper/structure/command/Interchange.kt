@@ -211,7 +211,7 @@ abstract class Interchange(
 	private fun wrongApprovalFeedback(
 		receiver: InterchangeExecutor,
 	) {
-		lang("interchange.run.issue.wrongApproval")
+		lang["interchange.run.issue.wrongApproval"]
 			.replace("[approval]", "${requiredApproval?.identity}")
 			.notification(Level.FAIL, receiver).display()
 	}
@@ -219,7 +219,7 @@ abstract class Interchange(
 	private fun wrongUsageFeedback(
 		receiver: InterchangeExecutor,
 	) {
-		lang("interchange.run.issue.wrongUsage")
+		lang["interchange.run.issue.wrongUsage"]
 			.notification(Level.FAIL, receiver).display()
 		receiver.sendMessage(Component.text(completion.buildSyntax(), NamedTextColor.YELLOW))
 	}
@@ -227,7 +227,7 @@ abstract class Interchange(
 	private fun wrongClientFeedback(
 		receiver: InterchangeExecutor,
 	) {
-		lang("interchange.run.issue.wrongClient")
+		lang["interchange.run.issue.wrongClient"]
 			.replace("[client]", userRestriction.name)
 			.notification(Level.FAIL, receiver).display()
 	}
@@ -235,7 +235,7 @@ abstract class Interchange(
 	private fun issueFeedback(
 		receiver: InterchangeExecutor
 	) {
-		lang("interchange.run.issue.issue")
+		lang["interchange.run.issue.issue"]
 			.replace("[interchange]", "Interchange/$label")
 			.notification(ERROR, receiver).display()
 	}

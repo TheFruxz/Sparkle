@@ -8,7 +8,6 @@ import de.moltenKt.paper.app.MoltenData
 import de.moltenKt.paper.app.component.point.asset.Point
 import de.moltenKt.paper.app.component.point.asset.PointConfig
 import de.moltenKt.paper.extension.display.notification
-import de.moltenKt.paper.extension.getSystemTranslated
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.system
@@ -40,7 +39,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 				buildString {
 
 					appendLine(
-						lang("interchange.internal.essentials.point.list.header").replaceVariables(
+						lang["interchange.internal.essentials.point.list.header"].replaceVariables(
 							"p1" to pageValue.page + 1,
 							"p2" to pageValue.pages,
 						)
@@ -49,7 +48,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 					pageValue.content.withIndex().forEach {
 						val point = it.value
 
-						lang("interchange.internal.essentials.point.list.entry").replaceVariables(
+						lang["interchange.internal.essentials.point.list.entry"].replaceVariables(
 							"point" to point.identity,
 							"x" to point.bukkitLocation.blockX,
 							"y" to point.bukkitLocation.blockY,
@@ -60,7 +59,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 				}.notification(INFO, executor).display()
 			} else
-				lang("interchange.internal.essentials.point.list.empty")
+				lang["interchange.internal.essentials.point.list.empty"]
 					.notification(FAIL, executor).display()
 		}
 
@@ -122,17 +121,12 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 						MoltenData.savedPoints.content =
 							PointConfig(points + Point(pointName, executor.location))
 
-						getSystemTranslated(system,
-							Address.address("interchange.internal.essentials.point.edit.created")
-						)
+						lang["interchange.internal.essentials.point.edit.created"]
 							.replaceVariables("point" to pointName)
 							.notification(APPLIED, executor).display()
 
 					} else
-						getSystemTranslated(
-							system,
-							Address.address("interchange.internal.essentials.point.edit.exists")
-						)
+						lang["interchange.internal.essentials.point.edit.exists"]
 							.replaceVariables("point" to pointName)
 							.notification(FAIL, executor).display()
 
@@ -156,12 +150,12 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 						MoltenData.savedPoints.content = PointConfig(points)
 
-						getSystemTranslated(system, Address.address("interchange.internal.essentials.point.edit.removed"))
+						lang["interchange.internal.essentials.point.edit.removed"]
 							.replaceVariables("point" to parameters.last())
 							.notification(APPLIED, executor).display()
 
 					} else
-						getSystemTranslated(system, Address.address("interchange.internal.essentials.point.edit.notFound"))
+						lang["interchange.internal.essentials.point.edit.notFound"]
 							.replaceVariables("point" to parameters.last())
 							.notification(FAIL, executor).display()
 
@@ -185,17 +179,12 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 						sync { executor.teleport(point.bukkitLocation) }
 
-						getSystemTranslated(
-							system,
-							Address.address("interchange.internal.essentials.point.edit.teleportedSelf")
-						)
+						lang["interchange.internal.essentials.point.edit.teleportedSelf"]
 							.replaceVariables("point" to parameters.last())
 							.notification(APPLIED, executor).display()
 
 					} else
-						getSystemTranslated(system,
-							Address.address("interchange.internal.essentials.point.edit.notFound")
-						)
+						lang["interchange.internal.essentials.point.edit.notFound"]
 							.replaceVariables("point" to parameters.last())
 							.notification(FAIL, executor).display()
 

@@ -10,6 +10,7 @@ import de.moltenKt.paper.tool.data.DataTransformer
 import de.moltenKt.paper.tool.data.MoltenYamlFile
 import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem
+import java.util.Locale
 import kotlin.io.path.div
 
 object MoltenData {
@@ -31,7 +32,7 @@ object MoltenData {
 	val systemLanguage = Preference(
 		file = CONFIG,
 		path = moltenPath("language"),
-		default = "en_general",
+		default = Locale.ENGLISH.language,
 	)
 
 	// SKULLS
@@ -61,7 +62,7 @@ object MoltenData {
 
 		val CONFIG = MoltenYamlFile.generateYaml(MoltenFileSystem.homePath / "setup.yml")
 
-		val ESSENTIALS_CONFIG = MoltenYamlFile.generateYaml(MoltenFileSystem.componentPath(Identifiable.custom("MoltenKT:World-Points")))
+		val ESSENTIALS_CONFIG = MoltenYamlFile.generateYaml(MoltenFileSystem.componentPath(Identifiable.custom("MoltenKT:World-Points")) / "points.yml")
 
 	}
 

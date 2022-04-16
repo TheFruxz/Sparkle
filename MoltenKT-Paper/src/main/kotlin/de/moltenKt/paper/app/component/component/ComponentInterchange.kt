@@ -7,7 +7,6 @@ import de.moltenKt.jvm.extension.math.ceilToInt
 import de.moltenKt.jvm.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.notification
-import de.moltenKt.paper.extension.get
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.system
@@ -40,14 +39,14 @@ internal class ComponentInterchange :
 				buildString {
 
 					appendLine(
-						lang("interchange.internal.component.list.header").replaceVariables(
+						lang["interchange.internal.component.list.header"].replaceVariables(
 							"p1" to (page + 1),
 							"p2" to pages
 						)
 					)
 
 					appendLine(
-						lang("interchange.internal.component.list.description").replaceVariables(
+						lang["interchange.internal.component.list.description"].replaceVariables(
 							"1" to "${icons[0]}/${icons[1]}",
 							"2" to icons[2],
 							"3" to icons[3],
@@ -59,7 +58,7 @@ internal class ComponentInterchange :
 
 					content.forEach { element ->
 						appendLine(
-							lang("interchange.internal.component.list.line").replaceVariables(
+							lang["interchange.internal.component.list.line"].replaceVariables(
 								"status" to if (element.isBlocked) "<red>${icons[5]}<gray>" else if (element.isRunning) "<green>${icons[1]}<gray>" else "<gray>${icons[0]}",
 								"autoStart" to if (element.isAutoStarting) "<green>${icons[2]}<gray>" else "<gray>${icons[2]}",
 								"force" to if (!element.canBeStopped) "<yellow>${icons[3]}<gray>" else "<gray>${icons[3]}",
@@ -81,16 +80,16 @@ internal class ComponentInterchange :
 
 					component.vendor.start(component.identityObject)
 
-					lang("interchange.internal.component.nowRunning")
+					lang["interchange.internal.component.nowRunning"]
 						.replaceVariables("component" to component.identity)
 						.notification(Transmission.Level.APPLIED, executor).display()
 
 				} else
-					lang("interchange.internal.component.alreadyRunning")
+					lang["interchange.internal.component.alreadyRunning"]
 						.replaceVariables("component" to component.identity)
 						.notification(Transmission.Level.FAIL, executor).display()
 			} else
-				lang("interchange.internal.component.blocked")
+				lang["interchange.internal.component.blocked"]
 					.replaceVariables("component" to component.identity)
 					.notification(Transmission.Level.ERROR, executor).display()
 		}
@@ -102,17 +101,17 @@ internal class ComponentInterchange :
 
 					component.vendor.stop(component.identityObject)
 
-					lang("interchange.internal.component.nowStopped")
+					lang["interchange.internal.component.nowStopped"]
 						.replace("[component]", component.identity)
 						.notification(Transmission.Level.APPLIED, executor).display()
 
 				} else
-					lang("interchange.internal.component.runningStatic")
+					lang["interchange.internal.component.runningStatic"]
 						.replaceVariables("component" to component.identity)
 						.notification(FAIL, executor).display()
 
 			} else
-				lang("interchange.internal.component.missingRunning")
+				lang["interchange.internal.component.missingRunning"]
 					.replaceVariables("component" to component.identity)
 					.notification(Transmission.Level.FAIL, executor).display()
 		}
@@ -140,7 +139,7 @@ internal class ComponentInterchange :
 					.notification(APPLIED, executor).display()
 
 			} else
-				lang("interchange.internal.component.autoStartStatic")
+				lang["interchange.internal.component.autoStartStatic"]
 					.replaceVariables("component" to component.identity)
 					.notification(Transmission.Level.FAIL, executor).display()
 		}
@@ -150,7 +149,7 @@ internal class ComponentInterchange :
 				if (containsKey(component.identityObject))
 					this[component.identityObject] = Calendar.now()
 			}
-			lang("interchange.internal.component.reset")
+			lang["interchange.internal.component.reset"]
 				.replaceVariables("component" to component.identity)
 				.notification(APPLIED, executor).display()
 		}
@@ -158,24 +157,24 @@ internal class ComponentInterchange :
 		fun info(component: Component, executor: InterchangeExecutor) {
 			buildString {
 
-				appendLine(lang("interchange.internal.component.info.header").replaceVariables("component" to component.identity))
+				appendLine(lang["interchange.internal.component.info.header"].replaceVariables("component" to component.identity))
 
 				fun Boolean.toDisplay() =
-					if (this) lang("interchange.internal.component.info.dict.true") else lang("interchange.internal.component.info.dict.false")
+					if (this) lang["interchange.internal.component.info.dict.true"] else lang["interchange.internal.component.info.dict.false"]
 
 				mapOf(
-					lang("interchange.internal.component.info.dict.name") to component.identity,
-					lang("interchange.internal.component.info.dict.running") to component.isRunning.toDisplay(),
-					lang("interchange.internal.component.info.dict.vendor") to component.vendorIdentity.identity,
-					lang("interchange.internal.component.info.dict.configuration") to component.behaviour.name,
-					lang("interchange.internal.component.info.dict.isAutoStart") to component.isAutoStarting.toDisplay(),
-					lang("interchange.internal.component.info.dict.isExperimental") to component.experimental.toDisplay(),
-					lang("interchange.internal.component.info.dict.runningSince") to (component.runningSince?.durationToNow()
+					lang["interchange.internal.component.info.dict.name"] to component.identity,
+					lang["interchange.internal.component.info.dict.running"] to component.isRunning.toDisplay(),
+					lang["interchange.internal.component.info.dict.vendor"] to component.vendorIdentity.identity,
+					lang["interchange.internal.component.info.dict.configuration"] to component.behaviour.name,
+					lang["interchange.internal.component.info.dict.isAutoStart"] to component.isAutoStarting.toDisplay(),
+					lang["interchange.internal.component.info.dict.isExperimental"] to component.experimental.toDisplay(),
+					lang["interchange.internal.component.info.dict.runningSince"] to (component.runningSince?.durationToNow()
 						?.toString() ?: "-/-")
 				).forEach { (key, value) ->
 					append(
 						"\n- ${
-							lang("interchange.internal.component.info.line").replaceVariables(
+							lang["interchange.internal.component.info.line"].replaceVariables(
 								"key" to key,
 								"value" to value,
 							)

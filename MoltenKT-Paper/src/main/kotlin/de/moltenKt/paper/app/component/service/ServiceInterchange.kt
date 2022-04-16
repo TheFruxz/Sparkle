@@ -39,7 +39,7 @@ internal class ServiceInterchange : StructuredInterchange(
 					buildString {
 
 						appendLine(
-							lang("interchange.internal.service.list.header").replaceVariables(
+							lang["interchange.internal.service.list.header"].replaceVariables(
 								"p1" to pageValue.page + 1,
 								"p2" to pageValue.pages,
 							)
@@ -48,7 +48,8 @@ internal class ServiceInterchange : StructuredInterchange(
 						pageValue.content.withIndex().forEach {
 							val service = it.value
 
-							appendLine(lang("interchange.internal.service.list.line").replaceVariables(
+							appendLine(
+								lang["interchange.internal.service.list.line"].replaceVariables(
 								"service" to service.identity,
 								"enabled" to if (service.isRunning) "<green><bold>ONLINE</bold>" else "<red><bold>OFFLINE</bold>",
 								"activeSince" to (Calendar.now().timeInMilliseconds - (service.controller?.startTime
@@ -59,7 +60,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 					}.notification(INFO, executor).display()
 				} else
-					lang("interchange.internal.service.noServices")
+					lang["interchange.internal.service.noServices"]
 						.notification(FAIL, executor).display()
 			}
 
@@ -113,12 +114,12 @@ internal class ServiceInterchange : StructuredInterchange(
 
 							app(service.vendor).start(service)
 
-							lang("interchange.internal.service.serviceStarted")
+							lang["interchange.internal.service.serviceStarted"]
 								.replace("[id]" to service.identity)
 								.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {
-							lang("interchange.internal.service.serviceAlreadyOnline")
+							lang["interchange.internal.service.serviceAlreadyOnline"]
 								.replace("[id]" to service.identity)
 								.notification(FAIL, executor).display()
 						}
@@ -140,12 +141,12 @@ internal class ServiceInterchange : StructuredInterchange(
 
 							app(service.vendor).stop(service)
 
-							lang("interchange.internal.service.serviceStopped")
+							lang["interchange.internal.service.serviceStopped"]
 								.replace("[id]" to service.identity)
 								.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {
-							lang("interchange.internal.service.serviceAlreadyOffline")
+							lang["interchange.internal.service.serviceAlreadyOffline"]
 								.replace("[id]" to service.identity)
 								.notification(FAIL, executor).display()
 						}
@@ -165,7 +166,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 						app(service.vendor).restart(service)
 
-						lang("interchange.internal.service.serviceRestarted")
+						lang["interchange.internal.service.serviceRestarted"]
 							.replace("[id]" to service.identity)
 							.notification(APPLIED, executor).display()
 
@@ -187,12 +188,12 @@ internal class ServiceInterchange : StructuredInterchange(
 							app(service.vendor).stop(service)
 							app(service.vendor).unregister(service)
 
-							lang("interchange.internal.service.serviceUnregistered")
+							lang["interchange.internal.service.serviceUnregistered"]
 								.replace("[id]" to service.identity)
 								.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {
-							lang("interchange.internal.service.serviceNotFound")
+							lang["interchange.internal.service.serviceNotFound"]
 								.replace("[id]" to service.identity)
 								.notification(FAIL, executor).display()
 						}
@@ -214,12 +215,12 @@ internal class ServiceInterchange : StructuredInterchange(
 
 							app(service.vendor).reset(service)
 
-							lang("interchange.internal.service.serviceReset")
+							lang["interchange.internal.service.serviceReset"]
 								.replace("[id]" to service.identity)
 								.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {
-							lang("interchange.internal.service.serviceNotFound")
+							lang["interchange.internal.service.serviceNotFound"]
 								.replace("[id]" to service.identity)
 								.notification(FAIL, executor).display()
 						}

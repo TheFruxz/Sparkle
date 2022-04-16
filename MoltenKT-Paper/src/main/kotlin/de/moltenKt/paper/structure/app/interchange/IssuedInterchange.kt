@@ -20,7 +20,7 @@ class IssuedInterchange(
 
 	override val execution = execution {
 
-		lang("interchange.structure.issue.register")
+		lang["interchange.structure.issue.register"]
 			.notification(ERROR, executor)
 			.display()
 

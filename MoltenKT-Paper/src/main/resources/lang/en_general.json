@@ -5,6 +5,7 @@
   "languageVendorWebsite": "${website}",
   "moltenVersion": "${version}",
   "languageData": {
+
     "system.hello": "Welcome to MoltenKT! - Welcome to this Language!",
 
     "system.prefix.general": "<gold>MoltenKT <dark_gray>» ",

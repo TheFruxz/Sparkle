@@ -37,7 +37,7 @@ data class SandBox(
 
                 MoltenCache.registeredSandBoxCalls[identityObject] = (MoltenCache.registeredSandBoxCalls[identityObject] ?: 0) + 1
 
-                lang("interchange.internal.sandbox.run")
+                lang["interchange.internal.sandbox.run"]
                     .replaceVariables("sandbox" to identity)
                     .notification(APPLIED, executor).display()
 
@@ -46,7 +46,7 @@ data class SandBox(
                 sectionLog.log(Level.INFO, "Executor '${executor.name}' finished the use of SandBox '$identity' successfully!")
             } catch (exception: Exception) {
                 catchException(exception)
-                lang("interchange.internal.sandbox.failed")
+                lang["interchange.internal.sandbox.failed"]
                     .replaceVariables("sandbox" to identity)
                     .notification(ERROR, executor).display()
             }

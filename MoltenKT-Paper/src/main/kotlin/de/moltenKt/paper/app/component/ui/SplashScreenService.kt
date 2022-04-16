@@ -5,7 +5,6 @@ import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.ui.buildPanel
 import de.moltenKt.paper.extension.display.ui.item
 import de.moltenKt.paper.extension.display.ui.set
-import de.moltenKt.paper.extension.get
 import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.extension.tasky.sync

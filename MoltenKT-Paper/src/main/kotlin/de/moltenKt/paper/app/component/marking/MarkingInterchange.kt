@@ -5,7 +5,6 @@ import de.moltenKt.jvm.extension.math.shorter
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.display.ui.item
-import de.moltenKt.paper.extension.get
 import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.paper.identityObject
 import de.moltenKt.paper.extension.paper.templateLocation

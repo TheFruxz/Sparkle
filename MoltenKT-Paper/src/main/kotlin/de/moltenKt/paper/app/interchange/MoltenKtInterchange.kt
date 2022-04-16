@@ -52,7 +52,7 @@ class MoltenKtInterchange : StructuredInterchange("moltenkt", protectedAccess = 
 
 		concludedExecution {
 
-			lang("interchange.internal.molten.version").replaceVariables(
+			lang["interchange.internal.molten.version"].replaceVariables(
 				"version" to "${vendor.description.version}@${vendor.description.apiVersion}"
 			).notification(GENERAL, executor).display()
 
@@ -66,7 +66,7 @@ class MoltenKtInterchange : StructuredInterchange("moltenkt", protectedAccess = 
 
 		concludedExecution {
 
-			lang("interchange.internal.molten.host").replaceVariables(
+			lang["interchange.internal.molten.host"].replaceVariables(
 				"website" to vendor.description.website
 			).notification(GENERAL, executor).display()
 
@@ -80,7 +80,7 @@ class MoltenKtInterchange : StructuredInterchange("moltenkt", protectedAccess = 
 
 		concludedExecution {
 
-			lang("interchange.internal.molten.ping")
+			lang["interchange.internal.molten.ping"]
 				.notification(GENERAL, executor).display()
 
 		}

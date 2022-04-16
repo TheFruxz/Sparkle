@@ -36,7 +36,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 				if (allSandBoxes.isNotEmpty()) {
 
-					val message = lang("interchange.internal.sandbox.dropAll")
+					val message = lang["interchange.internal.sandbox.dropAll"]
 						.replaceVariables("amount" to allSandBoxes.size)
 
 					destroyAllSandBoxes()
@@ -44,7 +44,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 					message.notification(APPLIED, executor).display()
 
 				} else
-					lang("interchange.internal.sandbox.noFound")
+					lang["interchange.internal.sandbox.noFound"]
 						.notification(FAIL, executor).display()
 			}
 
@@ -64,12 +64,12 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 					}
 
-					lang("interchange.internal.sandbox.runAll")
+					lang["interchange.internal.sandbox.runAll"]
 						.replaceVariables("amount" to allSandBoxes.size)
 						.notification(APPLIED, executor).display()
 
 				} else
-					lang("interchange.internal.sandbox.noFound")
+					lang["interchange.internal.sandbox.noFound"]
 						.notification(FAIL, executor).display()
 			}
 
@@ -86,7 +86,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 				if (pageValue.content.isNotEmpty()) {
 					buildString {
 						appendLine(
-							lang("interchange.internal.sandbox.list.header").replaceVariables(
+							lang["interchange.internal.sandbox.list.header"].replaceVariables(
 								"p1" to pageValue.page + 1,
 								"p2" to pageValue.pages,
 							)
@@ -94,7 +94,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 						pageValue.content.withIndex().forEach {
 
-							lang("interchange.internal.sandbox.list.line").replaceVariables(
+							lang["interchange.internal.sandbox.list.line"].replaceVariables(
 								"sandbox" to it.value.identity,
 								"vendor" to it.value.vendor.appLabel,
 							).let { message ->
@@ -108,7 +108,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 					}.notification(INFO, executor).display()
 				} else
-					lang("interchange.internal.sandbox.noFound")
+					lang["interchange.internal.sandbox.noFound"]
 						.notification(FAIL, executor).display()
 			}
 
@@ -158,7 +158,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 						destroySandBox(sandBox)
 
-						lang("interchange.internal.sandbox.drop")
+						lang["interchange.internal.sandbox.drop"]
 							.replaceVariables("sandbox" to sandBox.identity)
 							.notification(APPLIED, executor).display()
 
@@ -187,7 +187,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 						val sandBox = getSandBox(getInput(1))!!
 
 						buildString {
-							appendLine(lang("interchange.internal.sandbox.info.header"))
+							appendLine(lang["interchange.internal.sandbox.info.header"])
 
 							mapOf(
 								"VendorId" to sandBox.vendor.identity,
@@ -199,7 +199,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 									?: "none")
 							).forEach { (key, value) ->
 								appendLine(
-									lang("interchange.internal.sandbox.info.line").replaceVariables(
+									lang["interchange.internal.sandbox.info.line"].replaceVariables(
 										"key" to key,
 										"value" to value,
 									)
