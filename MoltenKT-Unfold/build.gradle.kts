@@ -10,7 +10,7 @@ repositories {
     mavenCentral()
 }
 
-var host = "github.com/TheFruxz/JET"
+var host = "github.com/TheFruxz/MoltenKT"
 
 dependencies {
 

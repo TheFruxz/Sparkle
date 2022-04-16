@@ -10,7 +10,7 @@ plugins {
     `maven-publish`
 }
 
-var host = "github.com/TheFruxz/JET"
+var host = "github.com/TheFruxz/MoltenKT"
 
 repositories {
 
