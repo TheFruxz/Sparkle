@@ -5,6 +5,7 @@ package de.moltenKt.unfold
 import de.moltenKt.unfold.extension.asStyledComponent
 import io.ktor.http.*
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEventSource
@@ -12,17 +13,15 @@ import java.io.File
 import java.net.URL
 import java.nio.file.Path
 
-private fun String.transform() = this.asStyledComponent
-
 fun text(build: TextComponent.Builder.() -> Unit) =
 	Component.text().apply(build).build()
 
 fun text(componentContent: String) =
-	componentContent.transform()
+	componentContent.asStyledComponent
 
-fun space() = Component.space()
+fun spaceText() = Component.space()
 
-fun empty() = Component.empty()
+fun emptyText() = Component.empty()
 
 fun newline() = Component.newline()
 
@@ -38,14 +37,20 @@ fun MoltenContext<HoverEventSource<*>>.empty() =
 fun MoltenContext<HoverEventSource<*>>.newline() =
 	text { text("\n") }
 
-operator fun TextComponent.Builder.plus(component: Component) =
-	append(component)
+operator fun TextComponent.Builder.plus(component: ComponentLike) =
+	append(component.asComponent())
 
 fun TextComponent.Builder.text(componentContent: String) =
-	this + componentContent.transform()
+	this + componentContent.asStyledComponent
+
+fun TextComponent.Builder.text(component: TextComponent) =
+	this + component
 
 fun TextComponent.Builder.text(componentContent: String, modify: TextComponent.Builder.() -> Unit) =
-	this.append(componentContent.transform().toBuilder().apply(modify).build())
+	this.append(componentContent.asStyledComponent.toBuilder().apply(modify).build())
+
+fun TextComponent.Builder.text(component: TextComponent, modify: TextComponent.Builder.() -> Unit) =
+	this.append(component.toBuilder().apply(modify).build())
 
 fun TextComponent.Builder.hover(eventSource: MoltenContext<HoverEventSource<*>>.() -> HoverEventSource<*>) =
 	hoverEvent(eventSource(MoltenContext.contextOf()))
