@@ -1,6 +1,6 @@
 package de.moltenKt.javacord.user
 
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import kotlinx.serialization.Serializable
 
 /**

@@ -1,6 +1,6 @@
 package de.moltenKt.paper.tool.display.item.action
 
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import org.bukkit.event.Event
 
 sealed interface ItemAction<T : Event> : Identifiable<ItemAction<T>> {

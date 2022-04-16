@@ -1,6 +1,6 @@
 package de.moltenKt.paper.app.interchange
 
-import de.moltenKt.jvm.extension.container.second
+import de.moltenKt.core.extension.container.second
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.structure.command.Interchange
@@ -10,7 +10,7 @@ import de.moltenKt.paper.structure.command.execution
 import de.moltenKt.paper.tool.display.message.Transmission.Level.APPLIED
 import de.moltenKt.paper.tool.display.message.Transmission.Level.FAIL
 
-@de.moltenKt.jvm.annotation.NotWorking
+@de.moltenKt.core.annotation.NotWorking
 class PreferenceInterchange : Interchange(
 	label = "preference",
 	protectedAccess = true,

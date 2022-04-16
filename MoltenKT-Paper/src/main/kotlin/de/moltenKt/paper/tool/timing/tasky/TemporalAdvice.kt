@@ -1,6 +1,6 @@
 package de.moltenKt.paper.tool.timing.tasky
 
-import de.moltenKt.jvm.extension.time.inWholeMinecraftTicks
+import de.moltenKt.core.extension.time.inWholeMinecraftTicks
 import de.moltenKt.paper.extension.system
 import org.bukkit.scheduler.BukkitRunnable
 import kotlin.time.Duration

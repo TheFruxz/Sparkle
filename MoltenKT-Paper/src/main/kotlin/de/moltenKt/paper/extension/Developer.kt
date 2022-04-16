@@ -1,13 +1,10 @@
 package de.moltenKt.paper.extension
 
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
-import de.moltenKt.jvm.tool.smart.identification.Identity
-import de.moltenKt.jvm.tool.smart.positioning.Address
+import de.moltenKt.core.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.MoltenLanguage
-import de.moltenKt.paper.runtime.app.LanguageSpeaker
-import de.moltenKt.paper.runtime.lang.LanguageData
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.event.EventListener
 import de.moltenKt.paper.structure.command.Interchange

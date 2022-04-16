@@ -1,11 +1,11 @@
 package de.moltenKt.paper.structure.component.file
 
-import de.moltenKt.jvm.extension.data.fromJson
-import de.moltenKt.jvm.extension.data.toJson
-import de.moltenKt.jvm.extension.div
-import de.moltenKt.jvm.extension.generateFileAndPath
-import de.moltenKt.jvm.extension.tryOrNull
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.core.extension.div
+import de.moltenKt.core.extension.generateFileAndPath
+import de.moltenKt.core.extension.tryOrNull
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem
 import kotlin.io.path.readText

@@ -1,11 +1,11 @@
 package de.moltenKt.paper.structure.command.completion.component
 
-import de.moltenKt.jvm.extension.container.mapToString
-import de.moltenKt.jvm.extension.container.withMap
-import de.moltenKt.jvm.extension.math.isDouble
-import de.moltenKt.jvm.extension.math.isLong
-import de.moltenKt.jvm.extension.tryOrNull
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.extension.container.mapToString
+import de.moltenKt.core.extension.container.withMap
+import de.moltenKt.core.extension.math.isDouble
+import de.moltenKt.core.extension.math.isLong
+import de.moltenKt.core.extension.tryOrNull
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.MoltenData
 import de.moltenKt.paper.app.component.point.asset.Point

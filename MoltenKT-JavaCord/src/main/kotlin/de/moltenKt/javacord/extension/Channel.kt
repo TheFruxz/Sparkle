@@ -1,6 +1,6 @@
 package de.moltenKt.javacord.extension
 
-import de.moltenKt.jvm.extension.javaUtil.getOrNull
+import de.moltenKt.core.extension.javaUtil.getOrNull
 import org.javacord.api.DiscordApi
 import org.javacord.api.entity.channel.Channel
 import org.javacord.api.entity.channel.TextChannel

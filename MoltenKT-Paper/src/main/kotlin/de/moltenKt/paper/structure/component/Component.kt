@@ -1,8 +1,8 @@
 package de.moltenKt.paper.structure.component
 
-import de.moltenKt.jvm.extension.tryToResult
-import de.moltenKt.jvm.tool.smart.identification.Identity
-import de.moltenKt.jvm.tool.timing.calendar.Calendar
+import de.moltenKt.core.extension.tryToResult
+import de.moltenKt.core.tool.smart.identification.Identity
+import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.paper.createKey

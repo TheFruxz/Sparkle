@@ -3,8 +3,8 @@
 package de.moltenKt.paper.extension.paper
 
 import com.destroystokyo.paper.entity.ai.MobGoals
-import de.moltenKt.jvm.extension.classType.UUID
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.extension.classType.UUID
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.asString

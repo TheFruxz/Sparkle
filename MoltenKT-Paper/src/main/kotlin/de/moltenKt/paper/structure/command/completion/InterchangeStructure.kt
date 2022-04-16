@@ -1,9 +1,9 @@
 package de.moltenKt.paper.structure.command.completion
 
-import de.moltenKt.jvm.tool.smart.identification.UUID
-import de.moltenKt.jvm.tool.smart.positioning.Address
-import de.moltenKt.jvm.tree.TreeBranch
-import de.moltenKt.jvm.tree.TreeBranchType
+import de.moltenKt.core.tool.smart.identification.UUID
+import de.moltenKt.core.tool.smart.positioning.Address
+import de.moltenKt.core.tree.TreeBranch
+import de.moltenKt.core.tree.TreeBranchType
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.structure.command.InterchangeResult
 import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS

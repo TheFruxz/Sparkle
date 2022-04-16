@@ -1,9 +1,9 @@
 package de.moltenKt.paper.structure.command.completion
 
-import de.moltenKt.jvm.extension.empty
-import de.moltenKt.jvm.extension.math.isDouble
-import de.moltenKt.jvm.extension.math.isLong
-import de.moltenKt.jvm.extension.tryOrNull
+import de.moltenKt.core.extension.empty
+import de.moltenKt.core.extension.math.isDouble
+import de.moltenKt.core.extension.math.isLong
+import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.paper.extension.paper.getOfflinePlayer
 import de.moltenKt.paper.extension.paper.getPlayer
 import org.bukkit.OfflinePlayer

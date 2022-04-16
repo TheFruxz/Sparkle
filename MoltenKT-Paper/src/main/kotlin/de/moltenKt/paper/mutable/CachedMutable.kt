@@ -1,7 +1,7 @@
 package de.moltenKt.paper.mutable
 
-import de.moltenKt.jvm.tool.mutable.FlexibleMutable
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.mutable.FlexibleMutable
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenCache
 
 class CachedMutable<T>(

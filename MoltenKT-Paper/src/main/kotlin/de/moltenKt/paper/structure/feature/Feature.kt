@@ -1,6 +1,6 @@
 package de.moltenKt.paper.structure.feature
 
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.tool.smart.VendorsIdentifiable

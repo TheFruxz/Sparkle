@@ -1,8 +1,8 @@
 package de.moltenKt.paper.runtime.sandbox
 
-import de.moltenKt.jvm.extension.catchException
-import de.moltenKt.jvm.extension.container.replaceVariables
-import de.moltenKt.jvm.tool.timing.calendar.Calendar
+import de.moltenKt.core.extension.catchException
+import de.moltenKt.core.extension.container.replaceVariables
+import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.component.sandbox.SandBoxComponent
 import de.moltenKt.paper.extension.display.notification

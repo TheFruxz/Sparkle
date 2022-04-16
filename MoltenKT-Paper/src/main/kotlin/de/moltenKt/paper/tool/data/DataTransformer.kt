@@ -1,10 +1,10 @@
 package de.moltenKt.paper.tool.data
 
-import de.moltenKt.jvm.extension.container.flipped
-import de.moltenKt.jvm.extension.container.replace
-import de.moltenKt.jvm.extension.container.toArrayList
-import de.moltenKt.jvm.extension.data.fromJson
-import de.moltenKt.jvm.extension.data.toJson
+import de.moltenKt.core.extension.container.flipped
+import de.moltenKt.core.extension.container.replace
+import de.moltenKt.core.extension.container.toArrayList
+import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.paper.runtime.app.LanguageSpeaker
 import de.moltenKt.paper.tool.display.item.Item
 import de.moltenKt.paper.tool.display.world.SimpleLocation

@@ -1,9 +1,9 @@
 package de.moltenKt.paper.app
 
-import de.moltenKt.jvm.extension.data.addMoltenJsonModuleModification
-import de.moltenKt.jvm.extension.forceCast
-import de.moltenKt.jvm.extension.tryToIgnore
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
+import de.moltenKt.core.extension.forceCast
+import de.moltenKt.core.extension.tryToIgnore
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.component.buildMode.BuildModeComponent
 import de.moltenKt.paper.app.component.chat.ChatComponent
 import de.moltenKt.paper.app.component.completion.ProtectionComponent

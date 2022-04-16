@@ -1,6 +1,6 @@
 package de.moltenKt.javacord.extension
 
-import de.moltenKt.jvm.extension.tryOrNull
+import de.moltenKt.core.extension.tryOrNull
 import org.javacord.api.DiscordApi
 
 /**

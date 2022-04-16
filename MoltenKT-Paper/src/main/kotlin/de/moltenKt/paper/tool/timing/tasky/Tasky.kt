@@ -1,11 +1,11 @@
 package de.moltenKt.paper.tool.timing.tasky
 
-import de.moltenKt.jvm.extension.catchException
-import de.moltenKt.jvm.extension.data.RandomTagType.ONLY_UPPERCASE
-import de.moltenKt.jvm.extension.data.buildRandomTag
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
-import de.moltenKt.jvm.tool.smart.identification.Identity
-import de.moltenKt.jvm.tool.timing.calendar.Calendar
+import de.moltenKt.core.extension.catchException
+import de.moltenKt.core.extension.data.RandomTagType.ONLY_UPPERCASE
+import de.moltenKt.core.extension.data.buildRandomTag
+import de.moltenKt.core.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identity
+import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.paper.scheduler
 import de.moltenKt.paper.structure.app.App

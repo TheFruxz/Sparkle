@@ -1,7 +1,7 @@
 package de.moltenKt.paper.app
 
-import de.moltenKt.jvm.tool.data.Base64.decodeToString
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.data.Base64.decodeToString
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenData.File.CONFIG
 import de.moltenKt.paper.app.MoltenData.File.ESSENTIALS_CONFIG
 import de.moltenKt.paper.app.component.point.asset.PointConfig

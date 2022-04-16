@@ -1,10 +1,10 @@
 package de.moltenKt.paper.tool.display.skull
 
 import com.destroystokyo.paper.profile.ProfileProperty
-import de.moltenKt.jvm.extension.data.randomBoolean
-import de.moltenKt.jvm.extension.data.url
-import de.moltenKt.jvm.tool.data.Base64
-import de.moltenKt.jvm.tool.data.CSV
+import de.moltenKt.core.extension.data.randomBoolean
+import de.moltenKt.core.extension.data.url
+import de.moltenKt.core.tool.data.Base64
+import de.moltenKt.core.tool.data.CSV
 import de.moltenKt.paper.app.MoltenData
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.ui.item

@@ -1,6 +1,6 @@
 package de.moltenKt.paper.extension.paper
 
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.tool.smart.identification.Identity
 import org.bukkit.entity.Entity
 
 val <T : Entity> T.identityObject: Identity<T>

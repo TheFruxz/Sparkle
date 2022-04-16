@@ -1,10 +1,10 @@
 package de.moltenKt.paper.app.component.service
 
-import de.moltenKt.jvm.extension.container.page
-import de.moltenKt.jvm.extension.container.replace
-import de.moltenKt.jvm.extension.container.replaceVariables
-import de.moltenKt.jvm.extension.math.ceilToInt
-import de.moltenKt.jvm.tool.timing.calendar.Calendar
+import de.moltenKt.core.extension.container.page
+import de.moltenKt.core.extension.container.replace
+import de.moltenKt.core.extension.container.replaceVariables
+import de.moltenKt.core.extension.math.ceilToInt
+import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenCache.registeredServices
 import de.moltenKt.paper.extension.app
 import de.moltenKt.paper.extension.display.notification

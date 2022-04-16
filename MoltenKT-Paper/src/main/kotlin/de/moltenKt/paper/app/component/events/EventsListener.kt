@@ -1,7 +1,7 @@
 package de.moltenKt.paper.app.component.events
 
-import de.moltenKt.jvm.extension.all
-import de.moltenKt.jvm.extension.forceCast
+import de.moltenKt.core.extension.all
+import de.moltenKt.core.extension.forceCast
 import de.moltenKt.paper.extension.display.ui.item
 import de.moltenKt.paper.runtime.event.PanelClickEvent
 import de.moltenKt.paper.runtime.event.PanelCloseEvent

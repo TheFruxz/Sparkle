@@ -1,10 +1,10 @@
 package de.moltenKt.paper.tool.display.ui.panel
 
-import de.moltenKt.jvm.extension.container.and
-import de.moltenKt.jvm.extension.container.orEmptyMutableList
-import de.moltenKt.jvm.extension.tryOrNull
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.extension.container.and
+import de.moltenKt.core.extension.container.orEmptyMutableList
+import de.moltenKt.core.extension.tryOrNull
+import de.moltenKt.core.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.ui.item
 import de.moltenKt.paper.extension.display.ui.panelIdentificationKey

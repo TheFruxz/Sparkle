@@ -1,7 +1,7 @@
 package de.moltenKt.paper.app
 
-import de.moltenKt.jvm.extension.data.fromJson
-import de.moltenKt.jvm.extension.data.toJson
+import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem

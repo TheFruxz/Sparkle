@@ -1,8 +1,8 @@
 package de.moltenKt.paper.structure.app
 
-import de.moltenKt.jvm.extension.forceCast
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.extension.forceCast
+import de.moltenKt.core.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob

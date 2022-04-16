@@ -1,8 +1,8 @@
 package de.moltenKt.paper.app.component.keeper
 
-import de.moltenKt.jvm.extension.catchException
-import de.moltenKt.jvm.extension.container.withForEach
-import de.moltenKt.jvm.extension.display.display
+import de.moltenKt.core.extension.catchException
+import de.moltenKt.core.extension.container.withForEach
+import de.moltenKt.core.extension.display.display
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.system

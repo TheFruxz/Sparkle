@@ -1,6 +1,6 @@
 package de.moltenKt.paper.tool.display.ui.inventory
 
-import de.moltenKt.jvm.extension.dump
+import de.moltenKt.core.extension.dump
 import de.moltenKt.paper.extension.display.GRAY
 import de.moltenKt.paper.extension.display.ui.item
 import de.moltenKt.paper.extension.mainLog

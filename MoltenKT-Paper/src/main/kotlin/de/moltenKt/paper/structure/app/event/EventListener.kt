@@ -1,7 +1,7 @@
 package de.moltenKt.paper.structure.app.event
 
-import de.moltenKt.jvm.extension.tryOrNull
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.extension.tryOrNull
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.tool.smart.VendorOnDemand
 import de.moltenKt.paper.tool.smart.VendorsIdentifiable

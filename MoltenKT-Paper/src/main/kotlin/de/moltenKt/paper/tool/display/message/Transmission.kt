@@ -1,7 +1,7 @@
 package de.moltenKt.paper.tool.display.message
 
-import de.moltenKt.jvm.tool.smart.positioning.Address
-import de.moltenKt.jvm.tool.smart.positioning.Address.Companion.address
+import de.moltenKt.core.tool.smart.positioning.Address
+import de.moltenKt.core.tool.smart.positioning.Address.Companion.address
 import de.moltenKt.paper.app.MoltenData
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.lang

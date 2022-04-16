@@ -1,16 +1,14 @@
 package de.moltenKt.paper.app.component.point
 
-import de.moltenKt.jvm.extension.container.page
-import de.moltenKt.jvm.extension.container.replaceVariables
-import de.moltenKt.jvm.extension.math.ceilToInt
-import de.moltenKt.jvm.tool.smart.positioning.Address
+import de.moltenKt.core.extension.container.page
+import de.moltenKt.core.extension.container.replaceVariables
+import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.paper.app.MoltenData
 import de.moltenKt.paper.app.component.point.asset.Point
 import de.moltenKt.paper.app.component.point.asset.PointConfig
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.lang
-import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.extension.tasky.sync
 import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS
 import de.moltenKt.paper.structure.command.InterchangeResult.WRONG_USAGE

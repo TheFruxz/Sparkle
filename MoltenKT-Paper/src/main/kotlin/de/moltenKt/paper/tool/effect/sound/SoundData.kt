@@ -1,6 +1,6 @@
 package de.moltenKt.paper.tool.effect.sound
 
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.tool.effect.Effect
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

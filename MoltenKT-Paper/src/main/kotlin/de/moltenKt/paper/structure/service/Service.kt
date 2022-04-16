@@ -1,6 +1,6 @@
 package de.moltenKt.paper.structure.service
 
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.app
 import de.moltenKt.paper.extension.paper.createKey

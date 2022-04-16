@@ -1,6 +1,6 @@
 package de.moltenKt.paper.app.component.ui
 
-import de.moltenKt.jvm.extension.container.mapCast
+import de.moltenKt.core.extension.container.mapCast
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.ui.item
 import de.moltenKt.paper.runtime.event.interact.PlayerInteractAtItemEvent

@@ -1,6 +1,6 @@
 package de.moltenKt.paper.tool.data.file
 
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.component.Component

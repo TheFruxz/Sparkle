@@ -1,6 +1,6 @@
 package de.moltenKt.paper.app.component.chat
 
-import de.moltenKt.jvm.extension.container.replacePrefix
+import de.moltenKt.core.extension.container.replacePrefix
 import de.moltenKt.paper.extension.display.buildTextComponent
 import de.moltenKt.paper.extension.paper.consoleSender
 import de.moltenKt.paper.extension.paper.getPlayer

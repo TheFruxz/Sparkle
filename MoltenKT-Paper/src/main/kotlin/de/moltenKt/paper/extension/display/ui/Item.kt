@@ -1,7 +1,7 @@
 package de.moltenKt.paper.extension.display.ui
 
-import de.moltenKt.jvm.extension.data.url
-import de.moltenKt.jvm.extension.tryOrNull
+import de.moltenKt.core.extension.data.url
+import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.paper.extension.mojang.getMojangProfile
 import de.moltenKt.paper.extension.paper.getOfflinePlayer
 import de.moltenKt.paper.tool.display.color.ColorType

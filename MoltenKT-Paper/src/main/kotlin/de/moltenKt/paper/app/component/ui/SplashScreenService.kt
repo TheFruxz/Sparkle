@@ -1,6 +1,6 @@
 package de.moltenKt.paper.app.component.ui
 
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.ui.buildPanel
 import de.moltenKt.paper.extension.display.ui.item

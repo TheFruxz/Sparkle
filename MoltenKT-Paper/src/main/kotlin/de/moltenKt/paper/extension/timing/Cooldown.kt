@@ -1,6 +1,6 @@
 package de.moltenKt.paper.extension.timing
 
-import de.moltenKt.jvm.tool.timing.calendar.Calendar
+import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.tool.timing.cooldown.Cooldown
 import de.moltenKt.paper.tool.timing.cooldown.Cooldown.Companion.CooldownSection

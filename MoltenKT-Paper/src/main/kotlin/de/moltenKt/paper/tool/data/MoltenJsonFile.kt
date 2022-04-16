@@ -1,19 +1,12 @@
 package de.moltenKt.paper.tool.data
 
-import de.moltenKt.jvm.extension.data.fromJson
-import de.moltenKt.jvm.extension.data.toJson
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
-import de.moltenKt.paper.extension.paper.bukkitVersion
-import de.moltenKt.paper.structure.app.App
-import de.moltenKt.paper.structure.component.Component
+import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.paper.tool.data.json.JsonConfiguration
 import de.moltenKt.paper.tool.data.json.JsonFileDataElement
-import de.moltenKt.paper.tool.smart.VendorsIdentifiable
 import java.nio.file.Path
-import kotlin.io.path.Path
 import kotlin.io.path.createDirectories
 import kotlin.io.path.createFile
-import kotlin.io.path.div
 import kotlin.io.path.exists
 
 interface MoltenJsonFile : MoltenFile {

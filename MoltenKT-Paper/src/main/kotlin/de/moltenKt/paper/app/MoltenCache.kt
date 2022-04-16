@@ -1,9 +1,9 @@
 package de.moltenKt.paper.app
 
-import de.moltenKt.jvm.extension.classType.UUID
-import de.moltenKt.jvm.extension.container.removeAll
-import de.moltenKt.jvm.tool.smart.identification.Identity
-import de.moltenKt.jvm.tool.timing.calendar.Calendar
+import de.moltenKt.core.extension.classType.UUID
+import de.moltenKt.core.extension.container.removeAll
+import de.moltenKt.core.tool.smart.identification.Identity
+import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.runtime.event.PanelClickEvent
 import de.moltenKt.paper.runtime.sandbox.SandBox

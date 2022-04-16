@@ -1,8 +1,8 @@
 package de.moltenKt.paper.tool.data
 
-import de.moltenKt.jvm.extension.forceCast
-import de.moltenKt.jvm.extension.tryOrNull
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.extension.forceCast
+import de.moltenKt.core.extension.tryOrNull
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.MoltenCache.registeredPreferenceCache
 import de.moltenKt.paper.extension.debugLog

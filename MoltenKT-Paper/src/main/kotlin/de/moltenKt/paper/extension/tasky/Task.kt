@@ -1,6 +1,6 @@
 package de.moltenKt.paper.extension.tasky
 
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.service.Service

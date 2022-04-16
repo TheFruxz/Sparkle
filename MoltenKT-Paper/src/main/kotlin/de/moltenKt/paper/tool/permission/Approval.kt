@@ -1,6 +1,6 @@
 package de.moltenKt.paper.tool.permission
 
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.structure.app.App
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

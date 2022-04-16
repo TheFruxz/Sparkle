@@ -1,7 +1,7 @@
 package de.moltenKt.paper.app.component.marking
 
-import de.moltenKt.jvm.extension.container.replaceVariables
-import de.moltenKt.jvm.extension.math.shorter
+import de.moltenKt.core.extension.container.replaceVariables
+import de.moltenKt.core.extension.math.shorter
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.display.ui.item

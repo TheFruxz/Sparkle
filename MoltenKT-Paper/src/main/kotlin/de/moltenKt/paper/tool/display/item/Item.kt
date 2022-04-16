@@ -1,9 +1,9 @@
 package de.moltenKt.paper.tool.display.item
 
-import de.moltenKt.jvm.extension.data.buildRandomTag
-import de.moltenKt.jvm.extension.forceCast
-import de.moltenKt.jvm.tool.smart.Producible
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.extension.data.buildRandomTag
+import de.moltenKt.core.extension.forceCast
+import de.moltenKt.core.tool.smart.Producible
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.ui.changeColor
 import de.moltenKt.paper.extension.paper.createBlockData

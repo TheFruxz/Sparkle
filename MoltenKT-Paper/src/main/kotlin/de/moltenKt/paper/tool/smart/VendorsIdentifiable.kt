@@ -1,7 +1,7 @@
 package de.moltenKt.paper.tool.smart
 
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.structure.app.App
 
 interface VendorsIdentifiable<T> : Identifiable<T> {

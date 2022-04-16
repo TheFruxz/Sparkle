@@ -1,6 +1,6 @@
 package de.moltenKt.paper.tool.effect.sound
 
-import de.moltenKt.jvm.tool.smart.Producible
+import de.moltenKt.core.tool.smart.Producible
 import de.moltenKt.paper.extension.effect.playSoundEffect
 import de.moltenKt.paper.extension.tasky.task
 import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice.Companion.ticking

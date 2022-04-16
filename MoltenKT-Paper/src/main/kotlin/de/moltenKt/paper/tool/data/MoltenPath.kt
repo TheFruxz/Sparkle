@@ -1,6 +1,6 @@
 package de.moltenKt.paper.tool.data
 
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identifiable
 
 /**
  * The path used inside yaml files

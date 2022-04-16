@@ -1,6 +1,6 @@
 package de.moltenKt.paper.structure.command
 
-import de.moltenKt.jvm.extension.math.maxTo
+import de.moltenKt.core.extension.math.maxTo
 import de.moltenKt.paper.structure.command.InterchangeAuthorizationType.MOLTEN
 import de.moltenKt.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.moltenKt.paper.structure.command.InterchangeUserRestriction.NOT_RESTRICTED

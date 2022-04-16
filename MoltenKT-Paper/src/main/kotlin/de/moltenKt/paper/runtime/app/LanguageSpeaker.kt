@@ -1,6 +1,6 @@
 package de.moltenKt.paper.runtime.app
 
-import de.moltenKt.jvm.extension.container.replace
+import de.moltenKt.core.extension.container.replace
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString

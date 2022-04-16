@@ -1,6 +1,6 @@
 package de.moltenKt.paper.structure.command.completion.tracing
 
-import de.moltenKt.jvm.tree.TreeBranch
+import de.moltenKt.core.tree.TreeBranch
 import de.moltenKt.paper.structure.command.completion.InterchangeStructure
 import de.moltenKt.paper.structure.command.completion.tracing.CompletionTraceResult.Conclusion.*
 

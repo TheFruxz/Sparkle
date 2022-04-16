@@ -1,6 +1,6 @@
 package de.moltenKt.paper.app.component.ui
 
-import de.moltenKt.jvm.extension.container.firstOrNull
+import de.moltenKt.core.extension.container.firstOrNull
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.runtime.event.PanelClickEvent
 import de.moltenKt.paper.runtime.event.PanelCloseEvent

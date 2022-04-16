@@ -1,7 +1,7 @@
 package de.moltenKt.javacord.extension
 
 import de.moltenKt.javacord.user.DiscordUser
-import de.moltenKt.jvm.extension.javaUtil.getOrNull
+import de.moltenKt.core.extension.javaUtil.getOrNull
 import org.javacord.api.DiscordApi
 import org.javacord.api.entity.user.User
 

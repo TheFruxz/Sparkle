@@ -1,6 +1,6 @@
 package de.moltenKt.paper.extension.paper
 
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.component.buildMode.BuildModeComponent
 import de.moltenKt.paper.tool.annotation.RequiresComponent

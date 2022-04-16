@@ -1,6 +1,6 @@
 package de.moltenKt.paper.extension.effect
 
-import de.moltenKt.jvm.extension.time.inWholeMinecraftTicks
+import de.moltenKt.core.extension.time.inWholeMinecraftTicks
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import kotlin.time.Duration

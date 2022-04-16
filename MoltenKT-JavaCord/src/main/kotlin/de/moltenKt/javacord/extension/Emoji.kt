@@ -1,7 +1,7 @@
 package de.moltenKt.javacord.extension
 
-import de.moltenKt.jvm.extension.isNotNull
-import de.moltenKt.jvm.extension.tryOrNull
+import de.moltenKt.core.extension.isNotNull
+import de.moltenKt.core.extension.tryOrNull
 import org.javacord.api.entity.emoji.CustomEmojiBuilder
 import org.javacord.api.entity.emoji.KnownCustomEmoji
 import org.javacord.api.entity.server.Server

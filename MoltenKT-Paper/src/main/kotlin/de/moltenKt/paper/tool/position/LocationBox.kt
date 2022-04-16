@@ -1,7 +1,7 @@
 package de.moltenKt.paper.tool.position
 
-import de.moltenKt.jvm.extension.math.difference
-import de.moltenKt.jvm.tool.smart.Producible
+import de.moltenKt.core.extension.math.difference
+import de.moltenKt.core.tool.smart.Producible
 import de.moltenKt.paper.extension.paper.directionVectorVelocity
 import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation

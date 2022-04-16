@@ -1,9 +1,9 @@
 package de.moltenKt.paper.structure.component
 
-import de.moltenKt.jvm.extension.tryOrNull
-import de.moltenKt.jvm.extension.tryToCatch
-import de.moltenKt.jvm.extension.tryToIgnore
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.extension.tryOrNull
+import de.moltenKt.core.extension.tryToCatch
+import de.moltenKt.core.extension.tryToIgnore
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification

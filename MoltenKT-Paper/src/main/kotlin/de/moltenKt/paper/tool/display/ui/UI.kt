@@ -1,6 +1,6 @@
 package de.moltenKt.paper.tool.display.ui
 
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identifiable
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 

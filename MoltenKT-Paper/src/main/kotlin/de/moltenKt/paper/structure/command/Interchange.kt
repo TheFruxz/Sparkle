@@ -1,7 +1,7 @@
 package de.moltenKt.paper.structure.command
 
-import de.moltenKt.jvm.extension.catchException
-import de.moltenKt.jvm.tool.smart.identification.Identity
+import de.moltenKt.core.extension.catchException
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor

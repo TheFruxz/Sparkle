@@ -1,8 +1,8 @@
 package de.moltenKt.paper.tool.timing.cooldown
 
-import de.moltenKt.jvm.tool.smart.identification.Identifiable
-import de.moltenKt.jvm.tool.timing.calendar.Calendar
-import de.moltenKt.jvm.tool.timing.calendar.timeUnit.TimeUnit.Companion.MILLISECOND
+import de.moltenKt.core.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.core.tool.timing.calendar.timeUnit.TimeUnit.Companion.MILLISECOND
 import de.moltenKt.paper.app.MoltenCache.livingCooldowns
 import org.bukkit.Server
 import org.bukkit.entity.Entity

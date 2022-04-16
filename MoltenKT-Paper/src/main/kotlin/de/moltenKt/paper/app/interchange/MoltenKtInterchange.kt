@@ -1,6 +1,6 @@
 package de.moltenKt.paper.app.interchange
 
-import de.moltenKt.jvm.extension.container.replaceVariables
+import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.paper.extension.display.message
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.lang

@@ -5,7 +5,7 @@ import de.moltenKt.javacord.app.DiscordBotExtension.parallelRunAllowed
 import de.moltenKt.javacord.app.DiscordBotExtension.runtimeAccessor
 import de.moltenKt.javacord.extension.runBot
 import de.moltenKt.javacord.structure.Bot
-import de.moltenKt.jvm.application.extension.AppExtension
+import de.moltenKt.core.application.extension.AppExtension
 import kotlin.reflect.KFunction1
 
 /**

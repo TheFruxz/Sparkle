@@ -1,6 +1,6 @@
 package de.moltenKt.paper.extension.display.ui
 
-import de.moltenKt.jvm.extension.tryOrNull
+import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.paper.extension.paper.createKey
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.tool.display.item.Item
