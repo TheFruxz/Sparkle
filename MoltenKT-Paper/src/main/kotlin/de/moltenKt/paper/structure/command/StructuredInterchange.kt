@@ -28,7 +28,7 @@ abstract class StructuredInterchange(
 ) {
 
 	final override val execution: suspend InterchangeAccess.() -> InterchangeResult = {
-		val trace = structure.trace(parameters)
+		val trace = structure.trace(parameters, executor)
 
 		when (trace.waysMatching.size.maxTo(2)) {
 			0, 2 -> WRONG_USAGE.also { println(trace.waysMatching.size) }

@@ -5,6 +5,7 @@ import de.moltenKt.core.tool.smart.positioning.Address
 import de.moltenKt.core.tree.TreeBranch
 import de.moltenKt.core.tree.TreeBranchType
 import de.moltenKt.paper.extension.debugLog
+import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.structure.command.InterchangeResult
 import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS
 import de.moltenKt.paper.structure.command.completion.InterchangeStructure.BranchStatus.*
@@ -14,6 +15,8 @@ import de.moltenKt.paper.structure.command.completion.tracing.CompletionTraceRes
 import de.moltenKt.paper.structure.command.completion.tracing.CompletionTraceResult.Conclusion.EMPTY
 import de.moltenKt.paper.structure.command.completion.tracing.PossibleTraceWay
 import de.moltenKt.paper.structure.command.live.InterchangeAccess
+import de.moltenKt.paper.tool.permission.Approval
+import de.moltenKt.paper.tool.permission.hasApproval
 
 class InterchangeStructure(
 	override var identity: String = UUID.randomString(),
@@ -23,6 +26,7 @@ class InterchangeStructure(
 	override var content: List<CompletionComponent> = emptyList(),
 	val parent: InterchangeStructure? = null,
 	private var isBranched: Boolean = false,
+	var requiredApprovals: List<Approval> = emptyList(),
 	var onExecution: (suspend InterchangeAccess.() -> InterchangeResult)? = null,
 ) : TreeBranch<InterchangeStructure, List<CompletionComponent>, TreeBranchType>(
 	identity,
@@ -76,6 +80,10 @@ class InterchangeStructure(
 		onExecution = process
 	}
 
+	fun requiredApproval(vararg approvals: Approval) {
+		requiredApprovals = approvals.toList()
+	}
+
 	/**
 	 * This function represents the [execution] function, but returns
 	 * [result] internally as the [InterchangeResult] instead of the
@@ -121,7 +129,7 @@ class InterchangeStructure(
 		FAILED;
 	}
 
-	fun trace(inputQuery: List<String>, availableExecutionRepresentsSolution: Boolean = true): CompletionTraceResult<InterchangeStructure> {
+	fun trace(inputQuery: List<String>, executor: InterchangeExecutor?, availableExecutionRepresentsSolution: Boolean = true): CompletionTraceResult<InterchangeStructure> {
 		val waysMatching = mutableListOf<PossibleTraceWay<InterchangeStructure>>()
 		val waysOverflow = mutableListOf<PossibleTraceWay<InterchangeStructure>>()
 		val waysIncomplete = mutableListOf<PossibleTraceWay<InterchangeStructure>>()
@@ -150,8 +158,12 @@ class InterchangeStructure(
 							} else if (currentDepth >= inputQuery.lastIndex || currentBranch.configuration.infiniteSubParameters) {
 								if ((currentSubBranches.isNotEmpty() && currentSubBranches.all { it.configuration.isRequired }) && !(availableExecutionRepresentsSolution && currentBranch.onExecution != null)) {
 									NO_DESTINATION // This branch has to be completed with its sub-branches
-								} else
-									MATCHING
+								} else {
+									if (currentBranch.requiredApprovals.all { executor?.hasApproval(it) != false }) { // check if executor has all required approvals
+										MATCHING
+									} else
+										FAILED // not enough approvals!
+								}
 							} else {
 								OVERFLOW
 							}
@@ -219,8 +231,8 @@ class InterchangeStructure(
 		)
 	}
 
-	fun validateInput(parameters: List<String>): Boolean {
-		val trace = trace(parameters)
+	fun validateInput(parameters: List<String>, executor: InterchangeExecutor?): Boolean {
+		val trace = trace(parameters, executor)
 
 		return if (trace.conclusion == EMPTY && parameters.isEmpty()) {
 			true
@@ -228,11 +240,11 @@ class InterchangeStructure(
 			trace.waysMatching.isNotEmpty()
 	}
 
-	fun computeCompletion(parameters: List<String>): List<String> {
+	fun computeCompletion(parameters: List<String>, executor: InterchangeExecutor?): List<String> {
 
 		val query = (parameters.lastOrNull() ?: "")
 		val traceBase = parameters.dropLast(1)
-		val tracing = trace(traceBase)
+		val tracing = trace(traceBase, executor)
 		val tracingContent = tracing.let { return@let (it.waysIncomplete + it.waysMatching + it.waysNoDestination) }
 		val filteredContent = tracingContent.filter { it.tracingDepth == parameters.lastIndex }
 		val flattenedContentCompletion = filteredContent.flatMap { it.cachedCompletion }
@@ -281,6 +293,7 @@ class InterchangeStructure(
 			configuration = configuration,
 			content = emptyList(),
 			parent = this,
+			requiredApprovals = requiredApprovals,
 		).apply(process)
 	}
 
@@ -294,6 +307,10 @@ class InterchangeStructure(
 	fun addContent(vararg assets: CompletionAsset<*>) =
 		addContent(components = assets.map { CompletionComponent.asset(it) }.toTypedArray())
 
+	fun addApprovalRequirement(vararg approval: Approval) {
+		requiredApprovals += approval
+	}
+
 }
 
 fun buildInterchangeStructure(
@@ -301,8 +318,9 @@ fun buildInterchangeStructure(
 	subBranches: List<InterchangeStructure> = emptyList(),
 	configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
 	content: List<CompletionComponent> = emptyList(),
+	requiredApprovals: List<Approval> = emptyList(),
 	process: InterchangeStructure.() -> Unit,
-) = InterchangeStructure("root", path, subBranches, configuration, content).apply(process)
+) = InterchangeStructure("root", path, subBranches, configuration, content, requiredApprovals = requiredApprovals).apply(process)
 
 fun emptyInterchangeStructure() =
 	buildInterchangeStructure(process = { })

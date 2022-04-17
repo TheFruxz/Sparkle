@@ -87,3 +87,5 @@ fun Permissible.hasApproval(approval: Approval) =
 @Deprecated("Use hasApproval(Approval) instead", ReplaceWith("hasApproval(approval)"))
 fun Permissible.hasPermission(approval: Approval) =
 	hasApproval(approval)
+
+val String.asApproval get() = Approval(this)
