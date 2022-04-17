@@ -9,9 +9,8 @@ import org.bukkit.SoundCategory
 import org.bukkit.SoundCategory.MASTER
 
 @Serializable
-@SerialName("EffectSoundData")
 data class SoundData(
-	@SerialName("soundType") var type: Sound,
+	var type: Sound,
 	var volume: Float,
 	var pitch: Float,
 	var category: SoundCategory,
