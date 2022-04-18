@@ -20,20 +20,28 @@ fun generateRAWSoundEffect(soundData: SoundData) = with(soundData) {
 @JvmName("playSoundEffectSmartly")
 fun playSoundEffect(
 	location: Location,
-	soundData: SoundData,
-) = location.playSoundEffect(soundData)
+	vararg soundData: SoundData,
+) = soundData.forEach { element ->
+	location.playSoundEffect(element)
+}
 
 fun Entity.playSoundEffect(
-	soundData: SoundData,
-) = with(location) { this@playSoundEffect.playSound(generateRAWSoundEffect(soundData), x, y, z) }
+	vararg soundData: SoundData,
+) = with(location) { soundData.forEach { element ->
+	this@playSoundEffect.playSound(generateRAWSoundEffect(element), x, y, z) }
+}
 
 fun World.playSoundEffect(
-	soundData: SoundData,
-) = playSound(generateRAWSoundEffect(soundData))
+	vararg soundData: SoundData,
+) = soundData.forEach { element ->
+	this.playSound(generateRAWSoundEffect(element))
+}
 
 fun Location.playSoundEffect(
-	soundData: SoundData,
-) = world.playSound(generateRAWSoundEffect(soundData), x, y, z)
+	vararg soundData: SoundData,
+) = soundData.forEach { element ->
+	world.playSound(generateRAWSoundEffect(element), x, y, z)
+}
 
 fun buildMelody(
 	insideDelay: Long,
