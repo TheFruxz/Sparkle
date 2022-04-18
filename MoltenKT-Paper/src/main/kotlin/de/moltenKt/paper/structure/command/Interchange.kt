@@ -109,7 +109,7 @@ abstract class Interchange(
 	 * @since 1.0
 	 */
 	val tabCompleter = TabCompleter { executor, _, _, args ->
-		completion.computeCompletion(args.toList()).takeIf { canExecuteBasePlate(executor)} ?: listOf(" ")
+		completion.computeCompletion(args.toList(), executor).takeIf { canExecuteBasePlate(executor)} ?: listOf(" ")
 	}
 
 	/**
@@ -257,7 +257,7 @@ abstract class Interchange(
 					|| (sender is ConsoleCommandSender && userRestriction == ONLY_CONSOLE)
 				) {
 
-					if (ignoreInputValidation || completion.validateInput(parameters)) {
+					if (ignoreInputValidation || completion.validateInput(parameters, sender)) {
 						val clientType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE
 
 						fun exception(exception: Exception) {
