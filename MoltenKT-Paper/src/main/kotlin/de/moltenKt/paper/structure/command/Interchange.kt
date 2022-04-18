@@ -221,7 +221,7 @@ abstract class Interchange(
 	) {
 		lang["interchange.run.issue.wrongUsage"]
 			.notification(Level.FAIL, receiver).display()
-		receiver.sendMessage(Component.text(completion.buildSyntax(), NamedTextColor.YELLOW))
+		receiver.sendMessage(Component.text(completion.buildSyntax(receiver), NamedTextColor.YELLOW))
 	}
 
 	private fun wrongClientFeedback(

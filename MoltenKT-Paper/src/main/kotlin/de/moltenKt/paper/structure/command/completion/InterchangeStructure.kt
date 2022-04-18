@@ -39,9 +39,10 @@ class InterchangeStructure(
 	var configuration = configuration
 		private set
 
-	fun buildSyntax() = buildString {
-		fun construct(level: Int = 0, subBranches: List<InterchangeStructure>) {
-			subBranches.forEach { subBranch ->
+	fun buildSyntax(executor: InterchangeExecutor?) = buildString {
+		fun construct(level: Int = 0, internalExecutor: InterchangeExecutor?, subBranches: List<InterchangeStructure>) {
+
+			subBranches.filter { it.requiredApprovals.all { approval -> executor?.hasApproval(approval) != false } }.forEach { subBranch ->
 				val branchConfig = subBranch.configuration
 				appendLine(buildString {
 					repeat(level) { append("  ") }
@@ -64,12 +65,16 @@ class InterchangeStructure(
 						}
 					})
 				})
-				if (subBranch.subBranches.isNotEmpty())
-					construct(level + 1, subBranch.subBranches)
+
+				val subSubBranches = subBranch.subBranches.filter { it.requiredApprovals.all { approval -> executor?.hasApproval(approval) != false } }
+
+				if (subSubBranches.isNotEmpty())
+					construct(level + 1, internalExecutor, subSubBranches)
+
 			}
 		}
 
-		construct(subBranches = listOf(this@InterchangeStructure))
+		construct(subBranches = listOf(this@InterchangeStructure), internalExecutor = executor)
 
 	}
 
@@ -151,40 +156,40 @@ class InterchangeStructure(
 				INCOMPLETE -> currentResult = INCOMPLETE
 				NO_DESTINATION, OVERFLOW, MATCHING -> {
 
-					if (currentInputValid) {
-						if (currentBranch.parent?.isRoot == true || (waysMatching + waysOverflow + waysNoDestination).any { t -> t.address == currentBranch.parent?.address }) {
-							currentResult = if (currentBranch.subBranches.any { it.configuration.isRequired } && inputQuery.lastIndex < currentDepth) {
-								INCOMPLETE
-							} else if (currentDepth >= inputQuery.lastIndex || currentBranch.configuration.infiniteSubParameters) {
-								if ((currentSubBranches.isNotEmpty() && currentSubBranches.all { it.configuration.isRequired }) && !(availableExecutionRepresentsSolution && currentBranch.onExecution != null)) {
-									NO_DESTINATION // This branch has to be completed with its sub-branches
+					if (currentBranch.requiredApprovals.all { (executor?.hasApproval(it) != false) }) { // check if executor has all required approvals
+						if (currentInputValid) {
+							if (currentBranch.parent?.isRoot == true || (waysMatching + waysOverflow + waysNoDestination).any { t -> t.address == currentBranch.parent?.address }) {
+								currentResult = if (currentBranch.subBranches.any { it.configuration.isRequired } && inputQuery.lastIndex < currentDepth) {
+									INCOMPLETE
+								} else if (currentDepth >= inputQuery.lastIndex || currentBranch.configuration.infiniteSubParameters) {
+									if ((currentSubBranches.isNotEmpty() && currentSubBranches.all { it.configuration.isRequired }) && !(availableExecutionRepresentsSolution && currentBranch.onExecution != null)) {
+										NO_DESTINATION // This branch has to be completed with its sub-branches
+									} else {
+											MATCHING
+									}
 								} else {
-									if (currentBranch.requiredApprovals.all { executor?.hasApproval(it) != false }) { // check if executor has all required approvals
-										MATCHING
-									} else
-										FAILED // not enough approvals!
+									OVERFLOW
 								}
+
 							} else {
-								OVERFLOW
+								currentResult = if (waysIncomplete.any { t -> t.address == currentBranch.parent?.address }) {
+									INCOMPLETE
+								} else {
+									FAILED
+								}
 							}
 
+						} else if (isAccessTargetValidRoot) {
+							currentResult = MATCHING
 						} else {
-							currentResult = if (waysIncomplete.any { t -> t.address == currentBranch.parent?.address }) {
+							currentResult = if (((waysMatching + waysOverflow + waysNoDestination).any { it.address == currentBranch.parent?.address } && currentLevelInput.isBlank()) || (currentBranch.parent?.isRoot == true && inputQuery.isEmpty())) {
 								INCOMPLETE
 							} else {
 								FAILED
 							}
 						}
-
-					} else if (isAccessTargetValidRoot) {
-						currentResult = MATCHING
-					} else {
-						currentResult = if (((waysMatching + waysOverflow + waysNoDestination).any { it.address == currentBranch.parent?.address } && currentLevelInput.isBlank()) || (currentBranch.parent?.isRoot == true && inputQuery.isEmpty())) {
-							INCOMPLETE
-						} else {
-							FAILED
-						}
-					}
+					} else
+						currentResult = FAILED // not enough approvals!
 				}
 			}
 
@@ -276,7 +281,7 @@ class InterchangeStructure(
 	 * @throws IllegalStateException if the new branch follows an infinite-parameter branch
 	 */
 	fun branch(
-		identity: String = (parent?.identity ?: "") + "/way-${parent?.subBranches ?: 0}",
+		identity: String = (parent?.identity ?: "") + "/way-${parent?.subBranches?.size ?: 0}",
 		path: Address<InterchangeStructure> = this.address / identity,
 		configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
 		process: InterchangeStructure.() -> Unit,

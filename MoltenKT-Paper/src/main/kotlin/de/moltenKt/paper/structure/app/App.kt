@@ -186,7 +186,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 				command.setExecutor(replace)
 				command.tabCompleter = replace.tabCompleter
-				command.usage = replace.completion.buildSyntax()
+				command.usage = replace.completion.buildSyntax(null)
 
 			} else
 				mainLog(Level.WARNING, "FAILED! failed to register fail-interchange for '$label'")
@@ -206,7 +206,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 					command.setExecutor(interchange)
 					command.tabCompleter = interchange.tabCompleter
-					command.usage = interchange.completion.buildSyntax()
+					command.usage = interchange.completion.buildSyntax(null)
 					command.aliases.mutableReplaceWith(aliases)
 
 					MoltenCache.registeredInterchanges.add(interchange)
