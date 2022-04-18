@@ -23,7 +23,7 @@ class PanelClickEvent(
 	val clickedSlot: Int = origin.slot,
 	val inventoryView: InventoryView = origin.view,
 	val clickedSlotType: SlotType = origin.slotType,
-	val clickedItem: Item? = origin.currentItem?.item,
+	val clickedItem: Item? = origin.currentItem?.takeIf { it.hasItemMeta() }?.item ?: origin.cursor?.takeIf { it.hasItemMeta() }?.item,
 	val clickedItemStack: ItemStack? = origin.currentItem,
 	val clickType: ClickType = origin.click,
 	val clickedInventory: Inventory? = origin.clickedInventory,
