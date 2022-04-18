@@ -65,7 +65,7 @@ maven("https://jitpack.io")
 implementation("com.github.TheFruxz.MoltenKT:moltenkt-core:[version]")
 implementation("com.github.TheFruxz.MoltenKT:moltenkt-javacord:[version]") // optional add MoltenKT-JavaCord
 implementation("com.github.TheFruxz.MoltenKT:moltenkt-paper:[version]") // or MoltenKT-Paper
-implementation("com.github.TheFruxz.MoltenKT:moltenkt-unfold:[version]") // or MoltenKT-Paper
+implementation("com.github.TheFruxz.MoltenKT:moltenkt-unfold:[version]") // or MoltenKT-Unfold
 ```
 
 #### Using GitHub Packages
