@@ -45,7 +45,10 @@ import java.nio.file.Path
 import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.reflect.KClass
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTime
 
 /**
  * # `App (abstract)`
@@ -149,6 +152,10 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	override val identity: String
 		get() = appIdentity
+
+	internal var loadTime: Duration? = null
+
+	internal var startTime: Duration? = null
 
 	// api
 
@@ -578,6 +585,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	}
 
+	@OptIn(ExperimentalTime::class)
 	final override fun onLoad() {
 		tryToCatch {
 			MoltenCache.registeredApplications.add(this)
@@ -588,7 +596,12 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 				classLoader.getResourceAsStream("plugin.yml")?.let { resource ->
 					appRegistrationFile.load(InputStreamReader(resource))
 				}
-				preHello()
+				measureTime {
+					preHello()
+				}.let { requiredTime ->
+					log.info("Loading (::preHello) of '$identity' took $requiredTime!")
+					loadTime = requiredTime
+				}
 				runStatus = LOAD
 
 			}
@@ -596,6 +609,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 		}
 	}
 
+	@OptIn(ExperimentalTime::class)
 	final override fun onEnable() {
 		tryToCatch {
 
@@ -603,8 +617,16 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 				awaitState(LOAD, ENABLE) {
 					runStatus = PRE_ENABLE
-					hello()
-					runStatus = ENABLE
+					measureTime {
+						hello()
+					}.let { requiredTime ->
+						startTime = requiredTime
+						runStatus = ENABLE
+
+						delay(1.seconds)
+						log.info("Enabling (::hello) of '$identity' took $requiredTime!")
+						
+					}
 				}
 
 			}
@@ -612,11 +634,16 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 		}
 	}
 
+	@OptIn(ExperimentalTime::class)
 	final override fun onDisable() {
 		tryToCatch {
 
 			runStatus = SHUTDOWN
-			bye()
+			measureTime {
+				bye()
+			}.let { requiredTime ->
+				log.info("Disabling (::bye) of '$identity' took $requiredTime!")
+			}
 			coroutineScope.cancel("App '$identity' is now disabled!")
 
 			runStatus = OFFLINE
