@@ -1,7 +1,7 @@
 package de.moltenKt.paper.extension.effect
 
-import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.paper.tool.effect.sound.SoundData
+import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import net.kyori.adventure.sound.Sound
 import org.bukkit.Location
 import org.bukkit.SoundCategory
@@ -14,7 +14,7 @@ fun soundOf(
 ) = SoundData(type, volume, pitch, soundCategory)
 
 fun generateRAWSoundEffect(soundData: SoundData) = with(soundData) {
-	Sound.sound(type, category, volume, pitch)
+	Sound.sound(sound, category, volume, pitch)
 }
 
 @JvmName("playSoundEffectSmartly")
@@ -25,7 +25,7 @@ fun playSoundEffect(
 
 fun Entity.playSoundEffect(
 	soundData: SoundData,
-) = playSound(generateRAWSoundEffect(soundData))
+) = with(location) { this@playSoundEffect.playSound(generateRAWSoundEffect(soundData), x, y, z) }
 
 fun World.playSoundEffect(
 	soundData: SoundData,
@@ -33,7 +33,7 @@ fun World.playSoundEffect(
 
 fun Location.playSoundEffect(
 	soundData: SoundData,
-) = world.playSound(generateRAWSoundEffect(soundData))
+) = world.playSound(generateRAWSoundEffect(soundData), x, y, z)
 
 fun buildMelody(
 	insideDelay: Long,
