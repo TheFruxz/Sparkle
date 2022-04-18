@@ -625,7 +625,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 						delay(1.seconds)
 						log.info("Enabling (::hello) of '$identity' took $requiredTime!")
-						
+
 					}
 				}
 

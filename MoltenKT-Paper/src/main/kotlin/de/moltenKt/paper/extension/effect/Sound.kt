@@ -2,20 +2,21 @@ package de.moltenKt.paper.extension.effect
 
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
+import net.kyori.adventure.sound.Sound.Emitter
+import net.kyori.adventure.sound.Sound.Source.MASTER
 import org.bukkit.Location
-import org.bukkit.SoundCategory
-import org.bukkit.SoundCategory.MASTER
 import org.bukkit.World
 import org.bukkit.entity.Entity
 
 fun soundOf(
-	type: org.bukkit.Sound, volume: Number = 1, pitch: Number = 1, soundCategory: SoundCategory = MASTER,
-) = SoundData(type, volume, pitch, soundCategory)
+	type: Sound.Type, volume: Number = 1, pitch: Number = 1, soundSource: Sound.Source = MASTER,
+) = SoundData(type, volume, pitch, soundSource)
 
-fun generateRAWSoundEffect(soundData: SoundData) = with(soundData) {
-	Sound.sound(sound, category, volume, pitch)
-}
+fun soundOf(
+	key: Key, volume: Number = 1, pitch: Number = 1, soundSource: Sound.Source = MASTER,
+) = SoundData(key, volume, pitch, soundSource)
 
 @JvmName("playSoundEffectSmartly")
 fun playSoundEffect(
@@ -27,20 +28,19 @@ fun playSoundEffect(
 
 fun Entity.playSoundEffect(
 	vararg soundData: SoundData,
-) = with(location) { soundData.forEach { element ->
-	this@playSoundEffect.playSound(generateRAWSoundEffect(element), x, y, z) }
-}
+) = soundData.forEach { element ->
+	this@playSoundEffect.playSound(element.computeRaw(), Emitter.self()) }
 
 fun World.playSoundEffect(
 	vararg soundData: SoundData,
 ) = soundData.forEach { element ->
-	this.playSound(generateRAWSoundEffect(element))
+	this.playSound(element.computeRaw(), Emitter.self())
 }
 
 fun Location.playSoundEffect(
 	vararg soundData: SoundData,
 ) = soundData.forEach { element ->
-	world.playSound(generateRAWSoundEffect(element), x, y, z)
+	world.playSound(element.computeRaw(), x, y, z)
 }
 
 fun buildMelody(
