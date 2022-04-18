@@ -62,10 +62,10 @@ maven("https://jitpack.io")
 
 ##### Dependency
 ```kotlin
-implementation("com.github.TheFruxz.MoltenKT:moltenkt-core:[version]")
-implementation("com.github.TheFruxz.MoltenKT:moltenkt-javacord:[version]") // optional add MoltenKT-JavaCord
-implementation("com.github.TheFruxz.MoltenKT:moltenkt-paper:[version]") // or MoltenKT-Paper
-implementation("com.github.TheFruxz.MoltenKT:moltenkt-unfold:[version]") // or MoltenKT-Unfold
+implementation("com.github.TheFruxz.MoltenKT:moltenkt-core:$moltenVersion")
+implementation("com.github.TheFruxz.MoltenKT:moltenkt-javacord:$moltenVersion") // optional add MoltenKT-JavaCord
+implementation("com.github.TheFruxz.MoltenKT:moltenkt-paper:$moltenVersion") // or MoltenKT-Paper
+implementation("com.github.TheFruxz.MoltenKT:moltenkt-unfold:$moltenVersion") // or MoltenKT-Unfold
 ```
 
 #### Using GitHub Packages
@@ -83,10 +83,10 @@ maven("https://maven.pkg.github.com/TheFruxz/MoltenKT") {
 
 ##### Dependency
 ```kotlin
-implementation("de.moltenKT:moltenkt-core:[version]")
-implementation("de.moltenKT:moltenkt-javacord:[version]") // optional add MoltenKT-JavaCord
-implementation("de.moltenKT:moltenkt-paper:[version]") // or MoltenKT-Paper
-implementation("de.moltenKT:moltenkt-unfold:[version]") // or MoltenKT-Unfold
+implementation("de.moltenKT:moltenkt-core:$moltenVersion")
+implementation("de.moltenKT:moltenkt-javacord:$moltenVersion") // optional add MoltenKT-JavaCord
+implementation("de.moltenKT:moltenkt-paper:$moltenVersion") // or MoltenKT-Paper
+implementation("de.moltenKT:moltenkt-unfold:$moltenVersion") // or MoltenKT-Unfold
 ```
 
 #### Auth
