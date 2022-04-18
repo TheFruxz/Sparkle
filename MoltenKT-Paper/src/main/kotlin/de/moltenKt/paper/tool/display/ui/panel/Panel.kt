@@ -52,7 +52,7 @@ data class PanelReceiveData(
 		panel = panel.apply(process)
 	}
 
-	fun updateView() = panel.display(receiver, receiveParameters)
+	fun updateView(): Unit = panel.display(receiver, receiveParameters)
 
 }
 
@@ -508,11 +508,14 @@ data class Panel(
 
 	}
 
-	override fun display(humanEntity: HumanEntity) =
+	override fun display(humanEntity: HumanEntity): Unit =
 		display(humanEntity, emptyMap())
 
-	override fun display(receiver: Player) =
+	override fun display(receiver: Player): Unit =
 		display(humanEntity = receiver)
+
+	override fun display(receiver: Player, specificParameters: Map<String, Any>): Unit =
+		display(humanEntity = receiver, specificParameters)
 
 	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>) { with(copy()) {
 		val previousState = this@Panel.content.toMap()
@@ -582,9 +585,6 @@ data class Panel(
 		this@Panel.content = previousState.toMutableMap()
 
 	} }
-
-	override fun display(receiver: Player, specificParameters: Map<String, Any>) =
-		display(humanEntity = receiver, specificParameters)
 
 	/**
 	 * This function returns, if the [inventory] is (via the identity) a
