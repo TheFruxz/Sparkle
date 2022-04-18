@@ -3,8 +3,9 @@ package de.moltenKt.paper.tool.smart
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.structure.app.App
+import net.kyori.adventure.key.Key
 
-interface VendorsIdentifiable<T> : Identifiable<T> {
+interface VendorsIdentifiable<T> : Identifiable<T>, Key {
 
 	val vendorIdentity: Identity<out App>
 
@@ -15,5 +16,11 @@ interface VendorsIdentifiable<T> : Identifiable<T> {
 
 	override val identity: String
 		get() = "${vendorIdentity.identity}:$thisIdentity"
+
+	override fun value(): String = thisIdentity
+
+	override fun namespace(): String = vendorIdentity.identity
+
+	override fun asString(): String = "${namespace()}:${value()}"
 
 }
