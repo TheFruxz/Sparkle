@@ -64,7 +64,8 @@ maven("https://jitpack.io")
 ```kotlin
 implementation("com.github.TheFruxz.MoltenKT:moltenkt-core:[version]")
 implementation("com.github.TheFruxz.MoltenKT:moltenkt-javacord:[version]") // optional add MoltenKT-JavaCord
-implementation("com.github.TheFruxz.MoltenKT:moltenkt-paper:[version]") // or MoltenKT-Minecraft
+implementation("com.github.TheFruxz.MoltenKT:moltenkt-paper:[version]") // or MoltenKT-Paper
+implementation("com.github.TheFruxz.MoltenKT:moltenkt-unfold:[version]") // or MoltenKT-Paper
 ```
 
 #### Using GitHub Packages
@@ -84,7 +85,8 @@ maven("https://maven.pkg.github.com/TheFruxz/MoltenKT") {
 ```kotlin
 implementation("de.moltenKT:moltenkt-core:[version]")
 implementation("de.moltenKT:moltenkt-javacord:[version]") // optional add MoltenKT-JavaCord
-implementation("de.moltenKT:moltenkt-paper:[version]") // or MoltenKT-Minecraft
+implementation("de.moltenKT:moltenkt-paper:[version]") // or MoltenKT-Paper
+implementation("de.moltenKT:moltenkt-unfold:[version]") // or MoltenKT-Unfold
 ```
 
 #### Auth
