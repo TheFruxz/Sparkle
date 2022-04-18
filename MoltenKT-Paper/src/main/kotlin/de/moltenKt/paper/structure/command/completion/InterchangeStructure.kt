@@ -116,10 +116,10 @@ class InterchangeStructure(
 					true
 			}
 
-	private fun computeLocalCompletion() = content.flatMap { it.completion() }
+	private fun computeLocalCompletion(executor: InterchangeExecutor) = content.flatMap { it.completion(executor) }
 
-	private fun validInput(input: String) =
-		(!configuration.mustMatchOutput || this.computeLocalCompletion()
+	private fun validInput(executor: InterchangeExecutor, input: String) =
+		(!configuration.mustMatchOutput || this.computeLocalCompletion(executor)
 			.any { it.equals(input, configuration.ignoreCase) })
 				&& configuration.supportedInputTypes.any { it.isValid(input) }
 				&& isInputAllowedByTypes(input)
@@ -134,7 +134,7 @@ class InterchangeStructure(
 		FAILED;
 	}
 
-	fun trace(inputQuery: List<String>, executor: InterchangeExecutor?, availableExecutionRepresentsSolution: Boolean = true): CompletionTraceResult<InterchangeStructure> {
+	fun trace(inputQuery: List<String>, executor: InterchangeExecutor, availableExecutionRepresentsSolution: Boolean = true): CompletionTraceResult<InterchangeStructure> {
 		val waysMatching = mutableListOf<PossibleTraceWay<InterchangeStructure>>()
 		val waysOverflow = mutableListOf<PossibleTraceWay<InterchangeStructure>>()
 		val waysIncomplete = mutableListOf<PossibleTraceWay<InterchangeStructure>>()
@@ -145,7 +145,7 @@ class InterchangeStructure(
 			debugLog("tracing branch ${currentBranch.identity}[${currentBranch.address}] with depth '$currentDepth' from parentStatus $parentBranchStatus")
 			val currentLevelInput = inputQuery.getOrNull(currentDepth) ?: ""
 			val currentSubBranches = currentBranch.subBranches
-			val currentInputValid = currentBranch.validInput(currentLevelInput)
+			val currentInputValid = currentBranch.validInput(executor, currentLevelInput)
 			val currentResult: BranchStatus
 			val isAccessTargetValidRoot = currentBranch.isRoot && inputQuery.isEmpty() && availableExecutionRepresentsSolution && currentBranch.onExecution != null
 
@@ -156,7 +156,7 @@ class InterchangeStructure(
 				INCOMPLETE -> currentResult = INCOMPLETE
 				NO_DESTINATION, OVERFLOW, MATCHING -> {
 
-					if (currentBranch.requiredApprovals.all { (executor?.hasApproval(it) != false) }) { // check if executor has all required approvals
+					if (currentBranch.requiredApprovals.all { executor.hasApproval(it) }) { // check if executor has all required approvals
 						if (currentInputValid) {
 							if (currentBranch.parent?.isRoot == true || (waysMatching + waysOverflow + waysNoDestination).any { t -> t.address == currentBranch.parent?.address }) {
 								currentResult = if (currentBranch.subBranches.any { it.configuration.isRequired } && inputQuery.lastIndex < currentDepth) {
@@ -200,7 +200,7 @@ class InterchangeStructure(
 			val outputBuild = PossibleTraceWay(
 				address = currentBranch.address,
 				branch = currentBranch,
-				cachedCompletion = currentBranch.computeLocalCompletion(),
+				cachedCompletion = currentBranch.computeLocalCompletion(executor),
 				tracingDepth = currentDepth,
 				usedQueryState = inputQuery,
 			)
@@ -236,7 +236,7 @@ class InterchangeStructure(
 		)
 	}
 
-	fun validateInput(parameters: List<String>, executor: InterchangeExecutor?): Boolean {
+	fun validateInput(parameters: List<String>, executor: InterchangeExecutor): Boolean {
 		val trace = trace(parameters, executor)
 
 		return if (trace.conclusion == EMPTY && parameters.isEmpty()) {
@@ -245,7 +245,7 @@ class InterchangeStructure(
 			trace.waysMatching.isNotEmpty()
 	}
 
-	fun computeCompletion(parameters: List<String>, executor: InterchangeExecutor?): List<String> {
+	fun computeCompletion(parameters: List<String>, executor: InterchangeExecutor): List<String> {
 
 		val query = (parameters.lastOrNull() ?: "")
 		val traceBase = parameters.dropLast(1)

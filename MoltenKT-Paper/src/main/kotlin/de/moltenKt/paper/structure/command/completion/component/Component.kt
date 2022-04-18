@@ -5,13 +5,13 @@ import de.moltenKt.paper.tool.permission.Approval
 
 sealed interface CompletionComponent {
 
-	fun completion(): Set<String>
+	fun completion(executor: InterchangeExecutor): Set<String>
 
 	val label: String
 
 	val displayRequirement: ((executor: InterchangeExecutor, parameters: Array<String>, completion: Set<String>) -> Boolean)?
 
-	val inputExpressionCheck: (input: String, ignoreCase: Boolean) -> Boolean
+	val inputExpressionCheck: (executor: InterchangeExecutor, input: String, ignoreCase: Boolean) -> Boolean
 
 	val accessApproval: Approval?
 
@@ -46,11 +46,11 @@ sealed interface CompletionComponent {
 		override val accessApproval: Approval? = null,
 	) : CompletionComponent {
 
-		override fun completion() = completion
+		override fun completion(executor: InterchangeExecutor) = completion
 
 		override val label = "[${completion.joinToString("/")}]"
 
-		override val inputExpressionCheck: (String, Boolean) -> Boolean = { input, ignoreCase ->
+		override val inputExpressionCheck: (InterchangeExecutor, String, Boolean) -> Boolean = { _, input, ignoreCase ->
 			completion.any { it.equals(input, ignoreCase) }
 		}
 
@@ -62,12 +62,12 @@ sealed interface CompletionComponent {
 		override val accessApproval: Approval? = null,
 	) : CompletionComponent {
 
-		override fun completion() = asset.computedContent
+		override fun completion(executor: InterchangeExecutor) = asset.computedContent(executor)
 
 		override val label = "<${asset.identity}>"
 
-		override val inputExpressionCheck: (String, Boolean) -> Boolean = check@{ input, ignoreCase ->
-			return@check asset.check?.invoke(input, ignoreCase) ?: true
+		override val inputExpressionCheck: (InterchangeExecutor, String, Boolean) -> Boolean = check@{ executor, input, ignoreCase ->
+			return@check asset.check?.invoke(executor, input, ignoreCase) ?: true
 		}
 
 	}
