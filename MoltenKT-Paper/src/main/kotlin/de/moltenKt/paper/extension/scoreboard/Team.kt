@@ -1,6 +1,6 @@
 package de.moltenKt.paper.extension.scoreboard
 
-import de.moltenKt.paper.extension.paper.getOfflinePlayer
+import de.moltenKt.paper.extension.paper.offlinePlayer
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.scoreboard.Team
@@ -13,7 +13,7 @@ import org.bukkit.scoreboard.Team
  * @since 1.0
  */
 val Team?.entriesAsOfflinePlayer: List<OfflinePlayer>
-    get() = this?.entries?.map { getOfflinePlayer(it) } ?: emptyList()
+    get() = this?.entries?.map { offlinePlayer(it) } ?: emptyList()
 
 /**
  * This value returns every entry from the [entriesAsOfflinePlayer] function, mapped to a [Player] object.

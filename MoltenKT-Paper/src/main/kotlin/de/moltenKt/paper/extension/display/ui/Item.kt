@@ -3,7 +3,7 @@ package de.moltenKt.paper.extension.display.ui
 import de.moltenKt.core.extension.data.url
 import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.paper.extension.mojang.getMojangProfile
-import de.moltenKt.paper.extension.paper.getOfflinePlayer
+import de.moltenKt.paper.extension.paper.offlinePlayer
 import de.moltenKt.paper.tool.display.color.ColorType
 import de.moltenKt.paper.tool.display.color.DyeableMaterial
 import de.moltenKt.paper.tool.display.item.Item
@@ -86,14 +86,14 @@ fun item(itemStack: ItemStack) = itemStack.item
  */
 fun skull(owner: String, httpRequest: Boolean = true) = Material.PLAYER_HEAD.item {
 
-	getOfflinePlayer(owner).name?.let { label = text(it).color(NamedTextColor.YELLOW) }
+	offlinePlayer(owner).name?.let { label = text(it).color(NamedTextColor.YELLOW) }
 
 	skullQuirk {
 
 		if (httpRequest) {
 			val ownerProfile = tryOrNull { runBlocking { getMojangProfile(owner) } }
 
-			owningPlayer = getOfflinePlayer("MHF_Question")
+			owningPlayer = offlinePlayer("MHF_Question")
 
 			if (ownerProfile != null) {
 				playerProfile = playerProfile!!.apply {
@@ -104,7 +104,7 @@ fun skull(owner: String, httpRequest: Boolean = true) = Material.PLAYER_HEAD.ite
 				playerProfile!!.complete(true, true)
 			}
 		} else
-			owningPlayer = getOfflinePlayer(owner)
+			owningPlayer = offlinePlayer(owner)
 
 	}
 }
@@ -122,14 +122,14 @@ fun skull(owner: String, httpRequest: Boolean = true) = Material.PLAYER_HEAD.ite
  */
 fun skull(owner: UUID, httpRequest: Boolean = true) = Material.PLAYER_HEAD.item {
 
-	getOfflinePlayer(owner).name?.let { label = text(it).color(NamedTextColor.YELLOW) }
+	offlinePlayer(owner).name?.let { label = text(it).color(NamedTextColor.YELLOW) }
 
 	skullQuirk {
 
 		if (httpRequest) {
 			val ownerProfile = tryOrNull { runBlocking { getMojangProfile(owner) } }
 
-			owningPlayer = getOfflinePlayer("MHF_Question")
+			owningPlayer = offlinePlayer("MHF_Question")
 
 			if (ownerProfile != null) {
 				playerProfile = playerProfile!!.apply {
@@ -140,7 +140,7 @@ fun skull(owner: UUID, httpRequest: Boolean = true) = Material.PLAYER_HEAD.item 
 				playerProfile!!.complete(true, true)
 			}
 		} else
-			owningPlayer = getOfflinePlayer(owner)
+			owningPlayer = offlinePlayer(owner)
 	}
 }
 

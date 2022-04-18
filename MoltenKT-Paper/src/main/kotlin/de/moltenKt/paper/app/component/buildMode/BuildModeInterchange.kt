@@ -10,7 +10,7 @@ import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.paper.buildMode
-import de.moltenKt.paper.extension.paper.getOfflinePlayer
+import de.moltenKt.paper.extension.paper.offlinePlayer
 import de.moltenKt.paper.extension.paper.onlinePlayers
 import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS
 import de.moltenKt.paper.structure.command.InterchangeResult.WRONG_USAGE
@@ -81,7 +81,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 						)
 
 						pageValue.content.withIndex().forEach {
-							val player = getOfflinePlayer(it.value.identity.toUUID())
+							val player = offlinePlayer(it.value.identity.toUUID())
 
 							lang["interchange.internal.buildmode.list.line"].replaceVariables(
 								"player" to player.name,

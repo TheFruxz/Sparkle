@@ -4,8 +4,8 @@ import de.moltenKt.core.extension.empty
 import de.moltenKt.core.extension.math.isDouble
 import de.moltenKt.core.extension.math.isLong
 import de.moltenKt.core.extension.tryOrNull
-import de.moltenKt.paper.extension.paper.getOfflinePlayer
-import de.moltenKt.paper.extension.paper.getPlayer
+import de.moltenKt.paper.extension.paper.offlinePlayer
+import de.moltenKt.paper.extension.paper.player
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import java.util.*
@@ -56,14 +56,14 @@ interface InterchangeStructureInputRestriction<DATATYPE> {
 
 		@JvmStatic
 		val ONLINE_PLAYER = object : InterchangeStructureInputRestriction<Player> {
-			override fun isValid(input: String) = (getPlayer(input) ?: tryOrNull { getPlayer(UUID.fromString(input)) }) != null
-			override fun transformer(input: String) = getPlayer(input) ?: getPlayer(UUID.fromString(input))!!
+			override fun isValid(input: String) = (player(input) ?: tryOrNull { player(UUID.fromString(input)) }) != null
+			override fun transformer(input: String) = player(input) ?: player(UUID.fromString(input))!!
 		}
 
 		@JvmStatic
 		val OFFLINE_PLAYER = object : InterchangeStructureInputRestriction<OfflinePlayer> {
-			override fun isValid(input: String) = (tryOrNull { getOfflinePlayer(UUID.fromString(input)) } ?: getOfflinePlayer(input)).name != null
-			override fun transformer(input: String) = tryOrNull { getOfflinePlayer(UUID.fromString(input)) } ?: getOfflinePlayer(input)
+			override fun isValid(input: String) = (tryOrNull { offlinePlayer(UUID.fromString(input)) } ?: offlinePlayer(input)).name != null
+			override fun transformer(input: String) = tryOrNull { offlinePlayer(UUID.fromString(input)) } ?: offlinePlayer(input)
 		}
 
 	}

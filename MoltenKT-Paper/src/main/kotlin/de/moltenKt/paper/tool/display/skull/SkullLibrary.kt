@@ -8,7 +8,7 @@ import de.moltenKt.core.tool.data.CSV
 import de.moltenKt.paper.app.MoltenData
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.ui.item
-import de.moltenKt.paper.extension.paper.getOfflinePlayer
+import de.moltenKt.paper.extension.paper.offlinePlayer
 import de.moltenKt.paper.tool.display.item.quirk.Quirk.Companion.skullQuirk
 import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.text
@@ -53,7 +53,7 @@ object SkullLibrary {
 		val skull = skulls.firstOrNull { it.id == id }
 
 		skullQuirk {
-			owningPlayer = getOfflinePlayer("MHF_Question")
+			owningPlayer = offlinePlayer("MHF_Question")
 
 			if (skull != null) {
 				playerProfile = playerProfile!!.apply {

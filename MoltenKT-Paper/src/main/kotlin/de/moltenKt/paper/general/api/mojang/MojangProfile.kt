@@ -2,7 +2,7 @@ package de.moltenKt.paper.general.api.mojang
 
 import com.destroystokyo.paper.profile.PlayerProfile
 import com.destroystokyo.paper.profile.ProfileProperty
-import de.moltenKt.paper.extension.paper.getOfflinePlayer
+import de.moltenKt.paper.extension.paper.offlinePlayer
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.extension.tasky.async
 import de.moltenKt.paper.tool.display.item.Item
@@ -46,7 +46,7 @@ data class MojangProfile(
 
 	fun applySkinToSkullMeta(target: SkullMeta, replaceName: Boolean = true) {
 
-		target.owningPlayer = getOfflinePlayer(username)
+		target.owningPlayer = offlinePlayer(username)
 
 		target.playerProfile = target.playerProfile?.apply {
 

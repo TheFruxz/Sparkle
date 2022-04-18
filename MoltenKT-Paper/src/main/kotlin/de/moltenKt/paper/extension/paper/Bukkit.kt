@@ -48,18 +48,18 @@ val onlinePlayers: Collection<Player>
 val offlinePlayers: List<OfflinePlayer>
 	get() = Bukkit.getOfflinePlayers().toList()
 
-fun getPlayer(playerName: String) = Bukkit.getPlayer(playerName)
+fun player(playerName: String) = Bukkit.getPlayer(playerName)
 
-fun getPlayer(uniqueIdentity: UUID) = Bukkit.getPlayer(uniqueIdentity)
+fun player(uniqueIdentity: UUID) = Bukkit.getPlayer(uniqueIdentity)
 
-fun getPlayer(identity: Identifiable<out OfflinePlayer>) = getPlayer(UUID.fromString(identity.identity))
+fun player(identity: Identifiable<out OfflinePlayer>) = player(UUID.fromString(identity.identity))
 
 @Suppress("DEPRECATION")
-fun getOfflinePlayer(playerName: String) = Bukkit.getOfflinePlayer(playerName)
+fun offlinePlayer(playerName: String) = Bukkit.getOfflinePlayer(playerName)
 
-fun getOfflinePlayer(uniqueIdentity: UUID) = Bukkit.getOfflinePlayer(uniqueIdentity)
+fun offlinePlayer(uniqueIdentity: UUID) = Bukkit.getOfflinePlayer(uniqueIdentity)
 
-fun getOfflinePlayer(identity: Identifiable<out OfflinePlayer>) = getOfflinePlayer(UUID.fromString(identity.identity))
+fun offlinePlayer(identity: Identifiable<out OfflinePlayer>) = offlinePlayer(UUID.fromString(identity.identity))
 
 fun Plugin.createKey(key: String) = NamespacedKey(this, key)
 

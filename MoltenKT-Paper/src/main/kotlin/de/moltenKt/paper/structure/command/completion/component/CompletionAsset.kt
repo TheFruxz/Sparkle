@@ -10,10 +10,10 @@ import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.MoltenData
 import de.moltenKt.paper.app.component.point.asset.Point
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
-import de.moltenKt.paper.extension.paper.getOfflinePlayer
-import de.moltenKt.paper.extension.paper.getPlayer
+import de.moltenKt.paper.extension.paper.offlinePlayer
 import de.moltenKt.paper.extension.paper.offlinePlayers
 import de.moltenKt.paper.extension.paper.onlinePlayers
+import de.moltenKt.paper.extension.paper.player
 import de.moltenKt.paper.extension.paper.worlds
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.runtime.sandbox.SandBox
@@ -89,36 +89,36 @@ data class CompletionAsset<T>(
 		val ONLINE_PLAYER_NAME = CompletionAsset<Player>(system, "ONLINE_PLAYER_NAME", true, listOf(InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
 			onlinePlayers.withMap { name }
 		}.doCheck { _, input, _ ->
-			getPlayer(input) != null
+			player(input) != null
 		}.transformer { _, input ->
-			getPlayer(input)
+			player(input)
 		}
 
 		@JvmStatic
 		val ONLINE_PLAYER_UUID = CompletionAsset<Player>(system, "ONLINE_PLAYER_UUID", true, listOf(InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
 			onlinePlayers.withMap { "$uniqueId" }
 		}.doCheck { _, input, _ ->
-			tryOrNull { UUID.fromString(input) }?.let { uuid -> return@let getPlayer(uuid) } != null
+			tryOrNull { UUID.fromString(input) }?.let { uuid -> return@let player(uuid) } != null
 		}.transformer { _, input ->
-			tryOrNull { getPlayer(UUID.fromString(input)) }
+			tryOrNull { player(UUID.fromString(input)) }
 		}
 
 		@JvmStatic
 		val OFFLINE_PLAYER_NAME = CompletionAsset<OfflinePlayer>(system, "OFFLINE_PLAYER_NAME", true, listOf(InterchangeStructureInputRestriction.OFFLINE_PLAYER)) {
 			offlinePlayers.withMap { name }.filterNotNull()
 		}.doCheck { _, input, _ ->
-			getOfflinePlayer(input).name != null
+			offlinePlayer(input).name != null
 		}.transformer { _, input ->
-			getOfflinePlayer(input)
+			offlinePlayer(input)
 		}
 
 		@JvmStatic
 		val OFFLINE_PLAYER_UUID = CompletionAsset<OfflinePlayer>(system, "OFFLINE_PLAYER_UUID", true, listOf(InterchangeStructureInputRestriction.OFFLINE_PLAYER)) {
 			offlinePlayers.withMap { "$uniqueId" }
 		}.doCheck { _, input, _ ->
-			tryOrNull { getOfflinePlayer(UUID.fromString(input)).name } != null
+			tryOrNull { offlinePlayer(UUID.fromString(input)).name } != null
 		}.transformer { _, input ->
-			tryOrNull { getOfflinePlayer(UUID.fromString(input)) }
+			tryOrNull { offlinePlayer(UUID.fromString(input)) }
 		}
 
 		@JvmStatic

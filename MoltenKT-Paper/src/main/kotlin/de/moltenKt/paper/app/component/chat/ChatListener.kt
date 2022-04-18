@@ -3,8 +3,8 @@ package de.moltenKt.paper.app.component.chat
 import de.moltenKt.core.extension.container.replacePrefix
 import de.moltenKt.paper.extension.display.buildTextComponent
 import de.moltenKt.paper.extension.paper.consoleSender
-import de.moltenKt.paper.extension.paper.getPlayer
 import de.moltenKt.paper.extension.paper.onlinePlayers
+import de.moltenKt.paper.extension.paper.player
 import de.moltenKt.paper.structure.app.event.EventListener
 import de.moltenKt.unfold.extension.asString
 import io.papermc.paper.event.player.AsyncChatEvent
@@ -27,7 +27,7 @@ internal class ChatListener : EventListener() {
 		val notify = mutableSetOf<UUID>()
 		val message = buildTextComponent {
 			event.message().asString.replacePrefix("./", "/").split(" ").forEach { snipped ->
-				val tagged = getPlayer(snipped.removePrefix("@"))
+				val tagged = player(snipped.removePrefix("@"))
 
 				append(Component.text(" "))
 
