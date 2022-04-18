@@ -29,7 +29,8 @@ fun playSoundEffect(
 fun Entity.playSoundEffect(
 	vararg soundData: SoundData,
 ) = soundData.forEach { element ->
-	this@playSoundEffect.playSound(element.computeRaw(), Emitter.self()) }
+	this@playSoundEffect.playSound(element.computeRaw(), Emitter.self())
+}
 
 fun World.playSoundEffect(
 	vararg soundData: SoundData,
