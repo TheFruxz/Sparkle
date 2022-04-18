@@ -8,6 +8,7 @@ import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.ui.item
 import de.moltenKt.paper.extension.display.ui.panelIdentificationKey
+import de.moltenKt.paper.extension.display.ui.set
 import de.moltenKt.paper.extension.paper.createInventory
 import de.moltenKt.paper.extension.paper.createKey
 import de.moltenKt.paper.extension.system
@@ -508,6 +509,24 @@ data class Panel(
 
 	}
 
+	private val iconModifier: Item.() -> Unit = {
+
+		if (label.isEmpty()) {
+			label = this@Panel.label
+		}
+
+		dataPut(panelIdentificationKey, this@Panel.identity, true)
+
+		if (overridingBorderProtection) {
+			dataPut(borderKey, 1)
+		}
+
+		// TODO check if the above is needed, because it may causes problems with the indicator
+
+	}
+
+	fun makeIcon(item: Item) = item.apply(iconModifier)
+
 	override fun display(humanEntity: HumanEntity): Unit =
 		display(humanEntity, emptyMap())
 
@@ -523,21 +542,7 @@ data class Panel(
 		complete()
 
 		this@with.content = this@with.content.apply {
-			set(4, this@with.icon.apply {
-
-				if (label.isEmpty()) {
-					label = this@with.label
-				}
-
-				dataPut(panelIdentificationKey, this@with.identity, true)
-
-				if (overridingBorderProtection) {
-					dataPut(borderKey, 1)
-				}
-
-				// TODO check if the above is needed, because it may causes problems with the indicator
-
-			})
+			set(4, this@with.icon.apply(iconModifier))
 		}
 
 		if (humanEntity is Player) {
@@ -637,6 +642,32 @@ data class Panel(
 		fun <T : Inventory> T.getPanel() = tryOrNull { panelIdentity?.let { panelIdentity ->
 			MoltenCache.completedPanels.lastOrNull { it.identityObject == panelIdentity }
 		} }
+
+		/**
+		 * This function checks, if the [Inventory] is a panel, and if so, it replaces the current
+		 * icon at slot 4 with the new [item]. This new [item] will be modified, so it works like
+		 * the original icon, but with its new [item] as visual and behavior.
+		 */
+		@JvmStatic
+		fun <T : Inventory> T.changeIcon(item: Item) = this.getPanel()?.let { panel ->
+			val icon = panel.makeIcon(item)
+
+			this[4] = icon
+
+		}
+
+		/**
+		 * This function checks, if the [Inventory] is a panel, and if so, it replaces the current
+		 * icon at slot 4 with the new [item]. This new [item] will be modified, so it works like
+		 * the original icon, but with its new [item] as visual and behavior.
+		 */
+		@JvmStatic
+		fun <T : Inventory> T.changeIcon(item: ItemStack) = this.getPanel()?.let { panel ->
+			val icon = panel.makeIcon(item.item)
+
+			this[4] = icon
+
+		}
 
 	}
 
