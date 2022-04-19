@@ -1,4 +1,5 @@
 import org.gradle.api.JavaVersion.VERSION_17
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -100,4 +101,8 @@ tasks {
         kotlinOptions.jvmTarget = "17"
     }
 
+}
+
+kotlin {
+    explicitApi = ExplicitApiMode.Warning
 }
