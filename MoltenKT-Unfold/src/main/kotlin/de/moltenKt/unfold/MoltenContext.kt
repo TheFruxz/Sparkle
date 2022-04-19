@@ -1,11 +1,11 @@
 package de.moltenKt.unfold
 
-interface MoltenContext<T> {
+public interface MoltenContext<T> {
 
-	companion object {
+	public companion object {
 
 		@JvmStatic
-		fun <X> contextOf() = object : MoltenContext<X> { }
+		public fun <X> contextOf(): MoltenContext<X> = object : MoltenContext<X> { }
 
 	}
 
