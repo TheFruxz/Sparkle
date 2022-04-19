@@ -1,73 +1,76 @@
 package de.moltenKt.paper.tool.effect.sound
 
-import de.moltenKt.core.tool.smart.Producible
-import de.moltenKt.paper.extension.effect.playSoundEffect
-import de.moltenKt.paper.extension.tasky.task
-import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice.Companion.ticking
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import de.moltenKt.core.extension.dump
+import de.moltenKt.paper.extension.system
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.entity.Entity
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
-@Serializable
-@SerialName("EffectSoundMelody")
 class SoundMelody(
-	var insideDelay: Long,
-	var wholeRepeats: Int,
-	var content: MutableList<Set<SoundData>>,
-	var sync: Boolean = true,
-) {
+	var delayPerBeat: Duration = .5.seconds,
+	var delayPerSound: Duration = Duration.ZERO,
+	var repetitions: Int = 0,
+	private val _structure: MutableList<MutableList<SoundData>> = mutableListOf(),
+) : SoundEffect {
 
-	constructor(insideDelay: Long, wholeRepeats: Int, sync: Boolean = true) : this(insideDelay, wholeRepeats, mutableListOf(), sync)
+	val structure: List<List<SoundData>>
+		get() = _structure
 
-	val builder: Builder
-		get() = Builder(this)
-
-	fun play(receivers: Collection<Entity>) = createPlay {
-		receivers.forEach { r -> r.playSoundEffect(it) }
+	fun beat(process: SoundMelodyBeat.() -> Unit) {
+		_structure.add(SoundMelodyBeat().apply(process).content.toMutableList())
 	}
 
-	private fun createPlay(execution: (SoundData) -> Unit) {
+	fun beat(soundData: SoundData): Unit = beat {
+		sound(soundData)
+	}
 
-		var repeatTimes = 0
-		var innerRound = 0
+	data class SoundMelodyBeat(
+		private val _content: MutableList<SoundData> = mutableListOf(),
+	) {
 
-		task(ticking(0, insideDelay, !sync)) {
-			val currentSounds = content[innerRound].toMutableSet()
+		val content: List<SoundData>
+			get() = _content
 
-			currentSounds.forEach(execution)
+		fun sound(soundData: SoundData) {
+			_content.add(soundData)
+		}
 
-			innerRound ++
-			if (innerRound >= content.size) {
-				innerRound = 0
-				if (wholeRepeats == - 1 || wholeRepeats > repeatTimes) {
-					repeatTimes ++
-				} else {
-					shutdown()
+	}
+
+	private fun executePlay(process: SoundData.() -> Unit): Unit = system.coroutineScope.launch {
+		if (repetitions < 0) throw IllegalArgumentException("repetitions cannot be negative")
+		if (delayPerSound.isNegative()) throw IllegalArgumentException("delayPerSound cannot be negative")
+		if (delayPerBeat.isNegative()) throw IllegalArgumentException("delayPerBeat cannot be negative")
+
+		repeat(1 + repetitions) {
+			_structure.toList().forEach { beat ->
+
+				beat.forEach { soundData ->
+					soundData.process()
+					delay(delayPerSound)
 				}
-			}
 
+				delay(delayPerBeat)
+
+			}
 		}
 
+	}.dump()
+
+	override fun play(vararg locations: Location?): Unit = executePlay {
+		play(*locations)
 	}
 
-	class Builder internal constructor(
-		base: SoundMelody,
-	) : Producible<SoundMelody> {
+	override fun play(vararg worlds: World?, sticky: Boolean): Unit = executePlay {
+		play(*worlds, sticky = sticky)
+	}
 
-		private var currentState: SoundMelody = base
-
-		override fun produce() = currentState
-
-		fun addToBeat(soundData: SoundData) {
-			currentState.content = currentState.content.apply {
-				set(currentState.content.lastIndex, currentState.content.last()+soundData)
-			}
-		}
-
-		fun addNextBeat(vararg soundData: SoundData) {
-			currentState.content = currentState.content.apply { add(setOf(*soundData)) }
-		}
-
+	override fun play(vararg entities: Entity?, sticky: Boolean): Unit = executePlay {
+		play(*entities, sticky = sticky)
 	}
 
 }

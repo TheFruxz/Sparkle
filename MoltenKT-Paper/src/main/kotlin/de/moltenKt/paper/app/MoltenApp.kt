@@ -40,7 +40,6 @@ import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.effect.sound.SoundData
-import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.paper.tool.permission.Approval
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
@@ -81,7 +80,6 @@ class MoltenApp : App() {
 				subclass(Modification::class)
 				subclass(SimpleLocation::class)
 				subclass(SoundData::class)
-				subclass(SoundMelody::class)
 				subclass(Approval::class)
 
 			}

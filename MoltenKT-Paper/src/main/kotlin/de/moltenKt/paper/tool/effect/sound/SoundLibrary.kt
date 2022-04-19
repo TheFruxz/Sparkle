@@ -1,59 +1,117 @@
 package de.moltenKt.paper.tool.effect.sound
 
+import de.moltenKt.paper.extension.effect.beat
 import de.moltenKt.paper.extension.effect.buildMelody
-import de.moltenKt.paper.extension.effect.soundOf
-import org.bukkit.Sound.*
+import de.moltenKt.paper.extension.effect.sound
+import de.moltenKt.paper.extension.timing.minecraftTicks
+import org.bukkit.Location
+import org.bukkit.Sound
+import org.bukkit.World
+import org.bukkit.entity.Entity
 
-object SoundLibrary {
+enum class SoundLibrary(val melody: SoundMelody) : SoundEffect {
 
-	val NOTIFICATION_FAIL = buildMelody(3, 0) {
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_BASS, pitch = 1))
+	NOTIFICATION_FAIL(buildMelody {
 
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_BASS, pitch = 0))
-	}
+		delayPerBeat = 3.minecraftTicks
 
-	val NOTIFICATION_ERROR = buildMelody(3, 2) {
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_BASS, pitch = 0))
-		addToBeat(soundOf(BLOCK_NOTE_BLOCK_BIT, pitch = 0))
-	}
+		beat(Sound.BLOCK_NOTE_BLOCK_BASS)
+		beat(Sound.BLOCK_NOTE_BLOCK_BASS, pitch = 0)
 
-	val NOTIFICATION_INFO = buildMelody(3, 0) {
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_PLING, pitch = 1))
+	}),
 
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_PLING, pitch = 2))
-	}
+	NOTIFICATION_ERROR(buildMelody {
 
-	val NOTIFICATION_GENERAL = buildMelody(0, 0) {
-		addNextBeat(soundOf(ENTITY_PUFFER_FISH_FLOP, pitch = 1.5))
-		addToBeat(soundOf(UI_TOAST_IN, pitch = 1.5))
-	}
+		delayPerBeat = 3.minecraftTicks
+		repetitions = 2
 
-	val NOTIFICATION_LEVEL = buildMelody(3, 0) {
-		addNextBeat(soundOf(ENTITY_PLAYER_LEVELUP, pitch = 1))
+		beat {
+			sound(Sound.BLOCK_NOTE_BLOCK_BASS, pitch = 0)
+			sound(Sound.BLOCK_NOTE_BLOCK_BIT, pitch = 0)
+		}
 
-		addNextBeat(soundOf(ENTITY_PLAYER_LEVELUP, pitch = 2))
-	}
+	}),
 
-	val NOTIFICATION_WARNING = buildMelody(3, 2) {
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_BASS, pitch = 0))
-		addToBeat(soundOf(BLOCK_NOTE_BLOCK_BASS, pitch = 2))
-	}
+	NOTIFICATION_INFO(buildMelody {
 
-	val NOTIFICATION_ATTENTION = buildMelody(2, 9) {
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_PLING, pitch = 2))
-	}
+		delayPerBeat = 3.minecraftTicks
 
-	val NOTIFICATION_PAYMENT = buildMelody(3, 0) {
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_PLING))
-		addToBeat(soundOf(ITEM_ARMOR_EQUIP_CHAIN))
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_PLING, pitch = 2))
-	}
+		beat(Sound.BLOCK_NOTE_BLOCK_PLING)
+		beat(Sound.BLOCK_NOTE_BLOCK_PLING, pitch = 2)
 
-	val NOTIFICATION_APPLIED = buildMelody(2, 0) {
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_BASS))
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_BASS))
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_BASS, pitch = 2))
-		addNextBeat(soundOf(BLOCK_NOTE_BLOCK_BASS))
-	}
+	}),
+
+	NOTIFICATION_GENERAL(buildMelody {
+
+		beat {
+			sound(Sound.ENTITY_PUFFER_FISH_FLOP, pitch = 1.5)
+			sound(Sound.UI_TOAST_IN, pitch = 1.5)
+		}
+
+	}),
+
+	NOTIFICATION_LEVEL(buildMelody {
+
+		delayPerBeat = 3.minecraftTicks
+
+		beat(Sound.ENTITY_PLAYER_LEVELUP)
+
+		beat(Sound.ENTITY_PLAYER_LEVELUP, pitch = 2)
+
+	}),
+
+	NOTIFICATION_WARNING(buildMelody {
+
+		delayPerBeat = 3.minecraftTicks
+		repetitions = 2
+
+		beat {
+			sound(Sound.BLOCK_NOTE_BLOCK_BASS, pitch = 0)
+			sound(Sound.BLOCK_NOTE_BLOCK_BASS, pitch = 2)
+		}
+
+	}),
+
+	NOTIFICATION_ATTENTION(buildMelody {
+
+		delayPerBeat = 2.minecraftTicks
+		repetitions = 9
+
+		beat(Sound.BLOCK_NOTE_BLOCK_PLING, pitch = 2)
+
+	}),
+
+	NOTIFICATION_PAYMENT(buildMelody {
+
+		delayPerBeat = 3.minecraftTicks
+
+		beat {
+			sound(Sound.BLOCK_NOTE_BLOCK_PLING)
+			sound(Sound.ITEM_ARMOR_EQUIP_CHAIN)
+		}
+
+		beat(Sound.BLOCK_NOTE_BLOCK_PLING, pitch = 2)
+
+	}),
+
+	NOTIFICATION_APPLIED(buildMelody {
+
+		delayPerBeat = 2.minecraftTicks
+
+		beat(Sound.BLOCK_NOTE_BLOCK_BASS)
+		beat(Sound.BLOCK_NOTE_BLOCK_BASS)
+		beat(Sound.BLOCK_NOTE_BLOCK_BASS, pitch = 2)
+		beat(Sound.BLOCK_NOTE_BLOCK_BASS)
+
+	});
+
+	override fun play(vararg locations: Location?): Unit =
+		melody.play(*locations)
+
+	override fun play(vararg entities: Entity?, sticky: Boolean): Unit =
+		melody.play(*entities, sticky = sticky)
+
+	override fun play(vararg worlds: World?, sticky: Boolean): Unit =
+		melody.play(*worlds, sticky = sticky)
 
 }

@@ -8,8 +8,8 @@ import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.paper.consoleSender
 import de.moltenKt.paper.extension.paper.onlinePlayers
 import de.moltenKt.paper.tool.display.message.DisplayType.*
+import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundLibrary
-import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.asString
 import de.moltenKt.unfold.extension.asStyledComponent
@@ -24,7 +24,7 @@ data class Transmission(
 	var participants: MutableList<InterchangeExecutor> = mutableListOf(),
 	var withoutPrefix: Boolean = false,
 	var displayType: DisplayType = DISPLAY_CHAT,
-	var promptSound: SoundMelody? = null,
+	var promptSoundEffect: SoundEffect? = null,
 	var level: Level = Level.GENERAL,
 	var prefixByLevel: Boolean = true,
 ) {
@@ -61,7 +61,7 @@ data class Transmission(
 
 	infix fun displayType(displayType: DisplayType) = edit { this.displayType = displayType }
 
-	infix fun promptSound(soundMelody: SoundMelody?) = edit { this.promptSound = soundMelody }
+	infix fun promptSound(soundEffect: SoundEffect?) = edit { this.promptSoundEffect = soundEffect }
 
 	fun display(): Transmission {
 		val nextRound = mutableSetOf<Entity>()
@@ -89,7 +89,7 @@ data class Transmission(
 				nextRound.add(participant)
 		}
 
-		promptSound?.play(nextRound)
+		promptSoundEffect?.play(*nextRound.toTypedArray())
 
 		return this
 	}
@@ -102,7 +102,7 @@ data class Transmission(
 	override fun toString() = content.map(Component::asString).joinToString("\n")
 
 	enum class Level(
-		val promptSound: SoundMelody?,
+		val promptSound: SoundEffect,
 		val prefixLink: Address<Level>,
 	) {
 

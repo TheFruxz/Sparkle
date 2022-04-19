@@ -27,6 +27,7 @@ import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.display.color.ColorType
 import de.moltenKt.paper.tool.display.color.DyeableMaterial
 import de.moltenKt.paper.tool.display.message.Transmission
+import de.moltenKt.paper.tool.effect.sound.SoundLibrary
 import de.moltenKt.paper.tool.smart.VendorsIdentifiable
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -209,6 +210,15 @@ data class CompletionAsset<T>(
 			Transmission.Level.values().any { it.name.equals(input, ignoreCase) }
 		}.transformer { _, input ->
 			Transmission.Level.values().firstOrNull { it.name.equals(input, true) }
+		}
+
+		@JvmStatic
+		val LIBRARY_SOUND_MELODY = CompletionAsset<SoundLibrary>(system, "LIBRARY_SOUND_MELODY", false, listOf(InterchangeStructureInputRestriction.STRING)) {
+			SoundLibrary.values().withMap { name }
+		}.doCheck { _, input, ignoreCase ->
+			SoundLibrary.values().any { it.name.equals(input, ignoreCase) }
+		}.transformer { _, input ->
+			SoundLibrary.values().firstOrNull { it.name == input }
 		}
 
 		@JvmStatic
