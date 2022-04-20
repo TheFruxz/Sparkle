@@ -22,7 +22,7 @@ import de.moltenKt.paper.tool.display.item.action.ItemClickAction
 import de.moltenKt.paper.tool.display.item.action.ItemInteractAction
 import de.moltenKt.paper.tool.display.ui.panel.Panel
 import de.moltenKt.paper.tool.display.ui.panel.PanelFlag
-import de.moltenKt.paper.tool.position.LocationBox
+import de.moltenKt.paper.tool.position.CubicalShape
 import de.moltenKt.paper.tool.timing.cooldown.Cooldown
 import de.moltenKt.paper.tool.timing.tasky.Tasky
 import kotlinx.coroutines.Job
@@ -112,7 +112,7 @@ object MoltenCache : AppCache {
 
 	@EntityData
 	@DataLevel(CLEAR)
-	val playerMarkerBoxes = mutableMapOf<Identity<out OfflinePlayer>, LocationBox>()
+	val playerMarkerBoxes = mutableMapOf<Identity<out OfflinePlayer>, CubicalShape>()
 
 	@GlobalData
 	@DataLevel(KILL)

@@ -4,7 +4,7 @@ import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.component.buildMode.BuildModeComponent
 import de.moltenKt.paper.tool.annotation.RequiresComponent
-import de.moltenKt.paper.tool.position.LocationBox
+import de.moltenKt.paper.tool.position.CubicalShape
 import org.bukkit.OfflinePlayer
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
@@ -40,7 +40,7 @@ var OfflinePlayer.buildMode: Boolean
 /**
  * @throws IllegalArgumentException if the marker is not set for this player
  */
-var Player.marker: LocationBox
+var Player.marker: CubicalShape
 	get() = MoltenCache.playerMarkerBoxes[identityObject] ?: throw IllegalArgumentException("Player marker is not set!")
 	set(value) {
 		MoltenCache.playerMarkerBoxes[identityObject] = value

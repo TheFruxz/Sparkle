@@ -14,7 +14,7 @@ import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.ignoreCase
 import de.moltenKt.paper.tool.display.message.Transmission.Level.APPLIED
 import de.moltenKt.paper.tool.display.message.Transmission.Level.FAIL
-import de.moltenKt.paper.tool.position.LocationBox
+import de.moltenKt.paper.tool.position.CubicalShape
 import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.newline
 import de.moltenKt.unfold.text
@@ -55,7 +55,7 @@ internal class MarkingInterchange : StructuredInterchange(
 				onInteractWith {
 					val targetBlock = whoInteract.rayTraceBlocks(10.0, ALWAYS)?.hitBlock
 					val actualBox = MoltenCache.playerMarkerBoxes[player.identityObject]
-					val currentBox = actualBox ?: LocationBox(targetBlock?.location ?: templateLocation)
+					val currentBox = actualBox ?: CubicalShape(targetBlock?.location ?: templateLocation)
 
 					if (!whoInteract.isSneaking) {
 						if (targetBlock != null) {

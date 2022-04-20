@@ -2,7 +2,7 @@ package de.moltenKt.paper.extension.paper
 
 import com.destroystokyo.paper.ParticleBuilder
 import de.moltenKt.paper.tool.display.world.SimpleLocation
-import de.moltenKt.paper.tool.position.LocationBox
+import de.moltenKt.paper.tool.position.CubicalShape
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.block.Block
@@ -12,7 +12,7 @@ import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import kotlin.math.roundToInt
 
-operator fun Location.plus(location: Location) = LocationBox(this, location)
+operator fun Location.plus(location: Location) = CubicalShape(this, location)
 
 fun Location.displayString(
 	withNames: Boolean = true,
@@ -30,7 +30,7 @@ fun Location.displayString(
 			"$x $y $z" + if (withRotation) "$displayYaw: ${yaw.roundToInt()} $displayPitch: ${pitch.roundToInt()}" else ""
 	}
 
-fun LocationBox.displayString() = with(locations) { "${first.displayString()} to ${second.displayString()}" }
+fun CubicalShape.displayString() = with(locations) { "${first.displayString()} to ${second.displayString()}" }
 
 fun BoundingBox.contains(location: Location) = this.contains(location.toVector())
 

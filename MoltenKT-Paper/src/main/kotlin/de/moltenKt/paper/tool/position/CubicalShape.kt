@@ -1,14 +1,15 @@
 package de.moltenKt.paper.tool.position
 
+import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.difference
+import de.moltenKt.core.extension.math.floorToInt
 import de.moltenKt.core.tool.smart.Producible
 import de.moltenKt.paper.extension.paper.directionVectorVelocity
 import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
+import kotlinx.serialization.Serializable
 import org.bukkit.Location
-import org.bukkit.block.Block
 import org.bukkit.configuration.serialization.ConfigurationSerializable
-import org.bukkit.entity.Entity
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 
@@ -24,11 +25,11 @@ import org.bukkit.util.Vector
  * @author Fruxz
  * @since 1.0
  */
-@kotlinx.serialization.Serializable
-data class LocationBox(
+@Serializable
+data class CubicalShape(
 	var first: SimpleLocation,
 	var second: SimpleLocation,
-) : Producible<BoundingBox>, ConfigurationSerializable {
+) : Producible<BoundingBox>, ConfigurationSerializable, Shape {
 
 	constructor(first: Location, second: Location) : this(first.toSimpleLocation(), second.toSimpleLocation())
 
@@ -85,7 +86,7 @@ data class LocationBox(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val center: Vector
+	val centerVector: Vector
 		get() = produce().center
 
 	/**
@@ -101,57 +102,38 @@ data class LocationBox(
 	val centerLocation: Location
 		get() = produce().center.toLocation(first.bukkit.world)
 
-	/**
-	 * This function returns, if the provided [vector] is
-	 * located inside this box.
-	 * The computational part is done by the [BoundingBox],
-	 * and the result is returned as a [Boolean].
-	 * @param vector The vector to check.
-	 * @return If the vector is inside the box.
-	 * @see BoundingBox.contains
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	fun contains(vector: Vector) = produce().contains(vector)
+	override val center: SimpleLocation
+		get() = centerLocation.toSimpleLocation()
 
-	/**
-	 * This function returns, if the provided [location] is
-	 * located inside this box (not observe world).
-	 * The computational part is done by the [BoundingBox],
-	 * and the result is returned as a [Boolean].
-	 * @param location The location to check.
-	 * @return If the location is inside the box.
-	 * @see contains
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	fun contains(location: Location) = contains(location.toVector())
+	override val volume: Double
+		get() = fullWidth * fullHeight * fullDepth
 
-	/**
-	 * This function returns, if the provided [entity] is
-	 * located inside this box (not observe world).
-	 * The computational part is done by the [BoundingBox],
-	 * and the result is returned as a [Boolean].
-	 * @param entity The entity to check.
-	 * @return If the entity is inside the box.
-	 * @see contains
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	fun contains(entity: Entity) = contains(entity.location)
+	override val fullWidth: Double
+		get() = produce().widthX
 
-	/**
-	 * This function returns, if the provided [block] is
-	 * located inside this box (not observe world).
-	 * The computational part is done by the [BoundingBox],
-	 * and the result is returned as a [Boolean].
-	 * @param block The block to check.
-	 * @return If the block is inside the box.
-	 * @see contains
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	fun contains(block: Block) = contains(block.location)
+	override val fullHeight: Double
+		get() = produce().height
+
+	override val fullDepth: Double
+		get() = produce().widthZ
+
+	override val fullSizeShape: CubicalShape
+		get() = copy()
+
+	override val blockLocations: List<SimpleLocation>
+		get() = buildList {
+			for (x in first.x.floorToInt()..second.x.ceilToInt()) {
+				for (y in first.y.floorToInt()..second.y.ceilToInt()) {
+					for (z in first.z.floorToInt()..second.z.ceilToInt()) {
+						add(SimpleLocation(first.world, x.toDouble(), y.toDouble(), z.toDouble()))
+					}
+				}
+			}
+		}
+
+	override fun contains(vector: Vector) = produce().contains(vector)
+
+	override fun contains(location: Location) = contains(location.toVector())
 
 	/**
 	 * This function changes the [first] and [second] location
@@ -253,22 +235,26 @@ data class LocationBox(
 		"second" to second,
 	)
 
-}
+	companion object {
 
-/**
- * This function creates a new [LocationBox] object, representing
- * a range from one to another [Location]. This function is defined
- * as a [rangeTo] operator function. This function uses the [this]
- * [Location] as the first [Location] ([LocationBox.component1])
- * and the [other] [Location] ([LocationBox.second]) as the
- * second [Location] inside the [LocationBox].
- * @param other is the second location used to define the range.
- * @return a new [LocationBox] object.
- * @see LocationBox
- * @see Location
- * @see rangeTo
- * @author Fruxz
- * @since 1.0
- */
-operator fun Location.rangeTo(other: Location) =
-	LocationBox(this to other)
+		/**
+		 * This function creates a new [CubicalShape] object, representing
+		 * a range from one to another [Location]. This function is defined
+		 * as a [rangeTo] operator function. This function uses the [this]
+		 * [Location] as the first [Location] ([CubicalShape.component1])
+		 * and the [other] [Location] ([CubicalShape.second]) as the
+		 * second [Location] inside the [CubicalShape].
+		 * @param other is the second location used to define the range.
+		 * @return a new [CubicalShape] object.
+		 * @see CubicalShape
+		 * @see Location
+		 * @see rangeTo
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		operator fun Location.rangeTo(other: Location) =
+			CubicalShape(this to other)
+
+	}
+
+}
