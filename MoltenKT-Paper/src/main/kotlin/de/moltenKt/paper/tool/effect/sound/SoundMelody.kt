@@ -1,21 +1,36 @@
 package de.moltenKt.paper.tool.effect.sound
 
 import de.moltenKt.core.extension.dump
+import de.moltenKt.core.extension.time.inWholeMinecraftTicks
 import de.moltenKt.paper.extension.system
+import de.moltenKt.paper.extension.timing.minecraftTicks
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.entity.Entity
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
+@Serializable
 class SoundMelody(
-	var delayPerBeat: Duration = .5.seconds,
-	var delayPerSound: Duration = Duration.ZERO,
+	private var ticksPerBeat: Long = 10,
+	private var ticksPerSound: Long = 0,
 	var repetitions: Int = 0,
 	private val _structure: MutableList<MutableList<SoundData>> = mutableListOf(),
 ) : SoundEffect {
+
+	var delayPerBeat: Duration
+		get() = ticksPerBeat.takeIf { it > 0 }?.minecraftTicks ?: Duration.ZERO
+		set(value) {
+			ticksPerBeat = value.inWholeMinecraftTicks
+		}
+
+	var delayPerSound: Duration
+		get() = ticksPerSound.takeIf { it > 0 }?.minecraftTicks ?: Duration.ZERO
+		set(value) {
+			ticksPerSound = value.inWholeMinecraftTicks
+		}
 
 	val structure: List<List<SoundData>>
 		get() = _structure

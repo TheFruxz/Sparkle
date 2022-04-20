@@ -13,17 +13,24 @@ import org.bukkit.entity.Entity
 
 @Serializable
 data class SoundData(
-	val sound: Key,
+	private val _sound: String,
 	val volume: Float,
 	val pitch: Float,
-	val category: Source,
+	private val _category: String,
 ) : Identifiable<SoundData>, SoundEffect {
 
 	constructor(type: Sound.Type, volume: Number, pitch: Number, soundSource: Source = MASTER) : this(type.key(), volume.toFloat(), pitch.toFloat(), soundSource)
 
-	constructor(type: Key, volume: Number, pitch: Number, soundSource: Source = MASTER) : this(type, volume.toFloat(), pitch.toFloat(), soundSource)
+	constructor(type: Key, volume: Number, pitch: Number, soundSource: Source = MASTER) : this(type.asString(), volume.toFloat(), pitch.toFloat(), soundSource.name)
 
-	val raw: Sound = Sound.sound(sound, category, volume, pitch)
+	val sound: Key
+		get() = Key.key(_sound)
+
+	val category: Source
+		get() = Source.valueOf(_category)
+
+	val raw: Sound
+		get() = Sound.sound(sound, category, volume, pitch)
 
 	override val identity = "${sound.asString()}:${category.name}:($pitch/$volume)"
 

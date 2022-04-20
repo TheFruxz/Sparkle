@@ -24,10 +24,6 @@ import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
-import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
-import de.moltenKt.paper.extension.paper.add
-import de.moltenKt.paper.extension.paper.toSimpleLocation
-import de.moltenKt.paper.extension.tasky.sync
 import de.moltenKt.paper.general.api.mojang.MojangProfile
 import de.moltenKt.paper.general.api.mojang.MojangProfileCape
 import de.moltenKt.paper.general.api.mojang.MojangProfileRaw
@@ -44,6 +40,8 @@ import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.effect.sound.SoundData
+import de.moltenKt.paper.tool.effect.sound.SoundEffect
+import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.paper.tool.permission.Approval
 import de.moltenKt.paper.tool.position.ComplexShape
 import de.moltenKt.paper.tool.position.CubicalShape
@@ -53,16 +51,12 @@ import de.moltenKt.paper.tool.position.SphericalShape
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Material
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
-import org.bukkit.entity.Player
-import org.bukkit.util.Vector
 import java.util.logging.Level
 
 public class MoltenApp : App() {
@@ -101,6 +95,13 @@ public class MoltenApp : App() {
 					subclass(CubicalShape::class)
 					subclass(CylindricalShape::class)
 					subclass(SphericalShape::class)
+
+				}
+
+				polymorphic(SoundEffect::class) {
+
+					subclass(SoundData::class)
+					subclass(SoundMelody::class)
 
 				}
 
@@ -170,72 +171,6 @@ public class MoltenApp : App() {
 		add(MoltenKtInterchange())
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
-
-		buildAndRegisterSandBox(this, "drawCyl") {
-			val player = executor as Player
-
-			coroutineScope.launch {
-
-				val blocks = CylindricalShape(player.location.toSimpleLocation(), 30.0, 10.0).blockLocations
-
-				blocks.forEach {
-					sync { player.world.getBlockAt(it.bukkit).type = Material.BLUE_CONCRETE }
-				}
-
-			}
-
-		}
-
-		buildAndRegisterSandBox(this, "drawBox") {
-			val player = executor as Player
-
-			coroutineScope.launch {
-
-				val blocks = CubicalShape(player.location, player.location.add(Vector(10, 5, 15))).blockLocations
-
-				blocks.forEach {
-					sync { player.world.getBlockAt(it.bukkit).type = Material.ORANGE_CONCRETE }
-				}
-
-			}
-
-		}
-
-		buildAndRegisterSandBox(this, "drawSphere") {
-			val player = executor as Player
-
-			coroutineScope.launch {
-
-				val blocks = SphericalShape(player.location.toSimpleLocation(), 10.0).blockLocations
-
-				blocks.forEach {
-					sync { player.world.getBlockAt(it.bukkit).type = Material.GREEN_CONCRETE }
-				}
-
-			}
-
-		}
-
-		buildAndRegisterSandBox(this, "drawComplex") {
-			val player = executor as Player
-
-			coroutineScope.launch {
-
-				val blocks = ComplexShape(
-					listOf(
-						CylindricalShape(player.location.toSimpleLocation(), 30.0, 10.0),
-						CubicalShape(player.location, player.location.add(Vector(10, 5, 15))),
-						SphericalShape(player.location.add(y = 30).toSimpleLocation(), 10.0),
-					)
-				).blockLocations
-
-				blocks.forEach {
-					sync { player.world.getBlockAt(it.bukkit).type = Material.GREEN_CONCRETE }
-				}
-
-			}
-
-		}
 
 	}
 
