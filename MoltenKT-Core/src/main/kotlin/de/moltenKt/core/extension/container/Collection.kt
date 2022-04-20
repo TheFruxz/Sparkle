@@ -32,7 +32,7 @@ import kotlin.time.Duration.Companion.milliseconds
  * @param T the inner containing data type
  * @param C the actual base collection, which will be transformed
  */
-fun <T, C : Collection<T>> C.toArrayList(): Collection<T> = ArrayList(this)
+fun <T, C : Collection<T>> C.toArrayList(): ArrayList<T> = ArrayList(this)
 
 /**
  * # `Array<out T>.toArrayList()`
