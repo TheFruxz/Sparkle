@@ -52,13 +52,13 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.util.logging.Level
 
-class MoltenApp : App() {
+public class MoltenApp : App() {
 
-	override val companion = Companion
+	override val companion: Companion = Companion
 
-	override val appIdentity = "MoltenKT"
-	override val appLabel = "MoltenKT"
-	override val appCache = MoltenCache
+	override val appIdentity: String = "MoltenKT"
+	override val appLabel: String = "MoltenKT"
+	override val appCache: MoltenCache = MoltenCache
 
 	override suspend fun preHello() {
 
@@ -191,13 +191,13 @@ class MoltenApp : App() {
 
 	}
 	
-	companion object : AppCompanion<MoltenApp>() {
+	public companion object : AppCompanion<MoltenApp>() {
 
 		@JvmStatic
-		override val predictedIdentity = Identity<MoltenApp>("MoltenKT")
+		override val predictedIdentity: Identity<MoltenApp> = Identity<MoltenApp>("MoltenKT")
 
 		@JvmStatic
-		var debugMode: Boolean = true
+		public var debugMode: Boolean = true
 
 	}
 
