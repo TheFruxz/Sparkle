@@ -65,7 +65,7 @@ dependencies {
     shadow("org.slf4j:slf4j-api:2.0.0-alpha7")
     shadow("org.jetbrains.exposed:exposed-core:0.38.1")
     shadow("org.jetbrains.exposed:exposed-dao:0.38.1")
-    shadow("org.jetbrains.exposed:exposed-jdbc:0.38.1")
+    shadow("org.jetbrains.exposed:exposed-jdbc:0.38.2")
 
     shadow("io.ktor:ktor-client-core-jvm:2.0.0") // Ktor
     shadow("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
