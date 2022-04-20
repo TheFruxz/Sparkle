@@ -15,7 +15,7 @@ import de.moltenKt.core.application.tag.version
  * @author Fruxz
  * @since 1.0
  */
-fun runApp(appName: String, appVersion: Version = 1.0.version, appInstance: de.moltenKt.core.application.configuration.MoltenCoreApp = de.moltenKt.core.application.configuration.MoltenCoreApp(
+fun runApp(appName: String, appVersion: Version = 1.0.version, appInstance: MoltenCoreApp = MoltenCoreApp(
 	appName,
 	appVersion
 ), runtime: MoltenCoreAppRuntime.() -> Unit) {

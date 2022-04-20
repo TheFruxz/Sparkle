@@ -9,7 +9,7 @@ import de.moltenKt.core.extension.math.limitTo
  * @author Fruxz
  * @since 1.0
  */
-inline fun <reified T : Enum<T>> Enum<T>.next(overflow: Boolean = true) =
+inline fun <reified T : Enum<T>> Enum<T>.next(overflow: Boolean = true): T =
 	enumValues<T>()[
 			if (overflow) {
 				(ordinal + 1) % enumValues<T>().size
@@ -24,7 +24,7 @@ inline fun <reified T : Enum<T>> Enum<T>.next(overflow: Boolean = true) =
  * @author Fruxz
  * @since 1.0
  */
-inline fun <reified T : Enum<T>> Enum<T>.previous(overflow: Boolean = true) =
+inline fun <reified T : Enum<T>> Enum<T>.previous(overflow: Boolean = true): T =
 
 	if (overflow) {
 		enumValues<T>()[(ordinal - 1).let { if (it < 0) enumValues<T>().lastIndex else it }]
@@ -37,25 +37,25 @@ inline fun <reified T : Enum<T>> Enum<T>.previous(overflow: Boolean = true) =
  * @author Fruxz
  * @since 1.0
  */
-inline fun <reified T : Enum<T>> Enum<T>.nextOrNull() = if (ordinal == enumValues<T>().lastIndex) null else next()
+inline fun <reified T : Enum<T>> Enum<T>.nextOrNull(): T? = if (ordinal == enumValues<T>().lastIndex) null else next()
 
 /**
  * Returns the previous enum in the ordinal order, or null, if this is already the first enum.
  * @author Fruxz
  * @since 1.0
  */
-inline fun <reified T : Enum<T>> Enum<T>.previousOrNull() = if (ordinal == 0) null else previous()
+inline fun <reified T : Enum<T>> Enum<T>.previousOrNull(): T? = if (ordinal == 0) null else previous()
 
 /**
  * Returns the next enum in the ordinal order, or if this enum is already the last enum, returns the first enum
  * @author Fruxz
  * @since 1.0
  */
-inline fun <reified T : Enum<T>> Enum<T>.nextOrFirst() = nextOrNull() ?: enumValues<T>().first()
+inline fun <reified T : Enum<T>> Enum<T>.nextOrFirst(): T = nextOrNull() ?: enumValues<T>().first()
 
 /**
  * Returns the previous enum in the ordinal order, or if this enum is already the first enum, returns the last enum
  * @author Fruxz
  * @since 1.0
  */
-inline fun <reified T : Enum<T>> Enum<T>.previousOrLast() = previousOrNull() ?: enumValues<T>().last()
+inline fun <reified T : Enum<T>> Enum<T>.previousOrLast(): T = previousOrNull() ?: enumValues<T>().last()

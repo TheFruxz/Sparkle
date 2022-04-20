@@ -32,7 +32,7 @@ import kotlin.time.Duration.Companion.milliseconds
  * @param T the inner containing data type
  * @param C the actual base collection, which will be transformed
  */
-fun <T, C : Collection<T>> C.toArrayList() = ArrayList(this)
+fun <T, C : Collection<T>> C.toArrayList(): Collection<T> = ArrayList(this)
 
 /**
  * # `Array<out T>.toArrayList()`
@@ -55,9 +55,9 @@ fun <T, C : Collection<T>> C.toArrayList() = ArrayList(this)
  * @since 1.0-BETA-5 (preview)
  * @param T the inner containing data type of both, input [Array] and output [ArrayList]
  */
-fun <T> Array<out T>.toArrayList() = ArrayList(this.toList())
+fun <T> Array<out T>.toArrayList(): ArrayList<out T> = ArrayList(this.toList())
 
-fun <T, C : Collection<T>> C.stackRandom(times: Int) = buildString {
+fun <T, C : Collection<T>> C.stackRandom(times: Int): String = buildString {
 	repeat(times) { append(this@stackRandom.random()) }
 }
 
@@ -68,7 +68,7 @@ fun <T, C : Collection<T>> C.stackRandom(times: Int) = buildString {
  * @author Fruxz
  * @since 1.0
  */
-fun <T> Array<out T>.stackRandom(times: Int) = buildString {
+fun <T> Array<out T>.stackRandom(times: Int): String = buildString {
 	repeat(times) { append(this@stackRandom.random()) }
 }
 
@@ -79,7 +79,7 @@ fun <T> Array<out T>.stackRandom(times: Int) = buildString {
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>> C.stackUniqueRandom(times: Int) =
+fun <T, C : Collection<T>> C.stackUniqueRandom(times: Int): String =
 	shuffled().take(times).joinToString(separator = "")
 
 /**
@@ -89,7 +89,7 @@ fun <T, C : Collection<T>> C.stackUniqueRandom(times: Int) =
  * @author Fruxz
  * @since 1.0
  */
-fun <T> Array<out T>.stackUniqueRandom(times: Int) =
+fun <T> Array<out T>.stackUniqueRandom(times: Int): String =
 	toList().shuffled().take(times).joinToString(separator = "")
 
 /**
@@ -102,7 +102,7 @@ fun <T> Array<out T>.stackUniqueRandom(times: Int) =
  * @author Fruxz
  * @since 1.0
  */
-fun <T> listOf(size: Int, generator: (Int) -> T) = List(size) { generator(it) }
+fun <T> listOf(size: Int, generator: (Int) -> T): List<T> = List(size) { generator(it) }
 
 /**
  * Returning the first object of the collection [C]
@@ -193,7 +193,7 @@ fun <T, C : Iterable<T>> C.get(index: Int, overflow: Boolean = false): T {
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>> C.take(intRange: IntRange) =
+fun <T, C : Collection<T>> C.take(intRange: IntRange): List<T> =
 	toList().subList(intRange.first, intRange.last)
 
 /**
@@ -202,7 +202,7 @@ fun <T, C : Collection<T>> C.take(intRange: IntRange) =
  * @author Fruxz
  * @since 1.0
  */
-fun <T> Array<T>.take(intRange: IntRange) =
+fun <T> Array<T>.take(intRange: IntRange): List<T> =
 	toList().subList(intRange.first, intRange.last)
 
 /**
@@ -238,7 +238,7 @@ fun <T, C : Collection<T>> C.page(page: Int, pageSize: Int): PageValue<T> {
  * @author Fruxz
  * @since 1.0
  */
-fun <T> Array<T>.page(page: Int, pageSize: Int) =
+fun <T> Array<T>.page(page: Int, pageSize: Int): PageValue<T> =
 	toList().page(page, pageSize)
 
 /**
@@ -248,7 +248,7 @@ fun <T> Array<T>.page(page: Int, pageSize: Int) =
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>> C.hasDuplicates() =
+fun <T, C : Collection<T>> C.hasDuplicates(): Boolean =
 	size > distinct().size
 
 /**
@@ -260,7 +260,7 @@ fun <T, C : Collection<T>> C.hasDuplicates() =
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>, K> C.hasDuplicates(process: (T) -> K) =
+fun <T, C : Collection<T>, K> C.hasDuplicates(process: (T) -> K): Boolean =
 	size > distinctBy(process).size
 
 /**
@@ -270,7 +270,7 @@ fun <T, C : Collection<T>, K> C.hasDuplicates(process: (T) -> K) =
  * @author Fruxz
  * @since 1.0
  */
-fun <T> Array<T>.hasDuplicates() =
+fun <T> Array<T>.hasDuplicates(): Boolean =
 	size > distinct().size
 
 /**
@@ -282,7 +282,7 @@ fun <T> Array<T>.hasDuplicates() =
  * @author Fruxz
  * @since 1.0
  */
-fun <T, K> Array<T>.hasDuplicates(process: (T) -> K) =
+fun <T, K> Array<T>.hasDuplicates(process: (T) -> K): Boolean =
 	size > distinctBy(process).size
 
 /**
