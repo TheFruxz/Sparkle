@@ -59,7 +59,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.util.logging.Level
 
-public class MoltenApp : App() {
+class MoltenApp : App() {
 
 	override val companion: Companion = Companion
 
