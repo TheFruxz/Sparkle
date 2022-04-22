@@ -2,6 +2,7 @@ package de.moltenKt.paper.tool.position
 
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.floorToInt
+import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
@@ -14,6 +15,12 @@ data class CylindricalShape(
 	val height: Double,
 	val radius: Double,
 ) : Shape {
+
+	constructor(bottomCenter: Location, height: Double, radius: Double) : this(
+		bottomCenter.toSimpleLocation(),
+		height,
+		radius
+	)
 
 	override val center: SimpleLocation
 		get() = bottomCenter.copy(y = bottomCenter.y + (height / 2))

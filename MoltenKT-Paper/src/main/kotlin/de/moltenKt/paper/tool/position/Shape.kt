@@ -150,4 +150,51 @@ interface Shape {
 	 */
 	fun contains(block: Block): Boolean = contains(location = block.location)
 
+	companion object {
+
+		/**
+		 * This function creates a new [CubicalShape] from the given parameters.
+		 * @param fromLocation the x&y&z start-location of the shape
+		 * @param toLocation the x&y&z end-location of the shape
+		 * @return The created [CubicalShape]
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		fun cube(fromLocation: Location, toLocation: Location): CubicalShape = CubicalShape(fromLocation, toLocation)
+
+		/**
+		 * This function creates a new [CubicalShape] from the given parameters.
+		 * It uses the center and then stretches the shape to the given size.
+		 * @param center The center of the shape
+		 * @param size The size of the shape
+		 * @return The created [CubicalShape]
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		fun cube(center: Location, size: Double) = cube(center.clone().subtract(size / 2, size / 2, size / 2), center.clone().add(size / 2, size / 2, size / 2))
+
+		/**
+		 * This function creates a new [SphericalShape] from the given parameters.
+		 * @param center The center of the shape
+		 * @param radius The radius of the shape
+		 * @return The created [SphericalShape]
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		fun sphere(center: Location, radius: Double) = SphericalShape(center, radius)
+
+		/**
+		 * This function creates a new [CylindricalShape] from the given parameters.
+		 * The location is the center of the bottom surface of the shape.
+		 * @param centerBottom The center of the bottom surface of the shape
+		 * @param height The height of the shape
+		 * @param radius The radius of the shape
+		 * @return The created [CylindricalShape]
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		fun cylinder(centerBottom: Location, height: Double, radius: Double) = CylindricalShape(centerBottom, height, radius)
+
+	}
+
 }
