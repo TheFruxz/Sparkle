@@ -160,6 +160,7 @@ interface Shape {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun cube(fromLocation: Location, toLocation: Location): CubicalShape = CubicalShape(fromLocation, toLocation)
 
 		/**
@@ -171,6 +172,7 @@ interface Shape {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun cube(center: Location, size: Double) = cube(center.clone().subtract(size / 2, size / 2, size / 2), center.clone().add(size / 2, size / 2, size / 2))
 
 		/**
@@ -181,6 +183,7 @@ interface Shape {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun sphere(center: Location, radius: Double) = SphericalShape(center, radius)
 
 		/**
@@ -193,6 +196,7 @@ interface Shape {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
+		@JvmStatic
 		fun cylinder(centerBottom: Location, height: Double, radius: Double) = CylindricalShape(centerBottom, height, radius)
 
 	}
