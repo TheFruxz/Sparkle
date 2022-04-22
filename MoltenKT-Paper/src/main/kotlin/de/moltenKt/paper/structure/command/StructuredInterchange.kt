@@ -31,7 +31,7 @@ abstract class StructuredInterchange(
 		val trace = structure.trace(parameters, executor)
 
 		when (trace.waysMatching.size.maxTo(2)) {
-			0, 2 -> WRONG_USAGE.also { println(trace.waysMatching.size) }
+			0, 2 -> WRONG_USAGE
 			else -> {
 				val extrapolatedTrace = trace.waysMatching.first()
 				val extrapolatedBranch = extrapolatedTrace.branch

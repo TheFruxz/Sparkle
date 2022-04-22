@@ -31,6 +31,13 @@ data class SimpleLocation(
 		z: Double,
 	) : this(world.name, x, y, z)
 
+	constructor(
+		world: String,
+		x: Number,
+		y: Number,
+		z: Number,
+	) : this(world, x.toDouble(), y.toDouble(), z.toDouble())
+
 	constructor(map: Map<String, Any>) : this("" + map["world"], ("" + map["x"]).toDouble(), ("" + map["y"]).toDouble(), ("" + map["z"]).toDouble())
 
 	/**

@@ -1,6 +1,8 @@
 package de.moltenKt.paper.tool.position
 
+import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
+import de.moltenKt.paper.tool.position.Shape.Direction.Y
 import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.entity.Entity
@@ -189,7 +191,7 @@ interface Shape {
 		/**
 		 * This function creates a new [CylindricalShape] from the given parameters.
 		 * The location is the center of the bottom surface of the shape.
-		 * @param centerBottom The center of the bottom surface of the shape
+		 * @param center The center of the shape
 		 * @param height The height of the shape
 		 * @param radius The radius of the shape
 		 * @return The created [CylindricalShape]
@@ -197,7 +199,13 @@ interface Shape {
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun cylinder(centerBottom: Location, height: Double, radius: Double) = CylindricalShape(centerBottom, height, radius)
+		fun cylinder(center: Location, height: Double, radius: Double, direction: Direction = Y) = CylindricalShape(center.toSimpleLocation(), direction, height, radius)
+
+	}
+
+	enum class Direction {
+
+		X, Y, Z;
 
 	}
 
