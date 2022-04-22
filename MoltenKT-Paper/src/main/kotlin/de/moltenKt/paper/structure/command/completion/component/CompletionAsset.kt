@@ -30,6 +30,7 @@ import de.moltenKt.paper.tool.display.message.Transmission
 import de.moltenKt.paper.tool.effect.sound.SoundLibrary
 import de.moltenKt.paper.tool.smart.VendorsIdentifiable
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
 import org.bukkit.World
@@ -42,27 +43,33 @@ data class CompletionAsset<T>(
 	override val thisIdentity: String,
 	val refreshing: Boolean,
 	val supportedInputType: List<InterchangeStructureInputRestriction<*>> = listOf(InterchangeStructureInputRestriction.STRING),
-	var check: ((executor: InterchangeExecutor, input: String, ignoreCase: Boolean) -> Boolean)? = null,
-	var transformer: ((executor: InterchangeExecutor, input: String) -> T?)? = null,
-	val generator: CompletionAsset<T>.(InterchangeExecutor) -> Collection<String>,
+	var check: (CompletionContext.() -> Boolean)? = null,
+	var transformer: (CompletionContext.() -> T?)? = null,
+	val generator: CompletionContext.(CompletionAsset<T>) -> Collection<String>,
 ) : VendorsIdentifiable<CompletionAsset<T>> {
+
+	data class CompletionContext(
+		val executor: InterchangeExecutor,
+		val fullLineInput: List<String>,
+		val input: String,
+		val ignoreCase: Boolean,
+	)
 
 	override val vendorIdentity = vendor.identityObject
 
-	fun computedContent(executor: InterchangeExecutor): Set<String> = if (!refreshing && MoltenCache.registeredCompletionAssetStateCache.containsKey(identity)) {
+	fun computedContent(context: CompletionContext): Set<String> = if (!refreshing && MoltenCache.registeredCompletionAssetStateCache.containsKey(identity)) {
 		MoltenCache.registeredCompletionAssetStateCache[identity]!!
 	} else {
-		generator(this, executor).toSortedSet().apply {
+		generator(context, this).toSortedSet().apply {
 			if (!refreshing) MoltenCache.registeredCompletionAssetStateCache[identity] = this
 		}
 	}
 
-
-	fun doCheck(check: ((executor: InterchangeExecutor, input: String, ignoreCase: Boolean) -> Boolean)?) = apply {
+	fun doCheck(check: (CompletionContext.() -> Boolean)?) = apply {
 		this.check = check
 	}
 
-	fun transformer(transformer: ((executor: InterchangeExecutor, input: String) -> T?)?) = apply {
+	fun transformer(transformer: (CompletionContext.() -> T?)?) = apply {
 		this.transformer = transformer
 	}
 
@@ -71,171 +78,171 @@ data class CompletionAsset<T>(
 		@JvmStatic
 		val LONG = CompletionAsset<Long>(system, "LONG", false, listOf(InterchangeStructureInputRestriction.LONG)) {
 			(0..99).mapToString()
-		}.doCheck { _, input, _ ->
+		}.doCheck {
 			input.isLong()
-		}.transformer { _, input ->
+		}.transformer {
 			input.toLong()
 		}
 
 		@JvmStatic
 		val DOUBLE = CompletionAsset<Double>(system, "DOUBLE", false, listOf(InterchangeStructureInputRestriction.DOUBLE)) {
 			setOf(.0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0).mapToString()
-		}.doCheck { _, input, _ ->
+		}.doCheck {
 			input.isDouble()
-		}.transformer { _, input ->
+		}.transformer {
 			input.toDouble()
 		}
 
 		@JvmStatic
 		val ONLINE_PLAYER_NAME = CompletionAsset<Player>(system, "ONLINE_PLAYER_NAME", true, listOf(InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
 			onlinePlayers.withMap { name }
-		}.doCheck { _, input, _ ->
+		}.doCheck {
 			player(input) != null
-		}.transformer { _, input ->
+		}.transformer {
 			player(input)
 		}
 
 		@JvmStatic
 		val ONLINE_PLAYER_UUID = CompletionAsset<Player>(system, "ONLINE_PLAYER_UUID", true, listOf(InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
 			onlinePlayers.withMap { "$uniqueId" }
-		}.doCheck { _, input, _ ->
+		}.doCheck {
 			tryOrNull { UUID.fromString(input) }?.let { uuid -> return@let player(uuid) } != null
-		}.transformer { _, input ->
+		}.transformer {
 			tryOrNull { player(UUID.fromString(input)) }
 		}
 
 		@JvmStatic
 		val OFFLINE_PLAYER_NAME = CompletionAsset<OfflinePlayer>(system, "OFFLINE_PLAYER_NAME", true, listOf(InterchangeStructureInputRestriction.OFFLINE_PLAYER)) {
 			offlinePlayers.withMap { name }.filterNotNull()
-		}.doCheck { _, input, _ ->
+		}.doCheck {
 			offlinePlayer(input).name != null
-		}.transformer { _, input ->
+		}.transformer {
 			offlinePlayer(input)
 		}
 
 		@JvmStatic
 		val OFFLINE_PLAYER_UUID = CompletionAsset<OfflinePlayer>(system, "OFFLINE_PLAYER_UUID", true, listOf(InterchangeStructureInputRestriction.OFFLINE_PLAYER)) {
 			offlinePlayers.withMap { "$uniqueId" }
-		}.doCheck { _, input, _ ->
+		}.doCheck {
 			tryOrNull { offlinePlayer(UUID.fromString(input)).name } != null
-		}.transformer { _, input ->
+		}.transformer {
 			tryOrNull { offlinePlayer(UUID.fromString(input)) }
 		}
 
 		@JvmStatic
 		val ENTITY_TYPE = CompletionAsset<EntityType>(system, "ENTITY_TYPE", false) {
 			EntityType.values().withMap { name }
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			EntityType.values().any { it.name.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			EntityType.valueOf(input)
 		}
 
 		@JvmStatic
 		val WORLD_NAME = CompletionAsset<World>(system, "WORLD_NAME", true) {
 			worlds.withMap { name }
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			worlds.any { it.name.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			Bukkit.getWorld(input)
 		}
 
 		@JvmStatic
 		val APP = CompletionAsset<App>(system, "APP", true) {
 			MoltenCache.registeredApplications.withMap { identity }
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			MoltenCache.registeredApplications.any { it.identity.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			MoltenCache.registeredApplications.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic
 		val INTERCHANGE = CompletionAsset<Interchange>(system, "INTERCHANGE", true) {
 			MoltenCache.registeredInterchanges.withMap { identity }
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			MoltenCache.registeredInterchanges.any { it.identity.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			MoltenCache.registeredInterchanges.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic
 		val SERVICE = CompletionAsset<Service>(system, "SERVICE", true) {
 			MoltenCache.registeredServices.withMap { identity }
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			MoltenCache.registeredServices.any { it.identity.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			MoltenCache.registeredServices.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic
 		val COMPONENT = CompletionAsset<Component>(system, "COMPONENT", true, listOf(InterchangeStructureInputRestriction.STRING)) {
 			MoltenCache.registeredComponents.withMap { identity }
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			MoltenCache.registeredComponents.any { it.identity.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			MoltenCache.registeredComponents.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic
 		val SANDBOX = CompletionAsset<SandBox>(system, "SANDBOX", true, listOf(InterchangeStructureInputRestriction.STRING)) {
 			MoltenCache.registeredSandBoxes.withMap { identity }
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			MoltenCache.registeredSandBoxes.any { it.identity.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			MoltenCache.registeredSandBoxes.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic
 		val PREFERENCE = CompletionAsset<Preference<*>>(system, "PREFERENCE", true, listOf(InterchangeStructureInputRestriction.STRING)) {
 			MoltenCache.registeredPreferences.keys.withMap { identity }
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			MoltenCache.registeredPreferences.keys.any { it.identity.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			MoltenCache.registeredPreferences.toList().firstOrNull { it.first.identity == input }?.second
 		}
 
 		@JvmStatic
 		val CACHE_DEPTH_LEVEL = CompletionAsset<CacheDepthLevel>(system, "CACHE_DEPTH_LEVEL", false, listOf(InterchangeStructureInputRestriction.STRING)) {
 			CacheDepthLevel.values().withMap { name }
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			CacheDepthLevel.values().any { it.name.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			tryOrNull { CacheDepthLevel.valueOf(input) }
 		}
 
 		@JvmStatic
 		val TRANSMISSION_LEVEL = CompletionAsset<Transmission.Level>(system, "TRANSMISSION_LEVEL", false, listOf(InterchangeStructureInputRestriction.STRING)) {
 			Transmission.Level.values().withMap { name }
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			Transmission.Level.values().any { it.name.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			Transmission.Level.values().firstOrNull { it.name.equals(input, true) }
 		}
 
 		@JvmStatic
 		val LIBRARY_SOUND_MELODY = CompletionAsset<SoundLibrary>(system, "LIBRARY_SOUND_MELODY", false, listOf(InterchangeStructureInputRestriction.STRING)) {
 			SoundLibrary.values().withMap { name }
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			SoundLibrary.values().any { it.name.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			SoundLibrary.values().firstOrNull { it.name == input }
 		}
 
 		@JvmStatic
 		val POINT = CompletionAsset<Point>(system, "POINT", true, listOf(InterchangeStructureInputRestriction.STRING)) {
 			MoltenData.savedPoints.content.points.map(Point::identity)
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			MoltenData.savedPoints.content.points.any { it.identity.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			MoltenData.savedPoints.content.points.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic
 		val MATERIAL = CompletionAsset<Material>(system, "MATERIAL", false, listOf(InterchangeStructureInputRestriction.STRING)) {
 			Material.values().withMap { name }
-		}.doCheck { _, input, ignoreCase ->
+		}.doCheck {
 			Material.values().any { it.name.equals(input, ignoreCase) }
-		}.transformer { _, input ->
+		}.transformer {
 			tryOrNull { Material.valueOf(input) }
 		}
 
@@ -249,9 +256,9 @@ data class CompletionAsset<T>(
 					addAll(ColorType.values().withMap { "$key#$name" })
 				}
 			}
-		}.doCheck { _, input, _ ->
+		}.doCheck {
 			DyeableMaterial.materialFromMaterialCode(input) != null
-		}.transformer { _, input ->
+		}.transformer {
 			DyeableMaterial.materialFromMaterialCode(input)
 		}
 
@@ -268,22 +275,58 @@ data class CompletionAsset<T>(
 				}
 
 			}
-		}.doCheck { _, input, _ ->
+		}.doCheck {
 			DyeableMaterial.materialFromMaterialCode(input) != null
-		}.transformer { _, input ->
+		}.transformer {
 			DyeableMaterial.materialFromMaterialCode(input)
 		}
 
 		@JvmStatic
 		val EXECUTOR_HEALTH = CompletionAsset<Double>(system, "EXECUTOR_HEALTH", true, listOf(InterchangeStructureInputRestriction.DOUBLE)) {
-			if (it is Player) {
-				listOf("${it.health}")
+			if (executor is Player) {
+				listOf("${executor.health}")
 			} else
 				listOf("20.0")
-		}.doCheck { executor, input, _ ->
+		}.doCheck {
 			if (executor is Player) input == "${executor.health}" else input == "20.0"
-		}.transformer { _, input ->
+		}.transformer {
 			input.toDouble()
+		}
+
+		@JvmStatic
+		val EXECUTOR_LOCATION = CompletionAsset<Location>(system, "EXECUTOR_LOCATION", true, listOf(InterchangeStructureInputRestriction.STRING)) { executor ->
+			if (executor is Player) {
+				listOf(
+					"@spawn",
+					"@here",
+					"@eyes",
+					"@looking",
+					"@bed",
+					"@lastDamager",
+					"@highestBlock",
+					"@highestBlockAbove",
+				)
+			} else
+				listOf("@spawn")
+		}.doCheck {
+			if (executor !is Player) input.equals("@spawn", ignoreCase) else setOf("spawn", "here", "eyes", "looking").any { input.equals("@$it", ignoreCase) }
+		}.transformer {
+			if (executor !is Player && input.equals("@spawn", ignoreCase)) {
+				worlds[0].spawnLocation
+			} else if (executor is Player) {
+				when(input.removePrefix("@").lowercase()) {
+					"spawn" -> worlds[0].spawnLocation
+					"here" -> executor.location
+					"eyes" -> executor.eyeLocation
+					"looking" -> executor.eyeLocation
+					"bed" -> executor.bedLocation
+					"lastDamager" -> executor.lastDamageCause?.entity?.location
+					"highestBlock" -> executor.location.toHighestLocation()
+					"highestBlockAbove" -> executor.location.toHighestLocation().add(0.0, 1.0, 0.0)
+					else -> null
+				}
+			} else
+				null
 		}
 
 		@JvmStatic

@@ -43,7 +43,12 @@ data class InterchangeAccess(
 	fun <T : Any> getInput(slot: Int, restrictiveAsset: CompletionAsset<T>): T {
 		if (restrictiveAsset.transformer == null) throw IllegalArgumentException("Asset '${restrictiveAsset.identity}' provides no transformer!")
 
-		return getInput(slot).let { input -> restrictiveAsset.transformer?.invoke(executor, input) ?: throw IllegalStateException("Asset '${restrictiveAsset.identity}' transformer produces null at input '$input'!") }
+		return getInput(slot).let { input -> restrictiveAsset.transformer?.invoke(CompletionAsset.CompletionContext(
+			executor = executor,
+			fullLineInput = parameters,
+			input = parameters.lastOrNull() ?: "",
+			ignoreCase = true
+		)) ?: throw IllegalStateException("Asset '${restrictiveAsset.identity}' transformer produces null at input '$input'!") }
 
 	}
 

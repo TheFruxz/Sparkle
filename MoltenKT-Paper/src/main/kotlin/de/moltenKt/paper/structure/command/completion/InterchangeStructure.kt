@@ -116,10 +116,15 @@ class InterchangeStructure(
 					true
 			}
 
-	private fun computeLocalCompletion(executor: InterchangeExecutor) = content.flatMap { it.completion(executor) }
+	private fun computeLocalCompletion(context: CompletionAsset.CompletionContext) = content.flatMap { it.completion(context) }
 
-	private fun validInput(executor: InterchangeExecutor, input: String) =
-		(!configuration.mustMatchOutput || this.computeLocalCompletion(executor)
+	private fun validInput(executor: InterchangeExecutor, input: String, inputQuery: List<String>) =
+		(!configuration.mustMatchOutput || this.computeLocalCompletion(CompletionAsset.CompletionContext(
+			executor,
+			inputQuery,
+			input,
+			true, // TODO maybe get from this branch
+		))
 			.any { it.equals(input, configuration.ignoreCase) })
 				&& configuration.supportedInputTypes.any { it.isValid(input) }
 				&& isInputAllowedByTypes(input)
@@ -145,7 +150,7 @@ class InterchangeStructure(
 			debugLog("tracing branch ${currentBranch.identity}[${currentBranch.address}] with depth '$currentDepth' from parentStatus $parentBranchStatus")
 			val currentLevelInput = inputQuery.getOrNull(currentDepth) ?: ""
 			val currentSubBranches = currentBranch.subBranches
-			val currentInputValid = currentBranch.validInput(executor, currentLevelInput)
+			val currentInputValid = currentBranch.validInput(executor, currentLevelInput, inputQuery)
 			val currentResult: BranchStatus
 			val isAccessTargetValidRoot = currentBranch.isRoot && inputQuery.isEmpty() && availableExecutionRepresentsSolution && currentBranch.onExecution != null
 
@@ -200,7 +205,13 @@ class InterchangeStructure(
 			val outputBuild = PossibleTraceWay(
 				address = currentBranch.address,
 				branch = currentBranch,
-				cachedCompletion = currentBranch.computeLocalCompletion(executor),
+				cachedCompletion = currentBranch.computeLocalCompletion(
+					CompletionAsset.CompletionContext(
+						executor,
+						inputQuery,
+						currentLevelInput,
+						true // TODO maybe get
+				)),
 				tracingDepth = currentDepth,
 				usedQueryState = inputQuery,
 			)
