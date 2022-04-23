@@ -1,5 +1,6 @@
 package de.moltenKt.paper.tool.position
 
+import de.moltenKt.paper.extension.paper.add
 import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.position.Shape.Direction.Y
@@ -7,6 +8,8 @@ import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.entity.Entity
 import org.bukkit.util.Vector
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 interface Shape {
 
@@ -200,6 +203,60 @@ interface Shape {
 		 */
 		@JvmStatic
 		fun cylinder(center: Location, height: Double, radius: Double, direction: Direction = Y) = CylindricalShape(center.toSimpleLocation(), direction, height, radius)
+
+		/**
+		 * This function creates a new [PyramidalShape] from the given parameters.
+		 * The location is the center of the shape.
+		 * @param center The center of the shape
+		 * @param height The height of the shape
+		 * @param groundWidth The size of the bottom surface of the shape (x)
+		 * @param groundDepth The size of the bottom surface of the shape (z)
+		 * @return The created [PyramidalShape]
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		@JvmStatic
+		fun pyramid(center: Location, height: Double, groundWidth: Double, groundDepth: Double) = PyramidalShape(center.toSimpleLocation(), height, groundWidth, groundDepth)
+
+		/**
+		 * This function creates a new [PyramidalShape] from the given parameters.
+		 * The location is the center of the shape.
+		 * @param center The center of the shape
+		 * @param height The height of the shape
+		 * @param groundSize The size of the bottom surface of the shape (x&z)
+		 * @return The created [PyramidalShape]
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		@JvmStatic
+		fun pyramid(center: Location, height: Double, groundSize: Double) = pyramid(center, height, groundSize, groundSize)
+
+		/**
+		 * This function creates a new [PyramidalShape] from the given parameters.
+		 * The location is the center of the shape.
+		 * @param center The center of the shape
+		 * @param height The height of the shape and the size of the bottom surface of the shape (x&z)
+		 * @return The created [PyramidalShape]
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		@JvmStatic
+		fun pyramid(center: Location, height: Double) = pyramid(center, height, height)
+
+		/**
+		 * This function creates a new [PyramidalShape] from the given parameters.
+		 * The location is the center of the shape.
+		 * @param bottomCenter The center of the shape
+		 * @param groundWidth The size of the bottom surface of the shape (x)
+		 * @param groundDepth The size of the bottom surface of the shape (z)
+		 * @return The created [PyramidalShape]
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		@JvmStatic
+		fun pyramidAutoHeight(bottomCenter: Location, groundWidth: Double, groundDepth: Double) = sqrt(groundWidth.pow(2.0) + groundDepth.pow(2.0)).let { height ->
+			pyramid(bottomCenter.add(y = height), height, groundWidth, groundDepth)
+		}
 
 	}
 

@@ -49,6 +49,9 @@ data class SimpleLocation(
 	val bukkit: Location
 		get() = Location(getWorld(world), x, y, z)
 
+	val bukkitWorld: World
+		get() = bukkit.world
+
 	override fun serialize() = mapOf(
 		"world" to world,
 		"x" to x,

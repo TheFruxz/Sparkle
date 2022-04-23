@@ -3,10 +3,12 @@ package de.moltenKt.paper.tool.position
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.floorToInt
 import de.moltenKt.paper.tool.display.world.SimpleLocation
+import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.util.Vector
 import kotlin.math.pow
 
+@Serializable
 data class CylindricalShape(
 	override val center: SimpleLocation,
 	val direction: Shape.Direction,
