@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>contains</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../index.html">
+<span>MoltenKT</span>            </a>    </div>
+    <div>1.0-PRE-9.1
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="MoltenKT-Paper::de.moltenKt.paper.tool.position/PyramidalShape/contains/#org.bukkit.util.Vector/PointingToDeclaration//-2141326931">
+  <div class="breadcrumbs"><a href="../../index.html">MoltenKT-Paper</a><span class="delimiter">/</span><a href="../index.html">de.moltenKt.paper.tool.position</a><span class="delimiter">/</span><a href="index.html">PyramidalShape</a><span class="delimiter">/</span><a href="contains.html">contains</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>contains</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="contains.html"><span class="token function">contains</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">vector<span class="token operator">: </span><span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Returns, if the <span data-unresolved-link="org.bukkit.util/Vector/x/#/PointingToDeclaration/">Vector.x</span>, <span data-unresolved-link="org.bukkit.util/Vector/y/#/PointingToDeclaration/">Vector.y</span> and <span data-unresolved-link="org.bukkit.util/Vector/z/#/PointingToDeclaration/">Vector.z</span> values of the given <span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span> are inside the shape. This function is used to easily check simple <span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span> without checking the correct world or chunk. This can result to wrong conclusions, if the world-check is required (Player in the OverWorld can be inside this <a href="../-shape/index.html">Shape</a>, but also players in the Nether). To have more explicit checks, use <a href="../-shape/contains.html">Shape.contains</a> with <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span> parameter instead, because this function has its own base, specified inside the <a href="../-shape/index.html">Shape</a>.</p><h4 class="">Return</h4><p class="paragraph">True, if the <span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span> is inside the <a href="../-shape/index.html">Shape</a>, false otherwise</p><h4 class="">Author</h4><p class="paragraph">Fruxz</p><h4 class="">Since</h4><p class="paragraph">1.0</p><h2 class="">Parameters</h2><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>vector</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The <span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span> to check (not checking world and other specific values)</p></div></div></div></div></div></div></div><br><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="contains.html"><span class="token function">contains</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">location<span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Returns, if the given <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span> is inside the <a href="../-shape/index.html">Shape</a>. This function also checks the world and other specific values, so it is more precise than <a href="../-shape/contains.html">Shape.contains</a> with the <span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span> parameter. This function is specified inside the specific <a href="../-shape/index.html">Shape</a>.</p><h4 class="">Return</h4><p class="paragraph">True, if the <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span> is inside the <a href="../-shape/index.html">Shape</a>, false otherwise</p><h4 class="">Author</h4><p class="paragraph">Fruxz</p><h4 class="">Since</h4><p class="paragraph">1.0</p><h2 class="">Parameters</h2><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>location</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span> to check</p></div></div></div></div></div></div></div></div></div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+
