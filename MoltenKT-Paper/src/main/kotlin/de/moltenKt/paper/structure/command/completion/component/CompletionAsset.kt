@@ -294,7 +294,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val EXECUTOR_LOCATION = CompletionAsset<Location>(system, "EXECUTOR_LOCATION", true, listOf(InterchangeStructureInputRestriction.STRING)) { executor ->
+		val EXECUTOR_LOCATION = CompletionAsset<Location>(system, "EXECUTOR_LOCATION", true, listOf(InterchangeStructureInputRestriction.STRING)) {
 			if (executor is Player) {
 				listOf(
 					"@spawn",
@@ -318,11 +318,11 @@ data class CompletionAsset<T>(
 					"spawn" -> worlds[0].spawnLocation
 					"here" -> executor.location
 					"eyes" -> executor.eyeLocation
-					"looking" -> executor.eyeLocation
+					"looking" -> executor.rayTraceBlocks(100.0)?.hitBlock?.location ?: executor.eyeLocation
 					"bed" -> executor.bedLocation
-					"lastDamager" -> executor.lastDamageCause?.entity?.location
-					"highestBlock" -> executor.location.toHighestLocation()
-					"highestBlockAbove" -> executor.location.toHighestLocation().add(0.0, 1.0, 0.0)
+					"lastdamager" -> executor.lastDamageCause?.entity?.location ?: executor.location
+					"highestblock" -> executor.location.toHighestLocation()
+					"highestblockabove" -> executor.location.toHighestLocation().add(0.0, 1.0, 0.0)
 					else -> null
 				}
 			} else

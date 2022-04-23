@@ -46,7 +46,7 @@ data class InterchangeAccess(
 		return getInput(slot).let { input -> restrictiveAsset.transformer?.invoke(CompletionAsset.CompletionContext(
 			executor = executor,
 			fullLineInput = parameters,
-			input = parameters.lastOrNull() ?: "",
+			input = parameters.getOrNull(slot) ?: "",
 			ignoreCase = true
 		)) ?: throw IllegalStateException("Asset '${restrictiveAsset.identity}' transformer produces null at input '$input'!") }
 
