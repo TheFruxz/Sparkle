@@ -309,7 +309,7 @@ data class CompletionAsset<T>(
 			} else
 				listOf("@spawn")
 		}.doCheck {
-			if (executor !is Player) input.equals("@spawn", ignoreCase) else setOf("spawn", "here", "eyes", "looking").any { input.equals("@$it", ignoreCase) }
+			if (executor !is Player) input.equals("@spawn", ignoreCase) else setOf("spawn", "here", "eyes", "looking", "bed", "lastDamager", "highestBlock", "highestBlockBelow").any { input.equals("@$it", ignoreCase) }
 		}.transformer {
 			if (executor !is Player && input.equals("@spawn", ignoreCase)) {
 				worlds[0].spawnLocation
