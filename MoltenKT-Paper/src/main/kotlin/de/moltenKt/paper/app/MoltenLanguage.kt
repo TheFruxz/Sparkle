@@ -89,11 +89,11 @@ object MoltenLanguage {
             "system.prefix.info" to "<gold>INFO <dark_gray>» ",
             "system.prefix.fail" to "<red>FAIL <dark_gray>» ",
             "system.prefix.error" to "<red><bold>ERROR</bold> <dark_gray>» ",
-            "system.prefix.level" to "<dark_purple>STATS <dark_gray>» ",
+            "system.prefix.level" to "<purple>STATS <dark_gray>» ",
             "system.prefix.warning" to "<yellow><bold>WARNING</bold> <dark_gray>» ",
             "system.prefix.attention" to "<yellow>ATTENTION <dark_gray>» ",
-            "system.prefix.payment" to "<dark_aqua>PAYMENT <dark_gray>» ",
-            "system.prefix.applied" to "<dark_green>APPLIED <dark_gray>» ",
+            "system.prefix.payment" to "<aqua>PAYMENT <dark_gray>» ",
+            "system.prefix.applied" to "<green>APPLIED <dark_gray>» ",
 
             "splashscreen.loading" to "<bold><gradient:yellow:#eb6b34>Loading...</gradient></bold>",
 
