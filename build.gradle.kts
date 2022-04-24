@@ -14,7 +14,7 @@ repositories {
 
 allprojects {
 
-    version = "1.0-PRE-9.1"
+    version = "1.0-PRE-9.2"
     group = "de.moltenKt"
 
     tasks.withType<KotlinCompile>().configureEach {
