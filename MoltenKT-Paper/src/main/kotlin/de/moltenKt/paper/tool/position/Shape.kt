@@ -198,6 +198,7 @@ interface Shape {
 		 * @param center The center of the shape
 		 * @param height The height of the shape
 		 * @param radius The radius of the shape
+		 * @param direction The line on which the shapes' height is based
 		 * @return The created [CylindricalShape]
 		 * @author Fruxz
 		 * @since 1.0
