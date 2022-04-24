@@ -27,17 +27,11 @@ data class PyramidalShape(
 		(1/3.0) * (groundWidth * groundDepth) * height
 	}
 
-	override val fullHeight: Double by lazy {
-		height
-	}
+	override val fullHeight: Double = height
 
-	override val fullWidth: Double by lazy {
-		groundWidth
-	}
+	override val fullWidth: Double = groundWidth
 
-	override val fullDepth: Double by lazy {
-		groundDepth
-	}
+	override val fullDepth: Double = groundDepth
 
 	override val blockLocations: List<SimpleLocation> by lazy {
 		val output = mutableListOf<SimpleLocation>()
