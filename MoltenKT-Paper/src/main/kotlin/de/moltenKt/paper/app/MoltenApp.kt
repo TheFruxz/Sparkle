@@ -24,7 +24,14 @@ import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
-import de.moltenKt.paper.general.api.mojang.*
+import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
+import de.moltenKt.paper.extension.tasky.sync
+import de.moltenKt.paper.general.api.mojang.MojangProfile
+import de.moltenKt.paper.general.api.mojang.MojangProfileCape
+import de.moltenKt.paper.general.api.mojang.MojangProfileRaw
+import de.moltenKt.paper.general.api.mojang.MojangProfileSkin
+import de.moltenKt.paper.general.api.mojang.MojangProfileTextures
+import de.moltenKt.paper.general.api.mojang.MojangProfileUsernameHistoryEntry
 import de.moltenKt.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.AppCompanion
@@ -38,7 +45,11 @@ import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.paper.tool.permission.Approval
-import de.moltenKt.paper.tool.position.*
+import de.moltenKt.paper.tool.position.ComplexShape
+import de.moltenKt.paper.tool.position.CubicalShape
+import de.moltenKt.paper.tool.position.CylindricalShape
+import de.moltenKt.paper.tool.position.Shape
+import de.moltenKt.paper.tool.position.SphericalShape
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
@@ -46,8 +57,10 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.Material
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import org.bukkit.entity.Player
 import java.util.logging.Level
 
 class MoltenApp : App() {
@@ -162,6 +175,29 @@ class MoltenApp : App() {
 		add(MoltenKtInterchange())
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
+
+		buildAndRegisterSandBox(this, "test") {
+
+			val shape = Shape.cube((executor as Player).location, 50.0)
+
+			repeat(50) {
+				val material = Material.values().toList().shuffled().first {
+					it.isSolid && it.isCollidable && it.isOccluding && it.isBlock
+				}
+
+				shape.gridBlockLocations.forEach {
+
+					sync {
+
+						it.bukkit.block.type = material
+
+					}
+
+				}
+
+			}
+
+		}
 
 	}
 
