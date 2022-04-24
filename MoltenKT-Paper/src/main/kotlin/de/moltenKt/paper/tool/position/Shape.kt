@@ -270,6 +270,16 @@ interface Shape {
 		@JvmStatic
 		fun line(start: Location, end: Location) = LinearShape(start.toSimpleLocation(), end.toSimpleLocation())
 
+		/**
+		 * This function creates a new [ComplexShape] containing all the given [shapes].
+		 * @param shapes The shapes to add to the complex shape
+		 * @return The created [ComplexShape]
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		@JvmStatic
+		fun complex(vararg shapes: Shape) = ComplexShape(shapes.toList())
+
 	}
 
 	enum class Direction {

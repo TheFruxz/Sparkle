@@ -21,34 +21,37 @@ data class PyramidalShape(
 	val halfHeight = height / 2
 	val halfDepth = groundDepth / 2
 
-	override val volume: Double
-		get() = (1/3.0) * (groundWidth * groundDepth) * height
+	override val volume: Double by lazy {
+		(1/3.0) * (groundWidth * groundDepth) * height
+	}
 
-	override val fullHeight: Double
-		get() = height
+	override val fullHeight: Double by lazy {
+		height
+	}
 
-	override val fullWidth: Double
-		get() = groundWidth
+	override val fullWidth: Double by lazy {
+		groundWidth
+	}
 
-	override val fullDepth: Double
-		get() = groundDepth
+	override val fullDepth: Double by lazy {
+		groundDepth
+	}
 
-	override val blockLocations: List<SimpleLocation>
-		get() {
-			val output = mutableListOf<SimpleLocation>()
+	override val blockLocations: List<SimpleLocation> by lazy {
+		val output = mutableListOf<SimpleLocation>()
 
-			for (x in center.x.let { (it - halfWidth).floorToInt()..(it + halfWidth).ceilToInt() }) {
-				for (y in center.y.let { (it - halfHeight).floorToInt()..(it + halfHeight).ceilToInt() }) {
-					for (z in center.z.let { (it - halfDepth).floorToInt()..(it + halfDepth).ceilToInt() }) {
-						if (contains(Vector(x.toDouble(), y.toDouble(), z.toDouble()))) {
-							output.add(SimpleLocation(center.world, x, y, z))
-						}
+		for (x in center.x.let { (it - halfWidth).floorToInt()..(it + halfWidth).ceilToInt() }) {
+			for (y in center.y.let { (it - halfHeight).floorToInt()..(it + halfHeight).ceilToInt() }) {
+				for (z in center.z.let { (it - halfDepth).floorToInt()..(it + halfDepth).ceilToInt() }) {
+					if (contains(Vector(x.toDouble(), y.toDouble(), z.toDouble()))) {
+						output.add(SimpleLocation(center.world, x, y, z))
 					}
 				}
 			}
-
-			return output
 		}
+
+		return@lazy output
+	}
 
 	override fun contains(vector: Vector): Boolean {
 		val widthOfPyramidAtHeightY = halfWidth - (((vector.y - center.y) * (groundWidth / height) + halfWidth) / 2)

@@ -17,30 +17,24 @@ data class SphericalShape(
 
 	constructor(center: Location, radius: Double) : this(center.toSimpleLocation(), radius)
 
-	override val volume: Double
-		get() = 4.0 / 3.0 * Math.PI * radius.pow(3)
+	override val volume: Double by lazy {
+		4.0 / 3.0 * Math.PI * radius.pow(3)
+	}
 
-	override val fullHeight: Double
-		get() = radius * 2
+	override val fullHeight: Double by lazy {
+		radius * 2
+	}
 
-	override val fullWidth: Double
-		get() = radius * 2
+	override val fullWidth: Double by lazy {
+		radius * 2
+	}
 
-	override val fullDepth: Double
-		get() = radius * 2
+	override val fullDepth: Double by lazy {
+		radius * 2
+	}
 
-	override val blockLocations: List<SimpleLocation>
-		get() = buildList {
-			/*for (x in -radius.toInt()..radius.toInt()) {
-				for (y in -radius.toInt()..radius.toInt()) {
-					for (z in -radius.toInt()..radius.toInt()) {
-						val vector = Vector(x.toDouble(), y.toDouble(), z.toDouble())
-						if (contains(vector = vector)) {
-							add(SimpleLocation(center.world, center.x + x, center.y + y, center.z + z))
-						}
-					}
-				}
-			}*/
+	override val blockLocations: List<SimpleLocation> by lazy {
+		buildList {
 			for (x in (center.x - radius).floorToInt()..(center.x + radius).ceilToInt()) {
 				for (y in (center.y - radius).floorToInt()..(center.y + radius).ceilToInt()) {
 					for (z in (center.z - radius).floorToInt()..(center.z + radius).ceilToInt()) {
@@ -52,6 +46,7 @@ data class SphericalShape(
 				}
 			}
 		}
+	}
 
 	override fun contains(vector: Vector): Boolean = vector.distance(center.bukkit.toVector()).floorToInt() <= radius
 

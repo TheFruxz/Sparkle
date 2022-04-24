@@ -27,8 +27,8 @@ import org.bukkit.util.Vector
  */
 @Serializable
 data class CubicalShape(
-	var first: SimpleLocation,
-	var second: SimpleLocation,
+	val first: SimpleLocation,
+	val second: SimpleLocation,
 ) : Producible<BoundingBox>, ConfigurationSerializable, Shape {
 
 	constructor(first: Location, second: Location) : this(first.toSimpleLocation(), second.toSimpleLocation())
@@ -50,8 +50,9 @@ data class CubicalShape(
 	 * @since 1.0
 	 * @author Fruxz
 	 */
-	val locations: Pair<Location, Location>
-		get() = Pair(first.bukkit, second.bukkit)
+	val locations: Pair<Location, Location> by lazy {
+		Pair(first.bukkit, second.bukkit)
+	}
 
 	/**
 	 * The first location represented as a bukkit location.
@@ -59,11 +60,9 @@ data class CubicalShape(
 	 * @since 1.0
 	 * @author Fruxz
 	 */
-	var firstLocation: Location
-		get() = first.bukkit
-		set(value) {
-			first = value.toSimpleLocation()
-		}
+	val firstLocation: Location by lazy {
+		first.bukkit
+	}
 
 	/**
 	 * The second location represented as a bukkit location
@@ -71,61 +70,58 @@ data class CubicalShape(
 	 * @since 1.0
 	 * @author Fruxz
 	 */
-	var secondLocation: Location
-		get() = second.bukkit
-		set(value) {
-			second = value.toSimpleLocation()
-		}
+	val secondLocation: Location by lazy {
+		second.bukkit
+	}
 
-	val corners: List<SimpleLocation>
-		get() {
-			val corners = mutableListOf<SimpleLocation>()
+	val corners: List<SimpleLocation> by lazy {
+		val corners = mutableListOf<SimpleLocation>()
 
-			corners.addAll(listOf(
-				center.copy(
-					x = center.x - (fullWidth / 2),
-					y = center.y - (fullHeight / 2),
-					z = center.z - (fullDepth / 2),
-				),
-				center.copy(
-					x = center.x + (fullWidth / 2),
-					y = center.y - (fullHeight / 2),
-					z = center.z - (fullDepth / 2),
-				),
-				center.copy(
-					x = center.x + (fullWidth / 2),
-					y = center.y - (fullHeight / 2),
-					z = center.z + (fullDepth / 2),
-				),
-				center.copy(
-					x = center.x - (fullWidth / 2),
-					y = center.y - (fullHeight / 2),
-					z = center.z + (fullDepth / 2),
-				),
-				center.copy(
-					x = center.x - (fullWidth / 2),
-					y = center.y + (fullHeight / 2),
-					z = center.z - (fullDepth / 2),
-				),
-				center.copy(
-					x = center.x + (fullWidth / 2),
-					y = center.y + (fullHeight / 2),
-					z = center.z - (fullDepth / 2),
-				),
-				center.copy(
-					x = center.x + (fullWidth / 2),
-					y = center.y + (fullHeight / 2),
-					z = center.z + (fullDepth / 2),
-				),
-				center.copy(
-					x = center.x - (fullWidth / 2),
-					y = center.y + (fullHeight / 2),
-					z = center.z + (fullDepth / 2),
-				),
-			))
+		corners.addAll(listOf(
+			center.copy(
+				x = center.x - (fullWidth / 2),
+				y = center.y - (fullHeight / 2),
+				z = center.z - (fullDepth / 2),
+			),
+			center.copy(
+				x = center.x + (fullWidth / 2),
+				y = center.y - (fullHeight / 2),
+				z = center.z - (fullDepth / 2),
+			),
+			center.copy(
+				x = center.x + (fullWidth / 2),
+				y = center.y - (fullHeight / 2),
+				z = center.z + (fullDepth / 2),
+			),
+			center.copy(
+				x = center.x - (fullWidth / 2),
+				y = center.y - (fullHeight / 2),
+				z = center.z + (fullDepth / 2),
+			),
+			center.copy(
+				x = center.x - (fullWidth / 2),
+				y = center.y + (fullHeight / 2),
+				z = center.z - (fullDepth / 2),
+			),
+			center.copy(
+				x = center.x + (fullWidth / 2),
+				y = center.y + (fullHeight / 2),
+				z = center.z - (fullDepth / 2),
+			),
+			center.copy(
+				x = center.x + (fullWidth / 2),
+				y = center.y + (fullHeight / 2),
+				z = center.z + (fullDepth / 2),
+			),
+			center.copy(
+				x = center.x - (fullWidth / 2),
+				y = center.y + (fullHeight / 2),
+				z = center.z + (fullDepth / 2),
+			),
+		))
 
-			return corners
-		}
+		return@lazy corners
+	}
 
 	/**
 	 * The blocks hit by connection each corner of the box
@@ -133,10 +129,11 @@ data class CubicalShape(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val gridBlockLocations: List<SimpleLocation>
-		get() = corners.flatMap { corner ->
+	val gridBlockLocations: List<SimpleLocation> by lazy {
+		corners.flatMap { corner ->
 			corners.map { second -> Shape.line(corner.bukkit, second.bukkit) }
 		}.flatMap { it.blockLocations }
+	}
 
 	/**
 	 * The blocks hit by connection each corner of the box
@@ -145,8 +142,8 @@ data class CubicalShape(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val outlineBlockLocations: List<SimpleLocation>
-		get() = corners.flatMap { corner ->
+	val outlineBlockLocations: List<SimpleLocation> by lazy {
+		corners.flatMap { corner ->
 			corners.mapNotNull { second ->
 				if (listOf(corner.x == second.x, corner.y == second.y, corner.z == second.z).count { it } >= 2) {
 					Shape.line(corner.bukkit, second.bukkit)
@@ -154,6 +151,7 @@ data class CubicalShape(
 					null
 			}
 		}.flatMap { it.blockLocations }
+	}
 
 	/**
 	 * This function returns the center of the box.
@@ -164,8 +162,9 @@ data class CubicalShape(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val centerVector: Vector
-		get() = produce().center
+	val centerVector: Vector by lazy {
+		produce().center
+	}
 
 	/**
 	 * This function returns the center of the box.
@@ -177,29 +176,36 @@ data class CubicalShape(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val centerLocation: Location
-		get() = produce().center.toLocation(first.bukkit.world)
+	val centerLocation: Location by lazy {
+		produce().center.toLocation(first.bukkit.world)
+	}
 
-	override val center: SimpleLocation
-		get() = centerLocation.toSimpleLocation()
+	override val center: SimpleLocation by lazy {
+		centerLocation.toSimpleLocation()
+	}
 
-	override val volume: Double
-		get() = fullWidth * fullHeight * fullDepth
+	override val volume: Double by lazy {
+		fullWidth * fullHeight * fullDepth
+	}
 
-	override val fullWidth: Double
-		get() = produce().widthX
+	override val fullWidth: Double by lazy {
+		produce().widthX
+	}
 
-	override val fullHeight: Double
-		get() = produce().height
+	override val fullHeight: Double by lazy {
+		produce().height
+	}
 
-	override val fullDepth: Double
-		get() = produce().widthZ
+	override val fullDepth: Double by lazy {
+		produce().widthZ
+	}
 
-	override val fullSizeShape: CubicalShape
-		get() = copy()
+	override val fullSizeShape: CubicalShape by lazy {
+		copy()
+	}
 
-	override val blockLocations: List<SimpleLocation>
-		get() = buildList {
+	override val blockLocations: List<SimpleLocation> by lazy {
+		buildList {
 			for (x in first.x.floorToInt()..second.x.ceilToInt()) {
 				for (y in first.y.floorToInt()..second.y.ceilToInt()) {
 					for (z in first.z.floorToInt()..second.z.ceilToInt()) {
@@ -208,6 +214,7 @@ data class CubicalShape(
 				}
 			}
 		}
+	}
 
 	override fun contains(vector: Vector) = produce().contains(vector)
 
@@ -226,10 +233,10 @@ data class CubicalShape(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun updateLocations(firstLocation: Location, secondLocation: Location) = apply {
-		updateFirstLocation(newLocation = firstLocation)
-		updateSecondLocation(newLocation = secondLocation)
-	}
+	fun updateLocations(firstLocation: Location, secondLocation: Location) = copy(
+		first = firstLocation.toSimpleLocation(),
+		second = secondLocation.toSimpleLocation()
+	)
 
 	/**
 	 * This function changes the [first] and [second] location
@@ -254,9 +261,9 @@ data class CubicalShape(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun updateFirstLocation(newLocation: Location) = apply {
+	fun updateFirstLocation(newLocation: Location) = copy(
 		first = newLocation.toSimpleLocation()
-	}
+	)
 
 	/**
 	 * This function changes the [second] location,
@@ -267,17 +274,18 @@ data class CubicalShape(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun updateSecondLocation(newLocation: Location) = apply {
+	fun updateSecondLocation(newLocation: Location) = copy(
 		second = newLocation.toSimpleLocation()
-	}
+	)
 
 	/**
 	 * This computational value computes the volume of this box.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val blockVolume: Double
-		get() = (first.x.difference(second.x)+1) * (first.y.difference(second.y)+1) * (first.z.difference(second.z)+1)
+	val blockVolume: Double by lazy {
+		(first.x.difference(second.x)+1) * (first.y.difference(second.y)+1) * (first.z.difference(second.z)+1)
+	}
 
 	/**
 	 * This computational value computes the distance between the
@@ -286,8 +294,9 @@ data class CubicalShape(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val distance: Double
-		get() = first.bukkit.distance(second.bukkit)
+	val distance: Double by lazy {
+		first.bukkit.distance(second.bukkit)
+	}
 
 	/**
 	 * This computational value computes the required velocity,
@@ -297,8 +306,9 @@ data class CubicalShape(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val directionVelocity: Vector
-		get() = directionVectorVelocity(first.bukkit, second.bukkit)
+	val directionVelocity: Vector by lazy {
+		directionVectorVelocity(first.bukkit, second.bukkit)
+	}
 
 	/**
 	 * This function creates a [BoundingBox] from the provided

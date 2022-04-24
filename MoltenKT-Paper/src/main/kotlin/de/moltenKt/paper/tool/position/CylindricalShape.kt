@@ -16,70 +16,74 @@ data class CylindricalShape(
 	val radius: Double,
 ) : Shape {
 
-	private val halfHeight = height / 2
+	private val halfHeight by lazy {
+		height / 2
+	}
 
-	override val volume: Double
-		get() = Math.PI * radius.pow(2) * height
+	override val volume: Double by lazy {
+		Math.PI * radius.pow(2) * height
+	}
 
-	override val fullHeight: Double
-		get() = when (direction) {
+	override val fullHeight: Double by lazy {
+		when (direction) {
 			Shape.Direction.Y -> height
 			else -> radius * 2
 		}
+	}
 
-	override val fullWidth: Double
-		get() = when (direction) {
+	override val fullWidth: Double by lazy {
+		when (direction) {
 			Shape.Direction.X -> height
 			else -> radius * 2
 		}
+	}
 
-	override val fullDepth: Double
-		get() = when (direction) {
+	override val fullDepth: Double by lazy {
+		when (direction) {
 			Shape.Direction.Z -> height
 			else -> radius * 2
 		}
+	}
 
-	override val blockLocations: List<SimpleLocation>
-		get() {
-			val output = mutableListOf<SimpleLocation>()
-			var attempts = 0
-			val zLocations: IntRange
-			val xLocations: IntRange
-			val yLocations: IntRange
+	override val blockLocations: List<SimpleLocation> by lazy {
+		val output = mutableListOf<SimpleLocation>()
+		var attempts = 0
+		val zLocations: IntRange
+		val xLocations: IntRange
+		val yLocations: IntRange
 
-			when (direction) {
-				Shape.Direction.X -> {
-					zLocations = (center.z - radius).floorToInt()..(center.z + radius).ceilToInt()
-					xLocations = (center.x - halfHeight).floorToInt()..(center.x + halfHeight).ceilToInt()
-					yLocations = (center.y - radius).floorToInt()..(center.y + radius).ceilToInt()
-				}
-				Shape.Direction.Y -> {
-					zLocations = (center.z - radius).floorToInt()..(center.z + radius).ceilToInt()
-					xLocations = (center.x - radius).floorToInt()..(center.x + radius).ceilToInt()
-					yLocations = (center.y - halfHeight).floorToInt()..(center.y + halfHeight).ceilToInt()
-				}
-				Shape.Direction.Z -> {
-					zLocations = (center.z - halfHeight).floorToInt()..(center.z + halfHeight).ceilToInt()
-					xLocations = (center.x - radius).floorToInt()..(center.x + radius).ceilToInt()
-					yLocations = (center.y - radius).floorToInt()..(center.y + radius).ceilToInt()
-				}
+		when (direction) {
+			Shape.Direction.X -> {
+				zLocations = (center.z - radius).floorToInt()..(center.z + radius).ceilToInt()
+				xLocations = (center.x - halfHeight).floorToInt()..(center.x + halfHeight).ceilToInt()
+				yLocations = (center.y - radius).floorToInt()..(center.y + radius).ceilToInt()
 			}
+			Shape.Direction.Y -> {
+				zLocations = (center.z - radius).floorToInt()..(center.z + radius).ceilToInt()
+				xLocations = (center.x - radius).floorToInt()..(center.x + radius).ceilToInt()
+				yLocations = (center.y - halfHeight).floorToInt()..(center.y + halfHeight).ceilToInt()
+			}
+			Shape.Direction.Z -> {
+				zLocations = (center.z - halfHeight).floorToInt()..(center.z + halfHeight).ceilToInt()
+				xLocations = (center.x - radius).floorToInt()..(center.x + radius).ceilToInt()
+				yLocations = (center.y - radius).floorToInt()..(center.y + radius).ceilToInt()
+			}
+		}
 
-			for (x in xLocations) {
-				for (y in yLocations) {
-					for (z in zLocations) {
-						val location = SimpleLocation(center.world, x, y, z)
-						attempts++
-						if (contains(location)) {
-							output.add(location)
-						}
+		for (x in xLocations) {
+			for (y in yLocations) {
+				for (z in zLocations) {
+					val location = SimpleLocation(center.world, x, y, z)
+					attempts++
+					if (contains(location)) {
+						output.add(location)
 					}
 				}
 			}
-
-			return output
-
 		}
+
+		return@lazy output
+	}
 
 	override fun contains(vector: Vector): Boolean {
 		val x: ClosedFloatingPointRange<Double>
