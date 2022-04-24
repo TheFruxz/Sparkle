@@ -1,5 +1,6 @@
 package de.moltenKt.paper.tool.position
 
+import de.moltenKt.core.annotation.NotPerfect
 import de.moltenKt.paper.extension.paper.add
 import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
@@ -216,6 +217,7 @@ interface Shape {
 		 * @since 1.0
 		 */
 		@JvmStatic
+		@NotPerfect
 		fun pyramid(center: Location, height: Double, groundWidth: Double, groundDepth: Double) = PyramidalShape(center.toSimpleLocation(), height, groundWidth, groundDepth)
 
 		/**
@@ -229,6 +231,7 @@ interface Shape {
 		 * @since 1.0
 		 */
 		@JvmStatic
+		@NotPerfect
 		fun pyramid(center: Location, height: Double, groundSize: Double) = pyramid(center, height, groundSize, groundSize)
 
 		/**
@@ -241,6 +244,7 @@ interface Shape {
 		 * @since 1.0
 		 */
 		@JvmStatic
+		@NotPerfect
 		fun pyramid(center: Location, height: Double) = pyramid(center, height, height)
 
 		/**
@@ -254,6 +258,7 @@ interface Shape {
 		 * @since 1.0
 		 */
 		@JvmStatic
+		@NotPerfect
 		fun pyramidAutoHeight(bottomCenter: Location, groundWidth: Double, groundDepth: Double) = sqrt(groundWidth.pow(2.0) + groundDepth.pow(2.0)).let { height ->
 			pyramid(bottomCenter.add(y = height), height, groundWidth, groundDepth)
 		}

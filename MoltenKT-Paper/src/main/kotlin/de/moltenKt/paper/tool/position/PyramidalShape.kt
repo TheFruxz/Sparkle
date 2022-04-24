@@ -1,5 +1,6 @@
 package de.moltenKt.paper.tool.position
 
+import de.moltenKt.core.annotation.NotPerfect
 import de.moltenKt.core.extension.math.ceil
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.floor
@@ -10,6 +11,7 @@ import org.bukkit.Location
 import org.bukkit.util.Vector
 
 @Serializable
+@NotPerfect
 data class PyramidalShape(
 	override val center: SimpleLocation,
 	val height: Double,
