@@ -25,6 +25,7 @@ import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
+import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.extension.tasky.sync
 import de.moltenKt.paper.general.api.mojang.MojangProfile
 import de.moltenKt.paper.general.api.mojang.MojangProfileCape
@@ -48,6 +49,7 @@ import de.moltenKt.paper.tool.permission.Approval
 import de.moltenKt.paper.tool.position.ComplexShape
 import de.moltenKt.paper.tool.position.CubicalShape
 import de.moltenKt.paper.tool.position.CylindricalShape
+import de.moltenKt.paper.tool.position.PyramidalShape
 import de.moltenKt.paper.tool.position.Shape
 import de.moltenKt.paper.tool.position.SphericalShape
 import de.moltenKt.unfold.text
@@ -192,6 +194,38 @@ class MoltenApp : App() {
 						it.bukkit.block.type = material
 
 					}
+
+				}
+
+			}
+
+		}
+
+		buildAndRegisterSandBox(this, "test2") {
+
+			val shape = PyramidalShape((executor as Player).location.toSimpleLocation(), 5.0, 9.0, 9.0)
+
+			shape.blockLocations.forEach {
+
+				sync {
+
+					it.bukkit.block.type = Material.REDSTONE_LAMP
+
+				}
+
+			}
+
+		}
+
+		buildAndRegisterSandBox(this, "test3") {
+
+			val shape = PyramidalShape((executor as Player).location.toSimpleLocation(), 20.0, 15.0, 30.0)
+
+			shape.blockLocations.forEach {
+
+				sync {
+
+					it.bukkit.block.type = Material.REDSTONE_LAMP
 
 				}
 

@@ -207,8 +207,8 @@ interface Shape {
 
 		/**
 		 * This function creates a new [PyramidalShape] from the given parameters.
-		 * The location is the center of the shape.
-		 * @param center The center of the shape
+		 * The location is the peak of the shape.
+		 * @param peak The peak of the shape
 		 * @param height The height of the shape
 		 * @param groundWidth The size of the bottom surface of the shape (x)
 		 * @param groundDepth The size of the bottom surface of the shape (z)
@@ -218,12 +218,12 @@ interface Shape {
 		 */
 		@JvmStatic
 		@NotPerfect
-		fun pyramid(center: Location, height: Double, groundWidth: Double, groundDepth: Double) = PyramidalShape(center.toSimpleLocation(), height, groundWidth, groundDepth)
+		fun pyramid(peak: Location, height: Double, groundWidth: Double, groundDepth: Double) = PyramidalShape(peak.toSimpleLocation(), height, groundWidth, groundDepth)
 
 		/**
 		 * This function creates a new [PyramidalShape] from the given parameters.
-		 * The location is the center of the shape.
-		 * @param center The center of the shape
+		 * The location is the peak of the shape.
+		 * @param peak The peak of the shape
 		 * @param height The height of the shape
 		 * @param groundSize The size of the bottom surface of the shape (x&z)
 		 * @return The created [PyramidalShape]
@@ -232,12 +232,12 @@ interface Shape {
 		 */
 		@JvmStatic
 		@NotPerfect
-		fun pyramid(center: Location, height: Double, groundSize: Double) = pyramid(center, height, groundSize, groundSize)
+		fun pyramid(peak: Location, height: Double, groundSize: Double) = pyramid(peak, height, groundSize, groundSize)
 
 		/**
 		 * This function creates a new [PyramidalShape] from the given parameters.
-		 * The location is the center of the shape.
-		 * @param center The center of the shape
+		 * The location is the peak of the shape.
+		 * @param peak The peak of the shape
 		 * @param height The height of the shape and the size of the bottom surface of the shape (x&z)
 		 * @return The created [PyramidalShape]
 		 * @author Fruxz
@@ -245,12 +245,12 @@ interface Shape {
 		 */
 		@JvmStatic
 		@NotPerfect
-		fun pyramid(center: Location, height: Double) = pyramid(center, height, height)
+		fun pyramid(peak: Location, height: Double) = pyramid(peak, height, height)
 
 		/**
 		 * This function creates a new [PyramidalShape] from the given parameters.
-		 * The location is the center of the shape.
-		 * @param bottomCenter The center of the shape
+		 * The location is the peak of the shape.
+		 * @param peak The peak of the shape
 		 * @param groundWidth The size of the bottom surface of the shape (x)
 		 * @param groundDepth The size of the bottom surface of the shape (z)
 		 * @return The created [PyramidalShape]
@@ -259,8 +259,8 @@ interface Shape {
 		 */
 		@JvmStatic
 		@NotPerfect
-		fun pyramidAutoHeight(bottomCenter: Location, groundWidth: Double, groundDepth: Double) = sqrt(groundWidth.pow(2.0) + groundDepth.pow(2.0)).let { height ->
-			pyramid(bottomCenter.add(y = height), height, groundWidth, groundDepth)
+		fun pyramidAutoHeight(peak: Location, groundWidth: Double, groundDepth: Double) = sqrt(groundWidth.pow(2.0) + groundDepth.pow(2.0)).let { height ->
+			pyramid(peak.add(y = height), height, groundWidth, groundDepth)
 		}
 
 		/**
