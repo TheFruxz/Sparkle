@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.util.Vector
 
 /**
  * This object represents a non-directional location on a [World], by using the
@@ -51,6 +52,10 @@ data class SimpleLocation(
 
 	val bukkitWorld: World
 		get() = bukkit.world
+
+	fun toVector(): Vector {
+		return Vector(x, y, z)
+	}
 
 	override fun serialize() = mapOf(
 		"world" to world,

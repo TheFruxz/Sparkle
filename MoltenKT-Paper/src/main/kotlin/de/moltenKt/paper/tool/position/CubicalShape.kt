@@ -77,6 +77,84 @@ data class CubicalShape(
 			second = value.toSimpleLocation()
 		}
 
+	val corners: List<SimpleLocation>
+		get() {
+			val corners = mutableListOf<SimpleLocation>()
+
+			corners.addAll(listOf(
+				center.copy(
+					x = center.x - (fullWidth / 2),
+					y = center.y - (fullHeight / 2),
+					z = center.z - (fullDepth / 2),
+				),
+				center.copy(
+					x = center.x + (fullWidth / 2),
+					y = center.y - (fullHeight / 2),
+					z = center.z - (fullDepth / 2),
+				),
+				center.copy(
+					x = center.x + (fullWidth / 2),
+					y = center.y - (fullHeight / 2),
+					z = center.z + (fullDepth / 2),
+				),
+				center.copy(
+					x = center.x - (fullWidth / 2),
+					y = center.y - (fullHeight / 2),
+					z = center.z + (fullDepth / 2),
+				),
+				center.copy(
+					x = center.x - (fullWidth / 2),
+					y = center.y + (fullHeight / 2),
+					z = center.z - (fullDepth / 2),
+				),
+				center.copy(
+					x = center.x + (fullWidth / 2),
+					y = center.y + (fullHeight / 2),
+					z = center.z - (fullDepth / 2),
+				),
+				center.copy(
+					x = center.x + (fullWidth / 2),
+					y = center.y + (fullHeight / 2),
+					z = center.z + (fullDepth / 2),
+				),
+				center.copy(
+					x = center.x - (fullWidth / 2),
+					y = center.y + (fullHeight / 2),
+					z = center.z + (fullDepth / 2),
+				),
+			))
+
+			return corners
+		}
+
+	/**
+	 * The blocks hit by connection each corner of the box
+	 * to every other corner of the box.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val gridBlockLocations: List<SimpleLocation>
+		get() = corners.flatMap { corner ->
+			corners.map { second -> Shape.line(corner.bukkit, second.bukkit) }
+		}.flatMap { it.blockLocations }
+
+	/**
+	 * The blocks hit by connection each corner of the box
+	 * to every other corner of the box, excluding cross-
+	 * connections.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val outlineBlockLocations: List<SimpleLocation>
+		get() = corners.flatMap { corner ->
+			corners.mapNotNull { second ->
+				if (listOf(corner.x == second.x, corner.y == second.y, corner.z == second.z).count { it } >= 2) {
+					Shape.line(corner.bukkit, second.bukkit)
+				} else
+					null
+			}
+		}.flatMap { it.blockLocations }
+
 	/**
 	 * This function returns the center of the box.
 	 * The computational part is done by the [BoundingBox],

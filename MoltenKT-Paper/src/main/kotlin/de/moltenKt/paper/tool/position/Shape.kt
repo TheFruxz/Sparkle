@@ -258,6 +258,18 @@ interface Shape {
 			pyramid(bottomCenter.add(y = height), height, groundWidth, groundDepth)
 		}
 
+		/**
+		 * This function creates a new [LinearShape] from the given parameters.
+		 * This is a line without any volume.
+		 * @param start The start of the line
+		 * @param end The end of the line
+		 * @return The created [LinearShape]
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		@JvmStatic
+		fun line(start: Location, end: Location) = LinearShape(start.toSimpleLocation(), end.toSimpleLocation())
+
 	}
 
 	enum class Direction {
