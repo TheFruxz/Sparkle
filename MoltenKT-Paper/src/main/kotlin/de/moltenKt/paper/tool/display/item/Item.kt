@@ -21,6 +21,7 @@ import de.moltenKt.paper.tool.display.item.action.ItemDropAction
 import de.moltenKt.paper.tool.display.item.action.ItemInteractAction
 import de.moltenKt.paper.tool.display.item.quirk.Quirk
 import de.moltenKt.unfold.extension.asComponent
+import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.extension.asStyledString
 import de.moltenKt.unfold.extension.isNotBlank
 import de.moltenKt.unfold.extension.isNotEmpty
@@ -494,8 +495,8 @@ data class Item(
 	fun putMaterial(material: Material) =
 		apply { this.material = material }
 
-	fun putLabel(label: String) =
-		apply { this.label = label.asComponent }
+	fun putLabel(label: String, styled: Boolean = false) =
+		apply { this.label = if (styled) label.asStyledComponent else label.asComponent }
 
 	fun putLabel(label: Component) =
 		apply { this.label = label }
@@ -503,11 +504,11 @@ data class Item(
 	fun putSize(size: Int) =
 		apply { this.size = size }
 
-	fun putLore(lore: String) =
-		apply { this.lore = listOf(lore.asComponent) }
+	fun putLore(lore: String, styled: Boolean = false) =
+		apply { this.lore = listOf(if (styled) lore.asStyledComponent else lore.asComponent) }
 
-	fun putLore(lore: List<String>) =
-		apply { this.lore = lore.map { it.asComponent } }
+	fun putLore(lore: List<String>, styled: Boolean = false) =
+		apply { this.lore = lore.map { if (styled) it.asStyledComponent else it.asComponent } }
 
 	fun putLore(lore: Component) =
 		apply { this.lore = listOf(lore) }
