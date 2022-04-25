@@ -7,7 +7,7 @@ import de.moltenKt.paper.tool.display.message.Transmission
 import de.moltenKt.unfold.text
 import net.kyori.adventure.text.format.NamedTextColor
 
-class DebugModeInterchange : StructuredInterchange("debugmode", buildInterchangeStructure {
+internal class DebugModeInterchange : StructuredInterchange("debugmode", buildInterchangeStructure {
 
     branch {
 

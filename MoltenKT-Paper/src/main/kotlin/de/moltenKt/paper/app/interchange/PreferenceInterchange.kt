@@ -11,7 +11,7 @@ import de.moltenKt.paper.tool.display.message.Transmission.Level.APPLIED
 import de.moltenKt.paper.tool.display.message.Transmission.Level.FAIL
 
 @de.moltenKt.core.annotation.NotWorking
-class PreferenceInterchange : Interchange(
+internal class PreferenceInterchange : Interchange(
 	label = "preference",
 	protectedAccess = true,
 	completion = buildInterchangeStructure {

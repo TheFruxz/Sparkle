@@ -14,7 +14,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style.style
 import net.kyori.adventure.text.format.TextDecoration.BOLD
 
-class MoltenKtInterchange : StructuredInterchange("moltenkt", protectedAccess = false, structure = buildInterchangeStructure {
+internal class MoltenKtInterchange : StructuredInterchange("moltenkt", protectedAccess = false, structure = buildInterchangeStructure {
 
 	concludedExecution {
 

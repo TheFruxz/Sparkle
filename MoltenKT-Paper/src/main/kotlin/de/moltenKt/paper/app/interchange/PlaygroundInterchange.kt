@@ -5,7 +5,7 @@ import de.moltenKt.paper.structure.command.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
 
-class PlaygroundInterchange : StructuredInterchange("playground", buildInterchangeStructure {
+internal class PlaygroundInterchange : StructuredInterchange("playground", buildInterchangeStructure {
 
 	branch {
 
