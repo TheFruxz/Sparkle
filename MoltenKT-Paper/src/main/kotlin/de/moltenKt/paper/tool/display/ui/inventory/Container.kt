@@ -11,12 +11,14 @@ import de.moltenKt.paper.tool.display.item.Item
 import de.moltenKt.paper.tool.display.item.PostProperty
 import de.moltenKt.paper.tool.display.ui.UI
 import de.moltenKt.paper.tool.display.ui.panel.Panel
+import de.moltenKt.paper.tool.effect.EntityBasedEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.asStyledComponent
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.Material.AIR
+import org.bukkit.entity.Entity
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -32,7 +34,7 @@ open class Container<T : Container<T>>(
 	open var theme: ColorType = ColorType.GRAY,
 	open var openSound: SoundMelody? = null,
 	override var identity: String = "${UUID.randomUUID()}",
-) : UI<T>, Cloneable {
+) : UI<T>, Cloneable, EntityBasedEffect {
 
 	constructor(size: Int) : this(content = mutableMapOf(), size = size)
 
@@ -114,6 +116,13 @@ open class Container<T : Container<T>>(
 
 	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>) =
 		display(humanEntity)
+
+	override fun play(vararg entities: Entity?) =
+		entities.forEach { target ->
+			if (target is HumanEntity) {
+				display(target)
+			}
+		}
 
 	/**
 	 * This function replaces the [Container.label] property with the

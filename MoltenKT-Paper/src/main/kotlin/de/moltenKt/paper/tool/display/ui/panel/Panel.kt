@@ -35,6 +35,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
+import org.bukkit.entity.Entity
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -611,6 +612,13 @@ data class Panel(
 		this@Panel.content = previousState.toMutableMap()
 
 	} }
+
+	override fun play(vararg entities: Entity?) =
+		entities.forEach { target ->
+			if (target is HumanEntity) {
+				display(target)
+			}
+		}
 
 	/**
 	 * This function returns, if the [inventory] is (via the identity) a
