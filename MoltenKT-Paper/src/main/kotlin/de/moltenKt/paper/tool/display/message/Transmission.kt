@@ -1,5 +1,6 @@
 package de.moltenKt.paper.tool.display.message
 
+import de.moltenKt.core.extension.dump
 import de.moltenKt.core.tool.smart.positioning.Address
 import de.moltenKt.core.tool.smart.positioning.Address.Companion.address
 import de.moltenKt.paper.app.MoltenData
@@ -8,6 +9,7 @@ import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.paper.consoleSender
 import de.moltenKt.paper.extension.paper.onlinePlayers
 import de.moltenKt.paper.tool.display.message.DisplayType.*
+import de.moltenKt.paper.tool.effect.EntityBasedEffect
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundLibrary
 import de.moltenKt.unfold.extension.asComponent
@@ -27,7 +29,7 @@ data class Transmission(
 	var promptSoundEffect: SoundEffect? = null,
 	var level: Level = Level.GENERAL,
 	var prefixByLevel: Boolean = true,
-) {
+) : EntityBasedEffect {
 
 	constructor(legacyMessage: String) : this(content = listOf(legacyMessage.asStyledComponent))
 
@@ -98,6 +100,11 @@ data class Transmission(
 		.copy()
 		.participants(onlinePlayers + consoleSender)
 		.display()
+
+	override fun play(vararg entities: Entity?) =
+		copy().participants(entities.mapNotNull {
+			if (it is InterchangeExecutor) it else null
+		}).display().dump()
 
 	override fun toString() = content.map(Component::asString).joinToString("\n")
 
