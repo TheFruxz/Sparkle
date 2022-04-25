@@ -15,11 +15,8 @@ import de.moltenKt.paper.extension.objectBound.getSandBox
 import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS
 import de.moltenKt.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.moltenKt.paper.structure.command.StructuredInterchange
-import de.moltenKt.paper.structure.command.completion.InterchangeStructureInputRestriction
-import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
+import de.moltenKt.paper.structure.command.completion.*
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
-import de.moltenKt.paper.structure.command.completion.ignoreCase
-import de.moltenKt.paper.structure.command.completion.isNotRequired
 import de.moltenKt.paper.tool.display.message.Transmission.Level.*
 
 internal class SandBoxInterchange : StructuredInterchange(
@@ -170,10 +167,12 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 					addContent("run")
 
+					infiniteSubParameters()
+
 					concludedExecution {
 						val sandBox = getSandBox(getInput(1))!!
 
-						sandBox.execute(executor)
+						sandBox.execute(executor, parameters.drop(3))
 
 					}
 
