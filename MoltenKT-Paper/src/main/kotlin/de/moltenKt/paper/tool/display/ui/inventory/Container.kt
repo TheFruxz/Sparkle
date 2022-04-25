@@ -341,6 +341,8 @@ open class Container<T : Container<T>>(
 
 	fun fill(vararg materials: Material) = fill(*materials.map { Item(it) }.toTypedArray())
 
+	fun fill(vararg itemStacks: ItemStack) = fill(*itemStacks.map { Item(it) }.toTypedArray())
+
 	fun border(item: Item, schemaArray: Array<Int>) {
 		schemaArray.forEach { position ->
 			content[position] = item
@@ -356,6 +358,8 @@ open class Container<T : Container<T>>(
 	}
 
 	fun border(material: Material) = border(item = material.item)
+
+	fun border(itemStack: ItemStack) = border(itemStack.item)
 
 	fun placeOver(container: Container<*>) = placeOver(container.content)
 
