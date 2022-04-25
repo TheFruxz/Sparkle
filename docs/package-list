@@ -49,7 +49,6 @@ de.moltenKt.paper.app
 de.moltenKt.paper.app.component.buildMode.config
 de.moltenKt.paper.app.component.point.asset
 de.moltenKt.paper.app.component.world
-de.moltenKt.paper.app.interchange
 de.moltenKt.paper.extension
 de.moltenKt.paper.extension.data
 de.moltenKt.paper.extension.display
