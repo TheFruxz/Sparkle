@@ -9,6 +9,7 @@ import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
@@ -309,6 +310,11 @@ data class CubicalShape(
 	val directionVelocity: Vector by lazy {
 		directionVectorVelocity(first.bukkit, second.bukkit)
 	}
+
+	override fun asShifted(toWorld: World): Shape = copy(
+		first = first.copy(world = toWorld.name),
+		second = second.copy(world = toWorld.name),
+	)
 
 	/**
 	 * This function creates a [BoundingBox] from the provided

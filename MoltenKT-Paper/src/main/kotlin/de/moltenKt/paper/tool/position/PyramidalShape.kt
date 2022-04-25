@@ -6,6 +6,7 @@ import de.moltenKt.core.extension.math.floorToInt
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.util.Vector
 
 @Serializable
@@ -58,5 +59,9 @@ data class PyramidalShape(
 	override fun contains(location: Location): Boolean {
 		return contains(location.toVector()) && location.world.name == peakLocation.world
 	}
+
+	override fun asShifted(toWorld: World): Shape = copy(
+		peakLocation = peakLocation.copy(world = toWorld.name)
+	)
 
 }

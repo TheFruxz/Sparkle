@@ -1,11 +1,14 @@
 package de.moltenKt.paper.tool.position
 
 import de.moltenKt.core.annotation.NotPerfect
+import de.moltenKt.core.extension.classType.UUID
 import de.moltenKt.paper.extension.paper.add
 import de.moltenKt.paper.extension.paper.toSimpleLocation
+import de.moltenKt.paper.extension.paper.worlds
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.position.Shape.Direction.Y
 import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.block.Block
 import org.bukkit.entity.Entity
 import org.bukkit.util.Vector
@@ -155,6 +158,36 @@ interface Shape {
 	 * @see Block.getLocation
 	 */
 	fun contains(block: Block): Boolean = contains(location = block.location)
+
+	/**
+	 * Returns a copy of the [Shape] with the [toWorld] as the world,
+	 * instead of the world of the original [Shape].
+	 * @param toWorld The world to change to
+	 * @return A copy of the [Shape] with the [toWorld] as the world
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun asShifted(toWorld: World): Shape
+
+	/**
+	 * Returns a copy of the [Shape] with the [toWorldName] as the world,
+	 * instead of the world of the original [Shape].
+	 * @param toWorldName The world to change to
+	 * @return A copy of the [Shape] with the [toWorldName] as the world
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun asShifted(toWorldName: String): Shape = asShifted(worlds.first { it.name == toWorldName })
+
+	/**
+	 * Returns a copy of the [Shape] with the [toWorldUid] as the world,
+	 * instead of the world of the original [Shape].
+	 * @param toWorldUid The world to change to
+	 * @return A copy of the [Shape] with the [toWorldUid] as the world
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun asShifted(toWorldUid: UUID): Shape = asShifted(worlds.first { it.uid == toWorldUid })
 
 	companion object {
 

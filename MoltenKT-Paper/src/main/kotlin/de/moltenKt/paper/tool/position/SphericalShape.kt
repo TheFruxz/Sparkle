@@ -6,6 +6,7 @@ import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.util.Vector
 import kotlin.math.pow
 
@@ -51,5 +52,7 @@ data class SphericalShape(
 	override fun contains(vector: Vector): Boolean = vector.distance(center.bukkit.toVector()).floorToInt() <= radius
 
 	override fun contains(location: Location): Boolean = location.distance(center.bukkit).floorToInt() <= radius
+
+	override fun asShifted(toWorld: World): Shape = copy(center = center.copy(world = toWorld.name))
 
 }

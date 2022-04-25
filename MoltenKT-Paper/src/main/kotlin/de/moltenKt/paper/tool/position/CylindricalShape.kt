@@ -5,6 +5,7 @@ import de.moltenKt.core.extension.math.floorToInt
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.util.Vector
 import kotlin.math.pow
 
@@ -127,5 +128,9 @@ data class CylindricalShape(
 	override fun contains(location: Location): Boolean {
 		return contains(location.toVector()) && center.world == location.world.name
 	}
+
+	override fun asShifted(toWorld: World): Shape = copy(
+		center = center.copy(world = toWorld.name)
+	)
 
 }

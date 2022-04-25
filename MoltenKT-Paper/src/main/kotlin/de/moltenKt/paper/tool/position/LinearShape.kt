@@ -4,6 +4,7 @@ import de.moltenKt.paper.extension.paper.directionVectorVelocity
 import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.util.Vector
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -52,5 +53,10 @@ data class LinearShape(
     override fun contains(vector: Vector) = false
 
     override fun contains(location: Location) = false
+
+    override fun asShifted(toWorld: World): Shape = copy(
+        fromLocation = fromLocation.copy(world = toWorld.name),
+        toLocation = toLocation.copy(world = toWorld.name)
+    )
 
 }

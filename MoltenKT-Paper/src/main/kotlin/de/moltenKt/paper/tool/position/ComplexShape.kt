@@ -3,6 +3,7 @@ package de.moltenKt.paper.tool.position
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.util.Vector
 
 @Serializable
@@ -87,5 +88,9 @@ data class ComplexShape(
 	override fun contains(vector: Vector): Boolean = shapes.any { it.contains(vector) }
 
 	override fun contains(location: Location): Boolean = shapes.any { it.contains(location) }
+
+	override fun asShifted(toWorld: World): Shape = copy(
+		shapes = shapes.map { it.asShifted(toWorld) }
+	)
 
 }
