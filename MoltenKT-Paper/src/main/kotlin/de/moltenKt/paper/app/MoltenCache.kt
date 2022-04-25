@@ -47,7 +47,7 @@ object MoltenCache : AppCache {
 
 	@GlobalData
 	@DataLevel(DUMP)
-	val registeredCompletionAssetStateCache = mutableMapOf<String, Set<String>>() // todo was sorted set, why java.util.SortedSet?
+	val registeredCompletionAssetStateCache = mutableMapOf<String, Set<String>>()
 
 	@GlobalData
 	@DataLevel(KILL)

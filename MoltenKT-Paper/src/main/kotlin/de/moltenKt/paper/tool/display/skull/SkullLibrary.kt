@@ -40,7 +40,7 @@ object SkullLibrary {
 						it[1].removeSurrounding("\"").toInt(),
 						it[2].removeSurrounding("\""),
 						Base64.encodeToString(
-							"{\"textures\":{\"SKIN\":{\"url\":\"https://textures.minecraft.net/texture/${it[3]}\"}}}" //todo check, if https is working
+							"{\"textures\":{\"SKIN\":{\"url\":\"https://textures.minecraft.net/texture/${it[3]}\"}}}"
 						),
 						it[4].removeSurrounding("\"").toInt(),
 						it[5].removeSurrounding("\"")
