@@ -21,6 +21,7 @@ import de.moltenKt.paper.tool.annotation.Prototype
 import de.moltenKt.paper.tool.display.color.ColorType
 import de.moltenKt.paper.tool.display.item.Item
 import de.moltenKt.paper.tool.display.ui.inventory.Container
+import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.paper.tool.smart.Logging
 import de.moltenKt.paper.tool.smart.VendorsIdentifiable
@@ -65,7 +66,7 @@ data class Panel(
 	override var label: Component = text("Panel").style(Style.style(NamedTextColor.YELLOW, TextDecoration.BOLD)).asComponent(),
 	val lines: Int = 5,
 	override var theme: ColorType = ColorType.GRAY,
-	override var openSound: SoundMelody? = null,
+	override var openSound: SoundEffect? = null,
 	override var identity: String = "${UUID.randomUUID()}",
 	override var vendor: Identifiable<App> = system,
 	var onReceiveEvent: PanelReceiveData.() -> Unit = { },
@@ -591,6 +592,7 @@ data class Panel(
 					val rawInventory = editedPanel.rawInventory
 					sync {
 						humanEntity.openInventory(rawInventory)
+						openSound?.play(humanEntity)
 					}
 				}
 
@@ -603,6 +605,7 @@ data class Panel(
 			} else {
 				sync {
 					humanEntity.openInventory(editedPanel.rawInventory)
+					openSound?.play(humanEntity)
 				}
 			}
 

@@ -12,6 +12,7 @@ import de.moltenKt.paper.tool.display.item.PostProperty
 import de.moltenKt.paper.tool.display.ui.UI
 import de.moltenKt.paper.tool.display.ui.panel.Panel
 import de.moltenKt.paper.tool.effect.EntityBasedEffect
+import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.asStyledComponent
@@ -32,7 +33,7 @@ open class Container<T : Container<T>>(
 	open var label: Component = Component.text("${GRAY}Container"),
 	var size: Int = 9 * 3,
 	open var theme: ColorType = ColorType.GRAY,
-	open var openSound: SoundMelody? = null,
+	open var openSound: SoundEffect? = null,
 	override var identity: String = "${UUID.randomUUID()}",
 ) : UI<T>, Cloneable, EntityBasedEffect {
 
@@ -109,6 +110,7 @@ open class Container<T : Container<T>>(
 
 	override fun display(humanEntity: HumanEntity) = sync {
 		humanEntity.openInventory(rawInventory)
+		openSound?.play(humanEntity)
 	}.dump()
 
 	override fun display(receiver: Player, specificParameters: Map<String, Any>) =
