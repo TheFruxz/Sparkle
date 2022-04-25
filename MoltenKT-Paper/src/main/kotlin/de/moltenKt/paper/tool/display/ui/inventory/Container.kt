@@ -8,8 +8,12 @@ import de.moltenKt.paper.extension.paper.createInventory
 import de.moltenKt.paper.extension.tasky.sync
 import de.moltenKt.paper.tool.display.color.ColorType
 import de.moltenKt.paper.tool.display.item.Item
+import de.moltenKt.paper.tool.display.item.PostProperty
 import de.moltenKt.paper.tool.display.ui.UI
+import de.moltenKt.paper.tool.display.ui.panel.Panel
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
+import de.moltenKt.unfold.extension.asComponent
+import de.moltenKt.unfold.extension.asStyledComponent
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.Material.AIR
@@ -29,6 +33,8 @@ open class Container<T : Container<T>>(
 	open var openSound: SoundMelody? = null,
 	override var identity: String = "${UUID.randomUUID()}",
 ) : UI<T>, Cloneable {
+
+	constructor(size: Int) : this(content = mutableMapOf(), size = size)
 
 	open val rawInventory: Inventory
 		get() {
@@ -108,6 +114,45 @@ open class Container<T : Container<T>>(
 
 	override fun display(humanEntity: HumanEntity, specificParameters: Map<String, Any>) =
 		display(humanEntity)
+
+	/**
+	 * This function replaces the [Container.label] property with the
+	 * provided [label] string.
+	 * The [label] will be converted to a [Component.text] component. If [styled] is true,
+	 * [String.asStyledComponent] will be used, if false, [String.asComponent] will be used.
+	 * @param label The label to be set.
+	 * @param styled Whether the label should be converted using mini-message or not.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	open fun putLabel(label: String, styled: Boolean = false) { this.label = if (styled) label.asStyledComponent else label.asComponent }
+
+	/**
+	 * This function replaces the [Container.label] property with the
+	 * provided [label] component.
+	 * @param label The label to be set.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	open fun putLabel(label: Component) { this.label = label }
+
+	/**
+	 * This function replaces the [Container.label] property with a
+	 * blank string (' ').
+	 * This function utelizes the [putLabel] function.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	open fun blankLabel() { putLabel(Component.space()) }
+
+	/**
+	 * This function replaces the [Container.label] property with a
+	 * empty string ('').
+	 * This function utelizes the [putLabel] function.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	open fun emptyLabel() { putLabel(Component.empty()) }
 
 	fun place(slot: Int, item: Item) {
 		content[slot] = item
@@ -346,5 +391,31 @@ open class Container<T : Container<T>>(
 	operator fun get(intRange: IntRange) = get(collection = intRange.asIterable().toList())
 
 	operator fun get(vararg slots: Int) = get(slots.toTypedArray())
+
+	companion object {
+
+		/**
+		 * This function creates a new [Container] with the specified size.
+		 * @param size The size of the container.
+		 * @return The new [Container] instance.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		@JvmStatic
+		fun build(size: Int) = Container(size)
+
+		/**
+		 * This function creates a new [Container] with the specified size.
+		 * Allows direct editing inside the [block] lambda.
+		 * @param size The size of the container.
+		 * @param block The lambda that will be executed inside the [Container] instance.
+		 * @return The new [Container] instance.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		@JvmStatic
+		fun build(size: Int, block: Container<out Container<*>>.() -> Unit) = build(size).apply(block)
+
+	}
 
 }

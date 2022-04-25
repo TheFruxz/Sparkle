@@ -24,6 +24,8 @@ import de.moltenKt.paper.tool.display.ui.inventory.Container
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.paper.tool.smart.Logging
 import de.moltenKt.paper.tool.smart.VendorsIdentifiable
+import de.moltenKt.unfold.extension.asComponent
+import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.extension.isEmpty
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.launch
@@ -80,6 +82,8 @@ data class Panel(
 	var overridingBorderProtection: Boolean = true,
 	val generateBorder: Boolean = true,
 ) : Cloneable, Logging, Container<Panel>(label = label, size = lines * 9, theme = theme, openSound = openSound), VendorsIdentifiable<Panel> {
+
+	constructor(rows: Int) : this(lines = rows)
 
 	/**
 	 * This value represents the used key, to identify the border
@@ -180,28 +184,6 @@ data class Panel(
 	}
 
 	/**
-	 * This function replaces the panel [label] with an
-	 * empty component.
-	 * @see Component.empty
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	fun emptyLabel() {
-		label = Component.empty()
-	}
-
-	/**
-	 * This function replaces the panel [label] with a
-	 * component, that contains a space.
-	 * @see Component.space
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	fun blankLabel() {
-		label = Component.space()
-	}
-
-	/**
 	 * This function replaces the [Panel.label] with the provided [label] component.
 	 * @author Fruxz
 	 * @since 1.0
@@ -209,6 +191,45 @@ data class Panel(
 	fun label(label: ComponentLike) {
 		this.label = label.asComponent()
 	}
+
+	/**
+	 * This function replaces the [Panel.label] property with the
+	 * provided [label] string.
+	 * The [label] will be converted to a [Component.text] component. If [styled] is true,
+	 * [String.asStyledComponent] will be used, if false, [String.asComponent] will be used.
+	 * @param label The label to be set.
+	 * @param styled Whether the label should be converted using mini-message or not.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	override fun putLabel(label: String, styled: Boolean) { this.label = if (styled) label.asStyledComponent else label.asComponent }
+
+	/**
+	 * This function replaces the [Panel.label] property with the
+	 * provided [label] component.
+	 * @param label The label to be set.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	override fun putLabel(label: Component) { this.label = label }
+
+	/**
+	 * This function replaces the [Panel.label] property with a
+	 * blank string (' ').
+	 * This function utelizes the [putLabel] function.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	override fun blankLabel() { putLabel(Component.space()) }
+
+	/**
+	 * This function replaces the [Panel.label] property with a
+	 * empty string ('').
+	 * This function utelizes the [putLabel] function.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	override fun emptyLabel() { putLabel(Component.empty()) }
 
 	/**
 	 * The identities of the inner slots, that are used to identify
@@ -668,6 +689,28 @@ data class Panel(
 			this[4] = icon
 
 		}
+
+		/**
+		 * This function creates a new [Panel] with the specified size.
+		 * @param size The size of the container.
+		 * @return The new [Panel] instance.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		@JvmStatic
+		fun build(size: Int) = Panel(rows = size)
+
+		/**
+		 * This function creates a new [Panel] with the specified size.
+		 * Allows direct editing inside the [block] lambda.
+		 * @param size The size of the container.
+		 * @param block The lambda that will be executed inside the [Panel] instance.
+		 * @return The new [Panel] instance.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		@JvmStatic
+		fun build(size: Int, block: Panel.() -> Unit) = build(size).apply(block)
 
 	}
 
