@@ -30,9 +30,6 @@ val mainLog = MoltenApp.instance.log
 internal val lang: MoltenLanguage.MoltenLanguageContainer
 	get() = MoltenLanguage.container
 
-@Deprecated("", level = DeprecationLevel.ERROR, replaceWith = ReplaceWith("lang[key]"))
-internal fun lang(key: String) = lang[key]
-
 internal val system: MoltenApp
 	get() = de.moltenKt.paper.MoltenEngine.appInstance
 
