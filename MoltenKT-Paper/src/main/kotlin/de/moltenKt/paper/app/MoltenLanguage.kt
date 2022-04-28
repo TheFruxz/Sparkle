@@ -95,6 +95,9 @@ object MoltenLanguage {
             "system.prefix.payment" to "<aqua>PAYMENT <dark_gray>» ",
             "system.prefix.applied" to "<green>APPLIED <dark_gray>» ",
 
+            "system.message.style" to "[sender] <gray>to [receiver] <dark_gray>» <gray>[message]",
+            "system.message.style.you" to "YOU",
+
             "splashscreen.loading" to "<bold><gradient:yellow:#eb6b34>Loading...</gradient></bold>",
 
             "interchange.run.issue.wrongApproval" to "<gray>This action<red> requires<gray> the approval <yellow>'[approval]'<gray>, to be executed!",
@@ -196,7 +199,9 @@ object MoltenLanguage {
             "interchange.internal.essentials.point.edit.notFound" to "<gray>A Point called '<yellow>[point]<gray>' is not saved!",
             "interchange.internal.essentials.point.edit.exists" to "<gray>A Point called '<yellow>[point]<gray>' <red>already exists<gray>!",
             "interchange.internal.essentials.point.edit.teleportedSelf" to "<gray>Teleported you to the Point '<yellow>[point]<gray>'!",
-            "interchange.internal.essentials.point.edit.teleportedAll" to "<gray>Teleported everybody to the Point '<yellow>[point]<gray>'!"
+            "interchange.internal.essentials.point.edit.teleportedAll" to "<gray>Teleported everybody to the Point '<yellow>[point]<gray>'!",
+
+            "interchange.internal.message.reply.failed.noChatReceiver" to "<gray>You're <red>not<gray> having an active conversation with anyone online!",
 
         ),
     ) {
