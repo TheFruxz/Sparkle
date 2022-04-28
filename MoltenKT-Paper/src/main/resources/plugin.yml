@@ -31,3 +31,16 @@ commands:
     description: Manages your points!
   debugmode:
     description: Manages the servers debug mode!
+  message:
+    description: The communication-tool to chat with other players!
+    aliases:
+      - msg
+      - talk
+      - tell
+      - whisper
+      - speak
+  reply:
+    description: Reply to a message
+    aliases:
+      - r
+      - answer

@@ -12,6 +12,8 @@ import de.moltenKt.paper.app.component.events.EventsComponent
 import de.moltenKt.paper.app.component.experimental.ExperimentalComponent
 import de.moltenKt.paper.app.component.keeper.KeeperComponent
 import de.moltenKt.paper.app.component.marking.MarkingComponent
+import de.moltenKt.paper.app.component.messaging.MessageInterchange
+import de.moltenKt.paper.app.component.messaging.MessagingComponent
 import de.moltenKt.paper.app.component.point.PointComponent
 import de.moltenKt.paper.app.component.point.asset.Point
 import de.moltenKt.paper.app.component.point.asset.PointConfig
@@ -173,6 +175,7 @@ class MoltenApp : App() {
 		add(UIComponent())
 		add(ComponentComponent())
 		add(ProtectionComponent())
+		add(MessagingComponent())
 
 		add(MoltenKtInterchange())
 		add(DebugModeInterchange())
