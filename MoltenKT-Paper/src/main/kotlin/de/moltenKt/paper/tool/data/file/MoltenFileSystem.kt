@@ -9,16 +9,18 @@ import kotlin.io.path.div
 
 object MoltenFileSystem {
 
-    internal val homePath = Path("MoltenApps")
+    private val homePath = Path("MoltenApps")
 
     fun appPath(app: Identifiable<App>) =
-        homePath / "@${app.identity}"
+        homePath / "main@${app.identity}"
 
     fun rootPath() =
         appPath(system)
 
     fun componentPath(component: Identifiable<out Component>) =
         homePath / with(component.identity.split(":")) {
+            assert(!this[1].equals("main", true)) { "Component is not allowed to be called 'main' and also use the file system at the same time!" }
+
             "${this[1]}@${this[0]}"
         }
 
