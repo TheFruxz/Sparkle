@@ -142,6 +142,10 @@ object MoltenCache : AppCache {
 	@DataLevel(CLEAR)
 	internal val splashScreens = mutableMapOf<Player, Job>()
 
+	@EntityData
+	@DataLevel(CLEAR)
+	internal val messageConversationPartners = mutableMapOf<Player, Player>()
+
 	private fun entityCleanerObjects(entity: UUID) = mapOf(
 		this::buildModePlayers to { buildModePlayers.removeAll { it.identity == "" + entity } },
 		this::playerMarkerBoxes to { playerMarkerBoxes.removeAll { key, _ -> key.identity == "" + entity } },
