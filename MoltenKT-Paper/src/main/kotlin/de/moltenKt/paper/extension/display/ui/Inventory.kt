@@ -6,6 +6,8 @@ import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.tool.display.item.Item
 import de.moltenKt.paper.tool.display.ui.inventory.Container
 import de.moltenKt.paper.tool.display.ui.panel.Panel
+import net.kyori.adventure.text.TextComponent
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
@@ -17,6 +19,10 @@ fun emptyContainer(lines: Int = 3) = Container(size = lines*9)
 fun buildPanel(lines: Int = 5, generateBorder: Boolean = true, action: Panel.() -> Unit) = Panel(lines = lines, generateBorder = generateBorder).apply(action)
 
 fun emptyPanel(lines: Int = 5, generateBorder: Boolean = true) = Panel(lines = lines, generateBorder = generateBorder)
+
+fun buildInventory(size: Int, process: Inventory.() -> Unit) = Bukkit.createInventory(null, size).apply(process)
+
+fun buildInventory(size: Int, label: TextComponent, process: Inventory.() -> Unit) = Bukkit.createInventory(null, size, label).apply(process)
 
 operator fun <T : Inventory> T.get(slot: Int) = tryOrNull { getItem(slot) }
 
