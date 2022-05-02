@@ -15,8 +15,8 @@ import org.bukkit.entity.HumanEntity
 import org.bukkit.inventory.Inventory
 
 open class Canvas(
-	val key: Key,
-	val label: TextComponent,
+	open val key: Key,
+	open val label: TextComponent,
 	val canvasSize: CanvasSize,
 	val content: Map<Int, ItemLike>,
 	val panelFlags: Set<PanelFlag>,
@@ -59,6 +59,10 @@ open class Canvas(
 			}
 
 		}
+
+	operator fun get(slot: Int): ItemLike? {
+		return content[slot]
+	}
 
 	fun display(vararg receiver: HumanEntity): Unit = display(receiver = receiver, data = emptyMap())
 
