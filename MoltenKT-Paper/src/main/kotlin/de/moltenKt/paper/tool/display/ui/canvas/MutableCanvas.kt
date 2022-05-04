@@ -1,7 +1,11 @@
 package de.moltenKt.paper.tool.display.ui.canvas
 
+import de.moltenKt.paper.runtime.event.PanelClickEvent
+import de.moltenKt.paper.runtime.event.PanelCloseEvent
+import de.moltenKt.paper.runtime.event.PanelOpenEvent
 import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.display.ui.panel.PanelFlag
+import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
@@ -14,7 +18,12 @@ data class MutableCanvas(
     override val canvasSize: CanvasSize = CanvasSize.MEDIUM,
     override var content: Map<Int, ItemLike> = emptyMap(),
     override val panelFlags: Set<PanelFlag> = emptySet(),
+    override val openSoundEffect: SoundEffect? = null,
     ) : Canvas(key, label, canvasSize, content, panelFlags) {
+
+    override var onOpen: PanelOpenEvent.() -> Unit = { }
+    override var onClose: PanelCloseEvent.() -> Unit = { }
+    override var onClicks: Map<Int, PanelClickEvent.() -> Unit> = emptyMap()
 
     operator fun set(slot: Int, itemLike: ItemLike?) {
         if (itemLike != null) {

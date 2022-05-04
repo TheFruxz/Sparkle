@@ -20,13 +20,17 @@ import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.display.item.action.ItemAction
 import de.moltenKt.paper.tool.display.item.action.ItemClickAction
 import de.moltenKt.paper.tool.display.item.action.ItemInteractAction
+import de.moltenKt.paper.tool.display.ui.canvas.Canvas
+import de.moltenKt.paper.tool.display.ui.canvas.CanvasSessionManager.CanvasSession
 import de.moltenKt.paper.tool.display.ui.panel.Panel
 import de.moltenKt.paper.tool.display.ui.panel.PanelFlag
 import de.moltenKt.paper.tool.position.CubicalShape
 import de.moltenKt.paper.tool.timing.cooldown.Cooldown
 import de.moltenKt.paper.tool.timing.tasky.Tasky
 import kotlinx.coroutines.Job
+import net.kyori.adventure.key.Key
 import org.bukkit.OfflinePlayer
+import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import kotlin.reflect.full.findAnnotations
@@ -145,6 +149,14 @@ object MoltenCache : AppCache {
 	@EntityData
 	@DataLevel(CLEAR)
 	internal val messageConversationPartners = mutableMapOf<Player, Player>()
+
+	@EntityData
+	@DataLevel(CLEAR)
+	internal var canvasActions = mapOf<Key, Canvas.Reaction>()
+
+	@EntityData
+	@DataLevel(CLEAR)
+	internal var canvasSessions = mapOf<HumanEntity, CanvasSession>()
 
 	private fun entityCleanerObjects(entity: UUID) = mapOf(
 		this::buildModePlayers to { buildModePlayers.removeAll { it.identity == "" + entity } },
