@@ -1,27 +1,27 @@
 package de.moltenKt.paper.extension.display
 
-import org.bukkit.ChatColor
+import com.destroystokyo.paper.ParticleBuilder
+import de.moltenKt.paper.tool.display.color.MoltenColor
+import net.kyori.adventure.text.format.TextColor
+import org.bukkit.Color as BukkitColor
+import java.awt.Color as AwtColor
 
-val BLACK = ChatColor.BLACK
-val DARK_BLUE = ChatColor.DARK_BLUE
-val DARK_GREEN = ChatColor.DARK_GREEN
-val DARK_AQUA = ChatColor.DARK_AQUA
-val DARK_RED = ChatColor.DARK_RED
-val DARK_PURPLE = ChatColor.DARK_PURPLE
-val GOLD = ChatColor.GOLD
-val GRAY = ChatColor.GRAY
-val DARK_GRAY = ChatColor.DARK_GRAY
-val BLUE = ChatColor.BLUE
-val GREEN = ChatColor.GREEN
-val AQUA = ChatColor.AQUA
-val RED = ChatColor.RED
-val LIGHT_PURPLE = ChatColor.LIGHT_PURPLE
-val YELLOW = ChatColor.YELLOW
-val WHITE = ChatColor.WHITE
+fun colorOf(red: Int, green: Int, blue: Int) = MoltenColor(red, green, blue)
 
-val BOLD = ChatColor.BOLD
-val ITALIC = ChatColor.ITALIC
-val UNDERLINE = ChatColor.UNDERLINE
-val MAGIC = ChatColor.MAGIC
-val STRIKETHROUGH = ChatColor.STRIKETHROUGH
-val RESET = ChatColor.RESET
+fun colorOf(rgb: Int) = MoltenColor(rgb)
+
+fun colorOf(hexColor: String) = MoltenColor(hexColor)
+
+fun colorOf(awtColor: AwtColor) = MoltenColor(awtColor)
+
+fun colorOf(bukkitColor: BukkitColor) = MoltenColor(bukkitColor)
+
+fun colorOf(textColor: TextColor) = MoltenColor(textColor)
+
+fun ParticleBuilder.color(color: MoltenColor, size: Float) = apply {
+    this.color(color.bukkitColor, size)
+}
+
+fun ParticleBuilder.color(color: MoltenColor) = apply {
+    this.color(color.bukkitColor)
+}
