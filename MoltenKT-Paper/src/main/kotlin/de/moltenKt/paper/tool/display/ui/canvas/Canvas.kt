@@ -10,25 +10,25 @@ import de.moltenKt.paper.tool.display.color.ColorType
 import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.display.ui.panel.PanelFlag
 import net.kyori.adventure.key.Key
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.HumanEntity
 import org.bukkit.inventory.Inventory
 
 open class Canvas(
 	open val key: Key,
-	open val label: TextComponent,
-	val canvasSize: CanvasSize,
-	val content: Map<Int, ItemLike>,
-	val panelFlags: Set<PanelFlag>,
-	val colorTheme: ColorType,
-
-	val onReceive: CanvasViewContext.() -> Unit,
-	val onOpen: PanelOpenEvent.() -> Unit,
-	val onClose: PanelCloseEvent.() -> Unit,
+	open val label: TextComponent = Component.empty(),
+	open val canvasSize: CanvasSize = CanvasSize.MEDIUM,
+	open val content: Map<Int, ItemLike> = emptyMap(),
+	open val panelFlags: Set<PanelFlag> = emptySet(),
 ) : Identifiable<Canvas> {
 
 	override val identity: String
 		get() = key.asString()
+
+	val onReceive: CanvasViewContext.() -> Unit = { }
+	val onOpen: PanelOpenEvent.() -> Unit = { }
+	val onClose: PanelCloseEvent.() -> Unit = { }
 
 	private val computedInnerSlots: List<Int> by lazy {
 		mutableListOf<Int>().apply {
@@ -63,6 +63,12 @@ open class Canvas(
 	operator fun get(slot: Int): ItemLike? {
 		return content[slot]
 	}
+
+	operator fun get(slots: Iterable<Int>): List<ItemLike?> =
+		slots.map(this::get)
+
+	operator fun get(vararg slots: Int) =
+		get(slots.toList())
 
 	fun display(vararg receiver: HumanEntity): Unit = display(receiver = receiver, data = emptyMap())
 

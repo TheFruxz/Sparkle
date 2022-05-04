@@ -1,6 +1,9 @@
 package de.moltenKt.paper.tool.display.item
 
 import de.moltenKt.core.tool.smart.Producible
+import de.moltenKt.paper.extension.display.ui.item
+import de.moltenKt.paper.extension.display.ui.itemStack
+import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
 /**
@@ -41,5 +44,25 @@ interface ItemLike : Producible<ItemStack> {
 	 */
 	override fun produce(): ItemStack =
 		asItemStack()
+
+	companion object {
+
+		fun of(itemStack: ItemStack) = object : ItemLike {
+
+			override fun asItem() = itemStack.item
+
+			override fun asItemStack() = itemStack
+
+		}
+
+		fun of(material: Material) = object : ItemLike {
+
+			override fun asItem() = material.item
+
+			override fun asItemStack() = material.itemStack
+
+		}
+
+	}
 
 }
