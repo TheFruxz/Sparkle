@@ -9,6 +9,10 @@ import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.runtime.event.PanelClickEvent
 import de.moltenKt.paper.runtime.event.PanelCloseEvent
 import de.moltenKt.paper.runtime.event.PanelOpenEvent
+import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
+import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
+import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
+import de.moltenKt.paper.runtime.event.canvas.CanvasRenderEvent
 import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.display.ui.panel.PanelFlag
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
@@ -30,9 +34,10 @@ open class Canvas(
 	override val identity: String
 		get() = key.asString()
 
-	open val onOpen: PanelOpenEvent.() -> Unit = { }
-	open val onClose: PanelCloseEvent.() -> Unit = { }
-	open val onClicks: Map<Int, PanelClickEvent.() -> Unit> = emptyMap()
+	open val onRender: CanvasRenderEvent.() -> Unit = { }
+	open val onOpen: CanvasOpenEvent.() -> Unit = { }
+	open val onClose: CanvasCloseEvent.() -> Unit = { }
+	open val onClicks: Map<Int, CanvasClickEvent.() -> Unit> = emptyMap()
 
 	private val computedInnerSlots: List<Int> by lazy {
 		mutableListOf<Int>().apply {
