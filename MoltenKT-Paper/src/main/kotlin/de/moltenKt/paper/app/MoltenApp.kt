@@ -12,7 +12,6 @@ import de.moltenKt.paper.app.component.events.EventsComponent
 import de.moltenKt.paper.app.component.experimental.ExperimentalComponent
 import de.moltenKt.paper.app.component.keeper.KeeperComponent
 import de.moltenKt.paper.app.component.marking.MarkingComponent
-import de.moltenKt.paper.app.component.messaging.MessageInterchange
 import de.moltenKt.paper.app.component.messaging.MessagingComponent
 import de.moltenKt.paper.app.component.point.PointComponent
 import de.moltenKt.paper.app.component.point.asset.Point
@@ -25,10 +24,9 @@ import de.moltenKt.paper.app.interchange.MoltenKtInterchange
 import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
+import de.moltenKt.paper.extension.display.ui.skull
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
-import de.moltenKt.paper.extension.paper.toSimpleLocation
-import de.moltenKt.paper.extension.tasky.sync
 import de.moltenKt.paper.general.api.mojang.MojangProfile
 import de.moltenKt.paper.general.api.mojang.MojangProfileCape
 import de.moltenKt.paper.general.api.mojang.MojangProfileRaw
@@ -41,8 +39,10 @@ import de.moltenKt.paper.structure.app.AppCompanion
 import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.json.JsonConfiguration
 import de.moltenKt.paper.tool.data.json.JsonFileDataElement
+import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
+import de.moltenKt.paper.tool.display.ui.canvas.buildCanvas
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
@@ -51,7 +51,6 @@ import de.moltenKt.paper.tool.permission.Approval
 import de.moltenKt.paper.tool.position.ComplexShape
 import de.moltenKt.paper.tool.position.CubicalShape
 import de.moltenKt.paper.tool.position.CylindricalShape
-import de.moltenKt.paper.tool.position.PyramidalShape
 import de.moltenKt.paper.tool.position.Shape
 import de.moltenKt.paper.tool.position.SphericalShape
 import de.moltenKt.unfold.text
@@ -60,6 +59,7 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Material
 import org.bukkit.command.CommandExecutor
@@ -181,58 +181,18 @@ class MoltenApp : App() {
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
 
-		buildAndRegisterSandBox(this, "test") {
+		buildAndRegisterSandBox(this, "canvasTest") {
+			val player = executor as Player
 
-			val shape = Shape.cube((executor as Player).location, 50.0)
+			buildCanvas(Key.key("canvastest")) {
 
-			repeat(50) {
-				val material = Material.values().toList().shuffled().first {
-					it.isSolid && it.isCollidable && it.isOccluding && it.isBlock
-				}
+				this[11..14] = Material.STONE
 
-				shape.gridBlockLocations.forEach {
+				this[15] = skull("Cancelcloud")
 
-					sync {
+				border(Material.COPPER_BLOCK)
 
-						it.bukkit.block.type = material
-
-					}
-
-				}
-
-			}
-
-		}
-
-		buildAndRegisterSandBox(this, "test2") {
-
-			val shape = PyramidalShape((executor as Player).location.toSimpleLocation(), 5.0, 9.0, 9.0)
-
-			shape.blockLocations.forEach {
-
-				sync {
-
-					it.bukkit.block.type = Material.REDSTONE_LAMP
-
-				}
-
-			}
-
-		}
-
-		buildAndRegisterSandBox(this, "test3") {
-
-			val shape = PyramidalShape((executor as Player).location.toSimpleLocation(), 20.0, 15.0, 30.0)
-
-			shape.blockLocations.forEach {
-
-				sync {
-
-					it.bukkit.block.type = Material.REDSTONE_LAMP
-
-				}
-
-			}
+			}.display(player, player, player, player)
 
 		}
 

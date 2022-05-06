@@ -6,9 +6,7 @@ import de.moltenKt.paper.extension.display.ui.buildInventory
 import de.moltenKt.paper.extension.display.ui.set
 import de.moltenKt.paper.extension.effect.playSoundEffect
 import de.moltenKt.paper.extension.mainLog
-import de.moltenKt.paper.runtime.event.PanelClickEvent
-import de.moltenKt.paper.runtime.event.PanelCloseEvent
-import de.moltenKt.paper.runtime.event.PanelOpenEvent
+import de.moltenKt.paper.extension.tasky.sync
 import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
@@ -20,6 +18,7 @@ import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.HumanEntity
+import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 
 open class Canvas(
@@ -79,12 +78,38 @@ open class Canvas(
 	operator fun get(vararg slots: Int) =
 		get(slots.toList())
 
-	fun display(vararg receivers: HumanEntity, triggerEvents: Boolean = true): Unit = display(receivers = receivers, data = emptyMap())
+	fun display(
+		vararg receivers: HumanEntity,
+		data: Map<Key, Any> = emptyMap(),
+		triggerEvents: Boolean = true,
+		triggerSound: Boolean = true
+	) {
 
-	fun display(vararg receivers: HumanEntity, data: Map<Key, Any>, triggerEvents: Boolean = true, triggerSound: Boolean = true): Unit = receivers.forEach { receiver ->
-		if (triggerSound) openSoundEffect?.let { receiver.playSoundEffect(it) }
+		val inventoryContent = (0 until canvasSize.size).map { slot -> content[slot]?.asItemStack() }.toTypedArray()
 
-		CanvasSessionManager.putSession(receiver, key, data)
+		push()
+
+		receivers.forEach { receiver ->
+			if (triggerSound) openSoundEffect?.let { receiver.playSoundEffect(it) }
+
+			CanvasSessionManager.putSession(receiver, key, data)
+
+			var localInstance = buildInventory(canvasSize.size, label) {
+
+				this.contents = inventoryContent
+
+			}
+
+			if (triggerEvents && receiver is Player) CanvasOpenEvent(receiver, this, localInstance, data).let { event ->
+				if (event.callEvent()) {
+					localInstance = event.inventory
+				} else
+					return@forEach
+			}
+
+			sync { receiver.openInventory(localInstance) }
+
+		}
 
 	}
 
@@ -96,10 +121,28 @@ open class Canvas(
 		MoltenCache.canvasActions += key to Reaction(onOpen, onClose, onClicks)
 	}
 
+	fun toMutable(
+		key: Key = this.key,
+		label: TextComponent = this.label,
+		canvasSize: CanvasSize = this.canvasSize,
+		content: Map<Int, ItemLike> = this.content,
+		panelFlags: Set<PanelFlag> = this.panelFlags,
+		openSoundEffect: SoundEffect? = this.openSoundEffect,
+		onRender: CanvasRenderEvent.() -> Unit = this.onRender,
+		onOpen: CanvasOpenEvent.() -> Unit = this.onOpen,
+		onClose: CanvasCloseEvent.() -> Unit = this.onClose,
+		onClicks: Map<Int, CanvasClickEvent.() -> Unit> = this.onClicks,
+	): MutableCanvas = MutableCanvas(key, label, canvasSize, content, panelFlags, openSoundEffect).apply {
+		this.onRender = onRender
+		this.onOpen = onOpen
+		this.onClose = onClose
+		this.onClicks = onClicks
+	}
+
 	data class Reaction(
-		val onOpen: PanelOpenEvent.() -> Unit = { },
-		val onClose: PanelCloseEvent.() -> Unit = { },
-		val onClicks: Map<Int, PanelClickEvent.() -> Unit> = emptyMap(),
+		val onOpen: CanvasOpenEvent.() -> Unit = { },
+		val onClose: CanvasCloseEvent.() -> Unit = { },
+		val onClicks: Map<Int, CanvasClickEvent.() -> Unit> = emptyMap(),
 	)
 
 }
