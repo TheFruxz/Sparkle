@@ -71,7 +71,7 @@ data class Item(
 	var itemMetaBase: ItemMeta? = null,
 	var itemActionTags: Set<ItemActionTag> = emptySet(),
 	val productionPlugins: MutableSet<(ItemStack) -> Unit> = mutableSetOf(),
-) : Identifiable<Item>, Producible<ItemStack>, HoverEventSource<ShowItem> {
+) : ItemLike, Identifiable<Item>, Producible<ItemStack>, HoverEventSource<ShowItem> {
 
 	constructor(source: Material) : this(material = source)
 
@@ -153,6 +153,10 @@ data class Item(
 	} else null
 
 	fun produceJson() = JsonItemStack.toJson(produce())
+
+	override fun asItem(): Item = copy()
+
+	override fun asItemStack(): ItemStack = produce()
 
 	override fun produce(): ItemStack = if (asyncEngine) {
 		runBlocking {
