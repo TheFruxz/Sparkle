@@ -109,12 +109,15 @@ If you have any questions, suggestions or other items you would like to contribu
 
 MoltenKT-Paper-Runnable includes these small amount of dependencies
 
+  - MoltenKT-Core
+  - MoltenKT-Paper
+  - MoltenKT-Unfold
   - Kotlin Standard Library
   - Kotlin Standard Library JDK8
   - Kotlin Reflect
   - KotlinX Serialization JSON
   - KotlinX Coroutines Core
-  - SLF4J
+  - SLF4J-API
   - JetBrains Exposed Core
   - JetBrains Exposed DAO
   - JetBrains Exposed JDBC
