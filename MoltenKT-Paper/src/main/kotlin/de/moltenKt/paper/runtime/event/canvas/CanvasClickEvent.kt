@@ -15,7 +15,7 @@ data class CanvasClickEvent(
 	val view: InventoryView,
 	override var eventCancelled: Boolean = false,
 	val originEvent: InventoryClickEvent,
-) : CanvasEvent(player, canvas), KCancellable {
+) : CanvasEvent(player, canvas, isAsync = false), KCancellable {
 
 	val action by lazy {
 		originEvent.action

@@ -24,9 +24,7 @@ import de.moltenKt.paper.app.interchange.MoltenKtInterchange
 import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
-import de.moltenKt.paper.extension.display.ui.skull
 import de.moltenKt.paper.extension.mainLog
-import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
 import de.moltenKt.paper.general.api.mojang.MojangProfile
 import de.moltenKt.paper.general.api.mojang.MojangProfileCape
 import de.moltenKt.paper.general.api.mojang.MojangProfileRaw
@@ -39,10 +37,8 @@ import de.moltenKt.paper.structure.app.AppCompanion
 import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.json.JsonConfiguration
 import de.moltenKt.paper.tool.data.json.JsonFileDataElement
-import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
-import de.moltenKt.paper.tool.display.ui.canvas.buildCanvas
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
@@ -59,12 +55,9 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Material
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
-import org.bukkit.entity.Player
 import java.util.logging.Level
 
 class MoltenApp : App() {
@@ -180,21 +173,6 @@ class MoltenApp : App() {
 		add(MoltenKtInterchange())
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
-
-		buildAndRegisterSandBox(this, "canvasTest") {
-			val player = executor as Player
-
-			buildCanvas(Key.key("canvastest")) {
-
-				this[11..14] = Material.STONE
-
-				this[15] = skull("Cancelcloud")
-
-				border(Material.COPPER_BLOCK)
-
-			}.display(player, player, player, player)
-
-		}
 
 	}
 

@@ -47,6 +47,7 @@ interface ItemLike : Producible<ItemStack> {
 
 	companion object {
 
+		@JvmStatic
 		fun of(itemStack: ItemStack) = object : ItemLike {
 
 			override fun asItem() = itemStack.item
@@ -55,6 +56,7 @@ interface ItemLike : Producible<ItemStack> {
 
 		}
 
+		@JvmStatic
 		fun of(material: Material) = object : ItemLike {
 
 			override fun asItem() = material.item

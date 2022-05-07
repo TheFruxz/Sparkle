@@ -12,6 +12,7 @@ internal class UIComponent : SmartComponent(AUTOSTART_MUTABLE) {
 		listener(PanelLinkListener())
 		listener(ItemTagListener())
 		listener(SplashScreenListener())
+		listener(CanvasListener())
 
 		service(SplashScreenService())
 

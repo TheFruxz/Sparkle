@@ -9,4 +9,5 @@ abstract class CanvasEvent(
 	val host: HumanEntity,
 	open val canvas: Canvas,
 	val key: Key = canvas.key,
-) : Event(false /* TODO maybe change if data in items can be safely changed async */)
+	val isAsync: Boolean = true,
+) : Event(isAsync)

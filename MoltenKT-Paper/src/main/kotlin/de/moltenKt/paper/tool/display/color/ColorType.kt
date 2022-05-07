@@ -2,6 +2,7 @@
 
 package de.moltenKt.paper.tool.display.color
 
+import de.moltenKt.core.annotation.NotPerfect
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.util.RGBLike
@@ -51,7 +52,7 @@ enum class ColorType : RGBLike {
 		}
 	}
 
-	@de.moltenKt.core.annotation.NotPerfect
+	@NotPerfect
 	val chatColor by lazy {
 		when (this) {
 			WHITE -> ChatColor.WHITE
@@ -73,7 +74,7 @@ enum class ColorType : RGBLike {
 		}
 	}
 
-	@de.moltenKt.core.annotation.NotPerfect
+	@NotPerfect
 	val dyedChatColor: net.md_5.bungee.api.ChatColor by lazy {
 		try {
 			net.md_5.bungee.api.ChatColor.of(
@@ -90,7 +91,7 @@ enum class ColorType : RGBLike {
 		dyeColor.color
 	}
 
-	@de.moltenKt.core.annotation.NotPerfect
+	@NotPerfect
 	val barColor: BarColor by lazy {
 		when (this) {
 			WHITE -> BarColor.WHITE
@@ -106,7 +107,7 @@ enum class ColorType : RGBLike {
 		}
 	}
 
-	@de.moltenKt.core.annotation.NotPerfect
+	@NotPerfect
 	val adventureBarColor: BossBar.Color by lazy {
 		when (this) {
 			WHITE -> BossBar.Color.WHITE
@@ -198,6 +199,12 @@ enum class ColorType : RGBLike {
 		@JvmStatic
 		fun materialFromMaterialCode(materialCode: String) =
 			DyeableMaterial.materialFromMaterialCode(materialCode)
+
+		/**
+		 * The common colors of a rainbow.
+		 */
+		@JvmStatic
+		val rainbow: List<ColorType> by lazy { listOf(RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, PURPLE, PINK) }
 
 	}
 

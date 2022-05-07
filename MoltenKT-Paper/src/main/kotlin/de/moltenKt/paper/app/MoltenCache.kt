@@ -158,6 +158,10 @@ object MoltenCache : AppCache {
 	@DataLevel(CLEAR)
 	internal var canvasSessions = mapOf<HumanEntity, CanvasSession>()
 
+	@GlobalData
+	@DataLevel(CLEAR)
+	internal var canvas = mapOf<Key, Canvas>()
+
 	private fun entityCleanerObjects(entity: UUID) = mapOf(
 		this::buildModePlayers to { buildModePlayers.removeAll { it.identity == "" + entity } },
 		this::playerMarkerBoxes to { playerMarkerBoxes.removeAll { key, _ -> key.identity == "" + entity } },
