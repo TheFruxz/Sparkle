@@ -1,7 +1,6 @@
 package de.moltenKt.paper.tool.display.color
 
 import de.moltenKt.core.tool.color.Color
-import de.moltenKt.core.tool.smart.identification.Identifiable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.format.TextColor
@@ -37,7 +36,14 @@ data class MoltenColor(
         hexString
     }
 
+    /**
+     * This function creates a new color, but the [color]
+     * is applied to it, by [opacity] amount.
+     * @author Fruxz
+     * @since 1.0
+     */
     fun shiftTo(color: MoltenColor, opacity: Double): MoltenColor {
+        validate()
         if (opacity !in 0.0..1.0) error("opacity must be in range 0.0..1.0")
 
         println("o -> $opacity and ${opacity in 0.0..1.0}")
@@ -50,6 +56,7 @@ data class MoltenColor(
     }
 
     val bukkitColor: BukkitColor by lazy {
+        validate()
         BukkitColor.fromRGB(red, green, blue)
     }
 
