@@ -1,12 +1,12 @@
-package de.moltenKt.paper.tool.display.ui.canvas
+package de.moltenKt.paper.tool.display.canvas
 
 import de.moltenKt.core.tool.smart.Producible
 import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasRenderEvent
+import de.moltenKt.paper.tool.display.canvas.design.AdaptiveCanvas
 import de.moltenKt.paper.tool.display.item.ItemLike
-import de.moltenKt.paper.tool.display.ui.canvas.design.AdaptiveCanvas
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import net.kyori.adventure.builder.AbstractBuilder
 import net.kyori.adventure.key.Key

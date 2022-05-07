@@ -1,4 +1,4 @@
-package de.moltenKt.paper.tool.display.ui.canvas
+package de.moltenKt.paper.tool.display.canvas
 
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenCache
@@ -13,8 +13,8 @@ import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasRenderEvent
+import de.moltenKt.paper.tool.display.canvas.CanvasFlag.NO_OPEN
 import de.moltenKt.paper.tool.display.item.ItemLike
-import de.moltenKt.paper.tool.display.ui.canvas.CanvasFlag.NO_OPEN
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel

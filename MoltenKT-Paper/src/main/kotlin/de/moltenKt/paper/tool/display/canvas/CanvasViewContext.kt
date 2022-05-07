@@ -1,4 +1,4 @@
-package de.moltenKt.paper.tool.display.ui.canvas
+package de.moltenKt.paper.tool.display.canvas
 
 import net.kyori.adventure.key.Key
 import org.bukkit.entity.Player

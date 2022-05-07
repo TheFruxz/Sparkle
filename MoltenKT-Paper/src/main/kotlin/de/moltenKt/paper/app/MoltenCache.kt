@@ -5,7 +5,6 @@ import de.moltenKt.core.extension.container.removeAll
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.extension.debugLog
-import de.moltenKt.paper.runtime.event.PanelClickEvent
 import de.moltenKt.paper.runtime.sandbox.SandBox
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.AppCache
@@ -17,13 +16,11 @@ import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.structure.feature.Feature
 import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.data.Preference
+import de.moltenKt.paper.tool.display.canvas.Canvas
+import de.moltenKt.paper.tool.display.canvas.CanvasSessionManager.CanvasSession
 import de.moltenKt.paper.tool.display.item.action.ItemAction
 import de.moltenKt.paper.tool.display.item.action.ItemClickAction
 import de.moltenKt.paper.tool.display.item.action.ItemInteractAction
-import de.moltenKt.paper.tool.display.ui.canvas.Canvas
-import de.moltenKt.paper.tool.display.ui.canvas.CanvasSessionManager.CanvasSession
-import de.moltenKt.paper.tool.display.ui.panel.Panel
-import de.moltenKt.paper.tool.display.ui.panel.PanelFlag
 import de.moltenKt.paper.tool.position.CubicalShape
 import de.moltenKt.paper.tool.timing.cooldown.Cooldown
 import de.moltenKt.paper.tool.timing.tasky.Tasky
@@ -91,10 +88,6 @@ object MoltenCache : AppCache {
 
 	@GlobalData
 	@DataLevel(KILL)
-	val registeredPanelFlags = mutableMapOf<String, Set<PanelFlag>>()
-
-	@GlobalData
-	@DataLevel(KILL)
 	val registeredPreferences = mutableMapOf<Identity<out Preference<*>>, Preference<*>>()
 
 	@GlobalData
@@ -129,14 +122,6 @@ object MoltenCache : AppCache {
 	@GlobalData
 	@DataLevel(KILL)
 	internal val initializationProcesses = mutableListOf<() -> Unit>()
-
-	@GlobalData
-	@DataLevel(CLEAR)
-	internal val completedPanels = mutableSetOf<Panel>()
-
-	@GlobalData
-	@DataLevel(CLEAR)
-	internal val panelInteractions = mutableMapOf<Identity<out Panel>, MutableList<PanelClickEvent.() -> Unit>>()
 
 	@GlobalData
 	@DataLevel(CLEAR)
@@ -180,7 +165,6 @@ object MoltenCache : AppCache {
 		this::registeredComponents to { registeredComponents.clear() },
 		this::registeredServices to { registeredServices.clear() },
 		this::runningComponents to { runningComponents.clear() },
-		this::registeredPanelFlags to { registeredPanelFlags.clear() },
 		this::registeredPreferences to { registeredPreferences.clear() },
 		this::livingCooldowns to { livingCooldowns.clear() },
 		this::runningServiceTaskController to { runningServiceTaskController.clear() },
@@ -190,7 +174,6 @@ object MoltenCache : AppCache {
 		this::featureStates to { featureStates.clear() },
 		this::tmp_initSetupPreferences to { tmp_initSetupPreferences.clear() },
 		this::initializationProcesses to { initializationProcesses.clear() },
-		this::panelInteractions to { panelInteractions.clear() },
 	)
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {

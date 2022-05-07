@@ -1,4 +1,4 @@
-package de.moltenKt.paper.tool.display.ui.canvas
+package de.moltenKt.paper.tool.display.canvas
 
 import de.moltenKt.core.extension.math.floorToInt
 import kotlin.math.roundToInt

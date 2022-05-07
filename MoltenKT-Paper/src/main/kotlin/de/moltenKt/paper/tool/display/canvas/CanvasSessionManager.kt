@@ -1,4 +1,4 @@
-package de.moltenKt.paper.tool.display.ui.canvas
+package de.moltenKt.paper.tool.display.canvas
 
 import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenCache

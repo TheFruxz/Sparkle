@@ -1,4 +1,4 @@
-package de.moltenKt.paper.tool.display.ui.canvas
+package de.moltenKt.paper.tool.display.canvas
 
 /**
  * This enum defines multiple possible reactions of a canvas.

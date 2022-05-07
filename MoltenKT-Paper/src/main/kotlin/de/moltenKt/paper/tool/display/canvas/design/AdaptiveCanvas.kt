@@ -1,9 +1,9 @@
-package de.moltenKt.paper.tool.display.ui.canvas.design
+package de.moltenKt.paper.tool.display.canvas.design
 
+import de.moltenKt.paper.tool.display.canvas.MutableCanvas
 import de.moltenKt.paper.tool.display.color.ColorType
 import de.moltenKt.paper.tool.display.color.DyeableMaterial
 import de.moltenKt.paper.tool.display.item.ItemLike
-import de.moltenKt.paper.tool.display.ui.canvas.MutableCanvas
 
 /**
  * This interface represents an extendable canvas feature, that

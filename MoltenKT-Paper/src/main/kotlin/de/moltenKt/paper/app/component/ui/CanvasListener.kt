@@ -5,8 +5,8 @@ import de.moltenKt.paper.extension.paper.player
 import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.structure.app.event.EventListener
-import de.moltenKt.paper.tool.display.ui.canvas.CanvasFlag.*
-import de.moltenKt.paper.tool.display.ui.canvas.CanvasSessionManager
+import de.moltenKt.paper.tool.display.canvas.CanvasFlag.*
+import de.moltenKt.paper.tool.display.canvas.CanvasSessionManager
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.inventory.InventoryClickEvent

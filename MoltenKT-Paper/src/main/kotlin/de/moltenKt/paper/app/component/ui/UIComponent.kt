@@ -9,12 +9,8 @@ internal class UIComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 	override suspend fun component() {
 
-		listener(PanelLinkListener())
 		listener(ItemTagListener())
-		listener(SplashScreenListener())
 		listener(CanvasListener())
-
-		service(SplashScreenService())
 
 	}
 

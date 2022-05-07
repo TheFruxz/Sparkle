@@ -1,6 +1,6 @@
 package de.moltenKt.paper.runtime.event.canvas
 
-import de.moltenKt.paper.tool.display.ui.canvas.Canvas
+import de.moltenKt.paper.tool.display.canvas.Canvas
 import de.moltenKt.paper.tool.event.KCancellable
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
