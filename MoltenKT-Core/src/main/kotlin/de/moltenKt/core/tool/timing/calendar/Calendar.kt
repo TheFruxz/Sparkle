@@ -2,13 +2,13 @@ package de.moltenKt.core.tool.timing.calendar
 
 import de.moltenKt.core.extension.data.fromJson
 import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.core.extension.dump
 import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.core.tool.smart.Producible
 import de.moltenKt.core.tool.timing.calendar.Calendar.FormatStyle.FULL
 import de.moltenKt.core.tool.timing.calendar.Calendar.FormatStyle.MEDIUM
 import de.moltenKt.core.tool.timing.calendar.Calendar.MoltenCalendarColumnType
 import de.moltenKt.core.tool.timing.calendar.timeUnit.TimeUnit
-import de.moltenKt.core.tool.timing.calendar.timeUnit.TimeUnit.Companion.MILLISECOND
 import de.moltenKt.core.tool.timing.calendar.timeUnit.TimeUnit.Companion.SECOND
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Column
@@ -72,22 +72,6 @@ class Calendar constructor(
 
 	/**
 	 * This function adds some time to the calendar.
-	 * It takes the [amount], takes the time unit
-	 * [timeField] and adds it to the calendar.
-	 * @param timeField the unit of time which should be added
-	 * @param amount the amount of time which should be added
-	 * @return the calendar itself
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	fun add(timeField: TimeUnit, amount: Int) = apply {
-		origin = origin.apply {
-			add(timeField.javaField, amount)
-		}
-	}
-
-	/**
-	 * This function adds some time to the calendar.
 	 * It takes the time from the [duration] and adds
 	 * it to the calendar using the internal units.
 	 * @param duration the amount of time which should be added
@@ -96,10 +80,12 @@ class Calendar constructor(
 	 * @since 1.0
 	 */
 	fun add(duration: Duration) = apply {
-		add(MILLISECOND, duration.inWholeMilliseconds.toInt())
+		origin = origin.apply {
+			timeInMillis += duration.inWholeMilliseconds
+		}
 	}
 
-	/**
+		/**
 	 * This function sets the time of the calendar.
 	 * It takes the [amount], takes the time unit
 	 * [timeField] and sets it to the calendar.
@@ -117,22 +103,6 @@ class Calendar constructor(
 
 	/**
 	 * This function takes some time from the calendar.
-	 * It takes the [amount], takes the time unit
-	 * [timeField] and takes it from the calendar.
-	 * @param timeField the unit of time which should be taken
-	 * @param amount the amount of time which should be taken
-	 * @return the calendar itself
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	fun take(timeField: TimeUnit, amount: Int) = apply {
-		origin = origin.apply {
-			add(timeField.javaField, amount * (-1))
-		}
-	}
-
-	/**
-	 * This function takes some time from the calendar.
 	 * It takes the time from the [duration] and takes
 	 * it from the calendar using the internal units.
 	 * @param duration the amount of time which should be taken
@@ -141,7 +111,9 @@ class Calendar constructor(
 	 * @since 1.0
 	 */
 	fun take(duration: Duration) = apply {
-		take(MILLISECOND, duration.inWholeMicroseconds.toInt())
+		origin = origin.apply {
+			timeInMillis += duration.inWholeMilliseconds
+		}
 	}
 
 	/**
@@ -326,17 +298,17 @@ class Calendar constructor(
 	 */
 	fun durationFromNow() = durationFrom(now())
 
-	operator fun plus(duration: Duration) = clone().add(MILLISECOND, duration.inWholeMilliseconds.toInt())
+	operator fun plus(duration: Duration) =
+		clone().add(duration)
 
-	operator fun plusAssign(duration: Duration) {
-		add(MILLISECOND, duration.inWholeMilliseconds.toInt())
-	}
+	operator fun plusAssign(duration: Duration) =
+		add(duration).dump()
 
-	operator fun minus(duration: Duration) = clone().take(MILLISECOND, duration.inWholeMilliseconds.toInt())
+	operator fun minus(duration: Duration) =
+		clone().take(duration)
 
-	operator fun minusAssign(duration: Duration) {
-		take(MILLISECOND, duration.inWholeMilliseconds.toInt())
-	}
+	operator fun minusAssign(duration: Duration) =
+		take(duration).dump()
 
 	/**
 	 * This function returns a new [Calendar] with the
