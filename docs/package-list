@@ -24,6 +24,7 @@ de.moltenKt.core.interchange
 de.moltenKt.core.structure
 de.moltenKt.core.tool.base
 de.moltenKt.core.tool.collection
+de.moltenKt.core.tool.color
 de.moltenKt.core.tool.data
 de.moltenKt.core.tool.devlang
 de.moltenKt.core.tool.exception
@@ -47,6 +48,7 @@ module:MoltenKT-Paper
 de.moltenKt.paper
 de.moltenKt.paper.app
 de.moltenKt.paper.app.component.buildMode.config
+de.moltenKt.paper.app.component.messaging
 de.moltenKt.paper.app.component.point.asset
 de.moltenKt.paper.app.component.world
 de.moltenKt.paper.extension
@@ -67,6 +69,7 @@ de.moltenKt.paper.general.api.mojang
 de.moltenKt.paper.mutable
 de.moltenKt.paper.runtime.app
 de.moltenKt.paper.runtime.event
+de.moltenKt.paper.runtime.event.canvas
 de.moltenKt.paper.runtime.event.interact
 de.moltenKt.paper.runtime.exception
 de.moltenKt.paper.runtime.lang
@@ -88,15 +91,14 @@ de.moltenKt.paper.tool.annotation
 de.moltenKt.paper.tool.data
 de.moltenKt.paper.tool.data.file
 de.moltenKt.paper.tool.data.json
+de.moltenKt.paper.tool.display.canvas
+de.moltenKt.paper.tool.display.canvas.design
 de.moltenKt.paper.tool.display.color
 de.moltenKt.paper.tool.display.item
 de.moltenKt.paper.tool.display.item.action
 de.moltenKt.paper.tool.display.item.quirk
 de.moltenKt.paper.tool.display.message
 de.moltenKt.paper.tool.display.skull
-de.moltenKt.paper.tool.display.ui
-de.moltenKt.paper.tool.display.ui.inventory
-de.moltenKt.paper.tool.display.ui.panel
 de.moltenKt.paper.tool.display.world
 de.moltenKt.paper.tool.effect
 de.moltenKt.paper.tool.effect.sound
