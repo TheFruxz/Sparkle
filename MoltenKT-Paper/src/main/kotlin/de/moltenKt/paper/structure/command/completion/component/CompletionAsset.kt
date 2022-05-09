@@ -250,7 +250,7 @@ data class CompletionAsset<T>(
 		val MATERIAL_VARIANT = CompletionAsset<Material>(system, "MATERIAL_VARIANT", false, listOf(InterchangeStructureInputRestriction.STRING)) {
 			buildSet {
 				DyeableMaterial.values().forEach { flex ->
-					val key = flex.key.toString()
+					val key = flex.key().asString()
 					add(key)
 					add(flex.name)
 					addAll(ColorType.values().withMap { "$key#$name" })
@@ -269,9 +269,9 @@ data class CompletionAsset<T>(
 				addAll(Material.values().withMap { "minecraft:$name" })
 
 				DyeableMaterial.values().forEach { flex ->
-					val key = flex.key.toString()
+					val key = flex.key().asString()
 					add("MoltenKT:$key")
-					addAll(ColorType.values().withMap { "MoltenKT:$key#$name" })
+					addAll(ColorType.values().withMap { "MoltenKT:$key#$name" }) // TODO sus? can be double-trouble (the prefix + key)
 				}
 
 			}

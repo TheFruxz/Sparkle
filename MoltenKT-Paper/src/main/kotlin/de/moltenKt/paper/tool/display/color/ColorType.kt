@@ -3,7 +3,11 @@
 package de.moltenKt.paper.tool.display.color
 
 import de.moltenKt.core.annotation.NotPerfect
+import de.moltenKt.paper.extension.paper.createKey
+import de.moltenKt.paper.extension.system
 import net.kyori.adventure.bossbar.BossBar
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.key.Keyed
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.util.RGBLike
 import org.bukkit.ChatColor
@@ -12,7 +16,7 @@ import org.bukkit.DyeColor
 import org.bukkit.Material
 import org.bukkit.boss.BarColor
 
-enum class ColorType : RGBLike {
+enum class ColorType : RGBLike, Keyed {
 
 	WHITE,
 	ORANGE,
@@ -30,6 +34,8 @@ enum class ColorType : RGBLike {
 	GREEN,
 	RED,
 	BLACK;
+
+	override fun key(): Key = system.createKey(name)
 
 	val dyeColor: DyeColor by lazy {
 		when (this) {
