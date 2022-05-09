@@ -28,116 +28,100 @@ import org.bukkit.event.Event
 
 object MoltenCache : AppCache {
 
-	@GlobalData
-	@DataLevel(KILL)
 	var registeredApps = setOf<App>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var registeredSandBoxes = setOf<SandBox>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var registeredSandBoxCalls = mapOf<Identity<SandBox>, Int>()
 
-	@GlobalData
-	@DataLevel(DUMP)
 	var registeredCompletionAssetStateCache = mapOf<String, Set<String>>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var registeredCachedMutables = mapOf<String, Any?>()
 
-	@GlobalData
-	@DataLevel(DUMP)
 	var registeredPreferenceCache = mapOf<String, Any>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var registeredInterchanges = setOf<Interchange>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var registeredComponents = setOf<Component>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var registeredServices = setOf<Service>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var registeredListeners = setOf<EventListener>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var runningComponents = mapOf<Identity<out Component>, Calendar>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var registeredPreferences = mapOf<Identity<out Preference<*>>, Preference<*>>()
 
-	@GlobalData
-	@DataLevel(CLEAR)
 	var livingCooldowns = mapOf<String, Cooldown>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var runningServiceTaskController = mapOf<Identity<Service>, Tasky>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var runningTasks = listOf<Int>()
 
-	@EntityData
-	@DataLevel(CLEAR)
 	var buildModePlayers = setOf<Identity<out OfflinePlayer>>()
 
-	@EntityData
-	@DataLevel(CLEAR)
 	var playerMarkerBoxes = mapOf<Identity<out OfflinePlayer>, CubicalShape>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	var featureStates = mutableMapOf<Identity<Feature>, Feature.FeatureState>()
+	var featureStates = mapOf<Identity<Feature>, Feature.FeatureState>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var tmp_initSetupPreferences = setOf<Preference<*>>()
 
-	@GlobalData
-	@DataLevel(KILL)
 	var initializationProcesses = setOf<() -> Unit>()
 
-	@GlobalData
-	@DataLevel(CLEAR)
 	var itemActions = setOf<ItemAction<out Event>>()
 
-	@EntityData
-	@DataLevel(CLEAR)
 	var messageConversationPartners = mapOf<Player, Player>()
 
-	@EntityData
-	@DataLevel(CLEAR)
 	var canvasActions = mapOf<Key, Canvas.Reaction>()
 
-	@EntityData
-	@DataLevel(CLEAR)
 	var canvasSessions = mapOf<HumanEntity, CanvasSession>()
 
-	@GlobalData
-	@DataLevel(CLEAR)
 	var canvas = mapOf<Key, Canvas>()
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
-
+		when {
+			dropDepth.isDeeperThanOrEquals(CLEAR) -> {
+				buildModePlayers = buildModePlayers.filter { it.identity != "" + entityIdentity }.toSet()
+				playerMarkerBoxes = playerMarkerBoxes.filter { it.key.identity != "" + entityIdentity }
+				messageConversationPartners = messageConversationPartners.filter { it.value.uniqueId != entityIdentity && it.key.uniqueId != entityIdentity }
+				canvasSessions = canvasSessions.filter { it.key.uniqueId != entityIdentity }
+			}
+		}
 	}
 
 	override fun dropEverything(dropDepth: CacheDepthLevel) {
+		when {
+			dropDepth.isDeeperThanOrEquals(DUMP) -> {
+				registeredCompletionAssetStateCache = emptyMap()
+				registeredPreferenceCache = emptyMap()
+			}
+			dropDepth.isDeeperThanOrEquals(CLEAN) -> {
 
+			}
+			dropDepth.isDeeperThanOrEquals(CLEAR) -> {
+				livingCooldowns = emptyMap()
+				itemActions = emptySet()
+				canvasActions = emptyMap()
+				canvas = emptyMap()
+			}
+			dropDepth.isDeeperThanOrEquals(KILL) -> {
+				registeredApps = emptySet()
+				registeredSandBoxes = emptySet()
+				registeredSandBoxCalls = emptyMap()
+				registeredCachedMutables = emptyMap()
+				registeredInterchanges = emptySet()
+				registeredComponents = emptySet()
+				registeredServices = emptySet()
+				registeredListeners = emptySet()
+				runningComponents = emptyMap()
+				registeredPreferences = emptyMap()
+				runningServiceTaskController = emptyMap()
+				runningTasks = emptyList()
+				featureStates = emptyMap()
+				tmp_initSetupPreferences = emptySet()
+				initializationProcesses = emptySet()
+			}
+		}
 	}
-
-	private annotation class EntityData
-	private annotation class GlobalData
-	private annotation class DataLevel(val level: CacheDepthLevel)
 
 }
