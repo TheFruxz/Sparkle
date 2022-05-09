@@ -11,16 +11,16 @@ abstract class AppCompanion<T : App> : Identifiable<App> {
 
 	/**
 	 * This value represents the current [App] instance.
-	 * It is extracted from the [MoltenCache.registeredApplications].
+	 * It is extracted from the [MoltenCache.registeredApps].
 	 * If the cache, does not contain this [App] instance, a
 	 * [NoSuchElementException] is thrown.
 	 * The instance get registered during the [App.onLoad]/[App.preHello].
-	 * @throws NoSuchElementException if the [App] instance is not registered in the [MoltenCache.registeredApplications]
+	 * @throws NoSuchElementException if the [App] instance is not registered in the [MoltenCache.registeredApps]
 	 * @author Fruxz
 	 * @since 1.0
 	 */
 	val instance: T
-		get() = MoltenCache.registeredApplications.first { it.identity == predictedIdentity.identity }.forceCast()
+		get() = MoltenCache.registeredApps.first { it.identity == predictedIdentity.identity }.forceCast()
 
 	/**
 	 * This value represents the coroutine scope of the [App], that

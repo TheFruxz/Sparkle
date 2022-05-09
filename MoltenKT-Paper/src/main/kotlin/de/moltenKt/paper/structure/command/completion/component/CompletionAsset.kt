@@ -61,7 +61,7 @@ data class CompletionAsset<T>(
 		MoltenCache.registeredCompletionAssetStateCache[identity]!!
 	} else {
 		generator(context, this).toSortedSet().apply {
-			if (!refreshing) MoltenCache.registeredCompletionAssetStateCache[identity] = this
+			if (!refreshing) MoltenCache.registeredCompletionAssetStateCache += identity to this
 		}
 	}
 
@@ -149,11 +149,11 @@ data class CompletionAsset<T>(
 
 		@JvmStatic
 		val APP = CompletionAsset<App>(system, "APP", true) {
-			MoltenCache.registeredApplications.withMap { identity }
+			MoltenCache.registeredApps.withMap { identity }
 		}.doCheck {
-			MoltenCache.registeredApplications.any { it.identity.equals(input, ignoreCase) }
+			MoltenCache.registeredApps.any { it.identity.equals(input, ignoreCase) }
 		}.transformer {
-			MoltenCache.registeredApplications.firstOrNull { it.identity == input }
+			MoltenCache.registeredApps.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic

@@ -3,6 +3,7 @@ package de.moltenKt.paper.extension.objectBound
 import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenCache.registeredSandBoxes
 import de.moltenKt.paper.extension.mainLog
+import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.runtime.sandbox.SandBox
 import de.moltenKt.paper.runtime.sandbox.SandBoxInteraction
 import de.moltenKt.paper.structure.app.App
@@ -13,7 +14,7 @@ inline fun buildSandBox(vendor: App, identity: String, noinline action: suspend 
 	SandBox(vendor, identity, Calendar.now(), with(Throwable().stackTrace[0]) { "$className.$methodName()" }, action)
 
 fun registerSandBox(sandBox: SandBox) {
-	registeredSandBoxes.add(sandBox)
+	registeredSandBoxes += sandBox
 	sandBox.vendor.log.info("registering SandBox '${sandBox.identity}'!")
 }
 
@@ -27,16 +28,13 @@ val allSandBoxes: Set<SandBox>
 
 fun getSandBox(fullIdentity: String) = registeredSandBoxes.firstOrNull { it.identity == fullIdentity }
 
-fun destroySandBox(fullIdentity: String) = registeredSandBoxes.removeAll {
-	(it.identity == fullIdentity).apply {
-		if (this) {
-			it.vendor.log.log(Level.INFO, "removing SandBox '$fullIdentity'!")
-		}
-	}
+fun destroySandBox(fullIdentity: String) {
+	registeredSandBoxes = registeredSandBoxes.filter { it.identity != fullIdentity }.toSet()
+	system.log.info("removing SandBox '$fullIdentity'!")
 }
 
 fun destroySandBox(sandBox: SandBox) =
 	destroySandBox(sandBox.identity)
 
-fun destroyAllSandBoxes() = registeredSandBoxes.clear()
-	.also { mainLog(Level.WARNING, "WARNING! removing every SandBox!") }
+fun destroyAllSandBoxes() = mainLog(Level.WARNING, "WARNING! removing every SandBox!")
+	.also { registeredSandBoxes = emptySet() }

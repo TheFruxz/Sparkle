@@ -38,10 +38,10 @@ data class Preference<SHELL : Any>(
 	init {
 
 		if (initTriggerSetup && !isSavedInFile) {
-			MoltenCache.tmp_initSetupPreferences.add(this)
+			MoltenCache.tmp_initSetupPreferences += this
 		}
 
-		MoltenCache.registeredPreferences[identityObject] = this
+		MoltenCache.registeredPreferences += identityObject to this
 
 		if (inputType != null) {
 			when (default) {
@@ -91,7 +91,7 @@ data class Preference<SHELL : Any>(
 
 					out = newContent.let {
 						if (useCache)
-							registeredPreferenceCache[inFilePath] = it
+							registeredPreferenceCache += inFilePath to it
 						if (it == default)
 							file[inFilePath] = transformer.toCore(default)
 						file.save()
@@ -131,7 +131,7 @@ data class Preference<SHELL : Any>(
 
 				transformer.toCore(value).let { coreObject ->
 					if (useCache)
-						registeredPreferenceCache[identity] = coreObject
+						registeredPreferenceCache += identity to coreObject
 					file[path.identity] = coreObject
 					debugLog("transformed '$value'(shell) to '$coreObject'(core)")
 				}

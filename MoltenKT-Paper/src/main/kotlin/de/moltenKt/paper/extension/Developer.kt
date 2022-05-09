@@ -1,5 +1,6 @@
 package de.moltenKt.paper.extension
 
+import de.moltenKt.core.extension.dump
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenApp
@@ -34,13 +35,13 @@ internal val system: MoltenApp
 	get() = de.moltenKt.paper.MoltenEngine.appInstance
 
 @Throws(NoSuchElementException::class)
-fun app(id: String) = MoltenCache.registeredApplications.first { it.appIdentity == id }
+fun app(id: String) = MoltenCache.registeredApps.first { it.appIdentity == id }
 
 @Throws(NoSuchElementException::class)
-fun app(vendor: Identifiable<out App>) = MoltenCache.registeredApplications.first { it.appIdentity == vendor.identity }
+fun app(vendor: Identifiable<out App>) = MoltenCache.registeredApps.first { it.appIdentity == vendor.identity }
 
 @Throws(NoSuchElementException::class)
-fun app(vendorIdentity: Identity<out App>) = MoltenCache.registeredApplications.first { it.appIdentity == vendorIdentity.identity }
+fun app(vendorIdentity: Identity<out App>) = MoltenCache.registeredApps.first { it.appIdentity == vendorIdentity.identity }
 
 @Throws(NoSuchElementException::class)
 fun Identifiable<out App>.getApp() = app(identity)
@@ -54,17 +55,17 @@ fun <T : VendorOnDemand> T.runIfAutoRegister() {
 			when (this) {
 
 				is Component -> {
-					MoltenCache.initializationProcesses.add { preferredVendor?.add(this) }
+					MoltenCache.initializationProcesses += { preferredVendor?.add(this).dump() }
 					debugLog(this::class.simpleName + " added to Component-AutoRegister")
 				}
 
 				is Interchange -> {
-					MoltenCache.initializationProcesses.add { preferredVendor?.add(this) }
+					MoltenCache.initializationProcesses += { preferredVendor?.add(this).dump() }
 					debugLog(this::class.simpleName + " added to Interchange-AutoRegister")
 				}
 
 				is EventListener -> {
-					MoltenCache.initializationProcesses.add { preferredVendor?.add(this) }
+					MoltenCache.initializationProcesses += { preferredVendor?.add(this).dump() }
 					debugLog(this::class.simpleName + " added to EventListener-AutoRegister")
 				}
 

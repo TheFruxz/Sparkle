@@ -14,11 +14,9 @@ internal object Messaging {
 
     fun sendMessage(sender: Player, receiver: Player, message: String) {
 
-        MoltenCache.messageConversationPartners.removeAll { key, value ->
-            key == sender || value == sender
+        MoltenCache.messageConversationPartners = MoltenCache.messageConversationPartners.filter {
+            it.key != receiver || it.value != receiver
         }
-
-        MoltenCache.messageConversationPartners[sender] = receiver
 
         val you = lang["system.message.style.you"]
         val format = lang["system.message.style"]
