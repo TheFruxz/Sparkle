@@ -10,7 +10,7 @@ import de.moltenKt.paper.tool.effect.sound.SoundLibrary
 import de.moltenKt.unfold.extension.asStyledComponent
 import org.bukkit.entity.Player
 
-object Messaging {
+internal object Messaging {
 
     fun sendMessage(sender: Player, receiver: Player, message: String) {
 
