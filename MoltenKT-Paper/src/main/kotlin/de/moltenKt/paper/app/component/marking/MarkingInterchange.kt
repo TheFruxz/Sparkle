@@ -67,7 +67,7 @@ internal class MarkingInterchange : StructuredInterchange(
 
 									if (actualBox?.firstLocation != targetLocation) {
 
-										MoltenCache.playerMarkerBoxes[player.identityObject] = currentBox.updateFirstLocation(targetLocation)
+										MoltenCache.playerMarkerBoxes += player.identityObject to currentBox.updateFirstLocation(targetLocation)
 
 										lang["component.markingTool.action.set"].replaceVariables(
 											"n" to 1,
@@ -95,7 +95,7 @@ internal class MarkingInterchange : StructuredInterchange(
 
 									if (actualBox?.secondLocation != targetLocation) {
 
-										MoltenCache.playerMarkerBoxes[player.identityObject] = currentBox.updateSecondLocation(targetLocation)
+										MoltenCache.playerMarkerBoxes += player.identityObject to currentBox.updateSecondLocation(targetLocation)
 
 										lang["component.markingTool.action.set"].replaceVariables(
 											"n" to 2,

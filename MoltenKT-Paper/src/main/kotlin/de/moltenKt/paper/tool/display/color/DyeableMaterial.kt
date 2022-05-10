@@ -3,11 +3,13 @@ package de.moltenKt.paper.tool.display.color
 import de.moltenKt.paper.extension.paper.createKey
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.tool.display.color.ColorType.WHITE
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.key.Keyed
 import org.bukkit.Material
 
 enum class DyeableMaterial(
 	val produceMaterialProcess: ColorType.() -> Material,
-) {
+) : Keyed {
 
 	WOOL(ColorType::wool),
 	TERRACOTTA(ColorType::terracotta),
@@ -25,7 +27,7 @@ enum class DyeableMaterial(
 
 	fun withColor(color: ColorType) = produceMaterialProcess(color)
 
-	val key = system.createKey(name)
+	override fun key(): Key = system.createKey(name)
 
 	companion object {
 

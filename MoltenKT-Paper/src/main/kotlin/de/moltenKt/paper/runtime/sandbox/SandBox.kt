@@ -35,7 +35,7 @@ data class SandBox(
             try {
                 sectionLog.log(Level.INFO, "Executor '${executor.name}' is starting SandBox '$identity'!")
 
-                MoltenCache.registeredSandBoxCalls[identityObject] = (MoltenCache.registeredSandBoxCalls[identityObject] ?: 0) + 1
+                MoltenCache.registeredSandBoxCalls += identityObject to (MoltenCache.registeredSandBoxCalls[identityObject] ?: 0) + 1
 
                 lang["interchange.internal.sandbox.run"]
                     .replaceVariables("sandbox" to identity)

@@ -53,7 +53,6 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
 
     compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT") // PaperMC
-    compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") // Head-Database
 
     // Shadow
 

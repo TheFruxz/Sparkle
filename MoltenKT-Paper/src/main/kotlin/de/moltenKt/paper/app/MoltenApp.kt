@@ -136,7 +136,7 @@ class MoltenApp : App() {
 			proceed(it.default)
 		}
 
-		MoltenCache.tmp_initSetupPreferences.clear()
+		MoltenCache.tmp_initSetupPreferences = emptySet()
 
 		languageSpeaker.let { languageSpeaker ->
 			mainLog(Level.INFO, "Speaking langauge: ${languageSpeaker.baseLang}")

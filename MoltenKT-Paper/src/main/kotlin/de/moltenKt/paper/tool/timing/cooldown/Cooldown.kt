@@ -19,11 +19,11 @@ data class Cooldown(
 	val destination = Calendar.now().add(ticks.minecraftTicks)
 
 	fun startCooldown() {
-		livingCooldowns[identity] = this
+		livingCooldowns += identity to this
 	}
 
 	fun stopCooldown() {
-		livingCooldowns.remove(identity)
+		livingCooldowns -= identity
 	}
 
 	val remainingTime: Duration
@@ -48,7 +48,7 @@ data class Cooldown(
 		fun launchCooldown(identity: String, ticks: Int, section: String = CooldownSection.general()): Cooldown {
 
 			if (isCooldownRunning(identity, section))
-				livingCooldowns.remove("${sectioning(section)}$identity")
+				livingCooldowns = livingCooldowns - "${sectioning(section)}$identity"
 
 			return Cooldown("${sectioning(section)}:$identity", ticks).apply {
 				startCooldown()

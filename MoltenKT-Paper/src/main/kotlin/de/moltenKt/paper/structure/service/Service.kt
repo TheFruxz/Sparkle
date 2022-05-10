@@ -36,9 +36,9 @@ interface Service : VendorsIdentifiable<Service>, Logging {
 		get() = MoltenCache.runningServiceTaskController[identityObject]
 		set(value) {
 			if (value != null)
-				MoltenCache.runningServiceTaskController[identityObject] = value
+				MoltenCache.runningServiceTaskController += identityObject to value
 			else
-				MoltenCache.runningServiceTaskController.remove(identityObject)
+				MoltenCache.runningServiceTaskController -= identityObject
 		}
 
 	val isRunning: Boolean
