@@ -21,7 +21,7 @@ MoltenKT's goal is to simplify and improve development with different platforms 
 
 ## 📈 Version
 
-Currently, MoltenKT is working with Kotlin version 1.6, which is the latest Kotlin version. In the future, versions of both
+Currently, MoltenKT is working with Kotlin version 1.7, which is the latest Kotlin version. In the future, versions of both
 Kotlin, and those of Minecraft, Paper & JavaCord will be constantly updated to provide the best API as possible.
 
 ## 👻 Modules
