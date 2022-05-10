@@ -1,6 +1,5 @@
 package de.moltenKt.paper.app
 
-import de.moltenKt.core.tool.data.Base64.decodeToString
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenData.File.CONFIG
 import de.moltenKt.paper.app.MoltenData.File.ESSENTIALS_CONFIG
@@ -33,21 +32,6 @@ object MoltenData {
 		file = CONFIG,
 		path = moltenPath("language"),
 		default = Locale.ENGLISH.language,
-	)
-
-	// SKULLS
-
-	@Suppress("SpellCheckingInspection")
-	val skullDataURL = Preference(
-		file = CONFIG,
-		path = moltenPath("skullData"),
-		default = decodeToString(
-			decodeToString(
-				decodeToString(
-					"WVVoU01HTklUVFpNZVRsMFlWYzFiRmt6U21oYWJsRjBZVWRXYUZwSVRYVlpNamwwVERKT2VtUnBPSGxOUkVsM1RGUkJlRXhVVFhoTVZXeFdXakZLYVZOdE9VbFZiVXBYWVVkd1RHSnJPWE5oTWpGSlREQk9NV016VW5aaVV6RkpXbGRHYTB4VlVrTk1iVTU2WkdjOVBRPT0="
-				)
-			)
-		),
 	)
 
 	// ESSENTIALS component

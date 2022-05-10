@@ -32,9 +32,9 @@ var OfflinePlayer.buildMode: Boolean
 	get() = MoltenCache.buildModePlayers.contains(identityObject)
 	set(value) {
 		if (value) {
-			MoltenCache.buildModePlayers.add(identityObject)
+			MoltenCache.buildModePlayers += identityObject
 		} else
-			MoltenCache.buildModePlayers.remove(identityObject)
+			MoltenCache.buildModePlayers -= identityObject
 	}
 
 /**
@@ -43,5 +43,5 @@ var OfflinePlayer.buildMode: Boolean
 var Player.marker: CubicalShape
 	get() = MoltenCache.playerMarkerBoxes[identityObject] ?: throw IllegalArgumentException("Player marker is not set!")
 	set(value) {
-		MoltenCache.playerMarkerBoxes[identityObject] = value
+		MoltenCache.playerMarkerBoxes += identityObject to value
 	}

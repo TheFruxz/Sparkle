@@ -147,7 +147,7 @@ internal class ComponentInterchange :
 		fun reset(component: Component, executor: InterchangeExecutor) {
 			MoltenCache.runningComponents.apply {
 				if (containsKey(component.identityObject))
-					this[component.identityObject] = Calendar.now()
+					MoltenCache.runningComponents += component.identityObject to Calendar.now()
 			}
 			lang["interchange.internal.component.reset"]
 				.replaceVariables("component" to component.identity)

@@ -76,7 +76,7 @@ interface Tasky : Logging {
 						try {
 
 							if (controller.attempt == 1L) {
-								MoltenCache.runningTasks.add(element = taskId)
+								MoltenCache.runningTasks += taskId
 								onStart(controller)
 								output = controller
 							}
@@ -88,7 +88,7 @@ interface Tasky : Logging {
 
 							if (controller.dieOnError) {
 								onCrash(controller)
-								MoltenCache.runningTasks.removeAll { check -> check == controller.taskId }
+								MoltenCache.runningTasks = MoltenCache.runningTasks.filter { check -> check != controller.taskId }
 								MoltenCache.runningServiceTaskController = MoltenCache.runningServiceTaskController.filterNot { check -> check.value.taskId == controller.taskId }.toMutableMap()
 								controller.shutdown()
 							}
@@ -98,7 +98,7 @@ interface Tasky : Logging {
 
 							if (controller.dieOnError) {
 								onCrash(controller)
-								MoltenCache.runningTasks.removeAll { check -> check == controller.taskId }
+								MoltenCache.runningTasks = MoltenCache.runningTasks.filter { check -> check != controller.taskId }
 								MoltenCache.runningServiceTaskController = MoltenCache.runningServiceTaskController.filterNot { check -> check.value.taskId == controller.taskId }.toMutableMap()
 								controller.shutdown()
 							}
@@ -109,7 +109,7 @@ interface Tasky : Logging {
 				}.let {
 					output = object : Tasky {
 						override fun shutdown() {
-							MoltenCache.runningTasks.removeAll { check -> check == it.taskId }
+							MoltenCache.runningTasks = MoltenCache.runningTasks.filter { check -> check != it.taskId }
 							MoltenCache.runningServiceTaskController = MoltenCache.runningServiceTaskController.filterNot { check -> check.value.taskId == it.taskId }.toMutableMap()
 							onStop(this)
 							scheduler.cancelTask(it.taskId)
@@ -141,7 +141,7 @@ interface Tasky : Logging {
 			)
 
 			if (serviceVendor.identity != "dummy")
-				MoltenCache.runningServiceTaskController[serviceVendor] = output
+				MoltenCache.runningServiceTaskController += serviceVendor to output
 
 			return output
 		}

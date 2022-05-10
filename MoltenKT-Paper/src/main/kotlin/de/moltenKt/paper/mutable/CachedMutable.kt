@@ -13,7 +13,7 @@ class CachedMutable<T>(
 
 		// If not something is already cached, place default
 		if (!MoltenCache.registeredCachedMutables.contains(cacheId)) {
-			MoltenCache.registeredCachedMutables[cacheId] = property
+			MoltenCache.registeredCachedMutables += cacheId to property
 		}
 
 	}
@@ -22,7 +22,7 @@ class CachedMutable<T>(
 	override var property: T
 		get() = MoltenCache.registeredCachedMutables[cacheId] as T ?: default
 		set(value) {
-			MoltenCache.registeredCachedMutables[cacheId] = value
+			MoltenCache.registeredCachedMutables += cacheId to value
 		}
 
 	override val identity = cacheId

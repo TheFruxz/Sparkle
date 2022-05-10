@@ -32,13 +32,13 @@ internal class KeeperService : Service {
 		MoltenCache.livingCooldowns.toList().forEach { (key, value) ->
 
 			if (value.isOver) {
-				MoltenCache.livingCooldowns.remove(key)
+				MoltenCache.livingCooldowns -= key
 				debugLog("removed livingCooldown $key, because, it was over; remaining: ${value.remainingTime.display()}")
 			}
 
 		}
 
-		MoltenCache.registeredApplications.withForEach {
+		MoltenCache.registeredApps.withForEach {
 			try {
 				val level = DUMP
 				appCache.dropEverything(level)
