@@ -44,11 +44,11 @@ import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.paper.tool.permission.Approval
-import de.moltenKt.paper.tool.position.ComplexShape
-import de.moltenKt.paper.tool.position.CubicalShape
-import de.moltenKt.paper.tool.position.CylindricalShape
-import de.moltenKt.paper.tool.position.Shape
-import de.moltenKt.paper.tool.position.SphericalShape
+import de.moltenKt.paper.tool.position.dependent.DependentComplexShape
+import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
+import de.moltenKt.paper.tool.position.dependent.DependentCylindricalShape
+import de.moltenKt.paper.tool.position.dependent.DependentShape
+import de.moltenKt.paper.tool.position.dependent.DependentSphericalShape
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
@@ -90,12 +90,12 @@ class MoltenApp : App() {
 				subclass(SoundData::class)
 				subclass(Approval::class)
 
-				polymorphic(Shape::class) {
+				polymorphic(DependentShape::class) {
 
-					subclass(ComplexShape::class)
-					subclass(CubicalShape::class)
-					subclass(CylindricalShape::class)
-					subclass(SphericalShape::class)
+					subclass(DependentComplexShape::class)
+					subclass(DependentCubicalShape::class)
+					subclass(DependentCylindricalShape::class)
+					subclass(DependentSphericalShape::class)
 
 				}
 

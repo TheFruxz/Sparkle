@@ -1,12 +1,36 @@
 package de.moltenKt.paper.tool.effect.particle
 
+import com.destroystokyo.paper.ParticleBuilder
+import de.moltenKt.core.extension.dump
+import de.moltenKt.paper.extension.effect.offset
+import de.moltenKt.paper.tool.effect.IndependentEffect
+import de.moltenKt.paper.tool.position.relative.CubicalShape
+import de.moltenKt.paper.tool.position.relative.Shape
+import de.moltenKt.paper.tool.position.relative.SphereShape
+import org.bukkit.Location
+import org.bukkit.entity.Entity
+import org.bukkit.entity.Player
+
 data class ParticleData<T : Any>(
     val type: ParticleType<T>,
-    var data: T? = null,
-) {
+) : ParticleBuilder(type.type), ParticleEffect, IndependentEffect {
 
-    fun data(data: T) {
-        this.data = data
+    fun putData(data: T) =
+        data(data)
+
+    fun offset(cube: CubicalShape) =
+        offset(cube.length, cube.height, cube.depth)
+
+    fun edit(block: ParticleData<T>.() -> Unit) = apply(block)
+
+    override fun play(): Unit = spawn().dump()
+
+    override fun play(vararg locations: Location?): Unit = locations.forEach { location ->
+        if (location == null) return@forEach
+        location(location).spawn()
     }
+
+    override fun play(vararg entities: Entity?): Unit =
+        receivers(entities.filterIsInstance<Player>()).spawn().dump()
 
 }

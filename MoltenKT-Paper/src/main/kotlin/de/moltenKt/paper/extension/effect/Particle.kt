@@ -1,6 +1,8 @@
 package de.moltenKt.paper.extension.effect
 
 import com.destroystokyo.paper.ParticleBuilder
+import de.moltenKt.paper.tool.effect.particle.ParticleEffect
+import org.bukkit.entity.Player
 
 @Throws(IllegalStateException::class)
 fun ParticleBuilder.playParticleEffect(reach: Double = .0) {

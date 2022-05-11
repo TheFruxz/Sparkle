@@ -1,9 +1,10 @@
-package de.moltenKt.paper.tool.position
+package de.moltenKt.paper.tool.position.dependent
 
 import de.moltenKt.core.annotation.NotPerfect
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.floorToInt
 import de.moltenKt.paper.tool.display.world.SimpleLocation
+import de.moltenKt.paper.tool.position.relative.PyramidalShape
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
@@ -11,12 +12,12 @@ import org.bukkit.util.Vector
 
 @Serializable
 @NotPerfect
-data class PyramidalShape(
+data class DependentPyramidalShape(
 	val peakLocation: SimpleLocation,
-	val height: Double,
-	val groundWidth: Double,
-	val groundDepth: Double,
-) : Shape {
+	override val height: Double,
+	override val groundWidth: Double,
+	override val groundDepth: Double,
+) : DependentShape, PyramidalShape {
 
 	override val volume: Double by lazy {
 		(1/3.0) * (groundWidth * groundDepth) * height
@@ -60,7 +61,7 @@ data class PyramidalShape(
 		return contains(location.toVector()) && location.world.name == peakLocation.world
 	}
 
-	override fun asShifted(toWorld: World): Shape = copy(
+	override fun asShifted(toWorld: World): DependentShape = copy(
 		peakLocation = peakLocation.copy(world = toWorld.name)
 	)
 

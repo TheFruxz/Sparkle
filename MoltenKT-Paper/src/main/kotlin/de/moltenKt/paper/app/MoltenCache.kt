@@ -17,7 +17,7 @@ import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.display.canvas.Canvas
 import de.moltenKt.paper.tool.display.canvas.CanvasSessionManager.CanvasSession
 import de.moltenKt.paper.tool.display.item.action.ItemAction
-import de.moltenKt.paper.tool.position.CubicalShape
+import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
 import de.moltenKt.paper.tool.timing.cooldown.Cooldown
 import de.moltenKt.paper.tool.timing.tasky.Tasky
 import net.kyori.adventure.key.Key
@@ -60,7 +60,7 @@ object MoltenCache : AppCache {
 
 	var buildModePlayers = setOf<Identity<out OfflinePlayer>>()
 
-	var playerMarkerBoxes = mapOf<Identity<out OfflinePlayer>, CubicalShape>()
+	var playerMarkerBoxes = mapOf<Identity<out OfflinePlayer>, DependentCubicalShape>()
 
 	var featureStates = mapOf<Identity<Feature>, Feature.FeatureState>()
 
