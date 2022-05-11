@@ -1,13 +1,11 @@
 package de.moltenKt.paper.tool.effect.sound
 
 import de.moltenKt.paper.extension.paper.onlinePlayers
-import de.moltenKt.paper.tool.effect.Effect
-import de.moltenKt.paper.tool.effect.EntityBasedEffect
-import de.moltenKt.paper.tool.effect.LocationBasedEffect
+import de.moltenKt.paper.tool.effect.CrossBasedEffect
 import org.bukkit.World
 import org.bukkit.entity.Entity
 
-interface SoundEffect : Effect, LocationBasedEffect, EntityBasedEffect {
+interface SoundEffect : CrossBasedEffect {
 
 	/**
 	 * This function plays the given [SoundEffect] to every player

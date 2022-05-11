@@ -6,7 +6,7 @@ import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 
-interface EntityBasedEffect {
+interface EntityBasedEffect : Effect {
 
 	/**
 	 * This function plays the given [EntityBasedEffect] to every player

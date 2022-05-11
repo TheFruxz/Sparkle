@@ -60,4 +60,10 @@ data class SoundData(
 		}
 	}
 
+	override fun play(locations: Set<Location>, entities: Set<Entity>): Unit = locations.forEach { location ->
+		entities.forEach { entity ->
+			with(location) { entity.playSound(raw, x, y, z) }
+		}
+	}
+
 }

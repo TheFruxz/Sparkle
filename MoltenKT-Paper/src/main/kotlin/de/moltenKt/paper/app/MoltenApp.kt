@@ -40,6 +40,7 @@ import de.moltenKt.paper.tool.data.json.JsonFileDataElement
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.display.world.SimpleLocation
+import de.moltenKt.paper.tool.effect.particle.ParticleType.Companion
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
@@ -125,7 +126,8 @@ class MoltenApp : App() {
 			Level.INFO, """
 			MoltenKT is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
 			https://www.jetbrains.com/ | https://kotlinlang.org/
-		""".trimIndent())
+		""".trimIndent()
+		)
 
 		MoltenCache.tmp_initSetupPreferences.forEach {
 			fun <T : Any> proceed(default: T) {
@@ -215,7 +217,7 @@ class MoltenApp : App() {
 		}
 
 	}
-	
+
 	public companion object : AppCompanion<MoltenApp>() {
 
 		@JvmStatic

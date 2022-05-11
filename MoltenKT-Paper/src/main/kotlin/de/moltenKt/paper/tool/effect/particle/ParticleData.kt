@@ -2,18 +2,14 @@ package de.moltenKt.paper.tool.effect.particle
 
 import com.destroystokyo.paper.ParticleBuilder
 import de.moltenKt.core.extension.dump
-import de.moltenKt.paper.extension.effect.offset
-import de.moltenKt.paper.tool.effect.IndependentEffect
 import de.moltenKt.paper.tool.position.relative.CubicalShape
-import de.moltenKt.paper.tool.position.relative.Shape
-import de.moltenKt.paper.tool.position.relative.SphereShape
 import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 
 data class ParticleData<T : Any>(
     val type: ParticleType<T>,
-) : ParticleBuilder(type.type), ParticleEffect, IndependentEffect {
+) : ParticleBuilder(type.type), ParticleEffect {
 
     fun putData(data: T) =
         data(data)
@@ -32,5 +28,14 @@ data class ParticleData<T : Any>(
 
     override fun play(vararg entities: Entity?): Unit =
         receivers(entities.filterIsInstance<Player>()).spawn().dump()
+
+    override fun play(locations: Set<Location>, entities: Set<Entity>) {
+        val receivers = entities.filterIsInstance<Player>()
+
+        locations.forEach { location ->
+            location(location).receivers(receivers).spawn()
+        }
+
+    }
 
 }

@@ -1,7 +1,6 @@
 package de.moltenKt.paper.tool.effect.particle
 
-import de.moltenKt.paper.tool.effect.Effect
-import de.moltenKt.paper.tool.effect.EntityBasedEffect
-import de.moltenKt.paper.tool.effect.LocationBasedEffect
+import de.moltenKt.paper.tool.effect.CrossBasedEffect
+import de.moltenKt.paper.tool.effect.IndependentEffect
 
-interface ParticleEffect : Effect, LocationBasedEffect, EntityBasedEffect
+interface ParticleEffect : CrossBasedEffect, IndependentEffect
