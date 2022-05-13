@@ -3,7 +3,13 @@ package de.moltenKt.paper.tool.position.relative
 import de.moltenKt.core.annotation.NotPerfect
 import de.moltenKt.paper.extension.paper.add
 import de.moltenKt.paper.extension.paper.toSimpleLocation
-import de.moltenKt.paper.tool.position.dependent.*
+import de.moltenKt.paper.tool.position.dependent.DependentComplexShape
+import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
+import de.moltenKt.paper.tool.position.dependent.DependentCylindricalShape
+import de.moltenKt.paper.tool.position.dependent.DependentLinearShape
+import de.moltenKt.paper.tool.position.dependent.DependentPyramidalShape
+import de.moltenKt.paper.tool.position.dependent.DependentShape
+import de.moltenKt.paper.tool.position.dependent.DependentSphericalShape
 import org.bukkit.Location
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -54,7 +60,7 @@ interface Shape {
          * @since 1.0
          */
         @JvmStatic
-        fun cube(width: Double, depth: Double, height: Double) = CubicalShape.of(
+        fun independentCube(width: Double, depth: Double, height: Double) = CubicalShape.of(
             length = width,
             depth = depth,
             height = height,
@@ -80,7 +86,7 @@ interface Shape {
          * @since 1.0
          */
         @JvmStatic
-        fun sphere(radius: Double) = SphereShape.of(radius)
+        fun independentSphere(radius: Double) = SphereShape.of(radius)
 
         /**
          * This function creates a new [DependentCylindricalShape] from the given parameters.
@@ -107,7 +113,7 @@ interface Shape {
          * @since 1.0
          */
         @JvmStatic
-        fun cylinder(height: Double, radius: Double, direction: Direction = Direction.Y) = CylindricalShape.of(height, radius, direction)
+        fun independentCylinder(height: Double, radius: Double, direction: Direction = Direction.Y) = CylindricalShape.of(height, radius, direction)
 
         /**
          * This function creates a new [DependentPyramidalShape] from the given parameters.
@@ -179,7 +185,7 @@ interface Shape {
          */
         @JvmStatic
         @NotPerfect
-        fun pyramid(height: Double, groundWidth: Double, groundDepth: Double) = PyramidalShape.of(height, groundWidth, groundDepth)
+        fun independentPyramid(height: Double, groundWidth: Double, groundDepth: Double) = PyramidalShape.of(height, groundWidth, groundDepth)
 
         /**
          * This function creates a new [DependentLinearShape] from the given parameters.
@@ -202,7 +208,7 @@ interface Shape {
          * @since 1.0
          */
         @JvmStatic
-        fun line(length: Double) = LinearShape.of(length)
+        fun independentLine(length: Double) = LinearShape.of(length)
 
         /**
          * This function creates a new [DependentComplexShape] containing all the given [dependentShapes].
