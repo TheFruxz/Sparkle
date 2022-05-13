@@ -4,12 +4,14 @@ import de.moltenKt.paper.extension.paper.directionVectorVelocity
 import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.position.relative.LinearShape
+import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.util.Vector
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+@Serializable
 data class DependentLinearShape(
     val fromLocation: SimpleLocation,
     val toLocation: SimpleLocation,

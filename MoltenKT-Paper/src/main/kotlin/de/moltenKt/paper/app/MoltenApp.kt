@@ -1,6 +1,8 @@
 package de.moltenKt.paper.app
 
 import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
+import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.tryToIgnore
 import de.moltenKt.core.tool.smart.identification.Identity
@@ -25,6 +27,7 @@ import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
+import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
 import de.moltenKt.paper.general.api.mojang.MojangProfile
 import de.moltenKt.paper.general.api.mojang.MojangProfileCape
 import de.moltenKt.paper.general.api.mojang.MojangProfileRaw
@@ -48,8 +51,16 @@ import de.moltenKt.paper.tool.permission.Approval
 import de.moltenKt.paper.tool.position.dependent.DependentComplexShape
 import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
 import de.moltenKt.paper.tool.position.dependent.DependentCylindricalShape
+import de.moltenKt.paper.tool.position.dependent.DependentLinearShape
+import de.moltenKt.paper.tool.position.dependent.DependentPyramidalShape
 import de.moltenKt.paper.tool.position.dependent.DependentShape
 import de.moltenKt.paper.tool.position.dependent.DependentSphericalShape
+import de.moltenKt.paper.tool.position.relative.CubicalShape
+import de.moltenKt.paper.tool.position.relative.CylindricalShape
+import de.moltenKt.paper.tool.position.relative.LinearShape
+import de.moltenKt.paper.tool.position.relative.PyramidalShape
+import de.moltenKt.paper.tool.position.relative.Shape
+import de.moltenKt.paper.tool.position.relative.SphereShape
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
@@ -91,12 +102,24 @@ class MoltenApp : App() {
 				subclass(SoundData::class)
 				subclass(Approval::class)
 
-				polymorphic(DependentShape::class) {
+				polymorphic(Shape::class) {
 
-					subclass(DependentComplexShape::class)
-					subclass(DependentCubicalShape::class)
-					subclass(DependentCylindricalShape::class)
-					subclass(DependentSphericalShape::class)
+					polymorphic(DependentShape::class) {
+
+						subclass(DependentComplexShape::class)
+						subclass(DependentCubicalShape::class)
+						subclass(DependentCylindricalShape::class)
+						subclass(DependentLinearShape::class)
+						subclass(DependentPyramidalShape::class)
+						subclass(DependentSphericalShape::class)
+
+					}
+
+					polymorphic(CubicalShape::class) { subclass(DependentCubicalShape::class) }
+					polymorphic(CylindricalShape::class) { subclass(DependentCylindricalShape::class) }
+					polymorphic(LinearShape::class) { subclass(DependentLinearShape::class) }
+					polymorphic(PyramidalShape::class) { subclass(DependentPyramidalShape::class) }
+					polymorphic(SphereShape::class) { subclass(DependentSphericalShape::class) }
 
 				}
 
@@ -175,6 +198,16 @@ class MoltenApp : App() {
 		add(MoltenKtInterchange())
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
+
+		buildAndRegisterSandBox(this, "testSphereJSON") {
+
+			val shape = DependentSphericalShape(SimpleLocation("world", 1, 1, 1), .4)
+
+			executor.sendMessage(shape.toJson())
+
+			executor.sendMessage(shape.toJson().fromJson<DependentSphericalShape>().toString())
+
+		}
 
 	}
 
