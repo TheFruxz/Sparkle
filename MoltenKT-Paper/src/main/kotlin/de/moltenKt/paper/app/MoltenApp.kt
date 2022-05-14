@@ -40,15 +40,24 @@ import de.moltenKt.paper.tool.data.json.JsonFileDataElement
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.display.world.SimpleLocation
+import de.moltenKt.paper.tool.effect.particle.ParticleType.Companion
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.paper.tool.permission.Approval
-import de.moltenKt.paper.tool.position.ComplexShape
-import de.moltenKt.paper.tool.position.CubicalShape
-import de.moltenKt.paper.tool.position.CylindricalShape
-import de.moltenKt.paper.tool.position.Shape
-import de.moltenKt.paper.tool.position.SphericalShape
+import de.moltenKt.paper.tool.position.dependent.DependentComplexShape
+import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
+import de.moltenKt.paper.tool.position.dependent.DependentCylindricalShape
+import de.moltenKt.paper.tool.position.dependent.DependentLinearShape
+import de.moltenKt.paper.tool.position.dependent.DependentPyramidalShape
+import de.moltenKt.paper.tool.position.dependent.DependentShape
+import de.moltenKt.paper.tool.position.dependent.DependentSphericalShape
+import de.moltenKt.paper.tool.position.relative.CubicalShape
+import de.moltenKt.paper.tool.position.relative.CylindricalShape
+import de.moltenKt.paper.tool.position.relative.LinearShape
+import de.moltenKt.paper.tool.position.relative.PyramidalShape
+import de.moltenKt.paper.tool.position.relative.Shape
+import de.moltenKt.paper.tool.position.relative.SphereShape
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
@@ -92,10 +101,22 @@ class MoltenApp : App() {
 
 				polymorphic(Shape::class) {
 
-					subclass(ComplexShape::class)
-					subclass(CubicalShape::class)
-					subclass(CylindricalShape::class)
-					subclass(SphericalShape::class)
+					polymorphic(DependentShape::class) {
+
+						subclass(DependentComplexShape::class)
+						subclass(DependentCubicalShape::class)
+						subclass(DependentCylindricalShape::class)
+						subclass(DependentLinearShape::class)
+						subclass(DependentPyramidalShape::class)
+						subclass(DependentSphericalShape::class)
+
+					}
+
+					polymorphic(CubicalShape::class) { subclass(DependentCubicalShape::class) }
+					polymorphic(CylindricalShape::class) { subclass(DependentCylindricalShape::class) }
+					polymorphic(LinearShape::class) { subclass(DependentLinearShape::class) }
+					polymorphic(PyramidalShape::class) { subclass(DependentPyramidalShape::class) }
+					polymorphic(SphereShape::class) { subclass(DependentSphericalShape::class) }
 
 				}
 
@@ -125,7 +146,8 @@ class MoltenApp : App() {
 			Level.INFO, """
 			MoltenKT is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
 			https://www.jetbrains.com/ | https://kotlinlang.org/
-		""".trimIndent())
+		""".trimIndent()
+		)
 
 		MoltenCache.tmp_initSetupPreferences.forEach {
 			fun <T : Any> proceed(default: T) {
@@ -215,7 +237,7 @@ class MoltenApp : App() {
 		}
 
 	}
-	
+
 	public companion object : AppCompanion<MoltenApp>() {
 
 		@JvmStatic

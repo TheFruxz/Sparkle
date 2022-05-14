@@ -27,7 +27,7 @@ import org.bukkit.entity.Entity
  */
 fun soundOf(
 	type: Sound.Type, volume: Number = 1, pitch: Number = 1, soundSource: Sound.Source = MASTER,
-) = SoundData(type, volume, pitch, soundSource)
+) = SoundEffect.soundOf(type, volume, pitch, soundSource)
 
 /**
  * This function creates a [SoundData], that can be used to simply play the sound,
@@ -45,7 +45,7 @@ fun soundOf(
  */
 fun soundOf(
 	key: Key, volume: Number = 1, pitch: Number = 1, soundSource: Sound.Source = MASTER,
-) = SoundData(key, volume, pitch, soundSource)
+) = SoundEffect.soundOf(key, volume, pitch, soundSource)
 
 /**
  * This function creates a [SoundData] and directly attaches it to the given [SoundMelodyBeat].

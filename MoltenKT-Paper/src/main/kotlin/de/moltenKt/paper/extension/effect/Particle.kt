@@ -1,6 +1,8 @@
 package de.moltenKt.paper.extension.effect
 
 import com.destroystokyo.paper.ParticleBuilder
+import de.moltenKt.paper.tool.effect.particle.ParticleData
+import de.moltenKt.paper.tool.effect.particle.ParticleType
 
 @Throws(IllegalStateException::class)
 fun ParticleBuilder.playParticleEffect(reach: Double = .0) {
@@ -33,3 +35,5 @@ fun ParticleBuilder.playParticleEffect() =
 fun ParticleBuilder.offset(offset: Number) = offset(offset.toDouble(), offset.toDouble(), offset.toDouble())
 
 fun ParticleBuilder.offset(offsetX: Number, offsetZ: Number) = offset(offsetX.toDouble(), .0, offsetZ.toDouble())
+
+fun <T : Any> particleOf(particleType: ParticleType<T>): ParticleData<T> = ParticleData(particleType)
