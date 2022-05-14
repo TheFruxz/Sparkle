@@ -1,8 +1,6 @@
 package de.moltenKt.paper.app
 
 import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
-import de.moltenKt.core.extension.data.fromJson
-import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.tryToIgnore
 import de.moltenKt.core.tool.smart.identification.Identity
@@ -27,7 +25,6 @@ import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
-import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
 import de.moltenKt.paper.general.api.mojang.MojangProfile
 import de.moltenKt.paper.general.api.mojang.MojangProfileCape
 import de.moltenKt.paper.general.api.mojang.MojangProfileRaw
@@ -198,16 +195,6 @@ class MoltenApp : App() {
 		add(MoltenKtInterchange())
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
-
-		buildAndRegisterSandBox(this, "testSphereJSON") {
-
-			val shape = DependentSphericalShape(SimpleLocation("world", 1, 1, 1), .4)
-
-			executor.sendMessage(shape.toJson())
-
-			executor.sendMessage(shape.toJson().fromJson<DependentSphericalShape>().toString())
-
-		}
 
 	}
 
