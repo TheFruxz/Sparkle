@@ -1,4 +1,4 @@
-package de.moltenKt.paper.tool.position
+package de.moltenKt.paper.tool.position.dependent
 
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.difference
@@ -7,12 +7,15 @@ import de.moltenKt.core.tool.smart.Producible
 import de.moltenKt.paper.extension.paper.directionVectorVelocity
 import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
+import de.moltenKt.paper.tool.position.relative.CubicalShape
+import de.moltenKt.paper.tool.position.relative.Shape
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
+import kotlin.math.abs
 
 /**
  * This data class represents a computer generated box, defined by 2 points.
@@ -27,10 +30,10 @@ import org.bukkit.util.Vector
  * @since 1.0
  */
 @Serializable
-data class CubicalShape(
+data class DependentCubicalShape(
 	val first: SimpleLocation,
 	val second: SimpleLocation,
-) : Producible<BoundingBox>, ConfigurationSerializable, Shape {
+) : DependentShape, Producible<BoundingBox>, ConfigurationSerializable, CubicalShape {
 
 	constructor(first: Location, second: Location) : this(first.toSimpleLocation(), second.toSimpleLocation())
 
@@ -201,7 +204,7 @@ data class CubicalShape(
 		produce().widthZ
 	}
 
-	override val fullSizeShape: CubicalShape by lazy {
+	override val fullSizeShape: DependentCubicalShape by lazy {
 		copy()
 	}
 
@@ -311,7 +314,13 @@ data class CubicalShape(
 		directionVectorVelocity(first.bukkit, second.bukkit)
 	}
 
-	override fun asShifted(toWorld: World): Shape = copy(
+	override val length: Double = abs(first.x - second.x)
+
+	override val depth: Double = abs(first.z - second.z)
+
+	override val height: Double = abs(first.y - second.y)
+
+	override fun asShifted(toWorld: World): DependentShape = copy(
 		first = first.copy(world = toWorld.name),
 		second = second.copy(world = toWorld.name),
 	)
@@ -332,22 +341,22 @@ data class CubicalShape(
 	companion object {
 
 		/**
-		 * This function creates a new [CubicalShape] object, representing
+		 * This function creates a new [DependentCubicalShape] object, representing
 		 * a range from one to another [Location]. This function is defined
 		 * as a [rangeTo] operator function. This function uses the [this]
-		 * [Location] as the first [Location] ([CubicalShape.component1])
-		 * and the [other] [Location] ([CubicalShape.second]) as the
-		 * second [Location] inside the [CubicalShape].
+		 * [Location] as the first [Location] ([DependentCubicalShape.component1])
+		 * and the [other] [Location] ([DependentCubicalShape.second]) as the
+		 * second [Location] inside the [DependentCubicalShape].
 		 * @param other is the second location used to define the range.
-		 * @return a new [CubicalShape] object.
-		 * @see CubicalShape
+		 * @return a new [DependentCubicalShape] object.
+		 * @see DependentCubicalShape
 		 * @see Location
 		 * @see rangeTo
 		 * @author Fruxz
 		 * @since 1.0
 		 */
 		operator fun Location.rangeTo(other: Location) =
-			CubicalShape(this to other)
+			DependentCubicalShape(this to other)
 
 	}
 

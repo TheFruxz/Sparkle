@@ -114,4 +114,7 @@ enum class SoundLibrary(val melody: SoundMelody) : SoundEffect {
 	override fun play(vararg worlds: World?, sticky: Boolean): Unit =
 		melody.play(*worlds, sticky = sticky)
 
+	override fun play(locations: Set<Location>, entities: Set<Entity>): Unit =
+		melody.play(locations, entities)
+
 }

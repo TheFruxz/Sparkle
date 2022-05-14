@@ -1,9 +1,10 @@
-package de.moltenKt.paper.tool.position
+package de.moltenKt.paper.tool.position.dependent
 
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.floorToInt
 import de.moltenKt.paper.extension.paper.toSimpleLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
+import de.moltenKt.paper.tool.position.relative.SphereShape
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
@@ -11,10 +12,10 @@ import org.bukkit.util.Vector
 import kotlin.math.pow
 
 @Serializable
-data class SphericalShape(
+data class DependentSphericalShape(
 	override val center: SimpleLocation,
-	val radius: Double,
-) : Shape {
+	override val radius: Double,
+) : DependentShape, SphereShape {
 
 	constructor(center: Location, radius: Double) : this(center.toSimpleLocation(), radius)
 
@@ -53,6 +54,6 @@ data class SphericalShape(
 
 	override fun contains(location: Location): Boolean = location.distance(center.bukkit).floorToInt() <= radius
 
-	override fun asShifted(toWorld: World): Shape = copy(center = center.copy(world = toWorld.name))
+	override fun asShifted(toWorld: World): DependentShape = copy(center = center.copy(world = toWorld.name))
 
 }
