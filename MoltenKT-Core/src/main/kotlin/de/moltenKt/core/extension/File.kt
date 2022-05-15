@@ -90,3 +90,13 @@ fun File.generateFileAndPath() {
     parentFile.mkdirs()
     createNewFile()
 }
+
+/**
+ * This function returns the path, where the application
+ * is running from.
+ * @sample getHomePath
+ * @return the path, where the application is running from
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun getHomePath(): Path = File("/").toPath()
