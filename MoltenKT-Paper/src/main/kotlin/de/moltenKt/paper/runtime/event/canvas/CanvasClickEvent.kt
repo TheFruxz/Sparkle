@@ -6,6 +6,7 @@ import de.moltenKt.paper.tool.event.KCancellable
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryView
 
 data class CanvasClickEvent(
@@ -41,8 +42,11 @@ data class CanvasClickEvent(
 		clickedItemStack?.takeIf { it.hasItemMeta() }?.item ?: originEvent.cursor?.takeIf { it.hasItemMeta() }?.item
 	}
 
-	val clickedInventory by lazy {
-		originEvent.clickedInventory!! /* TODO trigger have to check this not to be null!!! */
+	/**
+	 * The clicked inventory, or null if clicked outside the inventory.
+	 */
+	val clickedInventory: Inventory? by lazy {
+		originEvent.clickedInventory
 	}
 
 	override fun getHandlers() = handlerList
