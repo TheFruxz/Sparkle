@@ -49,6 +49,16 @@ data class CanvasClickEvent(
 		originEvent.clickedInventory
 	}
 
+	/**
+	 * This value is only a wrapper for the original [slot] value,
+	 * this is here to create consistency accross the API.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val clickedSlot: Int by lazy {
+		slot
+	}
+
 	override fun getHandlers() = handlerList
 
 	companion object {
