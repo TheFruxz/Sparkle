@@ -198,9 +198,19 @@ data class MutableCanvas(
 		this.flags += flags
 	}
 
-	override fun produce(): Canvas = this
+	fun optimize() {
+		content = content.filterNot { it.value.asItemStack().type.isAir }
+	}
 
-	override fun build(): Canvas = this
+	override fun produce(): Canvas {
+		optimize()
+		return this
+	}
+
+	override fun build(): Canvas {
+		optimize()
+		return this
+	}
 
 }
 
