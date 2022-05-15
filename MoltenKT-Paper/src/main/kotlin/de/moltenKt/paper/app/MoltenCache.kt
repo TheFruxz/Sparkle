@@ -41,6 +41,8 @@ object MoltenCache : AppCache {
 
 	var registeredInterchanges = setOf<Interchange>()
 
+	var disabledInterchanges = setOf<Identity<out Interchange>>()
+
 	var registeredComponents = setOf<Component>()
 
 	var registeredServices = setOf<Service>()

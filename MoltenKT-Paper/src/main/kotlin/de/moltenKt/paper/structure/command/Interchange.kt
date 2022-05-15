@@ -321,6 +321,14 @@ enum class InterchangeUserRestriction {
 	ONLY_CONSOLE,
 	NOT_RESTRICTED;
 
+	fun match(sender: InterchangeExecutor): Boolean {
+		return when (this) {
+			ONLY_PLAYERS -> sender is Player
+			ONLY_CONSOLE -> sender is ConsoleCommandSender
+			NOT_RESTRICTED -> true
+		}
+	}
+
 }
 
 enum class InterchangeAuthorizationType {
