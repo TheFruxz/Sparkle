@@ -205,6 +205,17 @@ data class MutableCanvas(
 }
 
 /**
+ * This function constructs a new [MutableCanvas]
+ * @param key The identity of the [MutableCanvas] to create.
+ * @param size The size of the canvas.
+ * @return The created mutable [MutableCanvas].
+ * @author Fruxz
+ * @since 1.0
+ */
+fun buildCanvas(key: Key, size: CanvasSize = CanvasSize.MEDIUM): MutableCanvas =
+	MutableCanvas(key, canvasSize = size)
+
+/**
  * This function constructs a new [Canvas], created with the [MutableCanvas] edited
  * inside the given [builder] parameter process.
  * @param key The identity of the [Canvas] to create.
