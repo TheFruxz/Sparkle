@@ -2,6 +2,7 @@ package de.moltenKt.paper.app.component.app
 
 import de.moltenKt.paper.structure.command.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
+import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
 
 internal class AppInterchange : StructuredInterchange("app", buildInterchangeStructure {
 
@@ -21,7 +22,25 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
         addContent("list")
 
+        fun displayPage(page: Int) {
+
+        }
+
         concludedExecution {
+
+            displayPage(1)
+
+        }
+
+        branch {
+
+            addContent(CompletionAsset.LONG)
+
+            concludedExecution {
+
+                
+
+            }
 
         }
 
