@@ -39,8 +39,7 @@ internal class ProtectionListener : EventListener() {
                         remove = true
                 } else
                     remove = true
-            } else
-                remove = true
+            }
 
             if (remove) event.commands.remove(recommendation)
 
