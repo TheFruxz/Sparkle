@@ -112,7 +112,6 @@ open class Canvas(
 		push()
 
 		receivers.distinctBy { it.uniqueId }.forEach { receiver ->
-			if (triggerSound) openSoundEffect?.let { receiver.playSoundEffect(it) }
 			var localInstance = buildInventory(canvasSize.size, label) {
 				this.contents = runBlocking { inventoryContent.await() }
 			}
@@ -133,7 +132,7 @@ open class Canvas(
 							CanvasSessionManager.putSession(receiver, key, data)
 						}
 
-						openSoundEffect?.play(receiver)
+						if (triggerSound) openSoundEffect?.let { receiver.playSoundEffect(it) }
 
 						onOpen(event)
 
