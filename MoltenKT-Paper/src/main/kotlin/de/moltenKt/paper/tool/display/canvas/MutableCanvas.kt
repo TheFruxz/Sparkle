@@ -192,6 +192,12 @@ data class MutableCanvas(
 	fun background(replaceWith: ItemStack?) =
 		background(replaceWith?.let { ItemLike.of(it) })
 
+	// Flags
+
+	fun annexFlags(vararg flags: CanvasFlag) {
+		this.flags += flags
+	}
+
 	override fun produce(): Canvas = this
 
 	override fun build(): Canvas = this
