@@ -238,13 +238,13 @@ class MoltenApp : App() {
 
 	}
 
-	public companion object : AppCompanion<MoltenApp>() {
+	companion object : AppCompanion<MoltenApp>() {
 
 		@JvmStatic
 		override val predictedIdentity: Identity<MoltenApp> = Identity<MoltenApp>("MoltenKT")
 
 		@JvmStatic
-		public var debugMode: Boolean = true
+		var debugMode: Boolean = true
 
 	}
 
