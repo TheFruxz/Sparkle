@@ -1,6 +1,7 @@
 package de.moltenKt.paper.tool.display.canvas
 
 import de.moltenKt.core.tool.smart.Producible
+import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
@@ -198,8 +199,12 @@ data class MutableCanvas(
 		this.flags += flags
 	}
 
-	fun optimize() {
+	private fun optimize() {
+		val contentSize = content.size
+
 		content = content.filterNot { it.value.asItemStack().type.isAir }
+
+		debugLog("Optimized canvas content from $contentSize to ${content.size} @ ${key.asString()}")
 	}
 
 	override fun produce(): Canvas {

@@ -17,17 +17,31 @@ internal class CanvasListener : EventListener() {
 	@EventHandler
 	fun onClose(event: InventoryCloseEvent) {
 		val player = event.player
-		val session = CanvasSessionManager.getSession(player)
 
-		val canvas = MoltenCache.canvas[session?.canvas]
+		if (player is Player) {
 
-		if (canvas != null && player is Player) {
+			val session = CanvasSessionManager.getSession(player)
 
-			if (canvas.flags.contains(NO_CLOSE)) {
-				canvas.display(player)
-			} else {
-				MoltenCache.canvasActions[session?.canvas]?.onClose?.let { it(CanvasCloseEvent(player, canvas, event.view, event)) }
-				CanvasSessionManager.removeSession(player)
+			val canvas = MoltenCache.canvas[session?.canvas]
+
+			if (canvas != null) {
+
+				if (canvas.flags.contains(NO_CLOSE)) {
+					canvas.display(player)
+				} else {
+					MoltenCache.canvasActions[session?.canvas]?.onClose?.let {
+						it(
+							CanvasCloseEvent(
+								player,
+								canvas,
+								event.view,
+								event
+							)
+						)
+					}
+					CanvasSessionManager.removeSession(player)
+				}
+
 			}
 
 		}
