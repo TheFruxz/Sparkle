@@ -28,7 +28,7 @@ dependencies {
 
     // External
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     implementation("org.javacord:javacord:3.4.0")
 
