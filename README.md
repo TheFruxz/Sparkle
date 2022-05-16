@@ -29,7 +29,7 @@ Kotlin, and those of Minecraft, Paper & JavaCord will be constantly updated to p
 MoltenKT currently offers 4 different project modules, each with its own platform goals, but all of these are based on the base-plate module MoltenKT-Core.
 This integrated system allows to easily adapt new features across all of the modules, and also allows for easy integration of new features into the base-plate module.
 
-### ⛺️ MoltenKT-Core 
+### 💾 MoltenKT-Core 
 MoltenKT-Core is the main module, all other modules of MoltenKT, which also work on the JVM basis of [Kotlin](https://github.com/jetbrains/kotlin), is using this module.
 This is because this is where the most MoltenKT library-content is located, which you can also use in your projects.
 Here int this module is the more general system and structure located, that is compatible with any JVM project based on Kotlin and/or Java.
