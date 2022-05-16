@@ -4,6 +4,7 @@ import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenCache
 import net.kyori.adventure.key.Key
 import org.bukkit.entity.HumanEntity
+import org.bukkit.entity.Player
 
 /**
  * This class manages the sessions of the players,
@@ -29,7 +30,7 @@ object CanvasSessionManager {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun getSessions(queryCanvas: Key): Set<Map.Entry<HumanEntity, CanvasSession>> =
+	fun getSessions(queryCanvas: Key): Set<Map.Entry<Player, CanvasSession>> =
 		MoltenCache.canvasSessions.filter { it.value.canvas == queryCanvas }.entries
 
 	/**
@@ -40,7 +41,7 @@ object CanvasSessionManager {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun getSession(sessionHost: HumanEntity, queryCanvas: Key): CanvasSession? =
+	fun getSession(sessionHost: Player, queryCanvas: Key): CanvasSession? =
 		getSession(sessionHost)?.takeIf { it.canvas == queryCanvas }
 
 	/**
@@ -49,7 +50,7 @@ object CanvasSessionManager {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun getSession(sessionHost: HumanEntity): CanvasSession? =
+	fun getSession(sessionHost: Player): CanvasSession? =
 		MoltenCache.canvasSessions[sessionHost]
 
 	/**
@@ -58,14 +59,14 @@ object CanvasSessionManager {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun hasSession(sessionHost: HumanEntity): Boolean = getSession(sessionHost) != null
+	fun hasSession(sessionHost: Player): Boolean = getSession(sessionHost) != null
 
 	/**
 	 * This function removes the [CanvasSession] of the given [sessionHost] entity.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun removeSession(sessionHost: HumanEntity) {
+	fun removeSession(sessionHost: Player) {
 		MoltenCache.canvasSessions -= sessionHost
 	}
 
@@ -74,7 +75,7 @@ object CanvasSessionManager {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun putSession(sessionHost: HumanEntity, canvas: Key, parameters: Map<Key, Any> = emptyMap()) {
+	fun putSession(sessionHost: Player, canvas: Key, parameters: Map<Key, Any> = emptyMap()) {
 		MoltenCache.canvasSessions += sessionHost to CanvasSession(
 			canvas = canvas,
 			parameters = parameters,

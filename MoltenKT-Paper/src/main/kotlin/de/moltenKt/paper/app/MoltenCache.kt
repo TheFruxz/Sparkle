@@ -22,7 +22,6 @@ import de.moltenKt.paper.tool.timing.cooldown.Cooldown
 import de.moltenKt.paper.tool.timing.tasky.Tasky
 import net.kyori.adventure.key.Key
 import org.bukkit.OfflinePlayer
-import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 
@@ -41,6 +40,8 @@ object MoltenCache : AppCache {
 	var registeredPreferenceCache = mapOf<String, Any>()
 
 	var registeredInterchanges = setOf<Interchange>()
+
+	var disabledInterchanges = setOf<Identity<out Interchange>>()
 
 	var registeredComponents = setOf<Component>()
 
@@ -74,7 +75,7 @@ object MoltenCache : AppCache {
 
 	var canvasActions = mapOf<Key, Canvas.Reaction>()
 
-	var canvasSessions = mapOf<HumanEntity, CanvasSession>()
+	var canvasSessions = mapOf<Player, CanvasSession>()
 
 	var canvas = mapOf<Key, Canvas>()
 

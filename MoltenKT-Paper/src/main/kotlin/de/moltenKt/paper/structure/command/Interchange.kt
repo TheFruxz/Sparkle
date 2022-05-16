@@ -52,7 +52,7 @@ abstract class Interchange(
 	val protectedAccess: Boolean = false,
 	val userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
 	val accessProtectionType: InterchangeAuthorizationType = MOLTEN,
-	val hiddenFromRecommendation: Boolean = false, // todo: seems to be unused, that have to be an enabled feature
+	val hiddenFromRecommendation: Boolean = false,
 	val completion: InterchangeStructure = emptyInterchangeStructure(),
 	val ignoreInputValidation: Boolean = false,
 	var forcedApproval: Approval? = null,
@@ -320,6 +320,14 @@ enum class InterchangeUserRestriction {
 	ONLY_PLAYERS,
 	ONLY_CONSOLE,
 	NOT_RESTRICTED;
+
+	fun match(sender: InterchangeExecutor): Boolean {
+		return when (this) {
+			ONLY_PLAYERS -> sender is Player
+			ONLY_CONSOLE -> sender is ConsoleCommandSender
+			NOT_RESTRICTED -> true
+		}
+	}
 
 }
 

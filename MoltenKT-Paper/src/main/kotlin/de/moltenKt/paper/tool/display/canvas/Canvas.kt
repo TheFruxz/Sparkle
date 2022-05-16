@@ -99,6 +99,15 @@ open class Canvas(
 	operator fun get(vararg slots: Int) =
 		get(slots.toList())
 
+	/**
+	 * This computational value returns the players, that are currently
+	 * registered in the system, that are currently viewing this canvas.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val viewers: Set<Player>
+		get() = MoltenCache.canvasSessions.filter { it.value.canvas == this.key }.keys
+
 	fun display(
 		vararg receivers: HumanEntity,
 		data: Map<Key, Any> = emptyMap(),
@@ -112,7 +121,6 @@ open class Canvas(
 		push()
 
 		receivers.distinctBy { it.uniqueId }.forEach { receiver ->
-			if (triggerSound) openSoundEffect?.let { receiver.playSoundEffect(it) }
 			var localInstance = buildInventory(canvasSize.size, label) {
 				this.contents = runBlocking { inventoryContent.await() }
 			}
@@ -133,7 +141,7 @@ open class Canvas(
 							CanvasSessionManager.putSession(receiver, key, data)
 						}
 
-						openSoundEffect?.play(receiver)
+						if (triggerSound) openSoundEffect?.let { receiver.playSoundEffect(it) }
 
 						onOpen(event)
 
