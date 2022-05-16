@@ -107,7 +107,7 @@ If you have any questions, suggestions or other items you would like to contribu
 
 ## 🗒 Sidenotes
 
-MoltenKT-Paper-Runnable includes these small amount of dependencies
+The MoltenKT-Paper-Runnable jar includes (/ shadowed) these small amount of dependencies, so you don't have to provide them:
 
   - MoltenKT-Core
   - MoltenKT-Paper
