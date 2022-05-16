@@ -20,6 +20,7 @@ import de.moltenKt.paper.runtime.app.LanguageSpeaker
 import de.moltenKt.paper.runtime.app.RunStatus
 import de.moltenKt.paper.runtime.app.RunStatus.*
 import de.moltenKt.paper.runtime.exception.IllegalActionException
+import de.moltenKt.paper.structure.Hoster
 import de.moltenKt.paper.structure.app.event.EventListener
 import de.moltenKt.paper.structure.app.interchange.IssuedInterchange
 import de.moltenKt.paper.structure.command.Interchange
@@ -80,7 +81,7 @@ import kotlin.time.measureTime
  * @see de.moltenKt.paper.app.MoltenApp
  * @constructor abstract
  */
-abstract class App : JavaPlugin(), Identifiable<App> {
+abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 
 	// parameters
 
@@ -649,6 +650,14 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			runStatus = OFFLINE
 
 		}
+	}
+
+	override fun requestStart() {
+		pluginManager.enablePlugin(this)
+	}
+
+	override fun requestStop() {
+		pluginManager.disablePlugin(this)
 	}
 
 	companion object {
