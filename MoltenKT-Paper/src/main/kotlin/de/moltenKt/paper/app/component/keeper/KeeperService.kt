@@ -3,6 +3,7 @@ package de.moltenKt.paper.app.component.keeper
 import de.moltenKt.core.extension.catchException
 import de.moltenKt.core.extension.container.withForEach
 import de.moltenKt.core.extension.display.display
+import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.system
@@ -12,6 +13,8 @@ import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.timing.tasky.Tasky
 import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice
 import java.util.logging.Level
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 internal class KeeperService : Service {
 
@@ -19,10 +22,10 @@ internal class KeeperService : Service {
 
 	override val thisIdentity = "iKeeper"
 
-	override val temporalAdvice = TemporalAdvice.ticking(20, 20L*60*5, false)
+	override val temporalAdvice = TemporalAdvice.ticking(1.seconds, 20.minutes, false)
 
 	override val onStart: Tasky.() -> Unit = {
-		sectionLog.log(Level.INFO, "Hey! I'm starting to clean your JET! Wait, what's JET?")
+		sectionLog.log(Level.INFO, "Hey! I'm starting to clean your App-Caches!")
 	}
 
 	override val process: Tasky.() -> Unit = {
@@ -45,10 +48,9 @@ internal class KeeperService : Service {
 				debugLog("removed appCache (level: ${level.name}) from app $appLabel")
 			} catch (exception: Exception) {
 
-				if (de.moltenKt.paper.app.MoltenApp.debugMode)
-					catchException(exception)
+				if (MoltenApp.debugMode) catchException(exception)
 
-				debugLog("failed to clean appCache of '$appLabel'${ if (de.moltenKt.paper.app.MoltenApp.debugMode.not()) ", enable debugMode to see the stacktrace" else "" }!")
+				debugLog("failed to clean appCache of '$appLabel'${ if (MoltenApp.debugMode.not()) ", enable debugMode to see the stacktrace" else "" }!")
 
 			}
 		}
