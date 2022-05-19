@@ -30,8 +30,7 @@ internal class KeeperService : Service {
 
 	override val process: Tasky.() -> Unit = {
 
-		// Cleaning Cooldowns
-
+		// Cleaning the cooldowns, that got stuck in the cache
 		MoltenCache.livingCooldowns.toList().forEach { (key, value) ->
 
 			if (value.isOver) {
@@ -41,6 +40,7 @@ internal class KeeperService : Service {
 
 		}
 
+		// Cleaning the individual caches of the different registered apps
 		MoltenCache.registeredApps.withForEach {
 			try {
 				val level = DUMP
