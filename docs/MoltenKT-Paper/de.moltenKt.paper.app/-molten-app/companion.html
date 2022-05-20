@@ -26,7 +26,7 @@ if(savedDarkMode === true){
     <div class="library-name">
 <a href="../../../index.html">
 <span>MoltenKT</span>            </a>    </div>
-    <div>1.0-PRE-10
+    <div>1.0-PRE-11.0.2
     </div>
     <div class="pull-right d-flex">
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
@@ -83,15 +83,24 @@ import de.moltenKt.paper.tool.data.json.JsonFileDataElement
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.display.world.SimpleLocation
+import de.moltenKt.paper.tool.effect.particle.ParticleType.Companion
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.paper.tool.permission.Approval
-import de.moltenKt.paper.tool.position.dependent.ComplexShape
-import de.moltenKt.paper.tool.position.dependent.CubicalShape
-import de.moltenKt.paper.tool.position.dependent.CylindricalShape
-import de.moltenKt.paper.tool.position.dependent.Shape
-import de.moltenKt.paper.tool.position.dependent.SphericalShape
+import de.moltenKt.paper.tool.position.dependent.DependentComplexShape
+import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
+import de.moltenKt.paper.tool.position.dependent.DependentCylindricalShape
+import de.moltenKt.paper.tool.position.dependent.DependentLinearShape
+import de.moltenKt.paper.tool.position.dependent.DependentPyramidalShape
+import de.moltenKt.paper.tool.position.dependent.DependentShape
+import de.moltenKt.paper.tool.position.dependent.DependentSphericalShape
+import de.moltenKt.paper.tool.position.relative.CubicalShape
+import de.moltenKt.paper.tool.position.relative.CylindricalShape
+import de.moltenKt.paper.tool.position.relative.LinearShape
+import de.moltenKt.paper.tool.position.relative.PyramidalShape
+import de.moltenKt.paper.tool.position.relative.Shape
+import de.moltenKt.paper.tool.position.relative.SphereShape
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren

@@ -48,7 +48,6 @@ module:MoltenKT-Paper
 de.moltenKt.paper
 de.moltenKt.paper.app
 de.moltenKt.paper.app.component.buildMode.config
-de.moltenKt.paper.app.component.messaging
 de.moltenKt.paper.app.component.point.asset
 de.moltenKt.paper.app.component.world
 de.moltenKt.paper.extension
@@ -56,7 +55,6 @@ de.moltenKt.paper.extension.data
 de.moltenKt.paper.extension.display
 de.moltenKt.paper.extension.display.ui
 de.moltenKt.paper.extension.effect
-de.moltenKt.paper.extension.external
 de.moltenKt.paper.extension.interchange
 de.moltenKt.paper.extension.mojang
 de.moltenKt.paper.extension.objectBound
@@ -98,13 +96,14 @@ de.moltenKt.paper.tool.display.item
 de.moltenKt.paper.tool.display.item.action
 de.moltenKt.paper.tool.display.item.quirk
 de.moltenKt.paper.tool.display.message
-de.moltenKt.paper.tool.display.skull
 de.moltenKt.paper.tool.display.world
 de.moltenKt.paper.tool.effect
+de.moltenKt.paper.tool.effect.particle
 de.moltenKt.paper.tool.effect.sound
 de.moltenKt.paper.tool.event
 de.moltenKt.paper.tool.permission
-de.moltenKt.paper.tool.position
+de.moltenKt.paper.tool.position.dependent
+de.moltenKt.paper.tool.position.relative
 de.moltenKt.paper.tool.smart
 de.moltenKt.paper.tool.timing.cooldown
 de.moltenKt.paper.tool.timing.tasky
