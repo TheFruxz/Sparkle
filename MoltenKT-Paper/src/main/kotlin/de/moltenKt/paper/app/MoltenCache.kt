@@ -3,6 +3,7 @@ package de.moltenKt.paper.app
 import de.moltenKt.core.extension.classType.UUID
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.runtime.sandbox.SandBox
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.AppCache
@@ -91,38 +92,45 @@ object MoltenCache : AppCache {
 	}
 
 	override fun dropEverything(dropDepth: CacheDepthLevel) {
-		when {
-			dropDepth.isDeeperThanOrEquals(DUMP) -> {
-				registeredCompletionAssetStateCache = emptyMap()
-				registeredPreferenceCache = emptyMap()
-			}
-			dropDepth.isDeeperThanOrEquals(CLEAN) -> {
 
-			}
-			dropDepth.isDeeperThanOrEquals(CLEAR) -> {
-				livingCooldowns = emptyMap()
-				itemActions = emptySet()
-				canvasActions = emptyMap()
-				canvas = emptyMap()
-			}
-			dropDepth.isDeeperThanOrEquals(KILL) -> {
-				registeredApps = emptySet()
-				registeredSandBoxes = emptySet()
-				registeredSandBoxCalls = emptyMap()
-				registeredCachedMutables = emptyMap()
-				registeredInterchanges = emptySet()
-				registeredComponents = emptySet()
-				registeredServices = emptySet()
-				registeredListeners = emptySet()
-				runningComponents = emptyMap()
-				registeredPreferences = emptyMap()
-				runningServiceTaskController = emptyMap()
-				runningTasks = emptyList()
-				featureStates = emptyMap()
-				tmp_initSetupPreferences = emptySet()
-				initializationProcesses = emptySet()
-			}
+		if (dropDepth.isDeeperThanOrEquals(DUMP)) {
+			debugLog("Cache clear 'DUMP' reached")
+			registeredCompletionAssetStateCache = emptyMap()
+			registeredPreferenceCache = emptyMap()
 		}
+
+		if (dropDepth.isDeeperThanOrEquals(CLEAN)) {
+			debugLog("Cache clear 'CLEAN' reached")
+
+		}
+
+		if (dropDepth.isDeeperThanOrEquals(CLEAR)) {
+			debugLog("Cache clear 'CLEAR' reached")
+			livingCooldowns = emptyMap()
+			itemActions = emptySet()
+			canvasActions = emptyMap()
+			canvas = emptyMap()
+		}
+
+		if (dropDepth.isDeeperThanOrEquals(KILL)) {
+			debugLog("Cache clear 'KILL' reached")
+			registeredApps = emptySet()
+			registeredSandBoxes = emptySet()
+			registeredSandBoxCalls = emptyMap()
+			registeredCachedMutables = emptyMap()
+			registeredInterchanges = emptySet()
+			registeredComponents = emptySet()
+			registeredServices = emptySet()
+			registeredListeners = emptySet()
+			runningComponents = emptyMap()
+			registeredPreferences = emptyMap()
+			runningServiceTaskController = emptyMap()
+			runningTasks = emptyList()
+			featureStates = emptyMap()
+			tmp_initSetupPreferences = emptySet()
+			initializationProcesses = emptySet()
+		}
+
 	}
 
 }
