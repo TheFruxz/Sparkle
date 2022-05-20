@@ -40,8 +40,6 @@ open class Color<T : Color<T>> constructor(
         validate()
         if (opacity !in 0.0..1.0) error("opacity must be in range 0.0..1.0")
 
-        println("o -> $opacity and ${opacity in 0.0..1.0}")
-
         return Color(
             red = (red + (color.red - red) * opacity).roundToInt(),
             green = (green + (color.green - green) * opacity).roundToInt(),
