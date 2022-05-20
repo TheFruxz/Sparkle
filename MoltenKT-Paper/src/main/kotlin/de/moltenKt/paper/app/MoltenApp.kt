@@ -4,6 +4,7 @@ import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.tryToIgnore
 import de.moltenKt.core.tool.smart.identification.Identity
+import de.moltenKt.paper.app.component.app.AppComponent
 import de.moltenKt.paper.app.component.buildMode.BuildModeComponent
 import de.moltenKt.paper.app.component.chat.ChatComponent
 import de.moltenKt.paper.app.component.completion.ProtectionComponent
@@ -195,6 +196,8 @@ class MoltenApp : App() {
 		add(MoltenKtInterchange())
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
+
+		add(AppComponent())
 
 	}
 

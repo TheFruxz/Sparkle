@@ -44,3 +44,5 @@ commands:
     aliases:
       - r
       - answer
+  app:
+    description: Manages your apps!
