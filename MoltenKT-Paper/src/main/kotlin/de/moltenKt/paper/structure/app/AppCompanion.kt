@@ -20,7 +20,8 @@ abstract class AppCompanion<T : App> : Identifiable<App> {
 	 * @since 1.0
 	 */
 	val instance: T
-		get() = MoltenCache.registeredApps.first { it.identity == predictedIdentity.identity }.forceCast()
+		get() = MoltenCache.registeredApps.firstOrNull { it.identity == predictedIdentity.identity }?.forceCast<T>()
+			?: error("This app is not registered inside the 'registeredApps' instance! Maybe MoltenKT-Paper is shadowed inside the plugin using MoltenKT? This would lead to this error!")
 
 	/**
 	 * This value represents the coroutine scope of the [App], that
