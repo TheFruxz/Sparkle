@@ -2,7 +2,6 @@ package de.moltenKt.paper.app.component.app
 
 import de.moltenKt.core.extension.container.page
 import de.moltenKt.core.extension.container.replaceVariables
-import de.moltenKt.core.extension.math.INT_RANGE
 import de.moltenKt.core.extension.math.limitTo
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
@@ -23,7 +22,6 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
-import org.bukkit.Bukkit
 
 internal class AppInterchange : StructuredInterchange("app", buildInterchangeStructure {
 
