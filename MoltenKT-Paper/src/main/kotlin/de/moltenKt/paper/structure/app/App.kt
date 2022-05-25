@@ -652,13 +652,9 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 		}
 	}
 
-	override fun requestStart() {
-		pluginManager.enablePlugin(this)
-	}
+	override fun requestStart() = pluginManager.enablePlugin(this)
 
-	override fun requestStop() {
-		pluginManager.disablePlugin(this)
-	}
+	override fun requestStop() = pluginManager.disablePlugin(this)
 
 	companion object {
 
