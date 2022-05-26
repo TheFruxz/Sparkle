@@ -5,6 +5,7 @@ import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.core.extension.container.toUUID
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.switchResult
+import de.moltenKt.paper.Constants
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
@@ -68,7 +69,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 			ignoreCase()
 
 			fun displayPlayers(executor: InterchangeExecutor, page: Int) {
-				val pageValue = MoltenCache.buildModePlayers.page(page, 6)
+				val pageValue = MoltenCache.buildModePlayers.page(page, Constants.ENTRIES_PER_PAGE)
 
 				if (pageValue.content.isNotEmpty()) {
 					buildString {
@@ -104,7 +105,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(CompletionAsset.PAGES { ceilToInt(MoltenCache.buildModePlayers.size.toDouble() / 6) })
+				addContent(CompletionAsset.PAGES { ceilToInt(MoltenCache.buildModePlayers.size.toDouble() / Constants.ENTRIES_PER_PAGE) })
 
 				isNotRequired()
 

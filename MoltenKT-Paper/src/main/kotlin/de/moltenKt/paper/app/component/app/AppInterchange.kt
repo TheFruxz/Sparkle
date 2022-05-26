@@ -1,15 +1,20 @@
 package de.moltenKt.paper.app.component.app
 
+import de.moltenKt.core.extension.container.mapToString
 import de.moltenKt.core.extension.container.page
 import de.moltenKt.core.extension.container.replaceVariables
+import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.limitTo
+import de.moltenKt.paper.Constants.ENTRIES_PER_PAGE
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.message
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
+import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.structure.app.cache.CacheDepthLevel
 import de.moltenKt.paper.structure.command.StructuredInterchange
+import de.moltenKt.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
 import de.moltenKt.paper.structure.command.completion.isNotRequired
@@ -22,6 +27,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
+import org.bukkit.Bukkit
 
 internal class AppInterchange : StructuredInterchange("app", buildInterchangeStructure {
 
@@ -40,18 +46,31 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
         fun displayPage(executor: InterchangeExecutor, page: Int) {
 
-            val paged = MoltenCache.registeredApps.page(page - 1, 9)
+            val paged = MoltenCache.registeredApps.page(page - 1, ENTRIES_PER_PAGE)
 
-            val message = buildList {
+            buildList {
 
                 add("<gray>List of all running apps <yellow>(Page [p1] of [p2])<gray>:".replaceVariables(
                     "p1" to page,
                     "p2" to paged.pages,
                 ))
 
+                add("<gray>⏻ Power; ⌘ Naggable; ⏹ API-Compatible")
+
+                add("")
+
                 paged.content.forEach { app ->
-                    add("<gray> ${app.name}")
+                    add(buildString {
+
+                        append(if (app.isEnabled) "<green>⏻</green> " else "<gray>⭘</gray> ")
+                        append(if (app.isNaggable) "<green>⌘</green> " else "<gray>⌘</gray> ")
+                        append(if (Bukkit.getMinecraftVersion().startsWith("" + app.description.apiVersion)) "<green>⏹</green> " else "<gray>⏹</gray> ")
+                        append("<dark_gray>| <yellow>${app.identity} <gray>${app.description.version} → ${app.description.apiVersion}")
+
+                    })
                 }
+
+                add("")
 
             }.asStyledComponents.notification(Transmission.Level.INFO, executor).display()
 
@@ -65,7 +84,17 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
         branch {
 
-            addContent(CompletionAsset.LONG)
+            addContent(
+                CompletionAsset<Long>(
+                    vendor = system,
+                    thisIdentity = "appPage",
+                    refreshing = true,
+                    supportedInputType = listOf(InterchangeStructureInputRestriction.LONG),
+                    generator = {
+                        (1..ceilToInt(MoltenCache.registeredApps.size.toDouble() / ENTRIES_PER_PAGE)).mapToString()
+                    }
+                )
+            )
 
             concludedExecution {
                 val page = getInput(restrictiveAsset = CompletionAsset.LONG).limitTo(Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()).toInt()
@@ -372,23 +401,41 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         .color(NamedTextColor.GRAY)
                         .message(executor).display()
 
-                    component.requestStop()
-                    component.requestStart()
+                    if (component.requestRestart().exception == null) {
 
-                    text {
-                        text("Successfully") {
-                            style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD))
-                        }
-                        text(" restarted the '") {
-                            color(NamedTextColor.GRAY)
-                        }
-                        text(component.identity) {
-                            color(NamedTextColor.GOLD)
-                        }
-                        text("' component!") {
-                            color(NamedTextColor.GRAY)
-                        }
-                    }.notification(Transmission.Level.APPLIED, executor).display()
+                        text {
+                            text("Successfully") {
+                                style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD))
+                            }
+                            text(" restarted the '") {
+                                color(NamedTextColor.GRAY)
+                            }
+                            text(component.identity) {
+                                color(NamedTextColor.GOLD)
+                            }
+                            text("' component!") {
+                                color(NamedTextColor.GRAY)
+                            }
+                        }.notification(Transmission.Level.APPLIED, executor).display()
+
+                    } else {
+
+                        text {
+                            text("Failed to") {
+                                style(Style.style(NamedTextColor.RED, TextDecoration.BOLD))
+                            }
+                            text(" restart the '") {
+                                color(NamedTextColor.GRAY)
+                            }
+                            text(component.identity) {
+                                color(NamedTextColor.GOLD)
+                            }
+                            text("' component!") {
+                                color(NamedTextColor.GRAY)
+                            }
+                        }.notification(Transmission.Level.ERROR, executor).display()
+
+                    }
 
                 }
 
