@@ -435,11 +435,11 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 
 					if (MoltenCache.runningComponents.contains(componentIdentity)) {
 
+						MoltenCache.runningComponents -= componentIdentity
+
 						coroutineScope.launch(context = component.threadContext) {
 
 							component.stop()
-
-							MoltenCache.runningComponents -= componentIdentity
 
 							if (unregisterComponent)
 								unregister(componentIdentity)
