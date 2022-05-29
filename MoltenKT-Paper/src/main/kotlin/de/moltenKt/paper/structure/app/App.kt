@@ -11,6 +11,7 @@ import de.moltenKt.core.extension.tryToPrint
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.core.tool.timing.calendar.Calendar.Companion
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.mainLog
@@ -157,6 +158,9 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 	internal var loadTime: Duration? = null
 
 	internal var startTime: Duration? = null
+
+	var activeSince: Calendar? = null
+		private set
 
 	// api
 
@@ -589,6 +593,8 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 	@OptIn(ExperimentalTime::class)
 	final override fun onLoad() {
 		tryToCatch {
+			activeSince = Calendar.now()
+
 			MoltenCache.registeredApps += this
 
 			coroutineScope.launch {

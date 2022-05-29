@@ -20,6 +20,7 @@ import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
 import de.moltenKt.paper.structure.command.completion.isNotRequired
 import de.moltenKt.paper.structure.command.live.InterchangeAccess
 import de.moltenKt.paper.tool.display.message.Transmission
+import de.moltenKt.paper.tool.display.message.Transmission.Level.INFO
 import de.moltenKt.unfold.extension.asStyledComponents
 import de.moltenKt.unfold.hover
 import de.moltenKt.unfold.text
@@ -30,15 +31,6 @@ import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 
 internal class AppInterchange : StructuredInterchange("app", buildInterchangeStructure {
-
-    /*
-    /app list
-    /app @ <app|app#component> stop
-    /app @ <app|app#component> start
-    /app @ <app|app#component> restart
-    /app @ <app> cache info|clear (<level>)
-    /app @ <app|app#component> info
-    */
 
     branch {
 
@@ -229,19 +221,17 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 addContent("info")
 
                 concludedExecution {
-/*
-                         * - Displayname
-                         * - Identity
-                         * - Active since
-                         * - Amount of Components
-                         * - Amount of Interchanges
-                         * - Amount of Services
-                         * - Amount of Sandboxes
-                         * - (maybe) Amount of Scope-Jobs
-                         */
+                    val targetApp = getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
 
-                    "requested info!"
-                        .notification(Transmission.Level.APPLIED, executor).display()
+                    listOf(
+                        "<gray>Display-Name <dark_gray>| <yellow>${targetApp.appLabel}",
+                        "<gray>Identity <dark_gray>| <yellow>${targetApp.identity}",
+                        "<gray>Active since <dark_gray>| <yellow>${targetApp.activeSince}",
+                        "<gray>Components <dark_gray>| <yellow>${MoltenCache.registeredComponents.filter { it.vendorIdentity == targetApp.identityObject }.size}",
+                        "<gray>Interchanges <dark_gray>| <yellow>${MoltenCache.registeredInterchanges.filter { it.vendorIdentity == targetApp.identityObject }.size}",
+                        "<gray>Services <dark_gray>| <yellow>${MoltenCache.registeredServices.filter { it.vendorIdentity == targetApp.identityObject }.size}",
+                        "<gray>Sandboxes <dark_gray>| <yellow>${MoltenCache.registeredSandBoxes.filter { it.vendorIdentity == targetApp.identityObject }.size}",
+                    ).asStyledComponents.notification(Transmission.Level.INFO, executor).display()
 
                 }
 
@@ -446,21 +436,14 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 addContent("info")
 
                 concludedExecution {
+                    val component = getInput(1, CompletionAsset.COMPONENT)
 
-                    /*
-                    - Name
-                    - Identity (MoltenKT:Service)
-                    - Active since
-                    - Status
-                    - Auto-Start behavior
-                    - Amount of interchanges
-                    - Amount of components
-                    - Amount of services
-                    - Amount of sandboxes
-                     */
-
-                    "requested info!"
-                        .notification(Transmission.Level.APPLIED, executor).display()
+                    listOf(
+                        "<gray>Display-Name <dark_gray>| <gold>${component.namespace()}",
+                        "<gray>Identity <dark_gray>| <gold>${component.identity}",
+                        "<gray>Status <dark_gray>| <gold>${if (component.isRunning) "Running" else "Offline" }",
+                        "<gray>Auto-Start <dark_gray>| <gold>${if (component.isAutoStarting) "Enabled" else "Disabled" }",
+                    ).asStyledComponents.notification(INFO, executor).display()
 
                 }
 
