@@ -39,7 +39,7 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
 
     // External
 
@@ -48,9 +48,10 @@ dependencies {
     implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
 
     implementation("io.ktor:ktor-client-core-jvm:2.0.2") // Ktor
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
+
     implementation("io.ktor:ktor-client-cio:2.0.1")
-    implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
+    implementation("io.ktor:ktor-client-content-negotiation:2.0.2")
 
     compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT") // PaperMC
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") // Head-Database
@@ -67,9 +68,10 @@ dependencies {
     shadow("org.jetbrains.exposed:exposed-jdbc:0.38.2")
 
     shadow("io.ktor:ktor-client-core-jvm:2.0.2") // Ktor
-    shadow("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
+    shadow("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
+
     shadow("io.ktor:ktor-client-cio:2.0.0")
-    shadow("io.ktor:ktor-client-content-negotiation:2.0.0")
+    shadow("io.ktor:ktor-client-content-negotiation:2.0.2")
 
     shadow("net.kyori:adventure-api:4.10.1")
     shadow("net.kyori:adventure-text-serializer-legacy:4.10.1")
