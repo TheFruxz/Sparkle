@@ -11,6 +11,7 @@ import de.moltenKt.core.extension.tryToPrint
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.core.tool.timing.calendar.Calendar.Companion
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.mainLog
@@ -20,6 +21,7 @@ import de.moltenKt.paper.runtime.app.LanguageSpeaker
 import de.moltenKt.paper.runtime.app.RunStatus
 import de.moltenKt.paper.runtime.app.RunStatus.*
 import de.moltenKt.paper.runtime.exception.IllegalActionException
+import de.moltenKt.paper.structure.Hoster
 import de.moltenKt.paper.structure.app.event.EventListener
 import de.moltenKt.paper.structure.app.interchange.IssuedInterchange
 import de.moltenKt.paper.structure.command.Interchange
@@ -80,7 +82,7 @@ import kotlin.time.measureTime
  * @see de.moltenKt.paper.app.MoltenApp
  * @constructor abstract
  */
-abstract class App : JavaPlugin(), Identifiable<App> {
+abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 
 	// parameters
 
@@ -156,6 +158,9 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	internal var loadTime: Duration? = null
 
 	internal var startTime: Duration? = null
+
+	var activeSince: Calendar? = null
+		private set
 
 	// api
 
@@ -434,11 +439,11 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 					if (MoltenCache.runningComponents.contains(componentIdentity)) {
 
+						MoltenCache.runningComponents -= componentIdentity
+
 						coroutineScope.launch(context = component.threadContext) {
 
 							component.stop()
-
-							MoltenCache.runningComponents -= componentIdentity
 
 							if (unregisterComponent)
 								unregister(componentIdentity)
@@ -588,6 +593,8 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	@OptIn(ExperimentalTime::class)
 	final override fun onLoad() {
 		tryToCatch {
+			activeSince = Calendar.now()
+
 			MoltenCache.registeredApps += this
 
 			coroutineScope.launch {
@@ -650,6 +657,10 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 		}
 	}
+
+	override fun requestStart() = pluginManager.enablePlugin(this)
+
+	override fun requestStop() = pluginManager.disablePlugin(this)
 
 	companion object {
 

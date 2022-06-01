@@ -5,6 +5,7 @@ import de.moltenKt.core.extension.container.page
 import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.paper.Constants
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
@@ -34,7 +35,7 @@ internal class ComponentInterchange :
 		)
 
 		fun list(page: Int, executor: InterchangeExecutor) {
-			MoltenCache.registeredComponents.page(page - 1, 6).let { (content, page, pages) ->
+			MoltenCache.registeredComponents.page(page - 1, Constants.ENTRIES_PER_PAGE).let { (content, page, pages) ->
 
 				buildString {
 
@@ -199,12 +200,12 @@ internal class ComponentInterchange :
 
 				addContent(
 					CompletionAsset<Long>(
-						system,
-						"componentPage",
-						true,
-						listOf(InterchangeStructureInputRestriction.LONG),
+						vendor = system,
+						thisIdentity = "componentPage",
+						refreshing = true,
+						supportedInputType = listOf(InterchangeStructureInputRestriction.LONG),
 						generator = {
-							(1..ceilToInt(MoltenCache.registeredComponents.size.toDouble() / 6)).mapToString()
+							(1..ceilToInt(MoltenCache.registeredComponents.size.toDouble() / Constants.ENTRIES_PER_PAGE)).mapToString()
 						})
 				)
 				isNotRequired()

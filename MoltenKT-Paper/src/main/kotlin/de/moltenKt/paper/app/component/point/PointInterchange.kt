@@ -3,6 +3,7 @@ package de.moltenKt.paper.app.component.point
 import de.moltenKt.core.extension.container.page
 import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.core.extension.math.ceilToInt
+import de.moltenKt.paper.Constants
 import de.moltenKt.paper.app.MoltenData
 import de.moltenKt.paper.app.component.point.asset.Point
 import de.moltenKt.paper.app.component.point.asset.PointConfig
@@ -31,7 +32,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 		ignoreCase()
 
 		fun displayServices(executor: InterchangeExecutor, page: Int) {
-			val pageValue = MoltenData.savedPoints.content.points.page(page, 6)
+			val pageValue = MoltenData.savedPoints.content.points.page(page, Constants.ENTRIES_PER_PAGE)
 
 			if (pageValue.content.isNotEmpty()) {
 				buildString {
@@ -69,7 +70,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 		}
 
 		branch {
-			addContent(CompletionAsset.PAGES { ceilToInt(MoltenData.savedPoints.content.points.size.toDouble() / 6) })
+			addContent(CompletionAsset.PAGES { ceilToInt(MoltenData.savedPoints.content.points.size.toDouble() / Constants.ENTRIES_PER_PAGE) })
 
 			isNotRequired()
 
