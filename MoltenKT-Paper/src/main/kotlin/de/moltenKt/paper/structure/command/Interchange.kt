@@ -53,7 +53,7 @@ abstract class Interchange(
 	val userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
 	val accessProtectionType: InterchangeAuthorizationType = MOLTEN,
 	val hiddenFromRecommendation: Boolean = false,
-	val completion: InterchangeStructure = emptyInterchangeStructure(),
+	val completion: InterchangeStructure<out InterchangeExecutor> = emptyInterchangeStructure(),
 	val ignoreInputValidation: Boolean = false,
 	var forcedApproval: Approval? = null,
 	final override val preferredVendor: App? = null,
@@ -189,7 +189,7 @@ abstract class Interchange(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	abstract val execution: suspend InterchangeAccess.() -> InterchangeResult
+	abstract val execution: suspend InterchangeAccess<out InterchangeExecutor>.() -> InterchangeResult
 
 	// runtime-functions
 
@@ -343,4 +343,4 @@ enum class InterchangeAuthorizationType {
 }
 
 @Suppress("unused") // todo use Interchange as context, when the kotlin context API is ready
-fun Interchange.execution(execution: suspend InterchangeAccess.() -> InterchangeResult) = execution
+fun Interchange.execution(execution: suspend InterchangeAccess<out InterchangeExecutor>.() -> InterchangeResult) = execution

@@ -9,10 +9,10 @@ import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
 import de.moltenKt.paper.tool.smart.Logging
 import java.util.logging.Level
 
-data class InterchangeAccess(
+data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	override val vendor: App,
 	val executorType: InterchangeUserRestriction,
-	val executor: InterchangeExecutor,
+	val executor: EXECUTOR,
 	val interchange: Interchange,
 	val label: String,
 	val parameters: List<String>,

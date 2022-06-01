@@ -3,7 +3,7 @@ package de.moltenKt.paper.app.component.messaging
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.structure.command.InterchangeUserRestriction
-import de.moltenKt.paper.structure.command.StructuredInterchange
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.infiniteSubParameters
 import de.moltenKt.paper.tool.display.message.Transmission

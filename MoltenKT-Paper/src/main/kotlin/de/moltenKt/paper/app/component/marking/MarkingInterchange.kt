@@ -9,7 +9,7 @@ import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.paper.identityObject
 import de.moltenKt.paper.extension.paper.templateLocation
 import de.moltenKt.paper.extension.tasky.sync
-import de.moltenKt.paper.structure.command.StructuredInterchange
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.ignoreCase
 import de.moltenKt.paper.tool.display.message.Transmission.Level.APPLIED
