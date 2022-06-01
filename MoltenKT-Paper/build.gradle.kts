@@ -50,7 +50,7 @@ dependencies {
     implementation("io.ktor:ktor-client-core-jvm:2.0.1") // Ktor
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
     implementation("io.ktor:ktor-client-cio:2.0.1")
-    implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
+    implementation("io.ktor:ktor-client-content-negotiation:2.0.2")
 
     compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT") // PaperMC
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.1") // Head-Database
@@ -69,7 +69,7 @@ dependencies {
     shadow("io.ktor:ktor-client-core-jvm:2.0.0") // Ktor
     shadow("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
     shadow("io.ktor:ktor-client-cio:2.0.0")
-    shadow("io.ktor:ktor-client-content-negotiation:2.0.0")
+    shadow("io.ktor:ktor-client-content-negotiation:2.0.2")
 
     shadow("net.kyori:adventure-api:4.10.1")
     shadow("net.kyori:adventure-text-serializer-legacy:4.10.1")
