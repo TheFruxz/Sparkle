@@ -6,6 +6,7 @@ import de.moltenKt.core.tool.path.ArtificialPath
 import de.moltenKt.core.tool.path.ArtificialReadOnlyResourcePathProcessor
 import java.io.File
 import java.nio.file.Path
+import java.nio.file.Paths
 
 /**
  * Returns the file inside the resource folder of the class, where the function is called from.
@@ -99,4 +100,4 @@ fun File.generateFileAndPath() {
  * @author Fruxz
  * @since 1.0
  */
-inline fun getHomePath(): Path = File("/").toPath()
+inline fun getHomePath(): Path = Paths.get("")
