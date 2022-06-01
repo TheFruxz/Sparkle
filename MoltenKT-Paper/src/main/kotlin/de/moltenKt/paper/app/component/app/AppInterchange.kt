@@ -227,10 +227,10 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         "<gray>Display-Name <dark_gray>| <yellow>${targetApp.appLabel}",
                         "<gray>Identity <dark_gray>| <yellow>${targetApp.identity}",
                         "<gray>Active since <dark_gray>| <yellow>${targetApp.activeSince}",
-                        "<gray>Components <dark_gray>| <yellow>${MoltenCache.registeredComponents.filter { it.vendorIdentity == targetApp.identityObject }.size}",
-                        "<gray>Interchanges <dark_gray>| <yellow>${MoltenCache.registeredInterchanges.filter { it.vendorIdentity == targetApp.identityObject }.size}",
-                        "<gray>Services <dark_gray>| <yellow>${MoltenCache.registeredServices.filter { it.vendorIdentity == targetApp.identityObject }.size}",
-                        "<gray>Sandboxes <dark_gray>| <yellow>${MoltenCache.registeredSandBoxes.filter { it.vendorIdentity == targetApp.identityObject }.size}",
+                        "<gray>Components <dark_gray>| <yellow>${MoltenCache.registeredComponents.filter { it.vendorIdentity == targetApp.identityObject }.size} Components",
+                        "<gray>Interchanges <dark_gray>| <yellow>${MoltenCache.registeredInterchanges.filter { it.vendorIdentity == targetApp.identityObject }.size} Interchanges",
+                        "<gray>Services <dark_gray>| <yellow>${MoltenCache.registeredServices.filter { it.vendorIdentity == targetApp.identityObject }.size} Services",
+                        "<gray>SandBoxes <dark_gray>| <yellow>${MoltenCache.registeredSandBoxes.filter { it.vendorIdentity == targetApp.identityObject }.size} SandBoxes",
                     ).asStyledComponents.notification(Transmission.Level.INFO, executor).display()
 
                 }
