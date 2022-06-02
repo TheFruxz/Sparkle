@@ -18,7 +18,7 @@ dependencies {
 
     implementation("net.kyori:adventure-api:4.10.1")
     implementation("net.kyori:adventure-text-serializer-legacy:4.10.1")
-    implementation("net.kyori:adventure-text-minimessage:4.10.1")
+    implementation("net.kyori:adventure-text-minimessage:4.11.0")
     implementation("io.ktor:ktor-client-core-jvm:2.0.2")
 
 }
