@@ -13,7 +13,7 @@ import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.structure.app.cache.CacheDepthLevel
-import de.moltenKt.paper.structure.command.StructuredInterchange
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
@@ -241,7 +241,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
                 addContent("clear-cache")
 
-                fun cacheClear(interchangeAccess: InterchangeAccess, level: CacheDepthLevel) {
+                fun cacheClear(interchangeAccess: InterchangeAccess<*>, level: CacheDepthLevel) {
                     val targetApp = interchangeAccess.getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
 
                     text("Starting cache-clear of app '${targetApp.appLabel}'...")

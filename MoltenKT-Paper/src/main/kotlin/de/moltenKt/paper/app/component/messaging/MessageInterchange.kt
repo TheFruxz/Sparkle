@@ -1,7 +1,7 @@
 package de.moltenKt.paper.app.component.messaging
 
 import de.moltenKt.paper.structure.command.InterchangeUserRestriction
-import de.moltenKt.paper.structure.command.StructuredInterchange
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
 import de.moltenKt.paper.structure.command.completion.infiniteSubParameters
