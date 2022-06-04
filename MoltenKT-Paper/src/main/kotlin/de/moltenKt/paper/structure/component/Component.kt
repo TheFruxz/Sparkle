@@ -7,6 +7,7 @@ import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.paper.createKey
 import de.moltenKt.paper.extension.runIfAutoRegister
+import de.moltenKt.paper.structure.Hoster
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.component.Component.RunType.*
 import de.moltenKt.paper.structure.component.file.ComponentManager
@@ -22,7 +23,7 @@ abstract class Component(
 	open val behaviour: RunType = DISABLED,
 	open val experimental: Boolean = false,
 	final override val preferredVendor: App? = null,
-) : ContextualIdentifiable<Component>, VendorOnDemand, Logging {
+) : ContextualIdentifiable<Component>, VendorOnDemand, Logging, Hoster<Component.ComponentRequestAnswer, Component.ComponentRequestAnswer> {
 
 	init {
 
@@ -122,7 +123,7 @@ abstract class Component(
 
 	abstract suspend fun stop()
 
-	fun requestStart(): ComponentRequestAnswer {
+	override fun requestStart(): ComponentRequestAnswer {
 		var hasChanged = false
 		return tryToResult {
 			if (!isRunning) {
@@ -134,7 +135,7 @@ abstract class Component(
 		}.let { return@let ComponentRequestAnswer(hasChanged, it.exceptionOrNull()) }
 	}
 
-	fun requestStop(): ComponentRequestAnswer {
+	override fun requestStop(): ComponentRequestAnswer {
 		var hasChanged = false
 		return tryToResult {
 			if (isRunning && canBeStopped) {

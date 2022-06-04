@@ -9,6 +9,7 @@ import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.objectBound.buildSandBox
 import de.moltenKt.paper.extension.objectBound.destroySandBox
+import de.moltenKt.paper.extension.paper.onlinePlayers
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.runtime.sandbox.SandBox
 import de.moltenKt.paper.structure.app.App
@@ -47,6 +48,10 @@ abstract class SmartComponent(
 
 	fun sandbox(vararg sandbox: SandBox) = sandboxes.addAll(sandbox)
 
+	private fun updateCommands() {
+		onlinePlayers.forEach { it.updateCommands() }
+	}
+
 	final override suspend fun register() {
 
 		component() // register all objects
@@ -55,11 +60,13 @@ abstract class SmartComponent(
 			tryToCatch {
 				it.replaceVendor(vendor)
 				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval }))
-				MoltenCache.registeredInterchanges.add(it)
+				MoltenCache.registeredInterchanges += it
+				MoltenCache.disabledInterchanges += it.identityObject
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 			}
 		}
 
+		updateCommands()
 	}
 
 	final override suspend fun start() {
@@ -67,7 +74,8 @@ abstract class SmartComponent(
 		interchanges.forEach {
 			tryToCatch {
 				vendor.replace(it.thisIdentityObject, it)
-				MoltenCache.registeredInterchanges.add(it)
+				MoltenCache.registeredInterchanges += it
+				MoltenCache.disabledInterchanges -= it.identityObject
 				debugLog("Interchange '${it.identity}' replaced through '$identity' with original interchange-value!")
 			}
 		}
@@ -75,7 +83,7 @@ abstract class SmartComponent(
 		services.forEach {
 			tryToCatch {
 				vendor.register(it)
-				MoltenCache.registeredServices.add(it)
+				MoltenCache.registeredServices += it
 				debugLog("Service '${it.identity}' registered through '$identity'!")
 				vendor.start(it)
 				debugLog("Service '${it.identity}' started through '$identity'!")
@@ -85,7 +93,7 @@ abstract class SmartComponent(
 		components.forEach {
 			tryToCatch {
 				vendor.add(it)
-				MoltenCache.registeredComponents.add(it)
+				MoltenCache.registeredComponents += it
 				debugLog("Component '${it.identity}' added through '$identity'!")
 			}
 		}
@@ -93,7 +101,7 @@ abstract class SmartComponent(
 		listeners.forEach {
 			tryToCatch {
 				vendor.add(it)
-				MoltenCache.registeredListeners.add(it)
+				MoltenCache.registeredListeners += it
 				debugLog("Listener '${it.identity}' added through '$identity'!")
 			}
 		}
@@ -104,6 +112,7 @@ abstract class SmartComponent(
 			}
 		}
 
+		updateCommands()
 	}
 
 	final override suspend fun stop() {
@@ -111,7 +120,8 @@ abstract class SmartComponent(
 		interchanges.forEach {
 			tryToCatch {
 				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval }))
-				MoltenCache.registeredInterchanges.remove(it)
+				MoltenCache.registeredInterchanges -= it
+				MoltenCache.disabledInterchanges += it.identityObject
 				tryToIgnore { debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!") }
 			}
 		}
@@ -133,7 +143,7 @@ abstract class SmartComponent(
 		components.forEach {
 			tryToCatch {
 				vendor.stop(it.identityObject)
-				MoltenCache.registeredComponents.remove(it)
+				MoltenCache.registeredComponents -= it
 				tryToIgnore { debugLog("Component '${it.identity}' stopped through '$identity'!") }
 			}
 		}
@@ -151,6 +161,7 @@ abstract class SmartComponent(
 			}
 		}
 
+		updateCommands()
 	}
 
 	abstract suspend fun component()

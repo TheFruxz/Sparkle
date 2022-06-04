@@ -40,6 +40,16 @@ data class Identity<T> constructor(
 	 */
 	fun <O> change() = Identity<O>(identity)
 
+	override fun equals(other: Any?): Boolean {
+		if (other !is Identity<*>) return false
+		
+		return identity == other.identity
+	}
+
+	override fun hashCode(): Int {
+		return identity.hashCode()
+	}
+
 	class IdentityColumnType<T> : ColumnType() {
 
 		override fun sqlType() = currentDialect.dataTypeProvider.textType()

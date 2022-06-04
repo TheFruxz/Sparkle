@@ -3,63 +3,17 @@ package de.moltenKt.paper.app.component.events
 import de.moltenKt.core.extension.all
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.paper.extension.display.ui.item
-import de.moltenKt.paper.runtime.event.PanelClickEvent
-import de.moltenKt.paper.runtime.event.PanelCloseEvent
-import de.moltenKt.paper.runtime.event.PanelOpenEvent
 import de.moltenKt.paper.runtime.event.PlayerDamageByPlayerEvent
 import de.moltenKt.paper.runtime.event.interact.PlayerInteractAtBlockEvent
 import de.moltenKt.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.moltenKt.paper.structure.app.event.EventListener
-import de.moltenKt.paper.tool.display.ui.panel.Panel.Companion.getPanel
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority.HIGHEST
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.inventory.InventoryCloseEvent
-import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.event.player.PlayerInteractEvent
 
 internal class EventsListener : EventListener() {
-
-	@EventHandler(priority = HIGHEST)
-	fun onInventoryClick(event: InventoryClickEvent) {
-		val player = event.whoClicked as Player
-		val inventory = event.clickedInventory
-
-		if (inventory != null) {
-			val panel = inventory.getPanel()
-
-			if (panel != null) {
-
-				event.isCancelled = !PanelClickEvent(
-					player = player,
-					panel = panel,
-					eventCancelled = event.isCancelled,
-					origin = event,
-				).callEvent()
-
-			}
-
-		}
-
-	}
-
-	@EventHandler
-	fun onInventoryOpen(event: InventoryOpenEvent) {
-		event.inventory.getPanel()?.let { panel ->
-			event.isCancelled = !PanelOpenEvent(
-				event, panel, event.isCancelled
-			).callEvent()
-		}
-	}
-
-	@EventHandler
-	fun onInventoryClose(event: InventoryCloseEvent) {
-		event.inventory.getPanel()?.let { panel ->
-			PanelCloseEvent(event, panel).callEvent()
-		}
-	}
 
 	@EventHandler(priority = HIGHEST)
 	fun onEntityDamageByEntity(event: EntityDamageByEntityEvent) {

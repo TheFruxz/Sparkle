@@ -9,12 +9,12 @@ import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.paper.identityObject
 import de.moltenKt.paper.extension.paper.templateLocation
 import de.moltenKt.paper.extension.tasky.sync
-import de.moltenKt.paper.structure.command.StructuredInterchange
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.ignoreCase
 import de.moltenKt.paper.tool.display.message.Transmission.Level.APPLIED
 import de.moltenKt.paper.tool.display.message.Transmission.Level.FAIL
-import de.moltenKt.paper.tool.position.CubicalShape
+import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
 import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.newline
 import de.moltenKt.unfold.text
@@ -55,7 +55,7 @@ internal class MarkingInterchange : StructuredInterchange(
 				onInteractWith {
 					val targetBlock = whoInteract.rayTraceBlocks(10.0, ALWAYS)?.hitBlock
 					val actualBox = MoltenCache.playerMarkerBoxes[player.identityObject]
-					val currentBox = actualBox ?: CubicalShape(targetBlock?.location ?: templateLocation)
+					val currentBox = actualBox ?: DependentCubicalShape(targetBlock?.location ?: templateLocation)
 
 					if (!whoInteract.isSneaking) {
 						if (targetBlock != null) {
@@ -67,7 +67,7 @@ internal class MarkingInterchange : StructuredInterchange(
 
 									if (actualBox?.firstLocation != targetLocation) {
 
-										MoltenCache.playerMarkerBoxes[player.identityObject] = currentBox.updateFirstLocation(targetLocation)
+										MoltenCache.playerMarkerBoxes += player.identityObject to currentBox.updateFirstLocation(targetLocation)
 
 										lang["component.markingTool.action.set"].replaceVariables(
 											"n" to 1,
@@ -95,7 +95,7 @@ internal class MarkingInterchange : StructuredInterchange(
 
 									if (actualBox?.secondLocation != targetLocation) {
 
-										MoltenCache.playerMarkerBoxes[player.identityObject] = currentBox.updateSecondLocation(targetLocation)
+										MoltenCache.playerMarkerBoxes += player.identityObject to currentBox.updateSecondLocation(targetLocation)
 
 										lang["component.markingTool.action.set"].replaceVariables(
 											"n" to 2,

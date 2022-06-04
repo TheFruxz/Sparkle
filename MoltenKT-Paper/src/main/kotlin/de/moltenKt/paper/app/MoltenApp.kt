@@ -4,6 +4,7 @@ import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.tryToIgnore
 import de.moltenKt.core.tool.smart.identification.Identity
+import de.moltenKt.paper.app.component.app.AppComponent
 import de.moltenKt.paper.app.component.buildMode.BuildModeComponent
 import de.moltenKt.paper.app.component.chat.ChatComponent
 import de.moltenKt.paper.app.component.completion.ProtectionComponent
@@ -12,7 +13,6 @@ import de.moltenKt.paper.app.component.events.EventsComponent
 import de.moltenKt.paper.app.component.experimental.ExperimentalComponent
 import de.moltenKt.paper.app.component.keeper.KeeperComponent
 import de.moltenKt.paper.app.component.marking.MarkingComponent
-import de.moltenKt.paper.app.component.messaging.MessageInterchange
 import de.moltenKt.paper.app.component.messaging.MessagingComponent
 import de.moltenKt.paper.app.component.point.PointComponent
 import de.moltenKt.paper.app.component.point.asset.Point
@@ -26,9 +26,6 @@ import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
-import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
-import de.moltenKt.paper.extension.paper.toSimpleLocation
-import de.moltenKt.paper.extension.tasky.sync
 import de.moltenKt.paper.general.api.mojang.MojangProfile
 import de.moltenKt.paper.general.api.mojang.MojangProfileCape
 import de.moltenKt.paper.general.api.mojang.MojangProfileRaw
@@ -44,16 +41,24 @@ import de.moltenKt.paper.tool.data.json.JsonFileDataElement
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.display.world.SimpleLocation
+import de.moltenKt.paper.tool.effect.particle.ParticleType.Companion
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
 import de.moltenKt.paper.tool.permission.Approval
-import de.moltenKt.paper.tool.position.ComplexShape
-import de.moltenKt.paper.tool.position.CubicalShape
-import de.moltenKt.paper.tool.position.CylindricalShape
-import de.moltenKt.paper.tool.position.PyramidalShape
-import de.moltenKt.paper.tool.position.Shape
-import de.moltenKt.paper.tool.position.SphericalShape
+import de.moltenKt.paper.tool.position.dependent.DependentComplexShape
+import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
+import de.moltenKt.paper.tool.position.dependent.DependentCylindricalShape
+import de.moltenKt.paper.tool.position.dependent.DependentLinearShape
+import de.moltenKt.paper.tool.position.dependent.DependentPyramidalShape
+import de.moltenKt.paper.tool.position.dependent.DependentShape
+import de.moltenKt.paper.tool.position.dependent.DependentSphericalShape
+import de.moltenKt.paper.tool.position.relative.CubicalShape
+import de.moltenKt.paper.tool.position.relative.CylindricalShape
+import de.moltenKt.paper.tool.position.relative.LinearShape
+import de.moltenKt.paper.tool.position.relative.PyramidalShape
+import de.moltenKt.paper.tool.position.relative.Shape
+import de.moltenKt.paper.tool.position.relative.SphereShape
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
@@ -61,10 +66,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Material
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
-import org.bukkit.entity.Player
 import java.util.logging.Level
 
 class MoltenApp : App() {
@@ -99,10 +102,22 @@ class MoltenApp : App() {
 
 				polymorphic(Shape::class) {
 
-					subclass(ComplexShape::class)
-					subclass(CubicalShape::class)
-					subclass(CylindricalShape::class)
-					subclass(SphericalShape::class)
+					polymorphic(DependentShape::class) {
+
+						subclass(DependentComplexShape::class)
+						subclass(DependentCubicalShape::class)
+						subclass(DependentCylindricalShape::class)
+						subclass(DependentLinearShape::class)
+						subclass(DependentPyramidalShape::class)
+						subclass(DependentSphericalShape::class)
+
+					}
+
+					polymorphic(CubicalShape::class) { subclass(DependentCubicalShape::class) }
+					polymorphic(CylindricalShape::class) { subclass(DependentCylindricalShape::class) }
+					polymorphic(LinearShape::class) { subclass(DependentLinearShape::class) }
+					polymorphic(PyramidalShape::class) { subclass(DependentPyramidalShape::class) }
+					polymorphic(SphereShape::class) { subclass(DependentSphericalShape::class) }
 
 				}
 
@@ -132,7 +147,8 @@ class MoltenApp : App() {
 			Level.INFO, """
 			MoltenKT is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
 			https://www.jetbrains.com/ | https://kotlinlang.org/
-		""".trimIndent())
+		""".trimIndent()
+		)
 
 		MoltenCache.tmp_initSetupPreferences.forEach {
 			fun <T : Any> proceed(default: T) {
@@ -143,7 +159,7 @@ class MoltenApp : App() {
 			proceed(it.default)
 		}
 
-		MoltenCache.tmp_initSetupPreferences.clear()
+		MoltenCache.tmp_initSetupPreferences = emptySet()
 
 		languageSpeaker.let { languageSpeaker ->
 			mainLog(Level.INFO, "Speaking langauge: ${languageSpeaker.baseLang}")
@@ -181,60 +197,7 @@ class MoltenApp : App() {
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
 
-		buildAndRegisterSandBox(this, "test") {
-
-			val shape = Shape.cube((executor as Player).location, 50.0)
-
-			repeat(50) {
-				val material = Material.values().toList().shuffled().first {
-					it.isSolid && it.isCollidable && it.isOccluding && it.isBlock
-				}
-
-				shape.gridBlockLocations.forEach {
-
-					sync {
-
-						it.bukkit.block.type = material
-
-					}
-
-				}
-
-			}
-
-		}
-
-		buildAndRegisterSandBox(this, "test2") {
-
-			val shape = PyramidalShape((executor as Player).location.toSimpleLocation(), 5.0, 9.0, 9.0)
-
-			shape.blockLocations.forEach {
-
-				sync {
-
-					it.bukkit.block.type = Material.REDSTONE_LAMP
-
-				}
-
-			}
-
-		}
-
-		buildAndRegisterSandBox(this, "test3") {
-
-			val shape = PyramidalShape((executor as Player).location.toSimpleLocation(), 20.0, 15.0, 30.0)
-
-			shape.blockLocations.forEach {
-
-				sync {
-
-					it.bukkit.block.type = Material.REDSTONE_LAMP
-
-				}
-
-			}
-
-		}
+		add(AppComponent())
 
 	}
 
@@ -277,14 +240,14 @@ class MoltenApp : App() {
 		}
 
 	}
-	
-	public companion object : AppCompanion<MoltenApp>() {
+
+	companion object : AppCompanion<MoltenApp>() {
 
 		@JvmStatic
 		override val predictedIdentity: Identity<MoltenApp> = Identity<MoltenApp>("MoltenKT")
 
 		@JvmStatic
-		public var debugMode: Boolean = true
+		var debugMode: Boolean = true
 
 	}
 

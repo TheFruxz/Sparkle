@@ -41,12 +41,12 @@ class Feature(override val vendorIdentity: Identity<out App>, name: String, desc
     var isEnabled: Boolean
         get() = MoltenCache.featureStates[identityObject] == FeatureState.ENABLED
         set(value) {
-            MoltenCache.featureStates[identityObject] = if (value) FeatureState.ENABLED else FeatureState.DISABLED
+            MoltenCache.featureStates += identityObject to if (value) FeatureState.ENABLED else FeatureState.DISABLED
         }
 
     fun registerIfNotRegistered(state: FeatureState = FeatureState.ENABLED) {
         if (!MoltenCache.featureStates.contains(identityObject)) {
-            MoltenCache.featureStates[identityObject] = state
+            MoltenCache.featureStates += identityObject to state
         }
     }
 

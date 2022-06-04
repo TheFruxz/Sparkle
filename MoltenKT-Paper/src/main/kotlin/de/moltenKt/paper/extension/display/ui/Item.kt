@@ -7,6 +7,7 @@ import de.moltenKt.paper.extension.paper.offlinePlayer
 import de.moltenKt.paper.tool.display.color.ColorType
 import de.moltenKt.paper.tool.display.color.DyeableMaterial
 import de.moltenKt.paper.tool.display.item.Item
+import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.display.item.quirk.Quirk.Companion.skullQuirk
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.runBlocking
@@ -50,6 +51,9 @@ fun ItemStack.changeColor(newColorType: ColorType) = type.changeColor(newColorTy
 val Material.item: Item
 	get() = Item(this)
 
+val Material.itemLike: ItemLike
+	get() = ItemLike.of(this)
+
 fun Material.item(process: Item.() -> Unit) =
 	item.apply(process)
 
@@ -61,6 +65,9 @@ fun Material.itemStack(process: ItemStack.() -> Unit) =
 
 val ItemStack.item: Item
 	get() = Item(this)
+
+val ItemStack.itemLike: ItemLike
+	get() = ItemLike.of(this)
 
 fun ItemStack.item(process: Item.() -> Unit) =
 	item.apply(process)

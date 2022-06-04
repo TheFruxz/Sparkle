@@ -28,7 +28,7 @@ internal class BuildModeListener : EventListener() {
 	private fun Cancellable.buildModeCancel(entity: Entity, action: BuildModeConfiguration.ProtectedAction, affected: Material?) {
 		val configState = BuildModeManager.state
 
-		if (entity is Player && !entity.buildMode && configState.protectedActions.also { println("protected? ($it) -> ") }.contains(action.also { println("e: $it") }).also { println(it) } && !configState.ignoredMaterials.contains(affected?.name)) {
+		if (entity is Player && !entity.buildMode && configState.protectedActions.contains(action) && !configState.ignoredMaterials.contains(affected?.name)) {
 			this.isCancelled = true
 		}
 	}

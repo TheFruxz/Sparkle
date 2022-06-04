@@ -5,6 +5,7 @@ import de.moltenKt.core.extension.container.replace
 import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.paper.Constants
 import de.moltenKt.paper.app.MoltenCache.registeredServices
 import de.moltenKt.paper.extension.app
 import de.moltenKt.paper.extension.display.notification
@@ -12,7 +13,7 @@ import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS
 import de.moltenKt.paper.structure.command.InterchangeResult.WRONG_USAGE
-import de.moltenKt.paper.structure.command.StructuredInterchange
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
@@ -33,7 +34,7 @@ internal class ServiceInterchange : StructuredInterchange(
 			ignoreCase()
 
 			fun displayServices(executor: InterchangeExecutor, page: Int) {
-				val pageValue = registeredServices.page(page, 6)
+				val pageValue = registeredServices.page(page, Constants.ENTRIES_PER_PAGE)
 
 				if (pageValue.content.isNotEmpty()) {
 					buildString {
@@ -72,7 +73,7 @@ internal class ServiceInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(CompletionAsset.PAGES { ceilToInt(registeredServices.size.toDouble() / 6) })
+				addContent(CompletionAsset.PAGES { ceilToInt(registeredServices.size.toDouble() / Constants.ENTRIES_PER_PAGE) })
 
 				isNotRequired()
 

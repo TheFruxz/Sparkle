@@ -1,0 +1,658 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>DependentCubicalShape</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../index.html">
+<span>MoltenKT</span>            </a>    </div>
+    <div>1.0-PRE-11.0.2
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="MoltenKT-Paper::de.moltenKt.paper.tool.position.dependent/DependentCubicalShape///PointingToDeclaration//-2141326931">
+  <div class="breadcrumbs"><a href="../../index.html">MoltenKT-Paper</a><span class="delimiter">/</span><a href="../index.html">de.moltenKt.paper.tool.position.dependent</a><span class="delimiter">/</span><a href="index.html">DependentCubicalShape</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Dependent</span><wbr><span>Cubical</span><wbr><span><span>Shape</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">DependentCubicalShape</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>first<span class="token operator">: </span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>second<span class="token operator">: </span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a></span></span><span class="token punctuation">)</span> : <a href="../-dependent-shape/index.html">DependentShape</a>, <a href="../../../MoltenKT-Core/de.molten-kt.core.tool.smart/-producible/index.html">Producible</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="org.bukkit.util/BoundingBox///PointingToDeclaration/">BoundingBox</span><span class="token operator">&gt; </span>, <span data-unresolved-link="org.bukkit.configuration.serialization/ConfigurationSerializable///PointingToDeclaration/">ConfigurationSerializable</span>, <a href="../../de.moltenKt.paper.tool.position.relative/-cubical-shape/index.html">CubicalShape</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">This data class represents a computer generated box, defined by 2 points. These 2 points are locations and represent the corners of the box. The box is defined by the difference of the two points, and each point can be changed independently, without breaking the computational part. This class heavily uses the <span data-unresolved-link="org.bukkit.util/BoundingBox///PointingToDeclaration/">BoundingBox</span> class from the Bukkit API, and assists the usability of this Bukkit utility class.</p><h4 class="">Author</h4><p class="paragraph">Fruxz</p><h4 class="">Since</h4><p class="paragraph">1.0</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Extensions">Extensions</button><button class="section-tab" data-togglable="Parameters">Parameters</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Parameters</h2>
+      <div data-togglable="Parameters">
+        <div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="Parameters"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>first</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The first point/corner of the box.</p></div></div></div></div></div><div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>second</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The second point/corner of the box.</p></div></div></div></div></div></div></div></div></div>
+      </div>
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="1212399347%2FConstructors%2F-2141326931" anchor-label="DependentCubicalShape" id="1212399347%2FConstructors%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-dependent-cubical-shape.html"><span>Dependent</span><wbr><span>Cubical</span><wbr><span><span>Shape</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1212399347%2FConstructors%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-dependent-cubical-shape.html"><span class="token function">DependentCubicalShape</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">first<span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="token punctuation">, </span></span><span class="parameter ">second<span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1377044811%2FConstructors%2F-2141326931" anchor-label="DependentCubicalShape" id="1377044811%2FConstructors%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-dependent-cubical-shape.html"><span>Dependent</span><wbr><span>Cubical</span><wbr><span><span>Shape</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1377044811%2FConstructors%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-dependent-cubical-shape.html"><span class="token function">DependentCubicalShape</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">both<span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="857725013%2FConstructors%2F-2141326931" anchor-label="DependentCubicalShape" id="857725013%2FConstructors%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-dependent-cubical-shape.html"><span>Dependent</span><wbr><span>Cubical</span><wbr><span><span>Shape</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="857725013%2FConstructors%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-dependent-cubical-shape.html"><span class="token function">DependentCubicalShape</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">locations<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="token punctuation">, </span><span class="token keyword"></span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1632032910%2FConstructors%2F-2141326931" anchor-label="DependentCubicalShape" id="-1632032910%2FConstructors%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-dependent-cubical-shape.html"><span>Dependent</span><wbr><span>Cubical</span><wbr><span><span>Shape</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1632032910%2FConstructors%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-dependent-cubical-shape.html"><span class="token function">DependentCubicalShape</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">locationEntry<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/-entry/index.html">Map.Entry</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="token punctuation">, </span><span class="token keyword"></span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="70097269%2FConstructors%2F-2141326931" anchor-label="DependentCubicalShape" id="70097269%2FConstructors%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-dependent-cubical-shape.html"><span>Dependent</span><wbr><span>Cubical</span><wbr><span><span>Shape</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="70097269%2FConstructors%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-dependent-cubical-shape.html"><span class="token function">DependentCubicalShape</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>locations<span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1987691798%2FConstructors%2F-2141326931" anchor-label="DependentCubicalShape" id="1987691798%2FConstructors%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-dependent-cubical-shape.html"><span>Dependent</span><wbr><span>Cubical</span><wbr><span><span>Shape</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1987691798%2FConstructors%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-dependent-cubical-shape.html"><span class="token function">DependentCubicalShape</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">map<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="577694637%2FConstructors%2F-2141326931" anchor-label="DependentCubicalShape" id="577694637%2FConstructors%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-dependent-cubical-shape.html"><span>Dependent</span><wbr><span>Cubical</span><wbr><span><span>Shape</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="577694637%2FConstructors%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-dependent-cubical-shape.html"><span class="token function">DependentCubicalShape</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">first<span class="token operator">: </span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a><span class="token punctuation">, </span></span><span class="parameter ">second<span class="token operator">: </span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="-896685746%2FClasslikes%2F-2141326931" anchor-label="Companion" id="-896685746%2FClasslikes%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-896685746%2FClasslikes%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="-1131381443%2FFunctions%2F-2141326931" anchor-label="asShifted" id="-1131381443%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="as-shifted.html"><span>as</span><wbr><span><span>Shifted</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1131381443%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="as-shifted.html"><span class="token function">asShifted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">toWorld<span class="token operator">: </span><span data-unresolved-link="org.bukkit/World///PointingToDeclaration/">World</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-dependent-shape/index.html">DependentShape</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Returns a copy of the <a href="../-dependent-shape/index.html">DependentShape</a> with the <a href="as-shifted.html">toWorld</a> as the world, instead of the world of the original <a href="../-dependent-shape/index.html">DependentShape</a>.</p></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../-dependent-shape/as-shifted.html"><span class="token function">asShifted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">toWorldUid<span class="token operator">: </span><a href="../../../MoltenKT-Core/de.molten-kt.core.extension.class-type/-u-u-i-d/index.html">UUID</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-dependent-shape/index.html">DependentShape</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Returns a copy of the <a href="../-dependent-shape/index.html">DependentShape</a> with the <a href="../-dependent-shape/as-shifted.html">toWorldUid</a> as the world, instead of the world of the original <a href="../-dependent-shape/index.html">DependentShape</a>.</p></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../-dependent-shape/as-shifted.html"><span class="token function">asShifted</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">toWorldName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-dependent-shape/index.html">DependentShape</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Returns a copy of the <a href="../-dependent-shape/index.html">DependentShape</a> with the <a href="../-dependent-shape/as-shifted.html">toWorldName</a> as the world, instead of the world of the original <a href="../-dependent-shape/index.html">DependentShape</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1691240515%2FFunctions%2F-2141326931" anchor-label="contains" id="-1691240515%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="contains.html"><span><span>contains</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1691240515%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="contains.html"><span class="token function">contains</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">location<span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Returns, if the given <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span> is inside the <a href="../-dependent-shape/index.html">DependentShape</a>. This function also checks the world and other specific values, so it is more precise than <a href="../-dependent-shape/contains.html">DependentShape.contains</a> with the <span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span> parameter. This function is specified inside the specific <a href="../-dependent-shape/index.html">DependentShape</a>.</p></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="contains.html"><span class="token function">contains</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">vector<span class="token operator">: </span><span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Returns, if the <span data-unresolved-link="org.bukkit.util/Vector/x/#/PointingToDeclaration/">Vector.x</span>, <span data-unresolved-link="org.bukkit.util/Vector/y/#/PointingToDeclaration/">Vector.y</span> and <span data-unresolved-link="org.bukkit.util/Vector/z/#/PointingToDeclaration/">Vector.z</span> values of the given <span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span> are inside the shape. This function is used to easily check simple <span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span> without checking the correct world or chunk. This can result to wrong conclusions, if the world-check is required (Player in the OverWorld can be inside this <a href="../-dependent-shape/index.html">DependentShape</a>, but also players in the Nether). To have more explicit checks, use <a href="../-dependent-shape/contains.html">DependentShape.contains</a> with <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span> parameter instead, because this function has its own base, specified inside the <a href="../-dependent-shape/index.html">DependentShape</a>.</p></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../-dependent-shape/contains.html"><span class="token function">contains</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">simpleLocation<span class="token operator">: </span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Returns, if the given <span data-unresolved-link="org.bukkit.block/Block///PointingToDeclaration/">Block</span> is inside the <a href="../-dependent-shape/index.html">DependentShape</a>. This is done by using the <a href="../-dependent-shape/contains.html">DependentShape.contains</a> function with the <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span> parameter. So its precise and respects every aspect of the <a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a>, like the world and the chunk. To use the <a href="../-dependent-shape/contains.html">DependentShape.contains</a> function, the <a href="../-dependent-shape/contains.html">simpleLocation</a> parameter is converted to a Bukkit <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span>, via the <a href="../../de.moltenKt.paper.tool.display.world/-simple-location/bukkit.html">SimpleLocation.bukkit</a> computational value.</p></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../-dependent-shape/contains.html"><span class="token function">contains</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">block<span class="token operator">: </span><span data-unresolved-link="org.bukkit.block/Block///PointingToDeclaration/">Block</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Returns, if the given <span data-unresolved-link="org.bukkit.block/Block///PointingToDeclaration/">Block</span> is inside the <a href="../-dependent-shape/index.html">DependentShape</a>. This is done by using the <a href="../-dependent-shape/contains.html">DependentShape.contains</a> function with the <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span> parameter. So its precise and respects every aspect of the <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Block</span>, like the world and the chunk. To use the <a href="../-dependent-shape/contains.html">DependentShape.contains</a> function, the <a href="../-dependent-shape/contains.html">block</a> parameter is swapped to a <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span>, via the <span data-unresolved-link="org.bukkit.block/Block/getLocation/#/PointingToDeclaration/">Block.getLocation</span> function.</p></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../-dependent-shape/contains.html"><span class="token function">contains</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">entity<span class="token operator">: </span><span data-unresolved-link="org.bukkit.entity/Entity///PointingToDeclaration/">Entity</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Returns, if the given <span data-unresolved-link="org.bukkit.entity/Entity///PointingToDeclaration/">Entity</span> is inside the <a href="../-dependent-shape/index.html">DependentShape</a>. This is done by using the <a href="../-dependent-shape/contains.html">DependentShape.contains</a> function with the <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span> parameter. So its precise and respects every aspect of the <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Entity</span>, like the world and the chunk. To use the <a href="../-dependent-shape/contains.html">DependentShape.contains</a> function, the <a href="../-dependent-shape/contains.html">entity</a> parameter is swapped to a <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span>, via the <span data-unresolved-link="org.bukkit.entity/Entity/getLocation/#/PointingToDeclaration/">Entity.getLocation</span> function.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-33697369%2FFunctions%2F-2141326931" anchor-label="produce" id="-33697369%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="produce.html"><span><span>produce</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-33697369%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="produce.html"><span class="token function">produce</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span><span class="token annotation">@</span><span data-unresolved-link="org.jetbrains.annotations/NotNull///PointingToDeclaration/"><span class="token annotation">NotNull</span></span>&nbsp;</span><span data-unresolved-link="org.bukkit.util/BoundingBox///PointingToDeclaration/">BoundingBox</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function creates a <span data-unresolved-link="org.bukkit.util/BoundingBox///PointingToDeclaration/">BoundingBox</span> from the provided <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html">first</a> and <a href="second.html">second</a> locations.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="380038439%2FFunctions%2F-2141326931" anchor-label="serialize" id="380038439%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="serialize.html"><span><span>serialize</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="380038439%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="serialize.html"><span class="token function">serialize</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1765944996%2FFunctions%2F-2141326931" anchor-label="updateFirstLocation" id="-1765944996%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="update-first-location.html"><span>update</span><wbr><span>First</span><wbr><span><span>Location</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1765944996%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="update-first-location.html"><span class="token function">updateFirstLocation</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">newLocation<span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">DependentCubicalShape</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function changes the <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html">first</a> location, by replacing it with the provided <a href="update-first-location.html">newLocation</a>. This function returns itself, but updated.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1715377054%2FFunctions%2F-2141326931" anchor-label="updateLocations" id="1715377054%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="update-locations.html"><span>update</span><wbr><span><span>Locations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1715377054%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="update-locations.html"><span class="token function">updateLocations</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">locations<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="token punctuation">, </span><span class="token keyword"></span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">DependentCubicalShape</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function changes the <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html">first</a> and <a href="second.html">second</a> location of this box, by replacing them with the provided two <a href="update-locations.html">locations</a>. This function returns itself, but updated.</p></div><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="update-locations.html"><span class="token function">updateLocations</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">firstLocation<span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="token punctuation">, </span></span><span class="parameter ">secondLocation<span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">DependentCubicalShape</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function changes the <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html">first</a> and <a href="second.html">second</a> location of this box, by replacing them with the provided <a href="update-locations.html">firstLocation</a> and <a href="update-locations.html">secondLocation</a>. This function returns itself, but updated.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-425254810%2FFunctions%2F-2141326931" anchor-label="updateSecondLocation" id="-425254810%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="update-second-location.html"><span>update</span><wbr><span>Second</span><wbr><span><span>Location</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-425254810%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="update-second-location.html"><span class="token function">updateSecondLocation</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">newLocation<span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">DependentCubicalShape</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function changes the <a href="second.html">second</a> location, by replacing it with the provided <a href="update-second-location.html">newLocation</a>. This function returns itself, but updated.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="-595756670%2FProperties%2F-2141326931" anchor-label="blockLocations" id="-595756670%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="block-locations.html">blockLocations</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-595756670%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-595756670%2FProperties%2F-2141326931" anchor-label="blockLocations" id="-595756670%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="block-locations.html">blockLocations</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-595756670%2FProperties%2F-2141326931" anchor-label="blockLocations" id="-595756670%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">This computational value represents every block-center location inside the Shape. Value is specified by each <a href="../-dependent-shape/index.html">DependentShape</a> implementation individually.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="69744992%2FProperties%2F-2141326931" anchor-label="blockVolume" id="69744992%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="block-volume.html">blockVolume</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="69744992%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="69744992%2FProperties%2F-2141326931" anchor-label="blockVolume" id="69744992%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="block-volume.html">blockVolume</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="69744992%2FProperties%2F-2141326931" anchor-label="blockVolume" id="69744992%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">This computational value computes the volume of this box.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1989857026%2FProperties%2F-2141326931" anchor-label="center" id="-1989857026%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="center.html">center</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1989857026%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-1989857026%2FProperties%2F-2141326931" anchor-label="center" id="-1989857026%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="center.html">center</a><span class="token operator">: </span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-1989857026%2FProperties%2F-2141326931" anchor-label="center" id="-1989857026%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">This computational value represents the center of the Shape. In case of the <a href="../-dependent-complex-shape/index.html">DependentComplexShape</a>, that might not be inside the Shape. Value is specified by each <a href="../-dependent-shape/index.html">DependentShape</a> implementation individually.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-422976055%2FProperties%2F-2141326931" anchor-label="centerLocation" id="-422976055%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="center-location.html">centerLocation</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-422976055%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-422976055%2FProperties%2F-2141326931" anchor-label="centerLocation" id="-422976055%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="center-location.html">centerLocation</a><span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-422976055%2FProperties%2F-2141326931" anchor-label="centerLocation" id="-422976055%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">This function returns the center of the box. The computational part is done by the <span data-unresolved-link="org.bukkit.util/BoundingBox///PointingToDeclaration/">BoundingBox</span>, and the result is returned as a <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="949580859%2FProperties%2F-2141326931" anchor-label="centerVector" id="949580859%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="center-vector.html">centerVector</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="949580859%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="949580859%2FProperties%2F-2141326931" anchor-label="centerVector" id="949580859%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="center-vector.html">centerVector</a><span class="token operator">: </span><span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="949580859%2FProperties%2F-2141326931" anchor-label="centerVector" id="949580859%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">This function returns the center of the box. The computational part is done by the <span data-unresolved-link="org.bukkit.util/BoundingBox///PointingToDeclaration/">BoundingBox</span>, and the result is returned as a <span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-595117175%2FProperties%2F-2141326931" anchor-label="corners" id="-595117175%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="corners.html">corners</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-595117175%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-595117175%2FProperties%2F-2141326931" anchor-label="corners" id="-595117175%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="corners.html">corners</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1072999516%2FProperties%2F-2141326931" anchor-label="depth" id="-1072999516%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="depth.html">depth</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1072999516%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-1072999516%2FProperties%2F-2141326931" anchor-label="depth" id="-1072999516%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="depth.html">depth</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="814651403%2FProperties%2F-2141326931" anchor-label="directionVelocity" id="814651403%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="direction-velocity.html">directionVelocity</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="814651403%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="814651403%2FProperties%2F-2141326931" anchor-label="directionVelocity" id="814651403%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="direction-velocity.html">directionVelocity</a><span class="token operator">: </span><span data-unresolved-link="org.bukkit.util/Vector///PointingToDeclaration/">Vector</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="814651403%2FProperties%2F-2141326931" anchor-label="directionVelocity" id="814651403%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">This computational value computes the required velocity, to reach the <a href="second.html">second</a> location from the <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html">first</a> location. This velocity is mostly used to push an entity to the <a href="second.html">second</a> location.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1609506782%2FProperties%2F-2141326931" anchor-label="distance" id="1609506782%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="distance.html">distance</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1609506782%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1609506782%2FProperties%2F-2141326931" anchor-label="distance" id="1609506782%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="distance.html">distance</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1609506782%2FProperties%2F-2141326931" anchor-label="distance" id="1609506782%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">This computational value computes the distance between the <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html">first</a> and <a href="second.html">second</a> locations of this box. The measure unit is meters, or better known as blocks.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="623190103%2FProperties%2F-2141326931" anchor-label="first" id="623190103%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="first.html">first</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="623190103%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="623190103%2FProperties%2F-2141326931" anchor-label="first" id="623190103%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="first.html">first</a><span class="token operator">: </span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1024103390%2FProperties%2F-2141326931" anchor-label="firstLocation" id="-1024103390%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="first-location.html">firstLocation</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1024103390%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-1024103390%2FProperties%2F-2141326931" anchor-label="firstLocation" id="-1024103390%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="first-location.html">firstLocation</a><span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-1024103390%2FProperties%2F-2141326931" anchor-label="firstLocation" id="-1024103390%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">The first location represented as a bukkit location.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-172185325%2FProperties%2F-2141326931" anchor-label="fullDepth" id="-172185325%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="full-depth.html">fullDepth</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-172185325%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-172185325%2FProperties%2F-2141326931" anchor-label="fullDepth" id="-172185325%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="full-depth.html">fullDepth</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-172185325%2FProperties%2F-2141326931" anchor-label="fullDepth" id="-172185325%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">This computational value represents the minDepth..maxDepth of the shape. Value is specified by each <a href="../-dependent-shape/index.html">DependentShape</a> implementation individually. This value is used, to determine the space occupied by the shape, if the shape gets stretched to a cube, without changing the min/max values of the height and width.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="417559773%2FProperties%2F-2141326931" anchor-label="fullHeight" id="417559773%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="full-height.html">fullHeight</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="417559773%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="417559773%2FProperties%2F-2141326931" anchor-label="fullHeight" id="417559773%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="full-height.html">fullHeight</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="417559773%2FProperties%2F-2141326931" anchor-label="fullHeight" id="417559773%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">This computational value represents the minHeight..maxHeight of the shape. Value is specified by each <a href="../-dependent-shape/index.html">DependentShape</a> implementation individually. This value is used, to determine the space occupied by the shape, if the shape gets stretched to a cube, without changing the min/max values of the height and width.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="849078742%2FProperties%2F-2141326931" anchor-label="fullSizeShape" id="849078742%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="full-size-shape.html">fullSizeShape</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="849078742%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="849078742%2FProperties%2F-2141326931" anchor-label="fullSizeShape" id="849078742%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="full-size-shape.html">fullSizeShape</a><span class="token operator">: </span><a href="index.html">DependentCubicalShape</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="849078742%2FProperties%2F-2141326931" anchor-label="fullSizeShape" id="849078742%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">This computational value represents the <a href="full-width.html">fullWidth</a>, <a href="full-height.html">fullHeight</a> and <a href="full-depth.html">fullDepth</a> of the shape. This value is used, to determine the space occupied by the shape, if the shape gets stretched to a cube, without changing the min/max values of the height and width.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1577099120%2FProperties%2F-2141326931" anchor-label="fullWidth" id="1577099120%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="full-width.html">fullWidth</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1577099120%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1577099120%2FProperties%2F-2141326931" anchor-label="fullWidth" id="1577099120%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="full-width.html">fullWidth</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1577099120%2FProperties%2F-2141326931" anchor-label="fullWidth" id="1577099120%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">This computational value represents the minWidth..maxWidth of the shape. Value is specified by each <a href="../-dependent-shape/index.html">DependentShape</a> implementation individually. This value is used, to determine the space occupied by the shape, if the shape gets stretched to a cube, without changing the min/max values of the height and width.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1016436828%2FProperties%2F-2141326931" anchor-label="gridBlockLocations" id="1016436828%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="grid-block-locations.html">gridBlockLocations</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1016436828%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1016436828%2FProperties%2F-2141326931" anchor-label="gridBlockLocations" id="1016436828%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="grid-block-locations.html">gridBlockLocations</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1016436828%2FProperties%2F-2141326931" anchor-label="gridBlockLocations" id="1016436828%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">The blocks hit by connection each corner of the box to every other corner of the box.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1737876372%2FProperties%2F-2141326931" anchor-label="height" id="-1737876372%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="height.html">height</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1737876372%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-1737876372%2FProperties%2F-2141326931" anchor-label="height" id="-1737876372%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="height.html">height</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1413060493%2FProperties%2F-2141326931" anchor-label="length" id="1413060493%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="length.html">length</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1413060493%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1413060493%2FProperties%2F-2141326931" anchor-label="length" id="1413060493%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="length.html">length</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1392043625%2FProperties%2F-2141326931" anchor-label="locations" id="1392043625%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="locations.html">locations</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1392043625%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1392043625%2FProperties%2F-2141326931" anchor-label="locations" id="1392043625%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="locations.html">locations</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="token punctuation">, </span><span class="token keyword"></span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1392043625%2FProperties%2F-2141326931" anchor-label="locations" id="1392043625%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">Both locations <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html">first</a> and <a href="second.html">second</a> represented as a <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/index.html">Pair</a> of <span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span>s.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-37040588%2FProperties%2F-2141326931" anchor-label="outlineBlockLocations" id="-37040588%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="outline-block-locations.html">outlineBlockLocations</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-37040588%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-37040588%2FProperties%2F-2141326931" anchor-label="outlineBlockLocations" id="-37040588%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="outline-block-locations.html">outlineBlockLocations</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-37040588%2FProperties%2F-2141326931" anchor-label="outlineBlockLocations" id="-37040588%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">The blocks hit by connection each corner of the box to every other corner of the box, excluding cross- connections.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1197787583%2FProperties%2F-2141326931" anchor-label="second" id="1197787583%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="second.html">second</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1197787583%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1197787583%2FProperties%2F-2141326931" anchor-label="second" id="1197787583%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="second.html">second</a><span class="token operator">: </span><a href="../../de.moltenKt.paper.tool.display.world/-simple-location/index.html">SimpleLocation</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1622594166%2FProperties%2F-2141326931" anchor-label="secondLocation" id="-1622594166%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="second-location.html">secondLocation</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1622594166%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="-1622594166%2FProperties%2F-2141326931" anchor-label="secondLocation" id="-1622594166%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="second-location.html">secondLocation</a><span class="token operator">: </span><span data-unresolved-link="org.bukkit/Location///PointingToDeclaration/">Location</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-1622594166%2FProperties%2F-2141326931" anchor-label="secondLocation" id="-1622594166%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">The second location represented as a bukkit location</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1847283161%2FProperties%2F-2141326931" anchor-label="volume" id="1847283161%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="volume.html">volume</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1847283161%2FProperties%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><a data-name="1847283161%2FProperties%2F-2141326931" anchor-label="volume" id="1847283161%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="volume.html">volume</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1847283161%2FProperties%2F-2141326931" anchor-label="volume" id="1847283161%2FProperties%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a><p class="paragraph">This computational value represents the volume, that the Shape contains. Value is specified by each <a href="../-dependent-shape/index.html">DependentShape</a> implementation individually.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="tabbedcontent">Extensions</h2>
+      <div class="table" data-togglable="Extensions"><a data-name="1685692866%2FExtensions%2F-2141326931" anchor-label="displayString" id="1685692866%2FExtensions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../de.moltenKt.paper.extension.paper/display-string.html"><span>display</span><wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1685692866%2FExtensions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html">DependentCubicalShape</a><span class="token punctuation">.</span><a href="../../de.moltenKt.paper.extension.paper/display-string.html"><span class="token function">displayString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+

@@ -17,7 +17,7 @@ object BuildModeManager {
 	private var _state: BuildModeConfiguration? = null
 
 	var state: BuildModeConfiguration
-		get() = _state ?: tryOrNull<BuildModeManager, BuildModeConfiguration> { path.readText().fromJson() }.also { println("test: ${it?.toJson()}") } ?: BuildModeConfiguration().also {
+		get() = _state ?: tryOrNull { path.readText().fromJson() } ?: BuildModeConfiguration().also {
 			path.toFile().generateFileAndPath()
 			state = it
 		}

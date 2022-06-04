@@ -21,7 +21,7 @@ MoltenKT's goal is to simplify and improve development with different platforms 
 
 ## 📈 Version
 
-Currently, MoltenKT is working with Kotlin version 1.6, which is the latest Kotlin version. In the future, versions of both
+Currently, MoltenKT is working with Kotlin version 1.7, which is the latest Kotlin version. In the future, versions of both
 Kotlin, and those of Minecraft, Paper & JavaCord will be constantly updated to provide the best API as possible.
 
 ## 👻 Modules
@@ -29,7 +29,7 @@ Kotlin, and those of Minecraft, Paper & JavaCord will be constantly updated to p
 MoltenKT currently offers 4 different project modules, each with its own platform goals, but all of these are based on the base-plate module MoltenKT-Core.
 This integrated system allows to easily adapt new features across all of the modules, and also allows for easy integration of new features into the base-plate module.
 
-### ⛺️ MoltenKT-Core 
+### 💾 MoltenKT-Core 
 MoltenKT-Core is the main module, all other modules of MoltenKT, which also work on the JVM basis of [Kotlin](https://github.com/jetbrains/kotlin), is using this module.
 This is because this is where the most MoltenKT library-content is located, which you can also use in your projects.
 Here int this module is the more general system and structure located, that is compatible with any JVM project based on Kotlin and/or Java.
@@ -107,7 +107,7 @@ If you have any questions, suggestions or other items you would like to contribu
 
 ## 🗒 Sidenotes
 
-MoltenKT-Paper-Runnable includes these small amount of dependencies
+The MoltenKT-Paper-Runnable jar includes (/ shadowed) these small amount of dependencies, so you don't have to provide them:
 
   - MoltenKT-Core
   - MoltenKT-Paper

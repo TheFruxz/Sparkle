@@ -1,11 +1,9 @@
 package de.moltenKt.paper.app
 
 import de.moltenKt.core.extension.classType.UUID
-import de.moltenKt.core.extension.container.removeAll
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.extension.debugLog
-import de.moltenKt.paper.runtime.event.PanelClickEvent
 import de.moltenKt.paper.runtime.sandbox.SandBox
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.AppCache
@@ -17,193 +15,122 @@ import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.structure.feature.Feature
 import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.data.Preference
+import de.moltenKt.paper.tool.display.canvas.Canvas
+import de.moltenKt.paper.tool.display.canvas.CanvasSessionManager.CanvasSession
 import de.moltenKt.paper.tool.display.item.action.ItemAction
-import de.moltenKt.paper.tool.display.item.action.ItemClickAction
-import de.moltenKt.paper.tool.display.item.action.ItemInteractAction
-import de.moltenKt.paper.tool.display.ui.panel.Panel
-import de.moltenKt.paper.tool.display.ui.panel.PanelFlag
-import de.moltenKt.paper.tool.position.CubicalShape
+import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
 import de.moltenKt.paper.tool.timing.cooldown.Cooldown
 import de.moltenKt.paper.tool.timing.tasky.Tasky
-import kotlinx.coroutines.Job
+import net.kyori.adventure.key.Key
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
-import kotlin.reflect.full.findAnnotations
 
 object MoltenCache : AppCache {
 
-	@GlobalData
-	@DataLevel(KILL)
-	val registeredApplications = mutableSetOf<App>()
+	var registeredApps = setOf<App>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val registeredSandBoxes = mutableSetOf<SandBox>()
+	var registeredSandBoxes = setOf<SandBox>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val registeredSandBoxCalls = mutableMapOf<Identity<SandBox>, Int>()
+	var registeredSandBoxCalls = mapOf<Identity<SandBox>, Int>()
 
-	@GlobalData
-	@DataLevel(DUMP)
-	val registeredCompletionAssetStateCache = mutableMapOf<String, Set<String>>()
+	var registeredCompletionAssetStateCache = mapOf<String, Set<String>>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val registeredCachedMutables = mutableMapOf<String, Any?>()
+	var registeredCachedMutables = mapOf<String, Any?>()
 
-	@GlobalData
-	@DataLevel(DUMP)
-	val registeredPreferenceCache = mutableMapOf<String, Any>()
+	var registeredPreferenceCache = mapOf<String, Any>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val registeredItemClickActions = mutableMapOf<String, ItemClickAction>()
+	var registeredInterchanges = setOf<Interchange>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val registeredItemInteractActions = mutableMapOf<String, ItemInteractAction>()
+	var disabledInterchanges = setOf<Identity<out Interchange>>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val registeredInterchanges = mutableSetOf<Interchange>()
+	var registeredComponents = setOf<Component>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val registeredComponents = mutableSetOf<Component>()
+	var registeredServices = setOf<Service>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val registeredServices = mutableSetOf<Service>()
+	var registeredListeners = setOf<EventListener>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val registeredListeners = mutableSetOf<EventListener>()
+	var runningComponents = mapOf<Identity<out Component>, Calendar>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val runningComponents = mutableMapOf<Identity<Component>, Calendar>()
+	var registeredPreferences = mapOf<Identity<out Preference<*>>, Preference<*>>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val registeredPanelFlags = mutableMapOf<String, Set<PanelFlag>>()
+	var livingCooldowns = mapOf<String, Cooldown>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val registeredPreferences = mutableMapOf<Identity<out Preference<*>>, Preference<*>>()
+	var runningServiceTaskController = mapOf<Identity<Service>, Tasky>()
 
-	@GlobalData
-	@DataLevel(CLEAR)
-	val livingCooldowns = mutableMapOf<String, Cooldown>()
+	var runningTasks = listOf<Int>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	var runningServiceTaskController = mutableMapOf<Identity<Service>, Tasky>()
-		internal set
+	var buildModePlayers = setOf<Identity<out OfflinePlayer>>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val runningTasks = mutableListOf<Int>()
+	var playerMarkerBoxes = mapOf<Identity<out OfflinePlayer>, DependentCubicalShape>()
 
-	@EntityData
-	@DataLevel(CLEAR)
-	val buildModePlayers = mutableSetOf<Identity<out OfflinePlayer>>()
+	var featureStates = mapOf<Identity<Feature>, Feature.FeatureState>()
 
-	@EntityData
-	@DataLevel(CLEAR)
-	val playerMarkerBoxes = mutableMapOf<Identity<out OfflinePlayer>, CubicalShape>()
+	var tmp_initSetupPreferences = setOf<Preference<*>>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	val featureStates = mutableMapOf<Identity<Feature>, Feature.FeatureState>()
+	var initializationProcesses = setOf<() -> Unit>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	internal val tmp_initSetupPreferences = mutableSetOf<Preference<*>>()
+	var itemActions = setOf<ItemAction<out Event>>()
 
-	@GlobalData
-	@DataLevel(KILL)
-	internal val initializationProcesses = mutableListOf<() -> Unit>()
+	var messageConversationPartners = mapOf<Player, Player>()
 
-	@GlobalData
-	@DataLevel(CLEAR)
-	internal val completedPanels = mutableSetOf<Panel>()
+	var canvasActions = mapOf<Key, Canvas.Reaction>()
 
-	@GlobalData
-	@DataLevel(CLEAR)
-	internal val panelInteractions = mutableMapOf<Identity<out Panel>, MutableList<PanelClickEvent.() -> Unit>>()
+	var canvasSessions = mapOf<Player, CanvasSession>()
 
-	@GlobalData
-	@DataLevel(CLEAR)
-	internal val itemActions = mutableListOf<ItemAction<out Event>>()
-
-	@EntityData
-	@DataLevel(CLEAR)
-	internal val splashScreens = mutableMapOf<Player, Job>()
-
-	@EntityData
-	@DataLevel(CLEAR)
-	internal val messageConversationPartners = mutableMapOf<Player, Player>()
-
-	private fun entityCleanerObjects(entity: UUID) = mapOf(
-		this::buildModePlayers to { buildModePlayers.removeAll { it.identity == "" + entity } },
-		this::playerMarkerBoxes to { playerMarkerBoxes.removeAll { key, _ -> key.identity == "" + entity } },
-	)
-
-	private val cleanerObjects = mutableListOf(
-		this::registeredApplications to { registeredApplications.clear() },
-		this::registeredSandBoxes to { registeredSandBoxes.clear() },
-		this::registeredSandBoxCalls to { registeredSandBoxCalls.clear() },
-		this::registeredCompletionAssetStateCache to { registeredCompletionAssetStateCache.clear() },
-		this::registeredCachedMutables to { registeredCachedMutables.clear() },
-		this::registeredPreferenceCache to { registeredPreferenceCache.clear() },
-		this::registeredItemClickActions to { registeredItemClickActions.clear() },
-		this::registeredItemInteractActions to { registeredItemInteractActions.clear() },
-		this::registeredInterchanges to { registeredInterchanges.clear() },
-		this::registeredComponents to { registeredComponents.clear() },
-		this::registeredServices to { registeredServices.clear() },
-		this::runningComponents to { runningComponents.clear() },
-		this::registeredPanelFlags to { registeredPanelFlags.clear() },
-		this::registeredPreferences to { registeredPreferences.clear() },
-		this::livingCooldowns to { livingCooldowns.clear() },
-		this::runningServiceTaskController to { runningServiceTaskController.clear() },
-		this::runningTasks to { runningTasks.clear() },
-		this::buildModePlayers to { buildModePlayers.clear() },
-		this::playerMarkerBoxes to { playerMarkerBoxes.clear() },
-		this::featureStates to { featureStates.clear() },
-		this::tmp_initSetupPreferences to { tmp_initSetupPreferences.clear() },
-		this::initializationProcesses to { initializationProcesses.clear() },
-		this::panelInteractions to { panelInteractions.clear() },
-	)
+	var canvas = mapOf<Key, Canvas>()
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
-		@OptIn(ExperimentalStdlibApi::class)
-
-		entityCleanerObjects(entityIdentity).forEach { (obj, cleaner) ->
-			if (obj.findAnnotations(DataLevel::class).any { dropDepth.isDeeperThanOrEquals(it.level) }) {
-				cleaner()
-				debugLog("Dropped '${obj.name}': ${obj.findAnnotations(DataLevel::class).first().level} cache by query 'drop -e $entityIdentity at $dropDepth'")
+		when {
+			dropDepth.isDeeperThanOrEquals(CLEAR) -> {
+				buildModePlayers = buildModePlayers.filter { it.identity != "" + entityIdentity }.toSet()
+				playerMarkerBoxes = playerMarkerBoxes.filter { it.key.identity != "" + entityIdentity }
+				messageConversationPartners = messageConversationPartners.filter { it.value.uniqueId != entityIdentity && it.key.uniqueId != entityIdentity }
+				canvasSessions = canvasSessions.filter { it.key.uniqueId != entityIdentity }
 			}
 		}
 	}
 
 	override fun dropEverything(dropDepth: CacheDepthLevel) {
 
-		@OptIn(ExperimentalStdlibApi::class)
-		@Suppress("GrazieInspection")
+		if (dropDepth.isDeeperThanOrEquals(DUMP)) {
+			debugLog("Cache clear 'DUMP' reached")
+			registeredCompletionAssetStateCache = emptyMap()
+			registeredPreferenceCache = emptyMap()
+		}
 
-		cleanerObjects.forEach { (obj, cleaner) ->
-			if (obj.findAnnotations(DataLevel::class).any { dropDepth.isDeeperThanOrEquals(it.level) }) {
-				cleaner()
-				debugLog("Dropped '${obj.name}': ${obj.findAnnotations(DataLevel::class).first().level} cache by query 'drop -a at $dropDepth'")
-			}
+		if (dropDepth.isDeeperThanOrEquals(CLEAN)) {
+			debugLog("Cache clear 'CLEAN' reached")
+
+		}
+
+		if (dropDepth.isDeeperThanOrEquals(CLEAR)) {
+			debugLog("Cache clear 'CLEAR' reached")
+			livingCooldowns = emptyMap()
+			itemActions = emptySet()
+			canvasActions = emptyMap()
+			canvas = emptyMap()
+		}
+
+		if (dropDepth.isDeeperThanOrEquals(KILL)) {
+			debugLog("Cache clear 'KILL' reached")
+			registeredApps = emptySet()
+			registeredSandBoxes = emptySet()
+			registeredSandBoxCalls = emptyMap()
+			registeredCachedMutables = emptyMap()
+			registeredInterchanges = emptySet()
+			registeredComponents = emptySet()
+			registeredServices = emptySet()
+			registeredListeners = emptySet()
+			runningComponents = emptyMap()
+			registeredPreferences = emptyMap()
+			runningServiceTaskController = emptyMap()
+			runningTasks = emptyList()
+			featureStates = emptyMap()
+			tmp_initSetupPreferences = emptySet()
+			initializationProcesses = emptySet()
 		}
 
 	}
-
-	private annotation class EntityData
-	private annotation class GlobalData
-	private annotation class DataLevel(val level: CacheDepthLevel)
 
 }

@@ -9,7 +9,7 @@ import de.moltenKt.paper.extension.mojang.resetSkin
 import de.moltenKt.paper.extension.tasky.sync
 import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS
 import de.moltenKt.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
-import de.moltenKt.paper.structure.command.StructuredInterchange
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset

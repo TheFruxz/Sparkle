@@ -2,8 +2,8 @@ package de.moltenKt.paper.tool.timing.cooldown
 
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.timing.calendar.Calendar
-import de.moltenKt.core.tool.timing.calendar.timeUnit.TimeUnit.Companion.MILLISECOND
 import de.moltenKt.paper.app.MoltenCache.livingCooldowns
+import de.moltenKt.paper.extension.timing.minecraftTicks
 import org.bukkit.Server
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
@@ -16,14 +16,14 @@ data class Cooldown(
 
 	constructor(identity: String, ticks: Number) : this(identity, ticks.toInt())
 
-	val destination = Calendar.now().add(MILLISECOND, 50 * ticks)
+	val destination = Calendar.now().add(ticks.minecraftTicks)
 
 	fun startCooldown() {
-		livingCooldowns[identity] = this
+		livingCooldowns += identity to this
 	}
 
 	fun stopCooldown() {
-		livingCooldowns.remove(identity)
+		livingCooldowns -= identity
 	}
 
 	val remainingTime: Duration
@@ -48,7 +48,7 @@ data class Cooldown(
 		fun launchCooldown(identity: String, ticks: Int, section: String = CooldownSection.general()): Cooldown {
 
 			if (isCooldownRunning(identity, section))
-				livingCooldowns.remove("${sectioning(section)}$identity")
+				livingCooldowns = livingCooldowns - "${sectioning(section)}$identity"
 
 			return Cooldown("${sectioning(section)}:$identity", ticks).apply {
 				startCooldown()

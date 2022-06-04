@@ -431,3 +431,21 @@ val Double.decimalAsPercent: Percentage
  */
 val Float.decimalAsPercent: Percentage
 	get() = Percentage(this.toDouble())
+
+/**
+ * This computational value represents the range from the [Int.MIN_VALUE] to [Int.MAX_VALUE]
+ * as a [IntRange]
+ * @author Fruxz
+ * @since 1.0
+ */
+val INT_RANGE: IntRange
+	get() = Int.MIN_VALUE..Int.MAX_VALUE
+
+/**
+ * This computational value represents the range from the [Long.MIN_VALUE] to [Long.MAX_VALUE]
+ * as a [LongRange]
+ * @author Fruxz
+ * @since 1.0
+ */
+val LONG_RANGE: LongRange
+	get() = Long.MIN_VALUE..Long.MAX_VALUE

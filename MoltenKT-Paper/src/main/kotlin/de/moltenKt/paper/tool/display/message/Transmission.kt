@@ -13,8 +13,8 @@ import de.moltenKt.paper.tool.effect.EntityBasedEffect
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundLibrary
 import de.moltenKt.unfold.extension.asComponent
-import de.moltenKt.unfold.extension.asString
 import de.moltenKt.unfold.extension.asStyledComponent
+import de.moltenKt.unfold.extension.asStyledString
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.title.Title
@@ -106,7 +106,7 @@ data class Transmission(
 			if (it is InterchangeExecutor) it else null
 		}).display().dump()
 
-	override fun toString() = content.map(Component::asString).joinToString("\n")
+	override fun toString() = content.map(Component::asStyledString).joinToString("\n")
 
 	enum class Level(
 		val promptSound: SoundEffect,

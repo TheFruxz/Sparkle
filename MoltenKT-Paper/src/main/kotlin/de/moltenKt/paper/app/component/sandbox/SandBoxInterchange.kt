@@ -4,6 +4,7 @@ import de.moltenKt.core.extension.container.page
 import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.paper.Constants
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
@@ -14,9 +15,13 @@ import de.moltenKt.paper.extension.objectBound.destroySandBox
 import de.moltenKt.paper.extension.objectBound.getSandBox
 import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS
 import de.moltenKt.paper.structure.command.InterchangeResult.WRONG_USAGE
-import de.moltenKt.paper.structure.command.StructuredInterchange
-import de.moltenKt.paper.structure.command.completion.*
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
+import de.moltenKt.paper.structure.command.completion.InterchangeStructureInputRestriction
+import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
+import de.moltenKt.paper.structure.command.completion.ignoreCase
+import de.moltenKt.paper.structure.command.completion.infiniteSubParameters
+import de.moltenKt.paper.structure.command.completion.isNotRequired
 import de.moltenKt.paper.tool.display.message.Transmission.Level.*
 
 internal class SandBoxInterchange : StructuredInterchange(
@@ -78,7 +83,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 			ignoreCase()
 
 			fun displaySandBoxes(executor: InterchangeExecutor, page: Int) {
-				val pageValue = allSandBoxes.page(page, 6)
+				val pageValue = allSandBoxes.page(page, Constants.ENTRIES_PER_PAGE)
 
 				if (pageValue.content.isNotEmpty()) {
 					buildString {
@@ -117,7 +122,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(CompletionAsset.PAGES { ceilToInt(allSandBoxes.size.toDouble() / 6) })
+				addContent(CompletionAsset.PAGES { ceilToInt(allSandBoxes.size.toDouble() / Constants.ENTRIES_PER_PAGE) })
 
 				isNotRequired()
 

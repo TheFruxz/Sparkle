@@ -11,6 +11,7 @@ import de.moltenKt.core.extension.tryToPrint
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.core.tool.timing.calendar.Calendar.Companion
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.mainLog
@@ -20,6 +21,7 @@ import de.moltenKt.paper.runtime.app.LanguageSpeaker
 import de.moltenKt.paper.runtime.app.RunStatus
 import de.moltenKt.paper.runtime.app.RunStatus.*
 import de.moltenKt.paper.runtime.exception.IllegalActionException
+import de.moltenKt.paper.structure.Hoster
 import de.moltenKt.paper.structure.app.event.EventListener
 import de.moltenKt.paper.structure.app.interchange.IssuedInterchange
 import de.moltenKt.paper.structure.command.Interchange
@@ -80,7 +82,7 @@ import kotlin.time.measureTime
  * @see de.moltenKt.paper.app.MoltenApp
  * @constructor abstract
  */
-abstract class App : JavaPlugin(), Identifiable<App> {
+abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 
 	// parameters
 
@@ -157,6 +159,9 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 	internal var startTime: Duration? = null
 
+	var activeSince: Calendar? = null
+		private set
+
 	// api
 
 	/**
@@ -216,7 +221,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 					command.usage = interchange.completion.buildSyntax(null)
 					command.aliases.mutableReplaceWith(aliases)
 
-					MoltenCache.registeredInterchanges.add(interchange)
+					MoltenCache.registeredInterchanges += interchange
 
 					mainLog(Level.INFO, "Register of interchange '$label' succeed!")
 
@@ -240,7 +245,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 				eventListener.replaceVendor(this)
 
 				pluginManager.registerEvents(eventListener as Listener, this)
-				MoltenCache.registeredListeners.add(eventListener)
+				MoltenCache.registeredListeners += eventListener
 				mainLog(Level.INFO, "registered '${eventListener.listenerIdentity}' listener!")
 
 			} catch (e: Exception) {
@@ -258,7 +263,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	fun register(service: Service) {
 		if (MoltenCache.registeredServices.none { it.identity == service.identity }) {
 			tryToCatch {
-				MoltenCache.registeredServices.add(service)
+				MoltenCache.registeredServices += service
 				mainLog(Level.INFO, "Register of service '${service.identity}' succeed!")
 			}
 		} else
@@ -271,7 +276,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 				if (service.isRunning) {
 					stop(service)
 				}
-				MoltenCache.registeredServices.remove(service)
+				MoltenCache.registeredServices += service
 				mainLog(Level.INFO, "Unregister of service '${service.identity}' succeed!")
 			}
 		} else
@@ -341,7 +346,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			try {
 
 				HandlerList.unregisterAll(eventListener)
-				MoltenCache.registeredListeners.removeAll { it.listenerIdentity == eventListener.listenerIdentity }
+				MoltenCache.registeredListeners = MoltenCache.registeredListeners.filter { it.listenerIdentity != eventListener.listenerIdentity }.toSet()
 				mainLog(Level.INFO, "unregistered '${eventListener.listenerIdentity}' listener!")
 
 			} catch (e: Exception) {
@@ -370,7 +375,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 			component.firstContactHandshake()
 
-			MoltenCache.registeredComponents.add(component)
+			MoltenCache.registeredComponents += component
 
 			coroutineScope.launch(context = component.threadContext) {
 
@@ -402,7 +407,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 				if (!MoltenCache.runningComponents.contains(componentIdentity)) {
 
-					MoltenCache.runningComponents[componentIdentity.change()] = Calendar.now()
+					MoltenCache.runningComponents += componentIdentity.change<Component>() to Calendar.now()
 
 					coroutineScope.launch(context = component.threadContext) {
 
@@ -434,11 +439,11 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 					if (MoltenCache.runningComponents.contains(componentIdentity)) {
 
+						MoltenCache.runningComponents -= componentIdentity
+
 						coroutineScope.launch(context = component.threadContext) {
 
 							component.stop()
-
-							MoltenCache.runningComponents.remove(componentIdentity)
 
 							if (unregisterComponent)
 								unregister(componentIdentity)
@@ -471,7 +476,7 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 			if (component != null) {
 
 				if (component.isVendorCurrentlySet) {
-					MoltenCache.registeredComponents.remove(component)
+					MoltenCache.registeredComponents -= component
 				} else
 					mainLog(
 						Level.WARNING,
@@ -588,7 +593,9 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 	@OptIn(ExperimentalTime::class)
 	final override fun onLoad() {
 		tryToCatch {
-			MoltenCache.registeredApplications.add(this)
+			activeSince = Calendar.now()
+
+			MoltenCache.registeredApps += this
 
 			coroutineScope.launch {
 
@@ -650,6 +657,10 @@ abstract class App : JavaPlugin(), Identifiable<App> {
 
 		}
 	}
+
+	override fun requestStart() = pluginManager.enablePlugin(this)
+
+	override fun requestStop() = pluginManager.disablePlugin(this)
 
 	companion object {
 

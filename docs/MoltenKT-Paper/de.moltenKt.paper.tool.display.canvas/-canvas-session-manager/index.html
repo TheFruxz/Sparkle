@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>CanvasSessionManager</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../index.html">
+<span>MoltenKT</span>            </a>    </div>
+    <div>1.0-PRE-11.0.2
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="MoltenKT-Paper::de.moltenKt.paper.tool.display.canvas/CanvasSessionManager///PointingToDeclaration//-2141326931">
+  <div class="breadcrumbs"><a href="../../index.html">MoltenKT-Paper</a><span class="delimiter">/</span><a href="../index.html">de.moltenKt.paper.tool.display.canvas</a><span class="delimiter">/</span><a href="index.html">CanvasSessionManager</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Canvas</span><wbr><span>Session</span><wbr><span><span>Manager</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">CanvasSessionManager</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">This class manages the sessions of the players, using canvas based UI's.</p><h4 class="">Author</h4><p class="paragraph">Fruxz</p><h4 class="">Since</h4><p class="paragraph">1.0</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Functions">Functions</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="2138728278%2FClasslikes%2F-2141326931" anchor-label="CanvasSession" id="2138728278%2FClasslikes%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-canvas-session/index.html"><span>Canvas</span><wbr><span><span>Session</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2138728278%2FClasslikes%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-canvas-session/index.html">CanvasSession</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>canvas<span class="token operator">: </span><span data-unresolved-link="net.kyori.adventure.key/Key///PointingToDeclaration/">Key</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>parameters<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="net.kyori.adventure.key/Key///PointingToDeclaration/">Key</span><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>created<span class="token operator">: </span><a href="../../../MoltenKT-Core/de.molten-kt.core.tool.timing.calendar/-calendar/index.html">Calendar</a><span class="token operator"> = </span>Calendar.now()</span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This data class represents a canvas session.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="1187655378%2FFunctions%2F-2141326931" anchor-label="getSession" id="1187655378%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="get-session.html"><span>get</span><wbr><span><span>Session</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1187655378%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-session.html"><span class="token function">getSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sessionHost<span class="token operator">: </span><span data-unresolved-link="org.bukkit.entity/Player///PointingToDeclaration/">Player</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-canvas-session/index.html">CanvasSessionManager.CanvasSession</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function returns the <a href="-canvas-session/index.html">CanvasSession</a> of the given <a href="get-session.html">sessionHost</a> entity. Or null if the entity is not officially viewing a canvas.</p></div><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-session.html"><span class="token function">getSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sessionHost<span class="token operator">: </span><span data-unresolved-link="org.bukkit.entity/Player///PointingToDeclaration/">Player</span><span class="token punctuation">, </span></span><span class="parameter ">queryCanvas<span class="token operator">: </span><span data-unresolved-link="net.kyori.adventure.key/Key///PointingToDeclaration/">Key</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-canvas-session/index.html">CanvasSessionManager.CanvasSession</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function returns every canvas session, viewing a canvas, that is identified with the given <a href="get-session.html">queryCanvas</a> key (<span data-unresolved-link="net.kyori.adventure.key/Key///PointingToDeclaration/">Key</span>). And also viewed by the given <a href="get-session.html">sessionHost</a> entity. (bool &amp;&amp; bool)</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1154782377%2FFunctions%2F-2141326931" anchor-label="getSessions" id="1154782377%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="get-sessions.html"><span>get</span><wbr><span><span>Sessions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1154782377%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-sessions.html"><span class="token function">getSessions</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">queryCanvas<span class="token operator">: </span><span data-unresolved-link="net.kyori.adventure.key/Key///PointingToDeclaration/">Key</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/-entry/index.html">Map.Entry</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="org.bukkit.entity/Player///PointingToDeclaration/">Player</span><span class="token punctuation">, </span><span class="token keyword"></span><a href="-canvas-session/index.html">CanvasSessionManager.CanvasSession</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function returns every canvas session, viewing a canvas, that is identified with the given <a href="get-sessions.html">queryCanvas</a> key (<span data-unresolved-link="net.kyori.adventure.key/Key///PointingToDeclaration/">Key</span>).</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1744874652%2FFunctions%2F-2141326931" anchor-label="getViewersInSession" id="1744874652%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="get-viewers-in-session.html"><span>get</span><wbr><span>Viewers</span><wbr><span>In</span><wbr><span><span>Session</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1744874652%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-viewers-in-session.html"><span class="token function">getViewersInSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">queryCanvas<span class="token operator">: </span><span data-unresolved-link="net.kyori.adventure.key/Key///PointingToDeclaration/">Key</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="org.bukkit.entity/Player///PointingToDeclaration/">Player</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function returns every <span data-unresolved-link="org.bukkit.entity/HumanEntity///PointingToDeclaration/">HumanEntity</span> viewing a canvas, that is identified with the given <a href="get-viewers-in-session.html">queryCanvas</a> key (<span data-unresolved-link="net.kyori.adventure.key/Key///PointingToDeclaration/">Key</span>).</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="951735319%2FFunctions%2F-2141326931" anchor-label="hasSession" id="951735319%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="has-session.html"><span>has</span><wbr><span><span>Session</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="951735319%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="has-session.html"><span class="token function">hasSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sessionHost<span class="token operator">: </span><span data-unresolved-link="org.bukkit.entity/Player///PointingToDeclaration/">Player</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function returns, if the given <a href="has-session.html">sessionHost</a> entity is officially viewing a canvas.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="880850435%2FFunctions%2F-2141326931" anchor-label="putSession" id="880850435%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="put-session.html"><span>put</span><wbr><span><span>Session</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="880850435%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="put-session.html"><span class="token function">putSession</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;sessionHost<span class="token operator">: </span><span data-unresolved-link="org.bukkit.entity/Player///PointingToDeclaration/">Player</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;canvas<span class="token operator">: </span><span data-unresolved-link="net.kyori.adventure.key/Key///PointingToDeclaration/">Key</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;parameters<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="net.kyori.adventure.key/Key///PointingToDeclaration/">Key</span><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyMap()</span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function adds the <a href="-canvas-session/index.html">CanvasSession</a> of the given <a href="put-session.html">sessionHost</a> entity.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1005509321%2FFunctions%2F-2141326931" anchor-label="removeSession" id="1005509321%2FFunctions%2F-2141326931" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":MoltenKT-Paper:dokkaHtmlPartial/main" data-filterable-set=":MoltenKT-Paper:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="remove-session.html"><span>remove</span><wbr><span><span>Session</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1005509321%2FFunctions%2F-2141326931"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="remove-session.html"><span class="token function">removeSession</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sessionHost<span class="token operator">: </span><span data-unresolved-link="org.bukkit.entity/Player///PointingToDeclaration/">Player</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This function removes the <a href="-canvas-session/index.html">CanvasSession</a> of the given <a href="remove-session.html">sessionHost</a> entity.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+

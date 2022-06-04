@@ -88,4 +88,8 @@ class SoundMelody(
 		play(*entities, sticky = sticky)
 	}
 
+	override fun play(locations: Set<Location>, entities: Set<Entity>) = executePlay {
+		play(locations, entities)
+	}
+
 }

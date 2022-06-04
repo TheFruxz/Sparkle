@@ -8,7 +8,9 @@ internal class AppComponent : SmartComponent(AUTOSTART_IMMUTABLE) {
 	override val thisIdentity = "AppManagement"
 
 	override suspend fun component() {
-		TODO("Not yet implemented")
+
+		interchange(AppInterchange())
+
 	}
 
 }
