@@ -15,6 +15,7 @@ import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.structure.feature.Feature
 import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.data.Preference
+import de.moltenKt.paper.tool.data.Preference.PreferenceIndex
 import de.moltenKt.paper.tool.display.canvas.Canvas
 import de.moltenKt.paper.tool.display.canvas.CanvasSessionManager.CanvasSession
 import de.moltenKt.paper.tool.display.item.action.ItemAction
@@ -38,7 +39,7 @@ object MoltenCache : AppCache {
 
 	var registeredCachedMutables = mapOf<String, Any?>()
 
-	var registeredPreferenceCache = mapOf<String, Any>()
+	var registeredPreferenceCache = mapOf<PreferenceIndex<*>, Any>()
 
 	var registeredInterchanges = setOf<Interchange>()
 
@@ -93,10 +94,11 @@ object MoltenCache : AppCache {
 
 	override fun dropEverything(dropDepth: CacheDepthLevel) {
 
+		registeredPreferenceCache = registeredPreferenceCache.filterNot { dropDepth.isDeeperThanOrEquals(it.key.cacheDepthLevel) }
+
 		if (dropDepth.isDeeperThanOrEquals(DUMP)) {
 			debugLog("Cache clear 'DUMP' reached")
 			registeredCompletionAssetStateCache = emptyMap()
-			registeredPreferenceCache = emptyMap()
 		}
 
 		if (dropDepth.isDeeperThanOrEquals(CLEAN)) {

@@ -5,6 +5,7 @@ import de.moltenKt.paper.app.MoltenData.File.CONFIG
 import de.moltenKt.paper.app.MoltenData.File.ESSENTIALS_CONFIG
 import de.moltenKt.paper.app.component.point.asset.PointConfig
 import de.moltenKt.paper.extension.data.moltenPath
+import de.moltenKt.paper.structure.app.cache.CacheDepthLevel.CLEAR
 import de.moltenKt.paper.tool.data.DataTransformer
 import de.moltenKt.paper.tool.data.MoltenYamlFile
 import de.moltenKt.paper.tool.data.Preference
@@ -19,6 +20,7 @@ object MoltenData {
 		useCache = true,
 		path = moltenPath("debugMode"),
 		default = false,
+		cacheDepthLevel = CLEAR,
 	)
 
 	val systemPrefix = Preference(
@@ -26,12 +28,14 @@ object MoltenData {
 		useCache = true,
 		path = moltenPath("prefix"),
 		default = "<gold>MoltenKT <dark_gray>» ",
+		cacheDepthLevel = CLEAR,
 	).transformer(DataTransformer.simpleColorCode())
 
 	val systemLanguage = Preference(
 		file = CONFIG,
 		path = moltenPath("language"),
 		default = Locale.ENGLISH.language,
+		cacheDepthLevel = CLEAR,
 	)
 
 	// ESSENTIALS component

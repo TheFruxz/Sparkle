@@ -1,14 +1,17 @@
+
 package de.moltenKt.paper.tool.data
 
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.core.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.MoltenCache.registeredPreferenceCache
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.tasky.async
 import de.moltenKt.paper.extension.tasky.sync
 import de.moltenKt.paper.extension.tasky.task
+import de.moltenKt.paper.structure.app.cache.CacheDepthLevel
 import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice.Companion.instant
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit.SECONDS
@@ -29,11 +32,13 @@ data class Preference<SHELL : Any>(
 	var forceUseOfTasks: Boolean = false,
 	var initTriggerSetup: Boolean = true,
 	var inputType: InputType? = null,
-	val timeOut: Duration = 4.seconds
+	val timeOut: Duration = 4.seconds,
+	val cacheDepthLevel: CacheDepthLevel = CacheDepthLevel.DUMP,
 ) : Identifiable<Preference<SHELL>> {
 
 	override val identity = "${file.file}:${path.identity}"
 	private val inFilePath = path.identity
+	val indexKey by lazy { PreferenceIndex(identityObject, cacheDepthLevel) }
 
 	init {
 
@@ -67,7 +72,7 @@ data class Preference<SHELL : Any>(
 		get() {
 			var out: SHELL
 			val process = process@{
-				val currentCacheValue = registeredPreferenceCache[inFilePath]
+				val currentCacheValue = registeredPreferenceCache[indexKey]
 
 				if (useCache && currentCacheValue != null) {
 					out = try {
@@ -91,7 +96,7 @@ data class Preference<SHELL : Any>(
 
 					out = newContent.let {
 						if (useCache)
-							registeredPreferenceCache += inFilePath to it
+							registeredPreferenceCache += indexKey to it
 						if (it == default)
 							file[inFilePath] = transformer.toCore(default)
 						file.save()
@@ -131,7 +136,7 @@ data class Preference<SHELL : Any>(
 
 				transformer.toCore(value).let { coreObject ->
 					if (useCache)
-						registeredPreferenceCache += identity to coreObject
+						registeredPreferenceCache += indexKey to coreObject
 					file[path.identity] = coreObject
 					debugLog("transformed '$value'(shell) to '$coreObject'(core)")
 				}
@@ -200,5 +205,10 @@ data class Preference<SHELL : Any>(
 		}
 
 	}
+
+	data class PreferenceIndex<SHELL : Any>(
+		val identity: Identity<Preference<SHELL>>,
+		val cacheDepthLevel: CacheDepthLevel,
+	)
 
 }
