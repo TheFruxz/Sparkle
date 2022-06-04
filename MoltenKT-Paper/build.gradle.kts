@@ -74,7 +74,7 @@ dependencies {
     shadow("io.ktor:ktor-client-content-negotiation:2.0.2")
 
     shadow("net.kyori:adventure-api:4.10.1")
-    shadow("net.kyori:adventure-text-serializer-legacy:4.10.1")
+    shadow("net.kyori:adventure-text-serializer-legacy:4.11.0")
     shadow("net.kyori:adventure-text-minimessage:4.11.0")
 
 }
