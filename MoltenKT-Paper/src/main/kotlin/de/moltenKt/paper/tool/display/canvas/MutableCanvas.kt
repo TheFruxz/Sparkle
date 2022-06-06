@@ -87,6 +87,53 @@ data class MutableCanvas(
 	operator fun set(vararg slots: Int, adaptiveCanvas: AdaptiveCanvas) =
 		set(slots.toList(), adaptiveCanvas)
 
+	// Inner-placement
+
+	fun setInner(innerSlot: Int, itemLike: ItemLike?) {
+		if (innerSlot !in availableInnerSlots) throw IndexOutOfBoundsException("The inner slot $innerSlot is not available in this canvas.")
+
+		set(innerSlots[innerSlot], itemLike)
+	}
+
+	fun setInner(innerSlots: Iterable<Int>, itemLike: ItemLike?) =
+		innerSlots.forEach { setInner(it, itemLike) }
+
+	fun setInner(vararg innerSlots: Int, itemLike: ItemLike?) =
+		setInner(innerSlots.toList(), itemLike)
+
+	// Inner ItemStack support
+
+	fun setInner(innerSlot: Int, itemStack: ItemStack?) =
+		setInner(innerSlot, itemStack?.let { ItemLike.of(it) })
+
+	fun setInner(innerSlots: Iterable<Int>, itemStack: ItemStack?) =
+		setInner(innerSlots, itemStack?.let { ItemLike.of(it) })
+
+	fun setInner(vararg innerSlots: Int, itemStack: ItemStack?) =
+		setInner(innerSlots.toList(), itemStack?.let { ItemLike.of(it) })
+
+	// Inner Material support
+
+	fun setInner(innerSlot: Int, material: Material?) =
+		setInner(innerSlot, material?.let { ItemLike.of(it) })
+
+	fun setInner(innerSlots: Iterable<Int>, material: Material?) =
+		setInner(innerSlots, material?.let { ItemLike.of(it) })
+
+	fun setInner(vararg innerSlots: Int, material: Material?) =
+		setInner(innerSlots.toList(), material?.let { ItemLike.of(it) })
+
+	// Inner Adaptive support
+
+	fun setInner(innerSlotIterable: Iterable<Int>, adaptiveCanvas: AdaptiveCanvas) =
+		adaptiveCanvas.place(this, innerSlotIterable.map { innerSlots[it] })
+
+	fun setInner(innerSlot: Int, adaptiveCanvas: AdaptiveCanvas) =
+		setInner(listOf(innerSlot), adaptiveCanvas)
+
+	fun setInner(vararg innerSlots: Int, adaptiveCanvas: AdaptiveCanvas) =
+		setInner(innerSlots.toList(), adaptiveCanvas)
+
 	// Interactions
 
 	operator fun set(slot: Int, onClick: CanvasClickEvent.() -> Unit) {
