@@ -11,10 +11,11 @@ import de.moltenKt.core.extension.tryToPrint
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
-import de.moltenKt.core.tool.timing.calendar.Calendar.Companion
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.mainLog
+import de.moltenKt.paper.extension.paper.internalCommandMap
+import de.moltenKt.paper.extension.paper.internalSyncCommands
 import de.moltenKt.paper.extension.tasky.task
 import de.moltenKt.paper.extension.tasky.waitTask
 import de.moltenKt.paper.runtime.app.LanguageSpeaker
@@ -36,17 +37,20 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.bukkit.command.PluginCommand
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
+import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.InputStreamReader
 import java.nio.file.Path
 import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.reflect.KClass
+import kotlin.reflect.jvm.isAccessible
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
@@ -205,28 +209,48 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 
 		}
 
+		fun createCommand(): PluginCommand {
+			debugLog("Creating artificial command for '${interchange.label}'...")
+
+			val constructor = PluginCommand::class.constructors.first()
+
+			constructor.isAccessible = true
+
+			return constructor.call(interchange.label, this as Plugin).also {
+				MoltenCache.registeredArtificialRegisteredInterchanges += interchange
+				debugLog("Successfully created artificial command for '${interchange.label}'!")
+			}
+		}
+
 		if (isEnabled) {
 
 			try {
 				val label = interchange.label
 				val aliases = interchange.aliases
-				val command = getCommand(interchange.label)
+				val command = getCommand(interchange.label) ?: createCommand()
 
 				interchange.replaceVendor(companion.instance)
 
-				if (command != null) {
+				command.name = label
+				command.tabCompleter = interchange.tabCompleter
+				command.usage = interchange.completion.buildSyntax(null)
+				command.aliases = emptyList()
+				command.aliases.mutableReplaceWith(aliases)
+				command.setExecutor(interchange)
 
-					command.setExecutor(interchange)
-					command.tabCompleter = interchange.tabCompleter
-					command.usage = interchange.completion.buildSyntax(null)
-					command.aliases.mutableReplaceWith(aliases)
+				debugLog("Registering artificial command for '${interchange.label}'...")
 
-					MoltenCache.registeredInterchanges += interchange
+				server.internalCommandMap.apply {
+					register(description.name, command)
+				}
 
-					mainLog(Level.INFO, "Register of interchange '$label' succeed!")
+				server.internalSyncCommands()
 
-				} else
-					throw IllegalArgumentException("Cannot find interchange (command) with name '$label' in plugin.yml!")
+				debugLog("Successfully registered artificial command for '${interchange.label}'!")
+
+				MoltenCache.registeredInterchanges += interchange
+
+				mainLog(Level.INFO, "Register of interchange '$label' succeed!")
 
 			} catch (exception: Exception) {
 				catchException(exception)

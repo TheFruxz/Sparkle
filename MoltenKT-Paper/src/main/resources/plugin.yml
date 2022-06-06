@@ -11,10 +11,10 @@ api-version: 1.18
 prefix: ${name}
 website: ${website}
 commands:
-  moltenkt:
-    description: Discover more info about MoltenKT-Paper!
-  playground:
-    description: Discover more about MoltenKT by trying out!
+#  moltenkt:
+#    description: Discover more info about MoltenKT-Paper!
+#  playground:
+#    description: Discover more about MoltenKT by trying out!
   component:
     description: Manages your components!
   service:
@@ -29,8 +29,8 @@ commands:
     description: test skin
   point:
     description: Manages your points!
-  debugmode:
-    description: Manages the servers debug mode!
+#  debugmode:
+#    description: Manages the servers debug mode!
   message:
     description: The communication-tool to chat with other players!
     aliases:
