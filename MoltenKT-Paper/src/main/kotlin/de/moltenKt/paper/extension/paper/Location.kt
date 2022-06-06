@@ -133,3 +133,21 @@ fun Location.subtract(x: Number = 0, y: Number = 0, z: Number = 0) =
  * @since 1.0
  */
 fun Location.toSimpleLocation() = with(this) { SimpleLocation(world.name, x, y, z) }
+
+/**
+ * This computational value represents the [Entity.getLocation] of the entity
+ * as a new [SimpleLocation] object.
+ * @author Fruxz
+ * @since 1.0
+ */
+val Entity.simpleLocation: SimpleLocation
+	get() = location.toSimpleLocation()
+
+/**
+ * This computational value represents the [Block.getLocation] of the block
+ * as a new [SimpleLocation] object.
+ * @author Fruxz
+ * @since 1.0
+ */
+val Block.simpleLocation: SimpleLocation
+	get() = location.toSimpleLocation()
