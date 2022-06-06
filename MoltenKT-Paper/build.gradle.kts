@@ -46,7 +46,7 @@ dependencies {
 
     @Suppress("DependencyOnStdlib") implementation(kotlin("stdlib"))
 
-    implementation("org.ktorm:ktorm-core:3.4.1") // KTorm
+    implementation("org.ktorm:ktorm-core:3.5.0") // KTorm
 
     implementation("io.ktor:ktor-client-core-jvm:2.0.2") // Ktor
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
