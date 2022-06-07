@@ -1,5 +1,6 @@
 package de.moltenKt.paper.structure.component
 
+import de.moltenKt.core.extension.container.mutableReplaceWith
 import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.core.extension.tryToCatch
 import de.moltenKt.core.extension.tryToIgnore
@@ -9,8 +10,13 @@ import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.objectBound.buildSandBox
 import de.moltenKt.paper.extension.objectBound.destroySandBox
+import de.moltenKt.paper.extension.paper.internalCommandMap
+import de.moltenKt.paper.extension.paper.internalSyncCommands
 import de.moltenKt.paper.extension.paper.onlinePlayers
+import de.moltenKt.paper.extension.paper.server
 import de.moltenKt.paper.extension.system
+import de.moltenKt.paper.extension.tasky.async
+import de.moltenKt.paper.extension.tasky.sync
 import de.moltenKt.paper.runtime.sandbox.SandBox
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.event.EventListener
@@ -21,6 +27,8 @@ import de.moltenKt.paper.structure.component.Component.RunType.DISABLED
 import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.display.message.Transmission.Level.FAIL
 import de.moltenKt.paper.tool.permission.Approval
+import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice.Companion
+import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice.Companion.delayed
 
 abstract class SmartComponent(
 	override val behaviour: RunType = DISABLED,
@@ -58,11 +66,33 @@ abstract class SmartComponent(
 
 		interchanges.forEach {
 			tryToCatch {
+
 				it.replaceVendor(vendor)
-				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval }))
+
+				sync {
+					server.internalCommandMap.apply {
+						val command = server.getPluginCommand(it.label) ?: vendor.createCommand(it)
+
+						command.name = it.label
+						command.tabCompleter = it.tabCompleter
+						command.usage = it.completion.buildSyntax(null)
+						command.aliases = emptyList()
+						command.aliases.mutableReplaceWith(it.aliases)
+						command.setExecutor(it)
+
+						register(vendor.description.name, command)
+					}
+
+					server.internalSyncCommands()
+
+					if (!isAutoStarting) vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval }))
+
+				}
+
 				MoltenCache.registeredInterchanges += it
 				MoltenCache.disabledInterchanges += it.identityObject
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
+
 			}
 		}
 
