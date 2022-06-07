@@ -26,9 +26,9 @@ open class Color<T : Color<T>> constructor(
 ) : Identifiable<Color<T>> {
 
     fun validate() {
-        if (red !in 0..255) error("red must be in range 0..255")
-        if (green !in 0..255) error("green must be in range 0..255")
-        if (blue !in 0..255) error("blue must be in range 0..255")
+        if (red !in 0..255) error("red must be in range of 0..255")
+        if (green !in 0..255) error("green must be in range of 0..255")
+        if (blue !in 0..255) error("blue must be in range of 0..255")
     }
 
     override val identity: String by lazy {
