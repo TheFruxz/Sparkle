@@ -9,7 +9,7 @@ sealed interface ItemAction<T : Event> : Identifiable<ItemAction<T>> {
     val registrationTag: ItemActionTag
         get() = ItemActionTag(identity)
 
-    val executionProcess: suspend T.() -> Unit
+    val executionProcess: T.() -> Unit
 
     val type: ItemActionType
 

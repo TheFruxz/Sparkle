@@ -469,22 +469,22 @@ data class Item(
 	fun dropPostProperties(vararg postProperties: PostProperty) =
 		apply { this.postProperties.removeAll(postProperties.toSet()) }
 
-	fun onClick(identity: String = "click_${buildRandomTag()}_${this.identity}", process: suspend (InventoryClickEvent) -> Unit) =
+	fun onClick(identity: String = "click_${buildRandomTag()}_${this.identity}", process: (InventoryClickEvent) -> Unit) =
 		attachActions(ItemClickAction(identity, executionProcess = process).also { it.register() })
 
-	fun onClickWith(identity: String = "click_${buildRandomTag()}_${this.identity}", process: suspend InventoryClickEvent.() -> Unit) =
+	fun onClickWith(identity: String = "click_${buildRandomTag()}_${this.identity}", process: InventoryClickEvent.() -> Unit) =
 		onClick(identity, process)
 
-	fun onInteract(identity: String = "interact_${buildRandomTag()}_${this.identity}", process: suspend (PlayerInteractAtItemEvent) -> Unit) =
+	fun onInteract(identity: String = "interact_${buildRandomTag()}_${this.identity}", process: (PlayerInteractAtItemEvent) -> Unit) =
 		attachActions(ItemInteractAction(identity, executionProcess = process).also { it.register() })
 
-	fun onInteractWith(identity: String = "interact_${buildRandomTag()}_${this.identity}", process: suspend PlayerInteractAtItemEvent.() -> Unit) =
+	fun onInteractWith(identity: String = "interact_${buildRandomTag()}_${this.identity}", process: PlayerInteractAtItemEvent.() -> Unit) =
 		onInteract(identity, process)
 
-	fun onDrop(identity: String = "click_${buildRandomTag()}_${this.identity}", process: suspend (PlayerDropItemEvent) -> Unit) =
+	fun onDrop(identity: String = "click_${buildRandomTag()}_${this.identity}", process: (PlayerDropItemEvent) -> Unit) =
 		attachActions(ItemDropAction(identity, executionProcess = process).also { it.register() })
 
-	fun onDropWith(identity: String = "click_${buildRandomTag()}_${this.identity}", process: suspend PlayerDropItemEvent.() -> Unit) =
+	fun onDropWith(identity: String = "click_${buildRandomTag()}_${this.identity}", process: PlayerDropItemEvent.() -> Unit) =
 		onDrop(identity, process)
 
 	fun attachActions(vararg itemActionTags: ItemActionTag) = apply {

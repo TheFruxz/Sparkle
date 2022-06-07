@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 class ItemClickAction(
     override val identity: String,
     override val type: ItemActionType = CLICK,
-    override val executionProcess: suspend InventoryClickEvent.() -> Unit,
+    override val executionProcess: InventoryClickEvent.() -> Unit,
     override val created: Calendar = Calendar.now(),
 ) : ItemAction<InventoryClickEvent> {
 
