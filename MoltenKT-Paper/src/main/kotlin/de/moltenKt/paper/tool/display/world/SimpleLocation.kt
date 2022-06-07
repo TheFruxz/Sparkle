@@ -47,11 +47,21 @@ data class SimpleLocation(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val bukkit: Location
-		get() = Location(getWorld(world), x, y, z)
+	val bukkit: Location by lazy {
+		Location(getWorld(world), x, y, z)
+	}
 
 	val bukkitWorld: World
 		get() = bukkit.world
+
+	val blockX: Int
+		get() = bukkit.blockX
+
+	val blockY: Int
+		get() = bukkit.blockY
+
+	val blockZ: Int
+		get() = bukkit.blockZ
 
 	fun toVector(): Vector {
 		return Vector(x, y, z)
