@@ -30,6 +30,12 @@ operator fun <T : Inventory> T.set(slot: Int, material: Material) = setItem(slot
 
 operator fun <T : Inventory> T.set(slots: Iterable<Int>, material: Material) = slots.forEach { set(it, material.itemStack) }
 
+fun <T : Inventory> T.addItems(vararg items: ItemStack) = addItem(*items).toMap()
+
+fun <T : Inventory> T.addItems(vararg items: ItemLike) = addItem(*items.map { it.produce() }.toTypedArray()).toMap()
+
+fun <T : Inventory> T.addItems(vararg items: Material) = addItem(*items.map { it.itemStack }.toTypedArray()).toMap()
+
 /**
  * Returns the slot id of the inventory, where the best center is located.
  * If the inventory does not have a center, a near-center slot is returned.
