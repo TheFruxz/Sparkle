@@ -16,6 +16,7 @@ import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.extension.paper.internalCommandMap
 import de.moltenKt.paper.extension.paper.internalSyncCommands
+import de.moltenKt.paper.extension.tasky.sync
 import de.moltenKt.paper.extension.tasky.task
 import de.moltenKt.paper.extension.tasky.waitTask
 import de.moltenKt.paper.runtime.app.LanguageSpeaker
@@ -178,6 +179,18 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 		command?.tabCompleter = environment.tabCompleter
 	}
 
+	fun createCommand(interchange: Interchange): PluginCommand {
+		debugLog("Creating artificial command for '${interchange.label}'...")
+
+		val constructor = PluginCommand::class.constructors.first()
+
+		constructor.isAccessible = true
+
+		return constructor.call(interchange.label, this as Plugin).also {
+			debugLog("Successfully created artificial command for '${interchange.label}'!")
+		}
+	}
+
 	/**
 	 * Add Interchange
 	 */
@@ -209,48 +222,40 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 
 		}
 
-		fun createCommand(): PluginCommand {
-			debugLog("Creating artificial command for '${interchange.label}'...")
-
-			val constructor = PluginCommand::class.constructors.first()
-
-			constructor.isAccessible = true
-
-			return constructor.call(interchange.label, this as Plugin).also {
-				MoltenCache.registeredArtificialRegisteredInterchanges += interchange
-				debugLog("Successfully created artificial command for '${interchange.label}'!")
-			}
-		}
-
 		if (isEnabled) {
 
 			try {
-				val label = interchange.label
-				val aliases = interchange.aliases
-				val command = getCommand(interchange.label) ?: createCommand()
 
-				interchange.replaceVendor(companion.instance)
+				sync {
 
-				command.name = label
-				command.tabCompleter = interchange.tabCompleter
-				command.usage = interchange.completion.buildSyntax(null)
-				command.aliases = emptyList()
-				command.aliases.mutableReplaceWith(aliases)
-				command.setExecutor(interchange)
+					val label = interchange.label
+					val aliases = interchange.aliases
+					val command = getCommand(interchange.label) ?: createCommand(interchange)
 
-				debugLog("Registering artificial command for '${interchange.label}'...")
+					interchange.replaceVendor(companion.instance)
 
-				server.internalCommandMap.apply {
-					register(description.name, command)
+					command.name = label
+					command.tabCompleter = interchange.tabCompleter
+					command.usage = interchange.completion.buildSyntax(null)
+					command.aliases = emptyList()
+					command.aliases.mutableReplaceWith(aliases)
+					command.setExecutor(interchange)
+
+					debugLog("Registering artificial command for '${interchange.label}'...")
+
+					server.internalCommandMap.apply {
+						register(description.name, command)
+					}
+
+					server.internalSyncCommands()
+
+					debugLog("Successfully registered artificial command for '${interchange.label}'!")
+
+					MoltenCache.registeredInterchanges += interchange
+
+					mainLog(Level.INFO, "Register of interchange '$label' succeed!")
+
 				}
-
-				server.internalSyncCommands()
-
-				debugLog("Successfully registered artificial command for '${interchange.label}'!")
-
-				MoltenCache.registeredInterchanges += interchange
-
-				mainLog(Level.INFO, "Register of interchange '$label' succeed!")
 
 			} catch (exception: Exception) {
 				catchException(exception)

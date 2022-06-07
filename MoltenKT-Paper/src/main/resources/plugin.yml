@@ -10,39 +10,3 @@ softdepend:
 api-version: 1.18
 prefix: ${name}
 website: ${website}
-commands:
-#  moltenkt:
-#    description: Discover more info about MoltenKT-Paper!
-#  playground:
-#    description: Discover more about MoltenKT by trying out!
-  component:
-    description: Manages your components!
-  service:
-    description: Manages your services!
-  sandbox:
-    description: Manages your sandboxes!
-  buildmode:
-    description: Manages your buildmodes!
-  markings:
-    description: Gives you the marking tool!
-  changeskin:
-    description: test skin
-  point:
-    description: Manages your points!
-#  debugmode:
-#    description: Manages the servers debug mode!
-  message:
-    description: The communication-tool to chat with other players!
-    aliases:
-      - msg
-      - talk
-      - tell
-      - whisper
-      - speak
-  reply:
-    description: Reply to a message
-    aliases:
-      - r
-      - answer
-  app:
-    description: Manages your apps!
