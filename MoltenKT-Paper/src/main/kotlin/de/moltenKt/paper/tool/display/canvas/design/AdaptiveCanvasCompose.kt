@@ -8,25 +8,25 @@ import de.moltenKt.paper.tool.display.item.ItemLike
 /**
  * This interface represents an extendable canvas feature, that
  * automatically adapts to its environment and placement location.
- * View templates at [AdaptiveCanvas.Companion]!
- * @see AdaptiveCanvas.Companion
+ * View templates at [AdaptiveCanvasCompose.Companion]!
+ * @see AdaptiveCanvasCompose.Companion
  * @author Fruxz
  * @since 1.0
  */
-interface AdaptiveCanvas {
+interface AdaptiveCanvasCompose {
 
 	fun place(canvas: MutableCanvas, slots: Iterable<Int>)
 
 	companion object {
 
 		/**
-		 * This function returns an [AdaptiveCanvas] that is
+		 * This function returns an [AdaptiveCanvasCompose] that is
 		 * generating a rainbow-colored bunch of items.
 		 * @param materialGroup defines, which items should be used, as the color representatives.
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun rainbow(materialGroup: DyeableMaterial) = object : AdaptiveCanvas {
+		fun rainbow(materialGroup: DyeableMaterial) = object : AdaptiveCanvasCompose {
 
 			override fun place(canvas: MutableCanvas, slots: Iterable<Int>) {
 				slots.withIndex().forEach { (index, canvasSlot) ->
@@ -37,13 +37,13 @@ interface AdaptiveCanvas {
 		}
 
 		/**
-		 * This function returns an [AdaptiveCanvas] that is
+		 * This function returns an [AdaptiveCanvasCompose] that is
 		 * generating a bunch of items with randomized colors.
 		 * @param materialGroup defines, which items should be used, as the color representatives.
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun random(materialGroup: DyeableMaterial) = object : AdaptiveCanvas {
+		fun random(materialGroup: DyeableMaterial) = object : AdaptiveCanvasCompose {
 
 			override fun place(canvas: MutableCanvas, slots: Iterable<Int>) {
 				slots.forEach { canvasSlot ->
@@ -54,14 +54,14 @@ interface AdaptiveCanvas {
 		}
 
 		/**
-		 * This function returns an [AdaptiveCanvas] that is
+		 * This function returns an [AdaptiveCanvasCompose] that is
 		 * generating a bunch of items, but their item-stack-size is
 		 * the current place in the order of the slots list.
 		 * The first one is 1, so does not start with 0! -> (1..2..3..4..5..6)
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun amountCount(itemLike: ItemLike) = object : AdaptiveCanvas {
+		fun amountCount(itemLike: ItemLike) = object : AdaptiveCanvasCompose {
 
 			override fun place(canvas: MutableCanvas, slots: Iterable<Int>) {
 				slots.withIndex().forEach { (index, value) ->

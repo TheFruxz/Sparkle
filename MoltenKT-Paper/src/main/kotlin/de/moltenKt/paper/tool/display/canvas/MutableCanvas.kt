@@ -6,7 +6,7 @@ import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasRenderEvent
-import de.moltenKt.paper.tool.display.canvas.design.AdaptiveCanvas
+import de.moltenKt.paper.tool.display.canvas.design.AdaptiveCanvasCompose
 import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import net.kyori.adventure.builder.AbstractBuilder
@@ -78,14 +78,14 @@ data class MutableCanvas(
 
 	// Adaptive support
 
-	operator fun set(slots: Iterable<Int>, adaptiveCanvas: AdaptiveCanvas) =
-		adaptiveCanvas.place(this, slots)
+	operator fun set(slots: Iterable<Int>, adaptiveCanvasCompose: AdaptiveCanvasCompose) =
+		adaptiveCanvasCompose.place(this, slots)
 
-	operator fun set(slot: Int, adaptiveCanvas: AdaptiveCanvas) =
-		set(listOf(slot), adaptiveCanvas)
+	operator fun set(slot: Int, adaptiveCanvasCompose: AdaptiveCanvasCompose) =
+		set(listOf(slot), adaptiveCanvasCompose)
 
-	operator fun set(vararg slots: Int, adaptiveCanvas: AdaptiveCanvas) =
-		set(slots.toList(), adaptiveCanvas)
+	operator fun set(vararg slots: Int, adaptiveCanvasCompose: AdaptiveCanvasCompose) =
+		set(slots.toList(), adaptiveCanvasCompose)
 
 	// Inner-placement
 
@@ -125,14 +125,14 @@ data class MutableCanvas(
 
 	// Inner Adaptive support
 
-	fun setInner(innerSlotIterable: Iterable<Int>, adaptiveCanvas: AdaptiveCanvas) =
-		adaptiveCanvas.place(this, innerSlotIterable.map { innerSlots[it] })
+	fun setInner(innerSlotIterable: Iterable<Int>, adaptiveCanvasCompose: AdaptiveCanvasCompose) =
+		adaptiveCanvasCompose.place(this, innerSlotIterable.map { innerSlots[it] })
 
-	fun setInner(innerSlot: Int, adaptiveCanvas: AdaptiveCanvas) =
-		setInner(listOf(innerSlot), adaptiveCanvas)
+	fun setInner(innerSlot: Int, adaptiveCanvasCompose: AdaptiveCanvasCompose) =
+		setInner(listOf(innerSlot), adaptiveCanvasCompose)
 
-	fun setInner(vararg innerSlots: Int, adaptiveCanvas: AdaptiveCanvas) =
-		setInner(innerSlots.toList(), adaptiveCanvas)
+	fun setInner(vararg innerSlots: Int, adaptiveCanvasCompose: AdaptiveCanvasCompose) =
+		setInner(innerSlots.toList(), adaptiveCanvasCompose)
 
 	// Interactions
 
