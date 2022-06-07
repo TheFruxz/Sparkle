@@ -8,7 +8,7 @@ import de.moltenKt.paper.tool.display.item.action.ItemActionType.INTERACT
 class ItemInteractAction(
     override val identity: String,
     override val type: ItemActionType = INTERACT,
-    override val executionProcess: suspend PlayerInteractAtItemEvent.() -> Unit,
+    override val executionProcess: PlayerInteractAtItemEvent.() -> Unit,
     override val created: Calendar = Calendar.now(),
 ) : ItemAction<PlayerInteractAtItemEvent> {
 

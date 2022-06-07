@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerDropItemEvent
 class ItemDropAction(
     override val identity: String,
     override val type: ItemActionType = DROP,
-    override val executionProcess: suspend PlayerDropItemEvent.() -> Unit,
+    override val executionProcess: PlayerDropItemEvent.() -> Unit,
     override val created: Calendar = Calendar.now(),
 ) : ItemAction<PlayerDropItemEvent> {
 

@@ -181,9 +181,8 @@ object MoltenLanguage {
             "component.markingTool.action.set" to "<gray>Position #[n] set to <light_purple>[pos]<gray>!",
             "component.markingTool.action.duplicate" to "<gray>This position is <red>already<gray> set to <yellow>[pos]<gray>!",
             "component.markingTool.action.wrongLook" to "<gray>You are <red>not <gray>looking at a valid <yellow>block<gray>!",
-            "component.markingTool.action.view.notSet" to "<gray>You have <red>no <gray> valid <yellow>locations<gray> set!",
+            "component.markingTool.action.view.notSet" to "<gray>You have <red>no</red> valid <yellow>locations<gray> set!",
             "component.markingTool.action.view.detail" to "<gray>You have the locations <light_purple>[1] <gray>and <light_purple>[2] <gray>set!",
-            "component.markingTool.action.view.distance.both" to "<gray>Both locations are <gold>[distance] Block(s) <gray>away!",
             "component.markingTool.action.view.distance.other" to "<gray>Other position is <gold>[distance] Block(s) <gray>away!",
             "component.markingTool.action.view.distance.volume" to "<gray>Volume: <gold>[volume] Block(s) <gray>containing!",
 

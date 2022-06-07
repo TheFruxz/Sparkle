@@ -13,14 +13,18 @@ interface MoltenPlayerInteractEvent {
 
 	var interactedItem: Event.Result
 
-	fun MoltenPlayerInteractEvent.denyInteraction() {
-		interactedBlock = DENY
-		interactedItem = DENY
-	}
+	companion object {
 
-	fun MoltenPlayerInteractEvent.allowInteraction() {
-		interactedBlock = ALLOW
-		interactedItem = ALLOW
+		fun <T : MoltenPlayerInteractEvent> T.denyInteraction() {
+			this.interactedBlock = DENY
+			this.interactedItem = DENY
+		}
+
+		fun <T : MoltenPlayerInteractEvent> T.allowInteraction() {
+			this.interactedBlock = ALLOW
+			this.interactedItem = ALLOW
+		}
+
 	}
 
 }

@@ -51,9 +51,7 @@ internal class ItemTagListener : EventListener() {
 
             if (itemActions.any { it == action.registrationTag }) {
 
-                vendor.coroutineScope.launch {
-                    action.executionProcess(event)
-                }
+                action.executionProcess(event)
 
             }
 

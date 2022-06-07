@@ -27,7 +27,7 @@ fun Location.displayString(
 		if (withNames) {
 			"$displayX: $x $displayY: $y $displayZ: $z" + if (withRotation) "$displayYaw: ${yaw.roundToInt()} $displayPitch: ${pitch.roundToInt()}" else ""
 		} else
-			"$x $y $z" + if (withRotation) "$displayYaw: ${yaw.roundToInt()} $displayPitch: ${pitch.roundToInt()}" else ""
+			"$x $y $z" + if (withRotation) "${yaw.roundToInt()} ${pitch.roundToInt()}" else ""
 	}
 
 fun DependentCubicalShape.displayString() = with(locations) { "${first.displayString()} to ${second.displayString()}" }
