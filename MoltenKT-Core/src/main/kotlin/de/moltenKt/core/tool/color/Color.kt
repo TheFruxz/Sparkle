@@ -77,6 +77,24 @@ open class Color<T : Color<T>> constructor(
         shiftTo(of(red, green, blue), opacity, shiftType)
 
     /**
+     * This function performs multiple shifts to the [destination] color.
+     * The split is done in [parts] amount of parts.
+     * The result is a list of colors, which more and more are closer to the [destination] color.
+     * @param destination The color, which is the target of the shifts.
+     * @param parts The amount of parts, which are used to split the shifts.
+     * @author Fruxz
+     * @since 1.0
+     */
+    fun splitShiftTo(destination: Color<*>, parts: Int): List<T> = buildList {
+        val step = 1.0 / parts
+        var opacity = 0.0
+        repeat(parts + 1) {
+            add(shiftTo(destination, opacity, RELATIVE_TO_TRANSITION))
+            opacity += step
+        }
+    }
+
+    /**
      * This function creates a new color, but the [AwtColor.WHITE]
      * is applied to it, by [strength] amount.
      * @author Fruxz
@@ -127,6 +145,7 @@ open class Color<T : Color<T>> constructor(
     }
 
     enum class ShiftType {
+
         /**
          * Opacity relative to the transition: 0.05 Opacity with (0 shiftTo 20) = 1
          */
@@ -136,6 +155,7 @@ open class Color<T : Color<T>> constructor(
          * Opacity relative to the whole spectrum: 0.05 Opacity with (0 shiftTo 20) = 12,75
          */
         RELATIVE_TO_SPECTRUM,
+
     }
 
 }
