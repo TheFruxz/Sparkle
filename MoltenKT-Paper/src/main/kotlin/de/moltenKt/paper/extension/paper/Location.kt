@@ -160,3 +160,9 @@ fun Location.copy(
 	yaw: Number = this.yaw,
 	pitch: Number = this.pitch
 ) = Location(world, x.toDouble(), y.toDouble(), z.toDouble(), yaw.toFloat(), pitch.toFloat())
+
+fun Vector.copy(
+	x: Number = this.x,
+	y: Number = this.y,
+	z: Number = this.z,
+) = Vector(x.toDouble(), y.toDouble(), z.toDouble())
