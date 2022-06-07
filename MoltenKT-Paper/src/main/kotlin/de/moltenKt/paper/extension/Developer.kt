@@ -3,6 +3,7 @@ package de.moltenKt.paper.extension
 import de.moltenKt.core.extension.dump
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
+import de.moltenKt.paper.MoltenEngine
 import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.MoltenLanguage
@@ -32,7 +33,7 @@ internal val lang: MoltenLanguage.MoltenLanguageContainer
 	get() = MoltenLanguage.container
 
 internal val system: MoltenApp
-	get() = de.moltenKt.paper.MoltenEngine.appInstance
+	get() = MoltenEngine.appInstance
 
 @Throws(NoSuchElementException::class)
 fun app(id: String) = MoltenCache.registeredApps.first { it.appIdentity == id }
