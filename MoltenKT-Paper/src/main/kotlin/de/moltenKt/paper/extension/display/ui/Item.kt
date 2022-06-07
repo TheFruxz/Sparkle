@@ -16,6 +16,7 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import java.util.*
 
 // Modification / change
@@ -164,3 +165,13 @@ fun skull(owner: UUID, httpRequest: Boolean = true) = Material.PLAYER_HEAD.item 
  */
 fun skull(owner: OfflinePlayer, httpRequest: Boolean = true) =
 	skull(owner.uniqueId, httpRequest)
+
+fun ItemStack.copy(
+	material: Material = this.type,
+	amount: Int = this.amount,
+	itemMeta: ItemMeta = this.itemMeta,
+) = ItemStack(this).apply {
+	this.type = material
+	this.amount = amount
+	this.itemMeta = itemMeta
+}
