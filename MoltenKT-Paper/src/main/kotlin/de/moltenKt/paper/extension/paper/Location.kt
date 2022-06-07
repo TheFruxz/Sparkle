@@ -151,3 +151,12 @@ val Entity.simpleLocation: SimpleLocation
  */
 val Block.simpleLocation: SimpleLocation
 	get() = location.toSimpleLocation()
+
+fun Location.copy(
+	world: World = this.world,
+	x: Number = this.x,
+	y: Number = this.y,
+	z: Number = this.z,
+	yaw: Number = this.yaw,
+	pitch: Number = this.pitch
+) = Location(world, x.toDouble(), y.toDouble(), z.toDouble(), yaw.toFloat(), pitch.toFloat())
