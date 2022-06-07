@@ -166,3 +166,8 @@ fun Vector.copy(
 	y: Number = this.y,
 	z: Number = this.z,
 ) = Vector(x.toDouble(), y.toDouble(), z.toDouble())
+
+fun BoundingBox.copy(
+	fromVector: Vector = this.min,
+	toVector: Vector = this.max,
+) = BoundingBox.of(fromVector, toVector)
