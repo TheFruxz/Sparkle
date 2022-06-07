@@ -72,6 +72,7 @@ de.moltenKt.paper.runtime.event.interact
 de.moltenKt.paper.runtime.exception
 de.moltenKt.paper.runtime.lang
 de.moltenKt.paper.runtime.sandbox
+de.moltenKt.paper.structure
 de.moltenKt.paper.structure.app
 de.moltenKt.paper.structure.app.cache
 de.moltenKt.paper.structure.app.event
@@ -81,6 +82,7 @@ de.moltenKt.paper.structure.command.completion
 de.moltenKt.paper.structure.command.completion.component
 de.moltenKt.paper.structure.command.completion.tracing
 de.moltenKt.paper.structure.command.live
+de.moltenKt.paper.structure.command.structured
 de.moltenKt.paper.structure.component
 de.moltenKt.paper.structure.component.file
 de.moltenKt.paper.structure.feature
