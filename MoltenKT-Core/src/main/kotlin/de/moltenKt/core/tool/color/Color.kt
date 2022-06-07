@@ -1,6 +1,11 @@
 package de.moltenKt.core.tool.color
 
 import de.moltenKt.core.extension.forceCast
+import de.moltenKt.core.extension.math.ceilToInt
+import de.moltenKt.core.extension.math.floorToInt
+import de.moltenKt.core.extension.math.limitTo
+import de.moltenKt.core.tool.color.Color.ShiftType.RELATIVE_TO_SPECTRUM
+import de.moltenKt.core.tool.color.Color.ShiftType.RELATIVE_TO_TRANSITION
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import kotlinx.serialization.Serializable
 import kotlin.math.roundToInt
@@ -36,14 +41,29 @@ open class Color<T : Color<T>> constructor(
      * @author Fruxz
      * @since 1.0
      */
-    fun shiftTo(color: Color<*>, opacity: Double): T {
+    fun shiftTo(color: Color<*>, opacity: Double, shiftType: ShiftType = RELATIVE_TO_SPECTRUM): T {
         validate()
         if (opacity !in 0.0..1.0) error("opacity must be in range 0.0..1.0")
 
+        val spectrumLimiter = 255.0 * opacity
+
+        val redModifier = when (shiftType) {
+            RELATIVE_TO_SPECTRUM -> (color.red - red).limitTo(-spectrumLimiter.floorToInt()..spectrumLimiter.ceilToInt())
+            else -> ((color.red - red) * opacity).roundToInt()
+        }
+        val greenModifier = when (shiftType) {
+            RELATIVE_TO_SPECTRUM -> (color.green - green).limitTo(-spectrumLimiter.floorToInt()..spectrumLimiter.ceilToInt())
+            else -> ((color.green - green) * opacity).roundToInt()
+        }
+        val blueModifier = when (shiftType) {
+            RELATIVE_TO_SPECTRUM -> (color.blue - blue).limitTo(-spectrumLimiter.floorToInt()..spectrumLimiter.ceilToInt())
+            else -> ((color.blue - blue) * opacity).roundToInt()
+        }
+
         return Color(
-            red = (red + (color.red - red) * opacity).roundToInt(),
-            green = (green + (color.green - green) * opacity).roundToInt(),
-            blue = (blue + (color.blue - blue) * opacity).roundToInt(),
+            red = (red + redModifier),
+            green = (green + greenModifier),
+            blue = (blue + blueModifier),
         ).forceCast()
     }
 
@@ -53,8 +73,8 @@ open class Color<T : Color<T>> constructor(
      * @author Fruxz
      * @since 1.0
      */
-    fun shiftTo(red: Int, green: Int, blue: Int, opacity: Double) =
-        shiftTo(of(red, green, blue), opacity)
+    fun shiftTo(red: Int, green: Int, blue: Int, opacity: Double, shiftType: ShiftType = RELATIVE_TO_SPECTRUM) =
+        shiftTo(of(red, green, blue), opacity, shiftType)
 
     /**
      * This function creates a new color, but the [AwtColor.WHITE]
@@ -62,8 +82,8 @@ open class Color<T : Color<T>> constructor(
      * @author Fruxz
      * @since 1.0
      */
-    fun brighter(strength: Double) =
-        shiftTo(of(AwtColor.WHITE), strength)
+    fun brighter(strength: Double = .2, shiftType: ShiftType = RELATIVE_TO_TRANSITION) =
+        shiftTo(of(AwtColor.WHITE), strength, shiftType)
 
     /**
      * This function creates a new color, but the [AwtColor.BLACK]
@@ -71,8 +91,8 @@ open class Color<T : Color<T>> constructor(
      * @author Fruxz
      * @since 1.0
      */
-    fun darker(strength: Double) =
-        shiftTo(of(AwtColor.BLACK), strength)
+    fun darker(strength: Double = .2, shiftType: ShiftType = RELATIVE_TO_TRANSITION) =
+        shiftTo(of(AwtColor.BLACK), strength, shiftType)
 
     val rgb: Int by lazy {
         validate()
@@ -104,6 +124,18 @@ open class Color<T : Color<T>> constructor(
 
         fun of(hexString: String) = of(hexString.removePrefix("#").toInt(16))
 
+    }
+
+    enum class ShiftType {
+        /**
+         * Opacity relative to the transition: 0.05 Opacity with (0 shiftTo 20) = 1
+         */
+        RELATIVE_TO_TRANSITION,
+
+        /**
+         * Opacity relative to the whole spectrum: 0.05 Opacity with (0 shiftTo 20) = 12,75
+         */
+        RELATIVE_TO_SPECTRUM,
     }
 
 }

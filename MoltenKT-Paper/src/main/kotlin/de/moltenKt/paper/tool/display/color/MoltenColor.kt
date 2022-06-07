@@ -1,6 +1,7 @@
 package de.moltenKt.paper.tool.display.color
 
 import de.moltenKt.core.tool.color.Color
+import de.moltenKt.core.tool.color.Color.ShiftType.RELATIVE_TO_TRANSITION
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.format.TextColor
@@ -42,14 +43,16 @@ data class MoltenColor(
      * @author Fruxz
      * @since 1.0
      */
-    fun shiftTo(color: MoltenColor, opacity: Double): MoltenColor {
+    fun shiftTo(color: MoltenColor, opacity: Double, shiftType: ShiftType = RELATIVE_TO_TRANSITION): MoltenColor {
         validate()
         if (opacity !in 0.0..1.0) error("opacity must be in range 0.0..1.0")
 
+        val raw = Color(red, green, blue).shiftTo(color.red, color.green, color.blue, opacity, shiftType)
+
         return copy(
-            red = (red + (color.red - red) * opacity).roundToInt(),
-            green = (green + (color.green - green) * opacity).roundToInt(),
-            blue = (blue + (color.blue - blue) * opacity).roundToInt(),
+            red = raw.red,
+            green = raw.green,
+            blue = raw.blue,
         )
     }
 
