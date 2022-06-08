@@ -10,7 +10,7 @@ import org.bukkit.block.Block
 import org.bukkit.entity.Entity
 import org.bukkit.util.Vector
 
-interface DependentShape<R : DependentShape<R>> : Shape {
+interface DependentShape : Shape {
 
 	/**
 	 * This computational value represents the volume, that the Shape contains.
@@ -162,7 +162,7 @@ interface DependentShape<R : DependentShape<R>> : Shape {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun asShifted(toWorld: World): R
+	fun asShifted(toWorld: World): DependentShape
 
 	/**
 	 * Returns a copy of the [DependentShape] with the [toWorldName] as the world,
@@ -172,7 +172,7 @@ interface DependentShape<R : DependentShape<R>> : Shape {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun asShifted(toWorldName: String): R = asShifted(worlds.first { it.name == toWorldName })
+	fun asShifted(toWorldName: String): DependentShape = asShifted(worlds.first { it.name == toWorldName })
 
 	/**
 	 * Returns a copy of the [DependentShape] with the [toWorldUid] as the world,
@@ -182,6 +182,6 @@ interface DependentShape<R : DependentShape<R>> : Shape {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun asShifted(toWorldUid: UUID): R = asShifted(worlds.first { it.uid == toWorldUid })
+	fun asShifted(toWorldUid: UUID): DependentShape = asShifted(worlds.first { it.uid == toWorldUid })
 
 }

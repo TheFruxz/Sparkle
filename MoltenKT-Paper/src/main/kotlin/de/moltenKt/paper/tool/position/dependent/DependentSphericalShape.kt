@@ -15,7 +15,7 @@ import kotlin.math.pow
 data class DependentSphericalShape(
 	override val center: SimpleLocation,
 	override val radius: Double,
-) : DependentShape<DependentSphericalShape>, SphereShape {
+) : DependentShape, SphereShape {
 
 	constructor(center: Location, radius: Double) : this(center.toSimpleLocation(), radius)
 
@@ -54,6 +54,6 @@ data class DependentSphericalShape(
 
 	override fun contains(location: Location): Boolean = location.distance(center.bukkit).floorToInt() <= radius
 
-	override fun asShifted(toWorld: World): DependentSphericalShape = copy(center = center.copy(world = toWorld.name))
+	override fun asShifted(toWorld: World): DependentShape = copy(center = center.copy(world = toWorld.name))
 
 }

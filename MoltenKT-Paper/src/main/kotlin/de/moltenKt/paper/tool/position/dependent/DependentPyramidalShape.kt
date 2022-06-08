@@ -17,7 +17,7 @@ data class DependentPyramidalShape(
 	override val height: Double,
 	override val groundWidth: Double,
 	override val groundDepth: Double,
-) : DependentShape<DependentPyramidalShape>, PyramidalShape {
+) : DependentShape, PyramidalShape {
 
 	override val volume: Double by lazy {
 		(1/3.0) * (groundWidth * groundDepth) * height
@@ -61,7 +61,7 @@ data class DependentPyramidalShape(
 		return contains(location.toVector()) && location.world.name == peakLocation.world
 	}
 
-	override fun asShifted(toWorld: World): DependentPyramidalShape = copy(
+	override fun asShifted(toWorld: World): DependentShape = copy(
 		peakLocation = peakLocation.copy(world = toWorld.name)
 	)
 

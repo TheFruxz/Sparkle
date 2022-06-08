@@ -33,7 +33,7 @@ import kotlin.math.abs
 data class DependentCubicalShape(
 	val first: SimpleLocation,
 	val second: SimpleLocation,
-) : DependentShape<DependentCubicalShape>, Producible<BoundingBox>, ConfigurationSerializable, CubicalShape {
+) : DependentShape, Producible<BoundingBox>, ConfigurationSerializable, CubicalShape {
 
 	constructor(first: Location, second: Location) : this(first.toSimpleLocation(), second.toSimpleLocation())
 
@@ -324,7 +324,7 @@ data class DependentCubicalShape(
 
 	override val height: Double = abs(first.y - second.y)
 
-	override fun asShifted(toWorld: World): DependentCubicalShape = copy(
+	override fun asShifted(toWorld: World): DependentShape = copy(
 		first = first.copy(world = toWorld.name),
 		second = second.copy(world = toWorld.name),
 	)

@@ -17,7 +17,7 @@ data class DependentCylindricalShape(
 	override val direction: Shape.Direction,
 	override val height: Double,
 	override val radius: Double,
-) : DependentShape<DependentCylindricalShape>, CylindricalShape {
+) : DependentShape, CylindricalShape {
 
 	private val halfHeight by lazy {
 		height / 2
@@ -131,7 +131,7 @@ data class DependentCylindricalShape(
 		return contains(location.toVector()) && center.world == location.world.name
 	}
 
-	override fun asShifted(toWorld: World): DependentCylindricalShape = copy(
+	override fun asShifted(toWorld: World): DependentShape = copy(
 		center = center.copy(world = toWorld.name)
 	)
 
