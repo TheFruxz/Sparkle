@@ -7,9 +7,9 @@ import org.bukkit.World
 import org.bukkit.util.Vector
 
 @Serializable
-data class DependentComplexShape(
-	val dependentShapes: List<DependentShape>
-) : DependentShape {
+data class DependentComplexShape<T : DependentShape<T>>(
+	val dependentShapes: List<T>
+) : DependentShape<DependentComplexShape<T>> {
 
 	override val volume: Double by lazy {
 		dependentShapes.sumOf { it.volume }
@@ -89,7 +89,7 @@ data class DependentComplexShape(
 
 	override fun contains(location: Location): Boolean = dependentShapes.any { it.contains(location) }
 
-	override fun asShifted(toWorld: World): DependentShape = copy(
+	override fun asShifted(toWorld: World): DependentComplexShape<T> = copy(
 		dependentShapes = dependentShapes.map { it.asShifted(toWorld) }
 	)
 

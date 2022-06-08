@@ -218,7 +218,7 @@ interface Shape {
          * @since 1.0
          */
         @JvmStatic
-        fun complex(vararg dependentShapes: DependentShape) = DependentComplexShape(dependentShapes.toList())
+        fun <T : DependentShape<T>> complex(vararg dependentShapes: T) = DependentComplexShape(dependentShapes.toList())
 
     }
 

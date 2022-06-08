@@ -15,7 +15,7 @@ import kotlin.math.roundToInt
 data class DependentLinearShape(
     val fromLocation: SimpleLocation,
     val toLocation: SimpleLocation,
-) : DependentShape, LinearShape {
+) : DependentShape<DependentLinearShape>, LinearShape {
 
     override val length: Double = fromLocation.toVector().distance(toLocation.toVector())
 
@@ -59,7 +59,7 @@ data class DependentLinearShape(
 
     override fun contains(location: Location) = false
 
-    override fun asShifted(toWorld: World): DependentShape = copy(
+    override fun asShifted(toWorld: World): DependentLinearShape = copy(
         fromLocation = fromLocation.copy(world = toWorld.name),
         toLocation = toLocation.copy(world = toWorld.name)
     )
