@@ -210,9 +210,13 @@ data class DependentCubicalShape(
 
 	override val blockLocations: List<SimpleLocation> by lazy {
 		buildList {
-			for (x in first.x.floorToInt()..second.x.ceilToInt()) {
-				for (y in first.y.floorToInt()..second.y.ceilToInt()) {
-					for (z in first.z.floorToInt()..second.z.ceilToInt()) {
+			val xL = listOf(first.x, second.x).sorted()
+			val yL = listOf(first.y, second.y).sorted()
+			val zL = listOf(first.z, second.z).sorted()
+
+			for (x in xL.first().floorToInt()..xL.last().ceilToInt()) {
+				for (y in yL.first().floorToInt()..yL.last().ceilToInt()) {
+					for (z in zL.first().floorToInt()..zL.last().ceilToInt()) {
 						add(SimpleLocation(first.world, x.toDouble(), y.toDouble(), z.toDouble()))
 					}
 				}
