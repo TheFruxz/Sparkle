@@ -1,6 +1,8 @@
 package de.moltenKt.paper.tool.display.color
 
+import de.moltenKt.core.extension.container.replace
 import de.moltenKt.paper.extension.paper.createKey
+import de.moltenKt.paper.extension.paper.name
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.tool.display.color.ColorType.WHITE
 import net.kyori.adventure.key.Key
@@ -33,7 +35,10 @@ enum class DyeableMaterial(
 
 		@JvmStatic
 		fun fromMaterial(material: Material) = try {
-			valueOf(material.name.substringAfter('_'))
+			valueOf(material.name.replace(
+				"LIGHT_BLUE" to "LIGHTBLUE",
+				"LIGHT_GRAY" to "LIGHTGRAY",
+			).substringAfter('_'))
 		} catch (exception: IllegalArgumentException) {
 			null
 		}
