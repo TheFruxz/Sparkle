@@ -2,6 +2,7 @@ package de.moltenKt.paper.tool.position.dependent
 
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.difference
+import de.moltenKt.core.extension.math.floor
 import de.moltenKt.core.extension.math.floorToInt
 import de.moltenKt.core.tool.smart.Producible
 import de.moltenKt.paper.extension.paper.directionVectorVelocity
@@ -16,6 +17,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import kotlin.math.abs
+import kotlin.math.ceil
+import kotlin.math.floor
 
 /**
  * This data class represents a computer generated box, defined by 2 points.
@@ -214,10 +217,10 @@ data class DependentCubicalShape(
 			val yL = listOf(first.y, second.y).sorted()
 			val zL = listOf(first.z, second.z).sorted()
 
-			for (x in xL.first().floorToInt()..xL.last().ceilToInt()) {
-				for (y in yL.first().floorToInt()..yL.last().ceilToInt()) {
-					for (z in zL.first().floorToInt()..zL.last().ceilToInt()) {
-						add(SimpleLocation(first.world, x.toDouble(), y.toDouble(), z.toDouble()))
+			for (x in xL.first().floorToInt()..xL.last().floorToInt()) {
+				for (y in yL.first().floorToInt()..yL.last().floorToInt()) {
+					for (z in zL.first().floorToInt()..zL.last().floorToInt()) {
+						add(SimpleLocation(first.world, x.toDouble().floor() + .5, y.toDouble().floor() + .5, z.toDouble().floor() + .5))
 					}
 				}
 			}
@@ -291,8 +294,8 @@ data class DependentCubicalShape(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val blockVolume: Double by lazy {
-		(first.x.difference(second.x)+1) * (first.y.difference(second.y)+1) * (first.z.difference(second.z)+1)
+	val blockVolume: Int by lazy {
+		blockLocations.size
 	}
 
 	/**
