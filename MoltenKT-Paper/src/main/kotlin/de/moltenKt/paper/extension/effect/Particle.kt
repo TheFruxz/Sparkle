@@ -1,6 +1,7 @@
 package de.moltenKt.paper.extension.effect
 
 import com.destroystokyo.paper.ParticleBuilder
+import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.effect.particle.ParticleData
 import de.moltenKt.paper.tool.effect.particle.ParticleType
 
@@ -35,5 +36,7 @@ fun ParticleBuilder.playParticleEffect() =
 fun ParticleBuilder.offset(offset: Number) = offset(offset.toDouble(), offset.toDouble(), offset.toDouble())
 
 fun ParticleBuilder.offset(offsetX: Number, offsetZ: Number) = offset(offsetX.toDouble(), .0, offsetZ.toDouble())
+
+fun ParticleBuilder.location(simpleLocation: SimpleLocation) = location(simpleLocation.bukkit)
 
 fun <T : Any> particleOf(particleType: ParticleType<T>): ParticleData<T> = ParticleData(particleType)
