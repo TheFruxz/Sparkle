@@ -2,15 +2,19 @@
 
 package de.moltenKt.paper.tool.effect.particle
 
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.key.Keyed
 import org.bukkit.Particle
 import org.bukkit.Vibration
 import org.bukkit.block.data.BlockData
 import org.bukkit.inventory.ItemStack
 import org.bukkit.material.MaterialData
 
-interface ParticleType<DATA : Any> {
+interface ParticleType<DATA : Any> : Keyed {
 
     val type: Particle
+
+    override fun key() = Key.key(type.name)
 
     companion object {
 
@@ -18,8 +22,10 @@ interface ParticleType<DATA : Any> {
             override val type = particle
         }
 
+        fun values(): Set<ParticleType<*>> = Particle.values().map { minecraft(it) }.toSet()
+
         val EXPLOSION_NORMAL = particle<Nothing>(Particle.EXPLOSION_NORMAL)
-        val EXPLOSION_LARGE =particle<Nothing>(Particle.EXPLOSION_NORMAL)
+        val EXPLOSION_LARGE = particle<Nothing>(Particle.EXPLOSION_NORMAL)
         val EXPLOSION_HUGE = particle<Nothing>(Particle.EXPLOSION_HUGE)
         val FIREWORKS_SPARK = particle<Nothing>(Particle.FIREWORKS_SPARK)
         val WATER_BUBBLE = particle<Nothing>(Particle.WATER_BUBBLE)
@@ -112,8 +118,13 @@ interface ParticleType<DATA : Any> {
         val LEGACY_BLOCK_CRACK = particle<MaterialData>(Particle.LEGACY_BLOCK_CRACK)
         val LEGACY_BLOCK_DUST = particle<MaterialData>(Particle.LEGACY_BLOCK_DUST)
         val LEGACY_FALLING_DUST = particle<MaterialData>(Particle.LEGACY_FALLING_DUST)
+        val SONIC_BOOM = particle<Nothing>(Particle.SONIC_BOOM)
+        val SCULK_SOUL = particle<Nothing>(Particle.SCULK_SOUL)
+        val SCULK_CHARGE = particle<Float>(Particle.SCULK_CHARGE)
+        val SCULK_CHARGE_POP = particle<Nothing>(Particle.SCULK_CHARGE_POP)
+        val SHRIEK = particle<Int>(Particle.SHRIEK)
 
-        fun fromLegacy(particle: Particle): ParticleType<*> = when (particle) {
+        fun minecraft(particle: Particle): ParticleType<*> = when (particle) {
             Particle.EXPLOSION_NORMAL -> EXPLOSION_NORMAL
             Particle.EXPLOSION_LARGE -> EXPLOSION_LARGE
             Particle.EXPLOSION_HUGE -> EXPLOSION_HUGE
@@ -208,6 +219,11 @@ interface ParticleType<DATA : Any> {
             Particle.LEGACY_BLOCK_CRACK -> LEGACY_BLOCK_CRACK
             Particle.LEGACY_BLOCK_DUST -> LEGACY_BLOCK_DUST
             Particle.LEGACY_FALLING_DUST -> LEGACY_FALLING_DUST
+            Particle.SONIC_BOOM -> SONIC_BOOM
+            Particle.SCULK_SOUL -> SCULK_SOUL
+            Particle.SCULK_CHARGE -> SCULK_CHARGE
+            Particle.SCULK_CHARGE_POP -> SCULK_CHARGE_POP
+            Particle.SHRIEK -> SHRIEK
         }
 
     }
