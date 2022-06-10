@@ -295,7 +295,13 @@ data class DependentCubicalShape(
 	 * @since 1.0
 	 */
 	val blockVolume: Int by lazy {
-		blockLocations.size
+		val xL = listOf(first.x, second.x).sorted()
+		val yL = listOf(first.y, second.y).sorted()
+		val zL = listOf(first.z, second.z).sorted()
+
+		(xL.last().floorToInt() - xL.first().floorToInt() + 1) *
+				(yL.last().floorToInt() - yL.first().floorToInt() + 1) *
+				(zL.last().floorToInt() - zL.first().floorToInt() + 1)
 	}
 
 	/**
