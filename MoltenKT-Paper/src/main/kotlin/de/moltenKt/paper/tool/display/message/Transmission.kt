@@ -71,7 +71,7 @@ data class Transmission(
 		val prefix = if (prefixByLevel) {
 			lang["system.${level.prefixLink.addressObject}"].asStyledComponent
 		} else {
-			prefix ?: MoltenData.systemPrefix.content.asStyledComponent
+			prefix ?: MoltenData.systemConfig.prefix.asStyledComponent
 		}
 
 		val displayObject = content.map {

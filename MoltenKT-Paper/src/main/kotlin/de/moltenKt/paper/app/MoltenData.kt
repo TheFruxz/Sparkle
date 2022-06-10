@@ -1,42 +1,37 @@
 package de.moltenKt.paper.app
 
+import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.core.tool.smart.identification.Identifiable
-import de.moltenKt.paper.app.MoltenData.File.CONFIG
 import de.moltenKt.paper.app.MoltenData.File.ESSENTIALS_CONFIG
 import de.moltenKt.paper.app.component.point.asset.PointConfig
 import de.moltenKt.paper.extension.data.moltenPath
-import de.moltenKt.paper.structure.app.cache.CacheDepthLevel.CLEAR
+import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.tool.data.DataTransformer
 import de.moltenKt.paper.tool.data.MoltenYamlFile
 import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem
+import kotlinx.serialization.Serializable
 import java.util.*
 import kotlin.io.path.div
+import kotlin.io.path.readText
+import kotlin.io.path.writeText
 
 object MoltenData {
 
-	val debugMode = Preference(
-		file = CONFIG,
-		useCache = true,
-		path = moltenPath("debugMode"),
-		default = false,
-		cacheDepthLevel = CLEAR,
-	)
+	private var _systemConfig: MoltenConfig? = null
 
-	val systemPrefix = Preference(
-		file = CONFIG,
-		useCache = true,
-		path = moltenPath("prefix"),
-		default = "<gold>MoltenKT <dark_gray>» ",
-		cacheDepthLevel = CLEAR,
-	).transformer(DataTransformer.simpleColorCode())
+	private val systemConfigPath = MoltenFileSystem.appPath(system) / "settings.json"
 
-	val systemLanguage = Preference(
-		file = CONFIG,
-		path = moltenPath("language"),
-		default = Locale.ENGLISH.language,
-		cacheDepthLevel = CLEAR,
-	)
+	var systemConfig: MoltenConfig
+		get() = _systemConfig ?: tryOrNull { systemConfigPath.readText().fromJson() } ?: MoltenConfig().also {
+			systemConfig = it
+		}
+		set(value) {
+			_systemConfig = value
+			systemConfigPath.writeText(value.toJson())
+		}
 
 	// ESSENTIALS component
 
@@ -48,10 +43,15 @@ object MoltenData {
 
 	object File {
 
-		val CONFIG = MoltenYamlFile.generateYaml(MoltenFileSystem.rootPath() / "setup.yml")
-
 		val ESSENTIALS_CONFIG = MoltenYamlFile.generateYaml(MoltenFileSystem.componentPath(Identifiable.custom("MoltenKT:World-Points")) / "points.yml")
 
 	}
+
+	@Serializable
+	data class MoltenConfig(
+		val debugMode: Boolean = false,
+		val prefix: String = "<gold>MoltenKT <dark_gray>» ",
+		val language: String = Locale.ENGLISH.language
+	)
 
 }

@@ -2,6 +2,7 @@ package de.moltenKt.paper.app
 
 import de.moltenKt.core.extension.data.fromJson
 import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.paper.app.MoltenData.MoltenConfig
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem
@@ -15,12 +16,13 @@ import kotlin.io.path.div
 import kotlin.io.path.notExists
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
+import kotlin.reflect.full.primaryConstructor
 
 object MoltenLanguage {
 
-    private val configuredLanguage: String = MoltenData.systemLanguage.content
-    private val configuredDefault: String = MoltenData.systemLanguage.default
-    var path = MoltenFileSystem.rootPath() / "lang" / "${MoltenData.systemLanguage.content}.lang.json"
+    private val configuredLanguage: String = MoltenData.systemConfig.language
+    private val configuredDefault: String = Locale.ENGLISH.language
+    var path = MoltenFileSystem.rootPath() / "lang" / "${MoltenData.systemConfig.language}.lang.json"
         private set
 
     lateinit var container: MoltenLanguageContainer
@@ -31,7 +33,9 @@ object MoltenLanguage {
 
                 if (configuredLanguage != configuredDefault) {
                     mainLog.warning("Language $configuredLanguage not found! Using default language $configuredDefault instead!")
-                    MoltenData.systemLanguage.content = configuredDefault
+                    MoltenData.systemConfig = MoltenData.systemConfig.copy(
+                        language = configuredLanguage
+                    )
                     MoltenFileSystem.rootPath() / "lang" / configuredDefault
                     check()
                 } else {

@@ -141,7 +141,7 @@ class MoltenApp : App() {
 
 	override suspend fun hello() {
 
-		debugMode = MoltenData.debugMode.content
+		debugMode = MoltenData.systemConfig.debugMode
 
 		mainLog(
 			Level.INFO, """
