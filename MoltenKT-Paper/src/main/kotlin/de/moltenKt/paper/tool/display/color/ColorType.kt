@@ -197,7 +197,11 @@ enum class ColorType : RGBLike, Keyed {
 
 		@JvmStatic
 		fun fromMaterial(material: Material) = try {
-			valueOf(material.name.split("_").first())
+			when {
+				material.name.startsWith(LIGHT_GRAY.name) -> LIGHT_GRAY
+				material.name.startsWith(LIGHT_BLUE.name) -> LIGHT_BLUE
+				else -> valueOf(material.name.split("_").first())
+			}
 		} catch (exception: IllegalArgumentException) {
 			null
 		}
