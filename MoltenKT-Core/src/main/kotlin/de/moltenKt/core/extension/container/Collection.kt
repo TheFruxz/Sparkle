@@ -370,4 +370,34 @@ fun <T, C : Collection<T>> C.fragmented(fragments: Int = 2, keepOverflow: Boolea
 	return output
 }
 
+/**
+ * This function uses the [Collection.distinct] function and
+ * returns the result-list as a [Set], by using the [toSet] function.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T, C : Collection<T>> C.distinctSet() = distinct().toSet()
 
+/**
+ * This function uses the [Array.distinct] function and
+ * returns the result-list as a [Set], by using the [toSet] function.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T> Array<T>.distinctSet() = distinct().toSet()
+
+/**
+ * This function uses the [Collection.distinctBy] function and
+ * returns the result-list as a [List], by using the [toList] function.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T, C : Collection<T>> C.distinctSetBy(process: (T) -> String) = distinctBy(process).toSet()
+
+/**
+ * This function uses the [Array.distinctBy] function and
+ * returns the result-list as a [List], by using the [toList] function.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T> Array<T>.distinctSetBy(process: (T) -> String) = distinctBy(process).toSet()
