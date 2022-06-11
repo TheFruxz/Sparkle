@@ -15,6 +15,7 @@ import org.bukkit.Color
 import org.bukkit.DyeColor
 import org.bukkit.Material
 import org.bukkit.boss.BarColor
+import net.md_5.bungee.api.ChatColor as BungeeChatColor
 
 enum class ColorType : RGBLike, Keyed {
 
@@ -81,15 +82,15 @@ enum class ColorType : RGBLike, Keyed {
 	}
 
 	@NotPerfect
-	val dyedChatColor: net.md_5.bungee.api.ChatColor by lazy {
+	val dyedChatColor: BungeeChatColor by lazy {
 		try {
-			net.md_5.bungee.api.ChatColor.of(
+			BungeeChatColor.of(
 				with(java.awt.Color.RGBtoHSB(dyeColor.color.red, dyeColor.color.green, dyeColor.color.blue, null)) {
 					java.awt.Color.getHSBColor(get(0), get(1), get(2))
 				}
 			)
 		} catch (ignore: Exception) {
-			net.md_5.bungee.api.ChatColor.BLACK
+			BungeeChatColor.BLACK
 		}
 	}
 
