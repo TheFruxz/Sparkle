@@ -185,6 +185,14 @@ enum class ColorType : RGBLike, Keyed {
 		Material.valueOf("${name}_DYE")
 	}
 
+	val candle: Material by lazy {
+		Material.valueOf("${name}_CANDLE")
+	}
+
+	val candleCake: Material by lazy {
+		Material.valueOf("${name}_CANDLE_CAKE")
+	}
+
 	override fun red() = rawColor.red
 
 	override fun green() = rawColor.green
