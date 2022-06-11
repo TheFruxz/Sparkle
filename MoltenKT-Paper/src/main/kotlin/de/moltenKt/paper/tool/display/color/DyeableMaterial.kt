@@ -25,7 +25,9 @@ enum class DyeableMaterial(
 	BED(ColorType::bed),
 	BANNER(ColorType::banner),
 	BANNER_WALL(ColorType::bannerWall),
-	DYE(ColorType::dyeMaterial);
+	DYE(ColorType::dyeMaterial),
+	CANDLE(ColorType::candle),
+	CANDLE_CAKE(ColorType::candleCake);
 
 	fun withColor(color: ColorType) = produceMaterialProcess(color)
 
