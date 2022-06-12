@@ -4,6 +4,10 @@ import com.destroystokyo.paper.ParticleBuilder
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.effect.particle.ParticleData
 import de.moltenKt.paper.tool.effect.particle.ParticleType
+import de.moltenKt.paper.tool.effect.particle.ParticleType.Companion
+import org.bukkit.Location
+import org.bukkit.Particle
+import org.bukkit.entity.Player
 
 @Throws(IllegalStateException::class)
 fun ParticleBuilder.playParticleEffect(reach: Double = .0) {
@@ -40,3 +44,28 @@ fun ParticleBuilder.offset(offsetX: Number, offsetZ: Number) = offset(offsetX.to
 fun ParticleBuilder.location(simpleLocation: SimpleLocation) = location(simpleLocation.bukkit)
 
 fun <T : Any> particleOf(particleType: ParticleType<T>): ParticleData<T> = ParticleData(particleType)
+
+fun <T : Any> buildParticle(particleType: ParticleType<T>, builder: ParticleData<T>.() -> Unit) =
+	ParticleData(particleType).apply(builder)
+
+fun ParticleBuilder.copy(
+	particle: Particle = particle(),
+	receivers: List<Player>? = receivers(),
+	source: Player? = source(),
+	location: Location? = location(),
+	count: Int = count(),
+	offsetX: Double = offsetX(),
+	offsetY: Double = offsetY(),
+	offsetZ: Double = offsetZ(),
+	extra: Double = extra(),
+	data: Any? = data(),
+	force: Boolean = force(),
+) = ParticleBuilder(particle)
+	.receivers(receivers)
+	.source(source)
+	.count(count)
+	.offset(offsetX, offsetY, offsetZ)
+	.extra(extra)
+	.data(data)
+	.force(force)
+	.let { if (location != null) it.location(location) else it }
