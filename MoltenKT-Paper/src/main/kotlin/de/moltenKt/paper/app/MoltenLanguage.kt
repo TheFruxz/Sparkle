@@ -187,8 +187,10 @@ object MoltenLanguage {
             "component.markingTool.action.wrongLook" to "<gray>You are <red>not <gray>looking at a valid <yellow>block<gray>!",
             "component.markingTool.action.view.notSet" to "<gray>You have <red>no</red> valid <yellow>locations<gray> set!",
             "component.markingTool.action.view.detail" to "<gray>You have the locations <light_purple>[1] <gray>and <light_purple>[2] <gray>set!",
+            "component.markingTool.action.view.distance.both" to "<gray>Both locations are <gold>[distance] Block(s) <gray>away!",
             "component.markingTool.action.view.distance.other" to "<gray>Other position is <gold>[distance] Block(s) <gray>away!",
             "component.markingTool.action.view.distance.volume" to "<gray>Volume: <gold>[volume] Block(s) <gray>containing!",
+            "component.markingTool.action.view.distance.acrossWorlds" to "<red>This information is not available at markings across different worlds!",
 
             "interchange.internal.preference.list.empty" to "<gray>There are currently <red>no<gray> preferences registered!",
             "interchange.internal.preference.list.header" to "<gray>These '<gold>[amount]<gray>' preferences are currently registered:",
