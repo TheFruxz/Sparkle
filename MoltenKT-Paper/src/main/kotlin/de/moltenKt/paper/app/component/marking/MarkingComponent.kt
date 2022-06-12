@@ -2,6 +2,7 @@ package de.moltenKt.paper.app.component.marking
 
 import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.core.extension.math.shorter
+import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.display.ui.item
@@ -66,9 +67,11 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 							).asStyledComponent
 								.hoverEvent(text {
 									text(
-										lang["component.markingTool.action.view.distance.both"].replaceVariables(
-											"distance" to currentBox.distance.shorter
-										)
+										tryOrNull {
+											lang["component.markingTool.action.view.distance.both"].replaceVariables(
+												"distance" to currentBox.distance.shorter
+											)
+										} ?: lang["component.markingTool.action.view.distance.acrossWorlds"]
 									)
 									text(" ")
 									text(lang["component.markingTool.action.view.distance.volume"].replaceVariables(
@@ -100,9 +103,13 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 											"pos" to targetPrint,
 										).asStyledComponent
 											.hoverEvent(text {
-												text(lang["component.markingTool.action.view.distance.other"].replaceVariables(
-													"distance" to targetLocation.distance(currentBox.secondLocation).shorter
-												))
+												text(
+													tryOrNull {
+														lang["component.markingTool.action.view.distance.other"].replaceVariables(
+															"distance" to targetLocation.distance(currentBox.secondLocation).shorter
+														)
+													} ?: lang["component.markingTool.action.view.distance.acrossWorlds"]
+												)
 											})
 											.notification(APPLIED, user).display()
 
@@ -124,9 +131,13 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 											"pos" to targetPrint,
 										).asStyledComponent
 											.hoverEvent(text {
-												text(lang["component.markingTool.action.view.distance.other"].replaceVariables(
-													"distance" to targetLocation.distance(currentBox.firstLocation).shorter
-												))
+												text(
+													tryOrNull {
+														lang["component.markingTool.action.view.distance.other"].replaceVariables(
+															"distance" to targetLocation.distance(currentBox.firstLocation).shorter
+														)
+													} ?: lang["component.markingTool.action.view.distance.acrossWorlds"]
+												)
 											})
 											.notification(APPLIED, user)
 											.display()
