@@ -1,7 +1,6 @@
 package de.moltenKt.paper.app.component.marking
 
 import de.moltenKt.core.extension.container.replaceVariables
-import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.shorter
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.notification
@@ -18,11 +17,8 @@ import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
 import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.extension.asStyledComponents
-import de.moltenKt.unfold.newline
 import de.moltenKt.unfold.text
-import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.NamedTextColor.YELLOW
-import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.Style.style
 import net.kyori.adventure.text.format.TextDecoration.BOLD
 import org.bukkit.FluidCollisionMode.ALWAYS
@@ -72,7 +68,12 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 									text(
 										lang["component.markingTool.action.view.distance.both"].replaceVariables(
 											"distance" to currentBox.distance.shorter
-										))
+										)
+									)
+									text(" ")
+									text(lang["component.markingTool.action.view.distance.volume"].replaceVariables(
+										"volume" to currentBox.blockVolume
+									))
 								})
 								.notification(INFO, user).display()
 
