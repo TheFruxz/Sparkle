@@ -1,12 +1,10 @@
 package de.moltenKt.core.tool.color
 
-import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.floorToInt
 import de.moltenKt.core.extension.math.limitTo
 import de.moltenKt.core.tool.color.Color.ShiftType.RELATIVE_TO_SPECTRUM
 import de.moltenKt.core.tool.color.Color.ShiftType.RELATIVE_TO_TRANSITION
-import de.moltenKt.core.tool.smart.identification.Identifiable
 import kotlinx.serialization.Serializable
 import kotlin.math.roundToInt
 import java.awt.Color as AwtColor
@@ -19,17 +17,11 @@ import java.awt.Color as AwtColor
  * @since 1.0
  */
 @Serializable
-open class Color<T : Color<T>> constructor(
-    open val red: Int,
-    open val green: Int,
-    open val blue: Int,
-) : Identifiable<Color<T>> {
-
-    fun validate() {
-        if (red !in 0..255) error("red must be in range of 0..255")
-        if (green !in 0..255) error("green must be in range of 0..255")
-        if (blue !in 0..255) error("blue must be in range of 0..255")
-    }
+open class Color private constructor(
+    override val red: Int,
+    override val green: Int,
+    override val blue: Int,
+) : ColorBase<Color> {
 
     override val identity: String by lazy {
         hexString
@@ -41,7 +33,7 @@ open class Color<T : Color<T>> constructor(
      * @author Fruxz
      * @since 1.0
      */
-    fun shiftTo(color: Color<*>, opacity: Double, shiftType: ShiftType = RELATIVE_TO_SPECTRUM): T {
+    override fun shiftTo(color: ColorBase<*>, opacity: Double, shiftType: ShiftType): Color {
         validate()
         if (opacity !in 0.0..1.0) error("opacity must be in range 0.0..1.0")
 
@@ -60,11 +52,7 @@ open class Color<T : Color<T>> constructor(
             else -> ((color.blue - blue) * opacity).roundToInt()
         }
 
-        return Color(
-            red = (red + redModifier),
-            green = (green + greenModifier),
-            blue = (blue + blueModifier),
-        ).forceCast()
+        return recreate(red = (red + redModifier), green = (green + greenModifier), blue = (blue + blueModifier))
     }
 
     /**
@@ -73,7 +61,7 @@ open class Color<T : Color<T>> constructor(
      * @author Fruxz
      * @since 1.0
      */
-    fun shiftTo(red: Int, green: Int, blue: Int, opacity: Double, shiftType: ShiftType = RELATIVE_TO_SPECTRUM) =
+    override fun shiftTo(red: Int, green: Int, blue: Int, opacity: Double, shiftType: ShiftType): Color =
         shiftTo(of(red, green, blue), opacity, shiftType)
 
     /**
@@ -85,7 +73,7 @@ open class Color<T : Color<T>> constructor(
      * @author Fruxz
      * @since 1.0
      */
-    fun splitShiftTo(destination: Color<*>, parts: Int): List<T> = buildList {
+    override fun splitShiftTo(destination: ColorBase<*>, parts: Int): List<Color> = buildList {
         val step = 1.0 / parts
         var opacity = 0.0
         repeat(parts + 1) {
@@ -100,7 +88,7 @@ open class Color<T : Color<T>> constructor(
      * @author Fruxz
      * @since 1.0
      */
-    fun brighter(strength: Double = .2, shiftType: ShiftType = RELATIVE_TO_TRANSITION) =
+    override fun brighter(strength: Double, shiftType: ShiftType): Color =
         shiftTo(of(AwtColor.WHITE), strength, shiftType)
 
     /**
@@ -109,25 +97,28 @@ open class Color<T : Color<T>> constructor(
      * @author Fruxz
      * @since 1.0
      */
-    fun darker(strength: Double = .2, shiftType: ShiftType = RELATIVE_TO_TRANSITION) =
+    override fun darker(strength: Double, shiftType: ShiftType): Color =
         shiftTo(of(AwtColor.BLACK), strength, shiftType)
 
-    val rgb: Int by lazy {
+    override fun recreate(red: Int, green: Int, blue: Int): Color =
+        Color(red, green, blue)
+
+    override val rgb: Int by lazy {
         validate()
         (red shl 16) or (green shl 8) or blue
     }
 
-    val awtColor: AwtColor by lazy {
+    override val awtColor: AwtColor by lazy {
         validate()
         AwtColor(red, green, blue)
     }
 
-    val hexString: String by lazy {
+    override val hexString: String by lazy {
         validate()
         String.format("#%02x%02x%02x", red, green, blue)
     }
 
-    val rgbString: String by lazy {
+    override val rgbString: String by lazy {
         validate()
         String.format("rgb(%d, %d, %d)", red, green, blue)
     }
