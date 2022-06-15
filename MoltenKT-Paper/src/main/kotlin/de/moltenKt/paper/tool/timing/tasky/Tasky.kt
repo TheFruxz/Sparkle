@@ -7,10 +7,10 @@ import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenCache
-import de.moltenKt.paper.extension.paper.scheduler
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.smart.Logging
+import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
 
 interface Tasky : Logging {
@@ -112,7 +112,7 @@ interface Tasky : Logging {
 							MoltenCache.runningTasks = MoltenCache.runningTasks.filter { check -> check != it.taskId }
 							MoltenCache.runningServiceTaskController = MoltenCache.runningServiceTaskController.filterNot { check -> check.value.taskId == it.taskId }.toMutableMap()
 							onStop(this)
-							scheduler.cancelTask(it.taskId)
+							Bukkit.getScheduler().cancelTask(it.taskId)
 							it.cancel()
 						}
 

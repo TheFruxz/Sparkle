@@ -100,7 +100,7 @@ fun Pair<Pair<Number, Number>, Number>.asLocation(world: World) =
  * @since 1.0
  */
 fun Pair<Pair<Number, Number>, Number>.asLocation(worldName: String) =
-	getWorld(worldName)?.let { asLocation(it) }
+	worldOrNull(worldName)?.let { asLocation(it) }
 
 /**
  * This function adds the given [x], [y] and [z] values to the current [Location].

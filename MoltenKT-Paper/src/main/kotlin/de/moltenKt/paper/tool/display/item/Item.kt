@@ -6,8 +6,6 @@ import de.moltenKt.core.tool.smart.Producible
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.ui.changeColor
-import de.moltenKt.paper.extension.paper.createBlockData
-import de.moltenKt.paper.extension.paper.itemFactory
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.moltenKt.paper.structure.app.App
@@ -35,6 +33,8 @@ import net.kyori.adventure.text.event.HoverEventSource
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration.ITALIC
 import net.kyori.adventure.text.format.TextDecoration.State.FALSE
+import org.bukkit.Bukkit
+import org.bukkit.Bukkit.createBlockData
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Material.*
@@ -135,7 +135,7 @@ data class Item(
 			.build()
 
 	fun produceItemMeta() = if (!material.isAir) {
-		(itemMetaBase ?: itemFactory.getItemMeta(material)).apply {
+		(itemMetaBase ?: Bukkit.getItemFactory().getItemMeta(material)).apply {
 
 			label.let {
 				if (it.isNotEmpty()) {

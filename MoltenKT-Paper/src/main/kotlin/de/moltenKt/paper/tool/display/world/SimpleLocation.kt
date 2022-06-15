@@ -1,6 +1,6 @@
 package de.moltenKt.paper.tool.display.world
 
-import de.moltenKt.paper.extension.paper.getWorld
+import de.moltenKt.paper.extension.paper.worldOrNull
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
@@ -43,12 +43,12 @@ data class SimpleLocation(
 
 	/**
 	 * This value computes this [SimpleLocation] as a [Location] on the [World]
-	 * This requires the [World] with the [world]-name to be existent.
+	 * This requires the [World] with the [worldOrNull]-name to be existent.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
 	val bukkit: Location by lazy {
-		Location(getWorld(world), x, y, z)
+		Location(worldOrNull(world), x, y, z)
 	}
 
 	val bukkitWorld: World

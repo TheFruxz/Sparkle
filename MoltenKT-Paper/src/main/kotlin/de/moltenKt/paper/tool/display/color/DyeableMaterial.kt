@@ -2,7 +2,6 @@ package de.moltenKt.paper.tool.display.color
 
 import de.moltenKt.core.extension.container.replace
 import de.moltenKt.paper.extension.paper.createKey
-import de.moltenKt.paper.extension.paper.name
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.tool.display.color.ColorType.WHITE
 import net.kyori.adventure.key.Key

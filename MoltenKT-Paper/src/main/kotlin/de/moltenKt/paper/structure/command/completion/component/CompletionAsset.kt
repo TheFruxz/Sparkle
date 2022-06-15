@@ -13,7 +13,7 @@ import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.paper.offlinePlayer
 import de.moltenKt.paper.extension.paper.offlinePlayers
 import de.moltenKt.paper.extension.paper.onlinePlayers
-import de.moltenKt.paper.extension.paper.player
+import de.moltenKt.paper.extension.paper.playerOrNull
 import de.moltenKt.paper.extension.paper.worlds
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.runtime.sandbox.SandBox
@@ -97,18 +97,18 @@ data class CompletionAsset<T>(
 		val ONLINE_PLAYER_NAME = CompletionAsset<Player>(system, "ONLINE_PLAYER_NAME", true, listOf(InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
 			onlinePlayers.withMap { name }
 		}.doCheck {
-			player(input) != null
+			playerOrNull(input) != null
 		}.transformer {
-			player(input)
+			playerOrNull(input)
 		}
 
 		@JvmStatic
 		val ONLINE_PLAYER_UUID = CompletionAsset<Player>(system, "ONLINE_PLAYER_UUID", true, listOf(InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
 			onlinePlayers.withMap { "$uniqueId" }
 		}.doCheck {
-			tryOrNull { UUID.fromString(input) }?.let { uuid -> return@let player(uuid) } != null
+			tryOrNull { UUID.fromString(input) }?.let { uuid -> return@let playerOrNull(uuid) } != null
 		}.transformer {
-			tryOrNull { player(UUID.fromString(input)) }
+			tryOrNull { playerOrNull(UUID.fromString(input)) }
 		}
 
 		@JvmStatic

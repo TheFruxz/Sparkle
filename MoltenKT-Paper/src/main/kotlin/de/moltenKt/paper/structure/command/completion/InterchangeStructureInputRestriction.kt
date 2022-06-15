@@ -5,7 +5,7 @@ import de.moltenKt.core.extension.math.isDouble
 import de.moltenKt.core.extension.math.isLong
 import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.paper.extension.paper.offlinePlayer
-import de.moltenKt.paper.extension.paper.player
+import de.moltenKt.paper.extension.paper.playerOrNull
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import java.util.*
@@ -56,8 +56,8 @@ interface InterchangeStructureInputRestriction<DATATYPE> {
 
 		@JvmStatic
 		val ONLINE_PLAYER = object : InterchangeStructureInputRestriction<Player> {
-			override fun isValid(input: String) = (player(input) ?: tryOrNull { player(UUID.fromString(input)) }) != null
-			override fun transformer(input: String) = player(input) ?: player(UUID.fromString(input))!!
+			override fun isValid(input: String) = (playerOrNull(input) ?: tryOrNull { playerOrNull(UUID.fromString(input)) }) != null
+			override fun transformer(input: String) = playerOrNull(input) ?: playerOrNull(UUID.fromString(input))!!
 		}
 
 		@JvmStatic
