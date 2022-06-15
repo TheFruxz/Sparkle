@@ -30,8 +30,8 @@ object FrameRenderer {
 
 			add("<${from.hexString}>$text")
 
-			repeat(2) { step ->
-				add("<gradient:${from.hexString}:${startColors[step+1].hexString}:${from.hexString}>$text")
+			repeat(3) { step ->
+				add("<gradient:${from.hexString}:${startColors[step].hexString}:${from.hexString}>$text")
 			}
 
 			for (x in 0 until colorFrames.size) {
