@@ -14,6 +14,7 @@ de.moltenKt.core.extension.classType
 de.moltenKt.core.extension.container
 de.moltenKt.core.extension.data
 de.moltenKt.core.extension.display
+de.moltenKt.core.extension.exposed
 de.moltenKt.core.extension.input
 de.moltenKt.core.extension.javaUtil
 de.moltenKt.core.extension.logging
@@ -39,15 +40,11 @@ de.moltenKt.core.tool.timing.calendar
 de.moltenKt.core.tool.timing.calendar.timeUnit
 de.moltenKt.core.tool.timing.clock
 de.moltenKt.core.tree
-module:MoltenKT-JavaCord
-de.moltenKt.javacord.app
-de.moltenKt.javacord.extension
-de.moltenKt.javacord.structure
-de.moltenKt.javacord.user
 module:MoltenKT-Paper
 de.moltenKt.paper
 de.moltenKt.paper.app
 de.moltenKt.paper.app.component.buildMode.config
+de.moltenKt.paper.app.component.chat
 de.moltenKt.paper.app.component.point.asset
 de.moltenKt.paper.app.component.world
 de.moltenKt.paper.extension
@@ -112,3 +109,4 @@ de.moltenKt.paper.tool.timing.tasky
 module:MoltenKT-Unfold
 de.moltenKt.unfold
 de.moltenKt.unfold.extension
+de.moltenKt.unfold.render
