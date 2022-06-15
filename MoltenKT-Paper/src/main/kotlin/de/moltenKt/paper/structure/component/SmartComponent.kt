@@ -36,25 +36,25 @@ abstract class SmartComponent(
 	preferredVendor: App? = null,
 ) : Component(behaviour, experimental, preferredVendor) {
 
-	val interchanges = mutableSetOf<Interchange>()
+	var interchanges = setOf<Interchange>()
 
-	fun interchange(vararg interchange: Interchange) = interchanges.addAll(interchange)
+	fun interchange(vararg interchange: Interchange) { interchanges += interchange }
 
-	val services = mutableSetOf<Service>()
+	var services = setOf<Service>()
 
-	fun service(vararg service: Service) = services.addAll(service)
+	fun service(vararg service: Service) { services += service }
 
-	val components = mutableSetOf<Component>()
+	var components = setOf<Component>()
 
-	fun component(vararg component: Component) = components.addAll(component)
+	fun component(vararg component: Component) { components += component }
 
-	val listeners = mutableSetOf<EventListener>()
+	var listeners = setOf<EventListener>()
 
-	fun listener(vararg listener: EventListener) = listeners.addAll(listener)
+	fun listener(vararg listener: EventListener) { listeners += listener }
 
-	val sandboxes = mutableSetOf<SandBox>()
+	var sandboxes = setOf<SandBox>()
 
-	fun sandbox(vararg sandbox: SandBox) = sandboxes.addAll(sandbox)
+	fun sandbox(vararg sandbox: SandBox) { sandboxes += sandbox }
 
 	private fun updateCommands() {
 		onlinePlayers.forEach { it.updateCommands() }
