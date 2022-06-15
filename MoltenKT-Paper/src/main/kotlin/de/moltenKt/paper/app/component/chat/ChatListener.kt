@@ -26,20 +26,31 @@ internal class ChatListener : EventListener() {
 		val setup = ChatComponent.setup
 		var notifiedPlayers = setOf<Player>()
 
-		val message = buildTextComponent {
+		var message: Component = buildTextComponent {
 
 			message().asString.replacePrefix("./", "/").split(" ").forEach { snipped ->
 				val tagged = playerOrNull(snipped.removePrefix("@"))
 
-				if (setup.mentions.enabled && snipped.startsWith("@") && snipped.length > 2 && tagged != null && !notifiedPlayers.contains(tagged)) {
+				if (setup.mentions.enabled && snipped.startsWith("@") && snipped.length > 2 && tagged != null && !notifiedPlayers.contains(
+						tagged
+					)
+				) {
 					append("<${setup.mentions.mentionColor}>@${tagged.displayName().asString}</${setup.mentions.mentionColor}>".asStyledComponent)
 					notifiedPlayers += tagged
 				} else if (setup.hashTags.enabled && snipped.startsWith("#") && snipped.length > 1) {
 					append("<${setup.hashTags.hashTagColor}>$snipped</${setup.hashTags.hashTagColor}>".asStyledComponent)
 				} else if (setup.commands.enabled && snipped.startsWith("/") && snipped.length > 1) {
-					append("<${setup.commands.commandColor}>$snipped</${setup.commands.commandColor}>".asStyledComponent.clickEvent(ClickEvent.suggestCommand(snipped)))
+					append(
+						"<${setup.commands.commandColor}>$snipped</${setup.commands.commandColor}>".asStyledComponent.clickEvent(
+							ClickEvent.suggestCommand(snipped)
+						)
+					)
 				} else if (setup.items.enabled && snipped.equals("[item]", true)) {
-					append("<${setup.items.itemColor}>${player.inventory.itemInMainHand.displayName().asStyledString}</${setup.items.itemColor}>".asStyledComponent.hoverEvent(player.inventory.itemInMainHand))
+					append(
+						"<${setup.items.itemColor}>${player.inventory.itemInMainHand.displayName().asStyledString}</${setup.items.itemColor}>".asStyledComponent.hoverEvent(
+							player.inventory.itemInMainHand
+						)
+					)
 				} else
 					append("<${setup.messageColor}>$snipped</${setup.messageColor}>".asStyledComponent)
 
@@ -49,16 +60,23 @@ internal class ChatListener : EventListener() {
 
 		}
 
+		if (setup.allowExtensions) {
+			ChatComponent.chatExtensions.forEach {
+				message = message.replaceText(it)
+			}
+		}
+
 		buildTextComponent {
 
-			append(setup.chatFormat.replaceVariables(
-				"displayName" to player.displayName().asStyledString,
-				"name" to player.name,
-				"playerListName" to player.playerListName().asStyledString
-			).asStyledComponent.replaceText {
-				it.match("\\[message]")
-				it.replacement(message)
-			})
+			append(
+				setup.chatFormat.replaceVariables(
+					"displayName" to player.displayName().asStyledString,
+					"name" to player.name,
+					"playerListName" to player.playerListName().asStyledString
+				).asStyledComponent.replaceText {
+					it.match("\\[message]")
+					it.replacement(message)
+				})
 
 		}.let { result ->
 			(onlinePlayers + consoleSender).forEach { receiver ->

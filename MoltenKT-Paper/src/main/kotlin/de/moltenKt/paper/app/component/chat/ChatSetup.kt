@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class ChatSetup(
 	val chatFormat: String = "<dark_gray>▶ <white>[displayName]<dark_gray> » [message]",
 	val messageColor: String = "aqua",
-	// TODO Chat extensions val allowExtensions: Boolean = true,
+	val allowExtensions: Boolean = true,
 	val mentions: MentionProperty = MentionProperty(),
 	val hashTags: HashTagProperty = HashTagProperty(),
 	val commands: CommandProperty = CommandProperty(),

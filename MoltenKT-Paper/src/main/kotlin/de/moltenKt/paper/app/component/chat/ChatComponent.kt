@@ -6,12 +6,15 @@ import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.paper.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.moltenKt.paper.structure.component.SmartComponent
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextReplacementConfig
+import java.util.StringJoiner
 import kotlin.io.path.createDirectories
 import kotlin.io.path.div
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
-internal class ChatComponent : SmartComponent(AUTOSTART_MUTABLE) {
+class ChatComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 	override val thisIdentity = "Chat"
 
@@ -42,6 +45,15 @@ internal class ChatComponent : SmartComponent(AUTOSTART_MUTABLE) {
 		private val setupPath by lazy { MoltenFileSystem.componentPath(instance.identityObject) / "setup.json" }
 
 		internal lateinit var setup: ChatSetup
+
+		/**
+		 * The consumer, which will be used in a [Component.replaceText] block,
+		 * directly after the Mention, HashTag, Command and Item processing.
+		 * (Input is the whole message, with the stuff above applied)
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		var chatExtensions: Set<(TextReplacementConfig.Builder) -> Unit> = setOf()
 
 	}
 
