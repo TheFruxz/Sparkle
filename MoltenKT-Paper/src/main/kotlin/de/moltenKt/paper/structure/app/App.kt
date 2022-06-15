@@ -174,20 +174,20 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 	 */
 	internal fun replace(identity: Identity<out Interchange>, environment: Interchange) {
 		val command = getCommand(identity.identity)
-		debugLog("Command '${identity.identity}' command is ${command?.name} and is ${command?.javaClass}")
+		debugLog("command '${identity.identity}' command is ${command?.name} and is ${command?.javaClass}")
 		command?.setExecutor(environment)
 		command?.tabCompleter = environment.tabCompleter
 	}
 
 	fun createCommand(interchange: Interchange): PluginCommand {
-		debugLog("Creating artificial command for '${interchange.label}'...")
+		debugLog("creating artificial command for '${interchange.label}'...")
 
 		val constructor = PluginCommand::class.constructors.first()
 
 		constructor.isAccessible = true
 
 		return constructor.call(interchange.label, this as Plugin).also {
-			debugLog("Successfully created artificial command for '${interchange.label}'!")
+			debugLog("successfully created artificial command for '${interchange.label}'!")
 		}
 	}
 
@@ -197,7 +197,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 	fun add(interchange: Interchange) {
 		val failFreeLabel = interchange::class.simpleName
 
-		mainLog(Level.INFO, "Starting register of interchange '$failFreeLabel'!")
+		mainLog(Level.INFO, "starting register of interchange '$failFreeLabel'!")
 
 		fun failed() {
 			val label = interchange.label
@@ -241,7 +241,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 					command.aliases.mutableReplaceWith(aliases)
 					command.setExecutor(interchange)
 
-					debugLog("Registering artificial command for '${interchange.label}'...")
+					debugLog("registering artificial command for '${interchange.label}'...")
 
 					server.internalCommandMap.apply {
 						register(description.name, command)
@@ -249,11 +249,11 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 
 					server.internalSyncCommands()
 
-					debugLog("Successfully registered artificial command for '${interchange.label}'!")
+					debugLog("successfully registered artificial command for '${interchange.label}'!")
 
 					MoltenCache.registeredInterchanges += interchange
 
-					mainLog(Level.INFO, "Register of interchange '$label' succeed!")
+					mainLog(Level.INFO, "register of interchange '$label' succeed!")
 
 				}
 
@@ -293,7 +293,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 		if (MoltenCache.registeredServices.none { it.identity == service.identity }) {
 			tryToCatch {
 				MoltenCache.registeredServices += service
-				mainLog(Level.INFO, "Register of service '${service.identity}' succeed!")
+				mainLog(Level.INFO, "register of service '${service.identity}' succeed!")
 			}
 		} else
 			throw IllegalStateException("The service '${service.identity}' is already registered!")
@@ -306,7 +306,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 					stop(service)
 				}
 				MoltenCache.registeredServices += service
-				mainLog(Level.INFO, "Unregister of service '${service.identity}' succeed!")
+				mainLog(Level.INFO, "unregister of service '${service.identity}' succeed!")
 			}
 		} else
 			throw IllegalStateException("The service '${service.identity}' is not registered!")
@@ -316,7 +316,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 		if (MoltenCache.registeredServices.any { it.identity == service.identity }) {
 			tryToCatch {
 				service.controller?.attempt = 0
-				mainLog(Level.INFO, "Reset of service '${service.identity}' succeed!")
+				mainLog(Level.INFO, "reset of service '${service.identity}' succeed!")
 			}
 		} else
 			throw IllegalStateException("The service '${service.identity}' is not registered!")
@@ -335,7 +335,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 						onCrash = service.onCrash,
 						serviceVendor = service.identityObject
 					)
-					mainLog(Level.INFO, "Starting of service '${service.identity}' succeed!")
+					mainLog(Level.INFO, "starting of service '${service.identity}' succeed!")
 				}
 			} else
 				throw IllegalStateException("The service '${service.identity}' is already running!")
@@ -347,7 +347,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 		if (service.isRunning) {
 			tryToCatch {
 				service.shutdown()
-				mainLog(Level.INFO, "Stopping of service '${service.identity}' succeed!")
+				mainLog(Level.INFO, "stopping of service '${service.identity}' succeed!")
 			}
 		} else
 			throw IllegalStateException("The service '${service.identity}' is not running!")
