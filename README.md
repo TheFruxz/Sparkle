@@ -22,7 +22,7 @@ MoltenKT's goal is to simplify and improve development with different platforms 
 ## 📈 Version
 
 Currently, MoltenKT is working with Kotlin version 1.7, which is the latest Kotlin version. In the future, versions of both
-Kotlin, and those of Minecraft, Paper & JavaCord will be constantly updated to provide the best API as possible.
+Kotlin, and those of Minecraft & Paper will be constantly updated to provide the best API as possible.
 
 ## 👻 Modules
 
@@ -33,10 +33,6 @@ This integrated system allows to easily adapt new features across all of the mod
 MoltenKT-Core is the main module, all other modules of MoltenKT, which also work on the JVM basis of [Kotlin](https://github.com/jetbrains/kotlin), is using this module.
 This is because this is where the most MoltenKT library-content is located, which you can also use in your projects.
 Here int this module is the more general system and structure located, that is compatible with any JVM project based on Kotlin and/or Java.
-
-### 🤌 MoltenKT-JavaCord
-MoltenKT-JavaCord is the module for the development of Discord bots, which is based on the public [JavaCord API](https://github.com/Javacord/Javacord).
-With MoltenKT-JavaCord especially this development area is supported, with functions & systems which are exactly adapted for this system & plattform.
 
 ### 🤯 MoltenKT-Paper
 MoltenKT-Paper is the module for Minecraft server paper plugin development, which is based on the [PaperMC server API](https://github.com/PaperMC/Paper).
@@ -63,8 +59,7 @@ maven("https://jitpack.io")
 ##### Dependency
 ```kotlin
 implementation("com.github.TheFruxz.MoltenKT:moltenkt-core:$moltenVersion")
-implementation("com.github.TheFruxz.MoltenKT:moltenkt-javacord:$moltenVersion") // optional add MoltenKT-JavaCord
-implementation("com.github.TheFruxz.MoltenKT:moltenkt-paper:$moltenVersion") // or MoltenKT-Paper
+implementation("com.github.TheFruxz.MoltenKT:moltenkt-paper:$moltenVersion") // optionally add MoltenKT-Paper
 implementation("com.github.TheFruxz.MoltenKT:moltenkt-unfold:$moltenVersion") // or MoltenKT-Unfold
 ```
 
@@ -84,8 +79,7 @@ maven("https://maven.pkg.github.com/TheFruxz/MoltenKT") {
 ##### Dependency
 ```kotlin
 implementation("de.moltenKT:moltenkt-core:$moltenVersion")
-implementation("de.moltenKT:moltenkt-javacord:$moltenVersion") // optional add MoltenKT-JavaCord
-implementation("de.moltenKT:moltenkt-paper:$moltenVersion") // or MoltenKT-Paper
+implementation("de.moltenKT:moltenkt-paper:$moltenVersion") // optionally add MoltenKT-Paper
 implementation("de.moltenKT:moltenkt-unfold:$moltenVersion") // or MoltenKT-Unfold
 ```
 
@@ -128,7 +122,6 @@ The MoltenKT-Paper-Runnable jar includes (/ shadowed) these small amount of depe
   - Adventure API
   - Adventure text Serializer Legacy
   - Adventure text MiniMessage
-
 
 ###### We build & use MoltenKT on Java 17 - [Eclipse Temurin](https://adoptium.net/).
 ###### Also build & run MoltenKT with [Eclipse Temurin](https://adoptium.net/) to get the best possible experience!
