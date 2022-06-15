@@ -36,6 +36,11 @@ abstract class SmartComponent(
 	preferredVendor: App? = null,
 ) : Component(behaviour, experimental, preferredVendor) {
 
+	private var selfRegister: suspend () -> Unit = {}
+	private var selfStart: suspend () -> Unit = {}
+	private var selfStop: suspend () -> Unit = {}
+
+
 	var interchanges = setOf<Interchange>()
 
 	fun interchange(vararg interchange: Interchange) { interchanges += interchange }
@@ -56,6 +61,12 @@ abstract class SmartComponent(
 
 	fun sandbox(vararg sandbox: SandBox) { sandboxes += sandbox }
 
+	fun additionalRegister(register: suspend () -> Unit) { selfRegister = register }
+
+	fun additionalStart(start: suspend () -> Unit) { selfStart = start }
+
+	fun additionalStop(stop: suspend () -> Unit) { selfStop = stop }
+
 	private fun updateCommands() {
 		onlinePlayers.forEach { it.updateCommands() }
 	}
@@ -63,6 +74,8 @@ abstract class SmartComponent(
 	final override suspend fun register() {
 
 		component() // register all objects
+
+		selfRegister.invoke()
 
 		interchanges.forEach {
 			tryToCatch {
@@ -100,6 +113,8 @@ abstract class SmartComponent(
 	}
 
 	final override suspend fun start() {
+
+		selfStart.invoke()
 
 		interchanges.forEach {
 			tryToCatch {
@@ -146,6 +161,8 @@ abstract class SmartComponent(
 	}
 
 	final override suspend fun stop() {
+
+		selfStop.invoke()
 
 		interchanges.forEach {
 			tryToCatch {
