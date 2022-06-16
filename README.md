@@ -1,4 +1,4 @@
-# ![MoltenKT](https://user-images.githubusercontent.com/28064149/174038255-c08625c1-2e6c-4a89-9bc0-205d100d7fc5.png)
+# ![MoltenKT](https://user-images.githubusercontent.com/28064149/174038731-aea205d3-e7aa-4c69-8ae2-f2016ece3653.png)
 
 [![JitPack](https://jitpack.io/v/TheFruxz/MoltenKT.svg?style=flat-square)](https://jitpack.io/#TheFruxz/MoltenKT)
 [![MoltenKT-Build](https://github.com/TheFruxz/MoltenKT/actions/workflows/build-MoltenKT.yml/badge.svg)](https://github.com/TheFruxz/MoltenKT/actions/workflows/build-MoltenKT.yml)
