@@ -63,3 +63,23 @@ fun <T : Component> T.replace(pattern: Pattern, value: ComponentLike): Component
 		it.match(pattern)
 		it.replacement(value)
 	}
+
+/**
+ * Replaces all occurrences of the given [variable] name, surrounded by [ and ]
+ * @see replace
+ * @return the component with the replaced text
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T : Component> T.replaceVariables(variable: String, value: String): Component =
+	replace("[$variable]", value)
+
+/**
+ * Replaces all occurences of the given [variable] name, surrounded by [ and ]
+ * @see replace
+ * @return the component with the replaced text
+ * @author Fruxt
+ * @since 1.0
+ */
+fun <T : Component> T.replaceVariables(variable: String, value: ComponentLike): Component =
+	replace("[$variable]", value)
