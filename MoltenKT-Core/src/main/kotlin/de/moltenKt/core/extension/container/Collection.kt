@@ -392,7 +392,7 @@ fun <T> Array<T>.distinctSet() = distinct().toSet()
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>> C.distinctSetBy(process: (T) -> String) = distinctBy(process).toSet()
+fun <T, C : Collection<T>, O> C.distinctSetBy(process: (T) -> O) = distinctBy(process).toSet()
 
 /**
  * This function uses the [Array.distinctBy] function and
@@ -400,4 +400,4 @@ fun <T, C : Collection<T>> C.distinctSetBy(process: (T) -> String) = distinctBy(
  * @author Fruxz
  * @since 1.0
  */
-fun <T> Array<T>.distinctSetBy(process: (T) -> String) = distinctBy(process).toSet()
+fun <T, O> Array<T>.distinctSetBy(process: (T) -> O) = distinctBy(process).toSet()
