@@ -51,7 +51,7 @@ data class MoltenColor(
      */
     override fun shiftTo(color: ColorBase<*>, opacity: Double, shiftType: ShiftType): MoltenColor {
         validate()
-        if (opacity !in 0.0..1.0) error("opacity must be in range 0.0..1.0")
+        if (opacity !in 0.0..1.0) error("opacity ($opacity) must be in range 0.0..1.0")
 
         val spectrumLimiter = 255.0 * opacity
 
@@ -93,7 +93,7 @@ data class MoltenColor(
         val step = 1.0 / parts
         var opacity = 0.0
         repeat(parts + 1) {
-            add(shiftTo(destination, opacity, RELATIVE_TO_TRANSITION))
+            add(shiftTo(destination, opacity.limitTo(.0..1.0), RELATIVE_TO_TRANSITION))
             opacity += step
         }
     }
@@ -144,7 +144,7 @@ data class MoltenColor(
      */
     fun shiftTo(color: MoltenColor, opacity: Double, shiftType: ShiftType = RELATIVE_TO_TRANSITION): MoltenColor {
         validate()
-        if (opacity !in 0.0..1.0) error("opacity must be in range 0.0..1.0")
+        if (opacity !in 0.0..1.0) error("opacity ($opacity) must be in range 0.0..1.0")
 
         val raw = Color.of(red, green, blue).shiftTo(color.red, color.green, color.blue, opacity, shiftType)
 

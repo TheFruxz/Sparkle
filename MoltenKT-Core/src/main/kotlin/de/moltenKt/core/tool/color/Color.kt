@@ -35,7 +35,7 @@ open class Color private constructor(
      */
     override fun shiftTo(color: ColorBase<*>, opacity: Double, shiftType: ShiftType): Color {
         validate()
-        if (opacity !in 0.0..1.0) error("opacity must be in range 0.0..1.0")
+        if (opacity !in 0.0..1.0) error("opacity ($opacity) must be in range 0.0..1.0")
 
         val spectrumLimiter = 255.0 * opacity
 
@@ -77,7 +77,7 @@ open class Color private constructor(
         val step = 1.0 / parts
         var opacity = 0.0
         repeat(parts + 1) {
-            add(shiftTo(destination, opacity, RELATIVE_TO_TRANSITION))
+            add(shiftTo(destination, opacity.limitTo(.0..1.0), RELATIVE_TO_TRANSITION))
             opacity += step
         }
     }
