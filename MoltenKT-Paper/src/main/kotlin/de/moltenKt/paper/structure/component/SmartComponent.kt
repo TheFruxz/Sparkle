@@ -15,8 +15,7 @@ import de.moltenKt.paper.extension.paper.internalSyncCommands
 import de.moltenKt.paper.extension.paper.onlinePlayers
 import de.moltenKt.paper.extension.paper.server
 import de.moltenKt.paper.extension.system
-import de.moltenKt.paper.extension.tasky.async
-import de.moltenKt.paper.extension.tasky.sync
+import de.moltenKt.paper.extension.tasky.asSync
 import de.moltenKt.paper.runtime.sandbox.SandBox
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.event.EventListener
@@ -27,8 +26,6 @@ import de.moltenKt.paper.structure.component.Component.RunType.DISABLED
 import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.display.message.Transmission.Level.FAIL
 import de.moltenKt.paper.tool.permission.Approval
-import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice.Companion
-import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice.Companion.delayed
 
 abstract class SmartComponent(
 	override val behaviour: RunType = DISABLED,
@@ -82,7 +79,7 @@ abstract class SmartComponent(
 
 				it.replaceVendor(vendor)
 
-				sync {
+				asSync {
 					server.internalCommandMap.apply {
 						val command = server.getPluginCommand(it.label) ?: vendor.createCommand(it)
 

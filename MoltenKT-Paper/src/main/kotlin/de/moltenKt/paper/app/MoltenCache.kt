@@ -69,7 +69,7 @@ object MoltenCache : AppCache {
 
 	var tmp_initSetupPreferences = setOf<Preference<*>>()
 
-	var initializationProcesses = setOf<() -> Unit>()
+	var initializationProcesses = setOf<suspend () -> Unit>()
 
 	var itemActions = setOf<ItemAction<out Event>>()
 

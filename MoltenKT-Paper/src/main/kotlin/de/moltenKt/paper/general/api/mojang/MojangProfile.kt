@@ -4,7 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile
 import com.destroystokyo.paper.profile.ProfileProperty
 import de.moltenKt.paper.extension.paper.offlinePlayer
 import de.moltenKt.paper.extension.system
-import de.moltenKt.paper.extension.tasky.async
+import de.moltenKt.paper.extension.tasky.asAsync
 import de.moltenKt.paper.tool.display.item.Item
 import de.moltenKt.paper.tool.display.item.quirk.Quirk
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ data class MojangProfile(
 ) {
 
     private fun refresh(target: Player) {
-        async {
+        asAsync {
             target.playerProfile.complete(true, true)
         }
     }

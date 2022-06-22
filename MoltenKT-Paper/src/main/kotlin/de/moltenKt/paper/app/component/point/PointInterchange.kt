@@ -10,7 +10,7 @@ import de.moltenKt.paper.app.component.point.asset.PointConfig
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.lang
-import de.moltenKt.paper.extension.tasky.sync
+import de.moltenKt.paper.extension.tasky.asSync
 import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS
 import de.moltenKt.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.moltenKt.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
@@ -176,7 +176,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 					if (point != null) {
 
-						sync { executor.teleport(point.bukkitLocation) }
+						asSync { executor.teleport(point.bukkitLocation) }
 
 						lang["interchange.internal.essentials.point.edit.teleportedSelf"]
 							.replaceVariables("point" to parameters.last())

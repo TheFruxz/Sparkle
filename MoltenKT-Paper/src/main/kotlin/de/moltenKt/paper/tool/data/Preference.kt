@@ -8,8 +8,7 @@ import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.MoltenCache.registeredPreferenceCache
 import de.moltenKt.paper.extension.debugLog
-import de.moltenKt.paper.extension.tasky.async
-import de.moltenKt.paper.extension.tasky.sync
+import de.moltenKt.paper.extension.tasky.asAsync
 import de.moltenKt.paper.extension.tasky.task
 import de.moltenKt.paper.structure.app.cache.CacheDepthLevel
 import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice.Companion.instant
@@ -111,7 +110,7 @@ data class Preference<SHELL : Any>(
 			if (async || forceUseOfTasks) {
 				val future = CompletableFuture<SHELL>()
 
-				async { future.complete(process()) }
+				asAsync { future.complete(process()) }
 
 				return tryOrNull { future.get(timeOut.inWholeSeconds, SECONDS) } ?: default.also {
 					debugLog("Preference access (async) failed for $identity with default $default")
@@ -120,7 +119,7 @@ data class Preference<SHELL : Any>(
 			} else {
 				val future = CompletableFuture<SHELL>()
 
-				sync { future.complete(process()) }
+				asAsync { future.complete(process()) }
 
 				return tryOrNull { future.get(timeOut.inWholeSeconds, SECONDS) } ?: default.also {
 					debugLog("Preference access (sync) failed for $identity with default $default")

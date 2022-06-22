@@ -40,7 +40,7 @@ fun <O> doTry(tryBlock: () -> O) =
  * @author Fruxz
  * @since 1.0
  */
-fun <A> A.tryToCatch(process: A.() -> Unit) {
+inline fun <A> A.tryToCatch(process: A.() -> Unit) {
 	try {
 		process(this)
 	} catch (e: Exception) {
@@ -57,7 +57,7 @@ fun <A> A.tryToCatch(process: A.() -> Unit) {
  * @author Fruxz
  * @since 1.0
  */
-fun <A, T> A.tryToResult(process: A.() -> T): Result<T> {
+inline fun <A, T> A.tryToResult(process: A.() -> T): Result<T> {
 	return try {
 		Result.success(process())
 	} catch (e: Exception) {
@@ -77,7 +77,7 @@ fun <A, T> A.tryToResult(process: A.() -> T): Result<T> {
  * @author Fruxz
  * @since 1.0
  */
-fun <A, R, T : R> A.tryOrElse(other: T, process: A.() -> R): R {
+inline fun <A, R, T : R> A.tryOrElse(other: T, process: A.() -> R): R {
 	return tryToResult(process).getOrElse { other }
 }
 
@@ -91,7 +91,7 @@ fun <A, R, T : R> A.tryOrElse(other: T, process: A.() -> R): R {
  * @author Fruxz
  * @since 1.0
  */
-fun <A, T> A.tryOrNull(process: A.() -> T): T? {
+inline fun <A, T> A.tryOrNull(process: A.() -> T): T? {
 	return tryToResult(process).getOrNull()
 }
 
@@ -101,7 +101,7 @@ fun <A, T> A.tryOrNull(process: A.() -> T): T? {
  * @author Fruxz
  * @since 1.0
  */
-fun <A> A.tryToIgnore(process: A.() -> Unit) {
+inline fun <A> A.tryToIgnore(process: A.() -> Unit) {
 	tryToResult(process).dump()
 }
 
@@ -109,6 +109,6 @@ fun <A> A.tryToIgnore(process: A.() -> Unit) {
  * Try to execute the code specified inside the [process] function.
  * if an exception is thrown, the stack trace will be printed.
  */
-fun <A> A.tryToPrint(process: A.() -> Unit) {
+inline fun <A> A.tryToPrint(process: A.() -> Unit) {
 	tryToResult(process).exceptionOrNull()?.printStackTrace()
 }

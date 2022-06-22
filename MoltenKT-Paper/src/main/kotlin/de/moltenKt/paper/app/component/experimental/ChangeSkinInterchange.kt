@@ -6,7 +6,7 @@ import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.mojang.applySkin
 import de.moltenKt.paper.extension.mojang.resetSkin
-import de.moltenKt.paper.extension.tasky.sync
+import de.moltenKt.paper.extension.tasky.asSync
 import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS
 import de.moltenKt.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
 import de.moltenKt.paper.structure.command.structured.StructuredInterchange
@@ -65,7 +65,7 @@ internal class ChangeSkinInterchange : StructuredInterchange("changeskin", prote
 
 					if (getInput(1).equals("--reset", true)) {
 
-						sync {
+						asSync {
 							runBlocking { tryProcess(executor, parameters, target::resetSkin) }
 						}
 
@@ -78,7 +78,7 @@ internal class ChangeSkinInterchange : StructuredInterchange("changeskin", prote
 					} else {
 						val skinHolder = getInput(1)
 
-						sync {
+						asSync {
 							if (tryProcess(executor, parameters) {
 								target.applySkin(skinHolder)
 							}) {

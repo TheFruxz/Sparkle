@@ -1,37 +1,28 @@
 package de.moltenKt.paper.extension.tasky
 
+import de.moltenKt.core.extension.dump
 import de.moltenKt.core.tool.smart.identification.Identity
+import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.timing.tasky.Tasky
 import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice
+import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice.Companion
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.future.await
 import kotlinx.coroutines.launch
 import java.util.concurrent.CompletableFuture
+import kotlin.time.Duration
 
 /**
  * Exceptions are caught!
  */
 fun task(
 	temporalAdvice: TemporalAdvice,
-	killAtError: Boolean = true,
-	vendor: App = system,
-	onStart: Tasky.() -> Unit = {},
-	onStop: Tasky.() -> Unit = {},
-	onCrash: Tasky.() -> Unit = {},
-	serviceVendor: Identity<Service> = Identity("undefined"),
-	process: Tasky.() -> Unit,
-) = Tasky.task(vendor, temporalAdvice, killAtError, onStart, onStop, onCrash, serviceVendor, process)
-
-/**
- * Exceptions are caught!
- */
-fun sync(
-	temporalAdvice: TemporalAdvice = TemporalAdvice.instant(async = false),
 	killAtError: Boolean = true,
 	vendor: App = system,
 	onStart: Tasky.() -> Unit = {},
@@ -52,14 +43,24 @@ fun sync(
  * @author Fruxz
  * @since 1.0
  */
-suspend fun <T> asSync(process: Tasky.() -> T): T {
+suspend fun <T> asSync(process: () -> T): T {
 	val output = CompletableFuture<T>()
 
-	sync {
+	task(TemporalAdvice.instant(async = false)) {
 		output.complete(process())
 	}
 
 	return output.await()
+}
+
+fun <T> asSyncEnvironmental(process: () -> T): T {
+	val output = CompletableFuture<T>()
+
+	task(TemporalAdvice.instant(async = false)) {
+		output.complete(process())
+	}
+
+	return output.get()
 }
 
 /**
@@ -74,28 +75,26 @@ suspend fun <T> asSync(process: Tasky.() -> T): T {
  * @author Fruxz
  * @since 1.0
  */
-fun <T> asAsync(process: suspend CoroutineScope.() -> T): Deferred<T> = system.coroutineScope.async(block = process)
+fun <T> asAsync(process: suspend (CoroutineScope) -> T): Deferred<T> = system.coroutineScope.async(block = process)
 
-/**
- * Exceptions are caught!
- */
-fun async(
-	temporalAdvice: TemporalAdvice = TemporalAdvice.instant(async = true),
-	killAtError: Boolean = true,
-	vendor: App = system,
-	onStart: Tasky.() -> Unit = {},
-	onStop: Tasky.() -> Unit = {},
-	onCrash: Tasky.() -> Unit = {},
-	serviceVendor: Identity<Service> = Identity("undefined"),
-	process: Tasky.() -> Unit,
-) = Tasky.task(vendor, temporalAdvice, killAtError, onStart, onStop, onCrash, serviceVendor, process)
+fun <T> asAsyncEnvironmental(process: () -> T): T {
+	val output = CompletableFuture<T>()
 
-fun coroutine(
+	task(TemporalAdvice.instant(async = false)) {
+		process()
+	}
+
+	return output.get()
+}
+
+fun launch(
 	vendor: App = system,
-	process: suspend CoroutineScope.() -> Unit,
+	process: suspend (CoroutineScope) -> Unit,
 ) = vendor.coroutineScope.launch(block = process)
 
-fun <T> T.waitTask(ticks: Long, code: T.() -> Unit): T  {
-	sync(temporalAdvice = TemporalAdvice.delayed(ticks)) { code(this@waitTask) }
-	return this
-}
+suspend fun <T, O> T.wait(duration: Duration, code: suspend T.() -> O): O = asAsync {
+	delay(duration)
+	code(this@wait)
+}.await()
+
+fun <T, O> T.delayed(duration: Duration, code: suspend T.() -> O) = asAsync { wait(duration, code) }.dump()

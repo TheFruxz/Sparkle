@@ -99,7 +99,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	 * @since 1.0
 	 */
 	@JvmName("executionWithoutReturn")
-	fun concludedExecution(result: InterchangeResult = SUCCESS, process: InterchangeAccess<EXECUTOR>.() -> Unit) {
+	fun concludedExecution(result: InterchangeResult = SUCCESS, process: suspend InterchangeAccess<EXECUTOR>.() -> Unit) {
 		onExecution = {
 			process()
 			result

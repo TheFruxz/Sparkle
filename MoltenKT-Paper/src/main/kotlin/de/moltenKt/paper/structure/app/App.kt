@@ -16,9 +16,10 @@ import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.extension.paper.internalCommandMap
 import de.moltenKt.paper.extension.paper.internalSyncCommands
-import de.moltenKt.paper.extension.tasky.sync
+import de.moltenKt.paper.extension.tasky.asSync
+import de.moltenKt.paper.extension.tasky.delayed
 import de.moltenKt.paper.extension.tasky.task
-import de.moltenKt.paper.extension.tasky.waitTask
+import de.moltenKt.paper.extension.tasky.wait
 import de.moltenKt.paper.runtime.app.LanguageSpeaker
 import de.moltenKt.paper.runtime.app.RunStatus
 import de.moltenKt.paper.runtime.app.RunStatus.*
@@ -194,7 +195,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 	/**
 	 * Add Interchange
 	 */
-	fun add(interchange: Interchange) {
+	suspend fun add(interchange: Interchange) {
 		val failFreeLabel = interchange::class.simpleName
 
 		mainLog(Level.INFO, "starting register of interchange '$failFreeLabel'!")
@@ -226,7 +227,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 
 			try {
 
-				sync {
+				asSync {
 
 					val label = interchange.label
 					val aliases = interchange.aliases
@@ -362,9 +363,11 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 			mainLog(Level.WARNING, "skipped stop of service '${service.identity}', was already offline!")
 		}
 		mainLog(Level.INFO, "Waiting one second, let the service stop...")
-		waitTask(20L * 1) {
+
+		delayed(1.seconds) {
 			start(service)
 		}
+
 		mainLog(Level.INFO, "Restart of service '${service.identity}' succeed!")
 		mainLog(Level.INFO, "--- --- --- --- --- --- --- --- --- --- --- ---")
 	}

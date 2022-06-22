@@ -8,7 +8,6 @@ import de.moltenKt.paper.extension.effect.playSoundEffect
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.extension.tasky.asSync
-import de.moltenKt.paper.extension.tasky.sync
 import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
@@ -136,7 +135,7 @@ open class Canvas(
 					if (event.callEvent()) {
 						localInstance = event.inventory
 
-						sync {
+						asSync {
 							receiver.openInventory(localInstance)
 							CanvasSessionManager.putSession(receiver, key, data)
 						}
