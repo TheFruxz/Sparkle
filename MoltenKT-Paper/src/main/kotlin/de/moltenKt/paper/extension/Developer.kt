@@ -46,7 +46,6 @@ fun app(vendorIdentity: Identity<out App>) = MoltenCache.registeredApps.first { 
 @Throws(NoSuchElementException::class)
 fun Identifiable<out App>.getApp() = app(identity)
 
-@Suppress("FINAL_UPPER_BOUND")
 @OptIn(ExperimentalRegistrationApi::class)
 fun <T : VendorOnDemand> T.runIfAutoRegister() {
 	if (this::class.hasAnnotation<AutoRegister>()) {
