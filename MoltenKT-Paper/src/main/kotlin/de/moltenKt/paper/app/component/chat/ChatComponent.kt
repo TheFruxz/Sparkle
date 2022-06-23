@@ -8,7 +8,6 @@ import de.moltenKt.paper.structure.component.SmartComponent
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextReplacementConfig
-import java.util.StringJoiner
 import kotlin.io.path.createDirectories
 import kotlin.io.path.div
 import kotlin.io.path.readText

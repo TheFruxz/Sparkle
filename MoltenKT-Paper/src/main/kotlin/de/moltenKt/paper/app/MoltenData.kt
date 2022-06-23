@@ -3,6 +3,7 @@ package de.moltenKt.paper.app
 import de.moltenKt.core.extension.data.fromJson
 import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.core.extension.tryOrNull
+import de.moltenKt.core.extension.tryToIgnore
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenData.File.ESSENTIALS_CONFIG
 import de.moltenKt.paper.app.component.point.asset.PointConfig
@@ -14,6 +15,8 @@ import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem
 import kotlinx.serialization.Serializable
 import java.util.*
+import kotlin.io.path.createDirectories
+import kotlin.io.path.createFile
 import kotlin.io.path.div
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
@@ -30,6 +33,12 @@ object MoltenData {
 		}
 		set(value) {
 			_systemConfig = value
+
+			tryToIgnore {
+				systemConfigPath.parent.createDirectories()
+				systemConfigPath.createFile()
+			}
+
 			systemConfigPath.writeText(value.toJson())
 		}
 
