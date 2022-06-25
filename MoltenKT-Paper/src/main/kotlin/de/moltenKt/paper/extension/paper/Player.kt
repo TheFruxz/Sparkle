@@ -5,10 +5,12 @@ import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.component.buildMode.BuildModeComponent
 import de.moltenKt.paper.tool.annotation.RequiresComponent
 import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
+import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
+import org.bukkit.structure.Structure
 
 val OfflinePlayer.identityObject: Identity<OfflinePlayer>
 	get() = Identity("$uniqueId")
@@ -38,10 +40,53 @@ var OfflinePlayer.buildMode: Boolean
 	}
 
 /**
- * @throws IllegalArgumentException if the marker is not set for this player
+ * This computational property represents the current markings of
+ * the player and throws [NoSuchElementException] on get, if no
+ * marker is currently set.
+ * Love null? use [Player.markerOrNull]!
+ * @throws NoSuchElementException on get, if no marker is currently set.
+ * @author Fruxz
+ * @since 1.0
  */
 var Player.marker: DependentCubicalShape
-	get() = MoltenCache.playerMarkerBoxes[identityObject] ?: throw IllegalArgumentException("Player marker is not set!")
+	get() = markerOrNull ?: throw NoSuchElementException("Player marker is not set!")
 	set(value) {
 		MoltenCache.playerMarkerBoxes += identityObject to value
 	}
+
+/**
+ * This computational property represents the current markings of
+ * the player and returns null, if no marker is currently set.
+ * @author Fruxz
+ * @since 1.0
+ */
+var Player.markerOrNull: DependentCubicalShape?
+	get() = MoltenCache.playerMarkerBoxes[identityObject]
+	set(value) {
+		if (value != null) {
+			MoltenCache.playerMarkerBoxes += identityObject to value
+		} else
+			MoltenCache.playerMarkerBoxes -= identityObject
+	}
+
+/**
+ * This computational property returns the current [Player.marker]
+ * of the player, but transformed into a new unsaved [Structure],
+ * using the [Bukkit.getStructureManager] and the [Player.marker].
+ * @throws NoSuchElementException through [Player.marker]
+ * @author Fruxz
+ * @since 1.0
+ */
+val Player.markerAsStructure: Structure
+	get() = Bukkit.getStructureManager().createStructure().fill(marker, true)
+
+/**
+ * This computational property returns the current [Player.markerOrNull]
+ * of the player, but transformed into a new unsaved [Structure],
+ * using the [Bukkit.getStructureManager] and the [Player.markerOrNull].
+ * Or returns null, if no marker is currently set.
+ * @author Fruxz
+ * @since 1.0
+ */
+val Player.markerAsStructureOrNull: Structure?
+	get() = markerOrNull?.let { Bukkit.getStructureManager().createStructure().fill(it, true) }
