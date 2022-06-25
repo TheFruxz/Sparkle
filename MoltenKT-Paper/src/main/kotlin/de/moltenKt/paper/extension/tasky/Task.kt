@@ -2,13 +2,11 @@ package de.moltenKt.paper.extension.tasky
 
 import de.moltenKt.core.extension.dump
 import de.moltenKt.core.tool.smart.identification.Identity
-import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.timing.tasky.Tasky
 import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice
-import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice.Companion
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -53,7 +51,15 @@ suspend fun <T> asSync(process: () -> T): T {
 	return output.await()
 }
 
-fun <T> asSyncEnvironmental(process: () -> T): T {
+/**
+ * This function creates a sync task using the [Tasky] system.
+ * Internally a [CompletableFuture] is used to create the delayed result.
+ * Instead of the [asSync] function, this is not a suspending function, so
+ * this function can be used anywhere you want!
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T> doSync(process: () -> T): T {
 	val output = CompletableFuture<T>()
 
 	task(TemporalAdvice.instant(async = false)) {
@@ -77,7 +83,7 @@ fun <T> asSyncEnvironmental(process: () -> T): T {
  */
 fun <T> asAsync(process: suspend (CoroutineScope) -> T): Deferred<T> = system.coroutineScope.async(block = process)
 
-fun <T> asAsyncEnvironmental(process: () -> T): T {
+fun <T> doAsync(process: () -> T): T {
 	val output = CompletableFuture<T>()
 
 	task(TemporalAdvice.instant(async = false)) {
