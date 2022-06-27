@@ -109,4 +109,14 @@ data class Percentage(
      */
     override fun toString() = percentageString()
 
+    companion object {
+
+        val Number.percent: Percentage
+            get() = Percentage(toDouble() / 100)
+
+        val Number.decimalAsPercent: Percentage
+            get() = Percentage(toDouble())
+
+    }
+
 }
