@@ -83,14 +83,8 @@ fun <T> doSync(process: () -> T): T {
  */
 fun <T> asAsync(process: suspend (CoroutineScope) -> T): Deferred<T> = system.coroutineScope.async(block = process)
 
-fun <T> doAsync(process: () -> T): T {
-	val output = CompletableFuture<T>()
-
-	task(TemporalAdvice.instant(async = false)) {
-		process()
-	}
-
-	return output.get()
+fun doAsync(process: suspend () -> Unit) = launch {
+	process()
 }
 
 fun launch(
