@@ -1,7 +1,5 @@
 package de.moltenKt.paper.tool.position.dependent
 
-import de.moltenKt.core.extension.math.ceilToInt
-import de.moltenKt.core.extension.math.difference
 import de.moltenKt.core.extension.math.floor
 import de.moltenKt.core.extension.math.floorToInt
 import de.moltenKt.core.tool.smart.Producible
@@ -17,8 +15,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import kotlin.math.abs
-import kotlin.math.ceil
-import kotlin.math.floor
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * This data class represents a computer generated box, defined by 2 points.
@@ -333,9 +331,33 @@ data class DependentCubicalShape(
 
 	override val height: Double = abs(first.y - second.y)
 
+	val minX = min(first.x, second.x)
+	val minY = min(first.y, second.y)
+	val minZ = min(first.z, second.z)
+
+	val maxX = max(first.x, second.x)
+	val maxY = max(first.y, second.y)
+	val maxZ = max(first.z, second.z)
+
 	override fun asShifted(toWorld: World): DependentShape = copy(
 		first = first.copy(world = toWorld.name),
 		second = second.copy(world = toWorld.name),
+	)
+
+	/**
+	 * This function returns a copy of this [DependentCubicalShape],
+	 * but the [first] location represents the [minX], [minY], [minZ]
+	 * vector and the [second] location represents the [maxX], [maxY],
+	 * [maxZ] vector.
+	 * This function does not modify this current object, only creating
+	 * a different copy, because a [DependentCubicalShape] is immutable!
+	 * @return a modified copy
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun sorted() = copy(
+		first = SimpleLocation(first.world, minX, minY, minZ),
+		second = SimpleLocation(second.world, maxX, maxY, maxZ),
 	)
 
 	/**
