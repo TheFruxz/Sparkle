@@ -9,6 +9,7 @@ import de.moltenKt.paper.extension.display.ui.item
 import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.paper.displayString
 import de.moltenKt.paper.extension.paper.identityObject
+import de.moltenKt.paper.extension.paper.isPhysical
 import de.moltenKt.paper.extension.paper.templateLocation
 import de.moltenKt.paper.runtime.event.interact.MoltenPlayerInteractEvent.Companion.denyInteraction
 import de.moltenKt.paper.structure.component.Component.RunType.AUTOSTART_MUTABLE
@@ -57,7 +58,8 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 					val actualBox = MoltenCache.playerMarkerBoxes[user.identityObject]
 					val currentBox = actualBox ?: DependentCubicalShape(targetBlock?.location ?: templateLocation)
 
-					if (user.isSneaking) {
+					if (user.isSneaking && !event.action.isPhysical) {
+						event.denyInteraction()
 
 						if (MoltenCache.playerMarkerBoxes[user.identityObject] != null) {
 
