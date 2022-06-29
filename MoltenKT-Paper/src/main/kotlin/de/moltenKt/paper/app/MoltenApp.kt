@@ -1,6 +1,10 @@
 package de.moltenKt.paper.app
 
+import com.destroystokyo.paper.ParticleBuilder
+import de.moltenKt.core.extension.data.addJsonContextualConfiguration
 import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
+import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.tryToIgnore
 import de.moltenKt.core.tool.smart.identification.Identity
@@ -25,23 +29,28 @@ import de.moltenKt.paper.app.interchange.MoltenKtInterchange
 import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
+import de.moltenKt.paper.extension.display.ui.item
+import de.moltenKt.paper.extension.display.ui.itemStack
 import de.moltenKt.paper.extension.mainLog
-import de.moltenKt.paper.general.api.mojang.MojangProfile
-import de.moltenKt.paper.general.api.mojang.MojangProfileCape
-import de.moltenKt.paper.general.api.mojang.MojangProfileRaw
-import de.moltenKt.paper.general.api.mojang.MojangProfileSkin
-import de.moltenKt.paper.general.api.mojang.MojangProfileTextures
-import de.moltenKt.paper.general.api.mojang.MojangProfileUsernameHistoryEntry
+import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
+import de.moltenKt.paper.extension.paper.Location
+import de.moltenKt.paper.extension.paper.offlinePlayer
+import de.moltenKt.paper.mojang.MojangProfile
+import de.moltenKt.paper.mojang.MojangProfileCape
+import de.moltenKt.paper.mojang.MojangProfileRaw
+import de.moltenKt.paper.mojang.MojangProfileSkin
+import de.moltenKt.paper.mojang.MojangProfileTextures
+import de.moltenKt.paper.mojang.MojangProfileUsernameHistoryEntry
 import de.moltenKt.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.AppCompanion
 import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.json.JsonConfiguration
 import de.moltenKt.paper.tool.data.json.JsonFileDataElement
+import de.moltenKt.paper.tool.data.json.serializer.*
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.display.world.SimpleLocation
-import de.moltenKt.paper.tool.effect.particle.ParticleType.Companion
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
@@ -59,15 +68,29 @@ import de.moltenKt.paper.tool.position.relative.LinearShape
 import de.moltenKt.paper.tool.position.relative.PyramidalShape
 import de.moltenKt.paper.tool.position.relative.Shape
 import de.moltenKt.paper.tool.position.relative.SphereShape
+import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.text
+import io.ktor.util.*
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.Location
+import org.bukkit.Material
+import org.bukkit.OfflinePlayer
+import org.bukkit.Particle
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
+import org.bukkit.util.BoundingBox
+import org.bukkit.util.Vector
+import java.util.UUID
 import java.util.logging.Level
 
 class MoltenApp : App() {
@@ -79,6 +102,14 @@ class MoltenApp : App() {
 	override val appCache: MoltenCache = MoltenCache
 
 	override suspend fun preHello() {
+
+		addJsonContextualConfiguration(UUID::class, UUIDSerializer)
+		addJsonContextualConfiguration(Vector::class, VectorSerializer)
+		addJsonContextualConfiguration(Location::class, LocationSerializer)
+		addJsonContextualConfiguration(Particle::class, ParticleSerializer)
+		addJsonContextualConfiguration(ParticleBuilder::class, ParticleBuilderSerializer)
+		addJsonContextualConfiguration(ItemStack::class, ItemStackSerializer)
+		addJsonContextualConfiguration(BoundingBox::class, BoundingBoxSerializer)
 
 		addMoltenJsonModuleModification {
 

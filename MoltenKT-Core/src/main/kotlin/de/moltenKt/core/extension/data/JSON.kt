@@ -1,17 +1,23 @@
 package de.moltenKt.core.extension.data
 
+import de.moltenKt.core.extension.dump
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonBuilder
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.SerializersModuleBuilder
+import kotlin.reflect.KClass
 
 internal val runningJsonModuleModifications = mutableListOf<SerializersModuleBuilder.() -> Unit>()
 internal var lastKnownJsonModuleModifications = listOf<SerializersModuleBuilder.() -> Unit>()
 
 internal val runningJsonModifications = mutableListOf<JsonBuilder.() -> Unit>()
 internal var lastKnownJsonModifications = listOf<JsonBuilder.() -> Unit>()
+
+internal var contextuals = setOf<SerializersModule>()
+internal var contextualUpdate = false
 
 /**
  * This value returns the current [Json] from the cached value,
@@ -22,12 +28,14 @@ internal var lastKnownJsonModifications = listOf<JsonBuilder.() -> Unit>()
  * @since 1.0
  */
 @Suppress("JSON_FORMAT_REDUNDANT")
-val jsonBase: Json
+var jsonBase: Json
 	get() {
 		if (backingJsonBase == null
 			|| lastKnownJsonModuleModifications != runningJsonModuleModifications
 			|| lastKnownJsonModifications != runningJsonModifications
+			|| contextualUpdate
 		) {
+			contextualUpdate = false
 			Json {
 				prettyPrint = true
 				isLenient = true
@@ -38,6 +46,9 @@ val jsonBase: Json
 				allowStructuredMapKeys = true
 				allowSpecialFloatingPointValues = true
 				serializersModule = SerializersModule {
+					contextuals.forEach { contextual ->
+						include(contextual)
+					}
 					runningJsonModuleModifications.forEach {
 						this.apply(it)
 					}
@@ -52,6 +63,7 @@ val jsonBase: Json
 		} else
 			return backingJsonBase!!
 	}
+	set(value) { backingJsonBase = value }
 
 /**
  * The current cached state of the json base,
@@ -71,6 +83,14 @@ private var backingJsonBase: Json? = null
  */
 fun addMoltenJsonModuleModification(process: SerializersModuleBuilder.() -> Unit) {
 	runningJsonModuleModifications += process
+}
+
+fun <T : Any> addJsonContextualConfiguration(clazz: KClass<T>, serializer: KSerializer<T>) {
+	contextuals += SerializersModule {
+		contextual(clazz, serializer)
+	}
+	contextualUpdate = true
+	jsonBase.dump() // trigger update of module
 }
 
 /**

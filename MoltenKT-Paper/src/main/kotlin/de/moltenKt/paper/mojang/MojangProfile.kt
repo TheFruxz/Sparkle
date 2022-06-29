@@ -1,4 +1,4 @@
-package de.moltenKt.paper.general.api.mojang
+package de.moltenKt.paper.mojang
 
 import com.destroystokyo.paper.profile.PlayerProfile
 import com.destroystokyo.paper.profile.ProfileProperty
