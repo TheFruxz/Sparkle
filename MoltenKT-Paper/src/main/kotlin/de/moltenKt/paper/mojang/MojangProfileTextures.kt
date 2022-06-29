@@ -1,4 +1,4 @@
-package de.moltenKt.paper.general.api.mojang
+package de.moltenKt.paper.mojang
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

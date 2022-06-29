@@ -2,7 +2,7 @@ package de.moltenKt.paper.extension.mojang
 
 import de.moltenKt.core.extension.data.fromJson
 import de.moltenKt.paper.app.MoltenApp
-import de.moltenKt.paper.general.api.mojang.MojangProfile
+import de.moltenKt.paper.mojang.MojangProfile
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import java.util.*

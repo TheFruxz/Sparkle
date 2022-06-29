@@ -161,6 +161,15 @@ fun Location.copy(
 	pitch: Number = this.pitch
 ) = Location(world, x.toDouble(), y.toDouble(), z.toDouble(), yaw.toFloat(), pitch.toFloat())
 
+fun Location(
+	worldName: String,
+	x: Number,
+	y: Number,
+	z: Number,
+	yaw: Number = 0F,
+	pitch: Number = 0F,
+) = Location(world(worldName), x.toDouble(), y.toDouble(), z.toDouble(), yaw.toFloat(), pitch.toFloat())
+
 fun Vector.copy(
 	x: Number = this.x,
 	y: Number = this.y,
