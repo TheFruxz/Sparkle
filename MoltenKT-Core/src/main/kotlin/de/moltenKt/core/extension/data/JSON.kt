@@ -35,7 +35,6 @@ var jsonBase: Json
 			|| lastKnownJsonModifications != runningJsonModifications
 			|| contextualUpdate
 		) {
-			println("Json is updating...")
 			contextualUpdate = false
 			Json {
 				prettyPrint = true
@@ -91,7 +90,6 @@ fun <T : Any> addJsonContextualConfiguration(clazz: KClass<T>, serializer: KSeri
 		contextual(clazz, serializer)
 	}
 	contextualUpdate = true
-	println("calling....")
 	jsonBase.dump() // trigger update of module
 }
 

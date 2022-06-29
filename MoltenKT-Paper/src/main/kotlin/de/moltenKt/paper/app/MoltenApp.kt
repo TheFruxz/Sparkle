@@ -230,68 +230,6 @@ class MoltenApp : App() {
 
 		add(AppComponent())
 
-		buildAndRegisterSandBox(this, "demo") {
-
-			val original = Location("world", 0, 0, 0)
-
-			executor.sendMessage(original.toString())
-
-			val stringify = original.toJson()
-
-			executor.sendMessage(stringify)
-
-			val back = stringify.fromJson<Location>()
-
-			executor.sendMessage(back.toString())
-
-		}
-
-		buildAndRegisterSandBox(this, "demo2") {
-
-			val item = Material.IRON_SWORD.item {
-
-				label = text("magic!")
-				putLore("""
-					Magic!
-					happens!
-					often!
-				""".trimIndent())
-
-			}.produce()
-
-			executor.sendMessage(item.toString())
-
-			val string = item.serializeAsBytes().encodeBase64()
-
-			executor.sendMessage(string)
-
-			executor.sendMessage(ItemStack.deserializeBytes(string.decodeBase64Bytes()).toString())
-
-		}
-
-		buildAndRegisterSandBox(this, "demo3") {
-
-			@Serializable
-			data class Test(
-				@Contextual val box: BoundingBox = BoundingBox(.0, .0, .0, .0, .0, .0),
-				@Contextual val itemStack: ItemStack = Material.COBBLED_DEEPSLATE.itemStack,
-				@Contextual val location: Location = Location("world", 0, 0, 0),
-				@Contextual val uuid: UUID = UUID.randomUUID(),
-				@Contextual val vector: Vector = Vector(.0, .0, .0),
-			)
-
-			Test().let {
-
-				executor.sendMessage(it.toString())
-				executor.sendMessage(" ")
-				executor.sendMessage(it.toJson())
-				executor.sendMessage(" ")
-				executor.sendMessage(it.toJson().fromJson<Test>().toString())
-
-			}
-
-		}
-
 	}
 
 	override fun bye() {
