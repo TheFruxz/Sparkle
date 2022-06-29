@@ -106,11 +106,8 @@ class MoltenApp : App() {
 		addJsonContextualConfiguration(UUID::class, UUIDSerializer)
 		addJsonContextualConfiguration(Vector::class, VectorSerializer)
 		addJsonContextualConfiguration(Location::class, LocationSerializer)
-//		addJsonContextualConfiguration(OfflinePlayer::class, OfflinePlayerSerializer)
-		addJsonContextualConfiguration(Player::class, PlayerSerializer)
 		addJsonContextualConfiguration(Particle::class, ParticleSerializer)
 		addJsonContextualConfiguration(ParticleBuilder::class, ParticleBuilderSerializer)
-//		addJsonContextualConfiguration(TextComponent::class, TextComponentSerializer)
 		addJsonContextualConfiguration(ItemStack::class, ItemStackSerializer)
 		addJsonContextualConfiguration(BoundingBox::class, BoundingBoxSerializer)
 

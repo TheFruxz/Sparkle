@@ -1,6 +1,7 @@
 package de.moltenKt.paper.tool.data.json.serializer
 
 import com.destroystokyo.paper.ParticleBuilder
+import de.moltenKt.core.annotation.NotPerfect
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
@@ -14,12 +15,11 @@ import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.entity.Player
 
+@NotPerfect
 object ParticleBuilderSerializer : KSerializer<ParticleBuilder> {
 
 	override val descriptor = buildClassSerialDescriptor("ParticleBuilder") {
 		element<Particle>("particle")
-		element<List<Player>>("receivers")
-		element<Player>("source")
 		element("location", LocationSerializer.descriptor)
 		element<Double>("offsetX")
 		element<Double>("offsetY")
@@ -30,8 +30,6 @@ object ParticleBuilderSerializer : KSerializer<ParticleBuilder> {
 
 	override fun deserialize(decoder: Decoder) = decoder.decodeStructure(descriptor) {
 		ParticleBuilder(decodeSerializableElement(descriptor, decodeElementIndex(descriptor), ParticleSerializer))
-			.receivers(decodeSerializableElement(descriptor, decodeElementIndex(descriptor), ListSerializer(PlayerSerializer)))
-			.source(decodeSerializableElement(descriptor, decodeElementIndex(descriptor), PlayerSerializer))
 			.location(decodeSerializableElement(descriptor, decodeElementIndex(descriptor), LocationSerializer))
 			.count(decodeIntElement(descriptor, decodeElementIndex(descriptor)))
 			.offset(
@@ -48,8 +46,6 @@ object ParticleBuilderSerializer : KSerializer<ParticleBuilder> {
 		with(encoder) {
 			encodeStructure(descriptor) {
 				encodeSerializableElement(descriptor, 0, ParticleSerializer, particle())
-				encodeNullableSerializableElement(descriptor, 1, ListSerializer(PlayerSerializer), receivers()?.toList())
-				encodeNullableSerializableElement(descriptor, 2, PlayerSerializer, source())
 				encodeNullableSerializableElement(descriptor, 3, LocationSerializer, location())
 				encodeIntElement(descriptor, 4, count())
 				encodeDoubleElement(descriptor, 5, offsetX())
