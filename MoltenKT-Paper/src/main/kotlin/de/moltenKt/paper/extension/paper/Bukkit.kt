@@ -1,4 +1,4 @@
-@file:Suppress("unused", "DEPRECATION")
+@file:Suppress("unused")
 
 package de.moltenKt.paper.extension.paper
 

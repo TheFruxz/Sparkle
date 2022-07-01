@@ -3,8 +3,8 @@ package de.moltenKt.paper.tool.position.dependent
 import de.moltenKt.core.extension.math.floor
 import de.moltenKt.core.extension.math.floorToInt
 import de.moltenKt.core.tool.smart.Producible
-import de.moltenKt.paper.extension.paper.directionVectorVelocity
 import de.moltenKt.paper.extension.paper.toSimpleLocation
+import de.moltenKt.paper.extension.paper.velocityTo
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.position.relative.CubicalShape
 import de.moltenKt.paper.tool.position.relative.Shape
@@ -322,7 +322,7 @@ data class DependentCubicalShape(
 	 * @since 1.0
 	 */
 	val directionVelocity: Vector by lazy {
-		directionVectorVelocity(first.bukkit, second.bukkit)
+		first.bukkit velocityTo second.bukkit
 	}
 
 	override val length: Double = abs(first.x - second.x)

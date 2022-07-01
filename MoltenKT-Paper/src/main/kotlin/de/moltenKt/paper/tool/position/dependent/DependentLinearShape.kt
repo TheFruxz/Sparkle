@@ -1,7 +1,7 @@
 package de.moltenKt.paper.tool.position.dependent
 
-import de.moltenKt.paper.extension.paper.directionVectorVelocity
 import de.moltenKt.paper.extension.paper.toSimpleLocation
+import de.moltenKt.paper.extension.paper.velocityTo
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.position.relative.LinearShape
 import kotlinx.serialization.Serializable
@@ -44,7 +44,7 @@ data class DependentLinearShape(
 
     override val blockLocations: List<SimpleLocation> by lazy {
         val result = mutableListOf<SimpleLocation>()
-        val directionVector = directionVectorVelocity(fromLocation.toVector(), toLocation.toVector())
+        val directionVector = fromLocation velocityTo toLocation
         val directionVectorLength = directionVector.length()
 
         for (i in 0 until directionVectorLength.roundToInt()) {

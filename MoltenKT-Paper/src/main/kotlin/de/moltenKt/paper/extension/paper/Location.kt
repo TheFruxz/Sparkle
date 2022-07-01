@@ -112,6 +112,14 @@ infix fun Vector.velocityTo(destination: Vector) = destination.subtract(this)
 infix fun Location.velocityTo(destination: Location) = toVector() velocityTo destination.toVector()
 
 /**
+ * This function computes the required velocity, to reach the [destination]
+ * from [this] source position.
+ * @author Fruxz
+ * @since 1.0
+ */
+infix fun SimpleLocation.velocityTo(destination: SimpleLocation) = toVector() velocityTo destination.toVector()
+
+/**
  * This computational value computes the exact representation
  * of blocks bounding box.
  * @author Fruxz
