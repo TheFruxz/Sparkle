@@ -24,4 +24,4 @@ val Team?.entriesAsOfflinePlayer: List<OfflinePlayer>
  * @since 1.0
  */
 val Team?.validOnlinePlayers: List<Player>
-    get() = this?.entriesAsOfflinePlayer?.filter { it.isOnline }?.map { it.player!! } ?: emptyList()
+    get() = this?.entriesAsOfflinePlayer?.mapNotNull { it.takeIf { it.isOnline }?.player } ?: emptyList()
