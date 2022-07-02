@@ -20,7 +20,6 @@ import de.moltenKt.paper.tool.display.canvas.Canvas
 import de.moltenKt.paper.tool.display.canvas.CanvasSessionManager.CanvasSession
 import de.moltenKt.paper.tool.display.item.action.ItemAction
 import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
-import de.moltenKt.paper.tool.timing.cooldown.Cooldown
 import de.moltenKt.paper.tool.timing.tasky.Tasky
 import net.kyori.adventure.key.Key
 import org.bukkit.OfflinePlayer
@@ -54,8 +53,6 @@ object MoltenCache : AppCache {
 	var runningComponents = mapOf<Identity<out Component>, Calendar>()
 
 	var registeredPreferences = mapOf<Identity<out Preference<*>>, Preference<*>>()
-
-	var livingCooldowns = mapOf<String, Cooldown>()
 
 	var runningServiceTaskController = mapOf<Identity<Service>, Tasky>()
 
@@ -108,7 +105,6 @@ object MoltenCache : AppCache {
 
 		if (dropDepth.isDeeperThanOrEquals(CLEAR)) {
 			debugLog("Cache clear 'CLEAR' reached")
-			livingCooldowns = emptyMap()
 			itemActions = emptySet()
 			canvasActions = emptyMap()
 			canvas = emptyMap()
