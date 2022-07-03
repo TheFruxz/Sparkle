@@ -10,6 +10,7 @@ import de.moltenKt.paper.tool.position.dependent.DependentLinearShape
 import de.moltenKt.paper.tool.position.dependent.DependentPyramidalShape
 import de.moltenKt.paper.tool.position.dependent.DependentShape
 import de.moltenKt.paper.tool.position.dependent.DependentSphericalShape
+import org.bukkit.Axis
 import org.bukkit.Location
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -23,6 +24,12 @@ interface Shape {
     val fullWidth: Double
 
     val fullDepth: Double
+
+    fun getSize(axis: Axis): Double = when (axis) {
+        Axis.X -> fullWidth
+        Axis.Y -> fullHeight
+        Axis.Z -> fullDepth
+    }
 
     companion object {
 
