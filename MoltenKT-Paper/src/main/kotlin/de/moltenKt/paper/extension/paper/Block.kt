@@ -88,7 +88,7 @@ val Block.inventorySnapshot: Inventory
 @RequiresSync
 fun Block.toFallingBlock() = blockData.clone().let { data ->
     type = AIR
-    return@let world.spawnFallingBlock(location.toCenterLocation(), data) as FallingBlock
+    return@let world.spawnFallingBlock(location.toCenterLocation(), data)
 }
 
 /**
