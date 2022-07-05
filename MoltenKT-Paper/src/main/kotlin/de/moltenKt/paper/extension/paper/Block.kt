@@ -1,9 +1,14 @@
 package de.moltenKt.paper.extension.paper
 
+import de.moltenKt.paper.extension.tasky.doSync
+import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockState
 import org.bukkit.block.Container
 import org.bukkit.block.Sign
+import org.bukkit.entity.EntityType
+import org.bukkit.entity.FallingBlock
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason
 import org.bukkit.inventory.Inventory
 
 /**
@@ -66,3 +71,19 @@ val Block.inventorySnapshotOrNull: Inventory?
  */
 val Block.inventorySnapshot: Inventory
     get() = this.inventorySnapshotOrNull ?: throw NoSuchElementException("Block has no container")
+
+/**
+ * This function replaces the block with [Material.AIR]
+ * and spawns a new [FallingBlock] at the center location
+ * of [this] [Block].
+ * So for the player, it is like the block is falling like
+ * a normal sand block with air beyond.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun Block.toFallingBlock() {
+    blockData.clone().let { data ->
+        type = Material.AIR
+        world.spawnFallingBlock(location.toCenterLocation(), data)
+    }
+}
