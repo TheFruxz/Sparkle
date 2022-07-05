@@ -1,13 +1,17 @@
 package de.moltenKt.paper.extension.paper
 
 import de.moltenKt.paper.extension.tasky.doSync
+import de.moltenKt.paper.tool.annotation.RequiresSync
 import org.bukkit.Material
+import org.bukkit.Material.AIR
+import org.bukkit.Material.TNT
 import org.bukkit.block.Block
 import org.bukkit.block.BlockState
 import org.bukkit.block.Container
 import org.bukkit.block.Sign
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.FallingBlock
+import org.bukkit.entity.TNTPrimed
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason
 import org.bukkit.inventory.Inventory
 
@@ -81,9 +85,23 @@ val Block.inventorySnapshot: Inventory
  * @author Fruxz
  * @since 1.0
  */
-fun Block.toFallingBlock() {
-    blockData.clone().let { data ->
-        type = Material.AIR
-        world.spawnFallingBlock(location.toCenterLocation(), data)
-    }
+@RequiresSync
+fun Block.toFallingBlock() = blockData.clone().let { data ->
+    type = AIR
+    return@let world.spawnFallingBlock(location.toCenterLocation(), data) as FallingBlock
+}
+
+/**
+ * This function replaces the block with [Material.AIR]
+ * and spawns a new [TNTPrimed] at the center location
+ * of [this] [Block].
+ * So for the player, it is like the block is getting
+ * ignited, like a normal tnt block reacting to power.
+ * @author Fruxz
+ * @since 1.0
+ */
+@RequiresSync
+fun Block.ignite(): TNTPrimed {
+    type = AIR
+    return world.spawnEntity(location.toCenterLocation(), EntityType.PRIMED_TNT) as TNTPrimed
 }
