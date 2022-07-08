@@ -49,6 +49,9 @@ import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.json.JsonConfiguration
 import de.moltenKt.paper.tool.data.json.JsonFileDataElement
 import de.moltenKt.paper.tool.data.json.serializer.*
+import de.moltenKt.paper.tool.display.canvas.CanvasFlag
+import de.moltenKt.paper.tool.display.canvas.CanvasFlag.*
+import de.moltenKt.paper.tool.display.canvas.buildCanvas
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.display.world.SimpleLocation
@@ -76,8 +79,10 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
+import org.bukkit.Material.TNT
 import org.bukkit.Particle
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
@@ -262,6 +267,16 @@ class MoltenApp : App() {
 
 		buildAndRegisterSandBox(this, "__") {
 			executor.sendActionBar("Hello from the sandbox!".asStyledComponent)
+		}
+
+		buildAndRegisterSandBox(this, "createDummyCanvas") {
+			buildCanvas(Key.key("amazing")) {
+
+				this[1..10] = TNT
+
+				annexFlags(NO_GRAB, NO_DRAG, NO_SWAP)
+
+			}.display(executor as Player)
 		}
 
 	}

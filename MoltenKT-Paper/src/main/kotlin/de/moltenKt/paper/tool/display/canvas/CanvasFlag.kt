@@ -23,6 +23,30 @@ enum class CanvasFlag {
 	NO_GRAB,
 
 	/**
+	 * This flag defines, that every item move between inventories is cancelled.
+	 * **see InventoryMoveItemEvent**
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	NO_MOVE,
+
+	/**
+	 * This flag defines, that every item drag is cancelled.
+	 * **see InventoryDragEvent**
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	NO_DRAG,
+
+	/**
+	 * This flag defines, that every item swap is cancelled.
+	 * **see PlayerSwapHandItemsEvent**
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	NO_SWAP,
+
+	/**
 	 * This flag defines, that the canvas cannot be closed.
 	 * @author Fruxz
 	 * @since 1.0

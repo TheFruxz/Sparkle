@@ -5,6 +5,7 @@ import de.moltenKt.paper.tool.display.canvas.Canvas
 import de.moltenKt.paper.tool.event.KCancellable
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
+import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryView
@@ -16,14 +17,11 @@ data class CanvasClickEvent(
 	val view: InventoryView,
 	override var eventCancelled: Boolean = false,
 	val originEvent: InventoryClickEvent,
+	val click: ClickType = originEvent.click
 ) : CanvasEvent(player, canvas, isAsync = false), KCancellable {
 
 	val action by lazy {
 		originEvent.action
-	}
-
-	val click by lazy {
-		originEvent.click
 	}
 
 	val slotType by lazy {
