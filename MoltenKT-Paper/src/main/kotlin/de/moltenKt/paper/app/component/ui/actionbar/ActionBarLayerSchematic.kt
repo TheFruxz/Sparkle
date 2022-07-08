@@ -2,6 +2,7 @@ package de.moltenKt.paper.app.component.ui.actionbar
 
 import de.moltenKt.core.tool.timing.calendar.TimeState
 import net.kyori.adventure.text.Component
+import org.bukkit.entity.Player
 
 interface ActionBarLayerSchematic {
 
@@ -10,7 +11,7 @@ interface ActionBarLayerSchematic {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val content: () -> Component
+	val content: (Player) -> Component
 
 	/**
 	 * The time, when this layer is not valid anymore and

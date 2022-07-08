@@ -52,7 +52,7 @@ class AdaptiveActionBarComponent : SmartComponent(AUTOSTART_MUTABLE, true) {
 		// ## Advanced creation
 
 		@JvmStatic
-		fun addGlobalLayer(position: LayerPosition, stayDuration: Duration, content: () -> Component) =
+		fun addGlobalLayer(position: LayerPosition, stayDuration: Duration, content: (Player) -> Component) =
 			addGlobalLayer(position, ActionBarLayer(content, position, Calendar.now() + stayDuration))
 
 		@JvmStatic
@@ -83,7 +83,7 @@ class AdaptiveActionBarComponent : SmartComponent(AUTOSTART_MUTABLE, true) {
 		// ## Advanced creation
 
 		@JvmStatic
-		fun addPlayerLayer(player: Player, position: LayerPosition, stayDuration: Duration, content: () -> Component) =
+		fun addPlayerLayer(player: Player, position: LayerPosition, stayDuration: Duration, content: (Player) -> Component) =
 			addPlayerLayer(player, position, ActionBarLayer(content, position, Calendar.now() + stayDuration))
 
 		@JvmStatic
