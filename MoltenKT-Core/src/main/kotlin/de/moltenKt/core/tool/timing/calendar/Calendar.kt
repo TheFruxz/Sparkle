@@ -38,7 +38,7 @@ import java.util.Calendar as JavaUtilCalendar
 class Calendar constructor(
 	private var timeInMillis: Long,
 	private var timeZoneId: String,
-) : Producible<JavaUtilCalendar>, Cloneable, Comparable<Calendar>, JavaIoSerializable {
+) : Producible<JavaUtilCalendar>, Cloneable, Comparable<Calendar>, JavaIoSerializable, TimeState {
 
 	constructor(
 		timeInMillis: Long,
@@ -178,6 +178,14 @@ class Calendar constructor(
 	 */
 	val isExpired: Boolean
 		get() = isBefore(now())
+
+	override val inFuture: Boolean
+		get() = !isExpired
+
+	override val inPast: Boolean
+		get() = isExpired
+
+	override val infinite = false
 
 	/**
 	 * This computational value returns this calendar as a [Date]
@@ -456,6 +464,20 @@ class Calendar constructor(
 		 */
 		@JvmStatic
 		fun fromLegacy(calendar: JavaUtilCalendar) = now(instance = calendar)
+
+		@JvmStatic
+		val INFINITE_FUTURE = object : TimeState {
+			override val inFuture = true
+			override val infinite = true
+			override val inPast = false
+		}
+
+		@JvmStatic
+		val INFINITE_PAST = object : TimeState {
+			override val inFuture = false
+			override val infinite = true
+			override val inPast = false
+		}
 
 	}
 

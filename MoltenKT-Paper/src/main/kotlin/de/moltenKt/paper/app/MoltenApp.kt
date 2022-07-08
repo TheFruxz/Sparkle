@@ -3,11 +3,12 @@ package de.moltenKt.paper.app
 import com.destroystokyo.paper.ParticleBuilder
 import de.moltenKt.core.extension.data.addJsonContextualConfiguration
 import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
-import de.moltenKt.core.extension.data.fromJson
-import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.tryToIgnore
 import de.moltenKt.core.tool.smart.identification.Identity
+import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.core.tool.timing.calendar.Calendar.Companion
+import de.moltenKt.core.tool.timing.calendar.TimeState
 import de.moltenKt.paper.app.component.app.AppComponent
 import de.moltenKt.paper.app.component.buildMode.BuildModeComponent
 import de.moltenKt.paper.app.component.chat.ChatComponent
@@ -23,18 +24,18 @@ import de.moltenKt.paper.app.component.point.asset.Point
 import de.moltenKt.paper.app.component.point.asset.PointConfig
 import de.moltenKt.paper.app.component.sandbox.SandBoxComponent
 import de.moltenKt.paper.app.component.service.ServiceComponent
-import de.moltenKt.paper.app.component.ui.UIComponent
+import de.moltenKt.paper.app.component.ui.actionbar.ActionBarLayer
+import de.moltenKt.paper.app.component.ui.actionbar.AdaptiveActionBarComponent
+import de.moltenKt.paper.app.component.ui.actionbar.AdaptiveActionBarComponent.LayerPosition.BACKGROUND
+import de.moltenKt.paper.app.component.ui.actionbar.AdaptiveActionBarComponent.LayerPosition.FOREGROUND
+import de.moltenKt.paper.app.component.ui.gui.UIComponent
 import de.moltenKt.paper.app.interchange.DebugModeInterchange
 import de.moltenKt.paper.app.interchange.MoltenKtInterchange
 import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
-import de.moltenKt.paper.extension.display.ui.item
-import de.moltenKt.paper.extension.display.ui.itemStack
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
-import de.moltenKt.paper.extension.paper.Location
-import de.moltenKt.paper.extension.paper.offlinePlayer
 import de.moltenKt.paper.mojang.MojangProfile
 import de.moltenKt.paper.mojang.MojangProfileCape
 import de.moltenKt.paper.mojang.MojangProfileRaw
@@ -70,19 +71,13 @@ import de.moltenKt.paper.tool.position.relative.Shape
 import de.moltenKt.paper.tool.position.relative.SphereShape
 import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.text
-import io.ktor.util.*
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.OfflinePlayer
 import org.bukkit.Particle
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
@@ -92,6 +87,7 @@ import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import java.util.UUID
 import java.util.logging.Level
+import kotlin.time.Duration.Companion.seconds
 
 class MoltenApp : App() {
 
@@ -223,12 +219,50 @@ class MoltenApp : App() {
 		add(ComponentComponent())
 		add(ProtectionComponent())
 		add(MessagingComponent())
+		add(AdaptiveActionBarComponent())
 
 		add(MoltenKtInterchange())
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
 
 		add(AppComponent())
+
+		buildAndRegisterSandBox(this, "addGround") {
+			AdaptiveActionBarComponent.addGlobalLayer(BACKGROUND, ActionBarLayer(
+				staticContent = "magicMagic".asStyledComponent,
+				expiration = Calendar.INFINITE_FUTURE,
+				level = BACKGROUND,
+			))
+		}
+
+		buildAndRegisterSandBox(this, "addBase") {
+			AdaptiveActionBarComponent.addGlobalLayer(BACKGROUND, ActionBarLayer(
+				staticContent = "magicMagic2".asStyledComponent,
+				expiration = Calendar.now() + 10.seconds,
+				level = BACKGROUND,
+			))
+		}
+
+		buildAndRegisterSandBox(this, "addTop") {
+			AdaptiveActionBarComponent.addGlobalLayer(FOREGROUND, ActionBarLayer(
+				staticContent = "2nd layer".asStyledComponent,
+				expiration = Calendar.now() + 5.seconds,
+				level = FOREGROUND,
+			))
+		}
+
+		buildAndRegisterSandBox(this, "addPlayer") {
+			AdaptiveActionBarComponent.addPlayerLayer(executor as Player, FOREGROUND, ActionBarLayer(
+				staticContent = "player layer".asStyledComponent,
+				expiration = Calendar.now() + 3.seconds,
+				level = BACKGROUND,
+			))
+
+		}
+
+		buildAndRegisterSandBox(this, "__") {
+			executor.sendActionBar("Hello from the sandbox!".asStyledComponent)
+		}
 
 	}
 

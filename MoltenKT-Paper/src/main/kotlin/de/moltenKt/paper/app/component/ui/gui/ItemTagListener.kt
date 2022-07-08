@@ -1,4 +1,4 @@
-package de.moltenKt.paper.app.component.ui
+package de.moltenKt.paper.app.component.ui.gui
 
 import de.moltenKt.core.extension.container.mapCast
 import de.moltenKt.paper.app.MoltenCache

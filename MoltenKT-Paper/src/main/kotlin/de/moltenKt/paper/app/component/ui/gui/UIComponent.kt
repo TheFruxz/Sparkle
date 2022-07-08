@@ -1,4 +1,4 @@
-package de.moltenKt.paper.app.component.ui
+package de.moltenKt.paper.app.component.ui.gui
 
 import de.moltenKt.paper.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.moltenKt.paper.structure.component.SmartComponent
