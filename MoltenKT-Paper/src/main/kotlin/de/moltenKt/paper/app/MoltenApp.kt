@@ -232,53 +232,6 @@ class MoltenApp : App() {
 
 		add(AppComponent())
 
-		buildAndRegisterSandBox(this, "addGround") {
-			AdaptiveActionBarComponent.addGlobalLayer(BACKGROUND, ActionBarLayer(
-				staticContent = "magicMagic".asStyledComponent,
-				expiration = Calendar.INFINITE_FUTURE,
-				level = BACKGROUND,
-			))
-		}
-
-		buildAndRegisterSandBox(this, "addBase") {
-			AdaptiveActionBarComponent.addGlobalLayer(BACKGROUND, ActionBarLayer(
-				staticContent = "magicMagic2".asStyledComponent,
-				expiration = Calendar.now() + 10.seconds,
-				level = BACKGROUND,
-			))
-		}
-
-		buildAndRegisterSandBox(this, "addTop") {
-			AdaptiveActionBarComponent.addGlobalLayer(FOREGROUND, ActionBarLayer(
-				staticContent = "2nd layer".asStyledComponent,
-				expiration = Calendar.now() + 5.seconds,
-				level = FOREGROUND,
-			))
-		}
-
-		buildAndRegisterSandBox(this, "addPlayer") {
-			AdaptiveActionBarComponent.addPlayerLayer(executor as Player, FOREGROUND, ActionBarLayer(
-				staticContent = "player layer".asStyledComponent,
-				expiration = Calendar.now() + 3.seconds,
-				level = BACKGROUND,
-			))
-
-		}
-
-		buildAndRegisterSandBox(this, "__") {
-			executor.sendActionBar("Hello from the sandbox!".asStyledComponent)
-		}
-
-		buildAndRegisterSandBox(this, "createDummyCanvas") {
-			buildCanvas(Key.key("amazing")) {
-
-				this[1..10] = TNT
-
-				annexFlags(NO_GRAB, NO_DRAG, NO_SWAP)
-
-			}.display(executor as Player)
-		}
-
 	}
 
 	override fun bye() {
