@@ -11,6 +11,7 @@ import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.display.item.quirk.Quirk.Companion.skullQuirk
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeoutOrNull
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
 import org.bukkit.Material
@@ -18,6 +19,8 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import java.util.*
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 // Modification / change
 
@@ -88,18 +91,19 @@ fun item(itemStack: ItemStack) = itemStack.item
  * @see getMojangProfile
  * @param owner the name or uuid of the player
  * @param httpRequest if true, the player's skin will be fetched from the Mojang API, otherwise from the server
+ * @param timeout time allowed, before the http request is aborted (useful if mojang is down again)
  * @return the created [Item]
  * @author Fruxz
  * @since 1.0
  */
-fun skull(owner: String, httpRequest: Boolean = true) = Material.PLAYER_HEAD.item {
+fun skull(owner: String, httpRequest: Boolean = true, timeout: Duration = 5.seconds) = Material.PLAYER_HEAD.item {
 
-	offlinePlayer(owner).name?.let { label = text(it).color(NamedTextColor.YELLOW) }
+	runBlocking { withTimeoutOrNull(timeout) { offlinePlayer(owner).name } }?.let { label = text(it).color(NamedTextColor.YELLOW) }
 
 	skullQuirk {
 
 		if (httpRequest) {
-			val ownerProfile = tryOrNull { runBlocking { getMojangProfile(owner) } }
+			val ownerProfile = tryOrNull { runBlocking { withTimeoutOrNull(timeout) { getMojangProfile(owner) } } }
 
 			owningPlayer = offlinePlayer("MHF_Question")
 
@@ -124,18 +128,19 @@ fun skull(owner: String, httpRequest: Boolean = true) = Material.PLAYER_HEAD.ite
  * @see getMojangProfile
  * @param owner the uuid of the player
  * @param httpRequest if true, the player's skin will be fetched from the Mojang API, otherwise from the server
+ * @param timeout time allowed, before the http request is aborted (useful if Mojang is down again)
  * @return the created [Item]
  * @author Fruxz
  * @since 1.0
  */
-fun skull(owner: UUID, httpRequest: Boolean = true) = Material.PLAYER_HEAD.item {
+fun skull(owner: UUID, httpRequest: Boolean = true, timeout: Duration = 5.seconds) = Material.PLAYER_HEAD.item {
 
-	offlinePlayer(owner).name?.let { label = text(it).color(NamedTextColor.YELLOW) }
+	runBlocking { withTimeoutOrNull(timeout) { offlinePlayer(owner).name } }?.let { label = text(it).color(NamedTextColor.YELLOW) }
 
 	skullQuirk {
 
 		if (httpRequest) {
-			val ownerProfile = tryOrNull { runBlocking { getMojangProfile(owner) } }
+			val ownerProfile = tryOrNull { runBlocking { withTimeoutOrNull(timeout) { getMojangProfile(owner) } } }
 
 			owningPlayer = offlinePlayer("MHF_Question")
 
@@ -159,12 +164,13 @@ fun skull(owner: UUID, httpRequest: Boolean = true) = Material.PLAYER_HEAD.item 
  * @see getMojangProfile
  * @param owner the player
  * @param httpRequest if true, the player's skin will be fetched from the Mojang API, otherwise from the server
+ * @param timeout time allowed, before the http request is aborted (useful if Mojang is down again)
  * @return the created [Item]
  * @author Fruxz
  * @since 1.0
  */
-fun skull(owner: OfflinePlayer, httpRequest: Boolean = true) =
-	skull(owner.uniqueId, httpRequest)
+fun skull(owner: OfflinePlayer, httpRequest: Boolean = true, timeout: Duration = 5.seconds) =
+	skull(owner.uniqueId, httpRequest, timeout)
 
 fun ItemStack.copy(
 	material: Material = this.type,
