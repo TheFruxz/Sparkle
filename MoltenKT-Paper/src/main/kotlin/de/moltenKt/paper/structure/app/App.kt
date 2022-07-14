@@ -118,7 +118,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 	 * @sample de.moltenKt.paper.app.MoltenApp.companion
 	 * @constructor abstract
 	 */
-	abstract val companion: AppCompanion<*>
+	abstract val companion: AppCompanion<out App>
 
 
 	abstract val appIdentity: String
