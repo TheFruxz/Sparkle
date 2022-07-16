@@ -347,6 +347,12 @@ fun World.getChunkAt(location: ChunkLocation) = getChunkAt(location.x, location.
 
 fun World.getChunkAtAsync(location: ChunkLocation) = getChunkAtAsync(location.x, location.z)
 
+operator fun Chunk.contains(location: Location) = this.location == location.chunk.location
+
+operator fun Chunk.contains(entity: Entity) = entity.location in this
+
+operator fun Chunk.contains(block: Block) = block.location in this
+
 /**
  * This function creates a copy of [this] location, using the
  * [Location.copy] function, but modified with the different
