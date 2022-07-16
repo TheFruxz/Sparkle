@@ -340,17 +340,58 @@ fun Location.higher(amount: Int = 1) = copy(y = y + amount)
  */
 fun Location.lower(amount: Int = 1) = copy(y = y - amount)
 
+/**
+ * This computational value returns a new [ChunkLocation] object,
+ * that contains the x, y and the world key of [this] [Chunk].
+ * @author Fruxz
+ * @since 1.0
+ */
 val Chunk.location: ChunkLocation
 	get() = ChunkLocation(world.key, x, z)
 
+/**
+ * This function utilizes the [World.getChunkAt] function, to get the
+ * chunk at the provided location, provided by the [location] parameter.
+ * @see World.getChunkAt
+ * @author Fruxz
+ * @since 1.0
+ */
 fun World.getChunkAt(location: ChunkLocation) = getChunkAt(location.x, location.z)
 
+/**
+ * This function utilizes the [World.getChunkAtAsync] function, to get the
+ * chunk at the provided location, provided by the [location] parameter.
+ * @see World.getChunkAtAsync
+ * @author Fruxz
+ * @since 1.0
+ */
 fun World.getChunkAtAsync(location: ChunkLocation) = getChunkAtAsync(location.x, location.z)
 
+/**
+ * This function returns, if the provided [location]s chunk is the
+ * same as the chunk-location of [this] [Chunk].
+ * @return true if the chunks are the same, false if not
+ * @author Fruxz
+ * @since 1.0
+ */
 operator fun Chunk.contains(location: Location) = this.location == location.chunk.location
 
+/**
+ * This function returns, if the [Location] of the [entity]'s [Chunk]
+ * is the same as [this] [Chunk]s location.
+ * @return true, if the [Location] of the [entity]'s [Chunk] is the same as [this] [Chunk]s location
+ * @author Fruxz
+ * @since 1.0
+ */
 operator fun Chunk.contains(entity: Entity) = entity.location in this
 
+/**
+ * This function returns, if the [Location] of the [block]'s [Chunk]
+ * is the same as [this] [Chunk]s location.
+ * @return true if the [Location] of the [block]'s [Chunk] is the same as [this] location
+ * @author Fruxz
+ * @since 1.0
+ */
 operator fun Chunk.contains(block: Block) = block.location in this
 
 /**
