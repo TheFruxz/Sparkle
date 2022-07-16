@@ -269,9 +269,9 @@ data class CompletionAsset<T>(
 				addAll(Material.values().withMap { "minecraft:$name" })
 
 				DyeableMaterial.values().forEach { flex ->
-					val key = flex.key().asString()
-					add("MoltenKT:$key")
-					addAll(ColorType.values().withMap { "MoltenKT:$key#$name" }) // TODO sus? can be double-trouble (the prefix + key)
+					val value = flex.key().value()
+					add("MoltenKT:$value")
+					addAll(ColorType.values().withMap { "MoltenKT:$value#$name" })
 				}
 
 			}
