@@ -3,6 +3,8 @@ package de.moltenKt.paper.app
 import com.destroystokyo.paper.ParticleBuilder
 import de.moltenKt.core.extension.data.addJsonContextualConfiguration
 import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
+import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.tryToIgnore
 import de.moltenKt.core.tool.smart.identification.Identity
@@ -36,6 +38,7 @@ import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
+import de.moltenKt.paper.extension.paper.location
 import de.moltenKt.paper.mojang.MojangProfile
 import de.moltenKt.paper.mojang.MojangProfileCape
 import de.moltenKt.paper.mojang.MojangProfileRaw
@@ -54,6 +57,7 @@ import de.moltenKt.paper.tool.display.canvas.CanvasFlag.*
 import de.moltenKt.paper.tool.display.canvas.buildCanvas
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
+import de.moltenKt.paper.tool.display.world.ChunkLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
@@ -81,9 +85,12 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.Chunk
 import org.bukkit.Location
 import org.bukkit.Material.TNT
+import org.bukkit.NamespacedKey
 import org.bukkit.Particle
+import org.bukkit.World
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.entity.Player
@@ -233,6 +240,11 @@ class MoltenApp : App() {
 		add(PlaygroundInterchange())
 
 		add(AppComponent())
+
+		buildAndRegisterSandBox(this, "test") {
+			val user = executor as Player
+			user.sendMessage(user.chunk.location.toJson().fromJson<ChunkLocation>().toString())
+		}
 
 	}
 

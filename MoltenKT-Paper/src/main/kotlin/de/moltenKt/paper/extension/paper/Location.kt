@@ -2,8 +2,10 @@ package de.moltenKt.paper.extension.paper
 
 import com.destroystokyo.paper.ParticleBuilder
 import de.moltenKt.core.extension.dump
+import de.moltenKt.paper.tool.display.world.ChunkLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
+import org.bukkit.Chunk
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.block.Block
@@ -337,6 +339,13 @@ fun Location.higher(amount: Int = 1) = copy(y = y + amount)
  * @since 1.0
  */
 fun Location.lower(amount: Int = 1) = copy(y = y - amount)
+
+val Chunk.location: ChunkLocation
+	get() = ChunkLocation(world.key, x, z)
+
+fun World.getChunkAt(location: ChunkLocation) = getChunkAt(location.x, location.z)
+
+fun World.getChunkAtAsync(location: ChunkLocation) = getChunkAtAsync(location.x, location.z)
 
 /**
  * This function creates a copy of [this] location, using the
