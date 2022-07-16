@@ -111,6 +111,8 @@ class MoltenApp : App() {
 		addJsonContextualConfiguration(ParticleBuilder::class, ParticleBuilderSerializer)
 		addJsonContextualConfiguration(ItemStack::class, ItemStackSerializer)
 		addJsonContextualConfiguration(BoundingBox::class, BoundingBoxSerializer)
+		addJsonContextualConfiguration(World::class, WorldSerializer)
+		addJsonContextualConfiguration(NamespacedKey::class, NamespacedKeySerializer)
 
 		addMoltenJsonModuleModification {
 
