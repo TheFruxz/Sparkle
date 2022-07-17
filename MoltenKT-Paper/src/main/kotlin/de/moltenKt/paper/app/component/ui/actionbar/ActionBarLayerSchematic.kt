@@ -19,7 +19,16 @@ interface ActionBarLayerSchematic {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val expiration: TimeState
+	val expiration: (Player) -> TimeState
+
+	/**
+	 * This lambda will be called, when the layer is about to be displayed to the player.
+	 * The boolean, that this lambda returns, will be used to determine, if the layer will
+	 * be displayed, or not.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val displayCondition: (Player) -> Boolean
 
 	/**
 	 * The render-layer of the layer (higher -> displayed, even with background, lower -> not displayed, if higher is placed)

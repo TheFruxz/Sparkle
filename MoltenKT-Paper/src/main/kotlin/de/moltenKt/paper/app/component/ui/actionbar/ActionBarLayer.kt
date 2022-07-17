@@ -5,22 +5,25 @@ import de.moltenKt.paper.app.component.ui.actionbar.AdaptiveActionBarComponent.L
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 
-class ActionBarLayer : ActionBarLayerSchematic {
+class ActionBarLayer(
+	override val content: (Player) -> Component,
+	override val expiration: (Player) -> TimeState,
+	override val level: LayerPosition,
+	override val displayCondition: (Player) -> Boolean = { true },
+) : ActionBarLayerSchematic {
 
-	override val expiration: TimeState
-	override val content: (Player) -> Component
-	override val level: LayerPosition
+	constructor(
+		staticContent: Component,
+		expiration: TimeState,
+		level: LayerPosition,
+		displayCondition: (Player) -> Boolean = { true }
+	) : this({ staticContent }, { expiration }, level, displayCondition)
 
-	constructor(content: (Player) -> Component, level: LayerPosition, expiration: TimeState) {
-		this.expiration = expiration
-		this.content = content
-		this.level = level
-	}
-
-	constructor(staticContent: Component, level: LayerPosition, expiration: TimeState) {
-		this.expiration = expiration
-		this.content = { staticContent }
-		this.level = level
-	}
+	constructor(
+		staticContent: (Player) -> Component,
+		expiration: TimeState,
+		level: LayerPosition,
+		displayCondition: (Player) -> Boolean = { true },
+	) : this(staticContent, { expiration }, level, displayCondition)
 
 }

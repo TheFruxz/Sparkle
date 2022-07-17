@@ -35,8 +35,8 @@ class AdaptiveActionBarComponent : SmartComponent(AUTOSTART_MUTABLE, true) {
 		// # Global layers
 
 		@JvmStatic
-		fun addGlobalLayer(position: LayerPosition, layer: ActionBarLayerSchematic) {
-			when (position) {
+		fun addGlobalLayer(layer: ActionBarLayerSchematic) {
+			when (layer.level) {
 				BACKGROUND -> globalLayers = globalLayers.partition { it.level == BACKGROUND }.let { it.first + layer + it.second }
 				FOREGROUND -> globalLayers += layer
 			}
@@ -53,7 +53,7 @@ class AdaptiveActionBarComponent : SmartComponent(AUTOSTART_MUTABLE, true) {
 
 		@JvmStatic
 		fun addGlobalLayer(position: LayerPosition, stayDuration: Duration, content: (Player) -> Component) =
-			addGlobalLayer(position, ActionBarLayer(content, position, Calendar.now() + stayDuration))
+			addGlobalLayer(ActionBarLayer(content, Calendar.now() + stayDuration, position))
 
 		@JvmStatic
 		fun addGlobalLayer(position: LayerPosition, stayDuration: Duration, staticContent: Component) =
@@ -84,7 +84,7 @@ class AdaptiveActionBarComponent : SmartComponent(AUTOSTART_MUTABLE, true) {
 
 		@JvmStatic
 		fun addPlayerLayer(player: Player, position: LayerPosition, stayDuration: Duration, content: (Player) -> Component) =
-			addPlayerLayer(player, position, ActionBarLayer(content, position, Calendar.now() + stayDuration))
+			addPlayerLayer(player, position, ActionBarLayer(content, Calendar.now() + stayDuration, position))
 
 		@JvmStatic
 		fun addPlayerLayer(player: Player, position: LayerPosition, stayDuration: Duration, staticContent: Component) =
