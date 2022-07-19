@@ -7,6 +7,7 @@ import de.moltenKt.paper.extension.paper.consoleSender
 import de.moltenKt.paper.extension.paper.onlinePlayers
 import de.moltenKt.paper.extension.paper.playerOrNull
 import de.moltenKt.paper.structure.app.event.EventListener
+import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.asString
 import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.extension.asStyledString
@@ -35,7 +36,10 @@ internal class ChatListener : EventListener() {
 						tagged
 					)
 				) {
-					append("<${setup.mentions.mentionColor}>@${tagged.displayName().asString}</${setup.mentions.mentionColor}>".asStyledComponent)
+					append(
+						"<${setup.mentions.mentionColor}>@${tagged.displayName().asString}</${setup.mentions.mentionColor}>".asStyledComponent
+							.hoverEvent(tagged).clickEvent(ClickEvent.suggestCommand("/msg ${tagged.name}"))
+					)
 					notifiedPlayers += tagged
 				} else if (setup.hashTags.enabled && snipped.startsWith("#") && snipped.length > 1) {
 					append("<${setup.hashTags.hashTagColor}>$snipped</${setup.hashTags.hashTagColor}>".asStyledComponent)
@@ -70,9 +74,9 @@ internal class ChatListener : EventListener() {
 
 			append(
 				setup.chatFormat.replaceVariables(
-					"displayName" to player.displayName().asStyledString,
+					"displayName" to player.displayName().hoverEvent(player).clickEvent(ClickEvent.suggestCommand("/msg ${player.name}")).asStyledString,
 					"name" to player.name,
-					"playerListName" to player.playerListName().asStyledString
+					"playerListName" to player.playerListName().hoverEvent(player).clickEvent(ClickEvent.suggestCommand("/msg ${player.name}")).asStyledString
 				).asStyledComponent.replaceText {
 					it.match("\\[message]")
 					it.replacement(message)
