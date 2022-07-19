@@ -1,5 +1,6 @@
 package de.moltenKt.paper.structure.command.completion.component
 
+import de.moltenKt.core.extension.container.firstOrNull
 import de.moltenKt.core.extension.container.mapToString
 import de.moltenKt.core.extension.container.withMap
 import de.moltenKt.core.extension.math.isDouble
@@ -34,8 +35,10 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
 import org.bukkit.World
+import org.bukkit.block.structure.StructureRotation
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
+import org.bukkit.structure.Structure
 import java.util.*
 
 data class CompletionAsset<T>(
@@ -327,6 +330,24 @@ data class CompletionAsset<T>(
 				}
 			} else
 				null
+		}
+
+		@JvmStatic
+		val LOADED_STRUCTURE = CompletionAsset<Structure>(system, "LOADED_STRUCTURE", true) {
+			Bukkit.getStructureManager().structures.map { it.key.asString() }
+		}.doCheck {
+			Bukkit.getStructureManager().structures.any { it.key.asString() == input }
+		}.transformer {
+			Bukkit.getStructureManager().structures.firstOrNull { it.key.asString() == input }?.value
+		}
+
+		@JvmStatic
+		val STRUCTURE_ROTATION = CompletionAsset<StructureRotation>(system, "STRUCTURE_ROTATION", true) {
+			StructureRotation.values().withMap { name }
+		}.doCheck {
+			StructureRotation.values().any { it.name.equals(input, ignoreCase) }
+		}.transformer {
+			StructureRotation.values().firstOrNull { it.name.equals(input, ignoreCase) }
 		}
 
 		@JvmStatic
