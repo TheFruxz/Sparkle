@@ -16,6 +16,7 @@ import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.sound.Sound.Source.MASTER
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -32,9 +33,7 @@ internal class ChatListener : EventListener() {
 			message().asString.replacePrefix("./", "/").split(" ").forEach { snipped ->
 				val tagged = playerOrNull(snipped.removePrefix("@"))
 
-				if (setup.mentions.enabled && snipped.startsWith("@") && snipped.length > 2 && tagged != null && !notifiedPlayers.contains(
-						tagged
-					)
+				if (setup.mentions.enabled && snipped.startsWith("@") && snipped.length > 2 && tagged != null && !notifiedPlayers.contains(tagged)
 				) {
 					append(
 						"<${setup.mentions.mentionColor}>@${tagged.displayName().asString}</${setup.mentions.mentionColor}>".asStyledComponent
@@ -42,21 +41,23 @@ internal class ChatListener : EventListener() {
 					)
 					notifiedPlayers += tagged
 				} else if (setup.hashTags.enabled && snipped.startsWith("#") && snipped.length > 1) {
-					append("<${setup.hashTags.hashTagColor}>$snipped</${setup.hashTags.hashTagColor}>".asStyledComponent)
+					append(
+						"<${setup.hashTags.hashTagColor}>$snipped</${setup.hashTags.hashTagColor}>".asStyledComponent.clickEvent(null).hoverEvent(null)
+					)
 				} else if (setup.commands.enabled && snipped.startsWith("/") && snipped.length > 1) {
 					append(
 						"<${setup.commands.commandColor}>$snipped</${setup.commands.commandColor}>".asStyledComponent.clickEvent(
 							ClickEvent.suggestCommand(snipped)
-						)
+						).hoverEvent("<${setup.commands.commandColor}>$snipped</${setup.commands.commandColor}>".asStyledComponent)
 					)
 				} else if (setup.items.enabled && snipped.equals("[item]", true)) {
 					append(
 						"<${setup.items.itemColor}>${player.inventory.itemInMainHand.displayName().asStyledString}</${setup.items.itemColor}>".asStyledComponent.hoverEvent(
 							player.inventory.itemInMainHand
-						)
+						).clickEvent(null)
 					)
 				} else
-					append("<${setup.messageColor}>$snipped</${setup.messageColor}>".asStyledComponent)
+					append("<${setup.messageColor}>$snipped</${setup.messageColor}>".asStyledComponent.hoverEvent(null).clickEvent(null))
 
 				append(Component.space())
 
