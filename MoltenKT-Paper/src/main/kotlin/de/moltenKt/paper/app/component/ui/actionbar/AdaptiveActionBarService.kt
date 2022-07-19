@@ -29,13 +29,13 @@ internal class AdaptiveActionBarService : Service {
 
 				if (!specific.isNullOrEmpty()) {
 					specific.withIndex().forEach { (index, content) ->
-						if (index == specific.lastIndex) target.sendActionBar(content.content.invoke(target))
+						if (index == specific.indexOfLast { it.displayCondition.invoke(target) }) target.sendActionBar(content.content.invoke(target))
 						if (!content.expiration.invoke(target).inFuture) playerLayers += target to (specific - content)
 					}
 				} else {
 					if (global.isNotEmpty()) {
 						global.withIndex().forEach { (index, content) ->
-							if (index == global.lastIndex) target.sendActionBar(content.content.invoke(target))
+							if (index == global.indexOfLast { it.displayCondition.invoke(target) }) target.sendActionBar(content.content.invoke(target))
 							if (!content.expiration.invoke(target).inFuture) globalLayers -= content
 						}
 					}
