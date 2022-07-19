@@ -25,7 +25,7 @@ if(savedDarkMode === true){
     <div class="library-name">
 <a href="../../../index.html">
 <span>MoltenKT</span>            </a>    </div>
-    <div>1.0-PRE-13.4
+    <div>1.0-PRE-14
     </div>
     <div class="pull-right d-flex">
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
@@ -42,7 +42,11 @@ if(savedDarkMode === true){
   <div class="cover ">
     <h1 class="cover"><span>app</span><wbr><span><span>Label</span></span></h1>
   </div>
-  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="app-label.html">appLabel</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h1 class=""><code class="lang-kotlin">App.appLabel</code></h1><h2 class=""> Info</h2><p class="paragraph">This value defines the display-name of this app, which will be displayed in app-lists and information with the app included. Can be duplicated, but try to avoid duplicated display names with other apps!</p><h2 class=""> Use</h2><p class="paragraph">Use this value to tell your customers &amp; visitors that your app is running, there some possible ways to do that:</p><ul><li><p class="paragraph">On Minecraft-Networks: Tell the players the name of your network</p></li><li><p class="paragraph">On Publishing: Tell the players the name of your app (where they can find it)</p></li><li><p class="paragraph">On private use: Tell yourself, that this app is this app</p></li></ul><p class="paragraph">But you can use this like you like!</p><h2 class=""> Relations</h2><p class="paragraph">The label is not related to some crucial read/save system or something else, in this cases <a href="app-identity.html">appIdentity</a> is used!</p><h4 class="">Author</h4><p class="paragraph">Fruxz (@TheFruxz)</p><h4 class="">Since</h4><p class="paragraph">1.0-BETA-2 (preview)</p><h2 class="">Samples</h2><div class="sample-container"><pre><code class="runnablesample monospace block lang-kotlin" theme="idea">import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="app-label.html">appLabel</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h1 class=""><code class="lang-kotlin">App.appLabel</code></h1><h2 class=""> Info</h2><p class="paragraph">This value defines the display-name of this app, which will be displayed in app-lists and information with the app included. Can be duplicated, but try to avoid duplicated display names with other apps!</p><h2 class=""> Use</h2><p class="paragraph">Use this value to tell your customers &amp; visitors that your app is running, there some possible ways to do that:</p><ul><li><p class="paragraph">On Minecraft-Networks: Tell the players the name of your network</p></li><li><p class="paragraph">On Publishing: Tell the players the name of your app (where they can find it)</p></li><li><p class="paragraph">On private use: Tell yourself, that this app is this app</p></li></ul><p class="paragraph">But you can use this like you like!</p><h2 class=""> Relations</h2><p class="paragraph">The label is not related to some crucial read/save system or something else, in this cases <a href="app-identity.html">appIdentity</a> is used!</p><h4 class="">Author</h4><p class="paragraph">Fruxz (@TheFruxz)</p><h4 class="">Since</h4><p class="paragraph">1.0-BETA-2 (preview)</p><h2 class="">Samples</h2><div class="sample-container"><pre><code class="runnablesample monospace block lang-kotlin" theme="idea">import com.destroystokyo.paper.ParticleBuilder
+import de.moltenKt.core.extension.data.addJsonContextualConfiguration
+import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
+import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.tryToIgnore
 import de.moltenKt.core.tool.smart.identification.Identity
@@ -61,6 +65,7 @@ import de.moltenKt.paper.app.component.point.asset.Point
 import de.moltenKt.paper.app.component.point.asset.PointConfig
 import de.moltenKt.paper.app.component.sandbox.SandBoxComponent
 import de.moltenKt.paper.app.component.service.ServiceComponent
+import de.moltenKt.paper.app.component.ui.actionbar.AdaptiveActionBarComponent
 import de.moltenKt.paper.app.component.ui.gui.UIComponent
 import de.moltenKt.paper.app.interchange.DebugModeInterchange
 import de.moltenKt.paper.app.interchange.MoltenKtInterchange
@@ -68,22 +73,29 @@ import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
-import de.moltenKt.paper.general.api.mojang.MojangProfile
-import de.moltenKt.paper.general.api.mojang.MojangProfileCape
-import de.moltenKt.paper.general.api.mojang.MojangProfileRaw
-import de.moltenKt.paper.general.api.mojang.MojangProfileSkin
-import de.moltenKt.paper.general.api.mojang.MojangProfileTextures
-import de.moltenKt.paper.general.api.mojang.MojangProfileUsernameHistoryEntry
+import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
+import de.moltenKt.paper.extension.paper.asPlayer
+import de.moltenKt.paper.extension.paper.location
+import de.moltenKt.paper.extension.paper.place
+import de.moltenKt.paper.extension.tasky.doSync
+import de.moltenKt.paper.mojang.MojangProfile
+import de.moltenKt.paper.mojang.MojangProfileCape
+import de.moltenKt.paper.mojang.MojangProfileRaw
+import de.moltenKt.paper.mojang.MojangProfileSkin
+import de.moltenKt.paper.mojang.MojangProfileTextures
+import de.moltenKt.paper.mojang.MojangProfileUsernameHistoryEntry
 import de.moltenKt.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.AppCompanion
 import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.json.JsonConfiguration
 import de.moltenKt.paper.tool.data.json.JsonFileDataElement
+import de.moltenKt.paper.tool.data.json.serializer.*
+import de.moltenKt.paper.tool.display.canvas.CanvasFlag.*
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
+import de.moltenKt.paper.tool.display.world.ChunkLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
-import de.moltenKt.paper.tool.effect.particle.ParticleType.Companion
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
@@ -108,8 +120,19 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.Bukkit
+import org.bukkit.Location
+import org.bukkit.Material
+import org.bukkit.NamespacedKey
+import org.bukkit.Particle
+import org.bukkit.World
+import org.bukkit.block.structure.StructureRotation
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import org.bukkit.inventory.ItemStack
+import org.bukkit.util.BoundingBox
+import org.bukkit.util.Vector
+import java.util.UUID
 import java.util.logging.Level
 fun main() { 
    //sampleStart 

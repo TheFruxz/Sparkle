@@ -46,6 +46,7 @@ de.moltenKt.paper.app
 de.moltenKt.paper.app.component.buildMode.config
 de.moltenKt.paper.app.component.chat
 de.moltenKt.paper.app.component.point.asset
+de.moltenKt.paper.app.component.ui.actionbar
 de.moltenKt.paper.app.component.world
 de.moltenKt.paper.extension
 de.moltenKt.paper.extension.data
@@ -60,7 +61,7 @@ de.moltenKt.paper.extension.paper.entity
 de.moltenKt.paper.extension.scoreboard
 de.moltenKt.paper.extension.tasky
 de.moltenKt.paper.extension.timing
-de.moltenKt.paper.general.api.mojang
+de.moltenKt.paper.mojang
 de.moltenKt.paper.mutable
 de.moltenKt.paper.runtime.app
 de.moltenKt.paper.runtime.event
@@ -88,6 +89,7 @@ de.moltenKt.paper.tool.annotation
 de.moltenKt.paper.tool.data
 de.moltenKt.paper.tool.data.file
 de.moltenKt.paper.tool.data.json
+de.moltenKt.paper.tool.data.json.serializer
 de.moltenKt.paper.tool.display.canvas
 de.moltenKt.paper.tool.display.canvas.design
 de.moltenKt.paper.tool.display.color
@@ -104,7 +106,6 @@ de.moltenKt.paper.tool.permission
 de.moltenKt.paper.tool.position.dependent
 de.moltenKt.paper.tool.position.relative
 de.moltenKt.paper.tool.smart
-de.moltenKt.paper.tool.timing.cooldown
 de.moltenKt.paper.tool.timing.tasky
 module:MoltenKT-Unfold
 de.moltenKt.unfold
