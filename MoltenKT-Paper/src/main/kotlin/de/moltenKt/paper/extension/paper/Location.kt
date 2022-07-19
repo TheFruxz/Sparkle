@@ -420,3 +420,6 @@ fun Location.modify(
 		yaw = this.yaw + yaw.toFloat(),
 		pitch = this.pitch + pitch.toFloat(),
 	)
+
+val World.generatorCode: Long
+	get() = seed

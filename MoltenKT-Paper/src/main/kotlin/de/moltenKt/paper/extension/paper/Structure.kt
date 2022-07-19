@@ -1,5 +1,7 @@
 package de.moltenKt.paper.extension.paper
 
+import de.moltenKt.core.extension.div
+import de.moltenKt.core.extension.getHomePath
 import de.moltenKt.core.tool.math.Percentage
 import de.moltenKt.core.tool.math.Percentage.Companion.percent
 import de.moltenKt.paper.extension.effect.buildParticle
@@ -8,17 +10,23 @@ import de.moltenKt.paper.extension.tasky.doAsync
 import de.moltenKt.paper.tool.effect.particle.ParticleType
 import de.moltenKt.paper.tool.effect.particle.ParticleType.Companion
 import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
+import de.moltenKt.paper.tool.position.relative.Shape
 import kotlinx.coroutines.delay
+import org.bukkit.Bukkit
 import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.RegionAccessor
 import org.bukkit.World
 import org.bukkit.block.structure.Mirror
+import org.bukkit.block.structure.Mirror.FRONT_BACK
+import org.bukkit.block.structure.Mirror.LEFT_RIGHT
 import org.bukkit.block.structure.StructureRotation
-import org.bukkit.block.structure.StructureRotation.NONE
+import org.bukkit.block.structure.StructureRotation.*
 import org.bukkit.structure.Structure
 import org.bukkit.util.BlockVector
 import org.bukkit.util.BoundingBox
+import kotlin.io.path.Path
+import kotlin.io.path.writeText
 import kotlin.random.Random
 import kotlin.random.asJavaRandom
 import kotlin.time.Duration.Companion.seconds
@@ -61,7 +69,11 @@ fun Structure.place(
 	palette: Int = -1,
 	integrity: Percentage = 100.percent,
 	random: Random = Random.Default,
-) = apply { place(location, includeEntities, structureRotation, mirror, palette, integrity.decimal.toFloat(), random.asJavaRandom()) }
+): PlacedStructure {
+	place(location, includeEntities, structureRotation, mirror, palette, integrity.decimal.toFloat(), random.asJavaRandom())
+
+	return PlacedStructure(this, Shape.cube(location, getSecondCorner(location, structureRotation, mirror)))
+}
 
 fun Structure.place(
 	regionAccessor: RegionAccessor,
@@ -73,3 +85,101 @@ fun Structure.place(
 	integrity: Percentage = 100.percent,
 	random: Random = Random.Default,
 ) = apply { place(regionAccessor, location, includeEntities, structureRotation, mirror, palette, integrity.decimal.toFloat(), random.asJavaRandom()) }
+
+fun Structure.getSecondCorner(firstCorner: Location, rotationOfThisStructure: StructureRotation, mirror: Mirror): Location {
+	val secondCorner = firstCorner.copy(
+		x = firstCorner.x,
+		y = firstCorner.y,
+		z = firstCorner.z
+	)
+
+	val structureLengthX = size.x
+	val structureHeightY = size.y
+	val structureDepthZ = size.z
+
+	when (rotationOfThisStructure) {
+		NONE -> {
+			when (mirror) {
+				Mirror.NONE -> {
+					secondCorner.x += structureLengthX - 1
+					secondCorner.y += structureHeightY - 1
+					secondCorner.z += structureDepthZ - 1
+				}
+				FRONT_BACK -> {
+					secondCorner.x -= structureLengthX - 1
+					secondCorner.y += structureHeightY - 1
+					secondCorner.z += structureDepthZ - 1
+				}
+				LEFT_RIGHT -> {
+					secondCorner.x += structureLengthX - 1
+					secondCorner.y += structureHeightY - 1
+					secondCorner.z -= structureDepthZ - 1
+				}
+			}
+		}
+		CLOCKWISE_90 -> {
+			when (mirror) {
+				Mirror.NONE -> {
+					secondCorner.x -= structureDepthZ - 1
+					secondCorner.y += structureHeightY - 1
+					secondCorner.z += structureLengthX - 1
+				}
+				FRONT_BACK -> {
+					secondCorner.x -= structureDepthZ - 1
+					secondCorner.y += structureHeightY - 1
+					secondCorner.z -= structureLengthX - 1
+				}
+				LEFT_RIGHT -> {
+					secondCorner.x += structureDepthZ - 1
+					secondCorner.y += structureHeightY - 1
+					secondCorner.z += structureLengthX - 1
+				}
+			}
+		}
+		CLOCKWISE_180 -> {
+			when (mirror) {
+				Mirror.NONE -> {
+					secondCorner.x -= structureLengthX - 1
+					secondCorner.y += structureHeightY - 1
+					secondCorner.z -= structureDepthZ - 1
+				}
+				FRONT_BACK -> {
+					secondCorner.x += structureLengthX - 1
+					secondCorner.y += structureHeightY - 1
+					secondCorner.z -= structureDepthZ - 1
+				}
+				LEFT_RIGHT -> {
+					secondCorner.x -= structureLengthX - 1
+					secondCorner.y += structureHeightY - 1
+					secondCorner.z += structureDepthZ - 1
+				}
+			}
+		}
+		COUNTERCLOCKWISE_90 -> {
+			when (mirror) {
+				Mirror.NONE -> {
+					secondCorner.x += structureDepthZ - 1
+					secondCorner.y += structureHeightY - 1
+					secondCorner.z -= structureLengthX - 1
+				}
+				FRONT_BACK -> {
+					secondCorner.x += structureDepthZ - 1
+					secondCorner.y += structureHeightY - 1
+					secondCorner.z += structureLengthX - 1
+				}
+				LEFT_RIGHT -> {
+					secondCorner.x -= structureDepthZ - 1
+					secondCorner.y += structureHeightY - 1
+					secondCorner.z -= structureLengthX - 1
+				}
+			}
+		}
+	}
+
+	return secondCorner
+}
+
+data class PlacedStructure(
+	val raw: Structure,
+	val destination: DependentCubicalShape,
+)

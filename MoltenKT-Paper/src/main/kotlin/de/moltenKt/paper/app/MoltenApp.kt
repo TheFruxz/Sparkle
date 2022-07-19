@@ -8,9 +8,6 @@ import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.tryToIgnore
 import de.moltenKt.core.tool.smart.identification.Identity
-import de.moltenKt.core.tool.timing.calendar.Calendar
-import de.moltenKt.core.tool.timing.calendar.Calendar.Companion
-import de.moltenKt.core.tool.timing.calendar.TimeState
 import de.moltenKt.paper.app.component.app.AppComponent
 import de.moltenKt.paper.app.component.buildMode.BuildModeComponent
 import de.moltenKt.paper.app.component.chat.ChatComponent
@@ -26,10 +23,7 @@ import de.moltenKt.paper.app.component.point.asset.Point
 import de.moltenKt.paper.app.component.point.asset.PointConfig
 import de.moltenKt.paper.app.component.sandbox.SandBoxComponent
 import de.moltenKt.paper.app.component.service.ServiceComponent
-import de.moltenKt.paper.app.component.ui.actionbar.ActionBarLayer
 import de.moltenKt.paper.app.component.ui.actionbar.AdaptiveActionBarComponent
-import de.moltenKt.paper.app.component.ui.actionbar.AdaptiveActionBarComponent.LayerPosition.BACKGROUND
-import de.moltenKt.paper.app.component.ui.actionbar.AdaptiveActionBarComponent.LayerPosition.FOREGROUND
 import de.moltenKt.paper.app.component.ui.gui.UIComponent
 import de.moltenKt.paper.app.interchange.DebugModeInterchange
 import de.moltenKt.paper.app.interchange.MoltenKtInterchange
@@ -38,7 +32,10 @@ import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
+import de.moltenKt.paper.extension.paper.asPlayer
 import de.moltenKt.paper.extension.paper.location
+import de.moltenKt.paper.extension.paper.place
+import de.moltenKt.paper.extension.tasky.doSync
 import de.moltenKt.paper.mojang.MojangProfile
 import de.moltenKt.paper.mojang.MojangProfileCape
 import de.moltenKt.paper.mojang.MojangProfileRaw
@@ -52,9 +49,7 @@ import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.json.JsonConfiguration
 import de.moltenKt.paper.tool.data.json.JsonFileDataElement
 import de.moltenKt.paper.tool.data.json.serializer.*
-import de.moltenKt.paper.tool.display.canvas.CanvasFlag
 import de.moltenKt.paper.tool.display.canvas.CanvasFlag.*
-import de.moltenKt.paper.tool.display.canvas.buildCanvas
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.display.world.ChunkLocation
@@ -76,30 +71,27 @@ import de.moltenKt.paper.tool.position.relative.LinearShape
 import de.moltenKt.paper.tool.position.relative.PyramidalShape
 import de.moltenKt.paper.tool.position.relative.Shape
 import de.moltenKt.paper.tool.position.relative.SphereShape
-import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Chunk
+import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.Material.TNT
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.World
+import org.bukkit.block.structure.StructureRotation
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
-import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import java.util.UUID
 import java.util.logging.Level
-import kotlin.time.Duration.Companion.seconds
 
 class MoltenApp : App() {
 
@@ -240,11 +232,6 @@ class MoltenApp : App() {
 		add(PlaygroundInterchange())
 
 		add(AppComponent())
-
-		buildAndRegisterSandBox(this, "test") {
-			val user = executor as Player
-			user.sendMessage(user.chunk.location.toJson().fromJson<ChunkLocation>().toString())
-		}
 
 	}
 
