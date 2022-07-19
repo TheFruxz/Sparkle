@@ -35,6 +35,7 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
 import org.bukkit.World
+import org.bukkit.block.structure.Mirror
 import org.bukkit.block.structure.StructureRotation
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -342,12 +343,21 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val STRUCTURE_ROTATION = CompletionAsset<StructureRotation>(system, "STRUCTURE_ROTATION", true) {
+		val STRUCTURE_ROTATION = CompletionAsset<StructureRotation>(system, "STRUCTURE_ROTATION", false) {
 			StructureRotation.values().withMap { name }
 		}.doCheck {
 			StructureRotation.values().any { it.name.equals(input, ignoreCase) }
 		}.transformer {
 			StructureRotation.values().firstOrNull { it.name.equals(input, ignoreCase) }
+		}
+
+		@JvmStatic
+		val STRUCTURE_MIRROR = CompletionAsset<Mirror>(system, "STRUCTURE_MIRROR", false) {
+			Mirror.values().withMap { name }
+		}.doCheck {
+			StructureRotation.values().any { it.name.equals(input, ignoreCase) }
+		}.transformer {
+			Mirror.values().firstOrNull { it.name.equals(input, ignoreCase) }
 		}
 
 		@JvmStatic
