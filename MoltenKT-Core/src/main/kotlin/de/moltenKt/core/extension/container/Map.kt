@@ -10,7 +10,7 @@ import kotlin.collections.Map.Entry
  * @author Fruxz
  * @since 1.0
  */
-fun <F, S> Pair<Collection<F>, Collection<S>>.toMap() = first.withIndex().associate { it.value to second.get(it.index) }
+fun <F, S> Pair<Collection<F>, Collection<S>>.toMap() = first.zip(second).toMap()
 
 /**
  * This function returns the copy of [this] [Map],
