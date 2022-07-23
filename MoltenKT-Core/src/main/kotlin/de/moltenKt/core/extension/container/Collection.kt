@@ -5,6 +5,7 @@ import de.moltenKt.core.extension.math.floorToInt
 import de.moltenKt.core.extension.math.maxTo
 import de.moltenKt.core.extension.math.minTo
 import de.moltenKt.core.tool.collection.PageValue
+import kotlin.random.Random
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -57,8 +58,8 @@ fun <T, C : Collection<T>> C.toArrayList(): ArrayList<T> = ArrayList(this)
  */
 fun <T> Array<out T>.toArrayList(): ArrayList<out T> = ArrayList(this.toList())
 
-fun <T, C : Collection<T>> C.stackRandom(times: Int): String = buildString {
-	repeat(times) { append(this@stackRandom.random()) }
+fun <T, C : Collection<T>> C.stackRandom(times: Int, random: Random = Random): String = buildString {
+	repeat(times) { append(this@stackRandom.random(random)) }
 }
 
 /**
@@ -68,8 +69,8 @@ fun <T, C : Collection<T>> C.stackRandom(times: Int): String = buildString {
  * @author Fruxz
  * @since 1.0
  */
-fun <T> Array<out T>.stackRandom(times: Int): String = buildString {
-	repeat(times) { append(this@stackRandom.random()) }
+fun <T> Array<out T>.stackRandom(times: Int, random: Random = Random): String = buildString {
+	repeat(times) { append(this@stackRandom.random(random)) }
 }
 
 /**
@@ -79,8 +80,8 @@ fun <T> Array<out T>.stackRandom(times: Int): String = buildString {
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>> C.stackUniqueRandom(times: Int): String =
-	shuffled().take(times).joinToString(separator = "")
+fun <T, C : Collection<T>> C.stackUniqueRandom(times: Int, random: Random = Random): String =
+	shuffled(random).take(times).joinToString(separator = "")
 
 /**
  * Stacks the element randomized [times] times
@@ -89,8 +90,8 @@ fun <T, C : Collection<T>> C.stackUniqueRandom(times: Int): String =
  * @author Fruxz
  * @since 1.0
  */
-fun <T> Array<out T>.stackUniqueRandom(times: Int): String =
-	toList().shuffled().take(times).joinToString(separator = "")
+fun <T> Array<out T>.stackUniqueRandom(times: Int, random: Random = Random): String =
+	toList().shuffled(random).take(times).joinToString(separator = "")
 
 /**
  * This function creates a list of [T] objects, created

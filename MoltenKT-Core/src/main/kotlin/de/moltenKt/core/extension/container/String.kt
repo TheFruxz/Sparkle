@@ -1,6 +1,8 @@
 package de.moltenKt.core.extension.container
 
+import de.moltenKt.core.extension.data.randomBoolean
 import java.util.*
+import kotlin.random.Random
 
 /**
  * Replaces all occurrences of the given [Map.keys] with the given [Map.values] in this string.
@@ -140,3 +142,22 @@ fun String.replaceSuffix(oldValue: String, newValue: String, ignoreCase: Boolean
 fun String.replaceSurrounding(oldValue: String, newValue: String, ignoreCase: Boolean = false) =
 	replacePrefix(oldValue, newValue, ignoreCase)
 		.replaceSuffix(oldValue, newValue, ignoreCase)
+
+/**
+ * This function returns the string, but with mixed case set.
+ * If [randomized] is true (default = true), then the case will be randomized, but
+ * if it is false, the case would be set to cycle around between low-up-low-up...
+ * @param randomized if the case should be randomized
+ * @param random the randomizer to use
+ * @return the string with mixed case
+ * @author Fruxz
+ * @since 1.0
+ */
+fun String.mixedCase(randomized: Boolean = true, random: Random = Random(Random.nextLong())) = toCharArray().withIndex().joinToString(separator = "") { (index, char) ->
+	if (randomized && randomBoolean(random) || index % 2 == 0) { // More forced uniqueness, because of next seed
+		char.uppercase()
+	} else
+		char.lowercase()
+}
+
+
