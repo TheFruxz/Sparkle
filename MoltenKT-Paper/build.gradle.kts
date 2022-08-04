@@ -63,7 +63,7 @@ dependencies {
     shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
     shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     shadow("org.slf4j:slf4j-api:2.0.0-alpha7")
-    shadow("org.jetbrains.exposed:exposed-core:0.38.2")
+    shadow("org.jetbrains.exposed:exposed-core:0.39.2")
     shadow("org.jetbrains.exposed:exposed-dao:0.38.2")
     shadow("org.jetbrains.exposed:exposed-jdbc:0.38.2")
    
