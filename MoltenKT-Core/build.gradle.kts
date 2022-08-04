@@ -24,7 +24,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.0-alpha7")
 
     implementation("org.jetbrains.exposed:exposed-core:0.39.2")
-    implementation("org.jetbrains.exposed:exposed-dao:0.38.2")
+    implementation("org.jetbrains.exposed:exposed-dao:0.39.2")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.38.2")
 
 }
