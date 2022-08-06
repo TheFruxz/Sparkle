@@ -54,7 +54,7 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:2.0.3")
     implementation("io.ktor:ktor-client-content-negotiation:2.0.3")
 
-    compileOnly("io.papermc.paper:paper-api:1.19.1-R0.1-SNAPSHOT") // PaperMC
+    compileOnly("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT") // PaperMC
 
     // Shadow
 
