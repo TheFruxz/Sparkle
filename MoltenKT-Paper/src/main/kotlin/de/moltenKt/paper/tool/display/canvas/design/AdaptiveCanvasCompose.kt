@@ -4,6 +4,7 @@ import de.moltenKt.paper.tool.display.canvas.MutableCanvas
 import de.moltenKt.paper.tool.display.color.ColorType
 import de.moltenKt.paper.tool.display.color.DyeableMaterial
 import de.moltenKt.paper.tool.display.item.ItemLike
+import kotlin.random.Random
 
 /**
  * This interface represents an extendable canvas feature, that
@@ -43,11 +44,11 @@ interface AdaptiveCanvasCompose {
 		 * @author Fruxz
 		 * @since 1.0
 		 */
-		fun random(materialGroup: DyeableMaterial) = object : AdaptiveCanvasCompose {
+		fun random(materialGroup: DyeableMaterial, random: () -> Random = { Random }) = object : AdaptiveCanvasCompose {
 
 			override fun place(canvas: MutableCanvas, slots: Iterable<Int>) {
 				slots.forEach { canvasSlot ->
-					canvas[canvasSlot] = materialGroup.withColor(ColorType.values().random())
+					canvas[canvasSlot] = materialGroup.withColor(ColorType.values().random(random.invoke()))
 				}
 			}
 

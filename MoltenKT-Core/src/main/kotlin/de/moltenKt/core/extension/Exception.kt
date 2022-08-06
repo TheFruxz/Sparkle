@@ -9,9 +9,9 @@ import kotlin.random.Random
  * @author Fruxz
  * @since 1.0
  */
-fun catchException(exception: Exception) {
+fun catchException(exception: Exception, random: Random = Random) {
 
-	val exceptionIdentity = Random.nextInt(10000, 99999)
+	val exceptionIdentity = random.nextInt(10000, 99999)
 	val exceptionTag = "#$exceptionIdentity"
 	val exceptionShort = exception.stackTrace.firstOrNull()?.className ?: "Can't get short!"
 

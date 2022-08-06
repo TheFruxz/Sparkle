@@ -68,7 +68,7 @@ fun Structure.place(
 	mirror: Mirror = Mirror.NONE,
 	palette: Int = -1,
 	integrity: Percentage = 100.percent,
-	random: Random = Random.Default,
+	random: Random = Random,
 ): PlacedStructure {
 	place(location, includeEntities, structureRotation, mirror, palette, integrity.decimal.toFloat(), random.asJavaRandom())
 
@@ -83,7 +83,7 @@ fun Structure.place(
 	mirror: Mirror = Mirror.NONE,
 	palette: Int = -1,
 	integrity: Percentage = 100.percent,
-	random: Random = Random.Default,
+	random: Random = Random,
 ) = apply { place(regionAccessor, location, includeEntities, structureRotation, mirror, palette, integrity.decimal.toFloat(), random.asJavaRandom()) }
 
 fun Structure.getSecondCorner(firstCorner: Location, rotationOfThisStructure: StructureRotation, mirror: Mirror): Location {
