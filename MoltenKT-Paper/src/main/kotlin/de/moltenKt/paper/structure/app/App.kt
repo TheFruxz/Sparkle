@@ -33,6 +33,7 @@ import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.cache.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.CoroutineScope
@@ -560,6 +561,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit>, Namesp
 	 */
 	val httpClient by lazy {
 		HttpClient(CIO) {
+			install(HttpCache) // TODO create config preference, if caching in http client is enabled
 			install(ContentNegotiation) {
 				json(jsonBase)
 			}
