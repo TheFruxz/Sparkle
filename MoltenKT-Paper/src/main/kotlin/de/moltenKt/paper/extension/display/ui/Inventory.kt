@@ -7,6 +7,7 @@ import de.moltenKt.paper.tool.display.item.ItemLike
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
@@ -43,3 +44,16 @@ fun <T : Inventory> T.addItems(vararg items: Material) = addItem(*items.map { it
  * @since 1.0
  */
 val Inventory.center: Int get() = (size / 2) - 1
+
+/**
+ * This computational value returns the [InventoryClickEvent.getCurrentItem] or
+ * if this is null, the [InventoryClickEvent.getCursor] item.
+ * This should lead to the situation, that any time an item is touched (even if
+ * only laid into the inventory), the affected item is returned.
+ * Why? Because [InventoryClickEvent.getCurrentItem] is NOT returning the item
+ * in every case expected!
+ * @author Fruxz
+ * @since 1.0
+ */
+val InventoryClickEvent.affectedItem: ItemStack?
+	get() = currentItem ?: cursor

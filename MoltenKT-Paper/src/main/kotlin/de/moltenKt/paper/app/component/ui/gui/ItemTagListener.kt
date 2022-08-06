@@ -2,6 +2,7 @@ package de.moltenKt.paper.app.component.ui.gui
 
 import de.moltenKt.core.extension.container.mapCast
 import de.moltenKt.paper.app.MoltenCache
+import de.moltenKt.paper.extension.display.ui.affectedItem
 import de.moltenKt.paper.extension.display.ui.item
 import de.moltenKt.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.moltenKt.paper.structure.app.event.EventListener
@@ -22,7 +23,7 @@ internal class ItemTagListener : EventListener() {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onInventoryClick(event: InventoryClickEvent) {
         val actions = getAllActions<InventoryClickEvent>(ItemActionType.CLICK)
-        val item = event.currentItem?.takeIf { it.hasItemMeta() }?.item ?: event.cursor?.takeIf { it.hasItemMeta() }?.item
+        val item = event.affectedItem?.takeIf { it.hasItemMeta() }?.item
 
         if (item != null) {
             val itemActions = item.itemActionTags
