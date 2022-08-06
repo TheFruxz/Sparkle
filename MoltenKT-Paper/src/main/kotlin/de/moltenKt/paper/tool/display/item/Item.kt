@@ -77,7 +77,7 @@ data class Item(
 
 	constructor(itemStack: ItemStack) : this() {
 		material = itemStack.type
-		label = itemStack.itemMeta.displayName() ?: Component.empty()
+		label = itemStack.itemMeta?.displayName() ?: Component.empty()
 		size = itemStack.amount
 		lore = itemStack.lore() ?: emptyList()
 		damage = if (itemStack.itemMeta is Damageable) {
