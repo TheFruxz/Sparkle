@@ -54,7 +54,7 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:2.0.3")
     implementation("io.ktor:ktor-client-content-negotiation:2.0.3")
 
-    compileOnly("io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT") // PaperMC
+    compileOnly("io.papermc.paper:paper-api:1.19.1-R0.1-SNAPSHOT") // PaperMC
 
     // Shadow
 
@@ -63,9 +63,9 @@ dependencies {
     shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
     shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     shadow("org.slf4j:slf4j-api:2.0.0-alpha7")
-    shadow("org.jetbrains.exposed:exposed-core:0.38.2")
-    shadow("org.jetbrains.exposed:exposed-dao:0.38.2")
-    shadow("org.jetbrains.exposed:exposed-jdbc:0.38.2")
+    shadow("org.jetbrains.exposed:exposed-core:0.39.2")
+    shadow("org.jetbrains.exposed:exposed-dao:0.39.2")
+    shadow("org.jetbrains.exposed:exposed-jdbc:0.39.2")
    
     shadow("io.ktor:ktor-client-cio:2.0.2")
     shadow("io.ktor:ktor-client-core-jvm:2.0.2") // Ktor
