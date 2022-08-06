@@ -1,6 +1,8 @@
 package de.moltenKt.paper.tool.display.canvas
 
 import de.moltenKt.core.tool.smart.identification.Identifiable
+import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.core.tool.timing.calendar.TimeState
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.ui.buildInventory
 import de.moltenKt.paper.extension.display.ui.set
@@ -12,19 +14,25 @@ import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasRenderEvent
+import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRenderEngine.Companion
+import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRenderEngine.RenderTarget.GLOBAL
+import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRenderEngine.RenderTarget.USER
 import de.moltenKt.paper.tool.display.canvas.CanvasFlag.NO_OPEN
 import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
+import de.moltenKt.paper.tool.smart.KeyedIdentifiable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.key.Key
+import net.kyori.adventure.key.Keyed
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
+import kotlin.time.Duration
 
 /**
  * This class helps to easily create ui's for players.
@@ -42,18 +50,16 @@ import org.bukkit.inventory.Inventory
  * @since 1.0
  */
 open class Canvas(
-	open val key: Key,
+	override val identityKey: Key,
 	open val label: TextComponent = Component.empty(),
 	open val canvasSize: CanvasSize = CanvasSize.MEDIUM,
 	open val content: Map<Int, ItemLike> = emptyMap(),
 	open val flags: Set<CanvasFlag> = emptySet(),
 	open val openSoundEffect: SoundEffect? = null,
-) : Identifiable<Canvas> {
+	open val renderEngine: CanvasRenderEngine = CanvasRenderEngine.SINGLE_USE,
+) : KeyedIdentifiable<Canvas> {
 
-	override val identity: String
-		get() = key.asString()
-
-	open val onRender: CanvasRenderEvent.() -> Unit = { }
+	open val onRender: CanvasRenderer = CanvasRenderer {  }
 	open val onOpen: CanvasOpenEvent.() -> Unit = { }
 	open val onClose: CanvasCloseEvent.() -> Unit = { }
 	open val onClicks: List<CanvasClickEvent.() -> Unit> = emptyList()
@@ -167,11 +173,12 @@ open class Canvas(
 		content: Map<Int, ItemLike> = this.content,
 		panelFlags: Set<CanvasFlag> = this.flags,
 		openSoundEffect: SoundEffect? = this.openSoundEffect,
-		onRender: CanvasRenderEvent.() -> Unit = this.onRender,
+		renderEngine: CanvasRenderEngine = this.renderEngine,
+		onRender: CanvasRenderer = this.onRender,
 		onOpen: CanvasOpenEvent.() -> Unit = this.onOpen,
 		onClose: CanvasCloseEvent.() -> Unit = this.onClose,
 		onClicks: List<CanvasClickEvent.() -> Unit> = this.onClicks,
-	): MutableCanvas = MutableCanvas(key, label, canvasSize, content, panelFlags, openSoundEffect).apply {
+	): MutableCanvas = MutableCanvas(key, label, canvasSize, content, panelFlags, openSoundEffect, renderEngine).apply {
 		this.onRender = onRender
 		this.onOpen = onOpen
 		this.onClose = onClose
@@ -183,5 +190,40 @@ open class Canvas(
 		val onClose: CanvasCloseEvent.() -> Unit = { },
 		val onClicks: List<CanvasClickEvent.() -> Unit> = emptyList(),
 	)
+
+	fun interface CanvasRenderer {
+		fun CanvasRenderEvent.render()
+	}
+
+	interface CanvasRenderEngine {
+
+		val shelfLife: Duration
+
+		val target: RenderTarget
+
+		enum class RenderTarget {
+			GLOBAL, USER;
+		}
+
+		companion object {
+
+			val SINGLE_USE = object : CanvasRenderEngine {
+				override val shelfLife = Duration.INFINITE
+				override val target = USER
+			}
+
+			fun perTick(shelfLife: Duration) = object : CanvasRenderEngine {
+				override val shelfLife = shelfLife
+				override val target = GLOBAL
+			}
+
+			fun perUser(shelfLife: Duration) = object : CanvasRenderEngine {
+				override val shelfLife = shelfLife
+				override val target = USER
+			}
+
+		}
+
+	}
 
 }

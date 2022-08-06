@@ -1,13 +1,15 @@
 package de.moltenKt.paper.structure.app
 
 import de.moltenKt.core.extension.forceCast
+import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import net.kyori.adventure.key.Namespaced
 
-abstract class AppCompanion<T : App> : Identifiable<App> {
+abstract class AppCompanion<T : App> : Identifiable<App>, Namespaced {
 
 	/**
 	 * This value represents the current [App] instance.
@@ -52,5 +54,7 @@ abstract class AppCompanion<T : App> : Identifiable<App> {
 	 * @since 1.0
 	 */
 	abstract val predictedIdentity: Identity<T>
+
+	override fun namespace() = tryOrNull { identity.lowercase() } ?: predictedIdentity.identity.lowercase()
 
 }

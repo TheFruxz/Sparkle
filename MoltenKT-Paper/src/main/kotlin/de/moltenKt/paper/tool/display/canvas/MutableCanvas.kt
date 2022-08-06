@@ -6,6 +6,7 @@ import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasRenderEvent
+import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRenderEngine.Companion
 import de.moltenKt.paper.tool.display.canvas.design.AdaptiveCanvasCompose
 import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
@@ -28,15 +29,16 @@ import org.bukkit.inventory.ItemStack
  * @since 1.0
  */
 data class MutableCanvas(
-	override val key: Key,
+	override val identityKey: Key,
 	override var label: TextComponent = Component.empty(),
 	override val canvasSize: CanvasSize = CanvasSize.MEDIUM,
 	override var content: Map<Int, ItemLike> = emptyMap(),
 	override var flags: Set<CanvasFlag> = emptySet(),
 	override var openSoundEffect: SoundEffect? = null,
-) : Canvas(key, label, canvasSize, content, flags), Producible<Canvas>, AbstractBuilder<Canvas> {
+	override var renderEngine: CanvasRenderEngine = CanvasRenderEngine.SINGLE_USE,
+) : Canvas(identityKey, label, canvasSize, content, flags), Producible<Canvas>, AbstractBuilder<Canvas> {
 
-	override var onRender: CanvasRenderEvent.() -> Unit = { }
+	override var onRender: CanvasRenderer = CanvasRenderer {  }
 	override var onOpen: CanvasOpenEvent.() -> Unit = { }
 	override var onClose: CanvasCloseEvent.() -> Unit = { }
 	override var onClicks: List<CanvasClickEvent.() -> Unit> = emptyList()
@@ -190,12 +192,12 @@ data class MutableCanvas(
 		this.onClose = onClose
 	}
 
-	fun onRender(onRender: (CanvasRenderEvent) -> Unit) {
-		this.onRender = onRender
+	fun onRender(renderer: CanvasRenderer) {
+		this.onRender = renderer
 	}
 
-	fun onRenderWith(onRender: CanvasRenderEvent.() -> Unit) {
-		this.onRender = onRender
+	fun onRenderWith(renderer: CanvasRenderer) {
+		this.onRender = renderer
 	}
 
 	// Design

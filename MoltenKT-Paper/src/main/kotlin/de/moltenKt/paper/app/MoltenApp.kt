@@ -1,11 +1,14 @@
 package de.moltenKt.paper.app
 
+import com.destroystokyo.paper.MaterialTags
 import com.destroystokyo.paper.ParticleBuilder
 import de.moltenKt.core.extension.data.addJsonContextualConfiguration
 import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
+import de.moltenKt.core.extension.data.buildRandomTag
 import de.moltenKt.core.extension.data.fromJson
 import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.core.extension.forceCast
+import de.moltenKt.core.extension.math.shorter
 import de.moltenKt.core.extension.tryToIgnore
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.component.app.AppComponent
@@ -30,11 +33,16 @@ import de.moltenKt.paper.app.interchange.MoltenKtInterchange
 import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
+import de.moltenKt.paper.extension.display.ui.affectedItem
+import de.moltenKt.paper.extension.display.ui.item
+import de.moltenKt.paper.extension.display.ui.set
+import de.moltenKt.paper.extension.display.ui.skull
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
 import de.moltenKt.paper.extension.paper.asPlayer
 import de.moltenKt.paper.extension.paper.location
 import de.moltenKt.paper.extension.paper.place
+import de.moltenKt.paper.extension.tasky.asSync
 import de.moltenKt.paper.extension.tasky.doSync
 import de.moltenKt.paper.mojang.MojangProfile
 import de.moltenKt.paper.mojang.MojangProfileCape
@@ -45,11 +53,13 @@ import de.moltenKt.paper.mojang.MojangProfileUsernameHistoryEntry
 import de.moltenKt.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.AppCompanion
+import de.moltenKt.paper.tool.annotation.Prototype
 import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.json.JsonConfiguration
 import de.moltenKt.paper.tool.data.json.JsonFileDataElement
 import de.moltenKt.paper.tool.data.json.serializer.*
 import de.moltenKt.paper.tool.display.canvas.CanvasFlag.*
+import de.moltenKt.paper.tool.display.canvas.buildCanvas
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.display.world.ChunkLocation
@@ -71,12 +81,15 @@ import de.moltenKt.paper.tool.position.relative.LinearShape
 import de.moltenKt.paper.tool.position.relative.PyramidalShape
 import de.moltenKt.paper.tool.position.relative.Shape
 import de.moltenKt.paper.tool.position.relative.SphereShape
+import de.moltenKt.unfold.extension.asComponent
+import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -92,6 +105,7 @@ import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import java.util.UUID
 import java.util.logging.Level
+import kotlin.math.round
 
 class MoltenApp : App() {
 
@@ -172,6 +186,7 @@ class MoltenApp : App() {
 
 	}
 
+	@OptIn(Prototype::class)
 	override suspend fun hello() {
 
 		debugMode = MoltenData.systemConfig.debugMode
@@ -232,6 +247,67 @@ class MoltenApp : App() {
 		add(PlaygroundInterchange())
 
 		add(AppComponent())
+
+		buildAndRegisterSandBox(this, "asyncItem") {
+
+			var amount = 0
+
+			repeat(10_000) { first ->
+
+				println("${round((first.toDouble() / 10_000) * 100).toInt()}%")
+
+				buildCanvas(Key.key("test:test")) {
+
+					repeat(1_000) {
+						this[1..10] = MaterialTags.CONCRETES.values.random().item {
+							asyncEngine(true)
+						}
+					}
+
+					onOpen {
+						amount++
+						println("Opened! $amount")
+					}
+
+				}.display(executor.asPlayer)
+
+			}
+
+		}
+
+		buildAndRegisterSandBox(this, "simulateComplexUI") {
+
+			buildCanvas(Key.key(MoltenApp, "test")) {
+
+				this[0..8] = Material.IRON_AXE.item {
+					asyncEngine(true)
+					label = "Test-Item".asComponent
+				}
+
+				this[9..17] = Material.IRON_AXE.item {
+					asyncEngine(true)
+					label = "Test-Item".asComponent
+					dataPut(NamespacedKey(MoltenApp.instance, "test"), "test")
+
+					this.onClick {
+						it.whoClicked.sendMessage("test: ${it.affectedItem?.item?.dataGet(NamespacedKey(MoltenApp.instance, "test"))}")
+					}
+
+				}
+
+				onOpen { event ->
+
+					event.inventory[18..22] = skull("GommeHD").apply {
+
+						label = buildRandomTag().asComponent
+
+					}
+
+				}
+
+			}.display(executor.asPlayer)
+
+		}
 
 	}
 

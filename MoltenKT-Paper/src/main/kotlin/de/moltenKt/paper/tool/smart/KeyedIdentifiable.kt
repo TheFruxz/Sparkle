@@ -3,8 +3,10 @@ package de.moltenKt.paper.tool.smart
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.structure.app.App
 import net.kyori.adventure.key.Key
+import org.bukkit.Keyed
+import org.bukkit.NamespacedKey
 
-interface KeyedIdentifiable<T> : VendorsIdentifiable<T>, Key {
+interface KeyedIdentifiable<T> : VendorsIdentifiable<T>, Key, Keyed {
 
     val identityKey: Key
 
@@ -22,5 +24,7 @@ interface KeyedIdentifiable<T> : VendorsIdentifiable<T>, Key {
     override fun value(): String = identityKey.value()
 
     override fun asString(): String = identityKey.asString()
+
+    override fun getKey() = NamespacedKey.fromString(asString())!!
 
 }
