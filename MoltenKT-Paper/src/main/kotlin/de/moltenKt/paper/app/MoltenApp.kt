@@ -297,7 +297,7 @@ class MoltenApp : App() {
 
 				onOpen { event ->
 
-					event.inventory[18..22] = skull("GommeHD").apply {
+					event.inventory[18..26] = skull("GommeHD").apply {
 
 						label = buildRandomTag().asComponent
 
