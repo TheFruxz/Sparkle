@@ -67,11 +67,11 @@ dependencies {
     shadow("org.jetbrains.exposed:exposed-dao:0.39.2")
     shadow("org.jetbrains.exposed:exposed-jdbc:0.39.2")
    
-    shadow("io.ktor:ktor-client-cio:2.0.2")
-    shadow("io.ktor:ktor-client-core-jvm:2.0.2") // Ktor
-    shadow("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
+    shadow("io.ktor:ktor-client-cio:2.0.3")
+    shadow("io.ktor:ktor-client-core-jvm:2.0.3") // Ktor
+    shadow("io.ktor:ktor-serialization-kotlinx-json:2.0.3")
 
-    shadow("io.ktor:ktor-client-content-negotiation:2.0.2")
+    shadow("io.ktor:ktor-client-content-negotiation:2.0.3")
 
     shadow("net.kyori:adventure-api:4.11.0")
     shadow("net.kyori:adventure-text-serializer-legacy:4.11.0")
