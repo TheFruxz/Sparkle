@@ -1,8 +1,5 @@
 package de.moltenKt.paper.tool.display.canvas
 
-import de.moltenKt.core.tool.smart.identification.Identifiable
-import de.moltenKt.core.tool.timing.calendar.Calendar
-import de.moltenKt.core.tool.timing.calendar.TimeState
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.ui.buildInventory
 import de.moltenKt.paper.extension.display.ui.set
@@ -10,23 +7,23 @@ import de.moltenKt.paper.extension.effect.playSoundEffect
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.extension.tasky.asSync
+import de.moltenKt.paper.extension.tasky.doAsync
 import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasRenderEvent
-import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRenderEngine.Companion
 import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRenderEngine.RenderTarget.GLOBAL
 import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRenderEngine.RenderTarget.USER
 import de.moltenKt.paper.tool.display.canvas.CanvasFlag.NO_OPEN
 import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.smart.KeyedIdentifiable
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.key.Key
-import net.kyori.adventure.key.Keyed
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.HumanEntity
@@ -57,9 +54,10 @@ open class Canvas(
 	open val flags: Set<CanvasFlag> = emptySet(),
 	open val openSoundEffect: SoundEffect? = null,
 	open val renderEngine: CanvasRenderEngine = CanvasRenderEngine.SINGLE_USE,
+	open val asyncItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
 ) : KeyedIdentifiable<Canvas> {
 
-	open val onRender: CanvasRenderer = CanvasRenderer {  }
+	open val onRender: CanvasRender = CanvasRender {  }
 	open val onOpen: CanvasOpenEvent.() -> Unit = { }
 	open val onClose: CanvasCloseEvent.() -> Unit = { }
 	open val onClicks: List<CanvasClickEvent.() -> Unit> = emptyList()
@@ -134,6 +132,7 @@ open class Canvas(
 
 				CanvasRenderEvent(receiver, this@Canvas, localInstance, false).let { event ->
 					event.callEvent()
+					event.apply(onRender::render)
 					localInstance = event.renderResult
 				}
 
@@ -146,9 +145,13 @@ open class Canvas(
 							CanvasSessionManager.putSession(receiver, key, data)
 						}
 
-						if (triggerSound) openSoundEffect?.let { receiver.playSoundEffect(it) }
+						asyncItems.forEach { (key, value) ->
+							doAsync { localInstance.setItem(key, value.await().asItemStack()) }
+						}
 
-						onOpen(event)
+						event.apply(onOpen)
+
+						if (triggerSound) openSoundEffect?.let { receiver.playSoundEffect(it) }
 
 					} else {
 						return@forEach
@@ -174,7 +177,7 @@ open class Canvas(
 		panelFlags: Set<CanvasFlag> = this.flags,
 		openSoundEffect: SoundEffect? = this.openSoundEffect,
 		renderEngine: CanvasRenderEngine = this.renderEngine,
-		onRender: CanvasRenderer = this.onRender,
+		onRender: CanvasRender = this.onRender,
 		onOpen: CanvasOpenEvent.() -> Unit = this.onOpen,
 		onClose: CanvasCloseEvent.() -> Unit = this.onClose,
 		onClicks: List<CanvasClickEvent.() -> Unit> = this.onClicks,
@@ -191,8 +194,8 @@ open class Canvas(
 		val onClicks: List<CanvasClickEvent.() -> Unit> = emptyList(),
 	)
 
-	fun interface CanvasRenderer {
-		fun CanvasRenderEvent.render()
+	fun interface CanvasRender {
+		fun render(event: CanvasRenderEvent)
 	}
 
 	interface CanvasRenderEngine {

@@ -1,15 +1,17 @@
 package de.moltenKt.paper.tool.display.canvas
 
 import de.moltenKt.core.tool.smart.Producible
+import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
-import de.moltenKt.paper.runtime.event.canvas.CanvasRenderEvent
-import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRenderEngine.Companion
 import de.moltenKt.paper.tool.display.canvas.design.AdaptiveCanvasCompose
 import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import net.kyori.adventure.builder.AbstractBuilder
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
@@ -36,9 +38,10 @@ data class MutableCanvas(
 	override var flags: Set<CanvasFlag> = emptySet(),
 	override var openSoundEffect: SoundEffect? = null,
 	override var renderEngine: CanvasRenderEngine = CanvasRenderEngine.SINGLE_USE,
+	override var asyncItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
 ) : Canvas(identityKey, label, canvasSize, content, flags), Producible<Canvas>, AbstractBuilder<Canvas> {
 
-	override var onRender: CanvasRenderer = CanvasRenderer {  }
+	override var onRender: CanvasRender = CanvasRender {  }
 	override var onOpen: CanvasOpenEvent.() -> Unit = { }
 	override var onClose: CanvasCloseEvent.() -> Unit = { }
 	override var onClicks: List<CanvasClickEvent.() -> Unit> = emptyList()
@@ -50,33 +53,68 @@ data class MutableCanvas(
 			content -= slot
 	}
 
+	fun setDeferred(slot: Int, itemLikeProcess: suspend CoroutineScope.() -> ItemLike) {
+		asyncItems += slot to MoltenApp.coroutineScope.async(block = itemLikeProcess)
+	}
+
 	operator fun set(slots: Iterable<Int>, itemLike: ItemLike?) =
 		slots.forEach { set(it, itemLike) }
 
+	fun setDeferred(slots: Iterable<Int>, process: suspend CoroutineScope.() -> ItemLike) =
+		slots.forEach { setDeferred(it, process) }
+
 	operator fun set(vararg slots: Int, itemLike: ItemLike?) =
 		set(slots.toList(), itemLike)
+
+	fun setDeferred(vararg slots: Int, process: suspend CoroutineScope.() -> ItemLike) =
+		setDeferred(slots.toList(), process)
+
 
 	// ItemStack support
 
 	operator fun set(slot: Int, itemStack: ItemStack?) =
 		set(slot, itemStack?.let { ItemLike.of(it) })
 
+	@JvmName("asyncItemStack")
+	fun setDeferred(slot: Int, itemStackProcess: suspend CoroutineScope.() -> ItemStack): Unit =
+		setDeferred(slot, itemLikeProcess = { ItemLike.of(itemStackProcess.invoke(this)) })
+
 	operator fun set(slots: Iterable<Int>, itemStack: ItemStack?) =
 		set(slots, itemStack?.let { ItemLike.of(it) })
 
+	@JvmName("asyncItemStack")
+	fun setDeferred(slots: Iterable<Int>, itemStackProcess: suspend CoroutineScope.() -> ItemStack): Unit =
+		slots.forEach { setDeferred(it, itemStackProcess) }
+
 	operator fun set(vararg slots: Int, itemStack: ItemStack?) =
 		set(slots.toList(), itemStack?.let { ItemLike.of(it) })
+
+	@JvmName("asyncItemStack")
+	fun setDeferred(vararg slots: Int, itemStackProcess: suspend CoroutineScope.() -> ItemStack): Unit =
+		setDeferred(slots.toList(), itemStackProcess)
 
 	// Material support
 
 	operator fun set(slot: Int, material: Material?) =
 		set(slot, material?.let { ItemLike.of(it) })
 
+	@JvmName("asyncMaterial")
+	fun setDeferred(slot: Int, materialProcess: suspend CoroutineScope.() -> Material): Unit =
+		setDeferred(slot, itemLikeProcess = { ItemLike.of(materialProcess.invoke(this)) })
+
 	operator fun set(slots: Iterable<Int>, material: Material?) =
 		set(slots, material?.let { ItemLike.of(it) })
 
+	@JvmName("asyncMaterial")
+	fun setDeferred(slots: Iterable<Int>, materialProcess: suspend CoroutineScope.() -> Material): Unit =
+		slots.forEach { setDeferred(it, materialProcess) }
+
 	operator fun set(vararg slots: Int, material: Material?) =
 		set(slots.toList(), material?.let { ItemLike.of(it) })
+
+	@JvmName("asyncMaterial")
+	fun setDeferred(vararg slots: Int, materialProcess: suspend CoroutineScope.() -> Material): Unit =
+		setDeferred(slots.toList(), materialProcess)
 
 	// Adaptive support
 
@@ -192,11 +230,11 @@ data class MutableCanvas(
 		this.onClose = onClose
 	}
 
-	fun onRender(renderer: CanvasRenderer) {
+	fun onRender(renderer: CanvasRender) {
 		this.onRender = renderer
 	}
 
-	fun onRenderWith(renderer: CanvasRenderer) {
+	fun onRenderWith(renderer: CanvasRender) {
 		this.onRender = renderer
 	}
 

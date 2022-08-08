@@ -58,6 +58,7 @@ import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.json.JsonConfiguration
 import de.moltenKt.paper.tool.data.json.JsonFileDataElement
 import de.moltenKt.paper.tool.data.json.serializer.*
+import de.moltenKt.paper.tool.display.canvas.Canvas
 import de.moltenKt.paper.tool.display.canvas.CanvasFlag.*
 import de.moltenKt.paper.tool.display.canvas.buildCanvas
 import de.moltenKt.paper.tool.display.item.Modification
@@ -295,14 +296,12 @@ class MoltenApp : App() {
 
 				}
 
-				onOpen { event ->
+				setDeferred(18..26, process = {
+					skull("GommeHD")
+				})
 
-					event.inventory[18..26] = skull("GommeHD").apply {
-
-						label = buildRandomTag().asComponent
-
-					}
-
+				onRender { event ->
+					event.player.sendMessage("The renderer attached to the canvas has been run inside the renderer process")
 				}
 
 			}.display(executor.asPlayer)
