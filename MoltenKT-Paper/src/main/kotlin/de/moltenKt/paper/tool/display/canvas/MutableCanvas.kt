@@ -135,33 +135,69 @@ data class MutableCanvas(
 		set(innerSlots[innerSlot], itemLike)
 	}
 
+	fun setInnerDeferred(innerSlot: Int, itemLikeProcess: suspend CoroutineScope.() -> ItemLike) {
+		if (innerSlot !in availableInnerSlots) throw IndexOutOfBoundsException("The inner slot $innerSlot is not available in this canvas.")
+
+		setDeferred(innerSlots[innerSlot], itemLikeProcess)
+	}
+
 	fun setInner(innerSlots: Iterable<Int>, itemLike: ItemLike?) =
 		innerSlots.forEach { setInner(it, itemLike) }
 
+	fun setInnerDeferred(innerSlots: Iterable<Int>, itemLikeProcess: suspend CoroutineScope.() -> ItemLike) =
+		innerSlots.forEach { setInnerDeferred(it, itemLikeProcess) }
+
 	fun setInner(vararg innerSlots: Int, itemLike: ItemLike?) =
 		setInner(innerSlots.toList(), itemLike)
+
+	fun setInnerDeferred(vararg innerSlots: Int, itemLikeProcess: suspend CoroutineScope.() -> ItemLike) =
+		setInnerDeferred(innerSlots.toList(), itemLikeProcess)
 
 	// Inner ItemStack support
 
 	fun setInner(innerSlot: Int, itemStack: ItemStack?) =
 		setInner(innerSlot, itemStack?.let { ItemLike.of(it) })
 
+	@JvmName("asyncInnerItemStack")
+	fun setInnerDeferred(innerSlot: Int, itemStackProcess: suspend CoroutineScope.() -> ItemStack): Unit =
+		setInnerDeferred(innerSlot, itemLikeProcess = { ItemLike.of(itemStackProcess.invoke(this)) })
+
 	fun setInner(innerSlots: Iterable<Int>, itemStack: ItemStack?) =
 		setInner(innerSlots, itemStack?.let { ItemLike.of(it) })
 
+	@JvmName("asyncInnerItemStack")
+	fun setInnerDeferred(innerSlots: Iterable<Int>, itemStackProcess: suspend CoroutineScope.() -> ItemStack): Unit =
+		innerSlots.forEach { setInnerDeferred(it, itemStackProcess) }
+
 	fun setInner(vararg innerSlots: Int, itemStack: ItemStack?) =
 		setInner(innerSlots.toList(), itemStack?.let { ItemLike.of(it) })
+
+	@JvmName("asyncInnerItemStack")
+	fun setInnerDeferred(vararg innerSlots: Int, itemStackProcess: suspend CoroutineScope.() -> ItemStack): Unit =
+		setInnerDeferred(innerSlots.toList(), itemStackProcess)
 
 	// Inner Material support
 
 	fun setInner(innerSlot: Int, material: Material?) =
 		setInner(innerSlot, material?.let { ItemLike.of(it) })
 
+	@JvmName("asyncInnerMaterial")
+	fun setInnerDeferred(innerSlot: Int, materialProcess: suspend CoroutineScope.() -> Material): Unit =
+		setInnerDeferred(innerSlot, itemLikeProcess = { ItemLike.of(materialProcess.invoke(this)) })
+
 	fun setInner(innerSlots: Iterable<Int>, material: Material?) =
 		setInner(innerSlots, material?.let { ItemLike.of(it) })
 
+	@JvmName("asyncInnerMaterial")
+	fun setInnerDeferred(innerSlots: Iterable<Int>, materialProcess: suspend CoroutineScope.() -> Material): Unit =
+		innerSlots.forEach { setInnerDeferred(it, materialProcess) }
+
 	fun setInner(vararg innerSlots: Int, material: Material?) =
 		setInner(innerSlots.toList(), material?.let { ItemLike.of(it) })
+
+	@JvmName("asyncInnerMaterial")
+	fun setInnerDeferred(vararg innerSlots: Int, materialProcess: suspend CoroutineScope.() -> Material): Unit =
+		setInnerDeferred(innerSlots.toList(), materialProcess)
 
 	// Inner Adaptive support
 

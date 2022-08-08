@@ -87,6 +87,7 @@ import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
@@ -107,6 +108,7 @@ import org.bukkit.util.Vector
 import java.util.UUID
 import java.util.logging.Level
 import kotlin.math.round
+import kotlin.time.Duration.Companion.seconds
 
 class MoltenApp : App() {
 
@@ -248,65 +250,6 @@ class MoltenApp : App() {
 		add(PlaygroundInterchange())
 
 		add(AppComponent())
-
-		buildAndRegisterSandBox(this, "asyncItem") {
-
-			var amount = 0
-
-			repeat(10_000) { first ->
-
-				println("${round((first.toDouble() / 10_000) * 100).toInt()}%")
-
-				buildCanvas(Key.key("test:test")) {
-
-					repeat(1_000) {
-						this[1..10] = MaterialTags.CONCRETES.values.random().item {
-							asyncEngine(true)
-						}
-					}
-
-					onOpen {
-						amount++
-						println("Opened! $amount")
-					}
-
-				}.display(executor.asPlayer)
-
-			}
-
-		}
-
-		buildAndRegisterSandBox(this, "simulateComplexUI") {
-
-			buildCanvas(Key.key(MoltenApp, "test")) {
-
-				this[0..8] = Material.IRON_AXE.item {
-					asyncEngine(true)
-					label = "Test-Item".asComponent
-				}
-
-				this[9..17] = Material.IRON_AXE.item {
-					asyncEngine(true)
-					label = "Test-Item".asComponent
-					dataPut(NamespacedKey(MoltenApp.instance, "test"), "test")
-
-					this.onClick {
-						it.whoClicked.sendMessage("test: ${it.affectedItem?.item?.dataGet(NamespacedKey(MoltenApp.instance, "test"))}")
-					}
-
-				}
-
-				setDeferred(18..26, process = {
-					skull("GommeHD")
-				})
-
-				onRender { event ->
-					event.player.sendMessage("The renderer attached to the canvas has been run inside the renderer process")
-				}
-
-			}.display(executor.asPlayer)
-
-		}
 
 	}
 

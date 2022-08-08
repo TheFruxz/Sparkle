@@ -6,8 +6,8 @@ import de.moltenKt.paper.extension.display.ui.set
 import de.moltenKt.paper.extension.effect.playSoundEffect
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.extension.system
+import de.moltenKt.paper.extension.tasky.asAsync
 import de.moltenKt.paper.extension.tasky.asSync
-import de.moltenKt.paper.extension.tasky.doAsync
 import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
@@ -21,6 +21,7 @@ import de.moltenKt.paper.tool.smart.KeyedIdentifiable
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.key.Key
@@ -29,7 +30,9 @@ import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.ItemStack
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * This class helps to easily create ui's for players.
@@ -61,6 +64,7 @@ open class Canvas(
 	open val onOpen: CanvasOpenEvent.() -> Unit = { }
 	open val onClose: CanvasCloseEvent.() -> Unit = { }
 	open val onClicks: List<CanvasClickEvent.() -> Unit> = emptyList()
+	open val onFinishedDeferred: List<Deferred<ItemStack>>.() -> Unit = { }
 
 	private val computedInnerSlots: List<Int> by lazy {
 		mutableListOf<Int>().apply {
@@ -132,7 +136,7 @@ open class Canvas(
 
 				CanvasRenderEvent(receiver, this@Canvas, localInstance, false).let { event ->
 					event.callEvent()
-					event.apply(onRender::render)
+					event.apply { onRender.render(this) }
 					localInstance = event.renderResult
 				}
 
@@ -145,8 +149,25 @@ open class Canvas(
 							CanvasSessionManager.putSession(receiver, key, data)
 						}
 
-						asyncItems.forEach { (key, value) ->
-							doAsync { localInstance.setItem(key, value.await().asItemStack()) }
+						asyncItems.map { (key, value) ->
+							asAsync {
+								val result = value.await().asItemStack()
+
+								localInstance.setItem(key, result)
+
+								result
+							}
+						}.let { result ->
+							system.coroutineScope.launch {
+								while (true) {
+									if (result.none { it.isActive }) {
+										onFinishedDeferred.invoke(result)
+										cancel()
+										break
+									}
+									delay(.1.seconds)
+								}
+							}
 						}
 
 						event.apply(onOpen)
@@ -195,7 +216,7 @@ open class Canvas(
 	)
 
 	fun interface CanvasRender {
-		fun render(event: CanvasRenderEvent)
+		suspend fun render(event: CanvasRenderEvent)
 	}
 
 	interface CanvasRenderEngine {
