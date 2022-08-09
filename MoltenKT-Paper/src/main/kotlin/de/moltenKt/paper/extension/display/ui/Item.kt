@@ -89,21 +89,27 @@ fun item(itemStack: ItemStack) = itemStack.item
  * If the [httpRequest] parameter is set to true, the player's skin will be fetched from the Mojang API.
  * If the [httpRequest] parameter is set to false, the player's skin will be fetched from the server.
  * @see getMojangProfile
- * @param owner the name or uuid of the player
+ * @param ownerName the name or uuid of the player
  * @param httpRequest if true, the player's skin will be fetched from the Mojang API, otherwise from the server
  * @param timeout time allowed, before the http request is aborted (useful if mojang is down again)
  * @return the created [Item]
  * @author Fruxz
  * @since 1.0
  */
-fun skull(owner: String, httpRequest: Boolean = true, timeout: Duration = 5.seconds) = Material.PLAYER_HEAD.item {
+fun skull(ownerName: String, httpRequest: Boolean = true, timeout: Duration = 5.seconds): Item = Material.PLAYER_HEAD.item {
 
-	runBlocking { withTimeoutOrNull(timeout) { offlinePlayer(owner).name } }?.let { label = text(it).color(NamedTextColor.YELLOW) }
+	runBlocking { withTimeoutOrNull(timeout) { offlinePlayer(ownerName).name } }?.let { label = text(it).color(NamedTextColor.YELLOW) }
 
 	skullQuirk {
 
 		if (httpRequest) {
-			val ownerProfile = tryOrNull { runBlocking { withTimeoutOrNull(timeout) { getMojangProfile(owner) } } }
+			val ownerProfile = tryOrNull {
+				runBlocking {
+					withTimeoutOrNull(timeout) {
+						getMojangProfile(ownerName)
+					}
+				}
+			}
 
 			owningPlayer = offlinePlayer("MHF_Question")
 
@@ -116,7 +122,7 @@ fun skull(owner: String, httpRequest: Boolean = true, timeout: Duration = 5.seco
 				playerProfile!!.complete(true, true)
 			}
 		} else
-			owningPlayer = offlinePlayer(owner)
+			owningPlayer = offlinePlayer(ownerName)
 
 	}
 }
@@ -133,29 +139,8 @@ fun skull(owner: String, httpRequest: Boolean = true, timeout: Duration = 5.seco
  * @author Fruxz
  * @since 1.0
  */
-fun skull(owner: UUID, httpRequest: Boolean = true, timeout: Duration = 5.seconds) = Material.PLAYER_HEAD.item {
-
-	runBlocking { withTimeoutOrNull(timeout) { offlinePlayer(owner).name } }?.let { label = text(it).color(NamedTextColor.YELLOW) }
-
-	skullQuirk {
-
-		if (httpRequest) {
-			val ownerProfile = tryOrNull { runBlocking { withTimeoutOrNull(timeout) { getMojangProfile(owner) } } }
-
-			owningPlayer = offlinePlayer("MHF_Question")
-
-			if (ownerProfile != null) {
-				playerProfile = playerProfile!!.apply {
-					setTextures(textures.apply {
-						this.skin = url(ownerProfile.textures.skin.url)
-					})
-				}
-				playerProfile!!.complete(true, true)
-			}
-		} else
-			owningPlayer = offlinePlayer(owner)
-	}
-}
+fun skull(ownerUUID: UUID, httpRequest: Boolean = true, timeout: Duration = 5.seconds): Item =
+	skull(ownerName = "$ownerUUID", httpRequest, timeout)
 
 /**
  * This function creates a new [Item] with a [Material.PLAYER_HEAD].

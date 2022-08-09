@@ -33,12 +33,14 @@ import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.cache.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.kyori.adventure.key.Namespaced
 import org.bukkit.command.PluginCommand
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerializable
@@ -88,7 +90,7 @@ import kotlin.time.measureTime
  * @see de.moltenKt.paper.app.MoltenApp
  * @constructor abstract
  */
-abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
+abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit>, Namespaced {
 
 	// parameters
 
@@ -160,6 +162,8 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 
 	override val identity: String
 		get() = appIdentity
+
+	override fun namespace() = appIdentity.lowercase()
 
 	internal var loadTime: Duration? = null
 
@@ -557,6 +561,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit> {
 	 */
 	val httpClient by lazy {
 		HttpClient(CIO) {
+			install(HttpCache) // TODO create config preference, if caching in http client is enabled
 			install(ContentNegotiation) {
 				json(jsonBase)
 			}

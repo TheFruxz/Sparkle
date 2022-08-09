@@ -4,6 +4,7 @@ import de.moltenKt.core.extension.data.buildRandomTag
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.tool.smart.Producible
 import de.moltenKt.core.tool.smart.identification.Identifiable
+import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.ui.changeColor
 import de.moltenKt.paper.extension.system
@@ -110,13 +111,6 @@ data class Item(
 			quirk = Quirk.empty
 	}
 
-	private var asyncEngine: Boolean = false
-
-	@Prototype
-	fun asyncEngine(use: Boolean = !asyncEngine) {
-		asyncEngine = use
-	}
-
 	val identityNamespace = NamespacedKey(system, "itemIdentity")
 
 	val actionsNamespace = NamespacedKey(system, "itemActions")
@@ -158,114 +152,68 @@ data class Item(
 
 	override fun asItemStack(): ItemStack = produce()
 
-	override fun produce(): ItemStack = if (asyncEngine) {
-		runBlocking {
-			val itemMeta = produceItemMeta()
-
-			withContext(Dispatchers.Default) {
-				@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
-				val persistentData = mutableMapOf<Pair<NamespacedKey, PersistentDataType<*, *>>, Any>()
-
-				if (itemMeta != null) {
-
-					modificationsToEnchantments(modifications).forEach { (key, value) ->
-						itemMeta.addEnchant(key, value, true)
-					}
-
-					if (postProperties.contains(NO_ENCHANTMENTS)) itemMeta.addItemFlags(HIDE_ENCHANTS)
-
-					itemMeta.addItemFlags(*flags.toTypedArray())
-
-					if (!postProperties.contains(NO_IDENTITY))
-						persistentData[identityNamespace to PersistentDataType.STRING] = this@Item.identity
-
-					if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
-
-					if (itemActionTags.isNotEmpty()) persistentData[actionsNamespace to PersistentDataType.STRING] =
-						itemActionTags.joinToString("|") { it.identity }
-
-					fun <I, O : Any> place(namespacedKey: NamespacedKey, persistentDataType: PersistentDataType<I, O>, value: Any) {
-						runBlocking {
-							try {
-								itemMeta.persistentDataContainer.set(namespacedKey, persistentDataType, value.forceCast())
-							} catch (e: ConcurrentModificationException) {
-								debugLog("Saving data '$value' under '$namespacedKey' in item '$identity' failed, (PRODUCING) retrying in 0.1 seconds...")
-								delay(.1.seconds)
-								place(namespacedKey, persistentDataType, value)
-							}
-						}
-					}
-
-					persistentData.forEach { (key, value) ->
-						place(key.first, key.second, value)
-					}
-
-					if (!postProperties.contains(NO_DATA) && data.isNotEmpty())
-						itemMeta.persistentDataContainer.apply(itemStoreApplier)
-
-					itemStack.itemMeta = itemMeta
-
-				}
-
-				itemStack = itemStack.apply(quirk.itemStackProcessing)
-
-				if (postProperties.contains(BLANK_DATA)) itemStack.addItemFlags(*ItemFlag.values())
-
-				productionPlugins.forEach {
-					itemStack = itemStack.apply(it)
-				}
-
-				itemStack
-			}
-		}
-	} else {
+	override fun produce(): ItemStack = runBlocking {
 		val itemMeta = produceItemMeta()
 
-		@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
-		val persistentData = mutableMapOf<Pair<NamespacedKey, PersistentDataType<*, *>>, Any>()
+		withContext(MoltenApp.coroutineScope.coroutineContext) {
+			@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
+			val persistentData = mutableMapOf<Pair<NamespacedKey, PersistentDataType<*, *>>, Any>()
 
-		if (itemMeta != null) {
+			if (itemMeta != null) {
 
-			modificationsToEnchantments(modifications).forEach { (key, value) ->
-				itemMeta.addEnchant(key, value, true)
+				modificationsToEnchantments(modifications).forEach { (key, value) ->
+					itemMeta.addEnchant(key, value, true)
+				}
+
+				if (postProperties.contains(NO_ENCHANTMENTS)) itemMeta.addItemFlags(HIDE_ENCHANTS)
+
+				itemMeta.addItemFlags(*flags.toTypedArray())
+
+				if (!postProperties.contains(NO_IDENTITY))
+					persistentData[identityNamespace to PersistentDataType.STRING] = this@Item.identity
+
+				if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
+
+				if (itemActionTags.isNotEmpty()) persistentData[actionsNamespace to PersistentDataType.STRING] =
+					itemActionTags.joinToString("|") { it.identity }
+
+				fun <I, O : Any> place(
+					namespacedKey: NamespacedKey,
+					persistentDataType: PersistentDataType<I, O>,
+					value: Any
+				) {
+					runBlocking {
+						try {
+							itemMeta.persistentDataContainer.set(namespacedKey, persistentDataType, value.forceCast())
+						} catch (e: ConcurrentModificationException) {
+							debugLog("Saving data '$value' under '$namespacedKey' in item '$identity' failed, (PRODUCING) retrying in 0.1 seconds...")
+							delay(.1.seconds)
+							place(namespacedKey, persistentDataType, value)
+						}
+					}
+				}
+
+				persistentData.forEach { (key, value) ->
+					place(key.first, key.second, value)
+				}
+
+				if (!postProperties.contains(NO_DATA) && data.isNotEmpty())
+					itemMeta.persistentDataContainer.apply(itemStoreApplier)
+
+				itemStack.itemMeta = itemMeta
+
 			}
 
-			if (postProperties.contains(NO_ENCHANTMENTS)) itemMeta.addItemFlags(HIDE_ENCHANTS)
+			itemStack = itemStack.apply(quirk.itemStackProcessing)
 
-			itemMeta.addItemFlags(*flags.toTypedArray())
+			if (postProperties.contains(BLANK_DATA)) itemStack.addItemFlags(*ItemFlag.values())
 
-			if (!postProperties.contains(NO_IDENTITY))
-				persistentData[identityNamespace to PersistentDataType.STRING] = this@Item.identity
-
-			if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
-
-			if (itemActionTags.isNotEmpty()) persistentData[actionsNamespace to PersistentDataType.STRING] =
-				itemActionTags.joinToString("|") { it.identity }
-
-			fun <I, O : Any> place(namespacedKey: NamespacedKey, persistentDataType: PersistentDataType<I, O>, value: Any) {
-				itemMeta.persistentDataContainer.set(namespacedKey, persistentDataType, value.forceCast())
+			productionPlugins.forEach {
+				itemStack = itemStack.apply(it)
 			}
 
-			persistentData.forEach { (key, value) ->
-				place(key.first, key.second, value)
-			}
-
-			if (!postProperties.contains(NO_DATA) && data.isNotEmpty())
-				itemMeta.persistentDataContainer.apply(itemStoreApplier)
-
-			itemStack.itemMeta = itemMeta
-
+			itemStack
 		}
-
-		itemStack = itemStack.apply(quirk.itemStackProcessing)
-
-		if (postProperties.contains(BLANK_DATA)) itemStack.addItemFlags(*ItemFlag.values())
-
-		productionPlugins.forEach {
-			itemStack = itemStack.apply(it)
-		}
-
-		itemStack
 	}
 
 	fun spawn(location: Location) = location.world.dropItem(location, produce())

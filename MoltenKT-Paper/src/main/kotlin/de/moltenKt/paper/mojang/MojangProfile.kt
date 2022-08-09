@@ -4,28 +4,26 @@ import com.destroystokyo.paper.profile.PlayerProfile
 import com.destroystokyo.paper.profile.ProfileProperty
 import de.moltenKt.paper.extension.paper.offlinePlayer
 import de.moltenKt.paper.extension.system
-import de.moltenKt.paper.extension.tasky.asAsync
+import de.moltenKt.paper.extension.tasky.doAsync
 import de.moltenKt.paper.tool.display.item.Item
 import de.moltenKt.paper.tool.display.item.quirk.Quirk
 import kotlinx.coroutines.launch
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.SkullMeta
 
 @Serializable
-@SerialName("MojangProfile")
 @Suppress("DEPRECATION")
 data class MojangProfile(
-	val created_at: String?,
-	val textures: MojangProfileTextures,
+	val uuid: String,
 	val username: String,
 	val username_history: List<MojangProfileUsernameHistoryEntry>,
-	val uuid: String
+	val textures: MojangProfileTextures,
+	val created_at: String?,
 ) {
 
     private fun refresh(target: Player) {
-        asAsync {
+        doAsync {
             target.playerProfile.complete(true, true)
         }
     }
