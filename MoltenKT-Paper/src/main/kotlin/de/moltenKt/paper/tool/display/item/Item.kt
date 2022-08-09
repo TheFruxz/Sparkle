@@ -111,13 +111,6 @@ data class Item(
 			quirk = Quirk.empty
 	}
 
-	private var asyncEngine: Boolean = false
-
-	@Prototype
-	fun asyncEngine(use: Boolean = !asyncEngine) {
-		asyncEngine = use
-	}
-
 	val identityNamespace = NamespacedKey(system, "itemIdentity")
 
 	val actionsNamespace = NamespacedKey(system, "itemActions")
