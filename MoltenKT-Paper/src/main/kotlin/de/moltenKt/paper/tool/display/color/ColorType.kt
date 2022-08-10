@@ -3,6 +3,8 @@
 package de.moltenKt.paper.tool.display.color
 
 import de.moltenKt.core.annotation.NotPerfect
+import de.moltenKt.core.extension.data.rgb
+import de.moltenKt.paper.extension.display.asBukkitColor
 import de.moltenKt.paper.extension.paper.createKey
 import de.moltenKt.paper.extension.system
 import net.kyori.adventure.bossbar.BossBar
@@ -16,6 +18,7 @@ import org.bukkit.DyeColor
 import org.bukkit.Material
 import org.bukkit.boss.BarColor
 import net.md_5.bungee.api.ChatColor as BungeeChatColor
+import java.awt.Color as AwtColor
 
 enum class ColorType : RGBLike, Keyed {
 
@@ -60,7 +63,7 @@ enum class ColorType : RGBLike, Keyed {
 	}
 
 	@NotPerfect
-	val chatColor by lazy {
+	val bukkitChatColor by lazy {
 		when (this) {
 			WHITE -> ChatColor.WHITE
 			ORANGE -> ChatColor.GOLD
@@ -85,8 +88,8 @@ enum class ColorType : RGBLike, Keyed {
 	val dyedChatColor: BungeeChatColor by lazy {
 		try {
 			BungeeChatColor.of(
-				with(java.awt.Color.RGBtoHSB(dyeColor.color.red, dyeColor.color.green, dyeColor.color.blue, null)) {
-					java.awt.Color.getHSBColor(get(0), get(1), get(2))
+				with(AwtColor.RGBtoHSB(dyeColor.color.red, dyeColor.color.green, dyeColor.color.blue, null)) {
+					AwtColor.getHSBColor(get(0), get(1), get(2))
 				}
 			)
 		} catch (ignore: Exception) {
@@ -94,9 +97,7 @@ enum class ColorType : RGBLike, Keyed {
 		}
 	}
 
-	val rawColor: Color by lazy {
-		dyeColor.color
-	}
+	val rawColor: Color by lazy { dyeColor.color }
 
 	@NotPerfect
 	val barColor: BarColor by lazy {
@@ -200,7 +201,7 @@ enum class ColorType : RGBLike, Keyed {
 
 	override fun blue() = rawColor.blue
 
-	override fun toString() = chatColor.toString()
+	override fun toString() = bukkitChatColor.toString()
 
 	companion object {
 
