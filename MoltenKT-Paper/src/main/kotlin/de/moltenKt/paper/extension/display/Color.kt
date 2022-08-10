@@ -1,6 +1,7 @@
 package de.moltenKt.paper.extension.display
 
 import com.destroystokyo.paper.ParticleBuilder
+import de.moltenKt.core.tool.color.Color
 import de.moltenKt.paper.tool.display.color.MoltenColor
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Color as BukkitColor
@@ -25,3 +26,7 @@ fun ParticleBuilder.color(color: MoltenColor, size: Float) = apply {
 fun ParticleBuilder.color(color: MoltenColor) = apply {
     this.color(color.bukkitColor)
 }
+
+fun Color.asMoltenColor(): MoltenColor = MoltenColor(this.awtColor)
+
+fun Color.asBukkitColor(): org.bukkit.Color = asMoltenColor().bukkitColor
