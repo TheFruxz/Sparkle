@@ -48,7 +48,7 @@ dependencies {
 
     implementation("org.ktorm:ktorm-core:3.5.0") // KTorm
 
-    implementation("io.ktor:ktor-client-core-jvm:2.0.3") // Ktor
+    implementation("io.ktor:ktor-client-core-jvm:2.1.0") // Ktor
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.0")
 
     implementation("io.ktor:ktor-client-cio:2.0.3")
