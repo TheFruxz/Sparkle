@@ -2,7 +2,7 @@ package de.moltenKt.paper.tool.smart
 
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
 
-interface ContextualIdentifiable<T> : VendorsIdentifiable<T> {
+interface ContextualInstance<T : KeyedIdentifiable<T>> : KeyedIdentifiable<T> {
 
     val threadContext: ExecutorCoroutineDispatcher
 

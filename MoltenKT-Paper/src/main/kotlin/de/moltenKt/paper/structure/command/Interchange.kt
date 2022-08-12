@@ -18,12 +18,13 @@ import de.moltenKt.paper.tool.annotation.LegacyCraftBukkitFeature
 import de.moltenKt.paper.tool.display.message.Transmission.Level
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.permission.Approval
-import de.moltenKt.paper.tool.smart.ContextualIdentifiable
+import de.moltenKt.paper.tool.smart.ContextualInstance
 import de.moltenKt.paper.tool.smart.Logging
 import de.moltenKt.paper.tool.smart.VendorOnDemand
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.Command
@@ -57,7 +58,7 @@ abstract class Interchange(
 	val ignoreInputValidation: Boolean = false,
 	var forcedApproval: Approval? = null,
 	final override val preferredVendor: App? = null,
-) : CommandExecutor, ContextualIdentifiable<Interchange>, VendorOnDemand, Logging {
+) : CommandExecutor, ContextualInstance<Interchange>, VendorOnDemand, Logging {
 
 	init {
 		completion.identity = label
@@ -76,6 +77,8 @@ abstract class Interchange(
 	 */
 	final override lateinit var vendor: App
 		private set
+
+	override val identityKey by lazy { Key.key(vendor, label.lowercase()) }
 
 	/**
 	 * This function replaces the current [vendor] of this [Interchange]
@@ -141,7 +144,7 @@ abstract class Interchange(
 	 * This value is the second-part of the identity of this [Interchange],
 	 * used to track and identify this [Interchange], among the other
 	 * [Interchange]s, used by your or other [App]s.
-	 * @see ContextualIdentifiable
+	 * @see ContextualInstance
 	 * @author Fruxz
 	 * @since 1.0
 	 */
@@ -151,7 +154,7 @@ abstract class Interchange(
 	 * This value is the first-part of the identity of this [Interchange],
 	 * used to track and identify this [Interchange], among the other
 	 * [Interchange]s, used by your or other [App]s.
-	 * @see ContextualIdentifiable
+	 * @see ContextualInstance
 	 * @author Fruxz
 	 * @since 1.0
 	 */

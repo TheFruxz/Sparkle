@@ -4,12 +4,16 @@ import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
+import de.moltenKt.paper.app.MoltenApp
+import de.moltenKt.paper.app.MoltenApp.Infrastructure
 import de.moltenKt.paper.app.MoltenCache
+import de.moltenKt.paper.tool.smart.KeyedIdentifiable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.key.Namespaced
 
-abstract class AppCompanion<T : App> : Identifiable<App>, Namespaced {
+abstract class AppCompanion<T : App> : KeyedIdentifiable<T> {
 
 	/**
 	 * This value represents the current [App] instance.
@@ -22,7 +26,7 @@ abstract class AppCompanion<T : App> : Identifiable<App>, Namespaced {
 	 * @since 1.0
 	 */
 	val instance: T
-		get() = MoltenCache.registeredApps.firstOrNull { it.identity == predictedIdentity.identity }?.forceCast<T>()
+		get() = MoltenCache.registeredApps.firstOrNull { it.identityKey == identityKey }?.forceCast<T>()
 			?: error("This app is not registered inside the 'registeredApps' instance! Maybe MoltenKT-Paper is shadowed inside the plugin using MoltenKT? This would lead to this error!")
 
 	/**
@@ -42,8 +46,8 @@ abstract class AppCompanion<T : App> : Identifiable<App>, Namespaced {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	final override val identity: String
-		get() = instance.identity
+	override val identityKey: Key
+		get() = Key.key(Infrastructure.SYSTEM_IDENTITY, predictedIdentity)
 
 	/**
 	 * This value represents the identity, which is expected
@@ -53,8 +57,6 @@ abstract class AppCompanion<T : App> : Identifiable<App>, Namespaced {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	abstract val predictedIdentity: Identity<T>
-
-	override fun namespace() = tryOrNull { identity.lowercase() } ?: predictedIdentity.identity.lowercase()
+	abstract val predictedIdentity: String
 
 }

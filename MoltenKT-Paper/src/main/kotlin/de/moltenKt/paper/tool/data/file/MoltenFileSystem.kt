@@ -4,6 +4,7 @@ import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.component.Component
+import de.moltenKt.paper.tool.smart.KeyedIdentifiable
 import kotlin.io.path.Path
 import kotlin.io.path.div
 
@@ -11,7 +12,7 @@ object MoltenFileSystem {
 
     private val homePath = Path("MoltenApps")
 
-    fun appPath(app: Identifiable<App>) =
+    fun appPath(app: Identifiable<out App>) =
         homePath / "main@${app.identity}"
 
     fun rootPath() =

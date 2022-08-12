@@ -54,7 +54,7 @@ object MoltenCache : AppCache {
 
 	var registeredPreferences = mapOf<Identity<out Preference<*>>, Preference<*>>()
 
-	var runningServiceTaskController = mapOf<Identity<Service>, Tasky>()
+	var runningServiceTaskController = mapOf<Key, Tasky>()
 
 	var runningTasks = listOf<Int>()
 

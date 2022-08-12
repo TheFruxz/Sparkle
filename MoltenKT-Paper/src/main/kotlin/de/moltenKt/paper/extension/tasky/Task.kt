@@ -2,6 +2,7 @@ package de.moltenKt.paper.extension.tasky
 
 import de.moltenKt.core.extension.dump
 import de.moltenKt.core.tool.smart.identification.Identity
+import de.moltenKt.paper.extension.paper.createKey
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.service.Service
@@ -13,6 +14,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.future.await
 import kotlinx.coroutines.launch
+import net.kyori.adventure.key.Key
 import java.util.concurrent.CompletableFuture
 import kotlin.time.Duration
 
@@ -26,7 +28,7 @@ fun task(
 	onStart: Tasky.() -> Unit = {},
 	onStop: Tasky.() -> Unit = {},
 	onCrash: Tasky.() -> Unit = {},
-	serviceVendor: Identity<Service> = Identity("undefined"),
+	serviceVendor: Key = vendor.createKey("undefined"),
 	process: Tasky.() -> Unit,
 ) = Tasky.task(vendor, temporalAdvice, killAtError, onStart, onStop, onCrash, serviceVendor, process)
 
