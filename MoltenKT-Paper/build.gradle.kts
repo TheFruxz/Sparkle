@@ -51,7 +51,7 @@ dependencies {
     implementation("io.ktor:ktor-client-core-jvm:2.1.0") // Ktor
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.0")
 
-    implementation("io.ktor:ktor-client-cio:2.0.3")
+    implementation("io.ktor:ktor-client-cio:2.1.0")
     implementation("io.ktor:ktor-client-content-negotiation:2.1.0")
 
     compileOnly("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT") // PaperMC
