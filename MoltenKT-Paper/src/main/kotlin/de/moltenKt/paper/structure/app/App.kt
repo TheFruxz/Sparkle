@@ -127,7 +127,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	abstract val appIdentity: String
 
 	/**
-	 * # `App.appLabel`
+	 * # `App.label`
 	 * ## Info
 	 * This value defines the display-name of this app, which
 	 * will be displayed in app-lists and information with
@@ -150,11 +150,11 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	 *
 	 * @author Fruxz (@TheFruxz)
 	 * @since 1.0-BETA-2 (preview)
-	 * @see de.moltenKt.paper.app.MoltenApp.appLabel
-	 * @sample de.moltenKt.paper.app.MoltenApp.appLabel
+	 * @see de.moltenKt.paper.app.MoltenApp.label
+	 * @sample de.moltenKt.paper.app.MoltenApp.label
 	 * @constructor abstract
 	 */
-	abstract val appLabel: String
+	abstract override val label: String
 
 	override val identityKey: Key
 		get() = Key.key(Infrastructure.SYSTEM_IDENTITY, companion.predictedIdentity.lowercase())

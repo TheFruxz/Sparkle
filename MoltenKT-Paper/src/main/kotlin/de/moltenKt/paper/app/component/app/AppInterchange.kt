@@ -114,7 +114,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 concludedExecution {
                     val targetApp = getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
 
-                    text("Starting the app '${targetApp.appLabel}'...")
+                    text("Starting the app '${targetApp.label}'...")
                         .color(NamedTextColor.GRAY)
                         .hoverEvent(text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY))
                         .message(executor).display()
@@ -128,7 +128,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         text(" started the '") {
                             color(NamedTextColor.GRAY)
                         }
-                        text(targetApp.appLabel) {
+                        text(targetApp.label) {
                             color(NamedTextColor.GOLD)
                             hover {
                                 text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY)
@@ -150,7 +150,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 concludedExecution {
                     val targetApp = getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
 
-                    text("Stopping the app '${targetApp.appLabel}'...")
+                    text("Stopping the app '${targetApp.label}'...")
                         .color(NamedTextColor.GRAY)
                         .hoverEvent(text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY))
                         .message(executor).display()
@@ -164,7 +164,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         text(" stopped the '") {
                             color(NamedTextColor.GRAY)
                         }
-                        text(targetApp.appLabel) {
+                        text(targetApp.label) {
                             color(NamedTextColor.GOLD)
                             hover {
                                 text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY)
@@ -186,7 +186,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 concludedExecution {
                     val targetApp = getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
 
-                    text("Restarting the app '${targetApp.appLabel}'...")
+                    text("Restarting the app '${targetApp.label}'...")
                         .color(NamedTextColor.GRAY)
                         .hoverEvent(text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY))
                         .message(executor).display()
@@ -201,7 +201,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         text(" restarted the '") {
                             color(NamedTextColor.GRAY)
                         }
-                        text(targetApp.appLabel) {
+                        text(targetApp.label) {
                             color(NamedTextColor.GOLD)
                             hover {
                                 text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY)
@@ -224,7 +224,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                     val targetApp = getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
 
                     listOf(
-                        "<gray>Display-Name <dark_gray>| <yellow>${targetApp.appLabel}",
+                        "<gray>Display-Name <dark_gray>| <yellow>${targetApp.label}",
                         "<gray>Identity <dark_gray>| <yellow>${targetApp.identity}",
                         "<gray>Active since <dark_gray>| <yellow>${targetApp.activeSince}",
                         "<gray>Components <dark_gray>| <yellow>${MoltenCache.registeredComponents.filter { it.vendorIdentity == targetApp.identityObject }.size} Components",
@@ -244,7 +244,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 fun cacheClear(interchangeAccess: InterchangeAccess<*>, level: CacheDepthLevel) {
                     val targetApp = interchangeAccess.getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
 
-                    text("Starting cache-clear of app '${targetApp.appLabel}'...")
+                    text("Starting cache-clear of app '${targetApp.label}'...")
                         .color(NamedTextColor.GRAY)
                         .hoverEvent(text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY))
                         .message(interchangeAccess.executor).display()
@@ -265,7 +265,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                             color(NamedTextColor.GRAY)
                         }
 
-                        text(targetApp.appLabel) {
+                        text(targetApp.label) {
                             color(NamedTextColor.GOLD)
                             hoverEvent(Component.text("App-Identity: ${targetApp.identity}").color(NamedTextColor.GRAY))
                         }

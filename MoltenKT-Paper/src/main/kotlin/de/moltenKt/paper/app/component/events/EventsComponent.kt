@@ -5,7 +5,7 @@ import de.moltenKt.paper.structure.component.SmartComponent
 
 internal class EventsComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
-	override val thisIdentity = "Events"
+	override val label = "Events"
 
 	override suspend fun component() {
 

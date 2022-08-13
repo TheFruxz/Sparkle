@@ -94,7 +94,7 @@ class MoltenApp : App() {
 	override val companion: Companion = Companion
 
 	override val appIdentity: String = SYSTEM_IDENTITY
-	override val appLabel: String = "Molten-Kt Paper"
+	override val label = "Molten-Kt"
 	override val appCache: MoltenCache = MoltenCache
 
 	override suspend fun preHello() {

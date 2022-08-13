@@ -40,6 +40,9 @@ abstract class Component(
 	val isVendorCurrentlySet: Boolean
 		get() = this::vendor.isInitialized
 
+	override val thisIdentity: String
+		get() = label.lowercase()
+
 	override val vendorIdentity: Identity<out App>
 		get() = vendor.identityObject
 

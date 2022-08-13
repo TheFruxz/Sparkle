@@ -5,7 +5,7 @@ import de.moltenKt.paper.structure.component.SmartComponent
 
 internal class UIComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
-	override val thisIdentity = "UI"
+	override val label = "UserExperience"
 
 	override suspend fun component() {
 

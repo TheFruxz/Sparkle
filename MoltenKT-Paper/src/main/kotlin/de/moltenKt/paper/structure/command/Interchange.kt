@@ -19,6 +19,7 @@ import de.moltenKt.paper.tool.display.message.Transmission.Level
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.permission.Approval
 import de.moltenKt.paper.tool.smart.ContextualInstance
+import de.moltenKt.paper.tool.smart.Labeled
 import de.moltenKt.paper.tool.smart.Logging
 import de.moltenKt.paper.tool.smart.VendorOnDemand
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -48,7 +49,7 @@ import java.util.logging.Level.WARNING
  * @since 1.0
  */
 abstract class Interchange(
-	val label: String,
+	override val label: String,
 	val aliases: Set<String> = emptySet(),
 	val protectedAccess: Boolean = false,
 	val userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
@@ -58,7 +59,7 @@ abstract class Interchange(
 	val ignoreInputValidation: Boolean = false,
 	var forcedApproval: Approval? = null,
 	final override val preferredVendor: App? = null,
-) : CommandExecutor, ContextualInstance<Interchange>, VendorOnDemand, Logging {
+) : CommandExecutor, ContextualInstance<Interchange>, VendorOnDemand, Logging, Labeled {
 
 	init {
 		completion.identity = label
