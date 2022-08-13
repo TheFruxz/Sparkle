@@ -45,17 +45,8 @@ interface Service : Hoster<Unit, Unit, Service>, Logging {
 	val isRunning: Boolean
 		get() = controller != null && MoltenCache.runningTasks.contains(controller!!.taskId)
 
-	fun shutdown() {
-		val state = controller
-
-		if (state != null) {
-
-			state.shutdown()
-
-		} else
-			throw IllegalStateException("controller is null")
-
-	}
+	fun shutdown() =
+		controller?.shutdown() ?: throw IllegalStateException("controller is null")
 
 	override fun requestStart() =
 		vendor.getApp().start(this)
