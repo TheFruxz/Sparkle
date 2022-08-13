@@ -34,12 +34,12 @@ interface Service : Hoster<Unit, Unit, Service>, Logging {
 		get() = Key.key(vendor, thisIdentity)
 
 	var controller: Tasky?
-		get() = MoltenCache.runningServiceTaskController[identityKey]
+		get() = MoltenCache.runningServiceTaskController[key]
 		set(value) {
 			if (value != null)
-				MoltenCache.runningServiceTaskController += identityKey to value
+				MoltenCache.runningServiceTaskController += key to value
 			else
-				MoltenCache.runningServiceTaskController -= identityKey
+				MoltenCache.runningServiceTaskController -= key
 		}
 
 	val isRunning: Boolean
