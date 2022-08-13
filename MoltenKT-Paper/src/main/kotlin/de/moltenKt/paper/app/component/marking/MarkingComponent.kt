@@ -28,7 +28,7 @@ import org.bukkit.Material
 
 internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
-	override val thisIdentity = "Markings"
+	override val label = "Markings"
 
 	override suspend fun component() {
 

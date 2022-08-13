@@ -5,7 +5,7 @@ import de.moltenKt.paper.structure.component.SmartComponent
 
 internal class SandBoxComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
-	override val thisIdentity = "Sandboxing"
+	override val label = "Sandboxing"
 
 	override suspend fun component() {
 

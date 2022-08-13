@@ -4,7 +4,7 @@ import de.moltenKt.paper.structure.component.SmartComponent
 
 internal class ProtectionComponent : SmartComponent(RunType.AUTOSTART_MUTABLE, true) {
 
-    override val thisIdentity = "Protection"
+    override val label = "Protection"
 
     override suspend fun component() {
 

@@ -98,7 +98,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 							lang["interchange.internal.sandbox.list.line"].replaceVariables(
 								"sandbox" to it.value.identity,
-								"vendor" to it.value.vendor.appLabel,
+								"vendor" to it.value.vendor.label,
 							).let { message ->
 								if (it.index == allSandBoxes.indices.last) {
 									append(message)
@@ -195,7 +195,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 							mapOf(
 								"VendorId" to sandBox.vendor.identity,
-								"VendorLabel" to sandBox.vendor.appLabel,
+								"VendorLabel" to sandBox.vendor.label,
 								"Identity" to sandBox.identity,
 								"Since" to sandBox.creationTime.durationTo(Calendar.now()).toString(),
 								"CreationPos" to sandBox.creationLocation,

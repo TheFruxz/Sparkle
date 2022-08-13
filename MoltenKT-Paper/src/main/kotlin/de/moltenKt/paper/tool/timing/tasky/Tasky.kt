@@ -6,10 +6,14 @@ import de.moltenKt.core.extension.data.buildRandomTag
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.paper.app.MoltenApp
+import de.moltenKt.paper.app.MoltenApp.Infrastructure
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.service.Service
+import de.moltenKt.paper.tool.smart.KeyedIdentifiable
 import de.moltenKt.paper.tool.smart.Logging
+import net.kyori.adventure.key.Key
 import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
 
@@ -44,7 +48,7 @@ interface Tasky : Logging {
 			onStart: Tasky.() -> Unit = {},
 			onStop: Tasky.() -> Unit = {},
 			onCrash: Tasky.() -> Unit = {},
-			serviceVendor: Identity<Service> = Identifiable.custom<Service>("dummy").identityObject,
+			serviceVendor: Key = Key.key(Infrastructure.SYSTEM_IDENTITY, "dummy"),
 			process: Tasky.() -> Unit,
 			internalId: String = buildRandomTag(hashtag = false, tagType = ONLY_UPPERCASE)
 		): Tasky {
@@ -140,7 +144,7 @@ interface Tasky : Logging {
 
 			)
 
-			if (serviceVendor.identity != "dummy")
+			if (serviceVendor.value() != "dummy")
 				MoltenCache.runningServiceTaskController += serviceVendor to output
 
 			return output

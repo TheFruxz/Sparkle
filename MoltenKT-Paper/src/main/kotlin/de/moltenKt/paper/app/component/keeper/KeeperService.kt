@@ -18,7 +18,7 @@ internal class KeeperService : Service {
 
 	override val vendor = system
 
-	override val thisIdentity = "iKeeper"
+	override val label = "iKeeper"
 
 	override val temporalAdvice = TemporalAdvice.ticking(1.seconds, 20.minutes, false)
 
@@ -33,12 +33,12 @@ internal class KeeperService : Service {
 			try {
 				val level = DUMP
 				appCache.dropEverything(level)
-				debugLog("removed appCache (level: ${level.name}) from app $appLabel")
+				debugLog("removed appCache (level: ${level.name}) from app $label")
 			} catch (exception: Exception) {
 
 				if (MoltenApp.debugMode) catchException(exception)
 
-				debugLog("failed to clean appCache of '$appLabel'${ if (MoltenApp.debugMode.not()) ", enable debugMode to see the stacktrace" else "" }!")
+				debugLog("failed to clean appCache of '$label'${ if (MoltenApp.debugMode.not()) ", enable debugMode to see the stacktrace" else "" }!")
 
 			}
 		}

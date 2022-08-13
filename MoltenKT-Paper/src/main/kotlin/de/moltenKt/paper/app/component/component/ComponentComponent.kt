@@ -4,7 +4,7 @@ import de.moltenKt.paper.structure.component.SmartComponent
 
 internal class ComponentComponent : SmartComponent(RunType.ENABLED) {
 
-    override val thisIdentity = "Components"
+    override val label = "Components"
 
     override suspend fun component() {
 

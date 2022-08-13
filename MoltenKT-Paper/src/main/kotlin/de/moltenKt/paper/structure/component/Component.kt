@@ -5,25 +5,24 @@ import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
-import de.moltenKt.paper.extension.paper.createKey
 import de.moltenKt.paper.extension.runIfAutoRegister
 import de.moltenKt.paper.structure.Hoster
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.component.Component.RunType.*
 import de.moltenKt.paper.structure.component.file.ComponentManager
-import de.moltenKt.paper.tool.smart.ContextualIdentifiable
+import de.moltenKt.paper.tool.smart.ContextualInstance
 import de.moltenKt.paper.tool.smart.Logging
 import de.moltenKt.paper.tool.smart.VendorOnDemand
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
-import org.bukkit.NamespacedKey
+import net.kyori.adventure.key.Key
 import kotlin.reflect.KClass
 
 abstract class Component(
 	open val behaviour: RunType = DISABLED,
 	open val experimental: Boolean = false,
 	final override val preferredVendor: App? = null,
-) : ContextualIdentifiable<Component>, VendorOnDemand, Logging, Hoster<Component.ComponentRequestAnswer, Component.ComponentRequestAnswer> {
+) : ContextualInstance<Component>, VendorOnDemand, Logging, Hoster<Component.ComponentRequestAnswer, Component.ComponentRequestAnswer, Component> {
 
 	init {
 
@@ -41,6 +40,9 @@ abstract class Component(
 	val isVendorCurrentlySet: Boolean
 		get() = this::vendor.isInitialized
 
+	override val thisIdentity: String
+		get() = label.lowercase()
+
 	override val vendorIdentity: Identity<out App>
 		get() = vendor.identityObject
 
@@ -50,8 +52,7 @@ abstract class Component(
 	val isRunning: Boolean
 		get() = MoltenCache.runningComponents.contains(identityObject)
 
-	val key: NamespacedKey
-		get() = vendor.createKey(thisIdentity)
+	override val identityKey by lazy { Key.key(vendor, thisIdentity.lowercase()) }
 
 	override val threadContext by lazy { @OptIn(DelicateCoroutinesApi::class) newSingleThreadContext(identity) }
 

@@ -5,7 +5,7 @@ import de.moltenKt.paper.structure.component.SmartComponent
 
 internal class ServiceComponent : SmartComponent(ENABLED) {
 
-	override val thisIdentity = "Service"
+	override val label = "Service"
 
 	override suspend fun component() {
 

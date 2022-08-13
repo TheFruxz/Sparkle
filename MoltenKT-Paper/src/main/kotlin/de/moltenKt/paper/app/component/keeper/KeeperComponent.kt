@@ -5,7 +5,7 @@ import de.moltenKt.paper.structure.component.SmartComponent
 
 internal class KeeperComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
-	override val thisIdentity = "iKeeper"
+	override val label = "iKeeper"
 
 	override suspend fun component() {
 

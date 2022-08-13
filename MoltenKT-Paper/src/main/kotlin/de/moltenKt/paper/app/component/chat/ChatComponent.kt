@@ -15,7 +15,7 @@ import kotlin.io.path.writeText
 
 class ChatComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
-	override val thisIdentity = "Chat"
+	override val label = "Chat"
 
 	override suspend fun component() {
 

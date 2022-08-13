@@ -1,12 +1,11 @@
 package de.moltenKt.paper.tool.smart
 
-import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.structure.app.App
 import java.util.logging.Logger
 
 interface Logging {
 
-	val vendor: Identifiable<App>
+	val vendor: KeyedIdentifiable<App>
 
 	val sectionLabel: String
 

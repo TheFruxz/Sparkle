@@ -11,6 +11,8 @@ import de.moltenKt.core.extension.tryToPrint
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.paper.app.MoltenApp
+import de.moltenKt.paper.app.MoltenApp.Infrastructure
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.mainLog
@@ -19,7 +21,6 @@ import de.moltenKt.paper.extension.paper.internalSyncCommands
 import de.moltenKt.paper.extension.tasky.asSync
 import de.moltenKt.paper.extension.tasky.delayed
 import de.moltenKt.paper.extension.tasky.task
-import de.moltenKt.paper.extension.tasky.wait
 import de.moltenKt.paper.runtime.app.LanguageSpeaker
 import de.moltenKt.paper.runtime.app.RunStatus
 import de.moltenKt.paper.runtime.app.RunStatus.*
@@ -40,7 +41,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.kyori.adventure.key.Namespaced
+import net.kyori.adventure.key.Key
 import org.bukkit.command.PluginCommand
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerializable
@@ -90,7 +91,7 @@ import kotlin.time.measureTime
  * @see de.moltenKt.paper.app.MoltenApp
  * @constructor abstract
  */
-abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit>, Namespaced {
+abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 	// parameters
 
@@ -126,7 +127,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit>, Namesp
 	abstract val appIdentity: String
 
 	/**
-	 * # `App.appLabel`
+	 * # `App.label`
 	 * ## Info
 	 * This value defines the display-name of this app, which
 	 * will be displayed in app-lists and information with
@@ -149,21 +150,19 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit>, Namesp
 	 *
 	 * @author Fruxz (@TheFruxz)
 	 * @since 1.0-BETA-2 (preview)
-	 * @see de.moltenKt.paper.app.MoltenApp.appLabel
-	 * @sample de.moltenKt.paper.app.MoltenApp.appLabel
+	 * @see de.moltenKt.paper.app.MoltenApp.label
+	 * @sample de.moltenKt.paper.app.MoltenApp.label
 	 * @constructor abstract
 	 */
-	abstract val appLabel: String
+	abstract override val label: String
+
+	override val identityKey: Key
+		get() = Key.key(Infrastructure.SYSTEM_IDENTITY, companion.predictedIdentity.lowercase())
 
 	/**
 	 * The cache of the application
 	 */
 	abstract val appCache: AppCache
-
-	override val identity: String
-		get() = appIdentity
-
-	override fun namespace() = appIdentity.lowercase()
 
 	internal var loadTime: Duration? = null
 
@@ -310,7 +309,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit>, Namesp
 				if (service.isRunning) {
 					stop(service)
 				}
-				MoltenCache.registeredServices += service
+				MoltenCache.registeredServices -= service
 				mainLog(Level.INFO, "unregister of service '${service.identity}' succeed!")
 			}
 		} else
@@ -338,7 +337,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit>, Namesp
 						onStart = service.onStart,
 						onStop = service.onStop,
 						onCrash = service.onCrash,
-						serviceVendor = service.identityObject
+						serviceVendor = service.key
 					)
 					mainLog(Level.INFO, "starting of service '${service.identity}' succeed!")
 				}
@@ -643,7 +642,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit>, Namesp
 				measureTime {
 					preHello()
 				}.let { requiredTime ->
-					log.info("Loading (::preHello) of '$identity' took $requiredTime!")
+					log.info("Loading (::preHello) of '$identityKey' took $requiredTime!")
 					loadTime = requiredTime
 				}
 				runStatus = LOAD
@@ -668,7 +667,7 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit>, Namesp
 						runStatus = ENABLE
 
 						delay(1.seconds)
-						log.info("Enabling (::hello) of '$identity' took $requiredTime!")
+						log.info("Enabling (::hello) of '$identityKey' took $requiredTime!")
 
 					}
 				}
@@ -686,9 +685,9 @@ abstract class App : JavaPlugin(), Identifiable<App>, Hoster<Unit, Unit>, Namesp
 			measureTime {
 				bye()
 			}.let { requiredTime ->
-				log.info("Disabling (::bye) of '$identity' took $requiredTime!")
+				log.info("Disabling (::bye) of '$identityKey' took $requiredTime!")
 			}
-			coroutineScope.cancel("App '$identity' is now disabled!")
+			coroutineScope.cancel("App '$identityKey' is now disabled!")
 
 			runStatus = OFFLINE
 

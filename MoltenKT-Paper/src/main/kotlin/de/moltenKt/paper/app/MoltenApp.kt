@@ -1,16 +1,11 @@
 package de.moltenKt.paper.app
 
-import com.destroystokyo.paper.MaterialTags
 import com.destroystokyo.paper.ParticleBuilder
 import de.moltenKt.core.extension.data.addJsonContextualConfiguration
 import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
-import de.moltenKt.core.extension.data.buildRandomTag
-import de.moltenKt.core.extension.data.fromJson
-import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.core.extension.forceCast
-import de.moltenKt.core.extension.math.shorter
 import de.moltenKt.core.extension.tryToIgnore
-import de.moltenKt.core.tool.smart.identification.Identity
+import de.moltenKt.paper.app.MoltenApp.Infrastructure.SYSTEM_IDENTITY
 import de.moltenKt.paper.app.component.app.AppComponent
 import de.moltenKt.paper.app.component.buildMode.BuildModeComponent
 import de.moltenKt.paper.app.component.chat.ChatComponent
@@ -33,17 +28,7 @@ import de.moltenKt.paper.app.interchange.MoltenKtInterchange
 import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
-import de.moltenKt.paper.extension.display.ui.affectedItem
-import de.moltenKt.paper.extension.display.ui.item
-import de.moltenKt.paper.extension.display.ui.set
-import de.moltenKt.paper.extension.display.ui.skull
 import de.moltenKt.paper.extension.mainLog
-import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
-import de.moltenKt.paper.extension.paper.asPlayer
-import de.moltenKt.paper.extension.paper.location
-import de.moltenKt.paper.extension.paper.place
-import de.moltenKt.paper.extension.tasky.asSync
-import de.moltenKt.paper.extension.tasky.doSync
 import de.moltenKt.paper.mojang.MojangProfile
 import de.moltenKt.paper.mojang.MojangProfileCape
 import de.moltenKt.paper.mojang.MojangProfileRaw
@@ -53,17 +38,20 @@ import de.moltenKt.paper.mojang.MojangProfileUsernameHistoryEntry
 import de.moltenKt.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.AppCompanion
-import de.moltenKt.paper.tool.annotation.Prototype
 import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.json.JsonConfiguration
 import de.moltenKt.paper.tool.data.json.JsonFileDataElement
-import de.moltenKt.paper.tool.data.json.serializer.*
-import de.moltenKt.paper.tool.display.canvas.Canvas
-import de.moltenKt.paper.tool.display.canvas.CanvasFlag.*
-import de.moltenKt.paper.tool.display.canvas.buildCanvas
+import de.moltenKt.paper.tool.data.json.serializer.BoundingBoxSerializer
+import de.moltenKt.paper.tool.data.json.serializer.ItemStackSerializer
+import de.moltenKt.paper.tool.data.json.serializer.LocationSerializer
+import de.moltenKt.paper.tool.data.json.serializer.NamespacedKeySerializer
+import de.moltenKt.paper.tool.data.json.serializer.ParticleBuilderSerializer
+import de.moltenKt.paper.tool.data.json.serializer.ParticleSerializer
+import de.moltenKt.paper.tool.data.json.serializer.UUIDSerializer
+import de.moltenKt.paper.tool.data.json.serializer.VectorSerializer
+import de.moltenKt.paper.tool.data.json.serializer.WorldSerializer
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
-import de.moltenKt.paper.tool.display.world.ChunkLocation
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
@@ -82,40 +70,31 @@ import de.moltenKt.paper.tool.position.relative.LinearShape
 import de.moltenKt.paper.tool.position.relative.PyramidalShape
 import de.moltenKt.paper.tool.position.relative.Shape
 import de.moltenKt.paper.tool.position.relative.SphereShape
-import de.moltenKt.unfold.extension.asComponent
-import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.World
-import org.bukkit.block.structure.StructureRotation
 import org.bukkit.command.CommandExecutor
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
-import java.util.UUID
+import java.util.*
 import java.util.logging.Level
-import kotlin.math.round
-import kotlin.time.Duration.Companion.seconds
 
 class MoltenApp : App() {
 
 	override val companion: Companion = Companion
 
-	override val appIdentity: String = "MoltenKT"
-	override val appLabel: String = "MoltenKT"
+	override val appIdentity: String = SYSTEM_IDENTITY
+	override val label = "Molten-Kt"
 	override val appCache: MoltenCache = MoltenCache
 
 	override suspend fun preHello() {
@@ -189,14 +168,13 @@ class MoltenApp : App() {
 
 	}
 
-	@OptIn(Prototype::class)
 	override suspend fun hello() {
 
 		debugMode = MoltenData.systemConfig.debugMode
 
 		mainLog(
 			Level.INFO, """
-			MoltenKT is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
+			Molten-Kt is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
 			https://www.jetbrains.com/ | https://kotlinlang.org/
 		""".trimIndent()
 		)
@@ -218,7 +196,7 @@ class MoltenApp : App() {
 				"""
 					Display-Language detected:
 					ID: ${this.languageId};
-					MoltenKT: ${this.moltenVersion};
+					Molten-Kt: ${this.moltenVersion};
 					Version: ${this.languageVersion};
 					Vendor: ${this.languageVendor};
 					Website: ${this.languageVendorWebsite};
@@ -288,7 +266,7 @@ class MoltenApp : App() {
 
 		coroutineScope.apply {
 			coroutineContext.cancelChildren()
-			cancel("MoltenKT-Paper is shutting down!")
+			cancel("Molten-Kt Paper is shutting down!")
 		}
 
 	}
@@ -296,10 +274,17 @@ class MoltenApp : App() {
 	companion object : AppCompanion<MoltenApp>() {
 
 		@JvmStatic
-		override val predictedIdentity: Identity<MoltenApp> = Identity<MoltenApp>("MoltenKT")
+		override val predictedIdentity = SYSTEM_IDENTITY
 
 		@JvmStatic
 		var debugMode: Boolean = true
+
+	}
+
+	object Infrastructure {
+
+		@JvmStatic
+		val SYSTEM_IDENTITY = "molten-kt"
 
 	}
 

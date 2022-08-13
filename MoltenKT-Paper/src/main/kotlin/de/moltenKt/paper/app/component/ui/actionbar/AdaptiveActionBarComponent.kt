@@ -16,7 +16,7 @@ import kotlin.time.Duration
  */
 class AdaptiveActionBarComponent : SmartComponent(AUTOSTART_MUTABLE, true) {
 
-	override val thisIdentity = "AdaptiveActionBar"
+	override val label = "AdaptiveActionBar"
 
 	override suspend fun component() {
 

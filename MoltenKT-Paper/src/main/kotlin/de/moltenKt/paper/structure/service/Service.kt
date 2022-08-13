@@ -1,17 +1,15 @@
 package de.moltenKt.paper.structure.service
 
-import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenCache
-import de.moltenKt.paper.extension.app
-import de.moltenKt.paper.extension.paper.createKey
-import de.moltenKt.paper.structure.app.App
+import de.moltenKt.paper.extension.getApp
+import de.moltenKt.paper.structure.Hoster
+import de.moltenKt.paper.tool.smart.KeyedIdentifiable
 import de.moltenKt.paper.tool.smart.Logging
-import de.moltenKt.paper.tool.smart.VendorsIdentifiable
 import de.moltenKt.paper.tool.timing.tasky.Tasky
 import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice
-import org.bukkit.NamespacedKey
+import net.kyori.adventure.key.Key
 
-interface Service : VendorsIdentifiable<Service>, Logging {
+interface Service : Hoster<Unit, Unit, Service>, Logging {
 
 	val temporalAdvice: TemporalAdvice
 
@@ -26,37 +24,34 @@ interface Service : VendorsIdentifiable<Service>, Logging {
 	val onCrash: Tasky.() -> Unit
 		get() = {}
 
+	override val thisIdentity: String
+		get() = label.lowercase()
+
 	override val sectionLabel: String
 		get() = thisIdentity
 
-	override val vendorIdentity: Identity<out App>
-		get() = vendor.identityObject
+	override val identityKey: Key
+		get() = Key.key(vendor, thisIdentity)
 
 	var controller: Tasky?
-		get() = MoltenCache.runningServiceTaskController[identityObject]
+		get() = MoltenCache.runningServiceTaskController[key]
 		set(value) {
 			if (value != null)
-				MoltenCache.runningServiceTaskController += identityObject to value
+				MoltenCache.runningServiceTaskController += key to value
 			else
-				MoltenCache.runningServiceTaskController -= identityObject
+				MoltenCache.runningServiceTaskController -= key
 		}
 
 	val isRunning: Boolean
 		get() = controller != null && MoltenCache.runningTasks.contains(controller!!.taskId)
 
-	val key: NamespacedKey
-		get() = app(vendor).createKey(thisIdentity)
+	fun shutdown() =
+		controller?.shutdown() ?: throw IllegalStateException("controller is null")
 
-	fun shutdown() {
-		val state = controller
+	override fun requestStart() =
+		vendor.getApp().start(this)
 
-		if (state != null) {
-
-			state.shutdown()
-
-		} else
-			throw IllegalStateException("controller is null")
-
-	}
+	override fun requestStop() =
+		shutdown()
 
 }

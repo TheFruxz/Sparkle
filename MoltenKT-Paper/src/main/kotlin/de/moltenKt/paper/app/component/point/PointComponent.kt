@@ -5,7 +5,7 @@ import de.moltenKt.paper.structure.component.SmartComponent
 
 internal class PointComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
-	override val thisIdentity = "World-Points"
+	override val label = "World-Points"
 
 	override suspend fun component() {
 

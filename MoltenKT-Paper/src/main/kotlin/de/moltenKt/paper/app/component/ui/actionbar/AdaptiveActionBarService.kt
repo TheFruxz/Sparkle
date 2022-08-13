@@ -1,7 +1,5 @@
 package de.moltenKt.paper.app.component.ui.actionbar
 
-import de.moltenKt.core.tool.timing.calendar.Calendar
-import de.moltenKt.core.tool.timing.calendar.Calendar.Companion
 import de.moltenKt.paper.app.component.ui.actionbar.AdaptiveActionBarComponent.Companion.globalLayers
 import de.moltenKt.paper.app.component.ui.actionbar.AdaptiveActionBarComponent.Companion.playerLayers
 import de.moltenKt.paper.extension.paper.onlinePlayers
@@ -13,7 +11,7 @@ import kotlin.time.Duration.Companion.seconds
 
 internal class AdaptiveActionBarService : Service {
 
-	override val thisIdentity = "AdaptiveActionBar"
+	override val label = "AdaptiveActionBar"
 
 	override val vendor = system
 

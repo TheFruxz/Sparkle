@@ -1,6 +1,9 @@
 package de.moltenKt.paper.structure
 
-interface Hoster<A, B> {
+import de.moltenKt.paper.tool.smart.KeyedIdentifiable
+import de.moltenKt.paper.tool.smart.Labeled
+
+interface Hoster<A, B, C : Hoster<A, B, C>> : KeyedIdentifiable<C>, Labeled {
 
     fun requestStart(): A
 
