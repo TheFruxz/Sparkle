@@ -309,7 +309,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 				if (service.isRunning) {
 					stop(service)
 				}
-				MoltenCache.registeredServices += service
+				MoltenCache.registeredServices -= service
 				mainLog(Level.INFO, "unregister of service '${service.identity}' succeed!")
 			}
 		} else
