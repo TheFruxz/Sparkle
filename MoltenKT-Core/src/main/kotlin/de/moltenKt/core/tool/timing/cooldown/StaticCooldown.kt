@@ -8,7 +8,7 @@ object StaticCooldown {
 	var cooldownStats: Map<Any, Calendar> = emptyMap()
 
 	fun getCooldown(key: Any): Calendar? {
-		return cooldownStats[key]
+		return cooldownStats[key]?.takeIf { !it.isExpired }
 	}
 
 	fun setCooldown(key: Any, cooldown: Calendar) {
