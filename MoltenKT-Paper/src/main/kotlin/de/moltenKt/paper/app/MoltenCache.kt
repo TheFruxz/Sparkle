@@ -3,6 +3,7 @@ package de.moltenKt.paper.app
 import de.moltenKt.core.extension.classType.UUID
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.core.tool.timing.cooldown.StaticCooldown
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.runtime.sandbox.SandBox
 import de.moltenKt.paper.structure.app.App
@@ -96,6 +97,7 @@ object MoltenCache : AppCache {
 		if (dropDepth.isDeeperThanOrEquals(DUMP)) {
 			debugLog("Cache clear 'DUMP' reached")
 			registeredCompletionAssetStateCache = emptyMap()
+			StaticCooldown.clean()
 		}
 
 		if (dropDepth.isDeeperThanOrEquals(CLEAN)) {
