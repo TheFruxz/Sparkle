@@ -25,6 +25,10 @@ data class SandBox(
     val process: suspend SandBoxInteraction.() -> Unit,
 ) : VendorsIdentifiable<SandBox>, Logging {
 
+    init {
+    	if (thisIdentity.contains("[§: ]".toRegex())) throw IllegalArgumentException("It is not allowed, that the identity of a sandbox contains a '§', ':' or a ' '!")
+    }
+
     override val vendorIdentity = vendor.identityObject
 
     override val sectionLabel by lazy { identity }
