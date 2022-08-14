@@ -7,6 +7,7 @@ import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.ui.changeColor
+import de.moltenKt.paper.extension.paper.subNamespacedKey
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.moltenKt.paper.structure.app.App
@@ -19,11 +20,13 @@ import de.moltenKt.paper.tool.display.item.action.ItemClickAction
 import de.moltenKt.paper.tool.display.item.action.ItemDropAction
 import de.moltenKt.paper.tool.display.item.action.ItemInteractAction
 import de.moltenKt.paper.tool.display.item.quirk.Quirk
+import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
 import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.extension.asStyledString
 import de.moltenKt.unfold.extension.isNotBlank
 import de.moltenKt.unfold.extension.isNotEmpty
+import de.moltenKt.unfold.extension.subKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -111,9 +114,9 @@ data class Item(
 			quirk = Quirk.empty
 	}
 
-	val identityNamespace = NamespacedKey(system, "itemIdentity")
+	val identityNamespace = system.subNamespacedKey("itemIdentity", CONTINUE)
 
-	val actionsNamespace = NamespacedKey(system, "itemActions")
+	val actionsNamespace = system.subNamespacedKey("itemActions", CONTINUE)
 
 	val displayObject: Component
 		get() = Component.text()
@@ -286,8 +289,7 @@ data class Item(
 		path: String,
 		data: Any?,
 		allowTransforming: Boolean = true
-	) =
-		dataPut(NamespacedKey(vendor, path), data, allowTransforming)
+	) = dataPut(vendor.subNamespacedKey(path, CONTINUE), data, allowTransforming)
 
 	fun dataContains(path: NamespacedKey) = dataGet(path) != null
 

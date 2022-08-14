@@ -13,6 +13,8 @@ import de.moltenKt.paper.structure.component.file.ComponentManager
 import de.moltenKt.paper.tool.smart.ContextualInstance
 import de.moltenKt.paper.tool.smart.Logging
 import de.moltenKt.paper.tool.smart.VendorOnDemand
+import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
+import de.moltenKt.unfold.extension.subKey
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import net.kyori.adventure.key.Key
@@ -52,7 +54,7 @@ abstract class Component(
 	val isRunning: Boolean
 		get() = MoltenCache.runningComponents.contains(identityObject)
 
-	override val identityKey by lazy { Key.key(vendor, thisIdentity.lowercase()) }
+	override val identityKey by lazy { vendor.subKey(thisIdentity.lowercase(), CONTINUE) }
 
 	override val threadContext by lazy { @OptIn(DelicateCoroutinesApi::class) newSingleThreadContext(identity) }
 

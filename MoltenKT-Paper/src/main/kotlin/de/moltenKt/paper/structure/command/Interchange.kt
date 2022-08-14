@@ -22,6 +22,8 @@ import de.moltenKt.paper.tool.smart.ContextualInstance
 import de.moltenKt.paper.tool.smart.Labeled
 import de.moltenKt.paper.tool.smart.Logging
 import de.moltenKt.paper.tool.smart.VendorOnDemand
+import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
+import de.moltenKt.unfold.extension.subKey
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
@@ -79,7 +81,7 @@ abstract class Interchange(
 	final override lateinit var vendor: App
 		private set
 
-	override val identityKey by lazy { Key.key(vendor, label.lowercase()) }
+	override val identityKey by lazy { vendor.subKey(label.lowercase(), CONTINUE) }
 
 	/**
 	 * This function replaces the current [vendor] of this [Interchange]
