@@ -3,6 +3,7 @@ package de.moltenKt.unfold.extension
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.text.TextComponent
+import net.kyori.adventure.text.TextComponent.Builder
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
@@ -52,6 +53,9 @@ val ComponentLike.asString: String
 val String.asComponent: TextComponent
 	get() = adventureSerializer.deserializeOr(this, Component.text("FAILED", NamedTextColor.RED))!!
 
+fun String.asComponent(builder: Builder.() -> Unit) =
+	asComponent.toBuilder().apply(builder).build()
+
 /**
  * This computational value converts this [String] into a [TextComponent]
  * list (every list entry is a line) by using the [LegacyComponentSerializer],
@@ -97,6 +101,9 @@ val ComponentLike.asStyledString: String
  */
 val String.asStyledComponent: TextComponent
 	get() = Component.text().append(miniMessageSerializer.deserializeOr(this, Component.text("FAILED", NamedTextColor.RED))!!).build()
+
+fun String.asStyledComponent(builder: TextComponent.Builder.() -> Unit) =
+	asStyledComponent.toBuilder().apply(builder).build()
 
 /**
  * This computational value converts this [String] into a [TextComponent]
