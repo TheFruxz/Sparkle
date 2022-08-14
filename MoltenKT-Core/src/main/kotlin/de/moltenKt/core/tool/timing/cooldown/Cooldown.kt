@@ -91,7 +91,7 @@ data class Cooldown(val duration: Duration, var running: Boolean = false, var on
 
 	// executiveCooldown(key: Key, run: () -> Unit)
 
-	// splitted time? (refreshable) with code, that executes every time a 'heartbeat' occurs
+	// ✅ splitted time? (refreshable) with code, that executes every time a 'heartbeat' occurs
 
 	// Interchanges -> Cooldown
 
