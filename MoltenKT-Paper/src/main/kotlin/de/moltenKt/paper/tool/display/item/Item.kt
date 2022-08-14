@@ -20,6 +20,7 @@ import de.moltenKt.paper.tool.display.item.action.ItemClickAction
 import de.moltenKt.paper.tool.display.item.action.ItemDropAction
 import de.moltenKt.paper.tool.display.item.action.ItemInteractAction
 import de.moltenKt.paper.tool.display.item.quirk.Quirk
+import de.moltenKt.paper.tool.smart.KeyedIdentifiable
 import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
 import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.asStyledComponent
@@ -31,6 +32,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
 import net.kyori.adventure.text.event.HoverEventSource
@@ -70,12 +72,12 @@ data class Item(
 	var flags: MutableSet<ItemFlag> = mutableSetOf(),
 	var quirk: Quirk = Quirk.empty,
 	var postProperties: MutableSet<PostProperty> = mutableSetOf(),
-	override var identity: String = "${UUID.randomUUID()}",
+	var itemIdentity: String = "${UUID.randomUUID()}",
 	private var data: MutableMap<String, Any> = mutableMapOf(),
 	var itemMetaBase: ItemMeta? = null,
 	var itemActionTags: Set<ItemActionTag> = emptySet(),
 	val productionPlugins: MutableSet<(ItemStack) -> Unit> = mutableSetOf(),
-) : ItemLike, Identifiable<Item>, Producible<ItemStack>, HoverEventSource<ShowItem> {
+) : ItemLike, KeyedIdentifiable<Item>, Producible<ItemStack>, HoverEventSource<ShowItem> {
 
 	constructor(source: Material) : this(material = source)
 
@@ -84,20 +86,21 @@ data class Item(
 		label = itemStack.itemMeta?.displayName() ?: Component.empty()
 		size = itemStack.amount
 		lore = itemStack.lore() ?: emptyList()
-		damage = if (itemStack.itemMeta is Damageable) {
-			(itemStack.itemMeta as Damageable).damage
-		} else 0
+		damage = when (itemStack.itemMeta) {
+			is Damageable -> (itemStack.itemMeta as Damageable).damage
+			else -> 0
+		}
 		modifications = enchantmentsToModifications(itemStack.enchantments).toMutableSet()
 		flags = itemStack.itemFlags
 		quirk = Quirk.empty // using itemMetaBase instead of quirks
 		data = readItemDataStorage(itemStack).toMutableMap()
 		itemMetaBase = itemStack.itemMeta
 		itemActionTags = itemStack.takeIf { it.hasItemMeta() }?.itemMeta?.persistentDataContainer?.getOrDefault(actionsNamespace, PersistentDataType.STRING, "")?.split("|")?.map { ItemActionTag(it) }?.toSet() ?: emptySet()
-		this.identity = (itemStack.itemMeta?.persistentDataContainer?.get(identityNamespace, PersistentDataType.STRING) ?: "").let {
-				if (it.isNotBlank()) {
-					return@let it
-				} else
-					"${UUID.randomUUID()}"
+		this.itemIdentity = (itemStack.itemMeta?.persistentDataContainer?.get(identityNamespace, PersistentDataType.STRING) ?: "").let {
+				when {
+					it.isNotBlank() -> return@let it
+					else -> "${UUID.randomUUID()}"
+				}
 			}
 
 		// base skull quirk
@@ -113,6 +116,9 @@ data class Item(
 		} else
 			quirk = Quirk.empty
 	}
+
+	override val identityKey: Key
+		get() = Key.key(MoltenApp.Infrastructure.SYSTEM_IDENTITY + "_items", itemIdentity)
 
 	val identityNamespace = system.subNamespacedKey("itemIdentity", CONTINUE)
 
@@ -477,8 +483,8 @@ data class Item(
 	fun putQuirk(quirk: Quirk) =
 		apply { this.quirk = quirk }
 
-	fun putIdentity(identity: String) =
-		apply { this.identity = identity }
+	fun putItemIdentity(itemIdentity: String) =
+		apply { this.itemIdentity = itemIdentity }
 
 	fun putBase(itemMetaBase: ItemMeta?) =
 		apply { this.itemMetaBase = itemMetaBase }
