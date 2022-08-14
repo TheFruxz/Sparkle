@@ -49,7 +49,7 @@ import java.util.logging.Level.WARNING
  * @since 1.0
  */
 abstract class Interchange(
-	override val label: String,
+	final override val label: String,
 	val aliases: Set<String> = emptySet(),
 	val protectedAccess: Boolean = false,
 	val userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,

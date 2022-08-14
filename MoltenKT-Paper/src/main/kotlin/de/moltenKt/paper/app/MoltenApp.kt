@@ -5,6 +5,7 @@ import de.moltenKt.core.extension.data.addJsonContextualConfiguration
 import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.tryToIgnore
+import de.moltenKt.core.tool.timing.cooldown.Cooldown
 import de.moltenKt.paper.app.MoltenApp.Infrastructure.SYSTEM_IDENTITY
 import de.moltenKt.paper.app.component.app.AppComponent
 import de.moltenKt.paper.app.component.buildMode.BuildModeComponent
@@ -73,7 +74,6 @@ import de.moltenKt.paper.tool.position.relative.PyramidalShape
 import de.moltenKt.paper.tool.position.relative.Shape
 import de.moltenKt.paper.tool.position.relative.SphereShape
 import de.moltenKt.unfold.buildComponent
-import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.text
 import de.moltenKt.unfold.unaryPlus
@@ -95,6 +95,7 @@ import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import java.util.*
 import java.util.logging.Level
+import kotlin.time.Duration.Companion.seconds
 
 class MoltenApp : App() {
 
@@ -253,6 +254,19 @@ class MoltenApp : App() {
 				}
 
 			}.message().broadcastPlayers()
+
+		}
+
+		buildAndRegisterSandBox(this, "launchTickingCooldown") {
+
+			buildComponent {
+				+ "<green>HELLO!</green> this is the running cooldown..."
+			}.message(executor).display()
+
+			Cooldown.create(10.seconds, beatOnRemainingTime = true, heartBeatDuration = 1.seconds).apply {
+				attachOnFinish { executor.sendMessage("Finished!") }
+				attachOnHeartbeat { executor.sendMessage("Heartbeat!") }
+			}.launchNative(coroutineScope)
 
 		}
 
