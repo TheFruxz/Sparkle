@@ -1,19 +1,20 @@
 package de.moltenKt.paper.extension.paper
 
-import de.moltenKt.paper.extension.tasky.doSync
 import de.moltenKt.paper.tool.annotation.RequiresSync
 import org.bukkit.Material
 import org.bukkit.Material.AIR
-import org.bukkit.Material.TNT
 import org.bukkit.block.Block
 import org.bukkit.block.BlockState
+import org.bukkit.block.Chest
 import org.bukkit.block.Container
 import org.bukkit.block.Sign
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.FallingBlock
 import org.bukkit.entity.TNTPrimed
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason
 import org.bukkit.inventory.Inventory
+
+val Block.sign: Sign
+    get() = this.state as Sign
 
 /**
  * This function casts a [BlockState] to the correct,
@@ -23,6 +24,12 @@ import org.bukkit.inventory.Inventory
  */
 val BlockState.sign: Sign
     get() = this as Sign
+
+val Block.chest: Chest
+    get() = this.state as Chest
+
+val BlockState.chest: Chest
+    get() = this as Chest
 
 /**
  * This function takes the sign's state and applies the
