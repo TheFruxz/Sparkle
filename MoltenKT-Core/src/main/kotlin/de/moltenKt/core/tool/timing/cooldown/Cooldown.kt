@@ -32,10 +32,8 @@ data class Cooldown(val duration: Duration, var running: Boolean = false, var on
 		if (running) throw IllegalStateException("This cooldown is already running!")
 
 		running = true
-
-		println("Launching cooldown with duration $duration")
+		
 		coroutineScope.launch {
-			println("launch1")
 			destination = Calendar.now() + duration
 
 			if (heartBeatDuration.isPositive()) {
