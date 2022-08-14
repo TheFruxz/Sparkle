@@ -10,21 +10,21 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration
 
-data class Cooldown(val duration: Duration, var running: Boolean = false, var onFinish: List<CooldownDestination>, var onHeartbeat: List<CooldownHeartbeat>, val heartBeatDuration: Duration, val beatOnRemainingTime: Boolean) : PassiveCooldown(Calendar.INFINITE_FUTURE) {
+data class Cooldown(val duration: Duration, var running: Boolean = false, var onFinish: List<CooldownDestination>, var onHeartbeat: List<CooldownHeartbeat>, val heartBeatDuration: Duration, val beatOnRemainingTime: Boolean, val beatOnLaunch: Boolean) : PassiveCooldown(Calendar.INFINITE_FUTURE) {
 
 	companion object {
 
-		fun create(duration: Duration, onFinish: List<CooldownDestination> = emptyList(), onHeartbeat: List<CooldownHeartbeat> = emptyList(), heartBeatDuration: Duration = Duration.ZERO, beatOnRemainingTime: Boolean = true, builder: Cooldown.() -> Unit = { }) =
-			Cooldown(duration, false, onFinish, onHeartbeat, heartBeatDuration, beatOnRemainingTime).apply(builder)
+		fun create(duration: Duration, onFinish: List<CooldownDestination> = emptyList(), onHeartbeat: List<CooldownHeartbeat> = emptyList(), heartBeatDuration: Duration = Duration.ZERO, beatOnRemainingTime: Boolean = true, beatOnLaunch: Boolean = true, builder: Cooldown.() -> Unit = { }) =
+			Cooldown(duration, false, onFinish, onHeartbeat, heartBeatDuration, beatOnRemainingTime, beatOnLaunch).apply(builder)
 
-		fun launch(duration: Duration, onFinish: List<CooldownDestination> = emptyList(), onHeartbeat: List<CooldownHeartbeat> = emptyList(), heartBeatDuration: Duration = Duration.ZERO, beatOnRemainingTime: Boolean = true, builder: Cooldown.() -> Unit = { }) =
-			create(duration, onFinish, onHeartbeat, heartBeatDuration, beatOnRemainingTime, builder).launchNative()
+		fun launch(duration: Duration, onFinish: List<CooldownDestination> = emptyList(), onHeartbeat: List<CooldownHeartbeat> = emptyList(), heartBeatDuration: Duration = Duration.ZERO, beatOnRemainingTime: Boolean = true, beatOnLaunch: Boolean = true,  builder: Cooldown.() -> Unit = { }) =
+			create(duration, onFinish, onHeartbeat, heartBeatDuration, beatOnRemainingTime, beatOnLaunch, builder).launchNative()
 
-		fun create(destination: Calendar, onFinish: List<CooldownDestination> = emptyList(), onHeartbeat: List<CooldownHeartbeat> = emptyList(), heartBeatDuration: Duration = Duration.ZERO, beatOnRemainingTime: Boolean = true, builder: Cooldown.() -> Unit = { }) =
-			Cooldown(destination.durationFromNow(), false, onFinish, onHeartbeat, heartBeatDuration, beatOnRemainingTime).apply(builder)
+		fun create(destination: Calendar, onFinish: List<CooldownDestination> = emptyList(), onHeartbeat: List<CooldownHeartbeat> = emptyList(), heartBeatDuration: Duration = Duration.ZERO, beatOnRemainingTime: Boolean = true, beatOnLaunch: Boolean = true,  builder: Cooldown.() -> Unit = { }) =
+			Cooldown(destination.durationFromNow(), false, onFinish, onHeartbeat, heartBeatDuration, beatOnRemainingTime, beatOnLaunch).apply(builder)
 
-		fun launch(destination: Calendar, onFinish: List<CooldownDestination> = emptyList(), onHeartbeat: List<CooldownHeartbeat> = emptyList(), heartBeatDuration: Duration = Duration.ZERO, beatOnRemainingTime: Boolean = true, builder: Cooldown.() -> Unit = { }) =
-			create(destination, onFinish, onHeartbeat, heartBeatDuration, beatOnRemainingTime, builder).launchNative()
+		fun launch(destination: Calendar, onFinish: List<CooldownDestination> = emptyList(), onHeartbeat: List<CooldownHeartbeat> = emptyList(), heartBeatDuration: Duration = Duration.ZERO, beatOnRemainingTime: Boolean = true, beatOnLaunch: Boolean = true,  builder: Cooldown.() -> Unit = { }) =
+			create(destination, onFinish, onHeartbeat, heartBeatDuration, beatOnRemainingTime, beatOnLaunch, builder).launchNative()
 
 	}
 
@@ -32,9 +32,11 @@ data class Cooldown(val duration: Duration, var running: Boolean = false, var on
 		if (running) throw IllegalStateException("This cooldown is already running!")
 
 		running = true
-		
+
 		coroutineScope.launch {
 			destination = Calendar.now() + duration
+
+			if (beatOnLaunch) onHeartbeat.forEach { onHeartbeat -> onHeartbeat.onBeat() }
 
 			if (heartBeatDuration.isPositive()) {
 				var currentDuration = Duration.ZERO
