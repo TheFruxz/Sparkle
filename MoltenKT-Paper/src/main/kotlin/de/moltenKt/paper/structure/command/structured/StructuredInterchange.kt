@@ -12,6 +12,8 @@ import de.moltenKt.paper.structure.command.InterchangeUserRestriction
 import de.moltenKt.paper.structure.command.InterchangeUserRestriction.NOT_RESTRICTED
 import de.moltenKt.paper.structure.command.completion.InterchangeStructure
 import de.moltenKt.paper.structure.command.live.InterchangeAccess
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion
 
 abstract class StructuredInterchange(
 	label: String,
@@ -21,7 +23,8 @@ abstract class StructuredInterchange(
 	userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
 	accessProtectionType: InterchangeAuthorizationType = MOLTEN,
 	hiddenFromRecommendation: Boolean = false,
-	ignoreInputValidation: Boolean = false
+	ignoreInputValidation: Boolean = false,
+	cooldown: Duration = Duration.ZERO,
 ) : Interchange(
 	label,
 	aliases,
@@ -30,7 +33,8 @@ abstract class StructuredInterchange(
 	accessProtectionType,
 	hiddenFromRecommendation,
 	structure,
-	ignoreInputValidation
+	ignoreInputValidation,
+	cooldown = cooldown,
 ) {
 
 	final override val execution: suspend InterchangeAccess<out InterchangeExecutor>.() -> InterchangeResult = {

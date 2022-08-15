@@ -12,6 +12,8 @@ import de.moltenKt.paper.structure.command.InterchangeUserRestriction.ONLY_CONSO
 import de.moltenKt.paper.structure.command.completion.InterchangeStructure
 import de.moltenKt.paper.structure.command.live.InterchangeAccess
 import org.bukkit.command.ConsoleCommandSender
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion
 
 abstract class StructuredConsoleInterchange(
 	label: String,
@@ -20,7 +22,8 @@ abstract class StructuredConsoleInterchange(
 	protectedAccess: Boolean = true,
 	accessProtectionType: InterchangeAuthorizationType = MOLTEN,
 	hiddenFromRecommendation: Boolean = false,
-	ignoreInputValidation: Boolean = false
+	ignoreInputValidation: Boolean = false,
+	cooldown: Duration = Duration.ZERO,
 ) : Interchange(
 	label,
 	aliases,
@@ -29,7 +32,8 @@ abstract class StructuredConsoleInterchange(
 	accessProtectionType,
 	hiddenFromRecommendation,
 	structure,
-	ignoreInputValidation
+	ignoreInputValidation,
+	cooldown = cooldown,
 ) {
 
 	final override val execution: suspend InterchangeAccess<out InterchangeExecutor>.() -> InterchangeResult = {

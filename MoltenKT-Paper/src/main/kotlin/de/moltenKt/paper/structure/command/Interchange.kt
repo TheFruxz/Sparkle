@@ -7,6 +7,12 @@ import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.interchange.Parameters
 import de.moltenKt.paper.extension.lang
+import de.moltenKt.paper.extension.paper.asPlayer
+import de.moltenKt.paper.extension.paper.asPlayerOrNull
+import de.moltenKt.paper.extension.timing.RunningCooldown
+import de.moltenKt.paper.extension.timing.getCooldown
+import de.moltenKt.paper.extension.timing.hasCooldown
+import de.moltenKt.paper.extension.timing.setCooldown
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.command.InterchangeAuthorizationType.MOLTEN
 import de.moltenKt.paper.structure.command.InterchangeResult.*
@@ -17,25 +23,34 @@ import de.moltenKt.paper.structure.command.live.InterchangeAccess
 import de.moltenKt.paper.tool.annotation.LegacyCraftBukkitFeature
 import de.moltenKt.paper.tool.display.message.Transmission.Level
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
+import de.moltenKt.paper.tool.display.message.Transmission.Level.WARNING
 import de.moltenKt.paper.tool.permission.Approval
 import de.moltenKt.paper.tool.smart.ContextualInstance
 import de.moltenKt.paper.tool.smart.Labeled
 import de.moltenKt.paper.tool.smart.Logging
 import de.moltenKt.paper.tool.smart.VendorOnDemand
+import de.moltenKt.unfold.buildComponent
 import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
+import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.subKey
+import de.moltenKt.unfold.hover
+import de.moltenKt.unfold.unaryPlus
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.Style
+import net.kyori.adventure.text.format.TextDecoration.BOLD
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import java.util.logging.Level.WARNING
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
 
 /**
  * @param label is the interchange name, used as /<name> and as the identifier, defined inside your plugin.yml
@@ -61,6 +76,7 @@ abstract class Interchange(
 	val ignoreInputValidation: Boolean = false,
 	var forcedApproval: Approval? = null,
 	final override val preferredVendor: App? = null,
+	val cooldown: Duration = Duration.ZERO
 ) : CommandExecutor, ContextualInstance<Interchange>, VendorOnDemand, Logging, Labeled {
 
 	init {
@@ -115,7 +131,7 @@ abstract class Interchange(
 	 * @since 1.0
 	 */
 	val tabCompleter = TabCompleter { executor, _, _, args ->
-		completion.computeCompletion(args.toList(), executor).takeIf { canExecuteBasePlate(executor)} ?: listOf(" ")
+		completion.computeCompletion(args.toList(), executor).takeIf { canExecuteBasePlate(executor) } ?: listOf(" ")
 	}
 
 	/**
@@ -199,7 +215,11 @@ abstract class Interchange(
 
 	// runtime-functions
 
-	private fun interchangeException(exception: Exception, executor: InterchangeExecutor, executorType: InterchangeUserRestriction) {
+	private fun interchangeException(
+		exception: Exception,
+		executor: InterchangeExecutor,
+		executorType: InterchangeUserRestriction
+	) {
 		sectionLog.log(
 			WARNING,
 			"Executor ${executor.name} as ${executorType.name} caused an error at execution at ${with(exception.stackTrace[0]) { "$className:$methodName" }}!"
@@ -246,6 +266,21 @@ abstract class Interchange(
 			.notification(ERROR, receiver).display()
 	}
 
+	private fun cooldownFeedback(
+		receiver: InterchangeExecutor,
+		cooldown: RunningCooldown?,
+	) {
+		buildComponent {
+			+ "You have to wait ".asComponent.color(NamedTextColor.GRAY)
+			+ ((cooldown?.remaining?.toString(DurationUnit.SECONDS, 0) ?: "") + " ").asComponent
+				.style(Style.style(NamedTextColor.RED, BOLD))
+				.hover {
+					cooldown?.destination?.getFormatted(receiver.asPlayer.locale())?.asComponent?.color(NamedTextColor.GRAY)
+				}
+			+ "until you can execute this again!".asComponent.color(NamedTextColor.GRAY)
+		}.notification(Level.FAIL, receiver).display()
+	}
+
 	// logic
 
 	override fun onCommand(sender: InterchangeExecutor, command: Command, label: String, args: Parameters): Boolean {
@@ -257,53 +292,72 @@ abstract class Interchange(
 
 			if (canExecuteBasePlate(sender)) {
 
-				if (
-					(userRestriction == NOT_RESTRICTED)
-					|| (sender is Player && userRestriction == ONLY_PLAYERS)
-					|| (sender is ConsoleCommandSender && userRestriction == ONLY_CONSOLE)
-				) {
+				if (sender is ConsoleCommandSender || !cooldown.isPositive() || sender.asPlayerOrNull?.hasCooldown("interchange:$key") != true) {
 
-					if (ignoreInputValidation || completion.validateInput(parameters, sender)) {
-						val clientType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE
+					if (
+						(userRestriction == NOT_RESTRICTED)
+						|| (sender is Player && userRestriction == ONLY_PLAYERS)
+						|| (sender is ConsoleCommandSender && userRestriction == ONLY_CONSOLE)
+					) {
 
-						fun exception(exception: Exception) {
-							sectionLog.log(WARNING, "Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!")
-							catchException(exception)
-						}
+						if (ignoreInputValidation || completion.validateInput(parameters, sender)) {
+							val clientType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE
 
-						try {
-
-							when (executionProcess()(InterchangeAccess(vendor, clientType, sender, this@Interchange, label, parameters, emptyList()))) {
-
-								NOT_PERMITTED -> wrongApprovalFeedback(sender)
-								WRONG_CLIENT -> wrongClientFeedback(sender)
-								WRONG_USAGE -> wrongUsageFeedback(sender)
-								FAIL -> issueFeedback(sender)
-								SUCCESS -> debugLog(
-									"Executor ${sender.name} as ${clientType.name} successfully executed $label-interchange!"
+							fun exception(exception: Exception) {
+								sectionLog.log(
+									WARNING,
+									"Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!"
 								)
-
+								catchException(exception)
 							}
 
-						} catch (e: Exception) {
-							issueFeedback(sender)
-							exception(e)
-						} catch (e: java.lang.Exception) {
-							issueFeedback(sender)
-							exception(e)
-						} catch (e: NullPointerException) {
-							issueFeedback(sender)
-							exception(e)
-						} catch (e: NoSuchElementException) {
-							issueFeedback(sender)
-							exception(e)
-						}
+							try {
+
+								when (executionProcess()(
+									InterchangeAccess(
+										vendor,
+										clientType,
+										sender,
+										this@Interchange,
+										label,
+										parameters,
+										emptyList()
+									)
+								)) {
+
+									NOT_PERMITTED -> wrongApprovalFeedback(sender)
+									WRONG_CLIENT -> wrongClientFeedback(sender)
+									WRONG_USAGE -> wrongUsageFeedback(sender)
+									FAIL -> issueFeedback(sender)
+									SUCCESS -> {
+										sender.asPlayerOrNull?.setCooldown("interchange:$key", cooldown)
+										debugLog("Executor ${sender.name} as ${clientType.name} successfully executed $label-interchange!")
+									}
+
+								}
+
+							} catch (e: Exception) {
+								issueFeedback(sender)
+								exception(e)
+							} catch (e: java.lang.Exception) {
+								issueFeedback(sender)
+								exception(e)
+							} catch (e: NullPointerException) {
+								issueFeedback(sender)
+								exception(e)
+							} catch (e: NoSuchElementException) {
+								issueFeedback(sender)
+								exception(e)
+							}
+
+						} else
+							wrongUsageFeedback(sender)
 
 					} else
-						wrongUsageFeedback(sender)
+						wrongClientFeedback(sender)
 
 				} else
-					wrongClientFeedback(sender)
+					cooldownFeedback(sender, sender.asPlayer.getCooldown("interchange:$key"))
 
 			} else
 				wrongApprovalFeedback(sender)
@@ -349,4 +403,5 @@ enum class InterchangeAuthorizationType {
 }
 
 @Suppress("unused") // todo use Interchange as context, when the kotlin context API is ready
-fun Interchange.execution(execution: suspend InterchangeAccess<out InterchangeExecutor>.() -> InterchangeResult) = execution
+fun Interchange.execution(execution: suspend InterchangeAccess<out InterchangeExecutor>.() -> InterchangeResult) =
+	execution

@@ -12,6 +12,8 @@ import de.moltenKt.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYE
 import de.moltenKt.paper.structure.command.completion.InterchangeStructure
 import de.moltenKt.paper.structure.command.live.InterchangeAccess
 import org.bukkit.entity.Player
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion
 
 abstract class StructuredPlayerInterchange(
 	label: String,
@@ -20,7 +22,8 @@ abstract class StructuredPlayerInterchange(
 	protectedAccess: Boolean = true,
 	accessProtectionType: InterchangeAuthorizationType = MOLTEN,
 	hiddenFromRecommendation: Boolean = false,
-	ignoreInputValidation: Boolean = false
+	ignoreInputValidation: Boolean = false,
+	cooldown: Duration = Duration.ZERO,
 ) : Interchange(
 	label,
 	aliases,
@@ -29,7 +32,8 @@ abstract class StructuredPlayerInterchange(
 	accessProtectionType,
 	hiddenFromRecommendation,
 	structure,
-	ignoreInputValidation
+	ignoreInputValidation,
+	cooldown = cooldown,
 ) {
 
 	final override val execution: suspend InterchangeAccess<out InterchangeExecutor>.() -> InterchangeResult = {
