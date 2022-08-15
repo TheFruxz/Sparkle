@@ -43,7 +43,7 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 			Material.GOLDEN_HOE.item {
 
 				label = "Marking Tool".asComponent.style(style(YELLOW, BOLD))
-				identity = "MoltenKT:markingTool"
+				itemIdentity = "MoltenKT:markingTool"
 				lore = """
 				
 				<YELLOW>LEFT-CLICK <gray>-> Set #1 Position
