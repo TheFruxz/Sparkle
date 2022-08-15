@@ -35,7 +35,7 @@ fun text(content: String, builder: Builder.() -> Unit = { }) = content.asStyledC
 fun text(builder: Builder.() -> Unit) = text("", builder)
 
 @Unfold
-fun TextComponent.hover(process: () -> HoverEventSource<*>) = this.hoverEvent(process())
+fun TextComponent.hover(process: () -> HoverEventSource<*>?) = this.hoverEvent(process())
 
 @Unfold
 fun Builder.hover(process: () -> HoverEventSource<*>) = this.hoverEvent(process())
