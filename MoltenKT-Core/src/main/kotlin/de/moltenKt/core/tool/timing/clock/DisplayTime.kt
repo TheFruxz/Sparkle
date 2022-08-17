@@ -11,7 +11,6 @@ import kotlin.time.Duration
  * you want to display it.
  * @param ticks the amount of ticks used in this time
  */
-@Deprecated("Kotlin Duration API provide better display capabilities, also take a look at the MoltenKT-Core Calendar API!")
 data class DisplayTime(
 	var ticks: Double
 ) {
