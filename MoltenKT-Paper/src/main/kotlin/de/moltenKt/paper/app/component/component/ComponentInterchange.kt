@@ -21,6 +21,7 @@ import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.structure.component.file.ComponentManager
 import de.moltenKt.paper.tool.display.message.Transmission
 import de.moltenKt.paper.tool.display.message.Transmission.Level.*
+import kotlin.time.Duration.Companion.seconds
 
 internal class ComponentInterchange :
 	StructuredInterchange("component", protectedAccess = true, structure = buildInterchangeStructure {
@@ -345,6 +346,8 @@ internal class ComponentInterchange :
 					addContent("info")
 
 					ignoreCase()
+
+					cooldown(20.seconds)
 
 					concludedExecution {
 

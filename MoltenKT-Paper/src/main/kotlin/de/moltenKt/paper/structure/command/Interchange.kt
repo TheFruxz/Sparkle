@@ -1,6 +1,7 @@
 package de.moltenKt.paper.structure.command
 
 import de.moltenKt.core.extension.catchException
+import de.moltenKt.core.extension.empty
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
@@ -23,7 +24,6 @@ import de.moltenKt.paper.structure.command.live.InterchangeAccess
 import de.moltenKt.paper.tool.annotation.LegacyCraftBukkitFeature
 import de.moltenKt.paper.tool.display.message.Transmission.Level
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
-import de.moltenKt.paper.tool.display.message.Transmission.Level.WARNING
 import de.moltenKt.paper.tool.permission.Approval
 import de.moltenKt.paper.tool.smart.ContextualInstance
 import de.moltenKt.paper.tool.smart.Labeled
@@ -38,7 +38,6 @@ import de.moltenKt.unfold.unaryPlus
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
-import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
@@ -266,7 +265,7 @@ abstract class Interchange(
 			.notification(ERROR, receiver).display()
 	}
 
-	private fun cooldownFeedback(
+	internal fun cooldownFeedback(
 		receiver: InterchangeExecutor,
 		cooldown: RunningCooldown?,
 	) {
@@ -277,7 +276,7 @@ abstract class Interchange(
 				.hover {
 					cooldown?.destination?.getFormatted(receiver.asPlayer.locale())?.asComponent?.color(NamedTextColor.GRAY)
 				}
-			+ "until you can execute this again!".asComponent.color(NamedTextColor.GRAY)
+			+ "until you can execute this (sub-)interchange again!".asComponent.color(NamedTextColor.GRAY)
 		}.notification(Level.FAIL, receiver).display()
 	}
 
@@ -329,6 +328,7 @@ abstract class Interchange(
 									WRONG_CLIENT -> wrongClientFeedback(sender)
 									WRONG_USAGE -> wrongUsageFeedback(sender)
 									FAIL -> issueFeedback(sender)
+									BRANCH_COOLDOWN -> empty()
 									SUCCESS -> {
 										sender.asPlayerOrNull?.setCooldown("interchange:$key", cooldown)
 										debugLog("Executor ${sender.name} as ${clientType.name} successfully executed $label-interchange!")
@@ -371,7 +371,7 @@ abstract class Interchange(
 
 enum class InterchangeResult {
 
-	SUCCESS, NOT_PERMITTED, WRONG_USAGE, WRONG_CLIENT, FAIL;
+	SUCCESS, NOT_PERMITTED, WRONG_USAGE, WRONG_CLIENT, FAIL, BRANCH_COOLDOWN;
 
 }
 
