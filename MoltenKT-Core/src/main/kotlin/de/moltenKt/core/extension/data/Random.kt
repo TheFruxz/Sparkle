@@ -57,3 +57,9 @@ enum class RandomTagType {
 	ONLY_LOWERCASE,
 	MIXED_CASE;
 }
+
+fun buildRandomSeeds(amount: Long, random: Random = Random) = buildSet {
+	for (i in 1..amount) {
+		add(random.nextLong())
+	}
+}
