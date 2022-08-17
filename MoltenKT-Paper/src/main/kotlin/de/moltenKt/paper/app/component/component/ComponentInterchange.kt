@@ -347,8 +347,6 @@ internal class ComponentInterchange :
 
 					ignoreCase()
 
-					cooldown(20.seconds)
-
 					concludedExecution {
 
 						info(getInput(1, CompletionAsset.COMPONENT), executor)
