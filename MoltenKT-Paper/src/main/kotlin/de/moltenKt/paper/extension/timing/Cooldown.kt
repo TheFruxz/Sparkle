@@ -27,7 +27,7 @@ fun Player.hasCooldown(key: Any) =
 
 val Player.activeCooldowns: List<RunningCooldown>
 	get() = StaticCooldown.cooldownStats
-		.filter { it.key.let { key -> key is Pair<*, *> && key.first == this } }
+		.filter { it.key.let { key -> key is Pair<*, *> && key.first == this.key } && it.value.inFuture }
 		.map { RunningCooldown(it.key, it.value) }
 
 // Block cooldown
@@ -48,7 +48,7 @@ fun Block.hasCooldown(key: Any) =
 
 val Block.activeCooldowns: List<RunningCooldown>
 	get() = StaticCooldown.cooldownStats
-		.filter { it.key.let { key -> key is Pair<*, *> && key.first == this } }
+		.filter { it.key.let { key -> key is Pair<*, *> && key.first == this.key } && it.value.inFuture }
 		.map { RunningCooldown(it.key, it.value) }
 
 // Location cooldown
@@ -69,7 +69,7 @@ fun Location.hasCooldown(key: Any) =
 
 val Location.activeCooldowns: List<RunningCooldown>
 	get() = StaticCooldown.cooldownStats
-		.filter { it.key.let { key -> key is Pair<*, *> && key.first == this } }
+		.filter { it.key.let { key -> key is Pair<*, *> && key.first == this.key } && it.value.inFuture }
 		.map { RunningCooldown(it.key, it.value) }
 
 data class RunningCooldown constructor(val key: Any, val destination: Calendar) {
