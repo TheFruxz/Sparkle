@@ -1,14 +1,20 @@
 package de.moltenKt.paper.structure.command.completion
 
 import de.moltenKt.core.extension.forceCast
+import de.moltenKt.core.extension.math.maxTo
 import de.moltenKt.core.tool.smart.identification.UUID
 import de.moltenKt.core.tool.smart.positioning.Address
 import de.moltenKt.core.tree.TreeBranch
 import de.moltenKt.core.tree.TreeBranchType
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
+import de.moltenKt.paper.extension.paper.asPlayer
+import de.moltenKt.paper.extension.paper.asPlayerOrNull
+import de.moltenKt.paper.extension.timing.getCooldown
+import de.moltenKt.paper.extension.timing.hasCooldown
+import de.moltenKt.paper.extension.timing.setCooldown
 import de.moltenKt.paper.structure.command.InterchangeResult
-import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS
+import de.moltenKt.paper.structure.command.InterchangeResult.*
 import de.moltenKt.paper.structure.command.completion.InterchangeStructure.BranchStatus.*
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
 import de.moltenKt.paper.structure.command.completion.component.CompletionComponent
@@ -18,6 +24,9 @@ import de.moltenKt.paper.structure.command.completion.tracing.PossibleTraceWay
 import de.moltenKt.paper.structure.command.live.InterchangeAccess
 import de.moltenKt.paper.tool.permission.Approval
 import de.moltenKt.paper.tool.permission.hasApproval
+import de.moltenKt.unfold.buildComponent
+import org.bukkit.entity.Player
+import kotlin.time.Duration
 
 class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	override var identity: String = UUID.randomString(),
@@ -28,13 +37,14 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	val parent: InterchangeStructure<EXECUTOR>? = null,
 	private var isBranched: Boolean = false,
 	var requiredApprovals: List<Approval> = emptyList(),
+	var cooldown: Duration = Duration.ZERO,
 	var onExecution: (suspend InterchangeAccess<EXECUTOR>.() -> InterchangeResult)? = null,
 ) : TreeBranch<InterchangeStructure<EXECUTOR>, List<CompletionComponent>, TreeBranchType>(
-	identity,
-	address,
-	TreeBranchType.OBJECT,
-	subBranches,
-	content
+	identity = identity,
+	address = address,
+	branchType = TreeBranchType.OBJECT,
+	subBranches = subBranches,
+	content = content
 ) {
 
 	var configuration = configuration
@@ -171,7 +181,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 									if ((currentSubBranches.isNotEmpty() && currentSubBranches.all { it.configuration.isRequired }) && !(availableExecutionRepresentsSolution && currentBranch.onExecution != null)) {
 										NO_DESTINATION // This branch has to be completed with its sub-branches
 									} else {
-											MATCHING
+										MATCHING
 									}
 								} else {
 									OVERFLOW
@@ -257,6 +267,32 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 			trace.waysMatching.isNotEmpty()
 	}
 
+	suspend fun performExecution(access: InterchangeAccess<out InterchangeExecutor>): InterchangeResult {
+		return trace(access.parameters, access.executor).let { trace ->
+			when (trace.waysMatching.size.maxTo(2)) {
+				0, 2 -> WRONG_USAGE
+				else -> {
+					val extrapolatedTrace = trace.waysMatching.first()
+					val extrapolatedBranch = extrapolatedTrace.branch
+
+					if (!extrapolatedBranch.cooldown.isPositive() || access.executor !is Player || !access.executor.hasCooldown(access.interchange.key() to extrapolatedBranch.address)) {
+
+						// add cooldown to executor, if executor is player and cooldown is positive
+						if (extrapolatedBranch.cooldown.isPositive()) access.executor.asPlayerOrNull?.setCooldown(access.interchange.key() to extrapolatedBranch.address, extrapolatedBranch.cooldown)
+
+						// execute the execution block
+						extrapolatedBranch.onExecution?.invoke(access.copy(additionalParameters = access.parameters.drop(extrapolatedTrace.tracingDepth + 1)).forceCast()) ?: WRONG_USAGE
+
+					} else {
+						access.interchange.cooldownFeedback(access.executor, access.executor.asPlayer.getCooldown(access.interchange.key() to extrapolatedBranch.address))
+						BRANCH_COOLDOWN
+					}
+
+				}
+			}
+		}
+	}
+
 	fun computeCompletion(parameters: List<String>, executor: InterchangeExecutor): List<String> {
 
 		val query = (parameters.lastOrNull() ?: "")
@@ -328,6 +364,10 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 		requiredApprovals += approval
 	}
 
+	infix fun cooldown(cooldown: Duration) {
+		this.cooldown = cooldown
+	}
+
 }
 
 fun <EXECUTOR : InterchangeExecutor> buildInterchangeStructure(
@@ -337,7 +377,14 @@ fun <EXECUTOR : InterchangeExecutor> buildInterchangeStructure(
 	content: List<CompletionComponent> = emptyList(),
 	requiredApprovals: List<Approval> = emptyList(),
 	builder: InterchangeStructure<EXECUTOR>.() -> Unit,
-) = InterchangeStructure<EXECUTOR>("root", path, subBranches, configuration, content, requiredApprovals = requiredApprovals).apply(builder)
+) = InterchangeStructure(
+	identity = "root",
+	address = path,
+	subBranches = subBranches,
+	configuration = configuration,
+	content = content,
+	requiredApprovals = requiredApprovals
+).apply(builder)
 
 fun emptyInterchangeStructure() =
 	buildInterchangeStructure<InterchangeExecutor>(builder = { })

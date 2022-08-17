@@ -4,6 +4,10 @@ package de.moltenKt.paper.extension.paper
 
 import de.moltenKt.core.extension.classType.UUID
 import de.moltenKt.core.tool.smart.identification.Identifiable
+import de.moltenKt.paper.structure.app.App
+import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
+import de.moltenKt.unfold.extension.subKey
+import net.kyori.adventure.key.Key
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
@@ -142,7 +146,9 @@ fun offlinePlayer(identity: Identifiable<out OfflinePlayer>) = offlinePlayer(UUI
  * @author Fruxz
  * @since 1.0
  */
-fun Plugin.createKey(key: String) = NamespacedKey(this, key)
+fun Plugin.createNamespacedKey(key: String): NamespacedKey = NamespacedKey(this, key)
+
+fun App.createKey(value: String): Key = key.subKey(value, CONTINUE)
 
 /**
  * This function searches for a [World] with the given

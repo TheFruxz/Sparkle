@@ -27,10 +27,8 @@ import de.moltenKt.paper.app.interchange.DebugModeInterchange
 import de.moltenKt.paper.app.interchange.MoltenKtInterchange
 import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
-import de.moltenKt.paper.extension.display.message
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
-import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
 import de.moltenKt.paper.mojang.MojangProfile
 import de.moltenKt.paper.mojang.MojangProfileCape
 import de.moltenKt.paper.mojang.MojangProfileRaw
@@ -72,17 +70,12 @@ import de.moltenKt.paper.tool.position.relative.LinearShape
 import de.moltenKt.paper.tool.position.relative.PyramidalShape
 import de.moltenKt.paper.tool.position.relative.Shape
 import de.moltenKt.paper.tool.position.relative.SphereShape
-import de.moltenKt.unfold.buildComponent
-import de.moltenKt.unfold.extension.asComponent
-import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.text
-import de.moltenKt.unfold.unaryPlus
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
@@ -235,26 +228,6 @@ class MoltenApp : App() {
 		add(PlaygroundInterchange())
 
 		add(AppComponent())
-
-		buildAndRegisterSandBox(this, "demo") {
-
-			buildComponent {
-
-				+ "Hello!"
-
-				+ text(" This is") {
-					+ " my Test"
-				}
-
-				+ text(" Word!") {
-					color(NamedTextColor.RED)
-					hoverEvent("Hey Hover!".asStyledComponent)
-					+ ClickEvent.suggestCommand("DID IT!")
-				}
-
-			}.message().broadcastPlayers()
-
-		}
 
 	}
 

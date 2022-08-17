@@ -3,9 +3,8 @@
 package de.moltenKt.paper.tool.display.color
 
 import de.moltenKt.core.annotation.NotPerfect
-import de.moltenKt.core.extension.data.rgb
-import de.moltenKt.paper.extension.display.asBukkitColor
 import de.moltenKt.paper.extension.paper.createKey
+import de.moltenKt.paper.extension.paper.createNamespacedKey
 import de.moltenKt.paper.extension.system
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.key.Key

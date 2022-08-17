@@ -7,6 +7,8 @@ import de.moltenKt.paper.tool.smart.KeyedIdentifiable
 import de.moltenKt.paper.tool.smart.Logging
 import de.moltenKt.paper.tool.timing.tasky.Tasky
 import de.moltenKt.paper.tool.timing.tasky.TemporalAdvice
+import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
+import de.moltenKt.unfold.extension.subKey
 import net.kyori.adventure.key.Key
 
 interface Service : Hoster<Unit, Unit, Service>, Logging {
@@ -31,7 +33,7 @@ interface Service : Hoster<Unit, Unit, Service>, Logging {
 		get() = thisIdentity
 
 	override val identityKey: Key
-		get() = Key.key(vendor, thisIdentity)
+		get() = vendor.subKey(thisIdentity, CONTINUE)
 
 	var controller: Tasky?
 		get() = MoltenCache.runningServiceTaskController[key]

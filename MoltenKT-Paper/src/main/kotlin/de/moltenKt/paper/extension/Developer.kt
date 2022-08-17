@@ -24,6 +24,10 @@ fun <T : Any?> T.debugLog(message: String) = this.also {
 	}
 }
 
+fun <T : Any?> T.debugLog(messageProcess: T.() -> String) {
+	if (MoltenApp.debugMode) { debugLog(messageProcess()) }
+}
+
 fun mainLog(level: Level = Level.INFO, message: String) = MoltenApp.instance.log.log(level, message)
 
 val mainLog = MoltenApp.instance.log
