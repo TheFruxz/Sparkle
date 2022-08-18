@@ -8,6 +8,7 @@ import de.moltenKt.paper.structure.component.SmartComponent
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextReplacementConfig
+import org.bukkit.Bukkit
 import kotlin.io.path.createDirectories
 import kotlin.io.path.div
 import kotlin.io.path.readText
@@ -33,6 +34,9 @@ class ChatComponent : SmartComponent(AUTOSTART_MUTABLE) {
 				setupPath.writeText(it.toJson())
 			}
 
+			if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+				usePlaceholderAPI = true
+			}
 		}
 
 	}
@@ -54,6 +58,11 @@ class ChatComponent : SmartComponent(AUTOSTART_MUTABLE) {
 		 */
 		var chatExtensions: Set<(TextReplacementConfig.Builder) -> Unit> = setOf()
 
+
+		/**
+		 * If true, the PlaceholderAPI is used for the Placeholders.
+		 */
+		var usePlaceholderAPI: Boolean = false
 	}
 
 }
