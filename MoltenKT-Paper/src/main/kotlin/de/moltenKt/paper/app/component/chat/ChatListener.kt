@@ -12,6 +12,7 @@ import de.moltenKt.unfold.extension.asString
 import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.extension.asStyledString
 import io.papermc.paper.event.player.AsyncChatEvent
+import me.clip.placeholderapi.PlaceholderAPI
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.sound.Sound.Source.MASTER
 import net.kyori.adventure.text.Component
@@ -78,7 +79,13 @@ internal class ChatListener : EventListener() {
 					"displayName" to player.displayName().hoverEvent(player).clickEvent(ClickEvent.suggestCommand("/msg ${player.name}")).asStyledString,
 					"name" to player.name,
 					"playerListName" to player.playerListName().hoverEvent(player).clickEvent(ClickEvent.suggestCommand("/msg ${player.name}")).asStyledString
-				).asStyledComponent.replaceText {
+				).run {
+					return@run if (ChatComponent.usePlaceholderAPI) {
+						PlaceholderAPI.setPlaceholders(player, this)
+					} else {
+						this
+					}
+				}.asStyledComponent.replaceText {
 					it.match("\\[message]")
 					it.replacement(message)
 				})

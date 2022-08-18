@@ -17,7 +17,7 @@ repositories {
     mavenCentral()
     maven("https://jitpack.io")
     maven("https://papermc.io/repo/repository/maven-public/") // PaperMC
-
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 }
 
 dependencies {
@@ -55,6 +55,7 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:2.1.0")
 
     compileOnly("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT") // PaperMC
+    compileOnly("me.clip:placeholderapi:2.11.2") // PlaceholderAPI
 
     // Shadow
 
