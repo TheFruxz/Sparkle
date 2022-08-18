@@ -39,6 +39,7 @@ de.moltenKt.core.tool.smart.type
 de.moltenKt.core.tool.timing.calendar
 de.moltenKt.core.tool.timing.calendar.timeUnit
 de.moltenKt.core.tool.timing.clock
+de.moltenKt.core.tool.timing.cooldown
 de.moltenKt.core.tree
 module:MoltenKT-Paper
 de.moltenKt.paper
