@@ -34,7 +34,7 @@ import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
 import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.subKey
 import de.moltenKt.unfold.hover
-import de.moltenKt.unfold.unaryPlus
+import de.moltenKt.unfold.plus
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
@@ -270,13 +270,13 @@ abstract class Interchange(
 		cooldown: RunningCooldown?,
 	) {
 		buildComponent {
-			+ "You have to wait ".asComponent.color(NamedTextColor.GRAY)
-			+ ((cooldown?.remaining?.toString(DurationUnit.SECONDS, 0) ?: "") + " ").asComponent
+			this + "You have to wait ".asComponent.color(NamedTextColor.GRAY)
+			this + ((cooldown?.remaining?.toString(DurationUnit.SECONDS, 0) ?: "") + " ").asComponent
 				.style(Style.style(NamedTextColor.RED, BOLD))
 				.hover {
 					cooldown?.destination?.getFormatted(receiver.asPlayer.locale())?.asComponent?.color(NamedTextColor.GRAY)
 				}
-			+ "until you can execute this (sub-)interchange again!".asComponent.color(NamedTextColor.GRAY)
+			this + "until you can execute this (sub-)interchange again!".asComponent.color(NamedTextColor.GRAY)
 		}.notification(Level.FAIL, receiver).display()
 	}
 

@@ -8,8 +8,8 @@ import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.tool.display.message.Transmission.Level.GENERAL
 import de.moltenKt.paper.tool.display.message.Transmission.Level.INFO
+import de.moltenKt.unfold.plus
 import de.moltenKt.unfold.text
-import de.moltenKt.unfold.unaryPlus
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style.style
@@ -20,23 +20,17 @@ internal class MoltenKtInterchange : StructuredInterchange("moltenkt", protected
 	concludedExecution {
 
 		text {
-			+ text("MoltenKT") {
+			this + text("MoltenKT") {
 				style(style(NamedTextColor.GOLD, BOLD))
-			}
-			+ text(" was developed by ") {
+			} + text(" was developed by ") {
 				color(NamedTextColor.GRAY)
-			}
-			+ text("TheFruxz") {
+			} + text("TheFruxz") {
 				color(NamedTextColor.YELLOW)
-			}
-			+ text(", and other contributors of the repository: ") {
+			} + text(", and other contributors of the repository: ") {
 				color(NamedTextColor.GRAY)
-			}
-			+ text(vendor.description.website ?: "FEHLER") {
+			} + text(vendor.description.website ?: "FEHLER") {
 				style(style(NamedTextColor.GOLD, BOLD))
-			}
-
-			+ Component.newline()
+			} + Component.newline()
 
 		}.notification(INFO, executor).display()
 

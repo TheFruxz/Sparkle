@@ -92,7 +92,6 @@ tasks {
         kotlinOptions.freeCompilerArgs += "-opt-in=kotlinx.serialization.ExperimentalSerializationApi"
         kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.io.path.ExperimentalPathApi"
         kotlinOptions.freeCompilerArgs += "-opt-in=kotlinx.serialization.ExperimentalSerializationApi"
-        kotlinOptions.freeCompilerArgs += "-Xcontext-receivers"
     }
 
 }

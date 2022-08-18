@@ -19,7 +19,6 @@ allprojects {
 
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-        kotlinOptions.freeCompilerArgs += "-Xcontext-receivers"
     }
 
 }
