@@ -48,6 +48,14 @@ context(Builder)
 fun text(content: String, builder: Builder.() -> Unit = { }) = content.asStyledComponent(builder)
 
 @Unfold
+fun text(component: ComponentLike, builder: Builder.() -> Unit = { }) =
+	Component.text().append(component).apply(builder).build()
+
+@Unfold
+fun text(componentBuilder: Builder, builder: Builder.() -> Unit = { }) =
+	componentBuilder.apply(builder).build()
+
+@Unfold
 fun text(builder: Builder.() -> Unit) = text("", builder)
 
 @Unfold
