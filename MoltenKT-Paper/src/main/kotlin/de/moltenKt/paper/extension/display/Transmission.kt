@@ -4,6 +4,9 @@ import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.tool.display.message.Transmission
 import de.moltenKt.paper.tool.display.message.Transmission.Level
 import de.moltenKt.unfold.extension.asStyledComponent
+import de.moltenKt.unfold.extension.lines
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.ComponentIteratorType
 import net.kyori.adventure.text.ComponentLike
 
 fun Iterable<ComponentLike>.message(vararg participant: InterchangeExecutor) =
@@ -15,9 +18,9 @@ fun Iterable<ComponentLike>.notification(level: Level, vararg participant: Inter
 		.promptSound(level.promptSound)
 		.participants(participant.toList())
 
-fun ComponentLike.message(vararg participant: InterchangeExecutor) = listOf(this).message(*participant)
+fun ComponentLike.message(vararg participant: InterchangeExecutor) = lines().message(*participant)
 
-fun ComponentLike.notification(level: Level, vararg participant: InterchangeExecutor) = listOf(this).notification(level, *participant)
+fun ComponentLike.notification(level: Level, vararg participant: InterchangeExecutor) = lines().notification(level, *participant)
 
 fun String.message(vararg participants: InterchangeExecutor) = lines().map(String::asStyledComponent).message(*participants)
 

@@ -120,9 +120,9 @@ data class Item(
 	override val identityKey: Key
 		get() = Key.key(MoltenApp.Infrastructure.SYSTEM_IDENTITY + "_items", itemIdentity)
 
-	val identityNamespace = system.subNamespacedKey("itemIdentity", CONTINUE)
+	val identityNamespace = system.subNamespacedKey("item.identity", CONTINUE)
 
-	val actionsNamespace = system.subNamespacedKey("itemActions", CONTINUE)
+	val actionsNamespace = system.subNamespacedKey("item.actions", CONTINUE)
 
 	val displayObject: Component
 		get() = Component.text()

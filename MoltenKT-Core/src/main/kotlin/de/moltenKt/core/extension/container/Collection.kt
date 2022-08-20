@@ -371,6 +371,24 @@ fun <T, C : Collection<T>> C.fragmented(fragments: Int = 2, keepOverflow: Boolea
 	return output
 }
 
+fun <T, C : Collection<T>> C.splitBy(predicate: (T) -> Boolean): List<List<T>> {
+	val output = mutableListOf<List<T>>()
+	var currentFragment = mutableListOf<T>()
+
+	forEach {
+		if (predicate(it)) {
+			output.add(currentFragment.toList())
+			currentFragment = mutableListOf()
+		} else {
+			currentFragment.add(it)
+		}
+	}
+
+	if (currentFragment.isNotEmpty()) output.add(currentFragment.toList())
+
+	return output
+}
+
 /**
  * This function uses the [Collection.distinct] function and
  * returns the result-list as a [Set], by using the [toSet] function.

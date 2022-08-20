@@ -1,5 +1,6 @@
 name: MoltenKT-Paper
 version: ${version}
+api-version: 1.19
 main: de.moltenKt.paper.app.MoltenApp
 load: STARTUP
 authors:
@@ -8,6 +9,5 @@ authors:
 softdepend:
   - HeadDatabase
   - PlaceholderAPI
-api-version: 1.18
 prefix: ${name}
 website: ${website}

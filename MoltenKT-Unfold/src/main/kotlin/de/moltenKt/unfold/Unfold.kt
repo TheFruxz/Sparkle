@@ -7,6 +7,8 @@ import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.TextComponent.Builder
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEventSource
+import net.kyori.adventure.text.format.Style
+import net.kyori.adventure.text.format.TextColor
 
 /**
  * This function creates a [TextComponent] with the given base and modifier.
@@ -106,8 +108,32 @@ context(Builder)
  * @author Fruxz
  * @since 1.0
  */
-@Unfold infix operator fun Builder.plus(clickEvent: ClickEvent): Builder =
+@Unfold infix operator fun Builder.plus(clickEvent: ClickEvent?): Builder =
 	clickEvent(clickEvent)
+
+/**
+ * This operator function, which will be replaced with an *unaryPlus* function in the future,
+ * allows you to set the color of this [Builder] with the provided [color].
+ * @param color The [TextColor] instance, which will be applied to this [Builder]
+ * @return The current [Builder] instance
+ * @see Builder.color
+ * @author Fruxz
+ * @since 1.0
+ */
+@Unfold infix operator fun Builder.plus(color: TextColor?): Builder =
+	color(color)
+
+/**
+ * This operator function, which will be replaced with an *unaryPlus* function in the future,
+ * allows you to set the style of this [Builder] with the provided [style].
+ * @param style The [Style] instance, which will be applied to this [Builder]
+ * @return The current [Builder] instance
+ * @see Builder.style
+ * @author Fruxz
+ * @since 1.0
+ */
+@Unfold infix operator fun Builder.plus(style: Style): Builder =
+	style(style)
 
 /**
  * This function converts the [content] to an [TextComponent] using the [String.asStyledComponent].
