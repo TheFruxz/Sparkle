@@ -83,6 +83,9 @@ open class Canvas(
 		0..computedInnerSlots.lastIndex
 	}
 
+	val center: Int
+		get() = this.canvasSize.size / 2 - 1
+
 	val rawInventory: Inventory
 		get() = buildInventory(canvasSize.size, label) {
 
