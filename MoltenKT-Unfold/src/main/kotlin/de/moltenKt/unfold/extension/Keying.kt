@@ -11,6 +11,8 @@ fun Key.subKey(value: String, strategy: KeyingStrategy = KeyingStrategy.CONTINUE
 	value
 )
 
+infix operator fun Key.div(value: String): Key = subKey(value)
+
 /**
  * Every strategy to generate sub keys of a key has its pros and cons.
  * Decide wisely by your use case, which you want to use, for a little help,

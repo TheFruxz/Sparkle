@@ -17,6 +17,8 @@ fun NamespacedKey.subKey(value: String, strategy: KeyingStrategy = KeyingStrateg
 	value
 )
 
+infix operator fun NamespacedKey.div(value: String): NamespacedKey = subKey(value)
+
 fun Key.subNamespacedKey(value: String, strategy: KeyingStrategy = KeyingStrategy.CONTINUE): NamespacedKey = NamespacedKey(
 	when (strategy) {
 		KeyingStrategy.SQUASH -> asString().replace(":", "_")
