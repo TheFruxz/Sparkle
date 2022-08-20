@@ -52,7 +52,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 this + text(" (Page $page of ${paged.pages})") {
                     plus(NamedTextColor.YELLOW)
                     hover {
-                        text("${paged.content.size} App" + (if (paged.content.size == 1) "" else "s")) {
+                        text("${paged.content.size} App" + (if (paged.content.size == 1) "" else "s") + " listed") {
                             plus(NamedTextColor.GRAY)
                         }
                     }
@@ -72,7 +72,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         plus(if (app.isEnabled) NamedTextColor.GREEN else NamedTextColor.GRAY)
                         hover {
                             buildComponent {
-                                this + text("Information: ") {
+                                this + text("Power-Indicator: ") {
                                     plus(Style.style(NamedTextColor.BLUE, TextDecoration.BOLD))
                                 }
                                 this + Component.newline()
@@ -94,11 +94,11 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         color(if (app.isNaggable) NamedTextColor.GREEN else NamedTextColor.GRAY)
                         hover {
                             buildComponent {
-                                this + text("API-Documentation: ") {
+                                this + text("Naggable-Indicator: ") {
                                     plus(Style.style(NamedTextColor.BLUE, TextDecoration.BOLD))
                                 }
                                 this + Component.newline()
-                                this + text("Simple boolean if we can still nag to the logs about things") {
+                                this + text("Indicates, if we can still nag to the logs about things") {
                                     plus(NamedTextColor.YELLOW)
                                 }
                             }
@@ -108,13 +108,14 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         plus(if (Bukkit.getMinecraftVersion().startsWith("" + app.description.apiVersion)) NamedTextColor.GREEN else NamedTextColor.GRAY)
                         hover {
                             buildComponent {
-                                this + text("Information: ") {
+                                this + text("Compatibility-Indicator: ") {
                                     plus(Style.style(NamedTextColor.BLUE, TextDecoration.BOLD))
                                 }
                                 this + Component.newline()
                                 this + text("Indicates, if the plugins target version is compatible with the current server version") {
                                     plus(NamedTextColor.YELLOW)
                                 }
+                                this + Component.newline()
                                 this + Component.newline() + text("Apps target version: ") {
                                     plus(NamedTextColor.GRAY)
                                 } + text(app.description.apiVersion ?: "None") {
@@ -135,8 +136,25 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                     this + text(app.label) {
                         plus(NamedTextColor.YELLOW)
                         hover {
-                            text("Identity: ${app.key()}") {
-                                plus(NamedTextColor.YELLOW)
+                            buildComponent {
+                                this + text("Identity: ") {
+                                    plus(Style.style(NamedTextColor.BLUE, TextDecoration.BOLD))
+                                }
+                                this + Component.newline()
+                                this + text("The label is used to display the app in lists and information, the identity is used to identify the app in the system") {
+                                    plus(NamedTextColor.YELLOW)
+                                }
+                                this + Component.newline()
+                                this + Component.newline() + text("Label: ") {
+                                    plus(NamedTextColor.GRAY)
+                                } + text(app.label) {
+                                    plus(NamedTextColor.GREEN)
+                                }
+                                this + Component.newline() + text("Identity: ") {
+                                    plus(NamedTextColor.GRAY)
+                                } + text(app.key().asString()) {
+                                    plus(NamedTextColor.GREEN)
+                                }
                             }
                         }
                     }
