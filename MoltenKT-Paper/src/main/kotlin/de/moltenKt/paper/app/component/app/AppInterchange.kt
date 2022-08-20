@@ -21,10 +21,14 @@ import de.moltenKt.paper.structure.command.completion.isNotRequired
 import de.moltenKt.paper.structure.command.live.InterchangeAccess
 import de.moltenKt.paper.tool.display.message.Transmission
 import de.moltenKt.paper.tool.display.message.Transmission.Level.INFO
+import de.moltenKt.unfold.buildComponent
 import de.moltenKt.unfold.extension.asStyledComponents
+import de.moltenKt.unfold.extension.asStyledString
 import de.moltenKt.unfold.hover
+import de.moltenKt.unfold.plus
 import de.moltenKt.unfold.text
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
@@ -40,31 +44,120 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
             val paged = MoltenCache.registeredApps.page(page - 1, ENTRIES_PER_PAGE)
 
-            buildList {
+            buildComponent {
 
-                add("<gray>List of all running apps <yellow>(Page [p1] of [p2])<gray>:".replaceVariables(
-                    "p1" to page,
-                    "p2" to paged.pages,
-                ))
-
-                add("<gray>⏻ Power; ⌘ Naggable; ⏹ API-Compatible")
-
-                add("")
-
-                paged.content.forEach { app ->
-                    add(buildString {
-
-                        append(if (app.isEnabled) "<green>⏻</green> " else "<gray>⭘</gray> ")
-                        append(if (app.isNaggable) "<green>⌘</green> " else "<gray>⌘</gray> ")
-                        append(if (Bukkit.getMinecraftVersion().startsWith("" + app.description.apiVersion)) "<green>⏹</green> " else "<gray>⏹</gray> ")
-                        append("<dark_gray>| <yellow>${app.identity} <gray>${app.description.version} → ${app.description.apiVersion}")
-
-                    })
+                this + text("List of all running apps") {
+                    plus(NamedTextColor.GRAY)
+                }
+                this + text(" (Page $page of ${paged.pages})") {
+                    plus(NamedTextColor.YELLOW)
+                    hover {
+                        text("${paged.content.size} App" + (if (paged.content.size == 1) "" else "s")) {
+                            plus(NamedTextColor.GRAY)
+                        }
+                    }
+                }
+                this + text(":") {
+                    plus(NamedTextColor.GRAY)
                 }
 
-                add("")
+                this + Component.newline() + text("⏻ Power; ⌘ Naggable; ⏹ API-Compatible") {
+                    plus(NamedTextColor.GRAY)
+                }
 
-            }.asStyledComponents.notification(Transmission.Level.INFO, executor).display()
+                this + Component.newline() + Component.newline()
+
+                paged.content.forEach { app ->
+                    this + text(if (app.isEnabled) "⏻" else "⭘") {
+                        plus(if (app.isEnabled) NamedTextColor.GREEN else NamedTextColor.GRAY)
+                        hover {
+                            buildComponent {
+                                this + text("Information: ") {
+                                    plus(Style.style(NamedTextColor.BLUE, TextDecoration.BOLD))
+                                }
+                                this + Component.newline()
+                                this + text("Indicates, if the plugin is currently enabled & running") {
+                                    plus(NamedTextColor.YELLOW)
+                                }
+                                this + Component.newline() + Component.newline()
+                                this + text("CLICK").style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD)) +
+                                        text(" to toggle the state of the app") {
+                                            plus(NamedTextColor.GRAY)
+                                        }
+                            }
+                        }
+                        clickEvent(ClickEvent.suggestCommand(
+                            if (app.isEnabled) "/app @ ${app.key()} stop" else "/app @ ${app.key()} start"
+                        ))
+                    }
+                    this + text(" ⌘") {
+                        color(if (app.isNaggable) NamedTextColor.GREEN else NamedTextColor.GRAY)
+                        hover {
+                            buildComponent {
+                                this + text("API-Documentation: ") {
+                                    plus(Style.style(NamedTextColor.BLUE, TextDecoration.BOLD))
+                                }
+                                this + Component.newline()
+                                this + text("Simple boolean if we can still nag to the logs about things") {
+                                    plus(NamedTextColor.YELLOW)
+                                }
+                            }
+                        }
+                    }
+                    this + text(" ⏹") {
+                        plus(if (Bukkit.getMinecraftVersion().startsWith("" + app.description.apiVersion)) NamedTextColor.GREEN else NamedTextColor.GRAY)
+                        hover {
+                            buildComponent {
+                                this + text("Information: ") {
+                                    plus(Style.style(NamedTextColor.BLUE, TextDecoration.BOLD))
+                                }
+                                this + Component.newline()
+                                this + text("Indicates, if the plugins target version is compatible with the current server version") {
+                                    plus(NamedTextColor.YELLOW)
+                                }
+                                this + Component.newline() + text("Apps target version: ") {
+                                    plus(NamedTextColor.GRAY)
+                                } + text(app.description.apiVersion ?: "None") {
+                                    plus(NamedTextColor.GREEN)
+                                }
+                                this + Component.newline() + text("Server version: ") {
+                                    plus(NamedTextColor.GRAY)
+                                } + text(Bukkit.getMinecraftVersion()) {
+                                    plus(NamedTextColor.GREEN)
+                                }
+
+                            }
+                        }
+                    }
+                    this + text(" | ") {
+                        plus(NamedTextColor.DARK_GRAY)
+                    }
+                    this + text(app.label) {
+                        plus(NamedTextColor.YELLOW)
+                        hover {
+                            text("Identity: ${app.key()}") {
+                                plus(NamedTextColor.YELLOW)
+                            }
+                        }
+                    }
+                    this + text(" ") {
+                        plus(NamedTextColor.GRAY)
+                    }
+                    this + text(app.description.version) {
+                        plus(NamedTextColor.GRAY)
+                    }
+                    this + text(" → ") {
+                        plus(NamedTextColor.GRAY)
+                    }
+                    this + text(app.description.apiVersion ?: "None") {
+                        plus(NamedTextColor.GRAY)
+                    }
+                    this + Component.newline()
+                }
+
+                this + Component.newline()
+
+            }.notification(Transmission.Level.INFO, executor).display()
 
         }
 
@@ -305,145 +398,6 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         cacheClear(this, level)
 
                     }
-
-                }
-
-            }
-
-        }
-
-        branch {
-
-            addContent(CompletionAsset.COMPONENT)
-
-            branch {
-
-                addContent("start")
-
-                concludedExecution {
-                    val component = getInput(1, CompletionAsset.COMPONENT)
-
-                    text("Starting the component '${component.identity}'...")
-                        .color(NamedTextColor.GRAY)
-                        .message(executor).display()
-
-                    component.requestStart()
-
-                    text {
-                        text("Successfully") {
-                            style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD))
-                        }
-                        text(" stopped the '") {
-                            color(NamedTextColor.GRAY)
-                        }
-                        text(component.identity) {
-                            color(NamedTextColor.GOLD)
-                        }
-                        text("' component!") {
-                            color(NamedTextColor.GRAY)
-                        }
-                    }.notification(Transmission.Level.APPLIED, executor).display()
-
-                }
-
-            }
-
-            branch {
-
-                addContent("stop")
-
-                concludedExecution {
-                    val component = getInput(1, CompletionAsset.COMPONENT)
-
-                    text("Stopping the component '${component.identity}'...")
-                        .color(NamedTextColor.GRAY)
-                        .message(executor).display()
-
-                    component.requestStop()
-
-                    text {
-                        text("Successfully") {
-                            style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD))
-                        }
-                        text(" stopped the '") {
-                            color(NamedTextColor.GRAY)
-                        }
-                        text(component.identity) {
-                            color(NamedTextColor.GOLD)
-                        }
-                        text("' component!") {
-                            color(NamedTextColor.GRAY)
-                        }
-                    }.notification(Transmission.Level.APPLIED, executor).display()
-
-                }
-
-            }
-
-            branch {
-
-                addContent("restart")
-
-                concludedExecution {
-                    val component = getInput(1, CompletionAsset.COMPONENT)
-
-                    text("Restarting the component '${component.identity}'...")
-                        .color(NamedTextColor.GRAY)
-                        .message(executor).display()
-
-                    if (component.requestRestart().exception == null) {
-
-                        text {
-                            text("Successfully") {
-                                style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD))
-                            }
-                            text(" restarted the '") {
-                                color(NamedTextColor.GRAY)
-                            }
-                            text(component.identity) {
-                                color(NamedTextColor.GOLD)
-                            }
-                            text("' component!") {
-                                color(NamedTextColor.GRAY)
-                            }
-                        }.notification(Transmission.Level.APPLIED, executor).display()
-
-                    } else {
-
-                        text {
-                            text("Failed to") {
-                                style(Style.style(NamedTextColor.RED, TextDecoration.BOLD))
-                            }
-                            text(" restart the '") {
-                                color(NamedTextColor.GRAY)
-                            }
-                            text(component.identity) {
-                                color(NamedTextColor.GOLD)
-                            }
-                            text("' component!") {
-                                color(NamedTextColor.GRAY)
-                            }
-                        }.notification(Transmission.Level.ERROR, executor).display()
-
-                    }
-
-                }
-
-            }
-
-            branch {
-
-                addContent("info")
-
-                concludedExecution {
-                    val component = getInput(1, CompletionAsset.COMPONENT)
-
-                    listOf(
-                        "<gray>Display-Name <dark_gray>| <gold>${component.namespace()}",
-                        "<gray>Identity <dark_gray>| <gold>${component.identity}",
-                        "<gray>Status <dark_gray>| <gold>${if (component.isRunning) "Running" else "Offline" }",
-                        "<gray>Auto-Start <dark_gray>| <gold>${if (component.isAutoStarting) "Enabled" else "Disabled" }",
-                    ).asStyledComponents.notification(INFO, executor).display()
 
                 }
 
