@@ -371,6 +371,18 @@ fun <T, C : Collection<T>> C.fragmented(fragments: Int = 2, keepOverflow: Boolea
 	return output
 }
 
+/**
+ * This function applies the split function of strings to collections.
+ * A list contains every element, until the [predicate] is true. If it is
+ * true, the list is stored, a new list for the following elements is created
+ * and the indicating element itself is getting dropped.
+ * ***example: [1, 2, 3, 4, 5, 6, 7, 8, 9].splitBy { it % 3 == 0 } -> [[1, 2], [4, 5], [7, 8]]***
+ * @param predicate the predicate, which indicates, if the current element
+ * should be dropped and the list should be stored
+ * @return the list of lists, which are created by the [predicate]
+ * @author Fruxz
+ * @since 1.0
+ */
 fun <T, C : Collection<T>> C.splitBy(predicate: (T) -> Boolean): List<List<T>> {
 	val output = mutableListOf<List<T>>()
 	var currentFragment = mutableListOf<T>()
