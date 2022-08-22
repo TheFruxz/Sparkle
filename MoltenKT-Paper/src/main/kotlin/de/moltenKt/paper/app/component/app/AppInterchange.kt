@@ -233,19 +233,19 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                     targetApp.requestStart()
 
                     text {
-                        text("Successfully") {
+                        this + text("Successfully") {
                             style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD))
                         }
-                        text(" started the '") {
+                        this + text(" started the '") {
                             color(NamedTextColor.GRAY)
                         }
-                        text(targetApp.label) {
+                        this + text(targetApp.label) {
                             color(NamedTextColor.GOLD)
                             hover {
                                 text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY)
                             }
                         }
-                        text("' component!") {
+                        this + text("' component!") {
                             color(NamedTextColor.GRAY)
                         }
                     }.notification(Transmission.Level.APPLIED, executor).display()
@@ -269,19 +269,19 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                     targetApp.requestStop()
 
                     text {
-                        text("Successfully") {
+                        this + text("Successfully") {
                             style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD))
                         }
-                        text(" stopped the '") {
+                        this + text(" stopped the '") {
                             color(NamedTextColor.GRAY)
                         }
-                        text(targetApp.label) {
+                        this + text(targetApp.label) {
                             color(NamedTextColor.GOLD)
                             hover {
                                 text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY)
                             }
                         }
-                        text("' component!") {
+                        this + text("' component!") {
                             color(NamedTextColor.GRAY)
                         }
                     }.notification(Transmission.Level.APPLIED, executor).display()
@@ -306,19 +306,19 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                     targetApp.requestStart()
 
                     text {
-                        text("Successfully") {
+                        this + text("Successfully") {
                             style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD))
                         }
-                        text(" restarted the '") {
+                        this + text(" restarted the '") {
                             color(NamedTextColor.GRAY)
                         }
-                        text(targetApp.label) {
+                        this + text(targetApp.label) {
                             color(NamedTextColor.GOLD)
                             hover {
                                 text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY)
                             }
                         }
-                        text("' component!") {
+                        this + text("' component!") {
                             color(NamedTextColor.GRAY)
                         }
                     }.notification(Transmission.Level.APPLIED, executor).display()
@@ -368,28 +368,28 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
                     text {
 
-                        text("Successfully") {
+                        this + text("Successfully") {
                             color(NamedTextColor.GREEN)
                         }
 
-                        text(" cleared cache for '") {
+                        this + text(" cleared cache for '") {
                             color(NamedTextColor.GRAY)
                         }
 
-                        text(targetApp.label) {
+                        this + text(targetApp.label) {
                             color(NamedTextColor.GOLD)
                             hoverEvent(Component.text("App-Identity: ${targetApp.identity}").color(NamedTextColor.GRAY))
                         }
 
-                        text("' at level '") {
+                        this + text("' at level '") {
                             color(NamedTextColor.GRAY)
                         }
 
-                        text("$level") {
+                        this + text("$level") {
                             color(NamedTextColor.YELLOW)
                         }
 
-                        text("'!") {
+                        this + text("'!") {
                             color(NamedTextColor.GRAY)
                         }
 
