@@ -243,3 +243,19 @@ val worlds: List<World>
  */
 val server: Server
 	get() = Bukkit.getServer()
+
+/**
+ * This function searches for a [Plugin] with the given [name] as name. This returns the found
+ * plugin, or null if no plugin with the given name is found.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun pluginOrNull(name: String) = Bukkit.getPluginManager().getPlugin(name)
+
+/**
+ * This function searches for a [Plugin] with the given [name] as name. This returns the found
+ * plugin, or throws an [NoSuchElementException] if no plugi nwith the given name is found.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun plugin(name: String) = pluginOrNull(name) ?: NoSuchElementException("Plugin '$name'(Name) not found")

@@ -1,9 +1,12 @@
 package de.moltenKt.paper.app.interchange
 
+import de.moltenKt.paper.app.MoltenApp
+import de.moltenKt.paper.app.MoltenApp.Companion
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.tool.display.message.Transmission
+import de.moltenKt.unfold.plus
 import de.moltenKt.unfold.text
 import net.kyori.adventure.text.format.NamedTextColor
 
@@ -49,13 +52,13 @@ internal class DebugModeInterchange : StructuredInterchange("debugmode", buildIn
 
             text {
 
-                text("The debug mode is currently set to ") {
+                this + text("The debug mode is currently set to ") {
                     color(NamedTextColor.GRAY)
                 }
-                text(de.moltenKt.paper.app.MoltenApp.debugMode.toString()) {
-                    color(if(de.moltenKt.paper.app.MoltenApp.debugMode) NamedTextColor.GREEN else NamedTextColor.RED)
+                this + text(MoltenApp.debugMode.toString()) {
+                    color(if (MoltenApp.debugMode) NamedTextColor.GREEN else NamedTextColor.RED)
                 }
-                text("!") {
+                this + text("!") {
                     color(NamedTextColor.GRAY)
                 }
 

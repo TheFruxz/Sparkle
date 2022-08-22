@@ -19,6 +19,8 @@ import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
 import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.extension.asStyledComponents
+import de.moltenKt.unfold.hover
+import de.moltenKt.unfold.plus
 import de.moltenKt.unfold.text
 import net.kyori.adventure.text.format.NamedTextColor.YELLOW
 import net.kyori.adventure.text.format.Style.style
@@ -67,19 +69,21 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 								"1" to currentBox.firstLocation.displayString(),
 								"2" to currentBox.secondLocation.displayString(),
 							).asStyledComponent
-								.hoverEvent(text {
-									text(
-										tryOrNull {
-											lang["component.markingTool.action.view.distance.both"].replaceVariables(
-												"distance" to currentBox.distance.shorter
-											)
-										} ?: lang["component.markingTool.action.view.distance.acrossWorlds"]
-									)
-									text(" ")
-									text(lang["component.markingTool.action.view.distance.volume"].replaceVariables(
-										"volume" to currentBox.blockVolume
-									))
-								})
+								.hover {
+									text {
+										this + text(
+											tryOrNull {
+												lang["component.markingTool.action.view.distance.both"].replaceVariables(
+													"distance" to currentBox.distance.shorter
+												)
+											} ?: lang["component.markingTool.action.view.distance.acrossWorlds"]
+										)
+										this + text(" ")
+										this + text(lang["component.markingTool.action.view.distance.volume"].replaceVariables(
+											"volume" to currentBox.blockVolume
+										))
+									}
+								}
 								.notification(INFO, user).display()
 
 						} else
@@ -104,15 +108,17 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 											"n" to 1,
 											"pos" to targetPrint,
 										).asStyledComponent
-											.hoverEvent(text {
-												text(
-													tryOrNull {
-														lang["component.markingTool.action.view.distance.other"].replaceVariables(
-															"distance" to targetLocation.distance(currentBox.secondLocation).shorter
-														)
-													} ?: lang["component.markingTool.action.view.distance.acrossWorlds"]
-												)
-											})
+											.hover {
+												text {
+													this + text(
+														tryOrNull {
+															lang["component.markingTool.action.view.distance.other"].replaceVariables(
+																"distance" to targetLocation.distance(currentBox.secondLocation).shorter
+															)
+														} ?: lang["component.markingTool.action.view.distance.acrossWorlds"]
+													)
+												}
+											}
 											.notification(APPLIED, user).display()
 
 									} else
@@ -132,15 +138,17 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 											"n" to 2,
 											"pos" to targetPrint,
 										).asStyledComponent
-											.hoverEvent(text {
-												text(
-													tryOrNull {
-														lang["component.markingTool.action.view.distance.other"].replaceVariables(
-															"distance" to targetLocation.distance(currentBox.firstLocation).shorter
-														)
-													} ?: lang["component.markingTool.action.view.distance.acrossWorlds"]
-												)
-											})
+											.hover {
+												text {
+													this + text(
+														tryOrNull {
+															lang["component.markingTool.action.view.distance.other"].replaceVariables(
+																"distance" to targetLocation.distance(currentBox.firstLocation).shorter
+															)
+														} ?: lang["component.markingTool.action.view.distance.acrossWorlds"]
+													)
+												}
+											}
 											.notification(APPLIED, user)
 											.display()
 
