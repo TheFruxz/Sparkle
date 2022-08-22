@@ -16,6 +16,12 @@ import kotlin.io.path.div
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
+/**
+ * This component manages the chat and chat extensions via the native & Placeholder APIs.
+ * @author Fruxz
+ * @author CoasterFreakDE
+ * @since 1.0
+ */
 class ChatComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 	override val label = "Chat"
@@ -40,7 +46,7 @@ class ChatComponent : SmartComponent(AUTOSTART_MUTABLE) {
 				usePlaceholderAPI = true
 				debugLog { "PlaceholderAPI ${it.description.version} found by ChatComponent!" }
 			} ?: debugLog { "ChatComponent unable to find PlaceholderAPI, skipping custom placeholders!" }
-			
+
 		}
 
 	}
