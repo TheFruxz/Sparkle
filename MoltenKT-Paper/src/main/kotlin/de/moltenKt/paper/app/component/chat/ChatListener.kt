@@ -2,9 +2,8 @@ package de.moltenKt.paper.app.component.chat
 
 import de.moltenKt.core.extension.container.replacePrefix
 import de.moltenKt.core.extension.container.replaceVariables
-import de.moltenKt.paper.extension.display.buildTextComponent
+import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.paper.extension.effect.playEffect
-import de.moltenKt.paper.extension.effect.playSoundEffect
 import de.moltenKt.paper.extension.effect.soundOf
 import de.moltenKt.paper.extension.paper.consoleSender
 import de.moltenKt.paper.extension.paper.onlinePlayers
@@ -12,20 +11,18 @@ import de.moltenKt.paper.extension.paper.playerOrNull
 import de.moltenKt.paper.structure.app.event.EventListener
 import de.moltenKt.unfold.buildComponent
 import de.moltenKt.unfold.extension.asComponent
+import de.moltenKt.unfold.extension.asPlainString
 import de.moltenKt.unfold.extension.asString
 import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.extension.asStyledString
-import de.moltenKt.unfold.extension.miniMessageSerializer
+import de.moltenKt.unfold.extension.replace
 import de.moltenKt.unfold.plus
+import de.moltenKt.unfold.text
 import io.papermc.paper.event.player.AsyncChatEvent
 import me.clip.placeholderapi.PlaceholderAPI
-import net.kyori.adventure.sound.Sound
-import net.kyori.adventure.sound.Sound.Source.MASTER
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
-import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.format.TextColor
-import org.bukkit.ChatColor
+import net.kyori.adventure.text.minimessage.tag.Tag
 import org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -41,7 +38,9 @@ internal class ChatListener : EventListener() {
 
 		var message: Component = buildComponent {
 
-			message().asString.replacePrefix("./", "/").split(" ").forEach { snippet ->
+			message().asPlainString.replace("<", "''<'").let {
+				tryOrNull { it.asStyledComponent } ?: it.asComponent
+			}.asPlainString.replacePrefix("./", "/").split(" ").forEach { snippet ->
 				// Per snipped computation
 				val tagged = playerOrNull(snippet.removePrefix("@"))?.also {
 					notifiedPlayers += it
@@ -82,24 +81,46 @@ internal class ChatListener : EventListener() {
 
 		buildComponent {
 
-			val displayNameReplace = "displayName" to player.displayName().hoverEvent(player).clickEvent(ClickEvent.suggestCommand("/msg ${player.name}")).asStyledString
-			val nameReplace = "name" to player.name
-			val playerListReplace = "playerListName" to player.playerListName().hoverEvent(player).clickEvent(ClickEvent.suggestCommand("/msg ${player.name}")).asStyledString
-
-			this + setup.chatFormat.replaceVariables(
-				displayNameReplace,
-				nameReplace,
-				playerListReplace,
-			).run {
-				if (ChatComponent.usePlaceholderAPI) {
-					PlaceholderAPI.setPlaceholders(player, this) // Calls the placeholder-api for global replacing
-				} else {
-					this
+			this + (when {
+				ChatComponent.usePlaceholderAPI -> PlaceholderAPI.setPlaceholders(player, setup.chatFormat)
+				else -> setup.chatFormat
+			}).asStyledComponent
+				.replaceText {
+					it.match("\\[displayName]")
+					it.replacement(buildComponent {
+						this + text(player.displayName()) {
+							hoverEvent(player)
+							clickEvent(ClickEvent.suggestCommand("/msg ${player.name}"))
+						}
+					})
 				}
-			}.asStyledComponent.replaceText {
-				it.match("\\[message]")
-				it.replacement(message)
-			}
+				.replaceText {
+					it.match("\\[name]")
+					it.replacement(player.name)
+				}
+				.replaceText {
+					it.match("\\[playerListName]")
+					it.replacement(buildComponent {
+						this + text(player.playerListName()) {
+							hoverEvent(player)
+							clickEvent(ClickEvent.suggestCommand("/msg ${player.name}"))
+						}
+					})
+				}
+				.replaceText {
+					it.match("\\[customName]")
+					it.replacement(buildComponent {
+						this + text(player.customName() ?: Component.empty()) {
+							hoverEvent(player)
+							clickEvent(ClickEvent.suggestCommand("/msg ${player.name}"))
+						}
+					})
+				}
+				.replaceText {
+					it.match("\\[message]")
+					it.replacement(message)
+				}
+				.replace("''<'", "<")
 
 		}.let { result ->
 			(onlinePlayers + consoleSender).forEach { receiver ->
