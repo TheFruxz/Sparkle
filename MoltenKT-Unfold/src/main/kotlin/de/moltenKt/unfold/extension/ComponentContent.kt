@@ -2,7 +2,7 @@ package de.moltenKt.unfold.extension
 
 import net.kyori.adventure.text.ComponentLike
 
-fun ComponentLike.content() = this.asComponent().asString
+fun ComponentLike.content() = asPlainString
 
 fun ComponentLike.isBlank() = content().isBlank()
 

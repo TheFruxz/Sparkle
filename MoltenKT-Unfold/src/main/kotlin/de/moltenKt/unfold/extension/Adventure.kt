@@ -1,12 +1,16 @@
 package de.moltenKt.unfold.extension
 
+import de.moltenKt.core.extension.switchResult
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.TextComponent.Builder
+import net.kyori.adventure.text.flattener.ComponentFlattener
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.serializer.ComponentSerializer
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 
 /**
  * This value represents the [LegacyComponentSerializer] instance, which
@@ -20,6 +24,8 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 val adventureSerializer = LegacyComponentSerializer
 	.builder().extractUrls().hexColors().build()
 
+val plainAdventureSerializer = PlainTextComponentSerializer.plainText()
+
 /**
  * This value represents the [MiniMessage] instance, which
  * is used to convert between strings/objects and [Component]s.
@@ -31,6 +37,8 @@ val adventureSerializer = LegacyComponentSerializer
  */
 val miniMessageSerializer = MiniMessage.miniMessage()
 
+val strictMiniMessageSerializer = MiniMessage.builder().strict(true).build()
+
 /**
  * This computational value converts this [ComponentLike]
  * into a [String] by using the [LegacyComponentSerializer],
@@ -41,6 +49,9 @@ val miniMessageSerializer = MiniMessage.miniMessage()
  */
 val ComponentLike.asString: String
 	get() = adventureSerializer.serialize(asComponent())
+
+val ComponentLike.asPlainString: String
+	get() = plainAdventureSerializer.serialize(asComponent())
 
 /**
  * This computational value converts this [String] into a [TextComponent]
@@ -88,7 +99,10 @@ val Iterable<String>.asComponents: List<TextComponent>
  * @since 1.0
  */
 val ComponentLike.asStyledString: String
-	get() = miniMessageSerializer.serialize(asComponent())
+	get() = strictMiniMessageSerializer.serialize(asComponent())
+
+fun ComponentLike.asStyledString(strict: Boolean = true) =
+	strict.switchResult(asStyledString, miniMessageSerializer.serialize(asComponent()))
 
 /**
  * This computational value converts this [String] into a [TextComponent]
