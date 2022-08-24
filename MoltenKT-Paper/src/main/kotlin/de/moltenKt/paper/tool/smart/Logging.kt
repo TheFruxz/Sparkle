@@ -5,7 +5,7 @@ import java.util.logging.Logger
 
 interface Logging {
 
-	val vendor: KeyedIdentifiable<App>
+	val vendor: KeyedIdentifiable<out App>
 
 	val sectionLabel: String
 
