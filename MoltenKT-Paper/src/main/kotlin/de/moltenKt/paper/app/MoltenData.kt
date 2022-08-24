@@ -33,12 +33,7 @@ object MoltenData {
 		}
 		set(value) {
 			_systemConfig = value
-
-			tryToIgnore {
-				systemConfigPath.parent.createDirectories()
-				systemConfigPath.createFile()
-			}
-
+			systemConfigPath.parent.createDirectories()
 			systemConfigPath.writeText(value.toJson())
 		}
 
