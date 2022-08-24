@@ -1,6 +1,8 @@
 package de.moltenKt.paper.extension.objectBound
 
 import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.paper.app.MoltenCache
+import de.moltenKt.paper.app.MoltenCache.registeredSandBoxCalls
 import de.moltenKt.paper.app.MoltenCache.registeredSandBoxes
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.extension.system
@@ -30,6 +32,7 @@ fun getSandBox(fullIdentity: String) = registeredSandBoxes.firstOrNull { it.iden
 
 fun destroySandBox(fullIdentity: String) {
 	registeredSandBoxes = registeredSandBoxes.filter { it.identity != fullIdentity }.toSet()
+	registeredSandBoxCalls = registeredSandBoxCalls.filter { it.key.identity != fullIdentity }
 	system.log.info("removing SandBox '$fullIdentity'!")
 }
 
