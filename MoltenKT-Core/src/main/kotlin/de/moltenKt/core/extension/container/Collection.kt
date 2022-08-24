@@ -432,4 +432,19 @@ inline fun <T, C : Collection<T>, O> C.distinctSetBy(process: (T) -> O) = distin
  * @since 1.0
  */
 inline fun <T, O> Array<T>.distinctSetBy(process: (T) -> O) = distinctBy(process).toSet()
-
+
+/**
+ * This function uses the [Collection.forEach] function, but only on every
+ * element, which is not null.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <T, C : Collection<T?>> C.forEachNotNull(process: (T) -> Unit) = forEach { if (it != null) process(it) }
+
+/**
+ * This function uses the [Array.forEach] function, but only on every
+ * element, which is not null.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <T> Array<T?>.forEachNotNull(process: (T) -> Unit) = forEach { if (it != null) process(it) }
