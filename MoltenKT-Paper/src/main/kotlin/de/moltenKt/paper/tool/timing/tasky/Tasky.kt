@@ -9,6 +9,7 @@ import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.app.MoltenApp.Infrastructure
 import de.moltenKt.paper.app.MoltenCache
+import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.smart.KeyedIdentifiable
@@ -16,6 +17,7 @@ import de.moltenKt.paper.tool.smart.Logging
 import net.kyori.adventure.key.Key
 import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
+import java.util.logging.Level
 
 interface Tasky : Logging {
 
@@ -77,6 +79,17 @@ interface Tasky : Logging {
 						if ((Long.MAX_VALUE * .95) < controller.attempt)
 							controller.sectionLog.warning("WARNING! Task #$taskId is running out of attempts, please restart!")
 
+						fun handleCrash(exception: Exception) {
+							catchException(exception)
+
+							if (controller.dieOnError) {
+								onCrash(controller)
+								MoltenCache.runningTasks = MoltenCache.runningTasks.filter { check -> check != controller.taskId }
+								MoltenCache.runningServiceTaskController = MoltenCache.runningServiceTaskController.filterNot { check -> check.value.taskId == controller.taskId }.toMutableMap()
+								controller.shutdown()
+							}
+						}
+
 						try {
 
 							if (controller.attempt == 1L) {
@@ -87,27 +100,7 @@ interface Tasky : Logging {
 
 							currentTask.process(controller)
 
-						} catch (e: Exception) {
-							catchException(e)
-
-							if (controller.dieOnError) {
-								onCrash(controller)
-								MoltenCache.runningTasks = MoltenCache.runningTasks.filter { check -> check != controller.taskId }
-								MoltenCache.runningServiceTaskController = MoltenCache.runningServiceTaskController.filterNot { check -> check.value.taskId == controller.taskId }.toMutableMap()
-								controller.shutdown()
-							}
-
-						} catch (e: java.lang.Exception) {
-							catchException(e)
-
-							if (controller.dieOnError) {
-								onCrash(controller)
-								MoltenCache.runningTasks = MoltenCache.runningTasks.filter { check -> check != controller.taskId }
-								MoltenCache.runningServiceTaskController = MoltenCache.runningServiceTaskController.filterNot { check -> check.value.taskId == controller.taskId }.toMutableMap()
-								controller.shutdown()
-							}
-
-						}
+						} catch (e: Exception) { handleCrash(e) } catch (e: java.lang.Exception) { handleCrash(e) } // Crash handling
 					}
 
 				}.let {
@@ -144,8 +137,11 @@ interface Tasky : Logging {
 
 			)
 
-			if (serviceVendor.value() != "dummy")
+			if (serviceVendor.value() != "dummy") {
 				MoltenCache.runningServiceTaskController += serviceVendor to output
+				debugLog("Tasky '$serviceVendor' successfully started task '$internalId'")
+			} else
+				debugLog("Tasky failed to start task '$internalId' due to dummy check fail!", Level.WARNING)
 
 			return output
 		}
