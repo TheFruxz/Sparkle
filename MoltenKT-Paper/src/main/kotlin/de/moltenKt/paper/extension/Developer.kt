@@ -16,16 +16,16 @@ import de.moltenKt.paper.tool.smart.VendorOnDemand
 import java.util.logging.Level
 import kotlin.reflect.full.hasAnnotation
 
-fun <T : Any?> T.debugLog(message: String) = this.also {
+fun <T : Any?> T.debugLog(message: String, level: Level = Level.WARNING) = this.also {
 	if (MoltenApp.debugMode) {
 		message.lines().forEach { line ->
-			mainLog(Level.WARNING, "[DEBUG] $line")
+			mainLog(level, "[DEBUG] $line")
 		}
 	}
 }
 
-fun <T : Any?> T.debugLog(messageProcess: T.() -> String) {
-	if (MoltenApp.debugMode) { debugLog(messageProcess()) }
+fun <T : Any?> T.debugLog(level: Level = Level.WARNING, messageProcess: T.() -> String) {
+	if (MoltenApp.debugMode) { debugLog(messageProcess(), level) }
 }
 
 fun mainLog(level: Level = Level.INFO, message: String) = MoltenApp.instance.log.log(level, message)
