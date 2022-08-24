@@ -103,7 +103,7 @@ fun <T> Array<out T>.stackUniqueRandom(times: Int, random: Random = Random): Str
  * @author Fruxz
  * @since 1.0
  */
-fun <T> listOf(size: Int, generator: (Int) -> T): List<T> = List(size) { generator(it) }
+inline fun <T> listOf(size: Int, generator: (Int) -> T): List<T> = List(size) { generator(it) }
 
 /**
  * Returning the first object of the collection [C]
@@ -261,7 +261,7 @@ fun <T, C : Collection<T>> C.hasDuplicates(): Boolean =
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>, K> C.hasDuplicates(process: (T) -> K): Boolean =
+inline fun <T, C : Collection<T>, K> C.hasDuplicates(process: (T) -> K): Boolean =
 	size > distinctBy(process).size
 
 /**
@@ -283,7 +283,7 @@ fun <T> Array<T>.hasDuplicates(): Boolean =
  * @author Fruxz
  * @since 1.0
  */
-fun <T, K> Array<T>.hasDuplicates(process: (T) -> K): Boolean =
+inline fun <T, K> Array<T>.hasDuplicates(process: (T) -> K): Boolean =
 	size > distinctBy(process).size
 
 /**
@@ -383,7 +383,7 @@ fun <T, C : Collection<T>> C.fragmented(fragments: Int = 2, keepOverflow: Boolea
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>> C.splitBy(predicate: (T) -> Boolean): List<List<T>> {
+inline fun <T, C : Collection<T>> C.splitBy(predicate: (T) -> Boolean): List<List<T>> {
 	val output = mutableListOf<List<T>>()
 	var currentFragment = mutableListOf<T>()
 
@@ -423,7 +423,7 @@ fun <T> Array<T>.distinctSet() = distinct().toSet()
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>, O> C.distinctSetBy(process: (T) -> O) = distinctBy(process).toSet()
+inline fun <T, C : Collection<T>, O> C.distinctSetBy(process: (T) -> O) = distinctBy(process).toSet()
 
 /**
  * This function uses the [Array.distinctBy] function and
@@ -431,4 +431,5 @@ fun <T, C : Collection<T>, O> C.distinctSetBy(process: (T) -> O) = distinctBy(pr
  * @author Fruxz
  * @since 1.0
  */
-fun <T, O> Array<T>.distinctSetBy(process: (T) -> O) = distinctBy(process).toSet()
+inline fun <T, O> Array<T>.distinctSetBy(process: (T) -> O) = distinctBy(process).toSet()
+
