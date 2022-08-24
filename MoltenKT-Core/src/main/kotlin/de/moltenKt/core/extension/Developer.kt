@@ -44,6 +44,14 @@ fun <T> T.modifiedIf(modifyIf: Boolean, modification: T.() -> T) = if (!modifyIf
 fun <T> T.modifyIf(modifyIf: Boolean, modification: T.() -> Unit) = if (!modifyIf) { this } else apply(modification)
 
 /**
+ * This function returns the modified version of [this] via [modification], or
+ * if an exception gets thrown by the [modification] process, the original [this] is returned.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <T> T.modifiedIfSuccess(modification: T.() -> T): T = tryOrNull(modification) ?: this
+
+/**
  * Returns true if this [Any]? is null, otherwise false.
  * @author Fruxz
  * @since 1.0
