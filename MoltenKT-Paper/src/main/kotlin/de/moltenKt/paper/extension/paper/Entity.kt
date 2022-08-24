@@ -1,6 +1,7 @@
 package de.moltenKt.paper.extension.paper
 
 import de.moltenKt.core.tool.smart.identification.Identity
+import org.bukkit.block.Biome
 import org.bukkit.entity.Entity
 
 val <T : Entity> T.identityObject: Identity<T>
@@ -47,3 +48,12 @@ fun Entity.addScoreboardTags(vararg scoreboardTag: String) {
 fun Entity.removeScoreboardTags(vararg scoreboardTag: String) {
 	scoreboardTags -= scoreboardTag.toSet()
 }
+
+/**
+ * This computational value returns the biome of the
+ * block, where the player is currently located.
+ * @author Fruxz
+ * @since 1.0
+ */
+val Entity.biome: Biome
+	get() = location.block.biome
