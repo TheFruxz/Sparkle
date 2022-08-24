@@ -233,37 +233,6 @@ class MoltenApp : App() {
 
 	override fun bye() {
 
-		val disabledAppExecutor = CommandExecutor { sender, _, _, _ ->
-
-			text("This vendor app of this command is currently disabled!")
-				.color(NamedTextColor.RED)
-				.notification(ERROR, sender)
-				.display()
-
-			true
-		}
-
-		MoltenCache.registeredServices.forEach {
-			if (it.vendor.identity == this.identity) {
-				it.shutdown()
-			}
-		}
-
-		MoltenCache.registeredComponents.forEach {
-			if (it.vendor.identity == this.identity) {
-				tryToIgnore { runBlocking { it.stop() } }
-			}
-		}
-
-		description.commands.keys.forEach {
-			getCommand(it)?.apply {
-				setExecutor(disabledAppExecutor)
-				tabCompleter = null
-			}
-
-			mainLog(Level.INFO, "Command '$it' disabled")
-		}
-
 		coroutineScope.apply {
 			coroutineContext.cancelChildren()
 			cancel("Molten-Kt Paper is shutting down!")

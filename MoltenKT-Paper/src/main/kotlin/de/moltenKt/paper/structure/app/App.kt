@@ -7,6 +7,7 @@ import de.moltenKt.core.extension.catchException
 import de.moltenKt.core.extension.container.mutableReplaceWith
 import de.moltenKt.core.extension.data.jsonBase
 import de.moltenKt.core.extension.tryToCatch
+import de.moltenKt.core.extension.tryToIgnore
 import de.moltenKt.core.extension.tryToPrint
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
@@ -15,7 +16,9 @@ import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.app.MoltenApp.Infrastructure
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
+import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
+import de.moltenKt.paper.extension.objectBound.destroySandBox
 import de.moltenKt.paper.extension.paper.internalCommandMap
 import de.moltenKt.paper.extension.paper.internalSyncCommands
 import de.moltenKt.paper.extension.tasky.asSync
@@ -32,6 +35,8 @@ import de.moltenKt.paper.structure.command.Interchange
 import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.structure.service.Service
 import de.moltenKt.paper.tool.data.file.MoltenFileSystem
+import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
+import de.moltenKt.unfold.text
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.cache.*
@@ -41,7 +46,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.key.Key
+import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.command.CommandExecutor
 import org.bukkit.command.PluginCommand
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerializable
@@ -688,6 +696,45 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 				log.info("Disabling (::bye) of '$identityKey' took $requiredTime!")
 			}
 			coroutineScope.cancel("App '$identityKey' is now disabled!")
+
+			// shutdown process
+
+			val disabledAppExecutor = CommandExecutor { sender, _, _, _ ->
+
+				text("This vendor app of this command is currently disabled!")
+					.color(NamedTextColor.RED)
+					.notification(ERROR, sender)
+					.display()
+
+				true
+			}
+
+			MoltenCache.registeredServices.toList().forEach {
+				if (key() == it.vendor.key()) {
+					it.shutdown()
+				}
+			}
+
+			MoltenCache.registeredComponents.toList().forEach {
+				if (key() == it.vendor.key()) {
+					tryToIgnore { runBlocking { it.stop() } }
+				}
+			}
+
+			MoltenCache.registeredSandBoxes.toList().forEach { sandbox ->
+				if (key() == sandbox.vendor.key()) {
+					destroySandBox(sandbox)
+				}
+			}
+
+			description.commands.keys.forEach {
+				getCommand(it)?.apply {
+					setExecutor(disabledAppExecutor)
+					tabCompleter = null
+				}
+
+				mainLog(Level.INFO, "Command '$it' disabled")
+			}
 
 			runStatus = OFFLINE
 
