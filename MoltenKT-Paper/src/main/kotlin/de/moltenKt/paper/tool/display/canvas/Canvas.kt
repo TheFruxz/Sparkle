@@ -36,7 +36,7 @@ import kotlin.time.Duration.Companion.seconds
 
 /**
  * This class helps to easily create ui's for players.
- * @param key The key of the canvas, that is used to bind the actions to the canvas.
+ * @param identityKey The key of the canvas, that is used to bind the actions to the canvas.
  * This should be unique for each canvas, but if you want to share a canvas habits & actions, use the same.
  * Using shared keys can also improve memory-usage, if you do it cleverly. Why? because each registered action
  * and session is identified by the key!
