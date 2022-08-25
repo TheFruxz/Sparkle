@@ -343,7 +343,10 @@ data class MutableCanvas(
 }
 
 /**
- * This function constructs a new [MutableCanvas]
+ * This function constructs a new [MutableCanvas].
+ * *If you immediately want a non-mutable [Canvas] as a return,
+ * but want an [MutableCanvas] to build it, use the builder
+ * parameter!*
  * @param key The identity of the [MutableCanvas] to create.
  * @param size The size of the canvas.
  * @return The created mutable [MutableCanvas].
