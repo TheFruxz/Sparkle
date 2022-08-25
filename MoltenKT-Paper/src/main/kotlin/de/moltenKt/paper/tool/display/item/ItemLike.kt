@@ -51,6 +51,8 @@ interface ItemLike : Producible<ItemStack> {
 		 * This function wraps the [itemStack] into an [ItemLike] object.
 		 * If you want to use this in your system, I suggest you to use
 		 * the **ItemStack.itemLike** computational value!
+		 * @author Fruxz
+		 * @since 1.0
 		 */
 		@JvmStatic
 		fun of(itemStack: ItemStack) = object : ItemLike {
