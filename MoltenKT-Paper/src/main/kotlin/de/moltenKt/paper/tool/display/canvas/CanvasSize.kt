@@ -36,14 +36,43 @@ class CanvasSize private constructor(
 
 	companion object {
 
+		/**
+		 * This function creates a canvas size with the given size in rows,
+		 * this means that lines 2 is 18 slots.
+		 * @param lines the amount of 9-slot lines.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
 		fun ofLines(lines: Int) = CanvasSize(lines * 9)
 
+		/**
+		 * This function creates a canvas size with the given size in slots,
+		 * this means that size 9 is 1 row.
+		 * @param size the amount of slots.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
 		fun ofSize(size: Int) = CanvasSize(size)
 
+		/**
+		 * The small canvas size contains 3 lines of 9 slots.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
 		val SMALL = ofLines(3)
 
+		/**
+		 * The medium size contains 5 lines of 9 slots.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
 		val MEDIUM = ofLines(5)
 
+		/**
+		 * The large size contains 6 lines of 9 slots.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
 		val HUGE = ofLines(6)
 
 	}
