@@ -45,7 +45,7 @@ import kotlin.time.Duration.Companion.seconds
  * @param content The content, which is placed inside the canvas
  * @param flags The individual habits of the canvas.
  * @param openSoundEffect The sound effect, which is played, when the canvas is opened.
- * ***NOTE: If you want to edit a canvas, use the [MutableCanvas] class, maybe the [toMutable] function helps!***
+ * ***NOTE: If you want to edit a canvas, use the [MutableCanvas] class, maybe the [toMutable] or [buildCanvas] function helps!***
  * @author Fruxz
  * @since 1.0
  */
