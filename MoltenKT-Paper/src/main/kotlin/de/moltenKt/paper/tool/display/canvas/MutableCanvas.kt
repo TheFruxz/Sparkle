@@ -6,6 +6,7 @@ import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
+import de.moltenKt.paper.tool.display.canvas.CanvasFlag.*
 import de.moltenKt.paper.tool.display.canvas.design.AdaptiveCanvasCompose
 import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
@@ -321,6 +322,33 @@ data class MutableCanvas(
 	fun annexFlags(vararg flags: CanvasFlag) {
 		this.flags += flags
 	}
+
+	fun removeFlags(vararg flags: CanvasFlag) {
+		this.flags -= flags
+	}
+
+	/**
+	 * This function adds the [NO_GRAB], [NO_DRAG], [NO_SWAP] and [NO_MOVE] flags
+	 * to this [Canvas] using the [annexFlags] function in the background.
+	 * This completely disables the possibility for the player, to remove items
+	 * from the open canvas or move them around.
+	 * @param flags The flags that creates the protective canvas layer.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun disablePlayerItemGrabbing(vararg flags: CanvasFlag = arrayOf(NO_GRAB, NO_DRAG, NO_SWAP, NO_MOVE)) = annexFlags(*flags)
+
+	/**
+	 * This function removes the [NO_GRAB], [NO_DRAG], [NO_SWAP] and [NO_MOVE] flags
+	 * from this [Canvas] using the [removeFlags] function in the background.
+	 * This re-enables the possibility for the player, to remove items from the open
+	 * canvas or move them around. This only takes effect, if the flags were added
+	 * or/and if you used the [disablePlayerItemGrabbing] function before.
+	 * @param flags The flags that created the protective canvas layer.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun reEnablePlayerItemGrabbing(vararg flags: CanvasFlag = arrayOf(NO_GRAB, NO_DRAG, NO_SWAP, NO_MOVE)) = removeFlags(*flags)
 
 	private fun optimize() {
 		val contentSize = content.size
