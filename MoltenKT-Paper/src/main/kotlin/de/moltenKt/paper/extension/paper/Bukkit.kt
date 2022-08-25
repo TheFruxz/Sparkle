@@ -6,8 +6,10 @@ import de.moltenKt.core.extension.classType.UUID
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
+import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.extension.subKey
 import net.kyori.adventure.key.Key
+import net.kyori.adventure.text.ComponentLike
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
@@ -259,3 +261,56 @@ fun pluginOrNull(name: String) = Bukkit.getPluginManager().getPlugin(name)
  * @since 1.0
  */
 fun plugin(name: String) = pluginOrNull(name) ?: NoSuchElementException("Plugin '$name'(Name) not found")
+
+/**
+ * This function broadcasts the [component] to every individual player and console on the server.
+ * If the [permission] is not blank, only everyone having the given permission will receive the message.
+ * @author Fruxz
+ * @since 1.0
+ * @see Bukkit.broadcast
+ * @see String.asStyledComponent
+ */
+fun broadcast(component: ComponentLike, permission: String = "") = when (permission.isBlank()) {
+	true -> Bukkit.broadcast(component.asComponent())
+	false -> Bukkit.broadcast(component.asComponent(), permission)
+}
+
+/**
+ * This function broadcasts the [styledMessage] to every individual player and console on the server.
+ * If the [permission] is not blank, only everyone having the given permission will receive the message.
+ * @author Fruxz
+ * @since 1.0
+ * @see Bukkit.broadcast
+ * @see String.asStyledComponent
+ */
+fun broadcast(styledMessage: String, permission: String = "") = when (permission.isBlank()) {
+	true -> Bukkit.broadcast(styledMessage.asStyledComponent)
+	false -> Bukkit.broadcast(styledMessage.asStyledComponent, permission)
+}
+
+/**
+ * This function broadcasts the [component] to every individual player and console on the server via the actionbar.
+ * If the [permission] is not blank, only everyone having the given permission will receive the message.
+ * @author Fruxz
+ * @since 1.0
+ * @see Player.sendActionBar
+ * @see String.asStyledComponent
+ */
+fun broadcastActionBar(component: ComponentLike, permission: String = "") = when (permission.isBlank()) {
+	true -> onlinePlayers.forEach { it.sendActionBar(component.asComponent()) }
+	false -> onlinePlayers.forEach { if (it.hasPermission(permission)) it.sendActionBar(component.asComponent()) }
+}
+
+/**
+ * This function broadcasts the [styledMessage] to every individual player and console on the server via the actionbar.
+ * If the [permission] is not blank, only everyone having the given permission will receive the message.
+ * @author Fruxz
+ * @since 1.0
+ * @see Player.sendActionBar
+ * @see String.asStyledComponent
+ */
+fun broadcastActionBar(styledMessage: String, permission: String = "") = when (permission.isBlank()) {
+	true -> onlinePlayers.forEach { it.sendActionBar(styledMessage.asStyledComponent) }
+	false -> onlinePlayers.forEach { if (it.hasPermission(permission)) it.sendActionBar(styledMessage.asStyledComponent) }
+}
+
