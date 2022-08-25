@@ -38,6 +38,27 @@ fun randomInt(range: IntRange, random: Random = Random) = random.nextInt(range)
  * @since 1.0
  */
 fun randomInt(progression: IntProgression, random: Random = Random) = progression.toSet().random(random)
+
+/**
+ * Creates a new random long, which is inside the given [range].
+ * @param range the range of the random long (including the boundaries)
+ * @param random the randomizer to use
+ * @return a random long
+ * @author Fruxz
+ * @since 1.0
+ */
+fun randomLong(range: LongRange, random: Random = Random) = random.nextLong(range.first, range.last+1)
+
+/**
+ * Creates a new random long, which is inside the given [progression]
+ * @param progression the progression of the random long (including the boundaries)
+ * @param random the randomizer to use
+ * @return a random long
+ * @author Fruxz
+ * @since 1.0
+ */
+fun randomLong(progression: LongProgression, random: Random = Random) = progression.toSet().random(random)
+
 /**
  * Creates a random Tag, which is a combination of a '#' and some
  * random letters & numbers.
