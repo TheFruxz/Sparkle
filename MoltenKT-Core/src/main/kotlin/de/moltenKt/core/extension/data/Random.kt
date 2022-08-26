@@ -31,13 +31,13 @@ fun randomInt(range: IntRange, random: Random = Random) = random.nextInt(range)
 
 /**
  * Creates a new random integer, which is inside the given [progression]
- * @param progression the progression of the random integer (including the boundaries)
+ * @param progression the possibilities of the random integer
  * @param random the randomizer to use
  * @return a random integer
  * @author Fruxz
  * @since 1.0
  */
-fun randomInt(progression: IntProgression, random: Random = Random) = progression.toSet().random(random)
+fun randomInt(progression: Iterable<Int>, random: Random = Random) = progression.shuffled(random).first()
 
 /**
  * Creates a new random long, which is inside the given [range].
@@ -47,17 +47,17 @@ fun randomInt(progression: IntProgression, random: Random = Random) = progressio
  * @author Fruxz
  * @since 1.0
  */
-fun randomLong(range: LongRange, random: Random = Random) = random.nextLong(range.first, range.last+1)
+fun randomLong(range: LongRange, random: Random = Random) = range.shuffled(random).first()
 
 /**
  * Creates a new random long, which is inside the given [progression]
- * @param progression the progression of the random long (including the boundaries)
+ * @param progression the possibilities of the random long
  * @param random the randomizer to use
  * @return a random long
  * @author Fruxz
  * @since 1.0
  */
-fun randomLong(progression: LongProgression, random: Random = Random) = progression.toSet().random(random)
+fun randomLong(progression: Iterable<Int>, random: Random = Random) = progression.shuffled(random).first()
 
 /**
  * Creates a random Tag, which is a combination of a '#' and some
