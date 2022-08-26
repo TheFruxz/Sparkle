@@ -151,8 +151,8 @@ open class Canvas(
 					localInstance = event.renderResult
 				}
 
-				if (triggerOpenEvent) CanvasOpenEvent(receiver, this@Canvas, localInstance, data).let { event ->
-					if (event.callEvent()) {
+				CanvasOpenEvent(receiver, this@Canvas, localInstance, data).let { event ->
+					if (!triggerOpenEvent || event.callEvent()) {
 						localInstance = event.inventory
 
 						asSync {
@@ -249,8 +249,8 @@ open class Canvas(
 					topInventory = event.renderResult
 				}
 
-				if (triggerUpdateEvent) CanvasUpdateEvent(receiver, this@Canvas, topInventory, data).let { event ->
-					if (event.callEvent()) {
+				CanvasUpdateEvent(receiver, this@Canvas, topInventory, data).let { event ->
+					if (!triggerUpdateEvent || event.callEvent()) {
 						topInventory = event.inventory
 
 						asSync {
