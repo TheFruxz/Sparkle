@@ -15,6 +15,7 @@ import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.app.MoltenApp.Infrastructure
 import de.moltenKt.paper.app.MoltenCache
+import de.moltenKt.paper.app.MoltenData
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.mainLog
@@ -568,7 +569,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	 */
 	val httpClient by lazy {
 		HttpClient(CIO) {
-			install(HttpCache) // TODO create config preference, if caching in http client is enabled
+			if (MoltenData.systemConfig.httpClientCaching) install(HttpCache)
 			install(ContentNegotiation) {
 				json(jsonBase)
 			}

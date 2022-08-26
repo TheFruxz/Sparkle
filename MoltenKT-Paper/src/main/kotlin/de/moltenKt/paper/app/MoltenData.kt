@@ -54,6 +54,7 @@ object MoltenData {
 	@Serializable
 	data class MoltenConfig(
 		val debugMode: Boolean = false,
+		val httpClientCaching: Boolean = false,
 		val prefix: String = "<gold>MoltenKT <dark_gray>» ",
 		val language: String = Locale.ENGLISH.language
 	)
