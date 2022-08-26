@@ -31,6 +31,7 @@ interface EntityBasedEffect : Effect {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
+	fun broadcastPlayers(players: Set<Player> = onlinePlayers) =
 		play(entities = players.toTypedArray())
 
 	/**
