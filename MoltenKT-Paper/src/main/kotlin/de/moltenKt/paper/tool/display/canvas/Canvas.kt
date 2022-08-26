@@ -315,7 +315,8 @@ open class Canvas(
 		onOpen: CanvasOpenEvent.() -> Unit = this.onOpen,
 		onClose: CanvasCloseEvent.() -> Unit = this.onClose,
 		onClicks: List<CanvasClickEvent.() -> Unit> = this.onClicks,
-	): MutableCanvas = MutableCanvas(key, label, canvasSize, content, panelFlags, openSoundEffect).apply {
+		asyncItems: Map<Int, Deferred<ItemLike>> = this.asyncItems,
+	): MutableCanvas = MutableCanvas(key, label, canvasSize, content, panelFlags, openSoundEffect, asyncItems).apply {
 		this.onRender = onRender
 		this.onOpen = onOpen
 		this.onUpdate = onUpdate
