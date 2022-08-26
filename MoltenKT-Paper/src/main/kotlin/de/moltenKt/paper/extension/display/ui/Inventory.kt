@@ -15,19 +15,19 @@ fun buildInventory(size: Int, label: TextComponent, process: Inventory.() -> Uni
 
 operator fun <T : Inventory> T.get(slot: Int) = tryOrNull { getItem(slot) }
 
-operator fun <T : Inventory> T.set(slot: Int, itemStack: ItemStack) = setItem(slot, itemStack)
+operator fun <T : Inventory> T.set(slot: Int, itemStack: ItemStack?) = setItem(slot, itemStack)
 
-operator fun <T : Inventory> T.set(slots: Iterable<Int>, itemStack: ItemStack) = slots.forEach { set(it, itemStack) }
+operator fun <T : Inventory> T.set(slots: Iterable<Int>, itemStack: ItemStack?) = slots.forEach { set(it, itemStack) }
 
-operator fun <T : Inventory> T.set(slots: Iterable<Int>, process: (slot: Int) -> ItemStack) = slots.forEach { set(it, process(it)) }
+operator fun <T : Inventory> T.set(slots: Iterable<Int>, process: (slot: Int) -> ItemStack?) = slots.forEach { set(it, process(it)) }
 
-operator fun <T : Inventory> T.set(slot: Int, itemLike: ItemLike) = setItem(slot, itemLike.produce())
+operator fun <T : Inventory> T.set(slot: Int, itemLike: ItemLike?) = setItem(slot, itemLike?.produce())
 
-operator fun <T : Inventory> T.set(slots: Iterable<Int>, itemLike: ItemLike) = slots.forEach { set(it, itemLike) }
+operator fun <T : Inventory> T.set(slots: Iterable<Int>, itemLike: ItemLike?) = slots.forEach { set(it, itemLike) }
 
-operator fun <T : Inventory> T.set(slot: Int, material: Material) = setItem(slot, material.itemStack)
+operator fun <T : Inventory> T.set(slot: Int, material: Material?) = setItem(slot, material?.itemStack)
 
-operator fun <T : Inventory> T.set(slots: Iterable<Int>, material: Material) = slots.forEach { set(it, material.itemStack) }
+operator fun <T : Inventory> T.set(slots: Iterable<Int>, material: Material?) = slots.forEach { set(it, material?.itemStack) }
 
 fun <T : Inventory> T.addItems(vararg items: ItemStack) = addItem(*items).toMap()
 
