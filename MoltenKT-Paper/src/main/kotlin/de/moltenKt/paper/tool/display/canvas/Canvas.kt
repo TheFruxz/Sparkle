@@ -17,8 +17,7 @@ import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasRenderEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasUpdateEvent
-import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRenderEngine.RenderTarget.GLOBAL
-import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRenderEngine.RenderTarget.USER
+import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRender
 import de.moltenKt.paper.tool.display.canvas.CanvasFlag.*
 import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
@@ -35,9 +34,7 @@ import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -63,7 +60,6 @@ open class Canvas(
 	open val content: Map<Int, ItemLike> = emptyMap(),
 	open val flags: Set<CanvasFlag> = emptySet(),
 	open val openSoundEffect: SoundEffect? = null,
-	open val renderEngine: CanvasRenderEngine = CanvasRenderEngine.SINGLE_USE,
 	open val asyncItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
 ) : KeyedIdentifiable<Canvas> {
 
@@ -315,12 +311,11 @@ open class Canvas(
 		content: Map<Int, ItemLike> = this.content,
 		panelFlags: Set<CanvasFlag> = this.flags,
 		openSoundEffect: SoundEffect? = this.openSoundEffect,
-		renderEngine: CanvasRenderEngine = this.renderEngine,
 		onRender: CanvasRender = this.onRender,
 		onOpen: CanvasOpenEvent.() -> Unit = this.onOpen,
 		onClose: CanvasCloseEvent.() -> Unit = this.onClose,
 		onClicks: List<CanvasClickEvent.() -> Unit> = this.onClicks,
-	): MutableCanvas = MutableCanvas(key, label, canvasSize, content, panelFlags, openSoundEffect, renderEngine).apply {
+	): MutableCanvas = MutableCanvas(key, label, canvasSize, content, panelFlags, openSoundEffect).apply {
 		this.onRender = onRender
 		this.onOpen = onOpen
 		this.onUpdate = onUpdate
@@ -337,37 +332,6 @@ open class Canvas(
 
 	fun interface CanvasRender {
 		suspend fun render(event: CanvasRenderEvent)
-	}
-
-	interface CanvasRenderEngine {
-
-		val shelfLife: Duration
-
-		val target: RenderTarget
-
-		enum class RenderTarget {
-			GLOBAL, USER;
-		}
-
-		companion object {
-
-			val SINGLE_USE = object : CanvasRenderEngine {
-				override val shelfLife = Duration.INFINITE
-				override val target = USER
-			}
-
-			fun perTick(shelfLife: Duration) = object : CanvasRenderEngine {
-				override val shelfLife = shelfLife
-				override val target = GLOBAL
-			}
-
-			fun perUser(shelfLife: Duration) = object : CanvasRenderEngine {
-				override val shelfLife = shelfLife
-				override val target = USER
-			}
-
-		}
-
 	}
 
 }

@@ -39,9 +39,8 @@ data class MutableCanvas(
 	override var content: Map<Int, ItemLike> = emptyMap(),
 	override var flags: Set<CanvasFlag> = emptySet(),
 	override var openSoundEffect: SoundEffect? = null,
-	override var renderEngine: CanvasRenderEngine = CanvasRenderEngine.SINGLE_USE,
 	override var asyncItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
-) : Canvas(identityKey, label, canvasSize, content, flags, openSoundEffect, renderEngine, asyncItems), Producible<Canvas>, AbstractBuilder<Canvas> {
+) : Canvas(identityKey, label, canvasSize, content, flags, openSoundEffect, asyncItems), Producible<Canvas>, AbstractBuilder<Canvas> {
 
 	override var onRender: CanvasRender = CanvasRender {  }
 	override var onOpen: CanvasOpenEvent.() -> Unit = { }
