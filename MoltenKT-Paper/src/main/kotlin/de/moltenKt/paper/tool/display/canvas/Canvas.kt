@@ -1,7 +1,11 @@
 package de.moltenKt.paper.tool.display.canvas
 
+import de.moltenKt.core.extension.container.distinctSetBy
+import de.moltenKt.core.extension.container.forEachNotNull
 import de.moltenKt.paper.app.MoltenCache
+import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.ui.buildInventory
+import de.moltenKt.paper.extension.display.ui.get
 import de.moltenKt.paper.extension.display.ui.set
 import de.moltenKt.paper.extension.effect.playSoundEffect
 import de.moltenKt.paper.extension.mainLog
@@ -12,9 +16,10 @@ import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasRenderEvent
+import de.moltenKt.paper.runtime.event.canvas.CanvasUpdateEvent
 import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRenderEngine.RenderTarget.GLOBAL
 import de.moltenKt.paper.tool.display.canvas.Canvas.CanvasRenderEngine.RenderTarget.USER
-import de.moltenKt.paper.tool.display.canvas.CanvasFlag.NO_OPEN
+import de.moltenKt.paper.tool.display.canvas.CanvasFlag.*
 import de.moltenKt.paper.tool.display.item.ItemLike
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.smart.KeyedIdentifiable
@@ -30,6 +35,7 @@ import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -38,8 +44,9 @@ import kotlin.time.Duration.Companion.seconds
  * This class helps to easily create ui's for players.
  * @param identityKey The key of the canvas, that is used to bind the actions to the canvas.
  * This should be unique for each canvas, but if you want to share a canvas habits & actions, use the same.
- * Using shared keys can also improve memory-usage, if you do it cleverly. Why? because each registered action
- * and session is identified by the key!
+ * Using shared keys can also improve memory-usage, if you do it cleverly. Why? because each registered action,
+ * session and update is identified by the key! ***USING THE SAME KEY OR GENERATE A SINGLE CANVAS MULTIPLE
+ * TIMES IS QUITE DANGEROUS AND CAN AFFECT BEHAVIOR AND CANVAS UPDATES!***
  * @param label The label, which the viewer will see on top of the inventory.
  * @param canvasSize The size of the canvas.
  * @param content The content, which is placed inside the canvas
@@ -63,6 +70,7 @@ open class Canvas(
 	open val onRender: CanvasRender = CanvasRender {  }
 	open val onOpen: CanvasOpenEvent.() -> Unit = { }
 	open val onClose: CanvasCloseEvent.() -> Unit = { }
+	open val onUpdate: CanvasUpdateEvent.() -> Unit = { }
 	open val onClicks: List<CanvasClickEvent.() -> Unit> = emptyList()
 	open val onFinishedDeferred: List<Deferred<ItemStack>>.() -> Unit = { }
 
@@ -116,21 +124,21 @@ open class Canvas(
 	 * @since 1.0
 	 */
 	val viewers: Set<Player>
-		get() = MoltenCache.canvasSessions.filter { it.value.canvas == this.key }.keys
+		get() = MoltenCache.canvasSessions.filter { it.value.canvas == this.key }.keys.distinctSetBy { it.uniqueId }
 
 	fun display(
-		vararg receivers: HumanEntity,
+		vararg receivers: HumanEntity?,
 		data: Map<Key, Any> = emptyMap(),
 		triggerOpenEvent: Boolean = true,
 		triggerSound: Boolean = true
 	) = system.coroutineScope.launch {
-		if (flags.contains(NO_OPEN)) cancel()
+		if (NO_OPEN in flags) cancel()
 
 		val inventoryContent = async { asSync { (0 until canvasSize.size).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } }
 
 		push()
 
-		receivers.distinctBy { it.uniqueId }.forEach { receiver ->
+		receivers.toList().forEachNotNull { receiver ->
 			var localInstance = buildInventory(canvasSize.size, label) {
 				this.contents = runBlocking { inventoryContent.await() }
 			}
@@ -178,7 +186,7 @@ open class Canvas(
 						if (triggerSound) openSoundEffect?.let { receiver.playSoundEffect(it) }
 
 					} else {
-						return@forEach
+						return@forEachNotNull
 					}
 				}
 
@@ -191,6 +199,109 @@ open class Canvas(
 	fun push() {
 		MoltenCache.canvas += key to this
 		MoltenCache.canvasActions += key to Reaction(onOpen, onClose, onClicks)
+	}
+
+	/**
+	 * Tip: Do not call this function during an execution-part of the canvas itself, like inside the onOpen-execution.
+	 * This would lead, that even the update calls this method again and again.
+	 * Executing this per-player can also be dangerous, because multiple players executing this part of the code updating
+	 * (by default) even the canvas of the other [receivers], which would be unnecessary and power consuming!
+	 * @param receivers The receivers of this update (if they have the canvas open); By default [viewers]
+	 * @param data The additional data to be used in messaging the different accessors
+	 * @param triggerUpdateEvent If the [CanvasUpdateEvent] should be triggered
+	 * @param triggerSound If the [openSoundEffect] should be played to the [receivers]
+	 * @param triggerOnOpenToo The [onUpdate] is called, when the rendering is done and sending.
+	 * If we look on [display]: instead of [onUpdate] is the [onOpen] here called. To get the
+	 * same behavior of [onOpen] also in updates, not only first-openings, this should be enabled.
+	 * This (as normal) executes the [onUpdate] and directly after it the [onOpen].
+	 * @return The job, executing the update
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun update(
+		vararg receivers: HumanEntity? = viewers.toTypedArray(),
+		data: Map<Key, Any> = emptyMap(),
+		triggerUpdateEvent: Boolean = true,
+		triggerSound: Boolean = true,
+		triggerOnOpenToo: Boolean = true,
+	) = system.coroutineScope.launch {
+		if (NO_UPDATE in flags) cancel()
+
+		val inventoryContent = async { asSync { (0 until canvasSize.size).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } }
+
+		if (NO_UPDATE_PUSHES !in flags) push()
+
+		receivers.toList().forEachNotNull { receiver ->
+			var topInventory = receiver.openInventory.topInventory
+
+			// INSERT START
+
+			if (receiver is Player && topInventory.viewers.isNotEmpty() && receiver in viewers) {
+				// now the topInventory is safe to use
+
+				runBlocking { inventoryContent.await() }.forEachIndexed { index, itemStack ->
+					if (topInventory[index] != itemStack && index !in asyncItems.keys) topInventory[index] = itemStack
+				}
+
+				CanvasRenderEvent(receiver, this@Canvas, topInventory, false).let { event ->
+					event.callEvent()
+					event.apply { onRender.render(this) }
+					topInventory = event.renderResult
+				}
+
+				if (triggerUpdateEvent) CanvasUpdateEvent(receiver, this@Canvas, topInventory, data).let { event ->
+					if (event.callEvent()) {
+						topInventory = event.inventory
+
+						asSync {
+
+							if (topInventory.viewers.isNotEmpty() && receiver in viewers) { // just a check, to keep it bulletproof
+								debugLog("Updating ${receiver.name}'s inventory from ${key()} canvas")
+
+								receiver.openInventory(topInventory)
+
+								CanvasSessionManager.putSession(receiver, key, data)
+							} else
+								debugLog("Updating ${receiver.name}'s inventory blocked, during last check")
+						}
+
+						asyncItems.map { (key, value) ->
+							asAsync {
+								val result = value.await().asItemStack()
+
+								if (result != topInventory[key]) topInventory.setItem(key, result)
+
+								result
+							}
+						}.let { result ->
+							system.coroutineScope.launch {
+								while (true) {
+									if (result.none { it.isActive }) {
+										onFinishedDeferred.invoke(result)
+										cancel()
+										break
+									}
+									delay(.1.seconds)
+								}
+							}
+						}
+
+						event.apply(onUpdate)
+						if (triggerOnOpenToo) event.apply(onOpen)
+
+						if (triggerSound) openSoundEffect?.let { receiver.playSoundEffect(it) }
+
+					} else {
+						return@forEachNotNull
+					}
+				}
+
+			}
+
+			// INSERT STOP
+
+		}
+
 	}
 
 	fun toMutable(
@@ -208,6 +319,7 @@ open class Canvas(
 	): MutableCanvas = MutableCanvas(key, label, canvasSize, content, panelFlags, openSoundEffect, renderEngine).apply {
 		this.onRender = onRender
 		this.onOpen = onOpen
+		this.onUpdate = onUpdate
 		this.onClose = onClose
 		this.onClicks = onClicks
 	}

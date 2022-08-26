@@ -28,7 +28,10 @@ import de.moltenKt.paper.app.interchange.MoltenKtInterchange
 import de.moltenKt.paper.app.interchange.PlaygroundInterchange
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.notification
+import de.moltenKt.paper.extension.display.ui.set
 import de.moltenKt.paper.extension.mainLog
+import de.moltenKt.paper.extension.objectBound.buildAndRegisterSandBox
+import de.moltenKt.paper.extension.paper.asPlayerOrNull
 import de.moltenKt.paper.mojang.MojangProfile
 import de.moltenKt.paper.mojang.MojangProfileCape
 import de.moltenKt.paper.mojang.MojangProfileRaw
@@ -50,6 +53,7 @@ import de.moltenKt.paper.tool.data.json.serializer.ParticleSerializer
 import de.moltenKt.paper.tool.data.json.serializer.UUIDSerializer
 import de.moltenKt.paper.tool.data.json.serializer.VectorSerializer
 import de.moltenKt.paper.tool.data.json.serializer.WorldSerializer
+import de.moltenKt.paper.tool.display.canvas.buildCanvas
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.display.world.SimpleLocation
@@ -70,14 +74,19 @@ import de.moltenKt.paper.tool.position.relative.LinearShape
 import de.moltenKt.paper.tool.position.relative.PyramidalShape
 import de.moltenKt.paper.tool.position.relative.Shape
 import de.moltenKt.paper.tool.position.relative.SphereShape
+import de.moltenKt.unfold.extension.div
+import de.moltenKt.unfold.extension.subKey
 import de.moltenKt.unfold.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.World
@@ -88,6 +97,7 @@ import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import java.util.*
 import java.util.logging.Level
+import kotlin.time.Duration.Companion.seconds
 
 class MoltenApp : App() {
 
@@ -228,6 +238,35 @@ class MoltenApp : App() {
 		add(PlaygroundInterchange())
 
 		add(AppComponent())
+
+		val canvas = buildCanvas(key().subKey("canvas.demo") / "t") {
+
+			this[1..10] = Material.values().filter { it.isItem }.random()
+
+			setDeferred(11..15, materialProcess = {
+				Material.values().filter { it.isItem }.random()
+			})
+
+			onOpen {
+				it.inventory[16..17] = Material.values().filter { it.isItem }.random()
+			}
+
+		}
+
+		coroutineScope.launch {
+
+			repeat(100) { _ ->
+				delay(2.seconds)
+				canvas.update()
+			}
+
+		}
+
+		buildAndRegisterSandBox(this, "demoCanvas") {
+
+			canvas.display(executor.asPlayerOrNull)
+
+		}
 
 	}
 

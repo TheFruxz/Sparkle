@@ -58,6 +58,21 @@ enum class CanvasFlag {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	NO_OPEN;
+	NO_OPEN,
+
+	/**
+	 * This flag defines, that the canvas update function does not get executed.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	NO_UPDATE,
+
+	/**
+	 * This flag defines, that a canvas update does not perform a canvas push
+	 * (re-register in canvas & canvas-reaction{onOpen, onClose, onClicks} map)
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	NO_UPDATE_PUSHES;
 
 }

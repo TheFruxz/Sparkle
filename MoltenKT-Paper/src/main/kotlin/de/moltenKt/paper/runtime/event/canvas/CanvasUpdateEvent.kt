@@ -6,12 +6,12 @@ import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.inventory.Inventory
 
-open class CanvasOpenEvent(
-	val player: Player,
-	override val canvas: Canvas,
-	val inventory: Inventory,
-	val data: Map<Key, Any>,
-) : CanvasEvent(player, canvas) {
+class CanvasUpdateEvent(
+	player: Player,
+	canvas: Canvas,
+	inventory: Inventory,
+	data: Map<Key, Any>,
+) : CanvasOpenEvent(player, canvas, inventory, data) {
 
 	override fun getHandlers() = handlerList
 

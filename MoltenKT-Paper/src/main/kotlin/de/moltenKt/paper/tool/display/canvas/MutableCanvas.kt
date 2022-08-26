@@ -6,6 +6,7 @@ import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.runtime.event.canvas.CanvasClickEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasCloseEvent
 import de.moltenKt.paper.runtime.event.canvas.CanvasOpenEvent
+import de.moltenKt.paper.runtime.event.canvas.CanvasUpdateEvent
 import de.moltenKt.paper.tool.display.canvas.CanvasFlag.*
 import de.moltenKt.paper.tool.display.canvas.design.AdaptiveCanvasCompose
 import de.moltenKt.paper.tool.display.item.ItemLike
@@ -44,6 +45,7 @@ data class MutableCanvas(
 
 	override var onRender: CanvasRender = CanvasRender {  }
 	override var onOpen: CanvasOpenEvent.() -> Unit = { }
+	override var onUpdate: CanvasUpdateEvent.() -> Unit = { }
 	override var onClose: CanvasCloseEvent.() -> Unit = { }
 	override var onClicks: List<CanvasClickEvent.() -> Unit> = emptyList()
 
@@ -257,6 +259,14 @@ data class MutableCanvas(
 
 	fun onOpenWith(onOpen: CanvasOpenEvent.() -> Unit) {
 		this.onOpen = onOpen
+	}
+
+	fun onUpdate(onUpdate: (CanvasUpdateEvent) -> Unit) {
+		this.onUpdate = onUpdate
+	}
+
+	fun onUpdateWith(onUpdate: CanvasUpdateEvent.() -> Unit) {
+		this.onUpdate = onUpdate
 	}
 
 	fun onClose(onClose: (CanvasCloseEvent) -> Unit) {
