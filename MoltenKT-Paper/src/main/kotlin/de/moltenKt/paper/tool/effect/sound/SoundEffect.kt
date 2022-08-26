@@ -9,6 +9,13 @@ import net.kyori.adventure.sound.Sound.Source.MASTER
 import org.bukkit.World
 import org.bukkit.entity.Entity
 
+/**
+ * This interface defines that it is a sound effect, which
+ * can be played to multiple targets.
+ * ***To use api as easy as possible, use the soundOf() function!***
+ * @author Fruxz
+ * @since 1.0
+ */
 interface SoundEffect : CrossBasedEffect {
 
 	/**
