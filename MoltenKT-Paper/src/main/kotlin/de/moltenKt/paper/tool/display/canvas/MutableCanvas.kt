@@ -48,6 +48,7 @@ data class MutableCanvas(
 	override var onUpdate: CanvasUpdateEvent.() -> Unit = { }
 	override var onClose: CanvasCloseEvent.() -> Unit = { }
 	override var onClicks: List<CanvasClickEvent.() -> Unit> = emptyList()
+	override var onUpdateNonClearableSlots: Set<Int> = emptySet()
 
 	operator fun set(slot: Int, itemLike: ItemLike?) {
 		if (itemLike != null) {
@@ -359,6 +360,62 @@ data class MutableCanvas(
 	 * @since 1.0
 	 */
 	fun reEnablePlayerItemGrabbing(vararg flags: CanvasFlag = arrayOf(NO_GRAB, NO_DRAG, NO_SWAP, NO_MOVE)) = removeFlags(*flags)
+
+	// Technical stuff
+
+	/**
+	 * This function is used to add some slots, that
+	 * are not going to get cleared during the [update]
+	 * process. This is usefully for example, if you
+	 * set some slots during the [onOpen] event, and
+	 * you want to keep them, even if you call the
+	 * [update] function.
+	 * Doing so will prevent flickering, but you have
+	 * to clear the [slots] at your self, if you want
+	 * to use this.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun addNonClearableUpdateSlots(vararg slots: Int) {
+		onUpdateNonClearableSlots += slots.toSet()
+	}
+
+	/**
+	 * This function is used to add some slots, that
+	 * are not going to get cleared during the [update]
+	 * process. This is usefully for example, if you
+	 * set some slots during the [onOpen] event, and
+	 * you want to keep them, even if you call the
+	 * [update] function.
+	 * Doing so will prevent flickering, but you have
+	 * to clear the [slots] at your self, if you want
+	 * to use this.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun addNonClearableUpdateSlots(slots: Iterable<Int>) {
+		onUpdateNonClearableSlots += slots.toSet()
+	}
+
+	/**
+	 * Removing the [slots] of the update clear prevention
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun takeNonClearableUpdateSlots(vararg slots: Int) {
+		onUpdateNonClearableSlots -= slots.toSet()
+	}
+
+	/**
+	 * Removing the [slots] of the update clear prevention
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun takeNonClearableUpdateSlots(slots: Iterable<Int>) {
+		onUpdateNonClearableSlots -= slots.toSet()
+	}
+
+	// Internal stuff
 
 	private fun optimize() {
 		val contentSize = content.size

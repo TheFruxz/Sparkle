@@ -73,6 +73,7 @@ open class Canvas(
 	open val onUpdate: CanvasUpdateEvent.() -> Unit = { }
 	open val onClicks: List<CanvasClickEvent.() -> Unit> = emptyList()
 	open val onFinishedDeferred: List<Deferred<ItemStack>>.() -> Unit = { }
+	open val onUpdateNonClearableSlots: Set<Int> = emptySet()
 
 	private val computedInnerSlots: List<Int> by lazy {
 		mutableListOf<Int>().apply {
@@ -240,7 +241,10 @@ open class Canvas(
 				// now the topInventory is safe to use
 
 				runBlocking { inventoryContent.await() }.forEachIndexed { index, itemStack ->
-					if (topInventory[index] != itemStack && index !in asyncItems.keys) topInventory[index] = itemStack
+					if (topInventory[index] != itemStack &&
+						index !in asyncItems.keys &&
+						!(itemStack == null && index in onUpdateNonClearableSlots)
+					) topInventory[index] = itemStack
 				}
 
 				CanvasRenderEvent(receiver, this@Canvas, topInventory, false).let { event ->
@@ -322,6 +326,7 @@ open class Canvas(
 		this.onUpdate = onUpdate
 		this.onClose = onClose
 		this.onClicks = onClicks
+		this.onUpdateNonClearableSlots = onUpdateNonClearableSlots
 	}
 
 	data class Reaction(

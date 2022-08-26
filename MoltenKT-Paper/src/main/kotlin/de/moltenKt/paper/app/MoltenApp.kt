@@ -251,6 +251,8 @@ class MoltenApp : App() {
 				it.inventory[16..17] = Material.values().filter { it.isItem }.random()
 			}
 
+			addNonClearableUpdateSlots(17)
+
 		}
 
 		coroutineScope.launch {
