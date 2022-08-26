@@ -239,37 +239,6 @@ class MoltenApp : App() {
 
 		add(AppComponent())
 
-		val canvas = buildCanvas(key().subKey("canvas.demo") / "t") {
-
-			this[1..10] = Material.values().filter { it.isItem }.random()
-
-			setDeferred(11..15, materialProcess = {
-				Material.values().filter { it.isItem }.random()
-			})
-
-			onOpen {
-				it.inventory[16..17] = Material.values().filter { it.isItem }.random()
-			}
-
-			addNonClearableUpdateSlots(17)
-
-		}
-
-		coroutineScope.launch {
-
-			repeat(100) { _ ->
-				delay(2.seconds)
-				canvas.update()
-			}
-
-		}
-
-		buildAndRegisterSandBox(this, "demoCanvas") {
-
-			canvas.display(executor.asPlayerOrNull)
-
-		}
-
 	}
 
 	override fun bye() {
