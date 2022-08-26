@@ -134,7 +134,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 			executor,
 			inputQuery,
 			input,
-			true, // TODO maybe get from this branch
+			this.configuration.ignoreCase,
 		))
 			.any { it.equals(input, configuration.ignoreCase) })
 				&& configuration.supportedInputTypes.any { it.isValid(input) }
@@ -221,7 +221,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 						executor,
 						inputQuery,
 						currentLevelInput,
-						true // TODO maybe get
+						currentBranch.configuration.ignoreCase
 				)),
 				tracingDepth = currentDepth,
 				usedQueryState = inputQuery,
