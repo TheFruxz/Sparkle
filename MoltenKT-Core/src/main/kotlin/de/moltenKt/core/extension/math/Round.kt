@@ -1,7 +1,11 @@
 package de.moltenKt.core.extension.math
 
+import java.util.DoubleSummaryStatistics
 import kotlin.math.ceil
 import kotlin.math.floor
+import kotlin.math.pow
+import kotlin.math.round
+import kotlin.math.roundToInt
 
 /**
  * This function executes the [ceil] function on the given [x]
@@ -130,3 +134,43 @@ fun Double.floor() = floor(this)
  * @since 1.0
  */
 fun Float.floor() = floor(this)
+
+/**
+ * This function returns the [x] double, but rounded with [decimals]-amount of decimals.
+ * @param x The value to round.
+ * @param decimals The amount of decimals to round to.
+ * @return The rounded value.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun round(x: Double, decimals: Int): Double = 10.0.pow(decimals).let { factor -> round(x * factor) / factor }
+
+/**
+ * This function returns [this] double, but rounded with [decimals]-amount of decimals.
+ * @param decimals The amount of decimals to round to.
+ * @return The rounded value.
+ * @author Fruxz
+ * @since 1.0
+ */
+@JvmName("roundWithDecimalsThis")
+fun Double.round(decimals: Int): Double = round(this, decimals)
+
+/**
+ * This function returns the [x] float, but rounded with [decimals]-amount of decimals.
+ * @param x The value to round.
+ * @param decimals The amount of decimals to round to.
+ * @return The rounded value.
+ * @author Fruxz
+ * @since 1.0
+ */
+fun round(x: Float, decimals: Int): Float = 10.0.pow(decimals).toFloat().let { factor -> round(x * factor) / factor }
+
+/**
+ * This function returns [this] float, but rounded with [decimals]-amount of decimals.
+ * @param decimals The amount of decimals to round to.
+ * @return The rounded value.
+ * @author Fruxz
+ * @since 1.0
+ */
+@JvmName("roundWithDecimalsThis")
+fun Float.round(decimals: Int): Float = round(this, decimals)
