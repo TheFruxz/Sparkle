@@ -2,13 +2,17 @@ package de.moltenKt.unfold.extension
 
 import net.kyori.adventure.key.Key
 
-fun Key.subKey(value: String, strategy: KeyingStrategy = KeyingStrategy.CONTINUE): Key = Key.key(
+fun Key.subKey(value: String, strategy: KeyingStrategy = KeyingStrategy.PATHING): Key = Key.key(
 	when (strategy) {
 		KeyingStrategy.SQUASH -> asString().replace(":", "_")
 		KeyingStrategy.ORIGIN -> namespace()
 		KeyingStrategy.CONTINUE -> value()
+		KeyingStrategy.PATHING -> namespace()
 	},
-	value
+	when (strategy) {
+		KeyingStrategy.PATHING -> "${value()}.$value"
+		else -> value
+	}
 )
 
 infix operator fun Key.div(value: String): Key = subKey(value)
@@ -39,6 +43,15 @@ enum class KeyingStrategy {
 	 * Example: 'origin:parent' -> 'parent:child' -> 'child:sub-child'
 	 * Info: Small and allows to track the history, but the back-tracking requires that you have all the keys!
 	 */
-	CONTINUE;
+	CONTINUE,
+
+	/**
+	 * The namespace is the same as the value of the parent, but the value is the
+	 * parents value + a dot + the child value.
+	 * 'origin:parent' -> 'origin:parent.child' -> 'origin:parent.child.sub-child'
+	 * Info: Always keeps the complete source present and also contains the full
+	 * history, but can be quite large!
+	 */
+	PATHING;
 
 }

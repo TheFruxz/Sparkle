@@ -13,8 +13,12 @@ fun NamespacedKey.subKey(value: String, strategy: KeyingStrategy = KeyingStrateg
 		KeyingStrategy.SQUASH -> asString().replace(":", "_")
 		KeyingStrategy.ORIGIN -> namespace()
 		KeyingStrategy.CONTINUE -> value()
+		KeyingStrategy.PATHING -> namespace()
 	},
-	value
+	when (strategy) {
+		KeyingStrategy.PATHING -> "${value()}.$value"
+		else -> value
+	}
 )
 
 infix operator fun NamespacedKey.div(value: String): NamespacedKey = subKey(value)
@@ -24,8 +28,12 @@ fun Key.subNamespacedKey(value: String, strategy: KeyingStrategy = KeyingStrateg
 		KeyingStrategy.SQUASH -> asString().replace(":", "_")
 		KeyingStrategy.ORIGIN -> namespace()
 		KeyingStrategy.CONTINUE -> value()
+		KeyingStrategy.PATHING -> namespace()
 	},
-	value
+	when (strategy) {
+		KeyingStrategy.PATHING -> "${value()}.$value"
+		else -> value
+	}
 )
 
 val Player.key: Key
