@@ -1,6 +1,7 @@
 package de.moltenKt.paper.structure.service
 
 import de.moltenKt.paper.app.MoltenCache
+import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.getApp
 import de.moltenKt.paper.structure.Hoster
 import de.moltenKt.paper.tool.smart.KeyedIdentifiable
@@ -38,6 +39,7 @@ interface Service : Hoster<Unit, Unit, Service>, Logging {
 	var controller: Tasky?
 		get() = MoltenCache.runningServiceTaskController[key]
 		set(value) {
+			debugLog("Setting controller for $key to $value")
 			if (value != null)
 				MoltenCache.runningServiceTaskController += key to value
 			else
