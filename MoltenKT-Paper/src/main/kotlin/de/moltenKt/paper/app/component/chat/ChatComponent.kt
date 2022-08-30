@@ -7,10 +7,9 @@ import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.paper.pluginOrNull
 import de.moltenKt.paper.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.moltenKt.paper.structure.component.SmartComponent
-import de.moltenKt.paper.tool.data.file.MoltenFileSystem
+import de.moltenKt.paper.tool.data.file.MoltenPath
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextReplacementConfig
-import org.bukkit.Bukkit
 import kotlin.io.path.createDirectories
 import kotlin.io.path.div
 import kotlin.io.path.readText
@@ -55,7 +54,7 @@ class ChatComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 		private lateinit var instance: ChatComponent
 
-		private val setupPath by lazy { MoltenFileSystem.componentPath(instance.identityObject) / "setup.json" }
+		private val setupPath by lazy { MoltenPath.componentPath(instance.identityObject) / "setup.json" }
 
 		internal lateinit var setup: ChatSetup
 

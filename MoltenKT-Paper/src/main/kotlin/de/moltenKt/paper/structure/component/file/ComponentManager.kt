@@ -7,13 +7,13 @@ import de.moltenKt.core.extension.generateFileAndPath
 import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.structure.component.Component
-import de.moltenKt.paper.tool.data.file.MoltenFileSystem
+import de.moltenKt.paper.tool.data.file.MoltenPath
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 object ComponentManager {
 
-	val path = MoltenFileSystem.rootPath() / "components.json"
+	val path = MoltenPath.rootPath() / "components.json"
 
 	private var _state: ComponentConfiguration? = null
 

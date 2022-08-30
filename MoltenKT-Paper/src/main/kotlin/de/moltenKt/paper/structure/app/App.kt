@@ -12,7 +12,6 @@ import de.moltenKt.core.extension.tryToPrint
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
-import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.app.MoltenApp.Infrastructure
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.MoltenData
@@ -35,7 +34,7 @@ import de.moltenKt.paper.structure.app.interchange.IssuedInterchange
 import de.moltenKt.paper.structure.command.Interchange
 import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.structure.service.Service
-import de.moltenKt.paper.tool.data.file.MoltenFileSystem
+import de.moltenKt.paper.tool.data.file.MoltenPath
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.unfold.text
 import io.ktor.client.*
@@ -586,7 +585,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	private val pluginManager = server.pluginManager
 
 	val appFolder: Path
-		get() = MoltenFileSystem.appPath(this)
+		get() = MoltenPath.appPath(this)
 
 	// override base-mechanics
 
