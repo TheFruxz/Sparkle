@@ -1,7 +1,9 @@
 package de.moltenKt.core.application.configuration
 
 import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.readJson
 import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.core.extension.data.writeJson
 import java.io.File
 
 /**
@@ -37,7 +39,7 @@ object MoltenCoreAppConfigController {
 			configState
 		} else {
 			if (moltenConfig.exists()) {
-				configState = moltenConfig.readText().fromJson()
+				configState = moltenConfig.readJson()
 				configState
 			} else {
 				set()
@@ -56,7 +58,7 @@ object MoltenCoreAppConfigController {
 	)
 	) {
 		configState = content
-		moltenConfig.writeText(content.toJson())
+		moltenConfig.writeJson(content)
 	}
 
 	/**

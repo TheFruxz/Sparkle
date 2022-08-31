@@ -4,7 +4,9 @@ import de.moltenKt.core.extension.container.flipped
 import de.moltenKt.core.extension.container.replace
 import de.moltenKt.core.extension.container.toArrayList
 import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.fromJsonString
 import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.core.extension.data.toJsonString
 import de.moltenKt.paper.runtime.app.LanguageSpeaker
 import de.moltenKt.paper.tool.display.item.Item
 import de.moltenKt.paper.tool.display.world.SimpleLocation
@@ -25,8 +27,8 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 		@JvmStatic
 		inline fun <reified T : Any> json() =
 			DataTransformer<T, String>(
-				{ this.toJson() },
-				{ this.fromJson() },
+				{ this.toJsonString() },
+				{ this.fromJsonString() },
 			)
 
 		@JvmStatic

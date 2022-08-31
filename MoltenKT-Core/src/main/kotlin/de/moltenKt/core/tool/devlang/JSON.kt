@@ -1,6 +1,7 @@
 package de.moltenKt.core.tool.devlang
 
 import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.fromJsonString
 import de.moltenKt.core.tool.base.Constructable
 import org.intellij.lang.annotations.Language
 
@@ -19,7 +20,7 @@ data class JSON(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	inline fun <reified T : Any> fromJson() = value.fromJson<T>()
+	inline fun <reified T : Any> fromJson() = value.fromJsonString<T>()
 
 	override fun toString() =
 		value

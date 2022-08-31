@@ -1,7 +1,9 @@
 package de.moltenKt.paper.app.component.buildMode.config
 
 import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.readJson
 import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.core.extension.data.writeJson
 import de.moltenKt.core.extension.div
 import de.moltenKt.core.extension.generateFileAndPath
 import de.moltenKt.core.extension.tryOrNull
@@ -23,14 +25,14 @@ object BuildModeManager {
 	private var _state: BuildModeConfiguration? = null
 
 	var state: BuildModeConfiguration
-		get() = _state ?: tryOrNull { path.readText().fromJson() } ?: BuildModeConfiguration().also {
+		get() = _state ?: tryOrNull { path.readJson() } ?: BuildModeConfiguration().also {
 			path.toFile().generateFileAndPath()
 			state = it
 		}
 		set(value) {
 			_state = value
 			path.toFile().generateFileAndPath()
-			path.writeText(value.toJson())
+			path.writeJson(value)
 		}
 
 }

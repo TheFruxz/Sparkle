@@ -1,7 +1,9 @@
 package de.moltenKt.core.tool.timing.calendar
 
 import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.fromJsonString
 import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.core.extension.data.toJsonString
 import de.moltenKt.core.extension.dump
 import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.core.tool.smart.Producible
@@ -490,34 +492,34 @@ class Calendar constructor(
 
 		override fun nonNullValueToString(value: Any) = when (value) {
 			is String -> value
-			is Calendar -> value.toJson()
-			is Long -> Calendar(value).toJson()
-			is Number -> Calendar(value.toLong()).toJson()
-			is LocalDateTime -> Calendar(value).toJson()
+			is Calendar -> value.toJsonString()
+			is Long -> Calendar(value).toJsonString()
+			is Number -> Calendar(value.toLong()).toJsonString()
+			is LocalDateTime -> Calendar(value).toJsonString()
 			else -> throw IllegalArgumentException("Value is not a Calendar")
 		}
 
 		override fun valueFromDB(value: Any) = when (value) {
-			is String -> value.fromJson()
+			is String -> value.fromJsonString()
 			is JavaUtilCalendar -> Calendar(value)
 			is Long -> Calendar(value)
 			is Calendar -> value
 			is LocalDateTime -> Calendar(value)
-			else -> "$value".fromJson()
+			else -> "$value".fromJsonString()
 		}
 
 		override fun readObject(rs: ResultSet, index: Int) =
-			tryOrNull { rs.getString(index).takeIf { !it.isNullOrBlank() }?.fromJson() }
+			tryOrNull { rs.getString(index).takeIf { !it.isNullOrBlank() }?.fromJsonString<Calendar>() }
 				?: tryOrNull { Calendar(LocalDateTime.parse(rs.getString(index))) }
 
 		override fun notNullValueToDB(value: Any) = valueToDB(value) ?: error("Value is null")
 
 		override fun valueToDB(value: Any?) = when (value) {
 			is String -> value
-			is Calendar -> value.toJson()
-			is Long -> Calendar(value).toJson()
-			is Number -> Calendar(value.toLong()).toJson()
-			is LocalDateTime -> Calendar(value).toJson()
+			is Calendar -> value.toJsonString()
+			is Long -> Calendar(value).toJsonString()
+			is Number -> Calendar(value.toLong()).toJsonString()
+			is LocalDateTime -> Calendar(value).toJsonString()
 			else -> value
 		}
 

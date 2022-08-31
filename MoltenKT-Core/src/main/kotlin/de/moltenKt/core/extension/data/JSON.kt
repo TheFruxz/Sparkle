@@ -14,9 +14,15 @@ import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.encodeToStream
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.SerializersModuleBuilder
+import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
+import java.nio.charset.Charset
+import java.nio.file.OpenOption
+import java.nio.file.Path
 import kotlin.DeprecationLevel.WARNING
+import kotlin.io.path.readText
+import kotlin.io.path.writeText
 import kotlin.reflect.KClass
 
 internal val runningJsonModuleModifications = mutableListOf<SerializersModuleBuilder.() -> Unit>()
@@ -113,6 +119,8 @@ fun addMoltenJsonModification(process: JsonBuilder.() -> Unit) {
 	runningJsonModifications += process
 }
 
+// toJson conversion
+
 /**
  * Tries to encode the given object to a JSON string using the Kotlinx
  * serialization library's [Json.encodeToString] function.
@@ -184,6 +192,8 @@ inline fun <reified T> T.toJsonElement() = jsonBase.encodeToJsonElement(this)
  * @since 1.0
  */
 inline fun <reified T> T.toJsonElementOrNull() = tryOrNull { toJsonElement() }
+
+// fromJson conversion
 
 /**
  * Tries to decode the given JSON string to an object type [T] using the
@@ -258,3 +268,105 @@ inline fun <reified T> JsonElement.fromJsonElement() = jsonBase.decodeFromJsonEl
  * @since 1.0
  */
 inline fun <reified T> JsonElement.fromJsonElementOrNull() = tryOrNull { fromJsonElement<T>() }
+
+/**
+ * This function reads the content of [this] Path using the [readText] function and
+ * converts the content from a String to the requested [T] object via the [fromJsonStream]
+ * function.
+ * This process can throw exceptions if something goes wrong!
+ * @see Path.readText
+ * @see fromJsonString
+ * @return The object represented as a [T]
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> Path.fromJsonFile(charset: Charset = Charsets.UTF_8) = readText(charset).fromJsonString<T>()
+
+/**
+ * This function tries to return the result of executing the [fromJsonFile] function,
+ * but if it fails, it does return null, because of the utilization of the [tryOrNull].
+ * @see Path.fromJsonFile
+ * @return The object represented as a [T], or null if it failed.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> Path.fromJsonFileOrNull(charset: Charset = Charsets.UTF_8) = tryOrNull { fromJsonFile<T>(charset) }
+
+/**
+ * This function reads the content of [this] File using the [readText] function and
+ * converts the content from a String to the requested [T] object via the [fromJsonString].
+ * This process can throw exceptions if something goes wrong!
+ * @see File.readText
+ * @see fromJsonString
+ * @return The object represented as a [T]
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> File.fromJsonFile(charset: Charset = Charsets.UTF_8) = readText(charset).fromJsonString<T>()
+
+/**
+ * This function tries to return the result of executing the [fromJsonFile] function,
+ * but if it fails, it does return null, because of the utilization of the [tryOrNull].
+ * @see File.fromJsonFile
+ * @return The object represented as a [T], or null if it failed.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> File.fromJsonFileOrNull(charset: Charset = Charsets.UTF_8) = tryOrNull { fromJsonFile<T>(charset) }
+
+// write JSON
+
+/**
+ * This function writes the given [this] object to a JSON file via the [jsonBase]
+ * and [toJsonString] function from the Kotlinx serialization library.
+ * This process can throw exceptions if something goes wrong!
+ * @see toJsonString
+ * @see writeText
+ * @return The path itself.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> Path.writeJson(content: T, charset: Charset = Charsets.UTF_8, vararg options: OpenOption) = apply { writeText(content.toJsonString(), charset, *options) }
+
+/**
+ * This function writes the given [this] object to a JSON file via the [jsonBase]
+ * and [toJsonString] function from the Kotlinx serialization library.
+ * This process can throw exceptions if something goes wrong!
+ * @see toJsonString
+ * @see writeText
+ * @return The file itself.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> File.writeJson(content: T, charset: Charset = Charsets.UTF_8) = apply { writeText(content.toJsonString(), charset) }
+
+// read JSON
+
+/**
+ * This function returns the content of [this] Path using the [fromJsonFile] function.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> Path.readJson(charset: Charset = Charsets.UTF_8) = fromJsonFile<T>(charset)
+
+/**
+ * This function returns the content of [this] File using the [fromJsonFileOrNull] function.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> Path.readJsonOrNull(charset: Charset = Charsets.UTF_8) = fromJsonFileOrNull<T>(charset)
+
+/**
+ * This function returns the content of [this] File using the [fromJsonFile] function.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> File.readJson(charset: Charset = Charsets.UTF_8) = fromJsonFile<T>()
+
+/**
+ * This function returns the content of [this] File using the [fromJsonFileOrNull] function.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> File.readJsonOrNull(charset: Charset = Charsets.UTF_8) = fromJsonFileOrNull<T>()
+

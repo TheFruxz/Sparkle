@@ -1,7 +1,9 @@
 package de.moltenKt.paper.tool.data
 
 import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.fromJsonString
 import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.core.extension.data.writeJson
 import de.moltenKt.paper.tool.data.json.JsonConfiguration
 import de.moltenKt.paper.tool.data.json.JsonFileDataElement
 import java.nio.file.Path
@@ -44,16 +46,16 @@ interface MoltenJsonFile : MoltenFile {
 					val content = noPath.readText()
 
 					state = if (content.isNotBlank()) {
-						content.fromJson()
+						content.fromJsonString()
 					} else {
-						noPath.writeText(JsonConfiguration(elements = emptyList()).toJson())
+						noPath.writeJson(JsonConfiguration(elements = emptyList()))
 						JsonConfiguration(elements = emptyList())
 					}
 
 				}
 
 				override fun save() {
-					noPath.writeText(state.toJson())
+					noPath.writeJson(state)
 				}
 
 				override fun contains(path: String) =

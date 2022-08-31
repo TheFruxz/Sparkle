@@ -1,7 +1,10 @@
 package de.moltenKt.paper.app
 
 import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.fromJsonFile
+import de.moltenKt.core.extension.data.fromJsonFileOrNull
 import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.core.extension.data.writeJson
 import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenData.File.ESSENTIALS_CONFIG
@@ -31,13 +34,13 @@ object MoltenData {
 	private val systemConfigPath = MoltenPath.appPath(system) / "settings.json"
 
 	var systemConfig: MoltenConfig
-		get() = _systemConfig ?: tryOrNull { systemConfigPath.readText().fromJson() } ?: MoltenConfig().also {
+		get() = _systemConfig ?: systemConfigPath.fromJsonFileOrNull() ?: MoltenConfig().also {
 			systemConfig = it
 		}
 		set(value) {
 			_systemConfig = value
 			systemConfigPath.parent.createDirectories()
-			systemConfigPath.writeText(value.toJson())
+			systemConfigPath.writeJson(value)
 		}
 
 	// ESSENTIALS component

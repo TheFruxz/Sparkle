@@ -1,7 +1,9 @@
 package de.moltenKt.paper.structure.component.file
 
 import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.readJson
 import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.core.extension.data.writeJson
 import de.moltenKt.core.extension.div
 import de.moltenKt.core.extension.generateFileAndPath
 import de.moltenKt.core.extension.tryOrNull
@@ -18,18 +20,18 @@ object ComponentManager {
 	private var _state: ComponentConfiguration? = null
 
 	var state: ComponentConfiguration
-		get() = _state ?: tryOrNull { path.readText().fromJson() } ?: ComponentConfiguration().also {
+		get() = _state ?: tryOrNull { path.readJson() } ?: ComponentConfiguration().also {
 			path.toFile().generateFileAndPath()
 			state = it
 		}
 		set(value) {
 			_state = value
 			path.toFile().generateFileAndPath()
-			path.writeText(value.toJson())
+			path.writeJson(value)
 		}
 
 	fun reloadFromDisk() {
-		state = tryOrNull { path.readText().fromJson() } ?: ComponentConfiguration()
+		state = tryOrNull { path.readJson() } ?: ComponentConfiguration()
 	}
 
 	fun isRegistered(identity: Identity<out Component>): Boolean = state.components.any { it.identity == identity.identity }

@@ -1,7 +1,9 @@
 package de.moltenKt.paper.app
 
 import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.readJson
 import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.core.extension.data.writeJson
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.mainLog
 import de.moltenKt.paper.tool.data.file.MoltenPath
@@ -41,7 +43,7 @@ object MoltenLanguage {
                     debugLog("Generating language file...")
                     path.parent.createDirectories()
                     path.createFile()
-                    path.writeText(MoltenLanguageData().toJson())
+                    path.writeJson(MoltenLanguageData())
                     debugLog("Successfully generated language file!")
                     check()
 
@@ -50,7 +52,7 @@ object MoltenLanguage {
             } else {
 
                 container = MoltenLanguageContainer(
-                    path.readText().fromJson<MoltenLanguageData>().languageData.associate { it.key to it.content }
+                    path.readJson<MoltenLanguageData>().languageData.associate { it.key to it.content }
                 )
                 debugLog("Successfully loaded language file!")
 

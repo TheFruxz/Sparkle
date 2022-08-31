@@ -1,7 +1,9 @@
 package de.moltenKt.paper.app.component.chat
 
 import de.moltenKt.core.extension.data.fromJson
+import de.moltenKt.core.extension.data.readJson
 import de.moltenKt.core.extension.data.toJson
+import de.moltenKt.core.extension.data.writeJson
 import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.paper.pluginOrNull
@@ -37,8 +39,8 @@ class ChatComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 			setupPath.parent.createDirectories()
 
-			setup = tryOrNull { setupPath.readText().fromJson() } ?: ChatSetup().also {
-				setupPath.writeText(it.toJson())
+			setup = tryOrNull { setupPath.readJson() } ?: ChatSetup().also {
+				setupPath.writeJson(it)
 			}
 
 			pluginOrNull("PlaceholderAPI")?.let {
