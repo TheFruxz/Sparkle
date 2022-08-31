@@ -6,13 +6,19 @@ import de.moltenKt.core.extension.div
 import de.moltenKt.core.extension.generateFileAndPath
 import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.core.tool.smart.identification.Identifiable
+import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.tool.data.file.MoltenPath
+import de.moltenKt.paper.tool.smart.KeyedIdentifiable
+import de.moltenKt.paper.tool.smart.KeyedIdentifiable.Companion
+import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
+import de.moltenKt.unfold.extension.subKey
+import net.kyori.adventure.key.Key
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 object BuildModeManager {
 
-	private val path = MoltenPath.componentPath(Identifiable.custom("MoltenKT:BuildMode")) / "config.json"
+	private val path = MoltenPath.componentPath(KeyedIdentifiable.custom(system.subKey("build-mode", CONTINUE))) / "config.json"
 
 	private var _state: BuildModeConfiguration? = null
 

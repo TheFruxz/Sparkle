@@ -54,7 +54,7 @@ class ChatComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 		private lateinit var instance: ChatComponent
 
-		private val setupPath by lazy { MoltenPath.componentPath(instance.identityObject) / "setup.json" }
+		private val setupPath by lazy { MoltenPath.componentPath(instance) / "setup.json" }
 
 		internal lateinit var setup: ChatSetup
 

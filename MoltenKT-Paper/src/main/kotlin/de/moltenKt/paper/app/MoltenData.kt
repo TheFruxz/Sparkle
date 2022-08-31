@@ -12,7 +12,12 @@ import de.moltenKt.paper.tool.data.DataTransformer
 import de.moltenKt.paper.tool.data.MoltenYamlFile
 import de.moltenKt.paper.tool.data.Preference
 import de.moltenKt.paper.tool.data.file.MoltenPath
+import de.moltenKt.paper.tool.smart.KeyedIdentifiable
+import de.moltenKt.paper.tool.smart.KeyedIdentifiable.Companion
+import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
+import de.moltenKt.unfold.extension.subKey
 import kotlinx.serialization.Serializable
+import net.kyori.adventure.key.Key
 import java.util.*
 import kotlin.io.path.createDirectories
 import kotlin.io.path.div
@@ -45,7 +50,7 @@ object MoltenData {
 
 	object File {
 
-		val ESSENTIALS_CONFIG = MoltenYamlFile.generateYaml(MoltenPath.componentPath(Identifiable.custom("MoltenKT:World-Points")) / "points.yml")
+		val ESSENTIALS_CONFIG = MoltenYamlFile.generateYaml(MoltenPath.componentPath(KeyedIdentifiable.custom(system.subKey("world-points", CONTINUE))) / "points.yml")
 
 	}
 
