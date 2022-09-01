@@ -5,8 +5,10 @@ package de.moltenKt.core.extension
 import de.moltenKt.core.tool.path.ArtificialPath
 import de.moltenKt.core.tool.path.ArtificialReadOnlyResourcePathProcessor
 import java.io.File
+import java.nio.charset.Charset
 import java.nio.file.Path
 import java.nio.file.Paths
+import kotlin.io.path.readText
 
 /**
  * Returns the file inside the resource folder of the class, where the function is called from.
@@ -101,3 +103,23 @@ fun File.generateFileAndPath() {
  * @since 1.0
  */
 inline fun getHomePath(): Path = Paths.get("")
+
+/**
+ * This function tries to return the result of executing the [readText],
+ * or returns null, if an exception gets thrown.
+ * @see readText
+ * @see tryOrNull
+ * @author Fruxz
+ * @since 1.0
+ */
+fun Path.readTextOrNull(charset: Charset = Charsets.UTF_8) = tryOrNull { readText(charset) }
+
+/**
+ * This function tries to return the result of executing the [readText],
+ * or returns null, if an exception gets thrown.
+ * @see readText
+ * @see tryOrNull
+ * @author Fruxz
+ * @since 1.0
+ */
+fun File.readTextOrNull(charset: Charset = Charsets.UTF_8) = tryOrNull { this.readText(charset) }
