@@ -1,6 +1,7 @@
 package de.moltenKt.core.extension.data
 
 import de.moltenKt.core.extension.dump
+import de.moltenKt.core.extension.readTextOrNull
 import de.moltenKt.core.extension.tryOrNull
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.decodeFromString
@@ -21,6 +22,9 @@ import java.nio.charset.Charset
 import java.nio.file.OpenOption
 import java.nio.file.Path
 import kotlin.DeprecationLevel.WARNING
+import kotlin.io.path.Path
+import kotlin.io.path.createDirectories
+import kotlin.io.path.exists
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 import kotlin.reflect.KClass
@@ -340,6 +344,104 @@ inline fun <reified T> Path.writeJson(content: T, charset: Charset = Charsets.UT
  */
 inline fun <reified T> File.writeJson(content: T, charset: Charset = Charsets.UTF_8) = apply { writeText(content.toJsonString(), charset) }
 
+/**
+ * This function writes the given [content], to the file under [this] path, via the [writeJson]
+ * if the file under [this] path currently does not exist.
+ * @param content the content to write as json to the file.
+ * @param createParent if the parent directories will be created during to write
+ * @param charset the charset to use for to write
+ * @see writeJson
+ * @return the path itself.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> Path.writeJsonIfNotExists(content: T, createParent: Boolean = true, charset: Charset = Charsets.UTF_8, vararg options: OpenOption) = apply {
+	if (!exists()) {
+		if (createParent) parent.createDirectories()
+		writeJson(content, charset, *options)
+	}
+}
+
+/**
+ * This function writes the given [content], to [this] file , via the [writeJson]
+ * if the file currently does not exist.
+ * @param content the content to write as json to the file
+ * @param createParent if the parent directories will be created during the write
+ * @param charset the charset to use fo r to write
+ * @see writeJson
+ * @return the file itself
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> File.writeJsonIfNotExists(content: T, createParent: Boolean = true, charset: Charset = Charsets.UTF_8) = apply {
+	if (!exists()) {
+		if (createParent) parentFile.mkdirs()
+		writeJson(content, charset)
+	}
+}
+
+/**
+ * This function writes the given [content], to the file under [this] path, via the [writeJson]
+ * if the file under [this] path currently is empty or does not exist.
+ * @param content the content to write as json to the file.
+ * @param createParent if the parent directories will be created during to write
+ * @param charset the charset to use for to write
+ * @see writeJson
+ * @return the path itself.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> Path.writeJsonIfEmpty(content: T, createParent: Boolean = true, charset: Charset = Charsets.UTF_8, vararg options: OpenOption) = apply {
+	if (readTextOrNull(charset)?.isBlank() != false) {
+		if (createParent) parent.createDirectories()
+		writeJson(content, charset, *options)
+	}
+}
+
+/**
+ * This function writes the given [content], to [this] file, via the [writeJson]
+ * if [this] file is currently empty or does not exist.
+ * @param content the content to write as json to the file.
+ * @param createParent if the parent directories will be created during to write
+ * @param charset the charset to use for to write
+ * @see writeJson
+ * @return the file itself.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> File.writeJsonIfEmpty(content: T, createParent: Boolean = true, charset: Charset = Charsets.UTF_8) = apply {
+	if (readTextOrNull(charset)?.isBlank() != false) {
+		if (createParent) parentFile.mkdirs()
+		writeJson(content, charset)
+	}
+}
+
+/**
+ * This function writes the given [content], to the file under [this] path, via the [writeJson]
+ * if the file under [this] path is currently blank or does not exist.
+ * @param content the content to write as json to the file.
+ * @param createParent if the parent directories will be created during to write
+ * @param charset the charset to use for to write
+ * @see writeJson
+ * @return the path itself
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> Path.writeJsonIfBlank(content: T, createParent: Boolean = true, charset: Charset = Charsets.UTF_8, vararg options: OpenOption) = apply {
+	if (readTextOrNull(charset)?.isBlank() != false) {
+		if (createParent) parent.createDirectories()
+		writeJson(content, charset, *options)
+	}
+}
+
+inline fun <reified T> File.writeJsonIfBlank(content: T, createParent: Boolean = true, charset: Charset = Charsets.UTF_8) = apply {
+	if (readTextOrNull(charset)?.isBlank() != false) {
+		if (createParent) parentFile.mkdirs()
+		writeJson(content, charset)
+	}
+}
+
+
 // read JSON
 
 /**
@@ -370,3 +472,54 @@ inline fun <reified T> File.readJson(charset: Charset = Charsets.UTF_8) = fromJs
  */
 inline fun <reified T> File.readJsonOrNull(charset: Charset = Charsets.UTF_8) = fromJsonFileOrNull<T>()
 
+// read default
+
+/**
+ * This function reads the content of the file under [this] Path, converts it from the
+ * json string to an object of type [T] via the [readJsonOrDefault] function, or
+ * returns [default] if json cannot be read or transformed.
+ * If the file does not have the transformable json contained / existent and
+ * [writeIfBlank] is true, the [default] will be written to the file.
+ * @param default the default value to return if the file is blank, non-transformable or does not exist.
+ * @param writeIfBlank if the file is blank or does not exist, the [default] will be written to the file.
+ * @param writeCreatesParent if the parent directories will be created during the write.
+ * @param charset the charset to use for to write
+ * @see readJsonOrNull
+ * @see Path.createDirectories
+ * @see writeJson
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> Path.readJsonOrDefault(default: T, writeIfBlank: Boolean = false, writeCreatesParent: Boolean = true, charset: Charset = Charsets.UTF_8, vararg options: OpenOption) = if (writeIfBlank) {
+	readJsonOrNull<T>(charset) ?: default.also {
+		if (writeCreatesParent) parent.createDirectories()
+		writeJson(default, charset, *options)
+	}
+} else {
+	readJsonOrNull<T>(charset) ?: default
+}
+
+/**
+ * This function reads the content of [this] file, converts it from the
+ * json string to an object of type [T] via the [readJsonOrDefault] function, or
+ * returns [default] if json cannot be read or transformed.
+ * If the file does not have the transformable json contained / existent and
+ * [writeIfBlank] is true, the [default] will be written to the file.
+ * @param default the default value to return if the file is blank, non-transformable or does not exist.
+ * @param writeIfBlank if the file is blank or does not exist, the [default] will be written to the file.
+ * @param writeCreatesParent if the parent directories will be created during the write.
+ * @param charset the charset to use for to write
+ * @see readJsonOrNull
+ * @see Path.createDirectories
+ * @see writeJson
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <reified T> File.readJsonOrDefault(default: T, writeIfBlank: Boolean = false, writeCreatesParent: Boolean = true, charset: Charset = Charsets.UTF_8) = if (writeIfBlank) {
+	readJsonOrNull<T>(charset) ?: default.also {
+		if (writeCreatesParent) parentFile.mkdirs()
+		writeJson(default, charset)
+	}
+} else {
+	readJsonOrNull<T>(charset) ?: default
+}
