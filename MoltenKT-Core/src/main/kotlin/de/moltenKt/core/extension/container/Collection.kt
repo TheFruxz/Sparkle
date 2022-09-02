@@ -448,3 +448,23 @@ inline fun <T, C : Iterable<T?>> C.forEachNotNull(process: (T & Any) -> Unit) = 
  * @since 1.0
  */
 inline fun <T> Array<T?>.forEachNotNull(process: (T & Any) -> Unit) = forEach { if (it != null) process(it) }
+
+inline fun <C : Iterable<I>, I, O> C.flatMapNotNull(builder: (I) -> Iterable<O?>): List<O & Any> = buildList {
+	this@flatMapNotNull.forEach { t ->
+		builder.invoke(t).forEachNotNull { o ->
+			add(o)
+		}
+	}
+}
+
+fun <T : Iterable<O>, O> Iterable<T>.flattenNotNull() = flatMapNotNull { it }
+
+inline fun <I, O> Array<I>.flatMapNotNull(builder: (I) -> Iterable<O?>): List<O & Any> = buildList {
+	this@flatMapNotNull.forEach { t ->
+		builder.invoke(t).forEachNotNull { o ->
+			add(o)
+		}
+	}
+}
+
+fun <T : Iterable<O>, O> Array<T>.flattenNotNull() = flatMapNotNull { it }
