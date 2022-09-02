@@ -463,14 +463,14 @@ inline fun <reified T> Path.readJsonOrNull(charset: Charset = Charsets.UTF_8) = 
  * @author Fruxz
  * @since 1.0
  */
-inline fun <reified T> File.readJson(charset: Charset = Charsets.UTF_8) = fromJsonFile<T>()
+inline fun <reified T> File.readJson(charset: Charset = Charsets.UTF_8) = fromJsonFile<T>(charset)
 
 /**
  * This function returns the content of [this] File using the [fromJsonFileOrNull] function.
  * @author Fruxz
  * @since 1.0
  */
-inline fun <reified T> File.readJsonOrNull(charset: Charset = Charsets.UTF_8) = fromJsonFileOrNull<T>()
+inline fun <reified T> File.readJsonOrNull(charset: Charset = Charsets.UTF_8) = fromJsonFileOrNull<T>(charset)
 
 // read default
 
