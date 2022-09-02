@@ -80,7 +80,7 @@ fun <T> Array<out T>.stackRandom(times: Int, random: Random = Random): String = 
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>> C.stackUniqueRandom(times: Int, random: Random = Random): String =
+fun <T, C : Iterable<T>> C.stackUniqueRandom(times: Int, random: Random = Random): String =
 	shuffled(random).take(times).joinToString(separator = "")
 
 /**
@@ -110,7 +110,7 @@ inline fun <T> listOf(size: Int, generator: (Int) -> T): List<T> = List(size) { 
  * @author Fruxz
  * @since 1.0
  */
-val <T, C : Collection<T>> C.first: T
+val <T, C : Iterable<T>> C.first: T
 	get() = first()
 
 /**
@@ -126,7 +126,7 @@ val <T> Array<out T>.first: T
  * @author Fruxz
  * @since 1.0
  */
-val <T, C : Collection<T>> C.second: T
+val <T, C : Iterable<T>> C.second: T
 	get() = elementAt(1)
 
 /**
@@ -142,7 +142,7 @@ val <T> Array<out T>.second: T
  * @author Fruxz
  * @since 1.0
  */
-val <T, C : Collection<T>> C.third: T
+val <T, C : Iterable<T>> C.third: T
 	get() = elementAt(2)
 
 /**
@@ -158,7 +158,7 @@ val <T> Array<out T>.third: T
  * @author Fruxz
  * @since 1.0
  */
-val <T, C : Collection<T>> C.last: T
+val <T, C : Iterable<T>> C.last: T
 	get() = last()
 
 /**
@@ -194,7 +194,7 @@ fun <T, C : Iterable<T>> C.get(index: Int, overflow: Boolean = false): T {
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>> C.take(intRange: IntRange): List<T> =
+fun <T, C : Iterable<T>> C.take(intRange: IntRange): List<T> =
 	toList().subList(intRange.first, intRange.last)
 
 /**
@@ -217,15 +217,15 @@ fun <T> Array<T>.take(intRange: IntRange): List<T> =
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>> C.page(page: Int, pageSize: Int): PageValue<T> {
+fun <T, C : Iterable<T>> C.page(page: Int, pageSize: Int): PageValue<T> {
 	if (pageSize < 1) throw IllegalArgumentException("Page size must be greater than 0!")
 	if (page < 0) throw IllegalArgumentException("Page must be greater than or equals 0!")
-	if (isNullOrEmpty()) return PageValue(emptyList(), 0, 0)
+	if (none()) return PageValue(emptyList(), 0, 0)
 
-	val pages = ceilToInt(size.toDouble() / pageSize)
+	val pages = ceilToInt(count().toDouble() / pageSize)
 	val actualPage = (page + 1).maxTo(pages)
 
-	return PageValue(toList().subList(((1+pageSize*(actualPage-1)-1)..(pageSize*actualPage).maxTo(size))), actualPage - 1, pages)
+	return PageValue(toList().subList(((1+pageSize*(actualPage-1)-1)..(pageSize*actualPage).maxTo(count()))), actualPage - 1, pages)
 }
 
 /**
@@ -249,8 +249,8 @@ fun <T> Array<T>.page(page: Int, pageSize: Int): PageValue<T> =
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>> C.hasDuplicates(): Boolean =
-	size > distinct().size
+fun <T, C : Iterable<T>> C.hasDuplicates(): Boolean =
+	count() > distinct().size
 
 /**
  * This function returns, if the current [Collection]
@@ -261,8 +261,8 @@ fun <T, C : Collection<T>> C.hasDuplicates(): Boolean =
  * @author Fruxz
  * @since 1.0
  */
-inline fun <T, C : Collection<T>, K> C.hasDuplicates(process: (T) -> K): Boolean =
-	size > distinctBy(process).size
+inline fun <T, C : Iterable<T>, K> C.hasDuplicates(process: (T) -> K): Boolean =
+	count() > distinctBy(process).size
 
 /**
  * This function returns, if the current [Array]
@@ -293,8 +293,8 @@ inline fun <T, K> Array<T>.hasDuplicates(process: (T) -> K): Boolean =
  * @author Fruxz
  * @since 1.0
  */
-fun <C : Collection<Duration>> C.average(): Duration =
-	map(Duration::inWholeMilliseconds).sum().div(size).milliseconds
+fun <C : Iterable<Duration>> C.average(): Duration =
+	map(Duration::inWholeMilliseconds).sum().div(count()).milliseconds
 
 /**
  * This function returns the summary duration, out of the multiple duration
@@ -303,7 +303,7 @@ fun <C : Collection<Duration>> C.average(): Duration =
  * @author Fruxz
  * @since 1.0
  */
-fun <C : Collection<Duration>> C.sum(): Duration =
+fun <C : Iterable<Duration>> C.sum(): Duration =
 	map(Duration::inWholeMilliseconds).sum().milliseconds
 
 /**
@@ -313,7 +313,7 @@ fun <C : Collection<Duration>> C.sum(): Duration =
  * @author Fruxz
  * @since 1.0
  */
-fun <C : Collection<Duration>> C.max(): Duration =
+fun <C : Iterable<Duration>> C.max(): Duration =
 	map(Duration::inWholeMilliseconds).maxOf { it }.milliseconds
 
 /**
@@ -323,7 +323,7 @@ fun <C : Collection<Duration>> C.max(): Duration =
  * @author Fruxz
  * @since 1.0
  */
-fun <C : Collection<Duration>> C.min(): Duration =
+fun <C : Iterable<Duration>> C.min(): Duration =
 	map(Duration::inWholeMilliseconds).minOf { it }.milliseconds
 
 /**
@@ -351,18 +351,18 @@ fun <C : Iterable<String>> C.containsAll(elements: Iterable<String>, ignoreCase:
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>> C.fragmented(fragments: Int = 2, keepOverflow: Boolean = true): List<List<T>> {
-	if (fragments < 1 || isEmpty()) return emptyList()
-	if (fragments == size) return listOf(toList())
+fun <T, C : Iterable<T>> C.fragmented(fragments: Int = 2, keepOverflow: Boolean = true): List<List<T>> {
+	if (fragments < 1 || none()) return emptyList()
+	if (fragments == count()) return listOf(toList())
 
-	val elementsPerFragment = floorToInt(size.toDouble() / fragments).minTo(1)
+	val elementsPerFragment = floorToInt(count().toDouble() / fragments).minTo(1)
 
 	val output = mutableListOf<List<T>>()
 	var currentFragment = mutableListOf<T>()
 
 	forEach {
 		currentFragment.add(it)
-		if (currentFragment.size == elementsPerFragment || (keepOverflow && output.sumOf { entry -> entry.size } + currentFragment.size >= size)) {
+		if (currentFragment.size == elementsPerFragment || (keepOverflow && output.sumOf { entry -> entry.size } + currentFragment.size >= count())) {
 			output.add(currentFragment.toList())
 			currentFragment = mutableListOf()
 		}
@@ -383,7 +383,7 @@ fun <T, C : Collection<T>> C.fragmented(fragments: Int = 2, keepOverflow: Boolea
  * @author Fruxz
  * @since 1.0
  */
-inline fun <T, C : Collection<T>> C.splitBy(predicate: (T) -> Boolean): List<List<T>> {
+inline fun <T, C : Iterable<T>> C.splitBy(predicate: (T) -> Boolean): List<List<T>> {
 	val output = mutableListOf<List<T>>()
 	var currentFragment = mutableListOf<T>()
 
@@ -407,7 +407,7 @@ inline fun <T, C : Collection<T>> C.splitBy(predicate: (T) -> Boolean): List<Lis
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Collection<T>> C.distinctSet() = distinct().toSet()
+fun <T, C : Iterable<T>> C.distinctSet() = distinct().toSet()
 
 /**
  * This function uses the [Array.distinct] function and
@@ -423,7 +423,7 @@ fun <T> Array<T>.distinctSet() = distinct().toSet()
  * @author Fruxz
  * @since 1.0
  */
-inline fun <T, C : Collection<T>, O> C.distinctSetBy(process: (T) -> O) = distinctBy(process).toSet()
+inline fun <T, C : Iterable<T>, O> C.distinctSetBy(process: (T) -> O) = distinctBy(process).toSet()
 
 /**
  * This function uses the [Array.distinctBy] function and
@@ -439,7 +439,7 @@ inline fun <T, O> Array<T>.distinctSetBy(process: (T) -> O) = distinctBy(process
  * @author Fruxz
  * @since 1.0
  */
-inline fun <T, C : Collection<T?>> C.forEachNotNull(process: (T) -> Unit) = forEach { if (it != null) process(it) }
+inline fun <T, C : Iterable<T?>> C.forEachNotNull(process: (T & Any) -> Unit) = forEach { if (it != null) process(it) }
 
 /**
  * This function uses the [Array.forEach] function, but only on every
@@ -447,4 +447,4 @@ inline fun <T, C : Collection<T?>> C.forEachNotNull(process: (T) -> Unit) = forE
  * @author Fruxz
  * @since 1.0
  */
-inline fun <T> Array<T?>.forEachNotNull(process: (T) -> Unit) = forEach { if (it != null) process(it) }
+inline fun <T> Array<T?>.forEachNotNull(process: (T & Any) -> Unit) = forEach { if (it != null) process(it) }
