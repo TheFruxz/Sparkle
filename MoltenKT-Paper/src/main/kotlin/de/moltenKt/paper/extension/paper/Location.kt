@@ -410,8 +410,8 @@ fun Location.modify(
 	x: Number = 0,
 	y: Number = 0,
 	z: Number = 0,
-	yaw: Number = 0F,
-	pitch: Number = 0F
+	yaw: Number = 0,
+	pitch: Number = 0,
 ) =
 	copy(
 		x = this.x + x.toDouble(),
@@ -423,3 +423,78 @@ fun Location.modify(
 
 val World.generatorCode: Long
 	get() = seed
+
+fun location(
+	world: World,
+	x: Number,
+	y: Number,
+	z: Number,
+	yaw: Number = 0,
+	pitch: Number = 0,
+) = Location(world, x.toDouble(), y.toDouble(), z.toDouble(), yaw.toFloat(), pitch.toFloat())
+
+fun location(
+	worldName: String,
+	x: Number,
+	y: Number,
+	z: Number,
+	yaw: Number = 0,
+	pitch: Number = 0,
+) = Location(worldName, x, y, z, yaw, pitch)
+
+val Chunk.positionX: IntRange
+	get() = x * 16 until (x + 1) * 16
+
+val Chunk.positionY: IntRange
+	get() = world.minHeight..world.maxHeight
+
+val Chunk.positionZ: IntRange
+	get() = z * 16 until (z + 1) * 16
+
+val Chunk.locations: Set<Location>
+	get() = buildSet {
+		for (x in positionX) {
+			for (y in positionY) {
+				for (z in positionZ) {
+					add(location(world, x, y, z))
+				}
+			}
+		}
+	}
+
+val Chunk.blocks: Set<Block>
+	get() = buildSet {
+		for (x in positionX) {
+			for (y in positionY) {
+				for (z in positionZ) {
+					add(world.getBlockAt(x, y, z))
+				}
+			}
+		}
+	}
+
+fun Chunk.blocks(filter: (Block) -> Boolean): Set<Block> = buildSet {
+	for (x in positionX) {
+		for (y in positionY) {
+			for (z in positionZ) {
+				val block = world.getBlockAt(x, y, z)
+				if (filter(block)) {
+					add(block)
+				}
+			}
+		}
+	}
+}
+
+inline fun <reified T> Chunk.blocks(): Set<T> = buildSet {
+	for (x in positionX) {
+		for (y in positionY) {
+			for (z in positionZ) {
+				val block = world.getBlockAt(x, y, z)
+				if (block is T) {
+					add(block)
+				}
+			}
+		}
+	}
+}
