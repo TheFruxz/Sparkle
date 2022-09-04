@@ -12,7 +12,7 @@ object MoltenPath {
     private val homePath = Path("MoltenApps")
 
     fun appPath(app: KeyedIdentifiable<out App>) =
-        homePath / "main@${app.key()}"
+        homePath / "main@${app.key().value()}"
 
     fun rootPath() =
         appPath(system)
