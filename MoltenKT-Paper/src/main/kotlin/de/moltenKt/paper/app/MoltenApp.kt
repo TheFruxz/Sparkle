@@ -1,7 +1,6 @@
 package de.moltenKt.paper.app
 
 import com.destroystokyo.paper.ParticleBuilder
-import de.moltenKt.core.extension.data.addJsonContextualConfiguration
 import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.paper.app.MoltenApp.Infrastructure.SYSTEM_IDENTITY
@@ -50,6 +49,7 @@ import de.moltenKt.paper.tool.data.json.serializer.VectorSerializer
 import de.moltenKt.paper.tool.data.json.serializer.WorldSerializer
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.world.SimpleLocation
+import de.moltenKt.paper.tool.effect.particle.ParticleType.Companion
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
@@ -81,6 +81,7 @@ import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import java.util.*
 import java.util.logging.Level
+import de.moltenKt.core.extension.data.addJsonContextualConfiguration as jsonContextual
 
 class MoltenApp : App() {
 
@@ -92,15 +93,15 @@ class MoltenApp : App() {
 
 	override suspend fun preHello() {
 
-		addJsonContextualConfiguration(UUID::class, UUIDSerializer)
-		addJsonContextualConfiguration(Vector::class, VectorSerializer)
-		addJsonContextualConfiguration(Location::class, LocationSerializer)
-		addJsonContextualConfiguration(Particle::class, ParticleSerializer)
-		addJsonContextualConfiguration(ParticleBuilder::class, ParticleBuilderSerializer)
-		addJsonContextualConfiguration(ItemStack::class, ItemStackSerializer)
-		addJsonContextualConfiguration(BoundingBox::class, BoundingBoxSerializer)
-		addJsonContextualConfiguration(World::class, WorldSerializer)
-		addJsonContextualConfiguration(NamespacedKey::class, NamespacedKeySerializer)
+		jsonContextual(UUID::class, UUIDSerializer)
+		jsonContextual(Vector::class, VectorSerializer)
+		jsonContextual(Location::class, LocationSerializer)
+		jsonContextual(Particle::class, ParticleSerializer)
+		jsonContextual(ParticleBuilder::class, ParticleBuilderSerializer)
+		jsonContextual(ItemStack::class, ItemStackSerializer)
+		jsonContextual(BoundingBox::class, BoundingBoxSerializer)
+		jsonContextual(World::class, WorldSerializer)
+		jsonContextual(NamespacedKey::class, NamespacedKeySerializer)
 
 		addMoltenJsonModuleModification {
 
