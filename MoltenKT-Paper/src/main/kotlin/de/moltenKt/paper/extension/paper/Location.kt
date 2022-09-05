@@ -176,7 +176,20 @@ fun Location.getNearbyBlocks(radius: Int) = buildSet {
 			}
 		}
 	}
-}.toSet()
+}
+
+/**
+ * This function computes the chunks, that are around [this] location, inside the defined [radius].
+ * @author Fruxz
+ * @since 1.0
+ */
+fun Location.getNearbyChunks(radius: Int) = buildSet {
+	for (x in -radius until radius) {
+		for (z in -radius until radius) {
+			add(world.getChunkAt(chunk.x + x, chunk.z + z))
+		}
+	}
+}
 
 /**
  * This functions takes a ([Number] to [Number] to [Number]) [Triple],
