@@ -710,7 +710,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 			}
 
 			MoltenCache.registeredServices.toList().forEach {
-				if (key() == it.vendor.key()) {
+				if (key() == it.vendor.key() && it.isRunning) {
 					it.shutdown()
 				}
 			}
