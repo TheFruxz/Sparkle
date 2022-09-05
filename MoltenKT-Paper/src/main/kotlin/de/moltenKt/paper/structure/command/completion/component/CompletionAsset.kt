@@ -270,12 +270,11 @@ data class CompletionAsset<T>(
 		val MATERIAL_CODE = CompletionAsset<Material>(system, "MATERIAL_CODE", false, listOf(InterchangeStructureInputRestriction.STRING)) {
 			buildSet {
 
-				addAll(Material.values().withMap { "minecraft:$name" })
+				addAll(Material.values().withMap { key().asString() })
 
-				DyeableMaterial.values().forEach { flex ->
-					val value = flex.key().value()
-					add("MoltenKT:$value")
-					addAll(ColorType.values().withMap { "MoltenKT:$value#$name" })
+				DyeableMaterial.values().forEach { dyeable ->
+					add(dyeable.key().asString())
+					addAll(ColorType.values().withMap { "${dyeable.key().asString()}#$name" })
 				}
 
 			}
