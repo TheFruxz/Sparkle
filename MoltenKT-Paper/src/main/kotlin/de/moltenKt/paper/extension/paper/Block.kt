@@ -48,7 +48,12 @@ fun Block.editSign(builder: Sign.() -> Unit) {
  * @since 1.0
  */
 val Block.inventoryOrNull: Inventory?
-    get() = if (this is Container) inventory else null
+    get() = this.state.let { state ->
+        when (state) {
+            is Container -> state.inventory
+            else -> null
+        }
+    }
 
 /**
  * This function returns the inventory of the given Block,
@@ -68,8 +73,13 @@ val Block.inventory: Inventory
  * @author Fruxz
  * @since 1.0
  */
-val Block.inventorySnapshotOrNull: Inventory?
-    get() = if (this is Container) snapshotInventory else null
+val Block.snapshotInventoryOrNull: Inventory?
+    get() = this.state.let { state ->
+        when (state) {
+            is Container -> state.snapshotInventory
+            else -> null
+        }
+    }
 
 /**
  * This function returns a snapshot inventory of the given Block,
@@ -80,8 +90,8 @@ val Block.inventorySnapshotOrNull: Inventory?
  * @author Fruxz
  * @since 1.0
  */
-val Block.inventorySnapshot: Inventory
-    get() = this.inventorySnapshotOrNull ?: throw NoSuchElementException("Block has no container")
+val Block.snapshotInventory: Inventory
+    get() = this.snapshotInventoryOrNull ?: throw NoSuchElementException("Block has no container")
 
 /**
  * This function replaces the block with [Material.AIR]
