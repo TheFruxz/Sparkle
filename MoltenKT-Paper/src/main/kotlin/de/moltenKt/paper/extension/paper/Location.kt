@@ -168,7 +168,7 @@ fun ParticleBuilder.location(block: Block) = with(block.boundingBox) {
  * @author Fruxz
  * @since 1.0
  */
-fun Location.getNearbyBlocks(radius: Int) = mutableListOf<Block>().apply {
+fun Location.getNearbyBlocks(radius: Int) = buildSet {
 	for (x in -radius until radius) {
 		for (y in -radius until radius) {
 			for (z in -radius until radius) {
