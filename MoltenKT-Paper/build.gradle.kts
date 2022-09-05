@@ -17,7 +17,8 @@ repositories {
     mavenCentral()
     maven("https://jitpack.io")
     maven("https://papermc.io/repo/repository/maven-public/") // PaperMC
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://libraries.minecraft.net") // Minecraft (Brigadier)
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
 }
 
 dependencies {
@@ -47,6 +48,7 @@ dependencies {
     @Suppress("DependencyOnStdlib") implementation(kotlin("stdlib"))
 
     implementation("org.slf4j:slf4j-api:2.0.0")
+    implementation("com.mojang:brigadier:1.0.18")
 
     // > Ktor
     implementation("io.ktor:ktor-client-cio:2.1.0")
