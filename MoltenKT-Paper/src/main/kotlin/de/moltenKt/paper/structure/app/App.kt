@@ -44,6 +44,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -695,7 +696,11 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 			}.let { requiredTime ->
 				log.info("Disabling (::bye) of '$identityKey' took $requiredTime!")
 			}
-			coroutineScope.cancel("App '$identityKey' is now disabled!")
+
+			with(coroutineScope) {
+				coroutineContext.cancelChildren()
+				cancel("App '$identityKey' is now disabled!")
+			}
 
 			// shutdown process
 
