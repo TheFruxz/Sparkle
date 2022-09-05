@@ -12,6 +12,7 @@ import de.moltenKt.paper.structure.command.Interchange
 import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.tool.annotation.AutoRegister
 import de.moltenKt.paper.tool.annotation.ExperimentalRegistrationApi
+import de.moltenKt.paper.tool.smart.KeyedIdentifiable
 import de.moltenKt.paper.tool.smart.VendorOnDemand
 import java.util.logging.Level
 import kotlin.reflect.full.hasAnnotation
@@ -39,16 +40,16 @@ internal val system: MoltenApp
 	get() = MoltenApp.instance
 
 @Throws(NoSuchElementException::class)
-fun app(id: String) = MoltenCache.registeredApps.first { it.appIdentity == id }
+fun app(appIdentity: String) = MoltenCache.registeredApps.first { it.appIdentity == appIdentity }
 
 @Throws(NoSuchElementException::class)
-fun app(vendor: Identifiable<out App>) = MoltenCache.registeredApps.first { it.appIdentity == vendor.identity }
+fun app(vendor: KeyedIdentifiable<out App>) = MoltenCache.registeredApps.first { it.key() == vendor.key() }
 
 @Throws(NoSuchElementException::class)
-fun app(vendorIdentity: Identity<out App>) = MoltenCache.registeredApps.first { it.appIdentity == vendorIdentity.identity }
+fun app(vendorIdentity: Identity<out App>) = MoltenCache.registeredApps.first { it.identityObject == vendorIdentity }
 
 @Throws(NoSuchElementException::class)
-fun Identifiable<out App>.getApp() = app(identity)
+fun KeyedIdentifiable<out App>.getApp() = app(this)
 
 @OptIn(ExperimentalRegistrationApi::class)
 fun <T : VendorOnDemand> T.runIfAutoRegister() {
