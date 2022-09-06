@@ -1,12 +1,15 @@
 package de.moltenKt.paper.tool.display.item
 
+import de.moltenKt.core.extension.classType.UUID
 import de.moltenKt.core.extension.data.buildRandomTag
 import de.moltenKt.core.extension.forceCast
+import de.moltenKt.core.extension.objects.takeIfInstance
 import de.moltenKt.core.tool.smart.Producible
 import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.ui.changeColor
+import de.moltenKt.paper.extension.display.ui.itemMetaOrNull
 import de.moltenKt.paper.extension.paper.subNamespacedKey
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.runtime.event.interact.PlayerInteractAtItemEvent
@@ -20,6 +23,7 @@ import de.moltenKt.paper.tool.display.item.action.ItemClickAction
 import de.moltenKt.paper.tool.display.item.action.ItemDropAction
 import de.moltenKt.paper.tool.display.item.action.ItemInteractAction
 import de.moltenKt.paper.tool.display.item.quirk.Quirk
+import de.moltenKt.paper.tool.display.item.quirk.Quirk.Companion
 import de.moltenKt.paper.tool.smart.KeyedIdentifiable
 import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
 import de.moltenKt.unfold.extension.asComponent
@@ -29,6 +33,8 @@ import de.moltenKt.unfold.extension.isNotBlank
 import de.moltenKt.unfold.extension.isNotEmpty
 import de.moltenKt.unfold.extension.lines
 import de.moltenKt.unfold.extension.subKey
+import de.moltenKt.unfold.plus
+import de.moltenKt.unfold.text
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -82,48 +88,31 @@ data class Item(
 
 	constructor(source: Material) : this(material = source)
 
-	constructor(itemStack: ItemStack) : this() {
-		material = itemStack.type
-		label = itemStack.itemMeta?.displayName() ?: Component.empty()
-		size = itemStack.amount
-		lore = itemStack.lore() ?: emptyList()
-		damage = when (itemStack.itemMeta) {
-			is Damageable -> (itemStack.itemMeta as Damageable).damage
-			else -> 0
-		}
-		modifications = enchantmentsToModifications(itemStack.enchantments).toMutableSet()
-		flags = itemStack.itemFlags
-		quirk = Quirk.empty // using itemMetaBase instead of quirks
-		data = readItemDataStorage(itemStack).toMutableMap()
-		itemMetaBase = itemStack.itemMeta
-		itemActionTags = itemStack.takeIf { it.hasItemMeta() }?.itemMeta?.persistentDataContainer?.getOrDefault(actionsNamespace, PersistentDataType.STRING, "")?.split("|")?.map { ItemActionTag(it) }?.toSet() ?: emptySet()
-		this.itemIdentity = (itemStack.itemMeta?.persistentDataContainer?.get(identityNamespace, PersistentDataType.STRING) ?: "").let {
-				when {
-					it.isNotBlank() -> return@let it
-					else -> "${UUID.randomUUID()}"
-				}
+	constructor(itemStack: ItemStack) : this(
+		material = itemStack.type,
+		label = itemStack.itemMeta?.displayName() ?: Component.empty(),
+		size = itemStack.amount,
+		lore = itemStack.lore() ?: emptyList(),
+		damage = itemStack.itemMeta?.takeIfInstance<Damageable>()?.damage ?: 0,
+		modifications = enchantmentsToModifications(itemStack.enchantments).toMutableSet(),
+		flags = itemStack.itemFlags,
+		quirk = when (itemStack.type) {
+			PLAYER_HEAD, PLAYER_WALL_HEAD -> Quirk.skull { owningPlayer = itemStack.itemMetaOrNull?.takeIfInstance<SkullMeta>()?.owningPlayer } // TODO only set if itemMeta and owningPlayers is indeed null
+			else -> Quirk.empty
+		},
+		data = readItemDataStorage(itemStack).toMutableMap(),
+		itemMetaBase = itemStack.itemMeta,
+		itemActionTags = itemStack.takeIf { it.hasItemMeta() }?.itemMeta?.persistentDataContainer?.getOrDefault(actionsNamespace, PersistentDataType.STRING, "")?.split("|")?.map { ItemActionTag(it) }?.toSet() ?: emptySet(),
+		itemIdentity = (itemStack.itemMeta?.persistentDataContainer?.get(identityNamespace, PersistentDataType.STRING) ?: "").let {
+			when {
+				it.isNotBlank() -> return@let it
+				else -> "${UUID.randomUUID()}"
 			}
-
-		// base skull quirk
-
-		if (itemStack.type == PLAYER_HEAD || itemStack.type == PLAYER_WALL_HEAD) {
-			val meta = itemStack.itemMeta as SkullMeta
-			if (meta.owningPlayer != null) {
-				quirk = Quirk.skull {
-					owningPlayer = meta.owningPlayer
-				}
-			} else
-				quirk = Quirk.empty
-		} else
-			quirk = Quirk.empty
-	}
+		},
+	)
 
 	override val identityKey: Key
 		get() = Key.key(MoltenApp.Infrastructure.SYSTEM_IDENTITY + "_items", itemIdentity)
-
-	val identityNamespace = system.subNamespacedKey("item.identity", CONTINUE)
-
-	val actionsNamespace = system.subNamespacedKey("item.actions", CONTINUE)
 
 	val displayObject: Component
 		get() = Component.text()
@@ -596,6 +585,10 @@ data class Item(
 	}
 
 	companion object {
+
+		val identityNamespace = system.subNamespacedKey("item.identity", CONTINUE)
+
+		val actionsNamespace = system.subNamespacedKey("item.actions", CONTINUE)
 
 		@JvmStatic
 		fun produceByJson(json: String) = JsonItemStack.fromJson(json)?.let { Item(it) }
