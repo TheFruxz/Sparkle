@@ -76,6 +76,12 @@ val ItemStack.itemLike: ItemLike
 fun ItemStack.item(process: Item.() -> Unit) =
 	item.apply(process)
 
+val ItemStack.itemMetaOrNull: ItemMeta?
+	get() = when {
+		hasItemMeta() -> itemMeta
+		else -> null
+	}
+
 fun Material.spawnEntity(location: Location, amount: Int = 1) = item.putSize(amount).spawn(location)
 
 fun ItemStack.spawnEntity(location: Location, amount: Int = 1) = item.putSize(amount).spawn(location)
