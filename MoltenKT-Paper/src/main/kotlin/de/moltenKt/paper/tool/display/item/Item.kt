@@ -27,6 +27,7 @@ import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.extension.asStyledString
 import de.moltenKt.unfold.extension.isNotBlank
 import de.moltenKt.unfold.extension.isNotEmpty
+import de.moltenKt.unfold.extension.lines
 import de.moltenKt.unfold.extension.subKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -471,7 +472,7 @@ data class Item(
 		apply { this.lore = lore.map { if (styled) it.asStyledComponent else it.asComponent } }
 
 	fun putLore(lore: Component) =
-		apply { this.lore = listOf(lore) }
+		apply { this.lore = lore.lines() }
 
 	@JvmName("putLoreComponents")
 	fun putLore(lore: List<Component>) =
