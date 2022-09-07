@@ -116,7 +116,7 @@ fun ComponentLike.asStyledString(strict: Boolean = true) =
 val String.asStyledComponent: TextComponent
 	get() = Component.text().append(miniMessageSerializer.deserializeOr(this, Component.text("FAILED", NamedTextColor.RED))!!).build()
 
-fun String.asStyledComponent(builder: TextComponent.Builder.() -> Unit) =
+fun String.asStyledComponent(builder: Builder.() -> Unit) =
 	asStyledComponent.toBuilder().apply(builder).build()
 
 /**
