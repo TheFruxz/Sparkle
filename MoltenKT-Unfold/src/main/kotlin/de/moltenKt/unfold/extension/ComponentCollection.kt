@@ -19,4 +19,6 @@ fun Collection<ComponentLike>.joinToComponent(): TextComponent =
  * @since 1.0
  */
 fun <T : ComponentLike> T.lines(): List<Component> =
-    asComponent().children().splitBy { it == Component.newline() }.map { it.joinToComponent() }
+    (asComponent().children().takeIf { it.isNotEmpty() } ?: listOf(asComponent()))
+        .splitBy { it == Component.newline() }
+        .map { it.joinToComponent() }
