@@ -1,19 +1,20 @@
 package de.moltenKt.paper.app.interchange
 
-import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.paper.extension.display.message
 import de.moltenKt.paper.extension.display.notification
-import de.moltenKt.paper.extension.lang
-import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.tool.display.message.Transmission.Level.GENERAL
 import de.moltenKt.paper.tool.display.message.Transmission.Level.INFO
+import de.moltenKt.unfold.extension.style
+import de.moltenKt.unfold.hover
 import de.moltenKt.unfold.plus
 import de.moltenKt.unfold.text
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.format.Style.style
 import net.kyori.adventure.text.format.TextDecoration.BOLD
+import net.kyori.adventure.text.format.TextDecoration.ITALIC
 
 internal class MoltenKtInterchange : StructuredInterchange("moltenkt", protectedAccess = false, structure = buildInterchangeStructure {
 
@@ -21,7 +22,7 @@ internal class MoltenKtInterchange : StructuredInterchange("moltenkt", protected
 
 		text {
 			this + text("MoltenKT") {
-				style(style(NamedTextColor.GOLD, BOLD))
+				style(NamedTextColor.GOLD, BOLD)
 			} + text(" was developed by ") {
 				color(NamedTextColor.GRAY)
 			} + text("TheFruxz") {
@@ -29,7 +30,7 @@ internal class MoltenKtInterchange : StructuredInterchange("moltenkt", protected
 			} + text(", and other contributors of the repository: ") {
 				color(NamedTextColor.GRAY)
 			} + text(vendor.description.website ?: "FEHLER") {
-				style(style(NamedTextColor.GOLD, BOLD))
+				style(NamedTextColor.GOLD, BOLD)
 			} + Component.newline()
 
 		}.notification(INFO, executor).display()
@@ -46,9 +47,20 @@ internal class MoltenKtInterchange : StructuredInterchange("moltenkt", protected
 
 		concludedExecution {
 
-			lang["interchange.internal.molten.version"].replaceVariables(
-				"version" to "${vendor.description.version}@${vendor.description.apiVersion}"
-			).notification(GENERAL, executor).display()
+			text {
+				this + text(vendor.label) {
+					color(NamedTextColor.GOLD)
+				}
+				this + text(" is running with the version ") {
+					color(NamedTextColor.GRAY)
+				}
+				this + text {
+					this + text(vendor.description.version)
+					this + text("@")
+					this + text(vendor.description.apiVersion ?: "none")
+					color(NamedTextColor.GRAY)
+				}
+			}.notification(GENERAL, executor).display()
 
 		}
 
@@ -60,9 +72,31 @@ internal class MoltenKtInterchange : StructuredInterchange("moltenkt", protected
 
 		concludedExecution {
 
-			lang["interchange.internal.molten.host"].replaceVariables(
-				"website" to vendor.description.website
-			).notification(GENERAL, executor).display()
+			text {
+				this + text("Visit the repository of ") {
+					color(NamedTextColor.GRAY)
+				}
+				this + text(vendor.label) {
+					color(NamedTextColor.GOLD)
+				}
+				this + text(" here: ") {
+					color(NamedTextColor.GRAY)
+				}
+				this + text(vendor.description.website ?: "Please report this bug!") {
+					color(NamedTextColor.YELLOW)
+				}
+			}.hover {
+				text {
+					this + text("CLICK") {
+						style(NamedTextColor.GREEN, BOLD)
+					}
+					this + text(" to open the repository") {
+						style(NamedTextColor.GRAY)
+					}
+				}
+			}.clickEvent(ClickEvent.openUrl(vendor.description.website ?: "bug"))
+				.notification(GENERAL, executor)
+				.display()
 
 		}
 
@@ -74,7 +108,8 @@ internal class MoltenKtInterchange : StructuredInterchange("moltenkt", protected
 
 		concludedExecution {
 
-			lang["interchange.internal.molten.ping"]
+			Component.text("PONG!")
+				.style(NamedTextColor.GOLD, ITALIC, BOLD)
 				.notification(GENERAL, executor).display()
 
 		}

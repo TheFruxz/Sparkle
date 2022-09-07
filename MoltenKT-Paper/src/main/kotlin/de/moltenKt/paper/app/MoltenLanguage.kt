@@ -114,10 +114,6 @@ object MoltenLanguage {
 
             "interchange.structure.issue.register" to "<red><bold>Oops!</bold><gray> This interchange <red>crashed <gray>during the <yellow>registration<gray> process, please report this to a technician!",
 
-            "interchange.internal.molten.version" to "<gold>MoltenKT<gray> is running with the version <yellow>[version]<gray>!",
-            "interchange.internal.molten.host" to "<gray>Visit the repository of <gold>MoltenKT<gray> here: <yellow>[website]",
-            "interchange.internal.molten.ping" to "<gold><bold><italic>PONG!</italic></bold>",
-
             "interchange.internal.component.alreadyRunning" to "<gray>The component '<yellow>[component]<gray>' is <red>already<gray> running!",
             "interchange.internal.component.blocked" to "<gray>The component '<yellow>[component]<gray>' is <red>blocked<gray> inside the components.json!",
             "interchange.internal.component.nowRunning" to "<gray>The component '<yellow>[component]<gray>' got <green>successfully<gray> started!",
