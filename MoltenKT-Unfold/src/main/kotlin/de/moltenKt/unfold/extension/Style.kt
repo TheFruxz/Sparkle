@@ -1,5 +1,6 @@
 package de.moltenKt.unfold.extension
 
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextColor
@@ -74,3 +75,15 @@ infix fun TextComponent.style(style: Style) =
  */
 infix fun TextComponent.style(color: TextColor) =
 	this + color
+
+fun Component.style(color: TextColor, vararg decorations: TextDecoration) =
+	style(Style.style(color, *decorations))
+
+fun Component.style(vararg decorations: TextDecoration) =
+	style(Style.style(*decorations))
+
+fun TextComponent.Builder.style(color: TextColor, vararg decorations: TextDecoration) =
+	style(Style.style(color, *decorations))
+
+fun TextComponent.Builder.style(vararg decorations: TextDecoration) =
+	style(Style.style(*decorations))
