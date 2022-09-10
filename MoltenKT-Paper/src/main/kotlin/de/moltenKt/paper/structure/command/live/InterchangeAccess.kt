@@ -1,12 +1,19 @@
 package de.moltenKt.paper.structure.command.live
 
+import de.moltenKt.paper.extension.display.message
+import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.command.Interchange
 import de.moltenKt.paper.structure.command.InterchangeUserRestriction
 import de.moltenKt.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
+import de.moltenKt.paper.tool.display.message.Transmission
 import de.moltenKt.paper.tool.smart.Logging
+import de.moltenKt.unfold.extension.asStyledComponent
+import de.moltenKt.unfold.text
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextComponent
 import java.util.logging.Level
 
 data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
@@ -102,5 +109,19 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 		)) ?: throw IllegalStateException("Asset '${restrictiveAsset.identity}' transformer produces null at input '$input'!") }
 
 	}
+
+	fun feedback(componentLike: Component, notificationLevel: Transmission.Level? = null): Transmission =
+		componentLike.let {
+			when (notificationLevel) {
+				null -> it.message(executor)
+				else -> it.notification(notificationLevel)
+			}
+		}.display()
+
+	fun feedback(styledString: String, notificationLevel: Transmission.Level? = null): Transmission =
+		feedback(styledString.asStyledComponent, notificationLevel)
+
+	fun feedback(notificationLevel: Transmission.Level? = null, builder: TextComponent.Builder.() -> Unit): Transmission =
+		feedback(text(builder), notificationLevel)
 
 }
