@@ -24,7 +24,6 @@ import de.moltenKt.paper.structure.command.completion.tracing.PossibleTraceWay
 import de.moltenKt.paper.structure.command.live.InterchangeAccess
 import de.moltenKt.paper.tool.permission.Approval
 import de.moltenKt.paper.tool.permission.hasApproval
-import de.moltenKt.unfold.buildComponent
 import org.bukkit.entity.Player
 import kotlin.time.Duration
 
@@ -39,6 +38,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	var requiredApprovals: List<Approval> = emptyList(),
 	var cooldown: Duration = Duration.ZERO,
 	var onExecution: (suspend InterchangeAccess<EXECUTOR>.() -> InterchangeResult)? = null,
+	var label: String = "",
 ) : TreeBranch<InterchangeStructure<EXECUTOR>, List<CompletionComponent>, TreeBranchType>(
 	identity = identity,
 	address = address,
@@ -61,9 +61,16 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 					append(buildString {
 						if (level > 0) append("(")
 
-						append(subBranch.content.joinToString("|") { it.label }.let { display ->
-							display.ifBlank { subBranch.identity }
-						})
+						append(
+							when {
+								label.isNotBlank() -> label
+								else -> subBranch.content
+									.joinToString("|") { it.label }
+									.let { display ->
+										display.ifBlank { subBranch.identity }
+									}
+							}
+						)
 
 						if (level > 0) {
 							append(")")
@@ -366,6 +373,10 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 
 	infix fun cooldown(cooldown: Duration) {
 		this.cooldown = cooldown
+	}
+
+	fun label(label: String) {
+		this.label = label
 	}
 
 }

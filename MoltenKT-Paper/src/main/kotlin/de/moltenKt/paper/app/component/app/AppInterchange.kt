@@ -2,7 +2,6 @@ package de.moltenKt.paper.app.component.app
 
 import de.moltenKt.core.extension.container.mapToString
 import de.moltenKt.core.extension.container.page
-import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.limitTo
 import de.moltenKt.paper.Constants.ENTRIES_PER_PAGE
@@ -13,17 +12,15 @@ import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.structure.app.cache.CacheDepthLevel
-import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
 import de.moltenKt.paper.structure.command.completion.isNotRequired
 import de.moltenKt.paper.structure.command.live.InterchangeAccess
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.tool.display.message.Transmission
-import de.moltenKt.paper.tool.display.message.Transmission.Level.INFO
 import de.moltenKt.unfold.buildComponent
 import de.moltenKt.unfold.extension.asStyledComponents
-import de.moltenKt.unfold.extension.asStyledString
 import de.moltenKt.unfold.hover
 import de.moltenKt.unfold.plus
 import de.moltenKt.unfold.text
