@@ -5,10 +5,8 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.TextComponent.Builder
-import net.kyori.adventure.text.flattener.ComponentFlattener
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
-import net.kyori.adventure.text.serializer.ComponentSerializer
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 
@@ -114,7 +112,7 @@ fun ComponentLike.asStyledString(strict: Boolean = true) =
  * @since 1.0
  */
 val String.asStyledComponent: TextComponent
-	get() = Component.text().append(miniMessageSerializer.deserializeOr(this, Component.text("FAILED", NamedTextColor.RED))!!).build()
+	get() = Component.text().append(miniMessageSerializer.deserializeOr(this, Component.empty())!!).build()
 
 fun String.asStyledComponent(builder: Builder.() -> Unit) =
 	asStyledComponent.toBuilder().apply(builder).build()
