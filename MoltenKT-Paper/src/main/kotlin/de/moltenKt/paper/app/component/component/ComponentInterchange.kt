@@ -2,29 +2,47 @@ package de.moltenKt.paper.app.component.component
 
 import de.moltenKt.core.extension.container.mapToString
 import de.moltenKt.core.extension.container.page
-import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.Constants
 import de.moltenKt.paper.app.MoltenCache
+import de.moltenKt.paper.extension.display.BOLD
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
-import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.system
-import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
 import de.moltenKt.paper.structure.command.completion.ignoreCase
 import de.moltenKt.paper.structure.command.completion.isNotRequired
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.structure.component.file.ComponentManager
 import de.moltenKt.paper.tool.display.message.Transmission
-import de.moltenKt.paper.tool.display.message.Transmission.Level.*
-import kotlin.time.Duration.Companion.seconds
+import de.moltenKt.paper.tool.display.message.Transmission.Level.APPLIED
+import de.moltenKt.paper.tool.display.message.Transmission.Level.INFO
+import de.moltenKt.unfold.extension.dyeDarkGray
+import de.moltenKt.unfold.extension.dyeGray
+import de.moltenKt.unfold.extension.dyeGreen
+import de.moltenKt.unfold.extension.dyeRed
+import de.moltenKt.unfold.extension.dyeYellow
+import de.moltenKt.unfold.extension.style
+import de.moltenKt.unfold.hover
+import de.moltenKt.unfold.plus
+import de.moltenKt.unfold.text
+import net.kyori.adventure.text.Component.newline
+import net.kyori.adventure.text.Component.space
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
 
-internal class ComponentInterchange :
-	StructuredInterchange("component", protectedAccess = true, structure = buildInterchangeStructure {
+internal class ComponentInterchange : StructuredInterchange("component", protectedAccess = true, structure = buildInterchangeStructure {
+
+		val ICON_DISABLED = "⭘"
+		val ICON_ENABLED = "⏻"
+		val ICON_AUTOSTART = "⚡"
+		val ICON_FORCED = "☄"
+		val ICON_EXPERIMENTAL = "⚗"
+		val ICON_BLOCKED = "✘"
 
 		val icons = listOf(
 			"⭘",
@@ -36,42 +54,98 @@ internal class ComponentInterchange :
 		)
 
 		fun list(page: Int, executor: InterchangeExecutor) {
-			MoltenCache.registeredComponents.page(page - 1, Constants.ENTRIES_PER_PAGE).let { (content, page, pages) ->
+			MoltenCache.registeredComponents.page(page - 1, Constants.ENTRIES_PER_PAGE).let { (page, pages, content) ->
 
-				buildString {
+				text {
 
-					appendLine(
-						lang["interchange.internal.component.list.header"].replaceVariables(
-							"p1" to (page + 1),
-							"p2" to pages
-						)
-					)
+					this + text("List of all registered components: ").dyeGray()
+					this + text("(Page $page of ${pages.last})").dyeYellow()
+					this + newline()
+					this + text("$ICON_DISABLED/$ICON_ENABLED Power; $ICON_AUTOSTART Autostart; $ICON_FORCED Forced; $ICON_EXPERIMENTAL Experimental; $ICON_BLOCKED Blocked").dyeGray()
+					this + newline() + newline()
 
-					appendLine(
-						lang["interchange.internal.component.list.description"].replaceVariables(
-							"1" to "${icons[0]}/${icons[1]}",
-							"2" to icons[2],
-							"3" to icons[3],
-							"4" to icons[4],
-						)
-					)
+					content.forEach { component ->
 
-					appendLine()
+						this + when {
+							component.isBlocked -> text(ICON_BLOCKED).hover {
+								text {
+									this + text("Blocked: ").style(NamedTextColor.BLUE, BOLD)
+									this + newline()
+									this + text("This component is blocked by the server owner (via file) and cannot be used!").dyeGray()
+								}
+							}.dyeRed()
+							component.isRunning -> text(ICON_ENABLED).hover {
+								text {
+									this + text("Enabled: ").style(NamedTextColor.BLUE, BOLD)
+									this + newline()
+									this + text("This component is currently running and executing its code!").dyeGray()
+								}
+							}.dyeGreen()
+							else -> text(ICON_DISABLED).hover {
+								text {
+									this + text("Disabled: ").style(NamedTextColor.BLUE, BOLD)
+									this + newline()
+									this + text("This component is currently not running and not executing its code!").dyeGray()
+								}
+							}.dyeGray()
+						}
 
-					content.forEach { element ->
-						appendLine(
-							lang["interchange.internal.component.list.line"].replaceVariables(
-								"status" to if (element.isBlocked) "<red>${icons[5]}<gray>" else if (element.isRunning) "<green>${icons[1]}<gray>" else "<gray>${icons[0]}",
-								"autoStart" to if (element.isAutoStarting) "<green>${icons[2]}<gray>" else "<gray>${icons[2]}",
-								"force" to if (!element.canBeStopped) "<yellow>${icons[3]}<gray>" else "<gray>${icons[3]}",
-								"experimental" to if (element.experimental) "<yellow>${icons[4]}<gray>" else "<gray>${icons[4]}",
-								"component" to element.identity,
-							)
-						)
+						this + space()
+
+						this + when {
+							component.isAutoStarting -> text(ICON_AUTOSTART).hover {
+								text {
+									this + text("Autostart: ").style(NamedTextColor.BLUE, BOLD)
+									this + newline()
+									this + text("This component will be started automatically on server start!").dyeGray()
+								}
+							}.dyeGreen()
+							else -> text(ICON_AUTOSTART).dyeGray()
+						}
+
+						this + space()
+
+						this + when {
+							component.isForced -> text(ICON_FORCED).hover {
+								text {
+									this + text("Forced: ").style(NamedTextColor.BLUE, BOLD)
+									this + newline()
+									this + text("This component is forced to be started and cannot be stopped!").dyeGray()
+								}
+							}.dyeGreen()
+							else -> text(ICON_FORCED).dyeGray()
+						}
+
+						this + when {
+							component.isExperimental -> text(ICON_EXPERIMENTAL).hover {
+								text {
+									this + text("Experimental: ").style(NamedTextColor.BLUE, BOLD)
+									this + newline()
+									this + text("This component is experimental and may not work as expected!").dyeGray()
+								}
+							}.dyeYellow()
+							else -> text(ICON_EXPERIMENTAL).dyeGray()
+						}
+
+						this + text(" | ").dyeDarkGray()
+
+						this + text(component.label).hover {
+							text {
+								this + text("Label & Identity: ").style(NamedTextColor.BLUE, TextDecoration.BOLD)
+								this + newline()
+								this + text("The label is used to display the component in lists and information, the identity is used to identify the component in the system").dyeYellow()
+								this + newline() + newline()
+								this + text("Label: ").dyeGray()
+								this + text(component.label).dyeGreen()
+								this + newline()
+								this + text("Identity: ").dyeGreen()
+								this + text(component.key().asString()).dyeGreen()
+							}
+						}
+
 					}
 
-				}.notification(INFO, executor)
-					.display()
+				}.notification(INFO, executor).display()
 
 			}
 		}
@@ -82,18 +156,30 @@ internal class ComponentInterchange :
 
 					component.vendor.start(component.identityObject)
 
-					lang["interchange.internal.component.nowRunning"]
-						.replaceVariables("component" to component.identity)
-						.notification(Transmission.Level.APPLIED, executor).display()
+					text {
+						this + text("The component '").dyeGray()
+						this + text(component.label).dyeYellow()
+						this + text("' has been started!").dyeGray()
+					}.notification(APPLIED, executor).display()
 
-				} else
-					lang["interchange.internal.component.alreadyRunning"]
-						.replaceVariables("component" to component.identity)
-						.notification(Transmission.Level.FAIL, executor).display()
-			} else
-				lang["interchange.internal.component.blocked"]
-					.replaceVariables("component" to component.identity)
-					.notification(Transmission.Level.ERROR, executor).display()
+				} else {
+
+					text {
+						this + text("The component '").dyeGray()
+						this + text(component.label).dyeYellow()
+						this + text("' is already running!").dyeGray()
+					}.notification(Transmission.Level.FAIL, executor).display()
+
+				}
+			} else {
+
+				text {
+					this + text("The component '").dyeGray()
+					this + text(component.label).dyeYellow()
+					this + text("' is blocked and cannot be started!").dyeGray()
+				}.notification(Transmission.Level.FAIL, executor).display()
+
+			}
 		}
 
 		fun stop(component: Component, executor: InterchangeExecutor) {
@@ -103,19 +189,31 @@ internal class ComponentInterchange :
 
 					component.vendor.stop(component.identityObject)
 
-					lang["interchange.internal.component.nowStopped"]
-						.replace("[component]", component.identity)
-						.notification(Transmission.Level.APPLIED, executor).display()
+					text {
+						this + text("The component '").dyeGray()
+						this + text(component.label).dyeYellow()
+						this + text("' has been stopped!").dyeGray()
+					}.notification(APPLIED, executor).display()
 
-				} else
-					lang["interchange.internal.component.runningStatic"]
-						.replaceVariables("component" to component.identity)
-						.notification(FAIL, executor).display()
+				} else {
 
-			} else
-				lang["interchange.internal.component.missingRunning"]
-					.replaceVariables("component" to component.identity)
-					.notification(Transmission.Level.FAIL, executor).display()
+					text {
+						this + text("The component '").dyeGray()
+						this + text(component.label).dyeYellow()
+						this + text("' is forced and cannot be stopped!").dyeGray()
+					}.notification(Transmission.Level.FAIL, executor).display()
+
+				}
+
+			} else {
+
+				text {
+					this + text("The component '").dyeGray()
+					this + text(component.label).dyeYellow()
+					this + text("' is not running!").dyeGray()
+				}.notification(Transmission.Level.FAIL, executor).display()
+
+			}
 		}
 
 		fun restart(component: Component, executor: InterchangeExecutor) {
@@ -128,22 +226,23 @@ internal class ComponentInterchange :
 
 				ComponentManager.editComponent(component.identityObject, isAutoStart = !component.isAutoStarting)
 
-				val key = if (component.isAutoStarting) {
-					"interchange.internal.component.autoStartAdded"
-				} else {
-					"interchange.internal.component.autoStartRemoved"
-				}
+				text {
+					this + text("The component '").dyeGray()
+					this + text(component.label).dyeYellow()
+					this + text("' has been ").dyeGray()
+					this + text(if (component.isAutoStarting) "added" else "removed").dyeGreen()
+					this + text(" from the autostart list!").dyeGray()
+				}.notification(APPLIED, executor).display()
 
-				lang[key]
-					.replaceVariables(
-						"component" to component.identity,
-					)
-					.notification(APPLIED, executor).display()
+			} else {
 
-			} else
-				lang["interchange.internal.component.autoStartStatic"]
-					.replaceVariables("component" to component.identity)
-					.notification(Transmission.Level.FAIL, executor).display()
+				text {
+					this + text("The component '").dyeGray()
+					this + text(component.label).dyeYellow()
+					this + text("' cannot be added to the autostart list!").dyeGray()
+				}.notification(Transmission.Level.FAIL, executor).display()
+
+			}
 		}
 
 		fun reset(component: Component, executor: InterchangeExecutor) {
@@ -151,39 +250,38 @@ internal class ComponentInterchange :
 				if (containsKey(component.identityObject))
 					MoltenCache.runningComponents += component.identityObject to Calendar.now()
 			}
-			lang["interchange.internal.component.reset"]
-				.replaceVariables("component" to component.identity)
-				.notification(APPLIED, executor).display()
+
+			text {
+				this + text("The component '").dyeGray()
+				this + text(component.label).dyeYellow()
+				this + text("' has been reset!").dyeGray()
+			}.notification(APPLIED, executor).display()
+
 		}
 
 		fun info(component: Component, executor: InterchangeExecutor) {
-			buildString {
+			fun Any.toDisplay() = when (this) {
+				is Boolean -> if (this) "YES" else "NO"
+				else -> "$this"
+			}
 
-				appendLine(lang["interchange.internal.component.info.header"].replaceVariables("component" to component.identity))
-
-				fun Boolean.toDisplay() =
-					if (this) lang["interchange.internal.component.info.dict.true"] else lang["interchange.internal.component.info.dict.false"]
-
-				mapOf(
-					lang["interchange.internal.component.info.dict.name"] to component.identity,
-					lang["interchange.internal.component.info.dict.running"] to component.isRunning.toDisplay(),
-					lang["interchange.internal.component.info.dict.vendor"] to component.vendorIdentity.identity,
-					lang["interchange.internal.component.info.dict.configuration"] to component.behaviour.name,
-					lang["interchange.internal.component.info.dict.isAutoStart"] to component.isAutoStarting.toDisplay(),
-					lang["interchange.internal.component.info.dict.isExperimental"] to component.experimental.toDisplay(),
-					lang["interchange.internal.component.info.dict.runningSince"] to (component.runningSince?.durationToNow()
-						?.toString() ?: "-/-")
-				).forEach { (key, value) ->
-					append(
-						"\n- ${
-							lang["interchange.internal.component.info.line"].replaceVariables(
-								"key" to key,
-								"value" to value,
-							)
-						}"
-					)
+			text {
+				this + text {
+					this + text("Information about the component '").dyeGray()
+					this + text(component.label).dyeYellow()
+					this + text("':").dyeGray()
 				}
+
+				this + newline() + text("Label: ").dyeGray() + text(component.label).dyeYellow()
+				this + newline() + text("Identity: ").dyeGray() + text(component.key().asString()).dyeYellow()
+				this + newline() + text("Running: ").dyeGray() + text(component.isRunning.toDisplay()).dyeYellow()
+				this + newline() + text("Configuration: ").dyeGray() + text(component.behaviour.name).dyeYellow()
+				this + newline() + text("AutoStart: ").dyeGray() + text(component.isAutoStarting.toDisplay()).dyeYellow()
+				this + newline() + text("Experimental: ").dyeGray() + text(component.isExperimental.toDisplay()).dyeYellow()
+				this + newline() + text("Running since: ").dyeGray() + text(component.runningSince?.durationToNow()?.toString() ?: "-/-").dyeYellow()
+
 			}.notification(INFO, executor).display()
+
 		}
 
 		branch {
