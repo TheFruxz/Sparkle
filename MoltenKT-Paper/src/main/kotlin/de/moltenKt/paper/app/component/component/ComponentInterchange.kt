@@ -37,21 +37,12 @@ import net.kyori.adventure.text.format.TextDecoration
 
 internal class ComponentInterchange : StructuredInterchange("component", protectedAccess = true, structure = buildInterchangeStructure {
 
-		val ICON_DISABLED = "⭘"
-		val ICON_ENABLED = "⏻"
-		val ICON_AUTOSTART = "⚡"
-		val ICON_FORCED = "☄"
-		val ICON_EXPERIMENTAL = "⚗"
-		val ICON_BLOCKED = "✘"
-
-		val icons = listOf(
-			"⭘",
-			"⏻",
-			"⚡",
-			"⏹",
-			"\uD83E\uDDEA",
-			"❌"
-		)
+		val iconDisabled = "⭘"
+		val iconEnabled = "⏻"
+		val iconAutoStart = "⚡"
+		val iconForced = "☄"
+		val iconExperimental = "⚗"
+		val iconBlocked = "✘"
 
 		fun list(page: Int, executor: InterchangeExecutor) {
 			MoltenCache.registeredComponents.page(page - 1, Constants.ENTRIES_PER_PAGE).let { (page, pages, content) ->
@@ -61,27 +52,27 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 					this + text("List of all registered components: ").dyeGray()
 					this + text("(Page $page of ${pages.last})").dyeYellow()
 					this + newline()
-					this + text("$ICON_DISABLED/$ICON_ENABLED Power; $ICON_AUTOSTART Autostart; $ICON_FORCED Forced; $ICON_EXPERIMENTAL Experimental; $ICON_BLOCKED Blocked").dyeGray()
+					this + text("$iconDisabled/$iconEnabled Power; $iconAutoStart Autostart; $iconForced Forced; $iconExperimental Experimental; $iconBlocked Blocked").dyeGray()
 					this + newline() + newline()
 
 					content.forEach { component ->
 
 						this + when {
-							component.isBlocked -> text(ICON_BLOCKED).hover {
+							component.isBlocked -> text(iconBlocked).hover {
 								text {
 									this + text("Blocked: ").style(NamedTextColor.BLUE, BOLD)
 									this + newline()
 									this + text("This component is blocked by the server owner (via file) and cannot be used!").dyeGray()
 								}
 							}.dyeRed()
-							component.isRunning -> text(ICON_ENABLED).hover {
+							component.isRunning -> text(iconEnabled).hover {
 								text {
 									this + text("Enabled: ").style(NamedTextColor.BLUE, BOLD)
 									this + newline()
 									this + text("This component is currently running and executing its code!").dyeGray()
 								}
 							}.dyeGreen()
-							else -> text(ICON_DISABLED).hover {
+							else -> text(iconDisabled).hover {
 								text {
 									this + text("Disabled: ").style(NamedTextColor.BLUE, BOLD)
 									this + newline()
@@ -93,38 +84,38 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 						this + space()
 
 						this + when {
-							component.isAutoStarting -> text(ICON_AUTOSTART).hover {
+							component.isAutoStarting -> text(iconAutoStart).hover {
 								text {
 									this + text("Autostart: ").style(NamedTextColor.BLUE, BOLD)
 									this + newline()
 									this + text("This component will be started automatically on server start!").dyeGray()
 								}
 							}.dyeGreen()
-							else -> text(ICON_AUTOSTART).dyeGray()
+							else -> text(iconAutoStart).dyeGray()
 						}
 
 						this + space()
 
 						this + when {
-							component.isForced -> text(ICON_FORCED).hover {
+							component.isForced -> text(iconForced).hover {
 								text {
 									this + text("Forced: ").style(NamedTextColor.BLUE, BOLD)
 									this + newline()
 									this + text("This component is forced to be started and cannot be stopped!").dyeGray()
 								}
 							}.dyeGreen()
-							else -> text(ICON_FORCED).dyeGray()
+							else -> text(iconForced).dyeGray()
 						}
 
 						this + when {
-							component.isExperimental -> text(ICON_EXPERIMENTAL).hover {
+							component.isExperimental -> text(iconExperimental).hover {
 								text {
 									this + text("Experimental: ").style(NamedTextColor.BLUE, BOLD)
 									this + newline()
 									this + text("This component is experimental and may not work as expected!").dyeGray()
 								}
 							}.dyeYellow()
-							else -> text(ICON_EXPERIMENTAL).dyeGray()
+							else -> text(iconExperimental).dyeGray()
 						}
 
 						this + text(" | ").dyeDarkGray()
