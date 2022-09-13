@@ -67,8 +67,6 @@ import de.moltenKt.paper.tool.position.relative.LinearShape
 import de.moltenKt.paper.tool.position.relative.PyramidalShape
 import de.moltenKt.paper.tool.position.relative.Shape
 import de.moltenKt.paper.tool.position.relative.SphereShape
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.cancelChildren
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Location
@@ -222,15 +220,6 @@ class MoltenApp : App() {
 		add(PlaygroundInterchange())
 
 		add(AppComponent())
-
-	}
-
-	override fun bye() {
-
-		coroutineScope.apply {
-			coroutineContext.cancelChildren()
-			cancel("Molten-Kt Paper is shutting down!")
-		}
 
 	}
 
