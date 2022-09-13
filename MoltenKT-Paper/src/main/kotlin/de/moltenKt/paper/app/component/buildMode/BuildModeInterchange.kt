@@ -115,7 +115,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 					text {
 						this + text("These players have Build-Mode enabled: ").dyeGray()
-						this + text("(Page ${pageValue.page + 1} of ${pageValue.pages})").dyeYellow()
+						this + text("(Page ${pageValue.pageIndex + 1} of ${pageValue.pages})").dyeYellow()
 
 						pageValue.content.withIndex().forEach {
 							val player = offlinePlayer(it.value.identity.toUUID())

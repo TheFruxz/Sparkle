@@ -41,7 +41,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 						appendLine(
 							lang["interchange.internal.service.list.header"].replaceVariables(
-								"p1" to pageValue.page + 1,
+								"p1" to pageValue.pageIndex + 1,
 								"p2" to pageValue.pages,
 							)
 						)
