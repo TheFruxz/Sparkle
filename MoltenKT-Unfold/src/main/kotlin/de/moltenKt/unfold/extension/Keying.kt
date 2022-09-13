@@ -11,7 +11,7 @@ fun Key.subKey(value: String, strategy: KeyingStrategy = KeyingStrategy.PATHING)
 	},
 	when (strategy) {
 		KeyingStrategy.PATHING -> "${value()}.$value"
-		else -> value
+		else -> value.filter { KEY_REGEX.matches("$it") }
 	}
 )
 
