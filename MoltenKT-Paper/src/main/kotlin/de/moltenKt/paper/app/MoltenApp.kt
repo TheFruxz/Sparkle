@@ -49,7 +49,6 @@ import de.moltenKt.paper.tool.data.json.serializer.VectorSerializer
 import de.moltenKt.paper.tool.data.json.serializer.WorldSerializer
 import de.moltenKt.paper.tool.display.item.Modification
 import de.moltenKt.paper.tool.display.world.SimpleLocation
-import de.moltenKt.paper.tool.effect.particle.ParticleType.Companion
 import de.moltenKt.paper.tool.effect.sound.SoundData
 import de.moltenKt.paper.tool.effect.sound.SoundEffect
 import de.moltenKt.paper.tool.effect.sound.SoundMelody
