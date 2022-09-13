@@ -17,6 +17,8 @@ fun Key.subKey(value: String, strategy: KeyingStrategy = KeyingStrategy.PATHING)
 
 infix operator fun Key.div(value: String): Key = subKey(value)
 
+val KEY_REGEX = "[a-z0-9_.-]".toRegex()
+
 /**
  * Every strategy to generate sub keys of a key has its pros and cons.
  * Decide wisely by your use case, which you want to use, for a little help,

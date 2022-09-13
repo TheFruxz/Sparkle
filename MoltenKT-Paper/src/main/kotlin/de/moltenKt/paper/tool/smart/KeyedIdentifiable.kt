@@ -29,8 +29,6 @@ interface KeyedIdentifiable<T> : VendorsIdentifiable<T>, Key, Keyed {
 
     companion object {
 
-        val NAMESPACE_REGEX = "[a-z0-9_.-]".toRegex()
-
         fun <T> custom(key: Key) = object : KeyedIdentifiable<T> {
             override val identityKey = key
         }
