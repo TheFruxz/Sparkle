@@ -1,19 +1,22 @@
 package de.moltenKt.paper.runtime.sandbox
 
 import de.moltenKt.core.extension.catchException
-import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.app.component.sandbox.SandBoxComponent
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
-import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.tool.display.message.Transmission.Level.APPLIED
 import de.moltenKt.paper.tool.display.message.Transmission.Level.ERROR
 import de.moltenKt.paper.tool.smart.Logging
 import de.moltenKt.paper.tool.smart.VendorsIdentifiable
+import de.moltenKt.unfold.extension.dyeGray
+import de.moltenKt.unfold.extension.dyeYellow
+import de.moltenKt.unfold.plus
+import de.moltenKt.unfold.text
 import kotlinx.coroutines.launch
 import java.util.logging.Level
 
@@ -34,25 +37,31 @@ data class SandBox(
     override val sectionLabel by lazy { identity }
 
     fun execute(executor: InterchangeExecutor, parameters: List<String> = emptyList()) {
-        de.moltenKt.paper.app.MoltenApp.instance.coroutineScope.launch(Component.getInstance(SandBoxComponent::class).threadContext) {
+        MoltenApp.instance.coroutineScope.launch(Component.getInstance(SandBoxComponent::class).threadContext) {
 
             try {
                 sectionLog.log(Level.INFO, "Executor '${executor.name}' is starting SandBox '$identity'!")
 
                 MoltenCache.registeredSandBoxCalls += identityObject to (MoltenCache.registeredSandBoxCalls[identityObject] ?: 0) + 1
 
-                lang["interchange.internal.sandbox.run"]
-                    .replaceVariables("sandbox" to identity)
-                    .notification(APPLIED, executor).display()
+                text {
+                    this + text("You're now running the SandBox '").dyeGray()
+                    this + text(identity).dyeYellow()
+                    this + text("'!").dyeGray()
+                }.notification(APPLIED, executor).display()
 
                 process(SandBoxInteraction(this@SandBox, executor, parameters))
 
                 sectionLog.log(Level.INFO, "Executor '${executor.name}' finished the use of SandBox '$identity' successfully!")
             } catch (exception: Exception) {
                 catchException(exception)
-                lang["interchange.internal.sandbox.failed"]
-                    .replaceVariables("sandbox" to identity)
-                    .notification(ERROR, executor).display()
+
+                text {
+                    this + text("The SandBox '").dyeGray()
+                    this + text(identity).dyeYellow()
+                    this + text("' failed!").dyeGray()
+                }.notification(ERROR, executor).display()
+
             }
 
         }
