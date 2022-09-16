@@ -5,7 +5,6 @@ import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.tool.display.message.Transmission.Level.GENERAL
-import de.moltenKt.paper.tool.display.message.Transmission.Level.INFO
 import de.moltenKt.unfold.extension.style
 import de.moltenKt.unfold.hover
 import de.moltenKt.unfold.plus
@@ -33,7 +32,7 @@ internal class MoltenKtInterchange : StructuredInterchange("moltenkt", protected
 				style(NamedTextColor.GOLD, BOLD)
 			} + Component.newline()
 
-		}.notification(INFO, executor).display()
+		}.notification(GENERAL, executor).display()
 
 		text("MoltenKT is running & developed with Kotlin (the programming Language) from JetBrains. Check out their work https://jetbrains.com or https://kotlinlang.org")
 			.color(NamedTextColor.YELLOW)

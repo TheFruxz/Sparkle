@@ -92,7 +92,7 @@ internal class DebugModeInterchange : StructuredInterchange("debugmode", buildIn
                     }
                 )
 
-            }.notification(Transmission.Level.INFO, executor).display()
+            }.notification(Transmission.Level.GENERAL, executor).display()
 
         }
 

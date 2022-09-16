@@ -1,11 +1,9 @@
 package de.moltenKt.paper.extension
 
 import de.moltenKt.core.extension.dump
-import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.app.MoltenCache
-import de.moltenKt.paper.app.MoltenLanguage
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.event.EventListener
 import de.moltenKt.paper.structure.command.Interchange
@@ -32,9 +30,6 @@ fun <T : Any?> T.debugLog(level: Level = Level.WARNING, messageProcess: T.() -> 
 fun mainLog(level: Level = Level.INFO, message: String) = MoltenApp.instance.log.log(level, message)
 
 val mainLog = MoltenApp.instance.log
-
-internal val lang: MoltenLanguage.MoltenLanguageContainer
-	get() = MoltenLanguage.container
 
 internal val system: MoltenApp
 	get() = MoltenApp.instance

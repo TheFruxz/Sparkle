@@ -5,7 +5,6 @@ import de.moltenKt.core.tool.smart.positioning.Address
 import de.moltenKt.core.tool.smart.positioning.Address.Companion.address
 import de.moltenKt.paper.app.MoltenData
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
-import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.paper.consoleSender
 import de.moltenKt.paper.extension.paper.onlinePlayers
 import de.moltenKt.paper.tool.display.message.DisplayType.*
@@ -68,15 +67,9 @@ data class Transmission(
 	fun display(): Transmission {
 		val nextRound = mutableSetOf<Entity>()
 
-		val prefix = if (prefixByLevel) {
-			lang["system.${level.prefixLink.addressObject}"].asStyledComponent
-		} else {
-			prefix ?: MoltenData.systemConfig.prefix.asStyledComponent
-		}
+		val prefix = (MoltenData.systemConfig.prefix[level.prefixLink.addressString.takeIf { prefixByLevel } ?: "general"] ?: "<dark_gray>⏵ ").asStyledComponent
 
-		val displayObject = content.map {
-			prefix.append(it)
-		}
+		val displayObject = content.map { prefix.append(it) }
 
 		for (participant in participants) {
 
@@ -114,7 +107,7 @@ data class Transmission(
 	) {
 
 		GENERAL(SoundLibrary.NOTIFICATION_GENERAL, address("prefix.general")),
-		INFO(SoundLibrary.NOTIFICATION_INFO, address("prefix.info")),
+		PROCESS(SoundLibrary.NOTIFICATION_PROCESS, address("prefix.process")),
 		FAIL(SoundLibrary.NOTIFICATION_FAIL, address("prefix.fail")),
 		ERROR(SoundLibrary.NOTIFICATION_ERROR, address("prefix.error")),
 		LEVEL(SoundLibrary.NOTIFICATION_LEVEL, address("prefix.level")),

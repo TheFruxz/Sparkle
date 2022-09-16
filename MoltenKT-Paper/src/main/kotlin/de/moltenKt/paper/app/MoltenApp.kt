@@ -32,7 +32,6 @@ import de.moltenKt.paper.mojang.MojangProfileRaw
 import de.moltenKt.paper.mojang.MojangProfileSkin
 import de.moltenKt.paper.mojang.MojangProfileTextures
 import de.moltenKt.paper.mojang.MojangProfileUsernameHistoryEntry
-import de.moltenKt.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.AppCompanion
 import de.moltenKt.paper.tool.data.Preference
@@ -112,7 +111,6 @@ class MoltenApp : App() {
 				subclass(MojangProfileSkin::class)
 				subclass(MojangProfileTextures::class)
 				subclass(MojangProfileUsernameHistoryEntry::class)
-				subclass(LanguageContainer::class)
 				subclass(JsonConfiguration::class)
 				subclass(JsonFileDataElement::class)
 				subclass(Modification::class)
@@ -180,23 +178,6 @@ class MoltenApp : App() {
 		}
 
 		MoltenCache.tmp_initSetupPreferences = emptySet()
-
-		languageSpeaker.let { languageSpeaker ->
-			mainLog(Level.INFO, "Speaking langauge: ${languageSpeaker.baseLang}")
-			with(languageSpeaker.languageContainer) {
-				"""
-					Display-Language detected:
-					ID: ${this.languageId};
-					Molten-Kt: ${this.moltenVersion};
-					Version: ${this.languageVersion};
-					Vendor: ${this.languageVendor};
-					Website: ${this.languageVendorWebsite};
-					Test: ${languageSpeaker.message("system.hello")};
-				""".trimIndent().lines().forEach {
-					mainLog(Level.INFO, it)
-				}
-			}
-		}
 
 		// NEW COMPONENTS
 		add(ChatComponent())

@@ -4,10 +4,10 @@ import de.moltenKt.core.extension.catchException
 import de.moltenKt.core.extension.empty
 import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.paper.extension.debugLog
+import de.moltenKt.paper.extension.display.BOLD
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
 import de.moltenKt.paper.extension.interchange.Parameters
-import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.paper.asPlayer
 import de.moltenKt.paper.extension.paper.asPlayerOrNull
 import de.moltenKt.paper.extension.timing.RunningCooldown
@@ -32,16 +32,20 @@ import de.moltenKt.paper.tool.smart.VendorOnDemand
 import de.moltenKt.unfold.buildComponent
 import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
 import de.moltenKt.unfold.extension.asComponent
+import de.moltenKt.unfold.extension.dyeGray
+import de.moltenKt.unfold.extension.dyeRed
+import de.moltenKt.unfold.extension.dyeYellow
+import de.moltenKt.unfold.extension.style
 import de.moltenKt.unfold.extension.subKey
 import de.moltenKt.unfold.hover
 import de.moltenKt.unfold.plus
+import de.moltenKt.unfold.text
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
-import net.kyori.adventure.text.format.TextDecoration.BOLD
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.ConsoleCommandSender
@@ -236,33 +240,58 @@ abstract class Interchange(
 	private fun wrongApprovalFeedback(
 		receiver: InterchangeExecutor,
 	) {
-		lang["interchange.run.issue.wrongApproval"]
-			.replace("[approval]", "${requiredApproval?.identity}")
-			.notification(Level.FAIL, receiver).display()
+
+		text {
+			this + text("You currently do ").dyeGray()
+			this + text("not").dyeRed()
+			this + text(" have the ").dyeGray()
+			this + text("required approval").dyeYellow().hover {
+				text("Required Approval: ").dyeGray()
+				text("${requiredApproval?.identity}").dyeYellow()
+			}
+			this + text(" to execute this interchange!").dyeGray()
+		}.notification(Level.FAIL, receiver).display()
+
 	}
 
 	private fun wrongUsageFeedback(
 		receiver: InterchangeExecutor,
 	) {
-		lang["interchange.run.issue.wrongUsage"]
-			.notification(Level.FAIL, receiver).display()
+
+		text {
+			this + text("Follow the ").dyeGray()
+			this + text("syntax").dyeRed()
+			this + text(", to execute this! See:").dyeGray()
+		}.notification(Level.FAIL, receiver).display()
+
 		receiver.sendMessage(Component.text(completion.buildSyntax(receiver), NamedTextColor.YELLOW))
 	}
 
 	private fun wrongClientFeedback(
 		receiver: InterchangeExecutor,
 	) {
-		lang["interchange.run.issue.wrongClient"]
-			.replace("[client]", userRestriction.name)
-			.notification(Level.FAIL, receiver).display()
+
+		text {
+			this + text("This action ").dyeGray()
+			this + text("requires").dyeRed()
+			this + text(" you as a '").dyeGray()
+			this + text(userRestriction.name).dyeYellow()
+			this + text("', to be executed!").dyeGray()
+		}.notification(Level.FAIL, receiver).display()
+
 	}
 
 	private fun issueFeedback(
 		receiver: InterchangeExecutor
 	) {
-		lang["interchange.run.issue.issue"]
-			.replace("[interchange]", "Interchange/$label")
-			.notification(ERROR, receiver).display()
+
+		text {
+			this + text("Oops!").style(NamedTextColor.RED, BOLD)
+			this + text(" A").dyeGray()
+			this + text(" critical error ").dyeRed()
+			this + text("occurred, while executing this interchange!").dyeGray()
+		}.notification(ERROR, receiver).display()
+
 	}
 
 	internal fun cooldownFeedback(

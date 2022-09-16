@@ -1,13 +1,8 @@
 package de.moltenKt.paper.tool.data
 
-import de.moltenKt.core.extension.container.flipped
-import de.moltenKt.core.extension.container.replace
 import de.moltenKt.core.extension.container.toArrayList
-import de.moltenKt.core.extension.data.fromJson
 import de.moltenKt.core.extension.data.fromJsonString
-import de.moltenKt.core.extension.data.toJson
 import de.moltenKt.core.extension.data.toJsonString
-import de.moltenKt.paper.runtime.app.LanguageSpeaker
 import de.moltenKt.paper.tool.display.item.Item
 import de.moltenKt.paper.tool.display.world.SimpleLocation
 import org.bukkit.Location
@@ -43,12 +38,6 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 				{ toArrayList() },
 				{ toSet() },
 			)
-
-		// colors
-
-		@JvmStatic
-		fun simpleColorCode() =
-			DataTransformer<String, String>({ replace(LanguageSpeaker.smartColorReplace.flipped()) }, { replace(LanguageSpeaker.smartColorReplace) })
 
 		// simple location
 

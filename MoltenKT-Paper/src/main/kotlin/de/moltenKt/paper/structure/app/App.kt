@@ -24,7 +24,6 @@ import de.moltenKt.paper.extension.paper.internalSyncCommands
 import de.moltenKt.paper.extension.tasky.asSync
 import de.moltenKt.paper.extension.tasky.delayed
 import de.moltenKt.paper.extension.tasky.task
-import de.moltenKt.paper.runtime.app.LanguageSpeaker
 import de.moltenKt.paper.runtime.app.RunStatus
 import de.moltenKt.paper.runtime.app.RunStatus.*
 import de.moltenKt.paper.runtime.exception.IllegalActionException
@@ -580,8 +579,6 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 	internal fun getResourceFile(path: String) =
 		classLoader.getResourceAsStream(path)?.reader()?.readText()
-
-	val languageSpeaker by lazy { LanguageSpeaker(/*MoltenData.systemLanguage.content*/"en_general") }
 
 	private val pluginManager = server.pluginManager
 
