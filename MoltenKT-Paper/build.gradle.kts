@@ -47,7 +47,7 @@ dependencies {
 
     @Suppress("DependencyOnStdlib") implementation(kotlin("stdlib"))
 
-    implementation("org.slf4j:slf4j-api:2.0.0")
+    implementation("org.slf4j:slf4j-api:2.0.1")
     implementation("com.mojang:brigadier:1.0.18")
 
     // > Ktor
