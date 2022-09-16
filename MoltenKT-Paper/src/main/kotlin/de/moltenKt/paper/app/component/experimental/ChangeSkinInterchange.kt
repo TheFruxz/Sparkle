@@ -79,7 +79,7 @@ internal class ChangeSkinInterchange : StructuredInterchange("changeskin", prote
 								this + text(" user applied ").dyeGray()
 								this + text("skin changes ").dyeGold()
 								this + text("at your profile!").dyeGray()
-							}.notification(INFO, target)
+							}.notification(WARNING, target)
 						}
 					}
 
