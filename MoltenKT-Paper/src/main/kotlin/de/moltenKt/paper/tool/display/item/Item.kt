@@ -5,7 +5,6 @@ import de.moltenKt.core.extension.data.buildRandomTag
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.core.extension.objects.takeIfInstance
 import de.moltenKt.core.tool.smart.Producible
-import de.moltenKt.core.tool.smart.identification.Identifiable
 import de.moltenKt.paper.app.MoltenApp
 import de.moltenKt.paper.extension.debugLog
 import de.moltenKt.paper.extension.display.ui.changeColor
@@ -14,7 +13,6 @@ import de.moltenKt.paper.extension.paper.subNamespacedKey
 import de.moltenKt.paper.extension.system
 import de.moltenKt.paper.runtime.event.interact.PlayerInteractAtItemEvent
 import de.moltenKt.paper.structure.app.App
-import de.moltenKt.paper.tool.annotation.Prototype
 import de.moltenKt.paper.tool.display.color.ColorType
 import de.moltenKt.paper.tool.display.item.PostProperty.*
 import de.moltenKt.paper.tool.display.item.action.ItemAction
@@ -23,8 +21,8 @@ import de.moltenKt.paper.tool.display.item.action.ItemClickAction
 import de.moltenKt.paper.tool.display.item.action.ItemDropAction
 import de.moltenKt.paper.tool.display.item.action.ItemInteractAction
 import de.moltenKt.paper.tool.display.item.quirk.Quirk
-import de.moltenKt.paper.tool.display.item.quirk.Quirk.Companion
 import de.moltenKt.paper.tool.smart.KeyedIdentifiable
+import de.moltenKt.unfold.extension.KEY_REGEX
 import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
 import de.moltenKt.unfold.extension.asComponent
 import de.moltenKt.unfold.extension.asStyledComponent
@@ -32,10 +30,6 @@ import de.moltenKt.unfold.extension.asStyledString
 import de.moltenKt.unfold.extension.isNotBlank
 import de.moltenKt.unfold.extension.isNotEmpty
 import de.moltenKt.unfold.extension.lines
-import de.moltenKt.unfold.extension.subKey
-import de.moltenKt.unfold.plus
-import de.moltenKt.unfold.text
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -64,7 +58,6 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
-import java.util.*
 import java.util.function.UnaryOperator
 import kotlin.time.Duration.Companion.seconds
 
@@ -112,7 +105,7 @@ data class Item(
 	)
 
 	override val identityKey: Key
-		get() = Key.key(MoltenApp.Infrastructure.SYSTEM_IDENTITY + "_items", itemIdentity)
+		get() = Key.key(MoltenApp.Infrastructure.SYSTEM_IDENTITY + "_items", itemIdentity.lowercase().filter { KEY_REGEX.matches("$it") })
 
 	val displayObject: Component
 		get() = Component.text()
