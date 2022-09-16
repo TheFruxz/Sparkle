@@ -115,7 +115,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 
 					text {
 						this + text("These players have Build-Mode enabled: ").dyeGray()
-						this + text("(Page ${pageValue.pageIndex + 1} of ${pageValue.pages})").dyeYellow()
+						this + text("(Page ${pageValue.pageNumber} of ${pageValue.availablePages.last})").dyeYellow()
 
 						pageValue.content.withIndex().forEach {
 							val player = offlinePlayer(it.value.identity.toUUID())
@@ -127,7 +127,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 							}
 
 						}
-					}.notification(INFO, executor).display()
+					}.notification(GENERAL, executor).display()
 
 				} else {
 
@@ -279,7 +279,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 							this + text("' is ").dyeGray()
 							this + text(target.buildMode.switchResult("enabled", "disabled")).dyeGreen()
 							this + text("!").dyeGray()
-						}.notification(INFO, executor).display()
+						}.notification(GENERAL, executor).display()
 
 					}
 
