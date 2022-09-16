@@ -1,32 +1,45 @@
 package de.moltenKt.paper.app.component.service
 
 import de.moltenKt.core.extension.container.page
-import de.moltenKt.core.extension.container.replace
-import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.core.extension.math.ceilToInt
-import de.moltenKt.core.tool.timing.calendar.Calendar
+import de.moltenKt.core.extension.switchResult
 import de.moltenKt.paper.Constants
 import de.moltenKt.paper.app.MoltenCache.registeredServices
 import de.moltenKt.paper.extension.app
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
-import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS
 import de.moltenKt.paper.structure.command.InterchangeResult.WRONG_USAGE
-import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
 import de.moltenKt.paper.structure.command.completion.component.CompletionComponent
 import de.moltenKt.paper.structure.command.completion.ignoreCase
 import de.moltenKt.paper.structure.command.completion.isNotRequired
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.tool.display.message.Transmission.Level.*
-import kotlin.time.Duration.Companion.milliseconds
+import de.moltenKt.unfold.extension.dyeDarkGray
+import de.moltenKt.unfold.extension.dyeGold
+import de.moltenKt.unfold.extension.dyeGray
+import de.moltenKt.unfold.extension.dyeGreen
+import de.moltenKt.unfold.extension.dyeRed
+import de.moltenKt.unfold.extension.dyeYellow
+import de.moltenKt.unfold.extension.newlines
+import de.moltenKt.unfold.extension.style
+import de.moltenKt.unfold.hover
+import de.moltenKt.unfold.plus
+import de.moltenKt.unfold.text
+import net.kyori.adventure.text.Component.newline
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
 
 internal class ServiceInterchange : StructuredInterchange(
 	label = "service",
 	protectedAccess = true,
 	structure = buildInterchangeStructure {
+
+		val iconDisabled = "⭘"
+		val iconEnabled = "⏻"
 
 		branch {
 			addContent("list")
@@ -37,32 +50,51 @@ internal class ServiceInterchange : StructuredInterchange(
 				val pageValue = registeredServices.page(page, Constants.ENTRIES_PER_PAGE)
 
 				if (pageValue.content.isNotEmpty()) {
-					buildString {
 
-						appendLine(
-							lang["interchange.internal.service.list.header"].replaceVariables(
-								"p1" to pageValue.pageIndex + 1,
-								"p2" to pageValue.pages,
+					text {
+						this + text("List of all registered services: ").dyeGray()
+						this + text("(Page ${pageValue.pageNumber} of ${pageValue.availablePages.last})").dyeYellow()
+						this + newline()
+
+						pageValue.content.forEach { service ->
+							this + newline()
+							this + service.isRunning.switchResult(
+								text(iconEnabled).dyeGreen(),
+								text(iconDisabled).dyeGray(),
 							)
-						)
+							this + text(" | ").dyeDarkGray()
+							this + text {
+								this + text(service.label).dyeGold().hover {
+									text {
+										this + text("Label & Identity: ").style(NamedTextColor.BLUE, TextDecoration.BOLD)
+										this + newline()
+										this + text("The label is used to display the service in lists and information, the identity is used to identify the service in the system").dyeYellow()
 
-						pageValue.content.withIndex().forEach {
-							val service = it.value
+										newlines(2)
 
-							appendLine(
-								lang["interchange.internal.service.list.line"].replaceVariables(
-								"service" to service.identity,
-								"enabled" to if (service.isRunning) "<green><bold>ONLINE</bold>" else "<red><bold>OFFLINE</bold>",
-								"activeSince" to (Calendar.now().timeInMilliseconds - (service.controller?.startTime
-									?: Calendar.now()).timeInMilliseconds).milliseconds.toString(),
-							))
-
+										this + text("Label: ").dyeGray()
+										this + text(service.label).dyeGreen()
+										this + newline()
+										this + text("Identity: ").dyeGray()
+										this + text(service.key().asString()).dyeGreen()
+									}
+								}
+							}
 						}
 
-					}.notification(INFO, executor).display()
-				} else
-					lang["interchange.internal.service.noServices"]
-						.notification(FAIL, executor).display()
+						newlines(2)
+
+					}.notification(GENERAL, executor).display()
+
+				} else {
+
+					text {
+						this + text("There are currently ").dyeGray()
+						this + text("no services").dyeRed()
+						this + text(" registered!").dyeGray()
+					}.notification(FAIL, executor).display()
+
+				}
 			}
 
 			concludedExecution {
@@ -115,14 +147,20 @@ internal class ServiceInterchange : StructuredInterchange(
 
 							app(service.vendor).start(service)
 
-							lang["interchange.internal.service.serviceStarted"]
-								.replace("[id]" to service.identity)
-								.notification(APPLIED, executor).display()
+							text {
+								this + text("The service '").dyeGray()
+								this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+								this + text("' has been started!").dyeGray()
+							}.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {
-							lang["interchange.internal.service.serviceAlreadyOnline"]
-								.replace("[id]" to service.identity)
-								.notification(FAIL, executor).display()
+
+							text {
+								this + text("The service '").dyeGray()
+								this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+								this + text("' is already online!").dyeGray()
+							}
+
 						}
 
 					}
@@ -142,14 +180,20 @@ internal class ServiceInterchange : StructuredInterchange(
 
 							app(service.vendor).stop(service)
 
-							lang["interchange.internal.service.serviceStopped"]
-								.replace("[id]" to service.identity)
-								.notification(APPLIED, executor).display()
+							text {
+								this + text("The service '").dyeGray()
+								this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+								this + text("' has been stopped!").dyeGray()
+							}.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {
-							lang["interchange.internal.service.serviceAlreadyOffline"]
-								.replace("[id]" to service.identity)
-								.notification(FAIL, executor).display()
+
+							text {
+								this + text("The service '").dyeGray()
+								this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+								this + text("' is already offline!").dyeGray()
+							}.notification(FAIL, executor).display()
+
 						}
 
 					}
@@ -167,9 +211,11 @@ internal class ServiceInterchange : StructuredInterchange(
 
 						app(service.vendor).restart(service)
 
-						lang["interchange.internal.service.serviceRestarted"]
-							.replace("[id]" to service.identity)
-							.notification(APPLIED, executor).display()
+						text {
+							this + text("The service '").dyeGray()
+							this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+							this + text("' has been restarted!").dyeGray()
+						}.notification(APPLIED, executor).display()
 
 					}
 
@@ -189,14 +235,20 @@ internal class ServiceInterchange : StructuredInterchange(
 							app(service.vendor).stop(service)
 							app(service.vendor).unregister(service)
 
-							lang["interchange.internal.service.serviceUnregistered"]
-								.replace("[id]" to service.identity)
-								.notification(APPLIED, executor).display()
+							text {
+								this + text("The service '").dyeGray()
+								this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+								this + text("' has been unregistered!").dyeGray()
+							}.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {
-							lang["interchange.internal.service.serviceNotFound"]
-								.replace("[id]" to service.identity)
-								.notification(FAIL, executor).display()
+
+							text {
+								this + text("The service '").dyeGray()
+								this + text(getInput(1)).dyeYellow()
+								this + text("' is not registered!").dyeGray()
+							}.notification(FAIL, executor).display()
+
 						}
 
 					}
@@ -216,14 +268,20 @@ internal class ServiceInterchange : StructuredInterchange(
 
 							app(service.vendor).reset(service)
 
-							lang["interchange.internal.service.serviceReset"]
-								.replace("[id]" to service.identity)
-								.notification(APPLIED, executor).display()
+							text {
+								this + text("The service '").dyeGray()
+								this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+								this + text("' has been reset!").dyeGray()
+							}.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {
-							lang["interchange.internal.service.serviceNotFound"]
-								.replace("[id]" to service.identity)
-								.notification(FAIL, executor).display()
+
+							text {
+								this + text("The service '").dyeGray()
+								this + text(getInput(1)).dyeYellow()
+								this + text("' is not registered!").dyeGray()
+							}.notification(FAIL, executor).display()
+
 						}
 
 					}
