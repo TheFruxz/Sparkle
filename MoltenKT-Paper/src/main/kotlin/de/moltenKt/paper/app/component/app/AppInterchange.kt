@@ -20,11 +20,18 @@ import de.moltenKt.paper.structure.command.live.InterchangeAccess
 import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.tool.display.message.Transmission
 import de.moltenKt.unfold.buildComponent
-import de.moltenKt.unfold.extension.asStyledComponents
+import de.moltenKt.unfold.extension.dyeDarkGray
+import de.moltenKt.unfold.extension.dyeGold
+import de.moltenKt.unfold.extension.dyeGray
+import de.moltenKt.unfold.extension.dyeGreen
+import de.moltenKt.unfold.extension.dyeYellow
+import de.moltenKt.unfold.extension.newlines
+import de.moltenKt.unfold.extension.style
 import de.moltenKt.unfold.hover
 import de.moltenKt.unfold.plus
 import de.moltenKt.unfold.text
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.Component.newline
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
@@ -43,44 +50,31 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
             buildComponent {
 
-                this + text("List of all running apps") {
-                    plus(NamedTextColor.GRAY)
-                }
-                this + text(" (Page $page of ${paged.pages})") {
+                this + text("List of all running apps").dyeGray()
+                this + text(" (Page ${paged.pageNumber} of ${paged.availablePages.last})") {
                     plus(NamedTextColor.YELLOW)
                     hover {
-                        text("${paged.content.size} App" + (if (paged.content.size == 1) "" else "s") + " listed") {
-                            plus(NamedTextColor.GRAY)
-                        }
+                        text("${paged.content.size} App" + (if (paged.content.size == 1) "" else "s") + " listed").dyeGray()
                     }
                 }
-                this + text(":") {
-                    plus(NamedTextColor.GRAY)
-                }
+                this + text(":").dyeGray()
 
-                this + Component.newline() + text("⏻ Power; ⌘ Naggable; ⏹ API-Compatible") {
-                    plus(NamedTextColor.GRAY)
-                }
+                this + newline() + text("⏻ Power; ⌘ Naggable; ⏹ API-Compatible").dyeGray()
 
-                this + Component.newline() + Component.newline()
+                this + newline()
 
                 paged.content.forEach { app ->
+                    this + newline()
                     this + text(if (app.isEnabled) "⏻" else "⭘") {
                         plus(if (app.isEnabled) NamedTextColor.GREEN else NamedTextColor.GRAY)
                         hover {
                             buildComponent {
-                                this + text("Power-Indicator: ") {
-                                    plus(Style.style(NamedTextColor.BLUE, TextDecoration.BOLD))
-                                }
-                                this + Component.newline()
-                                this + text("Indicates, if the plugin is currently enabled & running") {
-                                    plus(NamedTextColor.YELLOW)
-                                }
-                                this + Component.newline() + Component.newline()
-                                this + text("CLICK").style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD)) +
-                                        text(" to toggle the state of the app") {
-                                            plus(NamedTextColor.GRAY)
-                                        }
+                                this + text("Power-Indicator: ").style(NamedTextColor.BLUE, TextDecoration.BOLD)
+                                this + newline()
+                                this + text("Indicates, if the plugin is currently enabled & running").dyeYellow()
+                                this + newline() + newline()
+                                this + text("CLICK").style(NamedTextColor.GREEN, TextDecoration.BOLD) +
+                                        text(" to toggle the state of the app").dyeGray()
                             }
                         }
                         clickEvent(ClickEvent.suggestCommand(
@@ -91,13 +85,9 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         color(if (app.isNaggable) NamedTextColor.GREEN else NamedTextColor.GRAY)
                         hover {
                             buildComponent {
-                                this + text("Naggable-Indicator: ") {
-                                    plus(Style.style(NamedTextColor.BLUE, TextDecoration.BOLD))
-                                }
-                                this + Component.newline()
-                                this + text("Indicates, if we can still nag to the logs about things") {
-                                    plus(NamedTextColor.YELLOW)
-                                }
+                                this + text("Naggable-Indicator: ").style(NamedTextColor.BLUE, TextDecoration.BOLD)
+                                this + newline()
+                                this + text("Indicates, if we can still nag to the logs about things").dyeYellow()
                             }
                         }
                     }
@@ -105,49 +95,37 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         plus(if (Bukkit.getMinecraftVersion().startsWith("" + app.description.apiVersion)) NamedTextColor.GREEN else NamedTextColor.GRAY)
                         hover {
                             buildComponent {
-                                this + text("Compatibility-Indicator: ") {
-                                    plus(Style.style(NamedTextColor.BLUE, TextDecoration.BOLD))
-                                }
-                                this + Component.newline()
-                                this + text("Indicates, if the plugins target version is compatible with the current server version") {
-                                    plus(NamedTextColor.YELLOW)
-                                }
-                                this + Component.newline()
-                                this + Component.newline() + text("Apps target version: ") {
-                                    plus(NamedTextColor.GRAY)
-                                } + text(app.description.apiVersion ?: "None") {
-                                    plus(NamedTextColor.GREEN)
-                                }
-                                this + Component.newline() + text("Server version: ") {
-                                    plus(NamedTextColor.GRAY)
-                                } + text(Bukkit.getMinecraftVersion()) {
-                                    plus(NamedTextColor.GREEN)
-                                }
+                                this + text("Compatibility-Indicator: ").style(NamedTextColor.BLUE, TextDecoration.BOLD)
+                                this + newline()
+                                this + text("Indicates, if the plugins target version is compatible with the current server version").dyeYellow()
+                                this + newline()
+                                this + newline() + text("Apps target version: ").dyeGray()
+                                this + text(app.description.apiVersion ?: "None").dyeGreen()
+                                this + newline() + text("Server version: ").dyeGray()
+                                this + text(Bukkit.getMinecraftVersion()).dyeGreen()
 
                             }
                         }
                     }
-                    this + text(" | ") {
-                        plus(NamedTextColor.DARK_GRAY)
-                    }
+                    this + text(" | ").dyeDarkGray()
                     this + text(app.label) {
                         plus(NamedTextColor.YELLOW)
                         hover {
                             buildComponent {
-                                this + text("Identity: ") {
+                                this + text("Label & Identity: ") {
                                     plus(Style.style(NamedTextColor.BLUE, TextDecoration.BOLD))
                                 }
-                                this + Component.newline()
+                                this + newline()
                                 this + text("The label is used to display the app in lists and information, the identity is used to identify the app in the system") {
                                     plus(NamedTextColor.YELLOW)
                                 }
-                                this + Component.newline()
-                                this + Component.newline() + text("Label: ") {
+                                this + newline()
+                                this + newline() + text("Label: ") {
                                     plus(NamedTextColor.GRAY)
                                 } + text(app.label) {
                                     plus(NamedTextColor.GREEN)
                                 }
-                                this + Component.newline() + text("Identity: ") {
+                                this + newline() + text("Identity: ") {
                                     plus(NamedTextColor.GRAY)
                                 } + text(app.key().asString()) {
                                     plus(NamedTextColor.GREEN)
@@ -167,12 +145,11 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                     this + text(app.description.apiVersion ?: "None") {
                         plus(NamedTextColor.GRAY)
                     }
-                    this + Component.newline()
                 }
 
-                this + Component.newline()
+                newlines(2)
 
-            }.notification(Transmission.Level.INFO, executor).display()
+            }.notification(Transmission.Level.GENERAL, executor).display()
 
         }
 
@@ -258,8 +235,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 concludedExecution {
                     val targetApp = getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
 
-                    text("Stopping the app '${targetApp.label}'...")
-                        .color(NamedTextColor.GRAY)
+                    text("Stopping the app '${targetApp.label}'...").dyeGray()
                         .hoverEvent(text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY))
                         .message(executor).display()
 
@@ -331,15 +307,23 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 concludedExecution {
                     val targetApp = getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
 
-                    listOf(
-                        "<gray>Display-Name <dark_gray>| <yellow>${targetApp.label}",
-                        "<gray>Identity <dark_gray>| <yellow>${targetApp.identity}",
-                        "<gray>Active since <dark_gray>| <yellow>${targetApp.activeSince}",
-                        "<gray>Components <dark_gray>| <yellow>${MoltenCache.registeredComponents.filter { it.vendorIdentity == targetApp.identityObject }.size} Components",
-                        "<gray>Interchanges <dark_gray>| <yellow>${MoltenCache.registeredInterchanges.filter { it.vendorIdentity == targetApp.identityObject }.size} Interchanges",
-                        "<gray>Services <dark_gray>| <yellow>${MoltenCache.registeredServices.filter { it.vendorIdentity == targetApp.identityObject }.size} Services",
-                        "<gray>SandBoxes <dark_gray>| <yellow>${MoltenCache.registeredSandBoxes.filter { it.vendorIdentity == targetApp.identityObject }.size} SandBoxes",
-                    ).asStyledComponents.notification(Transmission.Level.INFO, executor).display()
+                    text {
+                        this + text("Information about the app '").dyeGray()
+                        this + text(targetApp.label).dyeGold()
+                        this + text("'").dyeGray()
+
+                        this + newline()
+
+                        this + newline() + text("Display-Name: ").dyeGray() + text(targetApp.label).dyeYellow()
+                        this + newline() + text("Identity: ").dyeGray() + text(targetApp.identity).dyeYellow()
+                        this + newline() + text("Active since: ").dyeGray() + text(targetApp.activeSince.toString()).dyeYellow()
+                        this + newline() + text("Components: ").dyeGray() + text("${MoltenCache.registeredComponents.filter { it.vendorIdentity == targetApp.identityObject }.size} Components").dyeYellow()
+                        this + newline() + text("Interchanges: ").dyeGray() + text("${MoltenCache.registeredInterchanges.filter { it.vendorIdentity == targetApp.identityObject }.size} Interchanges").dyeYellow()
+                        this + newline() + text("Services: ").dyeGray() + text("${MoltenCache.registeredServices.filter { it.vendorIdentity == targetApp.identityObject }.size} Services").dyeYellow()
+                        this + newline() + text("SandBoxes: ").dyeGray() + text("${MoltenCache.registeredSandBoxes.filter { it.vendorIdentity == targetApp.identityObject }.size} SandBoxes").dyeYellow()
+
+                        newlines(2)
+                    }.notification(Transmission.Level.GENERAL, executor).display()
 
                 }
 
