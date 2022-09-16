@@ -29,9 +29,9 @@ import de.moltenKt.paper.tool.permission.Approval
 
 abstract class SmartComponent(
 	override val behaviour: RunType = DISABLED,
-	override val experimental: Boolean = false,
+	override val isExperimental: Boolean = false,
 	preferredVendor: App? = null,
-) : Component(behaviour, experimental, preferredVendor) {
+) : Component(behaviour, isExperimental, preferredVendor) {
 
 	private var selfRegister: suspend () -> Unit = {}
 	private var selfStart: suspend () -> Unit = {}

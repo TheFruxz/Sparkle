@@ -17,12 +17,11 @@ import de.moltenKt.unfold.extension.KeyingStrategy.CONTINUE
 import de.moltenKt.unfold.extension.subKey
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
-import net.kyori.adventure.key.Key
 import kotlin.reflect.KClass
 
 abstract class Component(
 	open val behaviour: RunType = DISABLED,
-	open val experimental: Boolean = false,
+	open val isExperimental: Boolean = false,
 	final override val preferredVendor: App? = null,
 ) : ContextualInstance<Component>, VendorOnDemand, Logging, Hoster<Component.ComponentRequestAnswer, Component.ComponentRequestAnswer, Component> {
 
@@ -107,6 +106,9 @@ abstract class Component(
 
 	val canBeStopped: Boolean
 		get() = behaviour != ENABLED
+
+	val isForced: Boolean
+		get() = behaviour == ENABLED
 
 	val canBeAutoStartToggled: Boolean
 		get() = !setOf(ENABLED, AUTOSTART_IMMUTABLE).contains(behaviour)
