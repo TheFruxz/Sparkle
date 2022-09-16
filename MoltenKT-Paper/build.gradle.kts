@@ -56,7 +56,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.1")
     implementation("io.ktor:ktor-client-content-negotiation:2.1.1")
 
-    compileOnly("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT") // PaperMC
+    implementation("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT") // PaperMC
     compileOnly("me.clip:placeholderapi:2.11.2") // PlaceholderAPI
 
     // Shadow
@@ -75,10 +75,10 @@ dependencies {
     shadow("org.jetbrains.exposed:exposed-jdbc:0.39.2")
 
     // > Ktor
-    shadow("io.ktor:ktor-client-cio:2.1.0")
-    shadow("io.ktor:ktor-client-core-jvm:2.1.0")
-    shadow("io.ktor:ktor-serialization-kotlinx-json:2.1.0")
-    shadow("io.ktor:ktor-client-content-negotiation:2.1.0")
+    shadow("io.ktor:ktor-client-cio:2.1.1")
+    shadow("io.ktor:ktor-client-core-jvm:2.1.1")
+    shadow("io.ktor:ktor-serialization-kotlinx-json:2.1.1")
+    shadow("io.ktor:ktor-client-content-negotiation:2.1.1")
 
     shadow("net.kyori:adventure-api:4.11.0")
     shadow("net.kyori:adventure-text-serializer-legacy:4.11.0")
