@@ -1,5 +1,6 @@
 package de.moltenKt.unfold.extension
 
+import de.moltenKt.unfold.Unfold
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.Style
@@ -14,6 +15,7 @@ import net.kyori.adventure.text.format.TextDecoration
  * @author Fruxz
  * @since 1.0
  */
+@Unfold
 operator fun TextColor.plus(decoration: TextDecoration) =
 	Style.style(this, decoration)
 
@@ -24,6 +26,7 @@ operator fun TextColor.plus(decoration: TextDecoration) =
  * @author Fruxz
  * @since 1.0
  */
+@Unfold
 operator fun TextDecoration.plus(color: TextColor) =
 	color + this
 
@@ -34,6 +37,7 @@ operator fun TextDecoration.plus(color: TextColor) =
  * @author Fruxz
  * @since 1.0
  */
+@Unfold
 operator fun <T : StyleSetter<T>> T.plus(color: TextColor) =
 	this.color(color)
 
@@ -44,6 +48,7 @@ operator fun <T : StyleSetter<T>> T.plus(color: TextColor) =
  * @author Fruxz
  * @since 1.0
  */
+@Unfold
 operator fun <T : StyleSetter<T>> T.plus(decoration: TextDecoration) =
 	this.decorate(decoration)
 
@@ -54,6 +59,7 @@ operator fun <T : StyleSetter<T>> T.plus(decoration: TextDecoration) =
  * @author Fruxz
  * @since 1.0
  */
+@Unfold
 operator fun TextComponent.plus(style: Style) =
 	this.style(style)
 
@@ -64,6 +70,7 @@ operator fun TextComponent.plus(style: Style) =
  * @author Fruxz
  * @since 1.0
  */
+@Unfold
 infix fun TextComponent.style(style: Style) =
 	this + style
 
@@ -74,17 +81,22 @@ infix fun TextComponent.style(style: Style) =
  * @author Fruxz
  * @since 1.0
  */
+@Unfold
 infix fun TextComponent.style(color: TextColor) =
 	this + color
 
+@Unfold
 fun Component.style(color: TextColor, vararg decorations: TextDecoration) =
 	style(Style.style(color, *decorations))
 
+@Unfold
 fun Component.style(vararg decorations: TextDecoration) =
 	style(Style.style(*decorations))
 
+@Unfold
 fun TextComponent.Builder.style(color: TextColor, vararg decorations: TextDecoration) =
 	style(Style.style(color, *decorations))
 
+@Unfold
 fun TextComponent.Builder.style(vararg decorations: TextDecoration) =
 	style(Style.style(*decorations))

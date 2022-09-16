@@ -2,22 +2,9 @@ package de.moltenKt.paper.extension.display
 
 import com.destroystokyo.paper.ParticleBuilder
 import de.moltenKt.core.tool.color.Color
-import de.moltenKt.paper.tool.display.color.MoltenColor
-import net.kyori.adventure.text.format.TextColor
+import de.moltenKt.unfold.color.MoltenColor
+import de.moltenKt.unfold.extension.asMoltenColor
 import org.bukkit.Color as BukkitColor
-import java.awt.Color as AwtColor
-
-fun colorOf(red: Int, green: Int, blue: Int) = MoltenColor(red, green, blue)
-
-fun colorOf(rgb: Int) = MoltenColor(rgb)
-
-fun colorOf(hexColor: String) = MoltenColor(hexColor)
-
-fun colorOf(awtColor: AwtColor) = MoltenColor(awtColor)
-
-fun colorOf(bukkitColor: BukkitColor) = MoltenColor(bukkitColor)
-
-fun colorOf(textColor: TextColor) = MoltenColor(textColor)
 
 fun ParticleBuilder.color(color: MoltenColor, size: Float) = apply {
     this.color(color.bukkitColor, size)
@@ -27,6 +14,14 @@ fun ParticleBuilder.color(color: MoltenColor) = apply {
     this.color(color.bukkitColor)
 }
 
-fun Color.asMoltenColor(): MoltenColor = MoltenColor(this.awtColor)
-
 fun Color.asBukkitColor(): org.bukkit.Color = asMoltenColor().bukkitColor
+
+fun colorOf(bukkitColor: BukkitColor) = MoltenColor.Companion.ofBukkit(bukkitColor)
+
+fun MoltenColor.Companion.ofBukkit(bukkitColor: BukkitColor) = MoltenColor(bukkitColor.asRGB())
+
+val MoltenColor.bukkitColor: BukkitColor
+    get() {
+        validate()
+        return BukkitColor.fromRGB(red, green, blue)
+    }

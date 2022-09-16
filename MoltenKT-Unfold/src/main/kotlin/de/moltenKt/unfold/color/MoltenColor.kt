@@ -1,4 +1,4 @@
-package de.moltenKt.paper.tool.display.color
+package de.moltenKt.unfold.color
 
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.floorToInt
@@ -13,7 +13,6 @@ import kotlinx.serialization.Serializable
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.util.RGBLike
 import kotlin.math.roundToInt
-import org.bukkit.Color as BukkitColor
 import java.awt.Color as AwtColor
 
 @Serializable
@@ -24,8 +23,6 @@ data class MoltenColor(
 ) : RGBLike, TextColor, ColorBase<MoltenColor> {
 
     constructor(textColor: TextColor) : this(textColor.value())
-
-    constructor(bukkitColor: BukkitColor) : this(bukkitColor.asRGB())
 
     constructor(color: AwtColor) : this(color.red, color.green, color.blue)
 
@@ -153,11 +150,6 @@ data class MoltenColor(
             green = raw.green,
             blue = raw.blue,
         )
-    }
-
-    val bukkitColor: BukkitColor by lazy {
-        validate()
-        BukkitColor.fromRGB(red, green, blue)
     }
 
     override fun recreate(red: Int, green: Int, blue: Int) =
