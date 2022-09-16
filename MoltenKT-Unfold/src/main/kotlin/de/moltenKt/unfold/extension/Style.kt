@@ -3,6 +3,7 @@ package de.moltenKt.unfold.extension
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.Style
+import net.kyori.adventure.text.format.StyleSetter
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 
@@ -33,7 +34,7 @@ operator fun TextDecoration.plus(color: TextColor) =
  * @author Fruxz
  * @since 1.0
  */
-operator fun TextComponent.plus(color: TextColor) =
+operator fun <T : StyleSetter<T>> T.plus(color: TextColor) =
 	this.color(color)
 
 /**
@@ -43,7 +44,7 @@ operator fun TextComponent.plus(color: TextColor) =
  * @author Fruxz
  * @since 1.0
  */
-operator fun TextComponent.plus(decoration: TextDecoration) =
+operator fun <T : StyleSetter<T>> T.plus(decoration: TextDecoration) =
 	this.decorate(decoration)
 
 /**

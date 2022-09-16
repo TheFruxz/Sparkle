@@ -8,6 +8,7 @@ import net.kyori.adventure.text.TextComponent.Builder
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEventSource
 import net.kyori.adventure.text.format.Style
+import net.kyori.adventure.text.format.StyleSetter
 import net.kyori.adventure.text.format.TextColor
 
 /**
@@ -188,26 +189,15 @@ fun text(componentBuilder: Builder, builder: Builder.() -> Unit = { }) =
 fun text(builder: Builder.() -> Unit) = text(Component.empty(), builder)
 
 /**
- * This function applies the result of the [process] to [this] current
- * [TextComponent], using the [TextComponent.hoverEvent] function.
+ * This function applies the result of the [process] to [this],
+ * using the [StyleSetter.hoverEvent] function.
  * @param process The process, which generates the [HoverEventSource]<*>
- * @return The modified [TextComponent]
+ * @return The modified [this]
  * @author Fruxz
  * @since 1.0
  */
 @Unfold
-fun TextComponent.hover(process: () -> HoverEventSource<*>?) = this.hoverEvent(process())
-
-/**
- * This function applies the result of the [process] to [this] current
- * [Builder], using the [Builder.hoverEvent] function.
- * @param process The process, which generates the [HoverEventSource]<*>
- * @return The modified [Builder]
- * @author Fruxz
- * @since 1.0
- */
-@Unfold
-fun Builder.hover(process: () -> HoverEventSource<*>) = this.hoverEvent(process())
+fun <T : StyleSetter<T>> T.hover(process: () -> HoverEventSource<*>?) = this.hoverEvent(process())
 
 @DslMarker
 @PublishedApi
