@@ -25,7 +25,7 @@ if(savedDarkMode === true){
     <div class="library-name">
 <a href="../../../index.html">
 <span>MoltenKT</span>            </a>    </div>
-    <div>1.0-PRE-16
+    <div>1.0-PRE-17
     </div>
     <div class="pull-right d-flex">
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
@@ -43,7 +43,6 @@ if(savedDarkMode === true){
     <h1 class="cover"><span><span>label</span></span></h1>
   </div>
   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":MoltenKT-Paper:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="label.html">label</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h1 class=""><code class="lang-kotlin">App.label</code></h1><h2 class=""> Info</h2><p class="paragraph">This value defines the display-name of this app, which will be displayed in app-lists and information with the app included. Can be duplicated, but try to avoid duplicated display names with other apps!</p><h2 class=""> Use</h2><p class="paragraph">Use this value to tell your customers &amp; visitors that your app is running, there some possible ways to do that:</p><ul><li><p class="paragraph">On Minecraft-Networks: Tell the players the name of your network</p></li><li><p class="paragraph">On Publishing: Tell the players the name of your app (where they can find it)</p></li><li><p class="paragraph">On private use: Tell yourself, that this app is this app</p></li></ul><p class="paragraph">But you can use this like you like!</p><h2 class=""> Relations</h2><p class="paragraph">The label is not related to some crucial read/save system or something else, in this cases <a href="app-identity.html">appIdentity</a> is used!</p><h4 class="">Author</h4><p class="paragraph">Fruxz (@TheFruxz)</p><h4 class="">Since</h4><p class="paragraph">1.0-BETA-2 (preview)</p><h2 class="">Samples</h2><div class="sample-container"><pre><code class="runnablesample monospace block lang-kotlin" theme="idea">import com.destroystokyo.paper.ParticleBuilder
-import de.moltenKt.core.extension.data.addJsonContextualConfiguration
 import de.moltenKt.core.extension.data.addMoltenJsonModuleModification
 import de.moltenKt.core.extension.forceCast
 import de.moltenKt.paper.app.MoltenApp.Infrastructure.SYSTEM_IDENTITY
@@ -75,7 +74,6 @@ import de.moltenKt.paper.mojang.MojangProfileRaw
 import de.moltenKt.paper.mojang.MojangProfileSkin
 import de.moltenKt.paper.mojang.MojangProfileTextures
 import de.moltenKt.paper.mojang.MojangProfileUsernameHistoryEntry
-import de.moltenKt.paper.runtime.app.LanguageSpeaker.LanguageContainer
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.app.AppCompanion
 import de.moltenKt.paper.tool.data.Preference
@@ -109,8 +107,6 @@ import de.moltenKt.paper.tool.position.relative.LinearShape
 import de.moltenKt.paper.tool.position.relative.PyramidalShape
 import de.moltenKt.paper.tool.position.relative.Shape
 import de.moltenKt.paper.tool.position.relative.SphereShape
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.cancelChildren
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Location
@@ -123,6 +119,7 @@ import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import java.util.*
 import java.util.logging.Level
+import de.moltenKt.core.extension.data.addJsonContextualConfiguration as jsonContextual
 fun main() { 
    //sampleStart 
    override val label = "Molten-Kt" 
