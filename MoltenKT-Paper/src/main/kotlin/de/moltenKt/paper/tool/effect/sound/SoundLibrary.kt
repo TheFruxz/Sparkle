@@ -32,7 +32,7 @@ enum class SoundLibrary(val melody: SoundMelody) : SoundEffect {
 
 	}),
 
-	NOTIFICATION_INFO(buildMelody {
+	NOTIFICATION_PROCESS(buildMelody {
 
 		delayPerBeat = 3.minecraftTicks
 
@@ -44,7 +44,7 @@ enum class SoundLibrary(val melody: SoundMelody) : SoundEffect {
 	NOTIFICATION_GENERAL(buildMelody {
 
 		beat {
-			sound(Sound.ENTITY_PUFFER_FISH_FLOP, pitch = 1.5)
+			sound(Sound.BLOCK_NOTE_BLOCK_BELL, pitch = .9, volume = .1)
 			sound(Sound.UI_TOAST_IN, pitch = 1.5)
 		}
 
