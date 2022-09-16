@@ -20,12 +20,14 @@ import de.moltenKt.paper.structure.component.Component
 import de.moltenKt.paper.structure.component.file.ComponentManager
 import de.moltenKt.paper.tool.display.message.Transmission
 import de.moltenKt.paper.tool.display.message.Transmission.Level.APPLIED
-import de.moltenKt.paper.tool.display.message.Transmission.Level.INFO
+import de.moltenKt.paper.tool.display.message.Transmission.Level.GENERAL
 import de.moltenKt.unfold.extension.dyeDarkGray
+import de.moltenKt.unfold.extension.dyeGold
 import de.moltenKt.unfold.extension.dyeGray
 import de.moltenKt.unfold.extension.dyeGreen
 import de.moltenKt.unfold.extension.dyeRed
 import de.moltenKt.unfold.extension.dyeYellow
+import de.moltenKt.unfold.extension.newlines
 import de.moltenKt.unfold.extension.style
 import de.moltenKt.unfold.hover
 import de.moltenKt.unfold.plus
@@ -53,10 +55,11 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 					this + text("(Page $page of ${pages.last})").dyeYellow()
 					this + newline()
 					this + text("$iconDisabled/$iconEnabled Power; $iconAutoStart Autostart; $iconForced Forced; $iconExperimental Experimental; $iconBlocked Blocked").dyeGray()
-					this + newline() + newline()
+					this + newline()
 
 					content.forEach { component ->
 
+						this + newline()
 						this + when {
 							component.isBlocked -> text(iconBlocked).hover {
 								text {
@@ -107,6 +110,8 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 							else -> text(iconForced).dyeGray()
 						}
 
+						this + space()
+
 						this + when {
 							component.isExperimental -> text(iconExperimental).hover {
 								text {
@@ -120,7 +125,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 
 						this + text(" | ").dyeDarkGray()
 
-						this + text(component.label).hover {
+						this + text(component.label).dyeGold().hover {
 							text {
 								this + text("Label & Identity: ").style(NamedTextColor.BLUE, TextDecoration.BOLD)
 								this + newline()
@@ -129,14 +134,18 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 								this + text("Label: ").dyeGray()
 								this + text(component.label).dyeGreen()
 								this + newline()
-								this + text("Identity: ").dyeGreen()
+								this + text("Identity: ").dyeGray()
 								this + text(component.key().asString()).dyeGreen()
 							}
 						}
 
+						this + space()
+
 					}
 
-				}.notification(INFO, executor).display()
+					newlines(2)
+
+				}.notification(GENERAL, executor).display()
 
 			}
 		}
@@ -259,9 +268,11 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 			text {
 				this + text {
 					this + text("Information about the component '").dyeGray()
-					this + text(component.label).dyeYellow()
+					this + text(component.label).dyeGold()
 					this + text("':").dyeGray()
 				}
+
+				this + newline()
 
 				this + newline() + text("Label: ").dyeGray() + text(component.label).dyeYellow()
 				this + newline() + text("Identity: ").dyeGray() + text(component.key().asString()).dyeYellow()
@@ -271,7 +282,9 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 				this + newline() + text("Experimental: ").dyeGray() + text(component.isExperimental.toDisplay()).dyeYellow()
 				this + newline() + text("Running since: ").dyeGray() + text(component.runningSince?.durationToNow()?.toString() ?: "-/-").dyeYellow()
 
-			}.notification(INFO, executor).display()
+				newlines(2)
+
+			}.notification(GENERAL, executor).display()
 
 		}
 
