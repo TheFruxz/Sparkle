@@ -1,7 +1,6 @@
 package de.moltenKt.paper.app.component.point
 
 import de.moltenKt.core.extension.container.page
-import de.moltenKt.core.extension.container.replaceVariables
 import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.paper.Constants
 import de.moltenKt.paper.app.MoltenData
@@ -9,19 +8,24 @@ import de.moltenKt.paper.app.component.point.asset.Point
 import de.moltenKt.paper.app.component.point.asset.PointConfig
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.interchange.InterchangeExecutor
-import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.tasky.asSync
 import de.moltenKt.paper.structure.command.InterchangeResult.SUCCESS
 import de.moltenKt.paper.structure.command.InterchangeResult.WRONG_USAGE
 import de.moltenKt.paper.structure.command.InterchangeUserRestriction.ONLY_PLAYERS
-import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.structure.command.completion.InterchangeStructureInputRestriction
 import de.moltenKt.paper.structure.command.completion.buildInterchangeStructure
 import de.moltenKt.paper.structure.command.completion.component.CompletionAsset
 import de.moltenKt.paper.structure.command.completion.ignoreCase
 import de.moltenKt.paper.structure.command.completion.isNotRequired
 import de.moltenKt.paper.structure.command.completion.mustNotMatchOutput
+import de.moltenKt.paper.structure.command.structured.StructuredInterchange
 import de.moltenKt.paper.tool.display.message.Transmission.Level.*
+import de.moltenKt.unfold.extension.dyeGray
+import de.moltenKt.unfold.extension.dyeRed
+import de.moltenKt.unfold.extension.dyeYellow
+import de.moltenKt.unfold.plus
+import de.moltenKt.unfold.text
+import net.kyori.adventure.text.Component.newline
 import org.bukkit.entity.Player
 
 internal class PointInterchange : StructuredInterchange("point", protectedAccess = true, userRestriction = ONLY_PLAYERS, structure = buildInterchangeStructure {
@@ -35,31 +39,31 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 			val pageValue = MoltenData.savedPoints.content.points.page(page, Constants.ENTRIES_PER_PAGE)
 
 			if (pageValue.content.isNotEmpty()) {
-				buildString {
 
-					appendLine(
-						lang["interchange.internal.essentials.point.list.header"].replaceVariables(
-							"p1" to pageValue.pageIndex + 1,
-							"p2" to pageValue.pages,
-						)
-					)
+				text {
+					this + text("List of all saved points: ").dyeGray()
+					this + text("(Page $page of ${pageValue.availablePages.last})").dyeYellow()
+					this + newline() + newline()
 
-					pageValue.content.withIndex().forEach {
-						val point = it.value
-
-						lang["interchange.internal.essentials.point.list.entry"].replaceVariables(
-							"point" to point.identity,
-							"x" to point.bukkitLocation.blockX,
-							"y" to point.bukkitLocation.blockY,
-							"z" to point.bukkitLocation.blockZ,
-						).let(::appendLine)
-
+					pageValue.content.forEach {
+						this + text {
+							this + text(it.identity).dyeYellow()
+							this + text(" - ")
+							this + text("X: ${it.bukkitLocation.blockX} Y: ${it.bukkitLocation.blockY} Z: ${it.bukkitLocation.blockZ}").dyeGray()
+						}
 					}
 
-				}.notification(INFO, executor).display()
-			} else
-				lang["interchange.internal.essentials.point.list.empty"]
-					.notification(FAIL, executor).display()
+				}.notification(GENERAL, executor).display()
+
+			} else {
+
+				text {
+					this + text("There are currently ").dyeGray()
+					this + text("no points").dyeRed()
+					this + text(" saved!").dyeGray()
+				}.notification(FAIL, executor).display()
+
+			}
 		}
 
 		concludedExecution {
@@ -120,14 +124,21 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 						MoltenData.savedPoints.content =
 							PointConfig(points + Point(pointName, executor.location))
 
-						lang["interchange.internal.essentials.point.edit.created"]
-							.replaceVariables("point" to pointName)
-							.notification(APPLIED, executor).display()
+						text {
+							this + text("A new point called '").dyeGray()
+							this + text(pointName).dyeYellow()
+							this + text("' has been created!").dyeGray()
+						}.notification(APPLIED, executor).display()
 
-					} else
-						lang["interchange.internal.essentials.point.edit.exists"]
-							.replaceVariables("point" to pointName)
-							.notification(FAIL, executor).display()
+					} else {
+
+						text {
+							this + text("A point called '").dyeGray()
+							this + text(pointName).dyeYellow()
+							this + text("' already exists!").dyeGray()
+						}.notification(FAIL, executor).display()
+
+					}
 
 				}
 
@@ -149,14 +160,21 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 						MoltenData.savedPoints.content = PointConfig(points)
 
-						lang["interchange.internal.essentials.point.edit.removed"]
-							.replaceVariables("point" to parameters.last())
-							.notification(APPLIED, executor).display()
+						text {
+							this + text("The point called '").dyeGray()
+							this + text(point.identity).dyeYellow()
+							this + text("' has been removed!").dyeGray()
+						}.notification(APPLIED, executor).display()
 
-					} else
-						lang["interchange.internal.essentials.point.edit.notFound"]
-							.replaceVariables("point" to parameters.last())
-							.notification(FAIL, executor).display()
+					} else {
+
+						text {
+							this + text("The point called '").dyeGray()
+							this + text(getInput(1)).dyeYellow()
+							this + text("' does not exist!").dyeGray()
+						}.notification(FAIL, executor).display()
+
+					}
 
 				}
 
@@ -178,14 +196,21 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 						asSync { executor.teleport(point.bukkitLocation) }
 
-						lang["interchange.internal.essentials.point.edit.teleportedSelf"]
-							.replaceVariables("point" to parameters.last())
-							.notification(APPLIED, executor).display()
+						text {
+							this + text("You have been teleported to the point called '").dyeGray()
+							this + text(point.identity).dyeYellow()
+							this + text("'!").dyeGray()
+						}.notification(APPLIED, executor).display()
 
-					} else
-						lang["interchange.internal.essentials.point.edit.notFound"]
-							.replaceVariables("point" to parameters.last())
-							.notification(FAIL, executor).display()
+					} else {
+
+						text {
+							this + text("The point called '").dyeGray()
+							this + text(getInput(1)).dyeYellow()
+							this + text("' does not exist!").dyeGray()
+						}.notification(FAIL, executor).display()
+
+					}
 
 				}
 
