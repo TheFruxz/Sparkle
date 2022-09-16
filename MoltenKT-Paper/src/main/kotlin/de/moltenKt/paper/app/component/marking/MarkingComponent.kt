@@ -1,12 +1,10 @@
 package de.moltenKt.paper.app.component.marking
 
-import de.moltenKt.core.extension.container.replaceVariables
-import de.moltenKt.core.extension.math.shorter
+import de.moltenKt.core.extension.math.round
 import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.display.ui.item
-import de.moltenKt.paper.extension.lang
 import de.moltenKt.paper.extension.paper.displayString
 import de.moltenKt.paper.extension.paper.identityObject
 import de.moltenKt.paper.extension.paper.isPhysical
@@ -17,11 +15,14 @@ import de.moltenKt.paper.structure.component.SmartComponent
 import de.moltenKt.paper.tool.display.message.Transmission.Level.*
 import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
 import de.moltenKt.unfold.extension.asComponent
-import de.moltenKt.unfold.extension.asStyledComponent
 import de.moltenKt.unfold.extension.asStyledComponents
+import de.moltenKt.unfold.extension.dyeGray
+import de.moltenKt.unfold.extension.dyeLightPurple
+import de.moltenKt.unfold.extension.dyeRed
 import de.moltenKt.unfold.hover
 import de.moltenKt.unfold.plus
 import de.moltenKt.unfold.text
+import net.kyori.adventure.text.Component.newline
 import net.kyori.adventure.text.format.NamedTextColor.YELLOW
 import net.kyori.adventure.text.format.Style.style
 import net.kyori.adventure.text.format.TextDecoration.BOLD
@@ -45,7 +46,7 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 			Material.GOLDEN_HOE.item {
 
 				label = "Marking Tool".asComponent.style(style(YELLOW, BOLD))
-				itemIdentity = "MoltenKT:markingTool"
+				itemIdentity = "markingTool"
 				lore = """
 				
 				<YELLOW>LEFT-CLICK <gray>-> Set #1 Position
@@ -65,36 +66,54 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 						if (MoltenCache.playerMarkerBoxes[user.identityObject] != null) {
 
-							lang["component.markingTool.action.view.detail"].replaceVariables(
-								"1" to currentBox.firstLocation.displayString(),
-								"2" to currentBox.secondLocation.displayString(),
-							).asStyledComponent
-								.hover {
-									text {
-										this + text(
-											tryOrNull {
-												lang["component.markingTool.action.view.distance.both"].replaceVariables(
-													"distance" to currentBox.distance.shorter
-												)
-											} ?: lang["component.markingTool.action.view.distance.acrossWorlds"]
-										)
-										this + text(" ")
-										this + text(lang["component.markingTool.action.view.distance.volume"].replaceVariables(
-											"volume" to currentBox.blockVolume
-										))
-									}
+							text {
+								this + text("You have the locations ").dyeGray()
+								this + text(currentBox.firstLocation.displayString()).dyeLightPurple()
+								this + text(" and ").dyeGray()
+								this + text(currentBox.secondLocation.displayString()).dyeLightPurple()
+								this + text(" marked.").dyeGray()
+							}.hover {
+								text {
+									this + text("Both locations are ").dyeGray()
+									this + text("${tryOrNull { currentBox.distance.round(2) } ?: Double.POSITIVE_INFINITY} Block(s) ").dyeLightPurple()
+									this + text("apart.").dyeGray()
+									this + newline() + newline()
+									this + text("The selection contains a volume of ").dyeGray()
+									this + text("${currentBox.blockVolume} Block(s)").dyeLightPurple()
 								}
-								.notification(INFO, user).display()
+							}.notification(GENERAL, user).display()
 
-						} else
-							lang["component.markingTool.action.view.notSet"]
-								.notification(FAIL, user).display()
+						} else {
+
+							text {
+								this + text("You have currently ").dyeGray()
+								this + text("no locations ").dyeRed()
+								this + text("marked, that are valid for this action.").dyeGray()
+							}.notification(FAIL, user).display()
+
+						}
 
 					} else {
 
 						if (targetBlock != null) {
 							val targetLocation = targetBlock.location.toCenterLocation()
 							val targetPrint = targetBlock.location.displayString()
+
+							fun actionProcessedMessage(positionNumber: Int) = text {
+								this + text("You have set the location #").dyeGray()
+								this + text("$positionNumber").dyeLightPurple()
+								this + text(" to ").dyeGray()
+								this + text(targetPrint).dyeLightPurple()
+								this + text(".").dyeGray()
+							}
+
+							fun actionAlreadySet() = text {
+								this + text("This position is ").dyeGray()
+								this + text("already set").dyeRed()
+								this + text(" to ").dyeGray()
+								this + text(targetPrint).dyeLightPurple()
+								this + text(".").dyeGray()
+							}
 
 							when {
 								event.action.isLeftClick -> {
@@ -104,27 +123,21 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 										MoltenCache.playerMarkerBoxes += user.identityObject to currentBox.updateFirstLocation(targetLocation)
 
-										lang["component.markingTool.action.set"].replaceVariables(
-											"n" to 1,
-											"pos" to targetPrint,
-										).asStyledComponent
+										actionProcessedMessage(1)
 											.hover {
 												text {
-													this + text(
-														tryOrNull {
-															lang["component.markingTool.action.view.distance.other"].replaceVariables(
-																"distance" to targetLocation.distance(currentBox.secondLocation).shorter
-															)
-														} ?: lang["component.markingTool.action.view.distance.acrossWorlds"]
-													)
+													this + text("Other position is ").dyeGray()
+													this + text("${tryOrNull { targetLocation.distance(currentBox.secondLocation).round(2) } ?: Double.POSITIVE_INFINITY} Block(s) ").dyeLightPurple()
+													this + text("away.").dyeGray()
 												}
 											}
 											.notification(APPLIED, user).display()
 
-									} else
-										lang["component.markingTool.action.duplicate"].replaceVariables(
-											"pos" to targetPrint
-										).notification(FAIL, user).display()
+									} else {
+
+										actionAlreadySet().notification(FAIL, user).display()
+
+									}
 								}
 
 								event.action.isRightClick -> {
@@ -134,34 +147,35 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 										MoltenCache.playerMarkerBoxes += user.identityObject to currentBox.updateSecondLocation(targetLocation)
 
-										lang["component.markingTool.action.set"].replaceVariables(
-											"n" to 2,
-											"pos" to targetPrint,
-										).asStyledComponent
+										actionProcessedMessage(2)
 											.hover {
 												text {
-													this + text(
-														tryOrNull {
-															lang["component.markingTool.action.view.distance.other"].replaceVariables(
-																"distance" to targetLocation.distance(currentBox.firstLocation).shorter
-															)
-														} ?: lang["component.markingTool.action.view.distance.acrossWorlds"]
-													)
+													this + text("Other position is ").dyeGray()
+													this + text("${tryOrNull { targetLocation.distance(currentBox.firstLocation).round(2) } ?: Double.POSITIVE_INFINITY} Block(s) ").dyeLightPurple()
+													this + text("away.").dyeGray()
 												}
 											}
-											.notification(APPLIED, user)
-											.display()
+											.notification(APPLIED, user).display()
 
-									} else
-										lang["component.markingTool.action.duplicate"].replaceVariables(
-											"pos" to targetPrint
-										).notification(FAIL, user).display()
+									} else {
+
+										actionAlreadySet().notification(FAIL, user).display()
+
+									}
 								}
 							}
 
-						} else
-							lang["component.markingTool.action.wrongLook"]
-								.notification(FAIL, user).display()
+						} else {
+
+							text {
+								this + text("You are ").dyeGray()
+								this + text("not").dyeRed()
+								this + text(" looking at a ").dyeGray()
+								this + text("valid block").dyeRed()
+								this + text("!").dyeGray()
+							}.notification(FAIL, user).display()
+
+						}
 
 					}
 
