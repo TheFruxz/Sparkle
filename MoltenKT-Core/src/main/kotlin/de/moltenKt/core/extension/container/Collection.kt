@@ -4,7 +4,7 @@ import de.moltenKt.core.extension.math.ceilToInt
 import de.moltenKt.core.extension.math.floorToInt
 import de.moltenKt.core.extension.math.maxTo
 import de.moltenKt.core.extension.math.minTo
-import de.moltenKt.core.tool.collection.CollectionPage
+import de.moltenKt.core.tool.collection.IterablePage
 import kotlin.random.Random
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -217,15 +217,15 @@ fun <T> Array<T>.take(intRange: IntRange): List<T> =
  * @author Fruxz
  * @since 1.0
  */
-fun <T, C : Iterable<T>> C.page(page: Int, pageSize: Int): CollectionPage<T> {
+fun <T, C : Iterable<T>> C.page(pageIndex: Int, pageSize: Int): IterablePage<T> {
 	if (pageSize < 1) throw IllegalArgumentException("Page size must be greater than 0!")
-	if (page < 0) throw IllegalArgumentException("Page must be greater than or equals 0!")
-	if (none()) return CollectionPage(emptyList(), 0, 0)
+	if (pageIndex < 0) throw IllegalArgumentException("Page must be greater than or equals 0!")
+	if (none()) return IterablePage(1, 1..1, emptyList())
 
 	val pages = ceilToInt(count().toDouble() / pageSize)
-	val actualPage = (page + 1).maxTo(pages)
+	val actualPage = (pageIndex + 1).maxTo(pages)
 
-	return CollectionPage(toList().subList(((1+pageSize*(actualPage-1)-1)..(pageSize*actualPage).maxTo(count()))), actualPage - 1, pages)
+	return IterablePage(actualPage, 1..pages, toList().subList(((1+pageSize*(actualPage-1)-1)..(pageSize*actualPage).maxTo(count()))))
 }
 
 /**
@@ -239,7 +239,7 @@ fun <T, C : Iterable<T>> C.page(page: Int, pageSize: Int): CollectionPage<T> {
  * @author Fruxz
  * @since 1.0
  */
-fun <T> Array<T>.page(page: Int, pageSize: Int): CollectionPage<T> =
+fun <T> Array<T>.page(page: Int, pageSize: Int): IterablePage<T> =
 	toList().page(page, pageSize)
 
 /**
