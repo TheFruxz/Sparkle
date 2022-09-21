@@ -90,7 +90,7 @@ fun <T> T?.applyIfNull(process: (T?) -> Unit) = modifyIf(isNull, process)
  * @author Fruxz
  * @since 1.0
  */
-fun <T> T?.applyIfNotNull(process: (T) -> Unit) = modifyIf(isNotNull) {
+fun <T> T?.applyIfNotNull(process: (T & Any) -> Unit) = modifyIf(isNotNull) {
 	process(this!!)
 }
 
