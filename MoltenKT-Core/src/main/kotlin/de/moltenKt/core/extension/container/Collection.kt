@@ -195,7 +195,7 @@ fun <T, C : Iterable<T>> C.get(index: Int, overflow: Boolean = false): T {
  * @since 1.0
  */
 fun <T, C : Iterable<T>> C.take(intRange: IntRange): List<T> =
-	toList().subList(intRange.first, intRange.last)
+	toList().subList(intRange)
 
 /**
  * Creates a sublist of the [intRange]
@@ -204,7 +204,7 @@ fun <T, C : Iterable<T>> C.take(intRange: IntRange): List<T> =
  * @since 1.0
  */
 fun <T> Array<T>.take(intRange: IntRange): List<T> =
-	toList().subList(intRange.first, intRange.last)
+	toList().subList(intRange)
 
 /**
  * This function returns a small list of [T] objects, that
