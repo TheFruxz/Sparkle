@@ -22,28 +22,57 @@ fun <F, S> Pair<Collection<F>, Collection<S>>.toMap() = first.zip(second).toMap(
 fun <F, S> Map<F, S>.flipped() = (values to keys).toMap()
 
 /**
- * Returns the first [Map.Entry] matching the given [check] or
+ * Returns the first [Map.Entry] matching the given [predicate] or
  * null if no such element exists.
- * @param check the [check] to match
- * @return the first [Map.Entry] matching the given [check] or null
+ * @param predicate the [predicate] to match
+ * @return the first [Map.Entry] matching the given [predicate] or null
  * @author Fruxz
  * @since 1.0
  */
-fun <F, S> Map<F, S>.firstOrNull(check: (Entry<F, S>) -> Boolean): Entry<F, S>? {
+fun <F, S> Map<F, S>.firstOrNull(predicate: (Entry<F, S>) -> Boolean): Entry<F, S>? {
+
 	forEach { mapEntry ->
-		if (check(mapEntry)) return mapEntry
+		if (predicate(mapEntry)) return mapEntry
 	}
+
 	return null
 }
 
 /**
- * Returns the first [Map.Entry] matching the given [check] or
- * throws an [IllegalArgumentException] if no such element exists.
- * @param check the [check] to match
- * @return the first [Map.Entry] matching the given [check]
- * @throws IllegalArgumentException if no element matches the given [check]
+ * Returns the first [Map.Entry] matching the given [predicate] or
+ * throws an [NoSuchElementException] if no such element exists.
+ * @param predicate the [predicate] to match
+ * @return the first [Map.Entry] matching the given [predicate]
+ * @throws NoSuchElementException if no element matches the given [predicate]
  * @author Fruxz
  * @since 1.0
  */
-fun <F, S> Map<F, S>.first(check: (Entry<F, S>) -> Boolean): Entry<F, S> =
-	firstOrNull(check) ?: throw NoSuchElementException("No element found for the given check")
+fun <F, S> Map<F, S>.first(predicate: (Entry<F, S>) -> Boolean): Entry<F, S> =
+	firstOrNull(predicate) ?: throw NoSuchElementException("No element found for the given predicate")
+
+/**
+ * Returns the last [Map.Entry] matching the given [predicate] or null if no such element exists.
+ * @param predicate the predicate to match
+ * @return the last [Map.Entry] matching the given [predicate] or null
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <K, V> Map<K, V>.lastOrNull(predicate: (Entry<K, V>) -> Boolean): Entry<K, V>? {
+
+	forEach { mapEntry ->
+		if (predicate(mapEntry)) return mapEntry
+	}
+
+	return null
+}
+
+/**
+ * Returns the last [Map.Entry] matching the given [predicate] or throws an [NoSuchElementException] if no such element exists
+ * @param predicate the predicate to match
+ * @return the last [Map.Entry] matching the given [predicate]
+ * @throws NoSuchElementException if no element matches the given [predicate]
+ * @author Fruxz
+ * @since 1.0
+ */
+fun <K, V> Map<K, V>.last(predicate: (Entry<K, V>) -> Boolean): Entry<K, V> =
+	lastOrNull(predicate) ?: throw NoSuchElementException("No element found for the given predicate")
