@@ -67,8 +67,6 @@ object MoltenCache : AppCache {
 
 	var tmp_initSetupPreferences = setOf<Preference<*>>()
 
-	var initializationProcesses = setOf<suspend () -> Unit>()
-
 	var itemActions = setOf<ItemAction<out Event>>()
 
 	var messageConversationPartners = mapOf<Player, Player>()
@@ -128,7 +126,6 @@ object MoltenCache : AppCache {
 			runningTasks = emptyList()
 			featureStates = emptyMap()
 			tmp_initSetupPreferences = emptySet()
-			initializationProcesses = emptySet()
 		}
 
 	}

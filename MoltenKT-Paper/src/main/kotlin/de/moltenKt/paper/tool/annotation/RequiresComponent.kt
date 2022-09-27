@@ -5,4 +5,4 @@ import kotlin.reflect.KClass
 
 @Repeatable
 @MustBeDocumented
-internal annotation class RequiresComponent(val module: KClass<out Component>)
+annotation class RequiresComponent(val module: KClass<out Component>) // TODO add to start blocks of interchanges, components and more, so that they can check if the given module is loaded
