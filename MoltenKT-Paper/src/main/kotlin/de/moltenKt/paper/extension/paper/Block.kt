@@ -1,5 +1,6 @@
 package de.moltenKt.paper.extension.paper
 
+import de.moltenKt.core.extension.tryOrNull
 import de.moltenKt.paper.tool.annotation.RequiresSync
 import org.bukkit.Material
 import org.bukkit.Material.AIR
@@ -13,23 +14,81 @@ import org.bukkit.entity.FallingBlock
 import org.bukkit.entity.TNTPrimed
 import org.bukkit.inventory.Inventory
 
+/**
+ * This computational value uses this block and returns the state
+ * of this block as a [Sign].
+ * @author Fruxz
+ * @since 1.0
+ */
 val Block.sign: Sign
     get() = this.state as Sign
 
 /**
- * This function casts a [BlockState] to the correct,
- * editable block state.
+ * This computational value uses this block-state and returns
+ * itself, but instead as a [Sign].
  * @author Fruxz
  * @since 1.0
  */
 val BlockState.sign: Sign
     get() = this as Sign
 
+/**
+ * This computational value uses this block and returns the state
+ * of this block as a [Chest].
+ * @author Fruxz
+ * @since 1.0
+ */
 val Block.chest: Chest
     get() = this.state as Chest
 
+/**
+ * This computational value uses this block-state and returns
+ * itself, but instead as a [Chest]
+ * @author Fruxz
+ * @since 1.0
+ */
 val BlockState.chest: Chest
     get() = this as Chest
+
+/**
+ * This function uses [this] block and opens it, if it is a chest.
+ * If it is not a chest, this function returns null instead of a [Unit].
+ * @return Unit if it is a chest, or null, if it is not.
+ * @receiver The block, which should be a chest
+ * @author Fruxz
+ * @since 1.0
+ */
+fun Block.openChest() = tryOrNull { chest.open() }
+
+/**
+ * This function uses [this] block state and opens it, if it is a chest.
+ * If it is not a chest, this function returns null instead of a [Unit].
+ * @return Unit if it is a chest, or null, if it is not.
+ * @receiver The block-state, which should be a chest's block-state
+ * @author Fruxz
+ * @since 1.0
+ */
+fun BlockState.openChest() = tryOrNull { chest.close() }
+
+/**
+ * This function uses [this] block and closes it, if it is a chest.
+ * If it is not a chest, this function returns null instead of a [Unit].
+ * @return Unit if it is a chest, or null, if it is not.
+ * @receiver The block, which should be a chest
+ * @author Fruxz
+ * @since 1.0
+ */
+fun Block.closeChest() = tryOrNull { chest.close() }
+
+/**
+ * This function uses [this] block state and closes it, if it is a chest.
+ * If it is not a chest, this function returns null instead of a [Unit].
+ * @return Unit if it is a chest, or null, if it is not.
+ * @receiver The block-state, which should be a chest's block-state
+ * @author Fruxz
+ * @since 1.0
+ */
+fun BlockState.closeChest() = tryOrNull { chest.close() }
 
 /**
  * This function takes the sign's state and applies the
