@@ -5,7 +5,6 @@ import de.moltenKt.core.tool.smart.identification.Identity
 import de.moltenKt.core.tool.timing.calendar.Calendar
 import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.debugLog
-import de.moltenKt.paper.extension.runIfAutoRegister
 import de.moltenKt.paper.structure.Hoster
 import de.moltenKt.paper.structure.app.App
 import de.moltenKt.paper.structure.component.Component.RunType.*
@@ -30,8 +29,6 @@ abstract class Component(
 		preferredVendor?.let {
 			vendor = it
 		}
-
-		runIfAutoRegister()
 
 	}
 
