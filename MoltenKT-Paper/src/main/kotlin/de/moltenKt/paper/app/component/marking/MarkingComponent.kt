@@ -6,7 +6,7 @@ import de.moltenKt.paper.app.MoltenCache
 import de.moltenKt.paper.extension.display.notification
 import de.moltenKt.paper.extension.display.ui.item
 import de.moltenKt.paper.extension.paper.displayString
-import de.moltenKt.paper.extension.paper.identityObject
+import de.moltenKt.paper.extension.paper.entity.identityObject
 import de.moltenKt.paper.extension.paper.isPhysical
 import de.moltenKt.paper.extension.paper.templateLocation
 import de.moltenKt.paper.runtime.event.interact.MoltenPlayerInteractEvent.Companion.denyInteraction

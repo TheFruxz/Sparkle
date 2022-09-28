@@ -1,4 +1,4 @@
-package de.moltenKt.paper.extension.paper
+package de.moltenKt.paper.extension.paper.entity
 
 import de.moltenKt.core.tool.smart.identification.Identity
 import org.bukkit.block.Biome
@@ -6,6 +6,18 @@ import org.bukkit.entity.Entity
 
 val <T : Entity> T.identityObject: Identity<T>
 	get() = Identity("$uniqueId")
+
+/**
+ * This var represents the [Entity.hasGravity] and
+ * the [Entity.setGravity] functions.
+ * @author Fruxz
+ * @since 1.0
+ */
+var Entity.gravity: Boolean
+	get() = hasGravity()
+	set(value) {
+		setGravity(value)
+	}
 
 /**
  * This function returns, if the given [scoreboardTag] is

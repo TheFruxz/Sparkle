@@ -9,18 +9,6 @@ import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 /**
- * This var represents the [Entity.hasGravity] and
- * the [Entity.setGravity] functions.
- * @author Fruxz
- * @since 1.0
- */
-var Entity.gravity: Boolean
-    get() = hasGravity()
-    set(value) {
-        setGravity(value)
-    }
-
-/**
  * This var represents the [ArmorStand.hasArms] and [ArmorStand.setArms] functions.
  * @author Fruxz
  * @since 1.0
