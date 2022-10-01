@@ -1,3 +1,3 @@
 # Table of contents
 
-* [hg](README.md)
+* [Welcome to Sparkle!](README.md)
