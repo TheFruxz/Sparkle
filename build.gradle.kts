@@ -13,7 +13,7 @@ plugins {
 var host = "github.com/TheFruxz/Sparkle"
 
 version = "1.0-PRE-18"
-group = "de.moltenKt"
+group = "de.fruxz"
 
 repositories {
     mavenCentral()

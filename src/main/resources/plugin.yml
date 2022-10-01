@@ -1,7 +1,7 @@
 name: Sparkle
 version: ${version}
 api-version: 1.19
-main: de.moltenKt.paper.app.MoltenApp
+main: de.fruxz.sparkle.app.MoltenApp
 load: STARTUP
 authors:
   - TheFruxz (Fruxz)
