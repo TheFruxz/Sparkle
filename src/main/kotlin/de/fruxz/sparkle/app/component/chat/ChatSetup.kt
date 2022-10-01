@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ChatSetup(
-	val chatFormat: String = "<dark_gray>▶ <aqua>[displayName]<dark_gray> » [message]",
+	val chatFormat: String = "<dark_gray>⏵ <aqua>[displayName]<dark_gray> » [message]",
 	val messageColor: String = "gray",
 	val allowExtensions: Boolean = true,
 	val mentions: MentionProperty = MentionProperty(),
