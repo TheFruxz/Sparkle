@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>label</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script src="https://unpkg.com/kotlin-playground@1"></script><script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>Sparkle</span>
+            </a>
+    </div>
+    <div>
+1.0-PRE-18    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageIds="Sparkle::de.moltenKt.paper.app/MoltenApp/label/#/PointingToDeclaration//769193423">
+  <div class="breadcrumbs"><a href="../../../index.html">Sparkle</a><span class="delimiter">/</span><a href="../index.html">de.moltenKt.paper.app</a><span class="delimiter">/</span><a href="index.html">MoltenApp</a><span class="delimiter">/</span><a href="label.html">label</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>label</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="label.html">label</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h1 class=""><code class="lang-kotlin">App.label</code></h1><h2 class=""> Info</h2><p class="paragraph">This value defines the display-name of this app, which will be displayed in app-lists and information with the app included. Can be duplicated, but try to avoid duplicated display names with other apps!</p><h2 class=""> Use</h2><p class="paragraph">Use this value to tell your customers & visitors that your app is running, there some possible ways to do that:</p><ul><li><p class="paragraph">On Minecraft-Networks: Tell the players the name of your network</p></li><li><p class="paragraph">On Publishing: Tell the players the name of your app (where they can find it)</p></li><li><p class="paragraph">On private use: Tell yourself, that this app is this app</p></li></ul><p class="paragraph">But you can use this like you like!</p><h2 class=""> Relations</h2><p class="paragraph">The label is not related to some crucial read/save system or something else, in this cases <a href="app-identity.html">appIdentity</a> is used!</p><h4 class="">Author</h4><p class="paragraph">Fruxz (@TheFruxz)</p><h4 class="">Since</h4><p class="paragraph">1.0-BETA-2 (preview)</p><h2 class="">Samples</h2><div class="sample-container"><pre><code class="runnablesample monospace block lang-kotlin" theme="idea">import com.destroystokyo.paper.ParticleBuilder
+import de.fruxz.ascend.extension.data.addAscendJsonModuleModification
+import de.fruxz.ascend.extension.forceCast
+import de.moltenKt.paper.app.MoltenApp.Infrastructure.SYSTEM_IDENTITY
+import de.moltenKt.paper.app.component.app.AppComponent
+import de.moltenKt.paper.app.component.buildMode.BuildModeComponent
+import de.moltenKt.paper.app.component.chat.ChatComponent
+import de.moltenKt.paper.app.component.completion.ProtectionComponent
+import de.moltenKt.paper.app.component.component.ComponentComponent
+import de.moltenKt.paper.app.component.events.EventsComponent
+import de.moltenKt.paper.app.component.experimental.ExperimentalComponent
+import de.moltenKt.paper.app.component.keeper.KeeperComponent
+import de.moltenKt.paper.app.component.marking.MarkingComponent
+import de.moltenKt.paper.app.component.messaging.MessagingComponent
+import de.moltenKt.paper.app.component.point.PointComponent
+import de.moltenKt.paper.app.component.point.asset.Point
+import de.moltenKt.paper.app.component.point.asset.PointConfig
+import de.moltenKt.paper.app.component.sandbox.SandBoxComponent
+import de.moltenKt.paper.app.component.service.ServiceComponent
+import de.moltenKt.paper.app.component.ui.actionbar.AdaptiveActionBarComponent
+import de.moltenKt.paper.app.component.ui.gui.UIComponent
+import de.moltenKt.paper.app.interchange.DebugModeInterchange
+import de.moltenKt.paper.app.interchange.MoltenKtInterchange
+import de.moltenKt.paper.app.interchange.PlaygroundInterchange
+import de.moltenKt.paper.extension.debugLog
+import de.moltenKt.paper.extension.mainLog
+import de.moltenKt.paper.mojang.MojangProfile
+import de.moltenKt.paper.mojang.MojangProfileCape
+import de.moltenKt.paper.mojang.MojangProfileRaw
+import de.moltenKt.paper.mojang.MojangProfileSkin
+import de.moltenKt.paper.mojang.MojangProfileTextures
+import de.moltenKt.paper.mojang.MojangProfileUsernameHistoryEntry
+import de.moltenKt.paper.structure.app.App
+import de.moltenKt.paper.structure.app.AppCompanion
+import de.moltenKt.paper.tool.data.Preference
+import de.moltenKt.paper.tool.data.json.JsonConfiguration
+import de.moltenKt.paper.tool.data.json.JsonFileDataElement
+import de.moltenKt.paper.tool.data.json.serializer.BoundingBoxSerializer
+import de.moltenKt.paper.tool.data.json.serializer.ItemStackSerializer
+import de.moltenKt.paper.tool.data.json.serializer.LocationSerializer
+import de.moltenKt.paper.tool.data.json.serializer.NamespacedKeySerializer
+import de.moltenKt.paper.tool.data.json.serializer.ParticleBuilderSerializer
+import de.moltenKt.paper.tool.data.json.serializer.ParticleSerializer
+import de.moltenKt.paper.tool.data.json.serializer.UUIDSerializer
+import de.moltenKt.paper.tool.data.json.serializer.VectorSerializer
+import de.moltenKt.paper.tool.data.json.serializer.WorldSerializer
+import de.moltenKt.paper.tool.display.item.Modification
+import de.moltenKt.paper.tool.display.world.SimpleLocation
+import de.moltenKt.paper.tool.effect.sound.SoundData
+import de.moltenKt.paper.tool.effect.sound.SoundEffect
+import de.moltenKt.paper.tool.effect.sound.SoundMelody
+import de.moltenKt.paper.tool.permission.Approval
+import de.moltenKt.paper.tool.position.dependent.DependentComplexShape
+import de.moltenKt.paper.tool.position.dependent.DependentCubicalShape
+import de.moltenKt.paper.tool.position.dependent.DependentCylindricalShape
+import de.moltenKt.paper.tool.position.dependent.DependentLinearShape
+import de.moltenKt.paper.tool.position.dependent.DependentPyramidalShape
+import de.moltenKt.paper.tool.position.dependent.DependentShape
+import de.moltenKt.paper.tool.position.dependent.DependentSphericalShape
+import de.moltenKt.paper.tool.position.relative.CubicalShape
+import de.moltenKt.paper.tool.position.relative.CylindricalShape
+import de.moltenKt.paper.tool.position.relative.LinearShape
+import de.moltenKt.paper.tool.position.relative.PyramidalShape
+import de.moltenKt.paper.tool.position.relative.Shape
+import de.moltenKt.paper.tool.position.relative.SphereShape
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
+import org.bukkit.Location
+import org.bukkit.NamespacedKey
+import org.bukkit.Particle
+import org.bukkit.World
+import org.bukkit.configuration.serialization.ConfigurationSerialization
+import org.bukkit.inventory.ItemStack
+import org.bukkit.util.BoundingBox
+import org.bukkit.util.Vector
+import java.util.*
+import java.util.logging.Level
+import de.fruxz.ascend.extension.data.addJsonContextualConfiguration as jsonContextual
+fun main() { 
+   //sampleStart 
+   override val label = &quot;Molten-Kt&quot; 
+   //sampleEnd
+}</code></pre></div><h2 class="">See also</h2><div data-togglable="See also"><div class="table" data-togglable="See also"><div class="table-row" data-filterable-current=":dokkaHtml/main" data-filterable-set=":dokkaHtml/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><a href="label.html"><span>de.</span><wbr></wbr><span>moltenKt.</span><wbr></wbr><span>paper.</span><wbr></wbr><span>app.</span><wbr></wbr><span>MoltenApp</span></a></div></span></div><div><div class="title"><div data-togglable="See also"></div></div></div></div></div></div></div></div></div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.JavaVersion.VERSION_17
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -55,7 +56,7 @@ dependencies {
 
     // Shadow
 
-    /*shadow("com.github.TheFruxz:Ascend:1.0.0-RC") {
+    shadow("com.github.TheFruxz:Ascend:1.0.0-RC") {
         isTransitive = false
     }
     shadow("com.github.TheFruxz:Stacked:1.0.0-RC") {
@@ -83,20 +84,20 @@ dependencies {
 
     shadow("net.kyori:adventure-api:4.11.0")
     shadow("net.kyori:adventure-text-serializer-legacy:4.11.0")
-    shadow("net.kyori:adventure-text-minimessage:4.11.0")*/
+    shadow("net.kyori:adventure-text-minimessage:4.11.0")
 
 }
 
 tasks {
 
-//    build {
-//        dependsOn(shadowJar)
-//    }
-//
-//    named<ShadowJar>("shadowJar") {
-//        archiveClassifier.set("Runnable")
-//        configurations = listOf(project.configurations.shadow.get())
-//    }
+    build {
+        dependsOn(shadowJar)
+    }
+
+    named<ShadowJar>("shadowJar") {
+        archiveClassifier.set("Runnable")
+        configurations = listOf(project.configurations.shadow.get())
+    }
 
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "17"
