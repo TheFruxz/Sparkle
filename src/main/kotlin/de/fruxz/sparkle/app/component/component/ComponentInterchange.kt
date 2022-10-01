@@ -4,8 +4,7 @@ import de.fruxz.ascend.extension.container.mapToString
 import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.Constants
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.display.BOLD
 import de.fruxz.sparkle.extension.display.notification
 import de.fruxz.sparkle.extension.interchange.InterchangeExecutor
@@ -47,7 +46,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 		val iconBlocked = "✘"
 
 		fun list(page: Int, executor: InterchangeExecutor) {
-			MoltenCache.registeredComponents.page(page - 1, de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE).let { (page, pages, content) ->
+			SparkleCache.registeredComponents.page(page - 1, de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE).let { (page, pages, content) ->
 
 				text {
 
@@ -246,9 +245,9 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 		}
 
 		fun reset(component: Component, executor: InterchangeExecutor) {
-			MoltenCache.runningComponents.apply {
+			SparkleCache.runningComponents.apply {
 				if (containsKey(component.identityObject))
-					MoltenCache.runningComponents += component.identityObject to Calendar.now()
+					SparkleCache.runningComponents += component.identityObject to Calendar.now()
 			}
 
 			text {
@@ -308,7 +307,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 						refreshing = true,
 						supportedInputType = listOf(InterchangeStructureInputRestriction.LONG),
 						generator = {
-							(1..ceilToInt(MoltenCache.registeredComponents.size.toDouble() / de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE)).mapToString()
+							(1..ceilToInt(SparkleCache.registeredComponents.size.toDouble() / de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE)).mapToString()
 						})
 				)
 				isNotRequired()
@@ -326,7 +325,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 			concludedExecution {
 
 				fun processAllComponents(function: (Component, InterchangeExecutor) -> Unit) {
-					MoltenCache.registeredComponents.forEach {
+					SparkleCache.registeredComponents.forEach {
 						function(it, executor)
 					}
 				}

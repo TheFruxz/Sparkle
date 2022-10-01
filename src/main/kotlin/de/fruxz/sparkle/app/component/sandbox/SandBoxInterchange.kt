@@ -3,8 +3,7 @@ package de.fruxz.sparkle.app.component.sandbox
 import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.Constants
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.display.notification
 import de.fruxz.sparkle.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.extension.objectBound.allSandBoxes
@@ -213,7 +212,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 							this + newline() + text("Identity: ").dyeGold() + text(sandBox.identity).dyeYellow()
 							this + newline() + text("Since: ").dyeGold() + text(sandBox.creationTime.durationTo(Calendar.now()).toString()).dyeYellow()
 							this + newline() + text("Creation-Position: ").dyeGold() + text(sandBox.creationLocation).dyeYellow()
-							this + newline() + text("Cached Calls: ").dyeGold() + text((MoltenCache.registeredSandBoxCalls[sandBox.identityObject]?.toString() ?: "none")).dyeYellow()
+							this + newline() + text("Cached Calls: ").dyeGold() + text((SparkleCache.registeredSandBoxCalls[sandBox.identityObject]?.toString() ?: "none")).dyeYellow()
 						}.notification(GENERAL, executor).display()
 
 					}

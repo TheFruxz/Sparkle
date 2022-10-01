@@ -1,21 +1,17 @@
 package de.fruxz.sparkle.structure.component.file
 
-import de.fruxz.ascend.extension.data.fromJson
 import de.fruxz.ascend.extension.data.readJson
-import de.fruxz.ascend.extension.data.toJson
 import de.fruxz.ascend.extension.data.writeJson
 import de.fruxz.ascend.extension.div
 import de.fruxz.ascend.extension.generateFileAndPath
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.structure.component.Component
-import de.fruxz.sparkle.tool.data.file.MoltenPath
-import kotlin.io.path.readText
-import kotlin.io.path.writeText
+import de.fruxz.sparkle.tool.data.file.SparklePath
 
 object ComponentManager {
 
-	val path = MoltenPath.rootPath() / "components.json"
+	val path = SparklePath.rootPath() / "components.json"
 
 	private var _state: ComponentConfiguration? = null
 

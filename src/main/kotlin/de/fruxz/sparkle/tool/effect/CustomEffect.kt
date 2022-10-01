@@ -3,7 +3,7 @@ package de.fruxz.sparkle.tool.effect
 import de.fruxz.sparkle.extension.paper.onlinePlayers
 import org.bukkit.entity.LivingEntity
 
-interface MoltenEffect {
+interface CustomEffect {
 
 	val action: (target: LivingEntity) -> Unit
 

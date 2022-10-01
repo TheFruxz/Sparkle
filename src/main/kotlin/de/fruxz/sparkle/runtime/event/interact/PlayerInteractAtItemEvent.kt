@@ -22,7 +22,7 @@ data class PlayerInteractAtItemEvent(
 	private var isCancelled: Boolean = false,
 	override var interactedBlock: Result = DEFAULT,
 	override var interactedItem: Result = DEFAULT,
-) : MoltenPlayerInteractEvent, PlayerEvent(whoInteract, false), Cancellable {
+) : SparklePlayerInteractEvent, PlayerEvent(whoInteract, false), Cancellable {
 
 	override fun isCancelled() = isCancelled
 

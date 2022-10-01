@@ -2,8 +2,7 @@ package de.fruxz.sparkle.runtime.sandbox
 
 import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.app.MoltenApp
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.app.component.sandbox.SandBoxComponent
 import de.fruxz.sparkle.extension.display.notification
 import de.fruxz.sparkle.extension.interchange.InterchangeExecutor
@@ -37,12 +36,12 @@ data class SandBox(
     override val sectionLabel by lazy { identity }
 
     fun execute(executor: InterchangeExecutor, parameters: List<String> = emptyList()) {
-        de.fruxz.sparkle.app.MoltenApp.instance.coroutineScope.launch(Component.getInstance(SandBoxComponent::class).threadContext) {
+        de.fruxz.sparkle.app.SparkleApp.instance.coroutineScope.launch(Component.getInstance(SandBoxComponent::class).threadContext) {
 
             try {
                 sectionLog.log(Level.INFO, "Executor '${executor.name}' is starting SandBox '$identity'!")
 
-                MoltenCache.registeredSandBoxCalls += identityObject to (MoltenCache.registeredSandBoxCalls[identityObject] ?: 0) + 1
+                SparkleCache.registeredSandBoxCalls += identityObject to (SparkleCache.registeredSandBoxCalls[identityObject] ?: 0) + 1
 
                 text {
                     this + text("You're now running the SandBox '").dyeGray()

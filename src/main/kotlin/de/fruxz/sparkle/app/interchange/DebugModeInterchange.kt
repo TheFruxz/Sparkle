@@ -1,6 +1,5 @@
 package de.fruxz.sparkle.app.interchange
 
-import de.fruxz.sparkle.app.MoltenApp
 import de.fruxz.sparkle.extension.display.notification
 import de.fruxz.sparkle.structure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.structure.command.structured.StructuredInterchange
@@ -18,7 +17,7 @@ internal class DebugModeInterchange : StructuredInterchange("debugmode", buildIn
 
         concludedExecution {
 
-            de.fruxz.sparkle.app.MoltenApp.debugMode = true
+            de.fruxz.sparkle.app.SparkleApp.debugMode = true
 
             text {
                 this + text("The ") {
@@ -48,7 +47,7 @@ internal class DebugModeInterchange : StructuredInterchange("debugmode", buildIn
 
         concludedExecution {
 
-            de.fruxz.sparkle.app.MoltenApp.debugMode = false
+            de.fruxz.sparkle.app.SparkleApp.debugMode = false
 
             text {
                 this + text("The ") {
@@ -84,8 +83,8 @@ internal class DebugModeInterchange : StructuredInterchange("debugmode", buildIn
                     text("The debug mode is currently set to ") {
                         color(NamedTextColor.GRAY)
                     },
-                    text(de.fruxz.sparkle.app.MoltenApp.debugMode.toString()) {
-                        color(if (de.fruxz.sparkle.app.MoltenApp.debugMode) NamedTextColor.GREEN else NamedTextColor.RED)
+                    text(de.fruxz.sparkle.app.SparkleApp.debugMode.toString()) {
+                        color(if (de.fruxz.sparkle.app.SparkleApp.debugMode) NamedTextColor.GREEN else NamedTextColor.RED)
                     },
                     text("!") {
                         color(NamedTextColor.GRAY)

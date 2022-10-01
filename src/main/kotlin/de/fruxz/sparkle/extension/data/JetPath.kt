@@ -1,11 +1,11 @@
 package de.fruxz.sparkle.extension.data
 
-import de.fruxz.sparkle.tool.data.MoltenPath
+import de.fruxz.sparkle.tool.data.SparklePath
 
-fun moltenPath(base: String) = MoltenPath(base)
+fun sparklePath(base: String) = SparklePath(base)
 
-operator fun MoltenPath.div(subPath: String) = apply {
+operator fun SparklePath.div(subPath: String) = apply {
 	fullPath += ".$subPath"
 }
 
-operator fun MoltenPath.plus(subPath: String) = this / subPath
+operator fun SparklePath.plus(subPath: String) = this / subPath

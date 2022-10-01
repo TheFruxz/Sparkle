@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.app.component.messaging
 
 import de.fruxz.ascend.extension.container.firstOrNull
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.effect.playSoundEffect
 import de.fruxz.sparkle.tool.effect.sound.SoundLibrary
 import de.fruxz.stacked.extension.colorOf
@@ -25,7 +25,7 @@ internal object Messaging {
 
     fun sendMessage(sender: Player, receiver: Player, message: String) {
 
-        MoltenCache.messageConversationPartners = MoltenCache.messageConversationPartners.filter {
+        SparkleCache.messageConversationPartners = SparkleCache.messageConversationPartners.filter {
             it.key != receiver || it.value != receiver
         }
 
@@ -39,7 +39,7 @@ internal object Messaging {
      * Returns, if the sender was in a conversion, to reply to.
      */
     fun sendReply(sender: Player, message: String): Boolean {
-        val reply = MoltenCache.messageConversationPartners.firstOrNull {
+        val reply = SparkleCache.messageConversationPartners.firstOrNull {
             it.key == sender || it.value == sender
         }?.let {
             if (it.key == sender) it.value else it.key

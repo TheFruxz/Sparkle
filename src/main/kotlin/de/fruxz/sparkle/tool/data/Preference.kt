@@ -5,8 +5,8 @@ import de.fruxz.ascend.extension.forceCast
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.sparkle.app.MoltenCache
-import de.fruxz.sparkle.app.MoltenCache.registeredPreferenceCache
+import de.fruxz.sparkle.app.SparkleCache
+import de.fruxz.sparkle.app.SparkleCache.registeredPreferenceCache
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.tasky.asAsync
 import de.fruxz.sparkle.extension.tasky.task
@@ -21,8 +21,8 @@ import kotlin.time.Duration.Companion.seconds
  * @param inputType null if automatic
  */
 data class Preference<SHELL : Any>(
-	val file: MoltenFile,
-	val path: Identifiable<MoltenPath>,
+	val file: SparkleFile,
+	val path: Identifiable<SparklePath>,
 	val default: SHELL,
 	val useCache: Boolean = false,
 	val readAndWrite: Boolean = true,
@@ -42,10 +42,10 @@ data class Preference<SHELL : Any>(
 	init {
 
 		if (initTriggerSetup && !isSavedInFile) {
-			MoltenCache.tmp_initSetupPreferences += this
+			SparkleCache.tmp_initSetupPreferences += this
 		}
 
-		MoltenCache.registeredPreferences += identityObject to this
+		SparkleCache.registeredPreferences += identityObject to this
 
 		if (inputType != null) {
 			when (default) {
@@ -61,9 +61,9 @@ data class Preference<SHELL : Any>(
 	}
 
 	val isSavedInFile: Boolean
-		get() = file.let { moltenFile ->
-			moltenFile.load()
-			return@let moltenFile.contains(inFilePath)
+		get() = file.let { sparkleFile ->
+			sparkleFile.load()
+			return@let sparkleFile.contains(inFilePath)
 		}
 
 	@Suppress("UNCHECKED_CAST")

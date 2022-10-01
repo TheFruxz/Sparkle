@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.app.component.ui.gui
 
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.data.ticks
 import de.fruxz.sparkle.extension.paper.player
 import de.fruxz.sparkle.extension.tasky.task
@@ -28,14 +28,14 @@ internal class CanvasListener : EventListener() {
 
 			val session = CanvasSessionManager.getSession(player)
 
-			val canvas = MoltenCache.canvas[session?.canvas]
+			val canvas = SparkleCache.canvas[session?.canvas]
 
 			if (canvas != null) {
 
 				if (canvas.flags.contains(NO_CLOSE)) {
 					canvas.display(player)
 				} else {
-					MoltenCache.canvasActions[session?.canvas]?.onClose?.let {
+					SparkleCache.canvasActions[session?.canvas]?.onClose?.let {
 						it(
 							CanvasCloseEvent(
 								player,
@@ -60,7 +60,7 @@ internal class CanvasListener : EventListener() {
 		val session = CanvasSessionManager.getSession(player)
 
 		if (session != null) {
-			val canvas = MoltenCache.canvas[session.canvas] ?: return
+			val canvas = SparkleCache.canvas[session.canvas] ?: return
 
 			CanvasClickEvent(player, canvas, event.slot, event.view, event.isCancelled, event, event.click).let { internalEvent ->
 
@@ -68,7 +68,7 @@ internal class CanvasListener : EventListener() {
 
 				if (!event.isCancelled && !canvas.flags.contains(NO_CLICK_ACTIONS)) {
 
-					MoltenCache.canvasActions[session.canvas]?.onClicks?.forEach { it.invoke(internalEvent) }
+					SparkleCache.canvasActions[session.canvas]?.onClicks?.forEach { it.invoke(internalEvent) }
 
 				}
 
@@ -95,7 +95,7 @@ internal class CanvasListener : EventListener() {
 		}.firstOrNull()
 
 		if (session != null) {
-			val canvas = MoltenCache.canvas[session.canvas] ?: return
+			val canvas = SparkleCache.canvas[session.canvas] ?: return
 
 			if (canvas.flags.contains(NO_MOVE)) event.isCancelled = true
 
@@ -109,7 +109,7 @@ internal class CanvasListener : EventListener() {
 		val session = CanvasSessionManager.getSession(player)
 
 		if (session != null) {
-			val canvas = MoltenCache.canvas[session.canvas] ?: return
+			val canvas = SparkleCache.canvas[session.canvas] ?: return
 
 			if (canvas.flags.contains(NO_DRAG)) event.isCancelled = true
 
@@ -124,7 +124,7 @@ internal class CanvasListener : EventListener() {
 		event.isCancelled = true
 
 		if (session != null) {
-			val canvas = MoltenCache.canvas[session.canvas] ?: return
+			val canvas = SparkleCache.canvas[session.canvas] ?: return
 
 			if (open.contains(event.mainHandItem) || open.contains(event.offHandItem)) {
 

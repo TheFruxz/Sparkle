@@ -15,12 +15,12 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration.BOLD
 import net.kyori.adventure.text.format.TextDecoration.ITALIC
 
-internal class MoltenKtInterchange : StructuredInterchange("moltenkt", protectedAccess = false, structure = buildInterchangeStructure {
+internal class SparkleInterchange : StructuredInterchange("sparkle", protectedAccess = false, structure = buildInterchangeStructure {
 
 	concludedExecution {
 
 		text {
-			this + text("MoltenKT") {
+			this + text("Sparkle") {
 				style(NamedTextColor.GOLD, BOLD)
 			} + text(" was developed by ") {
 				color(NamedTextColor.GRAY)
@@ -34,7 +34,7 @@ internal class MoltenKtInterchange : StructuredInterchange("moltenkt", protected
 
 		}.notification(GENERAL, executor).display()
 
-		text("MoltenKT is running & developed with Kotlin (the programming Language) from JetBrains. Check out their work https://jetbrains.com or https://kotlinlang.org")
+		text("Sparkle is running & developed with Kotlin (the programming Language) from JetBrains. Check out their work https://jetbrains.com or https://kotlinlang.org")
 			.color(NamedTextColor.YELLOW)
 			.message(executor).display()
 

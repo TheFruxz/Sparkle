@@ -3,7 +3,7 @@ package de.fruxz.sparkle.structure.component
 import de.fruxz.ascend.extension.tryToResult
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.structure.Hoster
 import de.fruxz.sparkle.structure.app.App
@@ -48,7 +48,7 @@ abstract class Component(
 		get() = "component/$identity"
 
 	val isRunning: Boolean
-		get() = MoltenCache.runningComponents.contains(identityObject)
+		get() = SparkleCache.runningComponents.contains(identityObject)
 
 	override val identityKey by lazy { vendor.subKey(thisIdentity.lowercase(), CONTINUE) }
 
@@ -111,7 +111,7 @@ abstract class Component(
 		get() = !setOf(ENABLED, AUTOSTART_IMMUTABLE).contains(behaviour)
 
 	val runningSince: Calendar?
-		get() = MoltenCache.runningComponents[identityObject]
+		get() = SparkleCache.runningComponents[identityObject]
 
 	val isBlocked: Boolean
 		get() = ComponentManager.getComponent(identityObject)?.isBlocked == true
@@ -188,7 +188,7 @@ abstract class Component(
 
 		@JvmStatic
 		fun getInstance(componentClass: KClass<out Component>): Component {
-			return MoltenCache.registeredComponents.first { it::class == componentClass }
+			return SparkleCache.registeredComponents.first { it::class == componentClass }
 		}
 
 	}

@@ -2,8 +2,7 @@ package de.fruxz.sparkle.app.component.point
 
 import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
-import de.fruxz.sparkle.Constants
-import de.fruxz.sparkle.app.MoltenData
+import de.fruxz.sparkle.app.SparkleData
 import de.fruxz.sparkle.app.component.point.asset.Point
 import de.fruxz.sparkle.app.component.point.asset.PointConfig
 import de.fruxz.sparkle.extension.display.notification
@@ -36,7 +35,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 		ignoreCase()
 
 		fun displayServices(executor: InterchangeExecutor, page: Int) {
-			val pageValue = MoltenData.savedPoints.content.points.page(page, de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE)
+			val pageValue = SparkleData.savedPoints.content.points.page(page, de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE)
 
 			if (pageValue.content.isNotEmpty()) {
 
@@ -74,7 +73,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 		}
 
 		branch {
-			addContent(CompletionAsset.PAGES { ceilToInt(MoltenData.savedPoints.content.points.size.toDouble() / de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE) })
+			addContent(CompletionAsset.PAGES { ceilToInt(SparkleData.savedPoints.content.points.size.toDouble() / de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE) })
 
 			isNotRequired()
 
@@ -113,7 +112,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 				ignoreCase()
 
 				concludedExecution {
-					val points = MoltenData.savedPoints.content.points.toMutableList()
+					val points = SparkleData.savedPoints.content.points.toMutableList()
 					val pointName = getInput(1)
 					val point = points.firstOrNull { it.identity == pointName }
 
@@ -121,7 +120,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 
 					if (point == null) {
 
-						MoltenData.savedPoints.content =
+						SparkleData.savedPoints.content =
 							PointConfig(points + Point(pointName, executor.location))
 
 						text {
@@ -151,14 +150,14 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 				ignoreCase()
 
 				concludedExecution {
-					val points = MoltenData.savedPoints.content.points.toMutableList()
+					val points = SparkleData.savedPoints.content.points.toMutableList()
 					val point = points.firstOrNull { it.identity == getInput(1) }
 
 					if (point != null) {
 
 						points.removeAll { it.identity.equals(parameters.dropLast(1).last(), true) }
 
-						MoltenData.savedPoints.content = PointConfig(points)
+						SparkleData.savedPoints.content = PointConfig(points)
 
 						text {
 							this + text("The point called '").dyeGray()
@@ -187,7 +186,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 				ignoreCase()
 
 				concludedExecution {
-					val points = MoltenData.savedPoints.content.points.toMutableList()
+					val points = SparkleData.savedPoints.content.points.toMutableList()
 					val point = points.firstOrNull { it.identity == getInput(1) }
 
 					executor as Player

@@ -12,9 +12,9 @@ import de.fruxz.ascend.extension.tryToPrint
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.app.MoltenApp.Infrastructure
-import de.fruxz.sparkle.app.MoltenCache
-import de.fruxz.sparkle.app.MoltenData
+import de.fruxz.sparkle.app.SparkleApp.Infrastructure
+import de.fruxz.sparkle.app.SparkleCache
+import de.fruxz.sparkle.app.SparkleData
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.display.notification
 import de.fruxz.sparkle.extension.mainLog
@@ -33,7 +33,7 @@ import de.fruxz.sparkle.structure.app.interchange.IssuedInterchange
 import de.fruxz.sparkle.structure.command.Interchange
 import de.fruxz.sparkle.structure.component.Component
 import de.fruxz.sparkle.structure.service.Service
-import de.fruxz.sparkle.tool.data.file.MoltenPath
+import de.fruxz.sparkle.tool.data.file.SparklePath
 import de.fruxz.sparkle.tool.display.message.Transmission.Level.ERROR
 import de.fruxz.stacked.text
 import io.ktor.client.*
@@ -96,7 +96,7 @@ import kotlin.time.measureTime
  *
  * @author Fruxz (@TheFruxz)
  * @since 1.0-BETA-2 (preview)
- * @see de.fruxz.sparkle.app.MoltenApp
+ * @see de.fruxz.sparkle.app.SparkleApp
  * @constructor abstract
  */
 abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
@@ -125,8 +125,8 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	 *
 	 * @author Fruxz (@TheFruxz)
 	 * @since 1.0-BETA-2 (preview)
-	 * @see de.fruxz.sparkle.app.MoltenApp.Companion
-	 * @sample de.fruxz.sparkle.app.MoltenApp.companion
+	 * @see de.fruxz.sparkle.app.SparkleApp.Companion
+	 * @sample de.fruxz.sparkle.app.SparkleApp.companion
 	 * @constructor abstract
 	 */
 	abstract val companion: AppCompanion<out App>
@@ -158,8 +158,8 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	 *
 	 * @author Fruxz (@TheFruxz)
 	 * @since 1.0-BETA-2 (preview)
-	 * @see de.fruxz.sparkle.app.MoltenApp.label
-	 * @sample de.fruxz.sparkle.app.MoltenApp.label
+	 * @see de.fruxz.sparkle.app.SparkleApp.label
+	 * @sample de.fruxz.sparkle.app.SparkleApp.label
 	 * @constructor abstract
 	 */
 	abstract override val label: String
@@ -263,7 +263,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 					debugLog("successfully registered artificial command for '${interchange.label}'!")
 
-					MoltenCache.registeredInterchanges += interchange
+					SparkleCache.registeredInterchanges += interchange
 
 					mainLog(Level.INFO, "register of interchange '$label' succeed!")
 
@@ -286,7 +286,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 				eventListener.replaceVendor(this)
 
 				pluginManager.registerEvents(eventListener as Listener, this)
-				MoltenCache.registeredListeners += eventListener
+				SparkleCache.registeredListeners += eventListener
 				mainLog(Level.INFO, "registered '${eventListener.listenerIdentity}' listener!")
 
 			} catch (e: Exception) {
@@ -302,9 +302,9 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	}
 
 	fun register(service: Service) {
-		if (MoltenCache.registeredServices.none { it.identity == service.identity }) {
+		if (SparkleCache.registeredServices.none { it.identity == service.identity }) {
 			tryToCatch {
-				MoltenCache.registeredServices += service
+				SparkleCache.registeredServices += service
 				mainLog(Level.INFO, "register of service '${service.identity}' succeed!")
 			}
 		} else
@@ -312,12 +312,12 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	}
 
 	fun unregister(service: Service) {
-		if (MoltenCache.registeredServices.any { it.identity == service.identity }) {
+		if (SparkleCache.registeredServices.any { it.identity == service.identity }) {
 			tryToCatch {
 				if (service.isRunning) {
 					stop(service)
 				}
-				MoltenCache.registeredServices -= service
+				SparkleCache.registeredServices -= service
 				mainLog(Level.INFO, "unregister of service '${service.identity}' succeed!")
 			}
 		} else
@@ -325,7 +325,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	}
 
 	fun reset(service: Service) {
-		if (MoltenCache.registeredServices.any { it.identity == service.identity }) {
+		if (SparkleCache.registeredServices.any { it.identity == service.identity }) {
 			tryToCatch {
 				service.controller?.attempt = 0
 				mainLog(Level.INFO, "reset of service '${service.identity}' succeed!")
@@ -335,7 +335,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	}
 
 	fun start(service: Service) {
-		if (MoltenCache.registeredServices.any { it.identity == service.identity }) {
+		if (SparkleCache.registeredServices.any { it.identity == service.identity }) {
 			if (!service.isRunning) {
 				tryToCatch {
 					task(
@@ -389,7 +389,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 			try {
 
 				HandlerList.unregisterAll(eventListener)
-				MoltenCache.registeredListeners = MoltenCache.registeredListeners.filter { it.listenerIdentity != eventListener.listenerIdentity }.toSet()
+				SparkleCache.registeredListeners = SparkleCache.registeredListeners.filter { it.listenerIdentity != eventListener.listenerIdentity }.toSet()
 				mainLog(Level.INFO, "unregistered '${eventListener.listenerIdentity}' listener!")
 
 			} catch (e: Exception) {
@@ -413,12 +413,12 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 //			if (!component.isBlocked) {
 
-			if (MoltenCache.registeredComponents.any { it.identity == component.identity })
+			if (SparkleCache.registeredComponents.any { it.identity == component.identity })
 				throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
 
 			component.firstContactHandshake()
 
-			MoltenCache.registeredComponents += component
+			SparkleCache.registeredComponents += component
 
 			coroutineScope.launch(context = component.threadContext) {
 
@@ -442,15 +442,15 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	}
 
 	fun start(componentIdentity: Identity<out Component>) = tryToCatch {
-		val component = MoltenCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
+		val component = SparkleCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 		if (component != null) {
 
 			if (!component.isBlocked) {
 
-				if (!MoltenCache.runningComponents.contains(componentIdentity)) {
+				if (!SparkleCache.runningComponents.contains(componentIdentity)) {
 
-					MoltenCache.runningComponents += componentIdentity.change<Component>() to Calendar.now()
+					SparkleCache.runningComponents += componentIdentity.change<Component>() to Calendar.now()
 
 					coroutineScope.launch(context = component.threadContext) {
 
@@ -472,7 +472,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	}
 
 	fun stop(componentIdentity: Identity<out Component>, unregisterComponent: Boolean = false) = tryToCatch {
-		val component = MoltenCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
+		val component = SparkleCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 		if (component != null) {
 
@@ -480,9 +480,9 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 				if (component.canBeStopped) {
 
-					if (MoltenCache.runningComponents.contains(componentIdentity)) {
+					if (SparkleCache.runningComponents.contains(componentIdentity)) {
 
-						MoltenCache.runningComponents -= componentIdentity
+						SparkleCache.runningComponents -= componentIdentity
 
 						coroutineScope.launch(context = component.threadContext) {
 
@@ -514,12 +514,12 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 	fun unregister(componentIdentity: Identity<out Component>) {
 		tryToCatch {
-			val component = MoltenCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
+			val component = SparkleCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 			if (component != null) {
 
 				if (component.isVendorCurrentlySet) {
-					MoltenCache.registeredComponents -= component
+					SparkleCache.registeredComponents -= component
 				} else
 					mainLog(
 						Level.WARNING,
@@ -568,7 +568,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	 */
 	val httpClient by lazy {
 		HttpClient(CIO) {
-			if (MoltenData.systemConfig.httpClientCaching) install(HttpCache)
+			if (SparkleData.systemConfig.httpClientCaching) install(HttpCache)
 			install(ContentNegotiation) {
 				json(jsonBase)
 			}
@@ -583,7 +583,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	private val pluginManager = server.pluginManager
 
 	val appFolder: Path
-		get() = MoltenPath.appPath(this)
+		get() = SparklePath.appPath(this)
 
 	// override base-mechanics
 
@@ -637,7 +637,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 		tryToCatch {
 			activeSince = Calendar.now()
 
-			MoltenCache.registeredApps += this
+			SparkleCache.registeredApps += this
 
 			coroutineScope.launch {
 
@@ -711,19 +711,19 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 				true
 			}
 
-			MoltenCache.registeredServices.toList().forEach {
+			SparkleCache.registeredServices.toList().forEach {
 				if (key() == it.vendor.key() && it.isRunning) {
 					it.shutdown()
 				}
 			}
 
-			MoltenCache.registeredComponents.toList().forEach {
+			SparkleCache.registeredComponents.toList().forEach {
 				if (key() == it.vendor.key()) {
 					tryToIgnore { runBlocking { it.stop() } }
 				}
 			}
 
-			MoltenCache.registeredSandBoxes.toList().forEach { sandbox ->
+			SparkleCache.registeredSandBoxes.toList().forEach { sandbox ->
 				if (key() == sandbox.vendor.key()) {
 					destroySandBox(sandbox)
 				}

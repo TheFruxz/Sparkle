@@ -2,7 +2,7 @@ package de.fruxz.sparkle.mutable
 
 import de.fruxz.ascend.tool.mutable.FlexibleMutable
 import de.fruxz.ascend.tool.smart.identification.Identifiable
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 
 class CachedMutable<T>(
 	val cacheId: String,
@@ -12,17 +12,17 @@ class CachedMutable<T>(
 	init {
 
 		// If not something is already cached, place default
-		if (!MoltenCache.registeredCachedMutables.contains(cacheId)) {
-			MoltenCache.registeredCachedMutables += cacheId to property
+		if (!SparkleCache.registeredCachedMutables.contains(cacheId)) {
+			SparkleCache.registeredCachedMutables += cacheId to property
 		}
 
 	}
 
 	@Suppress("UNCHECKED_CAST")
 	override var property: T
-		get() = MoltenCache.registeredCachedMutables[cacheId] as T ?: default
+		get() = SparkleCache.registeredCachedMutables[cacheId] as T ?: default
 		set(value) {
-			MoltenCache.registeredCachedMutables += cacheId to value
+			SparkleCache.registeredCachedMutables += cacheId to value
 		}
 
 	override val identity = cacheId

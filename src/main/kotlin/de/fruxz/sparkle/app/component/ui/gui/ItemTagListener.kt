@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.app.component.ui.gui
 
 import de.fruxz.ascend.extension.container.mapCast
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.display.ui.affectedItem
 import de.fruxz.sparkle.extension.display.ui.item
 import de.fruxz.sparkle.runtime.event.interact.PlayerInteractAtItemEvent
@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerDropItemEvent
 internal class ItemTagListener : EventListener() {
 
     private inline fun <reified T : Event> getAllActions(type: ItemActionType? = null) =
-        MoltenCache.itemActions.filter { type == null || it.type == type }.mapCast<ItemAction<T>>()
+        SparkleCache.itemActions.filter { type == null || it.type == type }.mapCast<ItemAction<T>>()
 
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onInventoryClick(event: InventoryClickEvent) {

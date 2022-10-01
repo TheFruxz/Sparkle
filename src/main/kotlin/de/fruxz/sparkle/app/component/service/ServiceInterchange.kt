@@ -3,8 +3,7 @@ package de.fruxz.sparkle.app.component.service
 import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.switchResult
-import de.fruxz.sparkle.Constants
-import de.fruxz.sparkle.app.MoltenCache.registeredServices
+import de.fruxz.sparkle.app.SparkleCache.registeredServices
 import de.fruxz.sparkle.extension.app
 import de.fruxz.sparkle.extension.display.notification
 import de.fruxz.sparkle.extension.interchange.InterchangeExecutor

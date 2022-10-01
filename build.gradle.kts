@@ -148,7 +148,7 @@ publishing {
         }
     }
 
-    publications.create("MoltenKT-Paper", MavenPublication::class) {
+    publications.create("Sparkle", MavenPublication::class) {
 
         from(components["kotlin"])
 
@@ -156,7 +156,7 @@ publishing {
         artifact(dokkaHtmlJar)
         artifact(source)
 
-        artifactId = "moltenkt-paper"
+        artifactId = "sparkle"
         version = version.toLowerCase()
 
     }

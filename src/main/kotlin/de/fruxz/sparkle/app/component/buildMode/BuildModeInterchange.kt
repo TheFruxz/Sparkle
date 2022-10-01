@@ -4,8 +4,7 @@ import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.container.toUUID
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.switchResult
-import de.fruxz.sparkle.Constants
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.display.BOLD
 import de.fruxz.sparkle.extension.display.notification
 import de.fruxz.sparkle.extension.interchange.InterchangeExecutor
@@ -109,7 +108,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 			ignoreCase()
 
 			fun displayPlayers(executor: InterchangeExecutor, page: Int) {
-				val pageValue = MoltenCache.buildModePlayers.page(page, de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE)
+				val pageValue = SparkleCache.buildModePlayers.page(page, de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE)
 
 				if (pageValue.content.isNotEmpty()) {
 
@@ -148,7 +147,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(CompletionAsset.PAGES { ceilToInt(MoltenCache.buildModePlayers.size.toDouble() / de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE) })
+				addContent(CompletionAsset.PAGES { ceilToInt(SparkleCache.buildModePlayers.size.toDouble() / de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE) })
 
 				isNotRequired()
 

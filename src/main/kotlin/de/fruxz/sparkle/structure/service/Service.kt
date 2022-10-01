@@ -1,10 +1,9 @@
 package de.fruxz.sparkle.structure.service
 
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.getApp
 import de.fruxz.sparkle.structure.Hoster
-import de.fruxz.sparkle.tool.smart.KeyedIdentifiable
 import de.fruxz.sparkle.tool.smart.Logging
 import de.fruxz.sparkle.tool.timing.tasky.Tasky
 import de.fruxz.sparkle.tool.timing.tasky.TemporalAdvice
@@ -37,17 +36,17 @@ interface Service : Hoster<Unit, Unit, Service>, Logging {
 		get() = vendor.subKey(thisIdentity, CONTINUE)
 
 	var controller: Tasky?
-		get() = MoltenCache.runningServiceTaskController[key]
+		get() = SparkleCache.runningServiceTaskController[key]
 		set(value) {
 			debugLog("Setting controller for $key to $value")
 			if (value != null)
-				MoltenCache.runningServiceTaskController += key to value
+				SparkleCache.runningServiceTaskController += key to value
 			else
-				MoltenCache.runningServiceTaskController -= key
+				SparkleCache.runningServiceTaskController -= key
 		}
 
 	val isRunning: Boolean
-		get() = controller != null && MoltenCache.runningTasks.contains(controller!!.taskId)
+		get() = controller != null && SparkleCache.runningTasks.contains(controller!!.taskId)
 
 	fun shutdown() =
 		controller?.shutdown() ?: throw IllegalStateException("controller of '$key' is null!")

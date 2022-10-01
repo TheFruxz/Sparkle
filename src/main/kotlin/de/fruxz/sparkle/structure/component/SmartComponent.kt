@@ -5,7 +5,7 @@ import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.extension.tryToCatch
 import de.fruxz.ascend.extension.tryToIgnore
 import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.display.notification
 import de.fruxz.sparkle.extension.objectBound.buildSandBox
@@ -99,8 +99,8 @@ abstract class SmartComponent(
 
 				}
 
-				MoltenCache.registeredInterchanges += it
-				MoltenCache.disabledInterchanges += it.identityObject
+				SparkleCache.registeredInterchanges += it
+				SparkleCache.disabledInterchanges += it.identityObject
 				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
 
 			}
@@ -116,8 +116,8 @@ abstract class SmartComponent(
 		interchanges.forEach {
 			tryToCatch {
 				vendor.replace(it.thisIdentityObject, it)
-				MoltenCache.registeredInterchanges += it
-				MoltenCache.disabledInterchanges -= it.identityObject
+				SparkleCache.registeredInterchanges += it
+				SparkleCache.disabledInterchanges -= it.identityObject
 				debugLog("Interchange '${it.identity}' replaced through '$identity' with original interchange-value!")
 			}
 		}
@@ -125,7 +125,7 @@ abstract class SmartComponent(
 		services.forEach {
 			tryToCatch {
 				vendor.register(it)
-				MoltenCache.registeredServices += it
+				SparkleCache.registeredServices += it
 				debugLog("Service '${it.identity}' registered through '$identity'!")
 				vendor.start(it)
 				debugLog("Service '${it.identity}' started through '$identity'!")
@@ -135,7 +135,7 @@ abstract class SmartComponent(
 		components.forEach {
 			tryToCatch {
 				vendor.add(it)
-				MoltenCache.registeredComponents += it
+				SparkleCache.registeredComponents += it
 				debugLog("Component '${it.identity}' added through '$identity'!")
 			}
 		}
@@ -143,7 +143,7 @@ abstract class SmartComponent(
 		listeners.forEach {
 			tryToCatch {
 				vendor.add(it)
-				MoltenCache.registeredListeners += it
+				SparkleCache.registeredListeners += it
 				debugLog("Listener '${it.identity}' added through '$identity'!")
 			}
 		}
@@ -164,8 +164,8 @@ abstract class SmartComponent(
 		interchanges.forEach {
 			tryToCatch {
 				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval }))
-				MoltenCache.registeredInterchanges -= it
-				MoltenCache.disabledInterchanges += it.identityObject
+				SparkleCache.registeredInterchanges -= it
+				SparkleCache.disabledInterchanges += it.identityObject
 				tryToIgnore { debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!") }
 			}
 		}
@@ -187,7 +187,7 @@ abstract class SmartComponent(
 		components.forEach {
 			tryToCatch {
 				vendor.stop(it.identityObject)
-				MoltenCache.registeredComponents -= it
+				SparkleCache.registeredComponents -= it
 				tryToIgnore { debugLog("Component '${it.identity}' stopped through '$identity'!") }
 			}
 		}

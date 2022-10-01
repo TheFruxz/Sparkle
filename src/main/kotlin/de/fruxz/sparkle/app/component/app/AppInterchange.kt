@@ -5,7 +5,7 @@ import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.limitTo
 import de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.display.message
 import de.fruxz.sparkle.extension.display.notification
@@ -46,7 +46,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
         fun displayPage(executor: InterchangeExecutor, page: Int) {
 
-            val paged = MoltenCache.registeredApps.page(page - 1, ENTRIES_PER_PAGE)
+            val paged = SparkleCache.registeredApps.page(page - 1, ENTRIES_PER_PAGE)
 
             buildComponent {
 
@@ -168,7 +168,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                     refreshing = true,
                     supportedInputType = listOf(InterchangeStructureInputRestriction.LONG),
                     generator = {
-                        (1..ceilToInt(MoltenCache.registeredApps.size.toDouble() / ENTRIES_PER_PAGE)).mapToString()
+                        (1..ceilToInt(SparkleCache.registeredApps.size.toDouble() / ENTRIES_PER_PAGE)).mapToString()
                     }
                 )
             )
@@ -317,10 +317,10 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         this + newline() + text("Display-Name: ").dyeGray() + text(targetApp.label).dyeYellow()
                         this + newline() + text("Identity: ").dyeGray() + text(targetApp.identity).dyeYellow()
                         this + newline() + text("Active since: ").dyeGray() + text(targetApp.activeSince.toString()).dyeYellow()
-                        this + newline() + text("Components: ").dyeGray() + text("${MoltenCache.registeredComponents.filter { it.vendorIdentity == targetApp.identityObject }.size} Components").dyeYellow()
-                        this + newline() + text("Interchanges: ").dyeGray() + text("${MoltenCache.registeredInterchanges.filter { it.vendorIdentity == targetApp.identityObject }.size} Interchanges").dyeYellow()
-                        this + newline() + text("Services: ").dyeGray() + text("${MoltenCache.registeredServices.filter { it.vendorIdentity == targetApp.identityObject }.size} Services").dyeYellow()
-                        this + newline() + text("SandBoxes: ").dyeGray() + text("${MoltenCache.registeredSandBoxes.filter { it.vendorIdentity == targetApp.identityObject }.size} SandBoxes").dyeYellow()
+                        this + newline() + text("Components: ").dyeGray() + text("${SparkleCache.registeredComponents.filter { it.vendorIdentity == targetApp.identityObject }.size} Components").dyeYellow()
+                        this + newline() + text("Interchanges: ").dyeGray() + text("${SparkleCache.registeredInterchanges.filter { it.vendorIdentity == targetApp.identityObject }.size} Interchanges").dyeYellow()
+                        this + newline() + text("Services: ").dyeGray() + text("${SparkleCache.registeredServices.filter { it.vendorIdentity == targetApp.identityObject }.size} Services").dyeYellow()
+                        this + newline() + text("SandBoxes: ").dyeGray() + text("${SparkleCache.registeredSandBoxes.filter { it.vendorIdentity == targetApp.identityObject }.size} SandBoxes").dyeYellow()
 
                         newlines(2)
                     }.notification(Transmission.Level.GENERAL, executor).display()

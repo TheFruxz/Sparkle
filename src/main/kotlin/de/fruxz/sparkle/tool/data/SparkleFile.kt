@@ -2,7 +2,7 @@ package de.fruxz.sparkle.tool.data
 
 import java.nio.file.Path
 
-interface MoltenFile {
+interface SparkleFile {
 
 	val file: Path
 

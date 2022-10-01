@@ -5,9 +5,9 @@ import de.fruxz.ascend.tool.smart.identification.Identifiable
 /**
  * The path used inside yaml files
  */
-data class MoltenPath(
+data class SparklePath(
 	private val base: String,
-): Identifiable<MoltenPath> {
+): Identifiable<SparklePath> {
 
 	var fullPath: String = base
 

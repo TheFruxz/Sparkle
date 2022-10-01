@@ -38,7 +38,7 @@ fun task(
  * Internally a [CompletableFuture] is used to create the delayed result.
  * Because the [CompletableFuture.await] function uses the coroutine suspend
  * feature, this function also utilizes the suspend function feature, so the
- * result can be easily managed into your existing MoltenKT App.
+ * result can be easily managed into your existing Sparkle App.
  * @param delay The delay before the process is executed; default none.
  * @param process The process to be executed.
  * @return The direct result of the process.

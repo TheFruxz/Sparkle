@@ -7,8 +7,8 @@ import de.fruxz.ascend.extension.math.isDouble
 import de.fruxz.ascend.extension.math.isLong
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.tool.smart.identification.Identifiable
-import de.fruxz.sparkle.app.MoltenCache
-import de.fruxz.sparkle.app.MoltenData
+import de.fruxz.sparkle.app.SparkleCache
+import de.fruxz.sparkle.app.SparkleData
 import de.fruxz.sparkle.app.component.point.asset.Point
 import de.fruxz.sparkle.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.extension.paper.offlinePlayer
@@ -61,11 +61,11 @@ data class CompletionAsset<T>(
 
 	override val vendorIdentity = vendor.identityObject
 
-	fun computedContent(context: CompletionContext): Set<String> = if (!refreshing && MoltenCache.registeredCompletionAssetStateCache.containsKey(identity)) {
-		MoltenCache.registeredCompletionAssetStateCache[identity]!!
+	fun computedContent(context: CompletionContext): Set<String> = if (!refreshing && SparkleCache.registeredCompletionAssetStateCache.containsKey(identity)) {
+		SparkleCache.registeredCompletionAssetStateCache[identity]!!
 	} else {
 		generator(context, this).toSortedSet().apply {
-			if (!refreshing) MoltenCache.registeredCompletionAssetStateCache += identity to this
+			if (!refreshing) SparkleCache.registeredCompletionAssetStateCache += identity to this
 		}
 	}
 
@@ -153,56 +153,56 @@ data class CompletionAsset<T>(
 
 		@JvmStatic
 		val APP = CompletionAsset<App>(system, "APP", true) {
-			MoltenCache.registeredApps.withMap { identity }
+			SparkleCache.registeredApps.withMap { identity }
 		}.doCheck {
-			MoltenCache.registeredApps.any { it.identity.equals(input, ignoreCase) }
+			SparkleCache.registeredApps.any { it.identity.equals(input, ignoreCase) }
 		}.transformer {
-			MoltenCache.registeredApps.firstOrNull { it.identity == input }
+			SparkleCache.registeredApps.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic
 		val INTERCHANGE = CompletionAsset<Interchange>(system, "INTERCHANGE", true) {
-			MoltenCache.registeredInterchanges.withMap { identity }
+			SparkleCache.registeredInterchanges.withMap { identity }
 		}.doCheck {
-			MoltenCache.registeredInterchanges.any { it.identity.equals(input, ignoreCase) }
+			SparkleCache.registeredInterchanges.any { it.identity.equals(input, ignoreCase) }
 		}.transformer {
-			MoltenCache.registeredInterchanges.firstOrNull { it.identity == input }
+			SparkleCache.registeredInterchanges.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic
 		val SERVICE = CompletionAsset<Service>(system, "SERVICE", true) {
-			MoltenCache.registeredServices.withMap { identity }
+			SparkleCache.registeredServices.withMap { identity }
 		}.doCheck {
-			MoltenCache.registeredServices.any { it.identity.equals(input, ignoreCase) }
+			SparkleCache.registeredServices.any { it.identity.equals(input, ignoreCase) }
 		}.transformer {
-			MoltenCache.registeredServices.firstOrNull { it.identity == input }
+			SparkleCache.registeredServices.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic
 		val COMPONENT = CompletionAsset<Component>(system, "COMPONENT", true, listOf(InterchangeStructureInputRestriction.STRING)) {
-			MoltenCache.registeredComponents.withMap { identity }
+			SparkleCache.registeredComponents.withMap { identity }
 		}.doCheck {
-			MoltenCache.registeredComponents.any { it.identity.equals(input, ignoreCase) }
+			SparkleCache.registeredComponents.any { it.identity.equals(input, ignoreCase) }
 		}.transformer {
-			MoltenCache.registeredComponents.firstOrNull { it.identity == input }
+			SparkleCache.registeredComponents.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic
 		val SANDBOX = CompletionAsset<SandBox>(system, "SANDBOX", true, listOf(InterchangeStructureInputRestriction.STRING)) {
-			MoltenCache.registeredSandBoxes.withMap { identity }
+			SparkleCache.registeredSandBoxes.withMap { identity }
 		}.doCheck {
-			MoltenCache.registeredSandBoxes.any { it.identity.equals(input, ignoreCase) }
+			SparkleCache.registeredSandBoxes.any { it.identity.equals(input, ignoreCase) }
 		}.transformer {
-			MoltenCache.registeredSandBoxes.firstOrNull { it.identity == input }
+			SparkleCache.registeredSandBoxes.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic
 		val PREFERENCE = CompletionAsset<Preference<*>>(system, "PREFERENCE", true, listOf(InterchangeStructureInputRestriction.STRING)) {
-			MoltenCache.registeredPreferences.keys.withMap { identity }
+			SparkleCache.registeredPreferences.keys.withMap { identity }
 		}.doCheck {
-			MoltenCache.registeredPreferences.keys.any { it.identity.equals(input, ignoreCase) }
+			SparkleCache.registeredPreferences.keys.any { it.identity.equals(input, ignoreCase) }
 		}.transformer {
-			MoltenCache.registeredPreferences.toList().firstOrNull { it.first.identity == input }?.second
+			SparkleCache.registeredPreferences.toList().firstOrNull { it.first.identity == input }?.second
 		}
 
 		@JvmStatic
@@ -234,11 +234,11 @@ data class CompletionAsset<T>(
 
 		@JvmStatic
 		val POINT = CompletionAsset<Point>(system, "POINT", true, listOf(InterchangeStructureInputRestriction.STRING)) {
-			MoltenData.savedPoints.content.points.map(Point::identity)
+			SparkleData.savedPoints.content.points.map(Point::identity)
 		}.doCheck {
-			MoltenData.savedPoints.content.points.any { it.identity.equals(input, ignoreCase) }
+			SparkleData.savedPoints.content.points.any { it.identity.equals(input, ignoreCase) }
 		}.transformer {
-			MoltenData.savedPoints.content.points.firstOrNull { it.identity == input }
+			SparkleData.savedPoints.content.points.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic

@@ -20,7 +20,7 @@ data class PlayerInteractAtBlockEvent(
 	override val origin: PlayerInteractEvent,
 	override var interactedBlock: Result = DEFAULT,
 	override var interactedItem: Result = DEFAULT,
-) : MoltenPlayerInteractEvent, PlayerEvent(whoInteract, false) {
+) : SparklePlayerInteractEvent, PlayerEvent(whoInteract, false) {
 
 	override fun getHandlers() = handlerList
 

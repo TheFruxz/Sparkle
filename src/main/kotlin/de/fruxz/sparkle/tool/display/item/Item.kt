@@ -5,7 +5,6 @@ import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.extension.forceCast
 import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.ascend.tool.smart.Producible
-import de.fruxz.sparkle.app.MoltenApp
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.display.ui.changeColor
 import de.fruxz.sparkle.extension.display.ui.itemMetaOrNull
@@ -105,7 +104,7 @@ data class Item(
 	)
 
 	override val identityKey: Key
-		get() = Key.key(de.fruxz.sparkle.app.MoltenApp.Infrastructure.SYSTEM_IDENTITY + "_items", itemIdentity.lowercase().filter { KEY_REGEX.matches("$it") })
+		get() = Key.key(de.fruxz.sparkle.app.SparkleApp.Infrastructure.SYSTEM_IDENTITY + "_items", itemIdentity.lowercase().filter { KEY_REGEX.matches("$it") })
 
 	val displayObject: Component
 		get() = Component.text()
@@ -147,7 +146,7 @@ data class Item(
 	override fun produce(): ItemStack = runBlocking {
 		val itemMeta = produceItemMeta()
 
-		withContext(de.fruxz.sparkle.app.MoltenApp.coroutineScope.coroutineContext) {
+		withContext(de.fruxz.sparkle.app.SparkleApp.coroutineScope.coroutineContext) {
 			@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
 			val persistentData = mutableMapOf<Pair<NamespacedKey, PersistentDataType<*, *>>, Any>()
 

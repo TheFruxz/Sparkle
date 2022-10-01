@@ -2,7 +2,7 @@ package de.fruxz.sparkle.tool.display.canvas
 
 import de.fruxz.ascend.extension.container.distinctSetBy
 import de.fruxz.ascend.extension.container.forEachNotNull
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.display.ui.buildInventory
 import de.fruxz.sparkle.extension.display.ui.get
@@ -121,7 +121,7 @@ open class Canvas(
 	 * @since 1.0
 	 */
 	val viewers: Set<Player>
-		get() = MoltenCache.canvasSessions.filter { it.value.canvas == this.key }.keys.distinctSetBy { it.uniqueId }
+		get() = SparkleCache.canvasSessions.filter { it.value.canvas == this.key }.keys.distinctSetBy { it.uniqueId }
 
 	fun display(
 		vararg receivers: HumanEntity?,
@@ -194,8 +194,8 @@ open class Canvas(
 	}
 
 	fun push() {
-		MoltenCache.canvas += key to this
-		MoltenCache.canvasActions += key to Reaction(onOpen, onClose, onClicks)
+		SparkleCache.canvas += key to this
+		SparkleCache.canvasActions += key to Reaction(onOpen, onClose, onClicks)
 	}
 
 	/**

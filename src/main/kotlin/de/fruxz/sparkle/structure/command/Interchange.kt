@@ -15,7 +15,7 @@ import de.fruxz.sparkle.extension.timing.getCooldown
 import de.fruxz.sparkle.extension.timing.hasCooldown
 import de.fruxz.sparkle.extension.timing.setCooldown
 import de.fruxz.sparkle.structure.app.App
-import de.fruxz.sparkle.structure.command.InterchangeAuthorizationType.MOLTEN
+import de.fruxz.sparkle.structure.command.InterchangeAuthorizationType.SPARKLE
 import de.fruxz.sparkle.structure.command.InterchangeResult.*
 import de.fruxz.sparkle.structure.command.InterchangeUserRestriction.*
 import de.fruxz.sparkle.structure.command.completion.InterchangeStructure
@@ -73,7 +73,7 @@ abstract class Interchange(
 	val aliases: Set<String> = emptySet(),
 	val protectedAccess: Boolean = false,
 	val userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
-	val accessProtectionType: InterchangeAuthorizationType = MOLTEN,
+	val accessProtectionType: InterchangeAuthorizationType = SPARKLE,
 	val hiddenFromRecommendation: Boolean = false,
 	val completion: InterchangeStructure<out InterchangeExecutor> = emptyInterchangeStructure(),
 	val ignoreInputValidation: Boolean = false,
@@ -235,7 +235,7 @@ abstract class Interchange(
 	 * its own possible approvals!**)
 	 */
 	private fun canExecuteBasePlate(executor: InterchangeExecutor) =
-		accessProtectionType != MOLTEN || requiredApproval == null || requiredApproval?.hasApproval(executor) ?: true
+		accessProtectionType != SPARKLE || requiredApproval == null || requiredApproval?.hasApproval(executor) ?: true
 
 	private fun wrongApprovalFeedback(
 		receiver: InterchangeExecutor,
@@ -422,7 +422,7 @@ enum class InterchangeUserRestriction {
 
 enum class InterchangeAuthorizationType {
 
-	MOLTEN,
+	SPARKLE,
 
 	@LegacyCraftBukkitFeature
 	CRAFTBUKKIT,

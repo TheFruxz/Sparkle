@@ -1,10 +1,10 @@
 package de.fruxz.sparkle.structure.component.file
 
-import de.fruxz.sparkle.app.MoltenApp
+import de.fruxz.sparkle.app.SparkleApp
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ComponentConfiguration(
-	var moltenVersion: String = de.fruxz.sparkle.app.MoltenApp.instance.description.version,
+	var sparkleVersion: String = SparkleApp.instance.description.version,
 	var components: List<ComponentConfigurationEntry> = listOf(),
 )

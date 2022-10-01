@@ -2,7 +2,7 @@ package de.fruxz.sparkle.tool.display.item.action
 
 /**
  * This enum defines the type of actions, you can track
- * using the ItemAction system of MoltenKT-Paper.
+ * using the ItemAction system of Sparkle.
  * @author Fruxz
  * @since 1.0
  */

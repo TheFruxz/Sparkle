@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.tool.display.canvas
 
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import net.kyori.adventure.key.Key
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
@@ -31,7 +31,7 @@ object CanvasSessionManager {
 	 * @since 1.0
 	 */
 	fun getSessions(queryCanvas: Key): Set<Map.Entry<Player, CanvasSession>> =
-		MoltenCache.canvasSessions.filter { it.value.canvas == queryCanvas }.entries
+		SparkleCache.canvasSessions.filter { it.value.canvas == queryCanvas }.entries
 
 	/**
 	 * This function returns every canvas session, viewing a
@@ -51,7 +51,7 @@ object CanvasSessionManager {
 	 * @since 1.0
 	 */
 	fun getSession(sessionHost: Player): CanvasSession? =
-		MoltenCache.canvasSessions[sessionHost]
+		SparkleCache.canvasSessions[sessionHost]
 
 	/**
 	 * This function returns, if the given [sessionHost] entity is
@@ -67,7 +67,7 @@ object CanvasSessionManager {
 	 * @since 1.0
 	 */
 	fun removeSession(sessionHost: Player) {
-		MoltenCache.canvasSessions -= sessionHost
+		SparkleCache.canvasSessions -= sessionHost
 	}
 
 	/**
@@ -76,7 +76,7 @@ object CanvasSessionManager {
 	 * @since 1.0
 	 */
 	fun putSession(sessionHost: Player, canvas: Key, parameters: Map<Key, Any> = emptyMap()) {
-		MoltenCache.canvasSessions += sessionHost to CanvasSession(
+		SparkleCache.canvasSessions += sessionHost to CanvasSession(
 			canvas = canvas,
 			parameters = parameters,
 			created = Calendar.now()

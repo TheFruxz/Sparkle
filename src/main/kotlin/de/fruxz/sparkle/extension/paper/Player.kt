@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.extension.paper
 
 import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.app.component.buildMode.BuildModeComponent
 import de.fruxz.sparkle.tool.annotation.RequiresComponent
 import de.fruxz.sparkle.tool.position.dependent.DependentCubicalShape
@@ -31,12 +31,12 @@ fun LivingEntity.maxOutHealth() {
 
 @RequiresComponent(BuildModeComponent::class)
 var OfflinePlayer.buildMode: Boolean
-	get() = MoltenCache.buildModePlayers.contains(identityObject)
+	get() = SparkleCache.buildModePlayers.contains(identityObject)
 	set(value) {
 		if (value) {
-			MoltenCache.buildModePlayers += identityObject
+			SparkleCache.buildModePlayers += identityObject
 		} else
-			MoltenCache.buildModePlayers -= identityObject
+			SparkleCache.buildModePlayers -= identityObject
 	}
 
 /**
@@ -51,7 +51,7 @@ var OfflinePlayer.buildMode: Boolean
 var Player.marker: DependentCubicalShape
 	get() = markerOrNull ?: throw NoSuchElementException("Player marker is not set!")
 	set(value) {
-		MoltenCache.playerMarkerBoxes += identityObject to value
+		SparkleCache.playerMarkerBoxes += identityObject to value
 	}
 
 /**
@@ -61,12 +61,12 @@ var Player.marker: DependentCubicalShape
  * @since 1.0
  */
 var Player.markerOrNull: DependentCubicalShape?
-	get() = MoltenCache.playerMarkerBoxes[identityObject]
+	get() = SparkleCache.playerMarkerBoxes[identityObject]
 	set(value) {
 		if (value != null) {
-			MoltenCache.playerMarkerBoxes += identityObject to value
+			SparkleCache.playerMarkerBoxes += identityObject to value
 		} else
-			MoltenCache.playerMarkerBoxes -= identityObject
+			SparkleCache.playerMarkerBoxes -= identityObject
 	}
 
 /**

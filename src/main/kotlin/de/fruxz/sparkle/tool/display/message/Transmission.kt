@@ -3,7 +3,7 @@ package de.fruxz.sparkle.tool.display.message
 import de.fruxz.ascend.extension.dump
 import de.fruxz.ascend.tool.smart.positioning.Address
 import de.fruxz.ascend.tool.smart.positioning.Address.Companion.address
-import de.fruxz.sparkle.app.MoltenData
+import de.fruxz.sparkle.app.SparkleData
 import de.fruxz.sparkle.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.extension.paper.consoleSender
 import de.fruxz.sparkle.extension.paper.onlinePlayers
@@ -67,7 +67,7 @@ data class Transmission(
 	fun display(): Transmission {
 		val nextRound = mutableSetOf<Entity>()
 
-		val prefix = (MoltenData.systemConfig.prefix[level.prefixLink.addressString.takeIf { prefixByLevel } ?: "general"] ?: "<dark_gray>⏵ ").asStyledComponent
+		val prefix = (SparkleData.systemConfig.prefix[level.prefixLink.addressString.takeIf { prefixByLevel } ?: "general"] ?: "<dark_gray>⏵ ").asStyledComponent
 
 		val displayObject = content.map { prefix.append(it) }
 

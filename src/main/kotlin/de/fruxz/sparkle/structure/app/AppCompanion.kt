@@ -1,33 +1,28 @@
 package de.fruxz.sparkle.structure.app
 
 import de.fruxz.ascend.extension.forceCast
-import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.tool.smart.identification.Identifiable
-import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.sparkle.app.MoltenApp
-import de.fruxz.sparkle.app.MoltenApp.Infrastructure
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleApp.Infrastructure
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.tool.smart.KeyedIdentifiable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import net.kyori.adventure.key.Key
-import net.kyori.adventure.key.Namespaced
 
 abstract class AppCompanion<T : App> : KeyedIdentifiable<T> {
 
 	/**
 	 * This value represents the current [App] instance.
-	 * It is extracted from the [MoltenCache.registeredApps].
+	 * It is extracted from the [SparkleCache.registeredApps].
 	 * If the cache, does not contain this [App] instance, a
 	 * [NoSuchElementException] is thrown.
 	 * The instance get registered during the [App.onLoad]/[App.preHello].
-	 * @throws NoSuchElementException if the [App] instance is not registered in the [MoltenCache.registeredApps]
+	 * @throws NoSuchElementException if the [App] instance is not registered in the [SparkleCache.registeredApps]
 	 * @author Fruxz
 	 * @since 1.0
 	 */
 	val instance: T
-		get() = MoltenCache.registeredApps.firstOrNull { it.identityKey == identityKey }?.forceCast<T>()
-			?: error("This app is not registered inside the 'registeredApps' instance! Maybe MoltenKT-Paper is shadowed inside the plugin using MoltenKT? This would lead to this error!")
+		get() = SparkleCache.registeredApps.firstOrNull { it.identityKey == identityKey }?.forceCast<T>()
+			?: error("This app is not registered inside the 'registeredApps' instance! Maybe Sparkle is shadowed inside the plugin using Sparkle? This would lead to this error!")
 
 	/**
 	 * This value represents the coroutine scope of the [App], that

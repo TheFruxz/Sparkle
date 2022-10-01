@@ -8,16 +8,16 @@ import org.bukkit.inventory.ItemStack
 
 /**
  * This interface is used to get into the item-based approach
- * of items inside MoltenKT for third-party apps.
+ * of items inside Sparkle for third-party apps.
  * Third-party item-systems should implement this interface,
- * to be able to use their items with MoltenKT seamlessly.
+ * to be able to use their items with Sparkle seamlessly.
  * @author Fruxz
  * @since 1.0
  */
 interface ItemLike : Producible<ItemStack> {
 
 	/**
-	 * This function produces an MoltenKT-Paper [Item]
+	 * This function produces an Sparkle [Item]
 	 * based on the given [ItemLike] object.
 	 * @author Fruxz
 	 * @since 1.0

@@ -7,9 +7,9 @@ import de.fruxz.sparkle.tool.smart.KeyedIdentifiable
 import kotlin.io.path.Path
 import kotlin.io.path.div
 
-object MoltenPath {
+object SparklePath {
 
-    private val homePath = Path("MoltenApps")
+    private val homePath = Path("SparkleApps")
 
     fun appPath(app: KeyedIdentifiable<out App>) =
         homePath / "main@${app.key().value()}"

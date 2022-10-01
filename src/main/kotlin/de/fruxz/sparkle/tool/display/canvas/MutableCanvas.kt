@@ -1,7 +1,6 @@
 package de.fruxz.sparkle.tool.display.canvas
 
 import de.fruxz.ascend.tool.smart.Producible
-import de.fruxz.sparkle.app.MoltenApp
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.runtime.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.runtime.event.canvas.CanvasCloseEvent
@@ -57,7 +56,7 @@ data class MutableCanvas(
 	}
 
 	fun setDeferred(slot: Int, itemLikeProcess: suspend CoroutineScope.() -> ItemLike) {
-		asyncItems += slot to de.fruxz.sparkle.app.MoltenApp.coroutineScope.async(block = itemLikeProcess)
+		asyncItems += slot to de.fruxz.sparkle.app.SparkleApp.coroutineScope.async(block = itemLikeProcess)
 	}
 
 	operator fun set(slots: Iterable<Int>, itemLike: ItemLike?) =

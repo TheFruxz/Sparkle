@@ -3,16 +3,11 @@ package de.fruxz.sparkle.tool.timing.tasky
 import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.extension.data.RandomTagType.ONLY_UPPERCASE
 import de.fruxz.ascend.extension.data.buildRandomTag
-import de.fruxz.ascend.tool.smart.identification.Identifiable
-import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.app.MoltenApp
-import de.fruxz.sparkle.app.MoltenApp.Infrastructure
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleApp.Infrastructure
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.structure.app.App
-import de.fruxz.sparkle.structure.service.Service
-import de.fruxz.sparkle.tool.smart.KeyedIdentifiable
 import de.fruxz.sparkle.tool.smart.Logging
 import net.kyori.adventure.key.Key
 import org.bukkit.Bukkit
@@ -84,8 +79,8 @@ interface Tasky : Logging {
 
 							if (controller.dieOnError) {
 								onCrash(controller)
-								MoltenCache.runningTasks = MoltenCache.runningTasks.filter { check -> check != controller.taskId }
-								MoltenCache.runningServiceTaskController = MoltenCache.runningServiceTaskController.filterNot { check -> check.value.taskId == controller.taskId }.toMutableMap()
+								SparkleCache.runningTasks = SparkleCache.runningTasks.filter { check -> check != controller.taskId }
+								SparkleCache.runningServiceTaskController = SparkleCache.runningServiceTaskController.filterNot { check -> check.value.taskId == controller.taskId }.toMutableMap()
 								controller.shutdown()
 							}
 						}
@@ -93,7 +88,7 @@ interface Tasky : Logging {
 						try {
 
 							if (controller.attempt == 1L) {
-								MoltenCache.runningTasks += taskId
+								SparkleCache.runningTasks += taskId
 								onStart(controller)
 								output = controller
 							}
@@ -106,8 +101,8 @@ interface Tasky : Logging {
 				}.let {
 					output = object : Tasky {
 						override fun shutdown() {
-							MoltenCache.runningTasks = MoltenCache.runningTasks.filter { check -> check != it.taskId }
-							MoltenCache.runningServiceTaskController = MoltenCache.runningServiceTaskController.filterNot { check -> check.value.taskId == it.taskId }.toMutableMap()
+							SparkleCache.runningTasks = SparkleCache.runningTasks.filter { check -> check != it.taskId }
+							SparkleCache.runningServiceTaskController = SparkleCache.runningServiceTaskController.filterNot { check -> check.value.taskId == it.taskId }.toMutableMap()
 							onStop(this)
 							Bukkit.getScheduler().cancelTask(it.taskId)
 							it.cancel()
@@ -138,7 +133,7 @@ interface Tasky : Logging {
 			)
 
 			if (serviceVendor.value() != "dummy") {
-				MoltenCache.runningServiceTaskController += serviceVendor to output
+				SparkleCache.runningServiceTaskController += serviceVendor to output
 				debugLog("Tasky '$serviceVendor' successfully started task '$internalId'")
 			} else
 				debugLog("Tasky failed to start task '$internalId' due to dummy check fail!", Level.WARNING)

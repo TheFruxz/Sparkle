@@ -9,7 +9,7 @@ import org.bukkit.permissions.Permissible
 /**
  * This class represents an approval for an action/access.
  * This is also known as "permissions".
- * @param id the permission, e.g. "molten.paper.*"
+ * @param id the permission, e.g. "sparkle.paper.*"
  * @author Fruxz
  * @since 1.0
  */
@@ -34,7 +34,7 @@ data class Approval(
 
 	/**
 	 * This operator function adds an additional sub-permision to the current permission.
-	 * Like div("use") = "molten.paper" -> "molten.paper.use"
+	 * Like div("use") = "sparkle.paper" -> "sparkle.paper.use"
 	 * @param value the sub-permission, that should be added
 	 * @author Fruxz
 	 * @since 1.0

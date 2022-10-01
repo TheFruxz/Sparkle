@@ -27,7 +27,7 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 
-object MoltenCache : AppCache {
+object SparkleCache : AppCache {
 
 	var registeredApps = setOf<App>()
 

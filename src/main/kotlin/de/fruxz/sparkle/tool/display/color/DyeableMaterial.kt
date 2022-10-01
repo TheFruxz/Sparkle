@@ -1,6 +1,7 @@
 package de.fruxz.sparkle.tool.display.color
 
 import de.fruxz.ascend.extension.container.replace
+import de.fruxz.sparkle.app.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import de.fruxz.sparkle.extension.paper.createKey
 import de.fruxz.sparkle.extension.paper.createNamespacedKey
 import de.fruxz.sparkle.extension.system
@@ -47,7 +48,7 @@ enum class DyeableMaterial(
 
 		@JvmStatic
 		fun materialFromMaterialCode(materialCode: String): Material? {
-			val code = materialCode.lowercase().removePrefix("minecraft:").removePrefix("moltenkt:").uppercase()
+			val code = materialCode.lowercase().removePrefix("minecraft:").removePrefix("$SYSTEM_IDENTITY:").uppercase()
 			val output = if (code.contains('#')) {
 				val split = code.split('#')
 

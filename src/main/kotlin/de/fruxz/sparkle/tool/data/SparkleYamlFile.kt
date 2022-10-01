@@ -6,13 +6,13 @@ import kotlin.io.path.createDirectories
 import kotlin.io.path.createFile
 import kotlin.io.path.exists
 
-interface MoltenYamlFile : MoltenFile {
+interface SparkleYamlFile : SparkleFile {
 
     companion object {
 
         @JvmStatic
         fun generateYaml(path: Path) =
-            object : MoltenFile {
+            object : SparkleFile {
 
                 override val file =
                     path.apply {

@@ -1,9 +1,8 @@
 package de.fruxz.sparkle.extension.objectBound
 
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.app.MoltenCache
-import de.fruxz.sparkle.app.MoltenCache.registeredSandBoxCalls
-import de.fruxz.sparkle.app.MoltenCache.registeredSandBoxes
+import de.fruxz.sparkle.app.SparkleCache.registeredSandBoxCalls
+import de.fruxz.sparkle.app.SparkleCache.registeredSandBoxes
 import de.fruxz.sparkle.extension.mainLog
 import de.fruxz.sparkle.extension.system
 import de.fruxz.sparkle.runtime.sandbox.SandBox

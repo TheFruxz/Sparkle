@@ -5,7 +5,7 @@ import org.bukkit.event.Event.Result.ALLOW
 import org.bukkit.event.Event.Result.DENY
 import org.bukkit.event.player.PlayerInteractEvent
 
-interface MoltenPlayerInteractEvent {
+interface SparklePlayerInteractEvent {
 
 	val origin: PlayerInteractEvent
 
@@ -15,12 +15,12 @@ interface MoltenPlayerInteractEvent {
 
 	companion object {
 
-		fun <T : MoltenPlayerInteractEvent> T.denyInteraction() {
+		fun <T : SparklePlayerInteractEvent> T.denyInteraction() {
 			this.interactedBlock = DENY
 			this.interactedItem = DENY
 		}
 
-		fun <T : MoltenPlayerInteractEvent> T.allowInteraction() {
+		fun <T : SparklePlayerInteractEvent> T.allowInteraction() {
 			this.interactedBlock = ALLOW
 			this.interactedItem = ALLOW
 		}

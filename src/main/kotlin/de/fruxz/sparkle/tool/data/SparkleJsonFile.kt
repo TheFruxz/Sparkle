@@ -1,8 +1,6 @@
 package de.fruxz.sparkle.tool.data
 
-import de.fruxz.ascend.extension.data.fromJson
 import de.fruxz.ascend.extension.data.fromJsonString
-import de.fruxz.ascend.extension.data.toJson
 import de.fruxz.ascend.extension.data.writeJson
 import de.fruxz.sparkle.tool.data.json.JsonConfiguration
 import de.fruxz.sparkle.tool.data.json.JsonFileDataElement
@@ -11,7 +9,7 @@ import kotlin.io.path.createDirectories
 import kotlin.io.path.createFile
 import kotlin.io.path.exists
 
-interface MoltenJsonFile : MoltenFile {
+interface SparkleJsonFile : SparkleFile {
 
 	override val file: Path
 
@@ -27,7 +25,7 @@ interface MoltenJsonFile : MoltenFile {
 
 		@JvmStatic
 		fun generateJson(path: Path) =
-			object : MoltenJsonFile {
+			object : SparkleJsonFile {
 
 				override val file =
 					path.apply {

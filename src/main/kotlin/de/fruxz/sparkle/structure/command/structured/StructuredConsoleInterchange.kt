@@ -3,7 +3,7 @@ package de.fruxz.sparkle.structure.command.structured
 import de.fruxz.sparkle.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.structure.command.Interchange
 import de.fruxz.sparkle.structure.command.InterchangeAuthorizationType
-import de.fruxz.sparkle.structure.command.InterchangeAuthorizationType.MOLTEN
+import de.fruxz.sparkle.structure.command.InterchangeAuthorizationType.SPARKLE
 import de.fruxz.sparkle.structure.command.InterchangeResult
 import de.fruxz.sparkle.structure.command.InterchangeUserRestriction.ONLY_CONSOLE
 import de.fruxz.sparkle.structure.command.completion.InterchangeStructure
@@ -16,7 +16,7 @@ abstract class StructuredConsoleInterchange(
 	val structure: InterchangeStructure<ConsoleCommandSender>,
 	aliases: Set<String> = emptySet(),
 	protectedAccess: Boolean = true,
-	accessProtectionType: InterchangeAuthorizationType = MOLTEN,
+	accessProtectionType: InterchangeAuthorizationType = SPARKLE,
 	hiddenFromRecommendation: Boolean = false,
 	ignoreInputValidation: Boolean = false,
 	cooldown: Duration = Duration.ZERO,

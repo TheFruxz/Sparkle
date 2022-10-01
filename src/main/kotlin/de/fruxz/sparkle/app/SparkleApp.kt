@@ -3,7 +3,7 @@ package de.fruxz.sparkle.app
 import com.destroystokyo.paper.ParticleBuilder
 import de.fruxz.ascend.extension.data.addAscendJsonModuleModification
 import de.fruxz.ascend.extension.forceCast
-import de.fruxz.sparkle.app.MoltenApp.Infrastructure.SYSTEM_IDENTITY
+import de.fruxz.sparkle.app.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import de.fruxz.sparkle.app.component.app.AppComponent
 import de.fruxz.sparkle.app.component.buildMode.BuildModeComponent
 import de.fruxz.sparkle.app.component.chat.ChatComponent
@@ -22,7 +22,7 @@ import de.fruxz.sparkle.app.component.service.ServiceComponent
 import de.fruxz.sparkle.app.component.ui.actionbar.AdaptiveActionBarComponent
 import de.fruxz.sparkle.app.component.ui.gui.UIComponent
 import de.fruxz.sparkle.app.interchange.DebugModeInterchange
-import de.fruxz.sparkle.app.interchange.MoltenKtInterchange
+import de.fruxz.sparkle.app.interchange.SparkleInterchange
 import de.fruxz.sparkle.app.interchange.PlaygroundInterchange
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.mainLog
@@ -79,13 +79,13 @@ import java.util.*
 import java.util.logging.Level
 import de.fruxz.ascend.extension.data.addJsonContextualConfiguration as jsonContextual
 
-class MoltenApp : App() {
+class SparkleApp : App() {
 
-	override val companion: de.fruxz.sparkle.app.MoltenApp.Companion = de.fruxz.sparkle.app.MoltenApp.Companion
+	override val companion: Companion = Companion
 
 	override val appIdentity: String = SYSTEM_IDENTITY
-	override val label = "Molten-Kt"
-	override val appCache: de.fruxz.sparkle.app.MoltenCache = de.fruxz.sparkle.app.MoltenCache
+	override val label = "Sparkle"
+	override val appCache: SparkleCache = SparkleCache
 
 	override suspend fun preHello() {
 
@@ -159,16 +159,16 @@ class MoltenApp : App() {
 
 	override suspend fun hello() {
 
-		de.fruxz.sparkle.app.MoltenApp.Companion.debugMode = de.fruxz.sparkle.app.MoltenData.systemConfig.debugMode
+		debugMode = SparkleData.systemConfig.debugMode
 
 		mainLog(
 			Level.INFO, """
-			Molten-Kt is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
+			Sparkle is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
 			https://www.jetbrains.com/ | https://kotlinlang.org/
 		""".trimIndent()
 		)
 
-		de.fruxz.sparkle.app.MoltenCache.tmp_initSetupPreferences.forEach {
+		SparkleCache.tmp_initSetupPreferences.forEach {
 			fun <T : Any> proceed(default: T) {
 				val preference = it.forceCast<Preference<T>>()
 				preference.content = default
@@ -177,7 +177,7 @@ class MoltenApp : App() {
 			proceed(it.default)
 		}
 
-		de.fruxz.sparkle.app.MoltenCache.tmp_initSetupPreferences = emptySet()
+		SparkleCache.tmp_initSetupPreferences = emptySet()
 
 		// NEW COMPONENTS
 		add(ChatComponent())
@@ -195,7 +195,7 @@ class MoltenApp : App() {
 		add(MessagingComponent())
 		add(AdaptiveActionBarComponent())
 
-		add(MoltenKtInterchange())
+		add(SparkleInterchange())
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
 
@@ -203,7 +203,7 @@ class MoltenApp : App() {
 
 	}
 
-	companion object : AppCompanion<de.fruxz.sparkle.app.MoltenApp>() {
+	companion object : AppCompanion<SparkleApp>() {
 
 		@JvmStatic
 		override val predictedIdentity = SYSTEM_IDENTITY
@@ -216,7 +216,7 @@ class MoltenApp : App() {
 	object Infrastructure {
 
 		@JvmStatic
-		val SYSTEM_IDENTITY = "molten-kt"
+		val SYSTEM_IDENTITY = "sparkle"
 
 	}
 

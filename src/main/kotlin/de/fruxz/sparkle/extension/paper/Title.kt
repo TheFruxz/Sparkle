@@ -1,6 +1,5 @@
 package de.fruxz.sparkle.extension.paper
 
-import de.fruxz.sparkle.app.MoltenApp
 import de.fruxz.sparkle.extension.data.ticks
 import de.fruxz.sparkle.extension.paper.KeyFramesAlignment.*
 import de.fruxz.stacked.extension.Times
@@ -33,7 +32,7 @@ fun Title.copy(
  * @author Fruxz
  * @since 1.0
  */
-fun Entity.showAnimatedTitle(title: List<Component>, subtitle: List<Component>, times: Times = Times(20.ticks, 60.ticks, 20.ticks), timeBetweenTicks: Duration = .1.seconds, alignment: KeyFramesAlignment = CENTER, renderFadeIn: Boolean = true) = de.fruxz.sparkle.app.MoltenApp.coroutineScope.launch {
+fun Entity.showAnimatedTitle(title: List<Component>, subtitle: List<Component>, times: Times = Times(20.ticks, 60.ticks, 20.ticks), timeBetweenTicks: Duration = .1.seconds, alignment: KeyFramesAlignment = CENTER, renderFadeIn: Boolean = true) = de.fruxz.sparkle.app.SparkleApp.coroutineScope.launch {
 	if (title.isEmpty() || subtitle.isEmpty()) throw IllegalArgumentException("Title and subtitle must not be empty")
 
 	val (titles, subtitles) = title.toMutableList() to subtitle.toMutableList()

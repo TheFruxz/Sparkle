@@ -2,14 +2,14 @@ package de.fruxz.sparkle.app.component.marking
 
 import de.fruxz.ascend.extension.math.round
 import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.display.notification
 import de.fruxz.sparkle.extension.display.ui.item
 import de.fruxz.sparkle.extension.paper.displayString
 import de.fruxz.sparkle.extension.paper.entity.identityObject
 import de.fruxz.sparkle.extension.paper.isPhysical
 import de.fruxz.sparkle.extension.paper.templateLocation
-import de.fruxz.sparkle.runtime.event.interact.MoltenPlayerInteractEvent.Companion.denyInteraction
+import de.fruxz.sparkle.runtime.event.interact.SparklePlayerInteractEvent.Companion.denyInteraction
 import de.fruxz.sparkle.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.fruxz.sparkle.structure.component.SmartComponent
 import de.fruxz.sparkle.tool.display.message.Transmission.Level.*
@@ -58,13 +58,13 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 				onInteract { event ->
 					val user = event.whoInteract
 					val targetBlock = user.rayTraceBlocks(15.0, ALWAYS)?.hitBlock
-					val actualBox = MoltenCache.playerMarkerBoxes[user.identityObject]
+					val actualBox = SparkleCache.playerMarkerBoxes[user.identityObject]
 					val currentBox = actualBox ?: DependentCubicalShape(targetBlock?.location ?: templateLocation)
 
 					if (user.isSneaking && !event.action.isPhysical) {
 						event.denyInteraction()
 
-						if (MoltenCache.playerMarkerBoxes[user.identityObject] != null) {
+						if (SparkleCache.playerMarkerBoxes[user.identityObject] != null) {
 
 							text {
 								this + text("You have the locations ").dyeGray()
@@ -121,7 +121,7 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 									if (actualBox?.firstLocation != targetLocation) {
 
-										MoltenCache.playerMarkerBoxes += user.identityObject to currentBox.updateFirstLocation(targetLocation)
+										SparkleCache.playerMarkerBoxes += user.identityObject to currentBox.updateFirstLocation(targetLocation)
 
 										actionProcessedMessage(1)
 											.hover {
@@ -145,7 +145,7 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 									if (actualBox?.secondLocation != targetLocation) {
 
-										MoltenCache.playerMarkerBoxes += user.identityObject to currentBox.updateSecondLocation(targetLocation)
+										SparkleCache.playerMarkerBoxes += user.identityObject to currentBox.updateSecondLocation(targetLocation)
 
 										actionProcessedMessage(2)
 											.hover {

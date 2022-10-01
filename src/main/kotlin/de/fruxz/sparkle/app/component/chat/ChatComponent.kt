@@ -1,21 +1,17 @@
 package de.fruxz.sparkle.app.component.chat
 
-import de.fruxz.ascend.extension.data.fromJson
 import de.fruxz.ascend.extension.data.readJson
-import de.fruxz.ascend.extension.data.toJson
 import de.fruxz.ascend.extension.data.writeJson
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.paper.pluginOrNull
 import de.fruxz.sparkle.structure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.fruxz.sparkle.structure.component.SmartComponent
-import de.fruxz.sparkle.tool.data.file.MoltenPath
+import de.fruxz.sparkle.tool.data.file.SparklePath
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextReplacementConfig
 import kotlin.io.path.createDirectories
 import kotlin.io.path.div
-import kotlin.io.path.readText
-import kotlin.io.path.writeText
 
 /**
  * This component manages the chat and chat extensions via the native & Placeholder APIs.
@@ -56,7 +52,7 @@ class ChatComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 		private lateinit var instance: ChatComponent
 
-		private val setupPath by lazy { MoltenPath.componentPath(instance) / "setup.json" }
+		private val setupPath by lazy { SparklePath.componentPath(instance) / "setup.json" }
 
 		internal lateinit var setup: ChatSetup
 

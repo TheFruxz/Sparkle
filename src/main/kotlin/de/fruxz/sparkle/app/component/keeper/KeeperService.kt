@@ -2,8 +2,7 @@ package de.fruxz.sparkle.app.component.keeper
 
 import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.extension.container.withForEach
-import de.fruxz.sparkle.app.MoltenApp
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.system
 import de.fruxz.sparkle.structure.app.cache.CacheDepthLevel.DUMP
@@ -29,16 +28,16 @@ internal class KeeperService : Service {
 	override val process: Tasky.() -> Unit = {
 
 		// Cleaning the individual caches of the different registered apps
-		MoltenCache.registeredApps.withForEach {
+		SparkleCache.registeredApps.withForEach {
 			try {
 				val level = DUMP
 				appCache.dropEverything(level)
 				debugLog("removed appCache (level: ${level.name}) from app $label")
 			} catch (exception: Exception) {
 
-				if (de.fruxz.sparkle.app.MoltenApp.debugMode) catchException(exception)
+				if (de.fruxz.sparkle.app.SparkleApp.debugMode) catchException(exception)
 
-				debugLog("failed to clean appCache of '$label'${ if (de.fruxz.sparkle.app.MoltenApp.debugMode.not()) ", enable debugMode to see the stacktrace" else "" }!")
+				debugLog("failed to clean appCache of '$label'${ if (de.fruxz.sparkle.app.SparkleApp.debugMode.not()) ", enable debugMode to see the stacktrace" else "" }!")
 
 			}
 		}

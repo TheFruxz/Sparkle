@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.structure.feature
 
 import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.structure.app.App
 import de.fruxz.sparkle.tool.smart.VendorsIdentifiable
 
@@ -39,14 +39,14 @@ class Feature(override val vendorIdentity: Identity<out App>, name: String, desc
      * Communicates directly with the cache
      */
     var isEnabled: Boolean
-        get() = MoltenCache.featureStates[identityObject] == FeatureState.ENABLED
+        get() = SparkleCache.featureStates[identityObject] == FeatureState.ENABLED
         set(value) {
-            MoltenCache.featureStates += identityObject to if (value) FeatureState.ENABLED else FeatureState.DISABLED
+            SparkleCache.featureStates += identityObject to if (value) FeatureState.ENABLED else FeatureState.DISABLED
         }
 
     fun registerIfNotRegistered(state: FeatureState = FeatureState.ENABLED) {
-        if (!MoltenCache.featureStates.contains(identityObject)) {
-            MoltenCache.featureStates += identityObject to state
+        if (!SparkleCache.featureStates.contains(identityObject)) {
+            SparkleCache.featureStates += identityObject to state
         }
     }
 

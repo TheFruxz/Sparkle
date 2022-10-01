@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.app.component.completion
 
-import de.fruxz.sparkle.app.MoltenCache
+import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.interchange.getInterchange
 import de.fruxz.sparkle.structure.app.event.EventListener
@@ -27,7 +27,7 @@ internal class ProtectionListener : EventListener() {
                         if (interchange.forcedApproval?.hasApproval(player) != false) {
                             if (interchange.userRestriction.match(player)) {
 
-                                if (MoltenCache.disabledInterchanges.any { it.identity == interchange.identity }) {
+                                if (SparkleCache.disabledInterchanges.any { it.identity == interchange.identity }) {
                                     remove = true
                                 }
 
