@@ -1,1 +1,0 @@
-sourceset_dependencies = '{":MoltenKT-Unfold:dokkaHtmlPartial/main":[],":MoltenKT-Paper:dokkaHtmlPartial/main":[],":MoltenKT-Core:dokkaHtmlPartial/main":[]}'
