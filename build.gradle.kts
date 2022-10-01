@@ -42,7 +42,7 @@ dependencies {
 
     @Suppress("DependencyOnStdlib") implementation(kotlin("stdlib"))
 
-    implementation("org.slf4j:slf4j-api:2.0.2")
+    implementation("org.slf4j:slf4j-api:2.0.3")
     implementation("com.mojang:brigadier:1.0.18")
 
     // > Ktor
@@ -69,7 +69,7 @@ dependencies {
     shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
     shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
-    shadow("org.slf4j:slf4j-api:2.0.1")
+    shadow("org.slf4j:slf4j-api:2.0.3")
     shadow("net.kyori:adventure-text-serializer-plain:4.11.0")
 
     shadow("org.jetbrains.exposed:exposed-core:0.39.2")
