@@ -1,19 +1,9 @@
 package de.fruxz.sparkle.extension.paper
 
-import de.fruxz.ascend.extension.div
-import de.fruxz.ascend.extension.getHomePath
 import de.fruxz.ascend.tool.math.Percentage
 import de.fruxz.ascend.tool.math.Percentage.Companion.percent
-import de.fruxz.sparkle.extension.effect.buildParticle
-import de.fruxz.sparkle.extension.effect.offset
-import de.fruxz.sparkle.extension.tasky.doAsync
-import de.fruxz.sparkle.tool.effect.particle.ParticleType
-import de.fruxz.sparkle.tool.effect.particle.ParticleType.Companion
 import de.fruxz.sparkle.tool.position.dependent.DependentCubicalShape
 import de.fruxz.sparkle.tool.position.relative.Shape
-import kotlinx.coroutines.delay
-import org.bukkit.Bukkit
-import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.RegionAccessor
 import org.bukkit.World
@@ -25,11 +15,8 @@ import org.bukkit.block.structure.StructureRotation.*
 import org.bukkit.structure.Structure
 import org.bukkit.util.BlockVector
 import org.bukkit.util.BoundingBox
-import kotlin.io.path.Path
-import kotlin.io.path.writeText
 import kotlin.random.Random
 import kotlin.random.asJavaRandom
-import kotlin.time.Duration.Companion.seconds
 
 /**
  * This function utilizes the [Structure.fill] function, to use the locations

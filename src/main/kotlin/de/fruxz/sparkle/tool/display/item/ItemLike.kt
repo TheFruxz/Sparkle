@@ -33,7 +33,7 @@ interface ItemLike : Producible<ItemStack> {
 	fun asItemStack(): ItemStack
 
 	/**
-	 * This function utelizes the [ItemLike.asItemStack] function
+	 * This function utilizes the [ItemLike.asItemStack] function
 	 * to replace the [Producible.produce] function.
 	 * This is used to make the [ItemLike] object usable
 	 * to more api-compatible systems, that do not directly uses

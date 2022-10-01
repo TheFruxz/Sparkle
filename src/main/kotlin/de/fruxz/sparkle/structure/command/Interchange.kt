@@ -431,6 +431,6 @@ enum class InterchangeAuthorizationType {
 
 }
 
-@Suppress("unused") // todo use Interchange as context, when the kotlin context API is ready
+@Suppress("UnusedReceiverParameter") // todo use Interchange as context, when the kotlin context API is ready
 fun Interchange.execution(execution: suspend InterchangeAccess<out InterchangeExecutor>.() -> InterchangeResult) =
 	execution

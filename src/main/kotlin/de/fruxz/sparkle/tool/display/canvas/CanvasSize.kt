@@ -12,8 +12,7 @@ class CanvasSize private constructor(
 	val slots = 0 until size
 
 	val borderSlots by lazy {
-		val fullBorders = size >= 9 * 2
-		val sideRows = if (fullBorders) {
+		val sideRows = if (size >= 9 * 2) {
 			(size.toDouble() / 9.0).let {
 				if (it >= 3) {
 					it.roundToInt()
@@ -26,7 +25,7 @@ class CanvasSize private constructor(
 		val sideSlots = mutableSetOf<Int>()
 
 		if (sideRows > 0) {
-			for ((index, _) in (1..(sideRows - (if (fullBorders) 2 else 0))).withIndex()) {
+			for ((index, _) in (1..(sideRows - 2)).withIndex()) {
 				sideSlots.addAll(setOf(9 + (index * 9), 17 + (index * 9)))
 			}
 		}

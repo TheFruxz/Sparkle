@@ -360,7 +360,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		fun PAGES(pages: () -> Number) = CompletionAsset<Number>(
+		fun pageCompletion(pages: () -> Number) = CompletionAsset<Number>(
 			vendor = system,
 			thisIdentity = "Page",
 			true,

@@ -88,7 +88,7 @@ import kotlin.time.measureTime
  *
  * This class uses these baseplates:
  * - [JavaPlugin]: Every app is a whole real Minecraft-Server-Plugin,
- * but it is heavely extended. But you can touch the original Bukkit/
+ * but it is heavily extended. But you can touch the original Bukkit/
  * Paper API, if you want to do so.
  *
  * - [Identifiable]<[App]>: Every app is identifiable through is unique

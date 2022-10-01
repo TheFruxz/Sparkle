@@ -4,7 +4,6 @@ import de.fruxz.sparkle.extension.display.ui.itemStack
 import de.fruxz.sparkle.tool.display.item.Item
 import org.bukkit.Material
 import org.bukkit.entity.ArmorStand
-import org.bukkit.entity.Entity
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 

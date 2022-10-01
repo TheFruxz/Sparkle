@@ -256,7 +256,7 @@ fun pluginOrNull(name: String) = Bukkit.getPluginManager().getPlugin(name)
 
 /**
  * This function searches for a [Plugin] with the given [name] as name. This returns the found
- * plugin, or throws an [NoSuchElementException] if no plugi nwith the given name is found.
+ * plugin, or throws an [NoSuchElementException] if no plugin with the given name is found.
  * @author Fruxz
  * @since 1.0
  */

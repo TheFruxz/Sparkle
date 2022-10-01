@@ -1,7 +1,6 @@
 package de.fruxz.sparkle.app.component.chat
 
 import de.fruxz.ascend.extension.container.replacePrefix
-import de.fruxz.ascend.extension.container.replaceVariables
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.sparkle.extension.effect.playEffect
 import de.fruxz.sparkle.extension.effect.soundOf
@@ -22,7 +21,6 @@ import io.papermc.paper.event.player.AsyncChatEvent
 import me.clip.placeholderapi.PlaceholderAPI
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
-import net.kyori.adventure.text.minimessage.tag.Tag
 import org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler

@@ -355,7 +355,7 @@ fun Location.lower(amount: Int = 1) = copy(y = y - amount)
 
 /**
  * This computational value returns a new [ChunkLocation] object,
- * that contains the x, y and the world key of [this] [Chunk].
+ * that contains the x, y and the world key of this [Chunk].
  * @author Fruxz
  * @since 1.0
  */

@@ -90,9 +90,10 @@ internal class CanvasListener : EventListener() {
 
 	@EventHandler
 	fun onItemMove(event: InventoryMoveItemEvent) {
-		val session = (event.source.viewers.toSet() + event.initiator.viewers + event.destination.viewers).mapNotNull {
-			if (it is Player) CanvasSessionManager.getSession(it) else null
-		}.firstOrNull()
+		val session =
+			(event.source.viewers.toSet() + event.initiator.viewers + event.destination.viewers).firstNotNullOfOrNull {
+				if (it is Player) CanvasSessionManager.getSession(it) else null
+			}
 
 		if (session != null) {
 			val canvas = SparkleCache.canvas[session.canvas] ?: return

@@ -9,6 +9,7 @@ import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.app.SparkleCache.registeredPreferenceCache
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.tasky.asAsync
+import de.fruxz.sparkle.extension.tasky.doAsync
 import de.fruxz.sparkle.extension.tasky.task
 import de.fruxz.sparkle.structure.app.cache.CacheDepthLevel
 import de.fruxz.sparkle.tool.timing.tasky.TemporalAdvice.Companion.instant
@@ -110,7 +111,7 @@ data class Preference<SHELL : Any>(
 			if (async || forceUseOfTasks) {
 				val future = CompletableFuture<SHELL>()
 
-				asAsync { future.complete(process()) }
+				doAsync { future.complete(process()) }
 
 				return tryOrNull { future.get(timeOut.inWholeSeconds, SECONDS) } ?: default.also {
 					debugLog("Preference access (async) failed for $identity with default $default")
@@ -119,7 +120,7 @@ data class Preference<SHELL : Any>(
 			} else {
 				val future = CompletableFuture<SHELL>()
 
-				asAsync { future.complete(process()) }
+				doAsync { future.complete(process()) }
 
 				return tryOrNull { future.get(timeOut.inWholeSeconds, SECONDS) } ?: default.also {
 					debugLog("Preference access (sync) failed for $identity with default $default")

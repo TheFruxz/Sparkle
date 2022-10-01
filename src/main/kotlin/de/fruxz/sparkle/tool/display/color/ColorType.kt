@@ -4,7 +4,6 @@ package de.fruxz.sparkle.tool.display.color
 
 import de.fruxz.ascend.annotation.NotPerfect
 import de.fruxz.sparkle.extension.paper.createKey
-import de.fruxz.sparkle.extension.paper.createNamespacedKey
 import de.fruxz.sparkle.extension.system
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.key.Key

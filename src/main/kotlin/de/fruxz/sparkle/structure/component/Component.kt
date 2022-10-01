@@ -181,7 +181,7 @@ abstract class Component(
 	}
 
 	fun requestReset() {
-
+		// TODO
 	}
 
 	companion object {

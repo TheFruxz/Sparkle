@@ -25,7 +25,7 @@ annotation class RunningAsync
 annotation class RequiresSync
 
 /**
- * This code requires, to run inside a async environment
+ * This code requires, to run inside an async environment
  * **NOTE, that this annotation is optional and only a helping indicator!**
  * @author Fruxz
  * @since 1.0

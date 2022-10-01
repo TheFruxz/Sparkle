@@ -4,16 +4,13 @@ import com.destroystokyo.paper.ParticleBuilder
 import de.fruxz.ascend.annotation.NotPerfect
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
-import org.bukkit.Location
 import org.bukkit.Particle
-import org.bukkit.entity.Player
 
 @NotPerfect
 object ParticleBuilderSerializer : KSerializer<ParticleBuilder> {

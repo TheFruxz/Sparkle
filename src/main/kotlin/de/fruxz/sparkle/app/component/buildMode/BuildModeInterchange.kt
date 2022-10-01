@@ -147,7 +147,7 @@ internal class BuildModeInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(CompletionAsset.PAGES { ceilToInt(SparkleCache.buildModePlayers.size.toDouble() / de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE) })
+				addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.buildModePlayers.size.toDouble() / de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE) })
 
 				isNotRequired()
 

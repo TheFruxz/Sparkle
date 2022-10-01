@@ -3,7 +3,6 @@ package de.fruxz.sparkle.tool.display.color
 import de.fruxz.ascend.extension.container.replace
 import de.fruxz.sparkle.app.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import de.fruxz.sparkle.extension.paper.createKey
-import de.fruxz.sparkle.extension.paper.createNamespacedKey
 import de.fruxz.sparkle.extension.system
 import de.fruxz.sparkle.tool.display.color.ColorType.WHITE
 import net.kyori.adventure.key.Key

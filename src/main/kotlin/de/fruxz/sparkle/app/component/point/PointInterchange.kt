@@ -73,7 +73,7 @@ internal class PointInterchange : StructuredInterchange("point", protectedAccess
 		}
 
 		branch {
-			addContent(CompletionAsset.PAGES { ceilToInt(SparkleData.savedPoints.content.points.size.toDouble() / de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE) })
+			addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleData.savedPoints.content.points.size.toDouble() / de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE) })
 
 			isNotRequired()
 

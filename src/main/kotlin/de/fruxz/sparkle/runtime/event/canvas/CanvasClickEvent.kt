@@ -1,7 +1,6 @@
 package de.fruxz.sparkle.runtime.event.canvas
 
 import de.fruxz.sparkle.extension.display.ui.affectedItem
-import de.fruxz.sparkle.extension.display.ui.item
 import de.fruxz.sparkle.tool.display.canvas.Canvas
 import de.fruxz.sparkle.tool.event.KCancellable
 import org.bukkit.entity.Player
@@ -50,7 +49,7 @@ data class CanvasClickEvent(
 
 	/**
 	 * This value is only a wrapper for the original [slot] value,
-	 * this is here to create consistency accross the API.
+	 * this is here to create consistency across the API.
 	 * @author Fruxz
 	 * @since 1.0
 	 */

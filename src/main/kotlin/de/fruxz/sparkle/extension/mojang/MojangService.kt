@@ -18,6 +18,6 @@ suspend fun getMojangProfile(profileQuery: String) =
 
 
 /**
- * throws exception if no user is found by the [profileQuery]
+ * throws exception if no user is found by the [uuid]
  */
 suspend fun getMojangProfile(uuid: UUID) = getMojangProfile("$uuid")

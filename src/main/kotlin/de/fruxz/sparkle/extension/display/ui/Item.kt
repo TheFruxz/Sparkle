@@ -138,7 +138,7 @@ fun skull(ownerName: String, httpRequest: Boolean = true, timeout: Duration = 5.
  * If the [httpRequest] parameter is set to true, the player's skin will be fetched from the Mojang API.
  * If the [httpRequest] parameter is set to false, the player's skin will be fetched from the server.
  * @see getMojangProfile
- * @param owner the uuid of the player
+ * @param ownerUUID the uuid of the player
  * @param httpRequest if true, the player's skin will be fetched from the Mojang API, otherwise from the server
  * @param timeout time allowed, before the http request is aborted (useful if Mojang is down again)
  * @return the created [Item]

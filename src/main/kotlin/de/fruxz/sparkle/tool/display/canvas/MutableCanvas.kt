@@ -22,7 +22,7 @@ import org.bukkit.inventory.ItemStack
 
 /**
  * This class helps to easily create ui's for players.
- * @param key The key of the canvas, that is used to bind the actions to the canvas.
+ * @param identityKey The key of the canvas, that is used to bind the actions to the canvas.
  * @param label The label, which the viewer will see on top of the inventory.
  * @param canvasSize The size of the canvas.
  * @param content The content, which is placed inside the canvas

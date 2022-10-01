@@ -104,7 +104,7 @@ fun SoundMelody.beat(
  * This function creates a [SoundData] and directly attaches it to the given [SoundMelody] as
  * a separate beat. This should be used, if you want to add a beat to the [SoundMelody], that
  * only contains a single [SoundData].
- * @param type The sound (to use custom, use the [sound] function with [Sound.Type] instead of [Key])
+ * @param key The sound (to use custom, use the [sound] function with [Sound.Type] instead of [Key])
  * @param volume The volume of the sound, ranging from 0.0 to 2.0. This [Number] will be converted to a [Float]!
  * @param pitch The pitch of the sound, ranging from 0.0 to 2.0. This [Number] will be converted to a [Float]!
  * @param soundSource The sound source. NOTE! Players can disable specific sound sources in their settings!
@@ -140,7 +140,7 @@ fun Entity.playSoundEffect(
 ): Unit = playEffect(*soundEffects)
 
 /**
- * This function plasy the [soundEffects] on the given [World], so it
+ * This function plays the [soundEffects] on the given [World], so it
  * broadcasts the sound to every player on the given [World].
  * @param soundEffects The [SoundEffect]s to play.
  * @author Fruxz

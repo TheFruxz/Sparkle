@@ -4,7 +4,6 @@ import de.fruxz.stacked.extension.KeyingStrategy
 import net.kyori.adventure.key.Key
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
-import org.bukkit.World
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
 

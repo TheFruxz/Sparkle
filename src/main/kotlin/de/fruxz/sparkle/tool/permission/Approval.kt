@@ -33,7 +33,7 @@ data class Approval(
 		permissible.hasPermission(identity)
 
 	/**
-	 * This operator function adds an additional sub-permision to the current permission.
+	 * This operator function adds a sub-permission to the current permission.
 	 * Like div("use") = "sparkle.paper" -> "sparkle.paper.use"
 	 * @param value the sub-permission, that should be added
 	 * @author Fruxz
@@ -87,5 +87,3 @@ fun Permissible.hasApproval(approval: Approval) =
 @Deprecated("Use hasApproval(Approval) instead", ReplaceWith("hasApproval(approval)"))
 fun Permissible.hasPermission(approval: Approval) =
 	hasApproval(approval)
-
-val String.asApproval get() = Approval(this)

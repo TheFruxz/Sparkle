@@ -313,8 +313,10 @@ open class Canvas(
 		openSoundEffect: SoundEffect? = this.openSoundEffect,
 		onRender: CanvasRender = this.onRender,
 		onOpen: CanvasOpenEvent.() -> Unit = this.onOpen,
+		onUpdate: CanvasUpdateEvent.() -> Unit = this.onUpdate,
 		onClose: CanvasCloseEvent.() -> Unit = this.onClose,
 		onClicks: List<CanvasClickEvent.() -> Unit> = this.onClicks,
+		onUpdateNonClearableSlots: Set<Int> = emptySet(),
 		asyncItems: Map<Int, Deferred<ItemLike>> = this.asyncItems,
 	): MutableCanvas = MutableCanvas(key, label, canvasSize, content, panelFlags, openSoundEffect, asyncItems).apply {
 		this.onRender = onRender

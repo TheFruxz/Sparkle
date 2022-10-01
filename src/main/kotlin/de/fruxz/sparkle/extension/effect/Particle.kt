@@ -4,7 +4,6 @@ import com.destroystokyo.paper.ParticleBuilder
 import de.fruxz.sparkle.tool.display.world.SimpleLocation
 import de.fruxz.sparkle.tool.effect.particle.ParticleData
 import de.fruxz.sparkle.tool.effect.particle.ParticleType
-import de.fruxz.sparkle.tool.effect.particle.ParticleType.Companion
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.entity.Player

@@ -312,8 +312,7 @@ object JsonItemStack {
                                         if (enchantment != null && level > 0) {
                                             meta.addEnchant(enchantment, level, true)
                                         }
-                                    } catch (_: NumberFormatException) {
-                                    }
+                                    } catch (_: NumberFormatException) { }
                                 }
                             }
                         })
@@ -363,8 +362,7 @@ object JsonItemStack {
                                         if (color.isPresent) {
                                             meta.baseColor = color.get()
                                         }
-                                    } catch (_: NumberFormatException) {
-                                    }
+                                    } catch (_: NumberFormatException) { }
                                 }
                                 if (patternsElement != null && patternsElement.isJsonArray) {
                                     val jarray = patternsElement.asJsonArray

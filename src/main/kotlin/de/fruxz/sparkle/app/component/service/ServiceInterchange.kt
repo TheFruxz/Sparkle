@@ -104,7 +104,7 @@ internal class ServiceInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(CompletionAsset.PAGES { ceilToInt(registeredServices.size.toDouble() / de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE) })
+				addContent(CompletionAsset.pageCompletion { ceilToInt(registeredServices.size.toDouble() / de.fruxz.sparkle.Constants.ENTRIES_PER_PAGE) })
 
 				isNotRequired()
 
