@@ -3,7 +3,6 @@ package de.fruxz.sparkle.structure.command.completion
 import com.mojang.brigadier.arguments.ArgumentType
 import com.mojang.brigadier.arguments.BoolArgumentType
 import com.mojang.brigadier.arguments.DoubleArgumentType
-import com.mojang.brigadier.arguments.LongArgumentType
 import com.mojang.brigadier.arguments.StringArgumentType
 import de.fruxz.ascend.extension.empty
 import de.fruxz.ascend.extension.math.isDouble
@@ -55,7 +54,7 @@ interface InterchangeStructureInputRestriction<DATATYPE> {
 
 		@JvmStatic
 		val LONG = object : InterchangeStructureInputRestriction<Long> {
-			override val type = LongArgumentType.longArg()
+			override val type = null
 			override fun isValid(input: String) = input.isLong()
 			override fun transformer(input: String) = input.toLong()
 		}
