@@ -1,5 +1,6 @@
 ---
-description: The Sparkle-Wiki welcomes you to a new Journey!
+description: The Sparkle welcomes you to a new journey!
+layout: landing
 ---
 
 # Welcome to Sparkle!

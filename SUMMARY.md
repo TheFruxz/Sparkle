@@ -2,6 +2,16 @@
 
 * [Welcome to Sparkle!](README.md)
 
-## 🕹 Interchanges
+## 🕹 Interchange
 
-* [Page 1](interchanges/page-1.md)
+* [The Interchanges](interchange/the-interchanges/README.md)
+  * [🔩 Completion](interchange/the-interchanges/completion.md)
+  * [🗻 StructuredInterchange](interchange/the-interchanges/structuredinterchange.md)
+
+## ⚙ Apps
+
+* [The Apps](apps/the-apps/README.md)
+  * [🦺 Structure](apps/the-apps/structure.md)
+  * [🏗 Coroutines](apps/the-apps/coroutines.md)
+* [🚞 Components](apps/components.md)
+* [📦 Services](apps/services.md)
