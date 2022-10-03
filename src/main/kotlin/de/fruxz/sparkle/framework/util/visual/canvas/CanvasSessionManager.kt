@@ -1,5 +1,6 @@
 package de.fruxz.sparkle.framework.util.visual.canvas
 
+import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.sparkle.server.SparkleCache
 import net.kyori.adventure.key.Key
@@ -75,7 +76,7 @@ object CanvasSessionManager {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun putSession(sessionHost: Player, canvas: Key, parameters: Map<Key, Any> = emptyMap()) {
+	fun putSession(sessionHost: Player, canvas: Identity<Canvas>, parameters: Map<Key, Any> = emptyMap()) {
 		SparkleCache.canvasSessions += sessionHost to CanvasSession(
 			canvas = canvas,
 			parameters = parameters,
@@ -89,7 +90,7 @@ object CanvasSessionManager {
 	 * @since 1.0
 	 */
 	data class CanvasSession(
-		val canvas: Key,
+		val canvas: Identity<Canvas>,
 		val parameters: Map<Key, Any>,
 		val created: Calendar = Calendar.now(),
 	)

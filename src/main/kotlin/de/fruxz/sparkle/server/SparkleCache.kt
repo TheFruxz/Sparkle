@@ -71,11 +71,11 @@ object SparkleCache : AppCache {
 
 	var messageConversationPartners = mapOf<Player, Player>()
 
-	var canvasActions = mapOf<Key, Canvas.Reaction>()
+	var canvasActions = mapOf<Identity<Canvas>, Canvas.Reaction>()
 
 	var canvasSessions = mapOf<Player, CanvasSession>()
 
-	var canvas = mapOf<Key, Canvas>()
+	var canvas = mapOf<Identity<Canvas>, Canvas>()
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
 		when {

@@ -2,9 +2,11 @@ package de.fruxz.sparkle.framework.util.visual.canvas
 
 import de.fruxz.ascend.extension.container.distinctSetBy
 import de.fruxz.ascend.extension.container.forEachNotNull
+import de.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
 import de.fruxz.ascend.extension.data.RandomTagType.ONLY_LOWERCASE
 import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.extension.objects.takeIfInstance
+import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.framework.util.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.framework.util.event.canvas.CanvasCloseEvent
@@ -24,6 +26,7 @@ import de.fruxz.sparkle.framework.util.visual.item.ItemLike
 import de.fruxz.sparkle.framework.util.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.util.identification.KeyedIdentifiable
 import de.fruxz.stacked.extension.subKey
+import io.ktor.client.plugins.BodyProgress.Plugin.key
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
@@ -35,6 +38,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
+import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 import kotlin.time.Duration.Companion.seconds
 
@@ -55,14 +59,13 @@ import kotlin.time.Duration.Companion.seconds
  * @since 1.0
  */
 open class Canvas(
-	override val identityKey: Key = system.subKey(buildRandomTag(tagType = ONLY_LOWERCASE, hashtag = false)),
 	open val label: TextComponent = Component.empty(),
 	open val canvasBase: CanvasBase = CanvasBase.ofLines(3),
 	open val content: Map<Int, ItemLike> = emptyMap(),
 	open val flags: Set<CanvasFlag> = emptySet(),
 	open val openSoundEffect: SoundEffect? = null,
 	open val asyncItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
-) : KeyedIdentifiable<Canvas> {
+) : Identifiable<Canvas> {
 
 	open val onRender: CanvasRender = CanvasRender {  }
 	open val onOpen: CanvasOpenEvent.() -> Unit = { }
@@ -71,6 +74,8 @@ open class Canvas(
 	open val onClicks: List<CanvasClickEvent.() -> Unit> = emptyList()
 	open val onFinishedDeferred: List<Deferred<ItemStack>>.() -> Unit = { }
 	open val onUpdateNonClearableSlots: Set<Int> = emptySet()
+
+	override val identity = buildRandomTag(10, tagType = MIXED_CASE)
 
 	val innerSlots: List<Int>
 		get() = buildList {
@@ -104,13 +109,14 @@ open class Canvas(
 	 * @since 1.0
 	 */
 	val viewers: Set<Player>
-		get() = SparkleCache.canvasSessions.filter { it.value.canvas == this.key }.keys.distinctSetBy { it.uniqueId }
+		get() = SparkleCache.canvasSessions.filter { it.value.canvas == this.identityObject }.keys.distinctSetBy { it.uniqueId }
 
 	fun display(
 		vararg receivers: HumanEntity?,
 		data: Map<Key, Any> = emptyMap(),
 		triggerOpenEvent: Boolean = true,
-		triggerSound: Boolean = true
+		triggerSound: Boolean = true,
+		owner: InventoryHolder? = null
 	) = system.coroutineScope.launch {
 		if (NO_OPEN in flags) cancel()
 
@@ -120,7 +126,7 @@ open class Canvas(
 
 		receivers.toList().forEachNotNull { receiver ->
 			var localInstance = canvasBase.generateInventory(
-				owner = data[identityKey.subKey("owner")]?.takeIfInstance(),
+				owner = owner,
 				label = label,
 			).apply {
 				this.contents = runBlocking { inventoryContent.await() }
@@ -140,7 +146,7 @@ open class Canvas(
 
 						asSync {
 							receiver.openInventory(localInstance)
-							CanvasSessionManager.putSession(receiver, key, data)
+							CanvasSessionManager.putSession(receiver, identityObject, data)
 						}
 
 						asyncItems.map { (key, value) ->
@@ -180,8 +186,8 @@ open class Canvas(
 	}
 
 	fun push() {
-		SparkleCache.canvas += key to this
-		SparkleCache.canvasActions += key to Reaction(onOpen, onClose, onClicks)
+		SparkleCache.canvas += identityObject to this
+		SparkleCache.canvasActions += identityObject to Reaction(onOpen, onClose, onClicks)
 	}
 
 	/**
@@ -242,11 +248,11 @@ open class Canvas(
 						asSync {
 
 							if (topInventory.viewers.isNotEmpty() && receiver in viewers) { // just a check, to keep it bulletproof
-								debugLog("Updating ${receiver.name}'s inventory from ${key()} canvas")
+								debugLog("Updating ${receiver.name}'s inventory from $identity canvas")
 
 								receiver.openInventory(topInventory)
 
-								CanvasSessionManager.putSession(receiver, key, data)
+								CanvasSessionManager.putSession(receiver, identityObject, data)
 							} else
 								debugLog("Updating ${receiver.name}'s inventory blocked, during last check")
 						}
@@ -291,7 +297,6 @@ open class Canvas(
 	}
 
 	fun toMutable(
-		key: Key = this.key,
 		label: TextComponent = this.label,
 		canvasBase: CanvasBase = this.canvasBase,
 		content: Map<Int, ItemLike> = this.content,
@@ -304,7 +309,8 @@ open class Canvas(
 		onClicks: List<CanvasClickEvent.() -> Unit> = this.onClicks,
 		onUpdateNonClearableSlots: Set<Int> = emptySet(),
 		asyncItems: Map<Int, Deferred<ItemLike>> = this.asyncItems,
-	): MutableCanvas = MutableCanvas(key, label, canvasBase, content, panelFlags, openSoundEffect, asyncItems).apply {
+	): MutableCanvas = MutableCanvas(label, canvasBase, content, panelFlags, openSoundEffect, asyncItems).apply {
+		this.identity = identity
 		this.onRender = onRender
 		this.onOpen = onOpen
 		this.onUpdate = onUpdate

@@ -1,5 +1,6 @@
 package de.fruxz.sparkle.framework.util.visual.canvas
 
+import de.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
 import de.fruxz.ascend.extension.data.RandomTagType.ONLY_LOWERCASE
 import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.tool.smart.Producible
@@ -37,14 +38,13 @@ import org.bukkit.inventory.ItemStack
  * @since 1.0
  */
 data class MutableCanvas(
-	override var identityKey: Key = system.subKey(buildRandomTag(tagType = ONLY_LOWERCASE, hashtag = false)),
 	override var label: TextComponent = Component.empty(),
 	override var canvasBase: CanvasBase = CanvasBase.ofLines(3),
 	override var content: Map<Int, ItemLike> = emptyMap(),
 	override var flags: Set<CanvasFlag> = emptySet(),
 	override var openSoundEffect: SoundEffect? = null,
 	override var asyncItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
-) : Canvas(identityKey, label, canvasBase, content, flags, openSoundEffect, asyncItems), Producible<Canvas>, AbstractBuilder<Canvas> {
+) : Canvas(label, canvasBase, content, flags, openSoundEffect, asyncItems), Producible<Canvas>, AbstractBuilder<Canvas> {
 
 	override var onRender: CanvasRender = CanvasRender {  }
 	override var onOpen: CanvasOpenEvent.() -> Unit = { }
@@ -52,6 +52,8 @@ data class MutableCanvas(
 	override var onClose: CanvasCloseEvent.() -> Unit = { }
 	override var onClicks: List<CanvasClickEvent.() -> Unit> = emptyList()
 	override var onUpdateNonClearableSlots: Set<Int> = emptySet()
+
+	override var identity = buildRandomTag(10, tagType = MIXED_CASE)
 
 	operator fun set(slot: Int, itemLike: ItemLike?) {
 		if (itemLike != null) {
@@ -425,7 +427,7 @@ data class MutableCanvas(
 
 		content = content.filterNot { it.value.asItemStack().type.isAir }
 
-		debugLog("Optimized canvas content from $contentSize to ${content.size} @ ${key.asString()}")
+		debugLog("Optimized canvas content from $contentSize to ${content.size} @ $identity")
 	}
 
 	override fun produce(): Canvas {
@@ -451,11 +453,8 @@ data class MutableCanvas(
  * @author Fruxz
  * @since 1.0
  */
-fun buildCanvas(key: Key = system.subKey(buildRandomTag(tagType = ONLY_LOWERCASE, hashtag = false)), base: CanvasBase = CanvasBase.ofLines(
-	3
-)
-): MutableCanvas =
-	MutableCanvas(key, canvasBase = base)
+fun buildCanvas(base: CanvasBase = CanvasBase.ofLines(3)): MutableCanvas = // todo expand the given parameters about the MutableCanvas constructor!
+	MutableCanvas(canvasBase = base)
 
 /**
  * This function constructs a new [Canvas], created with the [MutableCanvas] edited
@@ -467,7 +466,5 @@ fun buildCanvas(key: Key = system.subKey(buildRandomTag(tagType = ONLY_LOWERCASE
  * @author Fruxz
  * @since 1.0
  */
-fun buildCanvas(key: Key = system.subKey(buildRandomTag(tagType = ONLY_LOWERCASE, hashtag = false)), base: CanvasBase = CanvasBase.ofLines(
-	3
-), builder: MutableCanvas.() -> Unit): Canvas =
-	MutableCanvas(key, canvasBase = base).apply(builder).build()
+fun buildCanvas(base: CanvasBase = CanvasBase.ofLines(3), builder: MutableCanvas.() -> Unit): Canvas = // todo expand the given parameters about the MutableCanvas constructor!
+	MutableCanvas(canvasBase = base).apply(builder).build()

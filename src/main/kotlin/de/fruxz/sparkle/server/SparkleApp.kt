@@ -212,28 +212,6 @@ class SparkleApp : App() {
 
 		add(AppComponent())
 
-		buildAndRegisterSandBox(identity = "spawnSync") {
-			doSync {
-				executor.asPlayerOrNull?.let { target ->
-					target.world.spawnEntity(target.location, BEE)
-				}
-			}
-		}
-
-		buildAndRegisterSandBox(identity = "spawnAsync") {
-			doAsync {
-				executor.asPlayerOrNull?.let { target ->
-					target.world.spawnEntity(target.location, BEE)
-				}
-			}
-		}
-
-		buildAndRegisterSandBox(identity = "throwError") {
-			doSync {
-				throw IllegalStateException("OwO n errow occurrrred!")
-			}
-		}
-
 	}
 
 	companion object : AppCompanion<SparkleApp>() {
