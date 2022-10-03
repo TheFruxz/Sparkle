@@ -78,6 +78,7 @@ fun doSync(delay: Duration = Duration.ZERO, cycleDuration: Duration = Duration.Z
 				delay(delay)
 				while (scope.isActive) {
 					process.invoke(scope)
+					delay(cycleDuration)
 				}
 			}
 			else -> process.invoke(scope)
@@ -118,6 +119,7 @@ fun doAsync(delay: Duration = Duration.ZERO, cycleDuration: Duration = Duration.
 	if (cycleDuration.isPositive()) {
 		while (scope.isActive) {
 			process.invoke(scope)
+			delay(cycleDuration)
 		}
 	} else
 		process.invoke(scope)
