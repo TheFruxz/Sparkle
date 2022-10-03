@@ -79,7 +79,7 @@ abstract class SmartComponent(
 
 				it.replaceVendor(vendor)
 
-				asSync {
+				asSync { _ ->
 					server.internalCommandMap.apply {
 						val command = server.getPluginCommand(it.label) ?: vendor.createCommand(it)
 

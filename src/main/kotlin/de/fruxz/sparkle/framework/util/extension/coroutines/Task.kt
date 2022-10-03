@@ -43,13 +43,17 @@ fun task(
  * @author Fruxz
  * @since 1.0
  */
-suspend fun <T> asSync(delay: Duration = Duration.ZERO, process: suspend () -> T): T {
+suspend fun <T> asSync(delay: Duration = Duration.ZERO, process: suspend (CoroutineScope) -> T): T {
 	val output = CompletableFuture<T>()
 
 	launch(isAsync = false) {
 		if (delay.isPositive()) delay(delay)
 
-		output.complete(process())
+		try {
+			output.complete(process(it))
+		} catch (e: Exception) {
+			output.completeExceptionally(e)
+		}
 
 	}
 
