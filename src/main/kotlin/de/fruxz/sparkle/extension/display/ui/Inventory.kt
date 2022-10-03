@@ -1,17 +1,21 @@
 package de.fruxz.sparkle.extension.display.ui
 
 import de.fruxz.ascend.extension.tryOrNull
+import de.fruxz.sparkle.tool.display.canvas.CanvasBase
 import de.fruxz.sparkle.tool.display.item.ItemLike
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 
 fun buildInventory(size: Int, process: Inventory.() -> Unit) = Bukkit.createInventory(null, size).apply(process)
 
 fun buildInventory(size: Int, label: TextComponent, process: Inventory.() -> Unit) = Bukkit.createInventory(null, size, label).apply(process)
+
+fun buildInventory(canvasBase: CanvasBase, label: TextComponent? = null, owner: InventoryHolder? = null) = canvasBase.generateInventory(owner, label)
 
 operator fun <T : Inventory> T.get(slot: Int) = tryOrNull { getItem(slot) }
 

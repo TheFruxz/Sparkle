@@ -3,6 +3,7 @@ package de.fruxz.sparkle.extension.paper
 import de.fruxz.sparkle.runtime.event.interact.PlayerInteractAtBlockEvent
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import org.bukkit.event.Cancellable
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.Action.PHYSICAL
 import org.bukkit.event.inventory.InventoryInteractEvent

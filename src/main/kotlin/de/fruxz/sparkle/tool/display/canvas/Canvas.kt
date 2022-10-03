@@ -2,6 +2,9 @@ package de.fruxz.sparkle.tool.display.canvas
 
 import de.fruxz.ascend.extension.container.distinctSetBy
 import de.fruxz.ascend.extension.container.forEachNotNull
+import de.fruxz.ascend.extension.data.RandomTagType.ONLY_LOWERCASE
+import de.fruxz.ascend.extension.data.buildRandomTag
+import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.sparkle.app.SparkleCache
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.display.ui.buildInventory
@@ -22,6 +25,7 @@ import de.fruxz.sparkle.tool.display.canvas.CanvasFlag.*
 import de.fruxz.sparkle.tool.display.item.ItemLike
 import de.fruxz.sparkle.tool.effect.sound.SoundEffect
 import de.fruxz.sparkle.tool.smart.KeyedIdentifiable
+import de.fruxz.stacked.extension.subKey
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
@@ -45,7 +49,7 @@ import kotlin.time.Duration.Companion.seconds
  * session and update is identified by the key! ***USING THE SAME KEY OR GENERATE A SINGLE CANVAS MULTIPLE
  * TIMES IS QUITE DANGEROUS AND CAN AFFECT BEHAVIOR AND CANVAS UPDATES!***
  * @param label The label, which the viewer will see on top of the inventory.
- * @param canvasSize The size of the canvas.
+ * @param canvasBase The size of the canvas.
  * @param content The content, which is placed inside the canvas
  * @param flags The individual habits of the canvas.
  * @param openSoundEffect The sound effect, which is played, when the canvas is opened.
@@ -54,9 +58,9 @@ import kotlin.time.Duration.Companion.seconds
  * @since 1.0
  */
 open class Canvas(
-	override val identityKey: Key,
+	override val identityKey: Key = system.subKey(buildRandomTag(tagType = ONLY_LOWERCASE, hashtag = false)),
 	open val label: TextComponent = Component.empty(),
-	open val canvasSize: CanvasSize = CanvasSize.MEDIUM,
+	open val canvasBase: CanvasBase = CanvasBase.ofLines(3),
 	open val content: Map<Int, ItemLike> = emptyMap(),
 	open val flags: Set<CanvasFlag> = emptySet(),
 	open val openSoundEffect: SoundEffect? = null,
@@ -71,38 +75,20 @@ open class Canvas(
 	open val onFinishedDeferred: List<Deferred<ItemStack>>.() -> Unit = { }
 	open val onUpdateNonClearableSlots: Set<Int> = emptySet()
 
-	private val computedInnerSlots: List<Int> by lazy {
-		mutableListOf<Int>().apply {
-			for (x in 1..(canvasSize.lines - 2)) {
-				for (x2 in ((1 + (x * 9))..(7 + (x * 9))))
+	val innerSlots: List<Int>
+		get() = buildList {
+			for (x in 1..(canvasBase.lines - 2)) {
+				for (x2 in ((1 + (x * 9))..(7 + (x * 9)))) {
 					add(x2)
+				}
 			}
 		}
-	}
 
-	val innerSlots: List<Int> by lazy {
-		computedInnerSlots
-	}
-
-	val availableInnerSlots by lazy {
-		0..computedInnerSlots.lastIndex
-	}
+	val availableInnerSlots
+		get() = innerSlots.indices
 
 	val center: Int
-		get() = this.canvasSize.size / 2 - 1
-
-	val rawInventory: Inventory
-		get() = buildInventory(canvasSize.size, label) {
-
-			content.forEach { (slot, itemLike) ->
-				if (slot < size) {
-
-					this[slot] = itemLike.asItemStack()
-
-				} else mainLog.warning("Failed to produce item: ${itemLike.asItem()} to slot $slot because it is higher than the size-content max ${size}!")
-			}
-
-		}
+		get() = canvasBase.virtualSize / 2 - 1
 
 	operator fun get(slot: Int): ItemLike? {
 		return content[slot]
@@ -131,18 +117,21 @@ open class Canvas(
 	) = system.coroutineScope.launch {
 		if (NO_OPEN in flags) cancel()
 
-		val inventoryContent = async { asSync { (0 until canvasSize.size).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } }
+		val inventoryContent = async { asSync { (0 until canvasBase.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } }
 
 		push()
 
 		receivers.toList().forEachNotNull { receiver ->
-			var localInstance = buildInventory(canvasSize.size, label) {
+			var localInstance = canvasBase.generateInventory(
+				owner = data[identityKey.subKey("owner")]?.takeIfInstance(),
+				label = label,
+			).apply {
 				this.contents = runBlocking { inventoryContent.await() }
 			}
 
 			if (receiver is Player) {
 
-				CanvasRenderEvent(receiver, this@Canvas, localInstance, false).let { event ->
+				CanvasRenderEvent(receiver, this@Canvas, localInstance).let { event ->
 					event.callEvent()
 					event.apply { onRender.render(this) }
 					localInstance = event.renderResult
@@ -224,7 +213,7 @@ open class Canvas(
 	) = system.coroutineScope.launch {
 		if (NO_UPDATE in flags) cancel()
 
-		val inventoryContent = async { asSync { (0 until canvasSize.size).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } }
+		val inventoryContent = async { asSync { (0 until canvasBase.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } }
 
 		if (NO_UPDATE_PUSHES !in flags) push()
 
@@ -243,7 +232,7 @@ open class Canvas(
 					) topInventory[index] = itemStack
 				}
 
-				CanvasRenderEvent(receiver, this@Canvas, topInventory, false).let { event ->
+				CanvasRenderEvent(receiver, this@Canvas, topInventory).let { event ->
 					event.callEvent()
 					event.apply { onRender.render(this) }
 					topInventory = event.renderResult
@@ -307,7 +296,7 @@ open class Canvas(
 	fun toMutable(
 		key: Key = this.key,
 		label: TextComponent = this.label,
-		canvasSize: CanvasSize = this.canvasSize,
+		canvasBase: CanvasBase = this.canvasBase,
 		content: Map<Int, ItemLike> = this.content,
 		panelFlags: Set<CanvasFlag> = this.flags,
 		openSoundEffect: SoundEffect? = this.openSoundEffect,
@@ -318,7 +307,7 @@ open class Canvas(
 		onClicks: List<CanvasClickEvent.() -> Unit> = this.onClicks,
 		onUpdateNonClearableSlots: Set<Int> = emptySet(),
 		asyncItems: Map<Int, Deferred<ItemLike>> = this.asyncItems,
-	): MutableCanvas = MutableCanvas(key, label, canvasSize, content, panelFlags, openSoundEffect, asyncItems).apply {
+	): MutableCanvas = MutableCanvas(key, label, canvasBase, content, panelFlags, openSoundEffect, asyncItems).apply {
 		this.onRender = onRender
 		this.onOpen = onOpen
 		this.onUpdate = onUpdate

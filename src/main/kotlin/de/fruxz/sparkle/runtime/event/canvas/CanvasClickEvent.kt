@@ -2,7 +2,6 @@ package de.fruxz.sparkle.runtime.event.canvas
 
 import de.fruxz.sparkle.extension.display.ui.affectedItem
 import de.fruxz.sparkle.tool.display.canvas.Canvas
-import de.fruxz.sparkle.tool.event.KCancellable
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.inventory.ClickType
@@ -15,10 +14,9 @@ data class CanvasClickEvent(
 	override val canvas: Canvas,
 	val slot: Int,
 	val view: InventoryView,
-	override var eventCancelled: Boolean = false,
 	val originEvent: InventoryClickEvent,
 	val click: ClickType = originEvent.click
-) : CanvasEvent(player, canvas, isAsync = false), KCancellable {
+) : CanvasEvent(player, canvas, isAsync = false) {
 
 	val action by lazy {
 		originEvent.action

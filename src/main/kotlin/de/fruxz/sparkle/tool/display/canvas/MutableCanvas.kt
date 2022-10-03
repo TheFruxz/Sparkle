@@ -1,15 +1,20 @@
 package de.fruxz.sparkle.tool.display.canvas
 
+import de.fruxz.ascend.extension.data.RandomTagType.ONLY_LOWERCASE
+import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.tool.smart.Producible
 import de.fruxz.sparkle.extension.debugLog
+import de.fruxz.sparkle.extension.system
 import de.fruxz.sparkle.runtime.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.runtime.event.canvas.CanvasCloseEvent
 import de.fruxz.sparkle.runtime.event.canvas.CanvasOpenEvent
 import de.fruxz.sparkle.runtime.event.canvas.CanvasUpdateEvent
+import de.fruxz.sparkle.tool.display.canvas.CanvasBase.Companion
 import de.fruxz.sparkle.tool.display.canvas.CanvasFlag.*
 import de.fruxz.sparkle.tool.display.canvas.design.AdaptiveCanvasCompose
 import de.fruxz.sparkle.tool.display.item.ItemLike
 import de.fruxz.sparkle.tool.effect.sound.SoundEffect
+import de.fruxz.stacked.extension.subKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -24,7 +29,7 @@ import org.bukkit.inventory.ItemStack
  * This class helps to easily create ui's for players.
  * @param identityKey The key of the canvas, that is used to bind the actions to the canvas.
  * @param label The label, which the viewer will see on top of the inventory.
- * @param canvasSize The size of the canvas.
+ * @param canvasBase The size of the canvas.
  * @param content The content, which is placed inside the canvas
  * @param flags The individual habits of the canvas.
  * @param openSoundEffect The sound effect, which is played, when the canvas is opened.
@@ -32,14 +37,14 @@ import org.bukkit.inventory.ItemStack
  * @since 1.0
  */
 data class MutableCanvas(
-	override val identityKey: Key,
+	override var identityKey: Key = system.subKey(buildRandomTag(tagType = ONLY_LOWERCASE, hashtag = false)),
 	override var label: TextComponent = Component.empty(),
-	override val canvasSize: CanvasSize = CanvasSize.MEDIUM,
+	override var canvasBase: CanvasBase = CanvasBase.ofLines(3),
 	override var content: Map<Int, ItemLike> = emptyMap(),
 	override var flags: Set<CanvasFlag> = emptySet(),
 	override var openSoundEffect: SoundEffect? = null,
 	override var asyncItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
-) : Canvas(identityKey, label, canvasSize, content, flags, openSoundEffect, asyncItems), Producible<Canvas>, AbstractBuilder<Canvas> {
+) : Canvas(identityKey, label, canvasBase, content, flags, openSoundEffect, asyncItems), Producible<Canvas>, AbstractBuilder<Canvas> {
 
 	override var onRender: CanvasRender = CanvasRender {  }
 	override var onOpen: CanvasOpenEvent.() -> Unit = { }
@@ -287,7 +292,7 @@ data class MutableCanvas(
 	// Design
 
 	fun border(itemLike: ItemLike) =
-		set(canvasSize.borderSlots, itemLike)
+		set(canvasBase.borderSlots, itemLike)
 
 	fun border(material: Material) =
 		border(ItemLike.of(material))
@@ -296,7 +301,7 @@ data class MutableCanvas(
 		border(ItemLike.of(itemStack))
 
 	fun fill(itemLike: ItemLike) =
-		set(canvasSize.slots, itemLike)
+		set(canvasBase.slots, itemLike)
 
 	fun fill(material: Material) =
 		border(ItemLike.of(material))
@@ -305,7 +310,7 @@ data class MutableCanvas(
 		border(ItemLike.of(itemStack))
 
 	fun replace(replaceWith: ItemLike?, search: IndexedValue<ItemLike?>.() -> Boolean) =
-		canvasSize.slots.forEach { slot ->
+		canvasBase.slots.forEach { slot ->
 			if (search(IndexedValue(slot, this[slot]))) {
 				set(slot, replaceWith)
 			}
@@ -446,8 +451,8 @@ data class MutableCanvas(
  * @author Fruxz
  * @since 1.0
  */
-fun buildCanvas(key: Key, size: CanvasSize = CanvasSize.MEDIUM): MutableCanvas =
-	MutableCanvas(key, canvasSize = size)
+fun buildCanvas(key: Key = system.subKey(buildRandomTag(tagType = ONLY_LOWERCASE, hashtag = false)), base: CanvasBase = CanvasBase.ofLines(3)): MutableCanvas =
+	MutableCanvas(key, canvasBase = base)
 
 /**
  * This function constructs a new [Canvas], created with the [MutableCanvas] edited
@@ -459,5 +464,5 @@ fun buildCanvas(key: Key, size: CanvasSize = CanvasSize.MEDIUM): MutableCanvas =
  * @author Fruxz
  * @since 1.0
  */
-fun buildCanvas(key: Key, size: CanvasSize = CanvasSize.MEDIUM, builder: MutableCanvas.() -> Unit): Canvas =
-	MutableCanvas(key, canvasSize = size).apply(builder).build()
+fun buildCanvas(key: Key = system.subKey(buildRandomTag(tagType = ONLY_LOWERCASE, hashtag = false)), base: CanvasBase = CanvasBase.ofLines(3), builder: MutableCanvas.() -> Unit): Canvas =
+	MutableCanvas(key, canvasBase = base).apply(builder).build()

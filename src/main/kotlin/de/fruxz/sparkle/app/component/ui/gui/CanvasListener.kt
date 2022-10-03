@@ -62,11 +62,11 @@ internal class CanvasListener : EventListener() {
 		if (session != null) {
 			val canvas = SparkleCache.canvas[session.canvas] ?: return
 
-			CanvasClickEvent(player, canvas, event.slot, event.view, event.isCancelled, event, event.click).let { internalEvent ->
+			CanvasClickEvent(player, canvas, event.slot, event.view, event, event.click).let { internalEvent ->
 
 				if (!internalEvent.callEvent()) event.isCancelled = true
 
-				if (!event.isCancelled && !canvas.flags.contains(NO_CLICK_ACTIONS)) {
+				if (!canvas.flags.contains(NO_CLICK_ACTIONS)) {
 
 					SparkleCache.canvasActions[session.canvas]?.onClicks?.forEach { it.invoke(internalEvent) }
 

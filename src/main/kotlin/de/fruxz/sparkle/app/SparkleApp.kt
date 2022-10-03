@@ -26,6 +26,8 @@ import de.fruxz.sparkle.app.interchange.SparkleInterchange
 import de.fruxz.sparkle.app.interchange.PlaygroundInterchange
 import de.fruxz.sparkle.extension.debugLog
 import de.fruxz.sparkle.extension.mainLog
+import de.fruxz.sparkle.extension.objectBound.buildAndRegisterSandBox
+import de.fruxz.sparkle.extension.paper.asPlayerOrNull
 import de.fruxz.sparkle.mojang.MojangProfile
 import de.fruxz.sparkle.mojang.MojangProfileCape
 import de.fruxz.sparkle.mojang.MojangProfileRaw
@@ -46,6 +48,9 @@ import de.fruxz.sparkle.tool.data.json.serializer.ParticleSerializer
 import de.fruxz.sparkle.tool.data.json.serializer.UUIDSerializer
 import de.fruxz.sparkle.tool.data.json.serializer.VectorSerializer
 import de.fruxz.sparkle.tool.data.json.serializer.WorldSerializer
+import de.fruxz.sparkle.tool.display.canvas.CanvasBase
+import de.fruxz.sparkle.tool.display.canvas.CanvasBase.Companion
+import de.fruxz.sparkle.tool.display.canvas.buildCanvas
 import de.fruxz.sparkle.tool.display.item.Modification
 import de.fruxz.sparkle.tool.display.world.SimpleLocation
 import de.fruxz.sparkle.tool.effect.sound.SoundData
@@ -68,10 +73,12 @@ import de.fruxz.sparkle.tool.position.relative.SphereShape
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
