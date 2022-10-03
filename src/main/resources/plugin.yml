@@ -1,7 +1,7 @@
 name: Sparkle
 version: ${version}
 api-version: 1.19
-main: de.fruxz.sparkle.app.SparkleApp
+main: de.fruxz.sparkle.server.SparkleApp
 load: STARTUP
 authors:
   - TheFruxz (Fruxz)
