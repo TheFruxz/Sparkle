@@ -3,9 +3,7 @@ package de.fruxz.sparkle.framework.util.visual.canvas
 import de.fruxz.ascend.extension.container.distinctSetBy
 import de.fruxz.ascend.extension.container.forEachNotNull
 import de.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
-import de.fruxz.ascend.extension.data.RandomTagType.ONLY_LOWERCASE
 import de.fruxz.ascend.extension.data.buildRandomTag
-import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.framework.util.event.canvas.CanvasClickEvent
@@ -24,9 +22,6 @@ import de.fruxz.sparkle.framework.util.visual.canvas.Canvas.CanvasRender
 import de.fruxz.sparkle.framework.util.visual.canvas.CanvasFlag.*
 import de.fruxz.sparkle.framework.util.visual.item.ItemLike
 import de.fruxz.sparkle.framework.util.effect.sound.SoundEffect
-import de.fruxz.sparkle.framework.util.identification.KeyedIdentifiable
-import de.fruxz.stacked.extension.subKey
-import io.ktor.client.plugins.BodyProgress.Plugin.key
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
@@ -109,7 +104,7 @@ open class Canvas(
 	 * @since 1.0
 	 */
 	val viewers: Set<Player>
-		get() = SparkleCache.canvasSessions.filter { it.value.canvas == this.identityObject }.keys.distinctSetBy { it.uniqueId }
+		get() = CanvasSessionManager.getSessions(identityObject).map { it.key }.distinctSetBy { it.uniqueId }
 
 	fun display(
 		vararg receivers: HumanEntity?,
@@ -121,8 +116,6 @@ open class Canvas(
 		if (NO_OPEN in flags) cancel()
 
 		val inventoryContent = async { asSync { (0 until canvasBase.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } }
-
-		push()
 
 		receivers.toList().forEachNotNull { receiver ->
 			var localInstance = canvasBase.generateInventory(
@@ -146,7 +139,7 @@ open class Canvas(
 
 						asSync {
 							receiver.openInventory(localInstance)
-							CanvasSessionManager.putSession(receiver, identityObject, data)
+							CanvasSessionManager.putSession(receiver, this@Canvas, data)
 						}
 
 						asyncItems.map { (key, value) ->
@@ -185,11 +178,6 @@ open class Canvas(
 
 	}
 
-	fun push() {
-		SparkleCache.canvas += identityObject to this
-		SparkleCache.canvasActions += identityObject to Reaction(onOpen, onClose, onClicks)
-	}
-
 	/**
 	 * Tip: Do not call this function during an execution-part of the canvas itself, like inside the onOpen-execution.
 	 * This would lead, that even the update calls this method again and again.
@@ -217,8 +205,6 @@ open class Canvas(
 		if (NO_UPDATE in flags) cancel()
 
 		val inventoryContent = async { asSync { (0 until canvasBase.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } }
-
-		if (NO_UPDATE_PUSHES !in flags) push()
 
 		receivers.toList().forEachNotNull { receiver ->
 			var topInventory = receiver.openInventory.topInventory
@@ -252,7 +238,7 @@ open class Canvas(
 
 								receiver.openInventory(topInventory)
 
-								CanvasSessionManager.putSession(receiver, identityObject, data)
+								CanvasSessionManager.putSession(receiver, this@Canvas, data)
 							} else
 								debugLog("Updating ${receiver.name}'s inventory blocked, during last check")
 						}
@@ -318,12 +304,6 @@ open class Canvas(
 		this.onClicks = onClicks
 		this.onUpdateNonClearableSlots = onUpdateNonClearableSlots
 	}
-
-	data class Reaction(
-		val onOpen: CanvasOpenEvent.() -> Unit = { },
-		val onClose: CanvasCloseEvent.() -> Unit = { },
-		val onClicks: List<CanvasClickEvent.() -> Unit> = emptyList(),
-	)
 
 	fun interface CanvasRender {
 		suspend fun render(event: CanvasRenderEvent)

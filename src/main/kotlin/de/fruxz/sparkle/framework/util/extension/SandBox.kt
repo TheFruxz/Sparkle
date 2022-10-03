@@ -21,7 +21,7 @@ fun registerSandBox(sandBox: SandBox) {
 }
 
 @Suppress("NOTHING_TO_INLINE") // required, because of the Throwable
-inline fun buildAndRegisterSandBox(vendor: App = SparkleApp.instance, identity: String = buildRandomTag(tagType = ONLY_LOWERCASE, hashtag = false), noinline action: suspend SandBoxInteraction.() -> Unit) {
+inline fun quickSandBox(vendor: App = SparkleApp.instance, identity: String = buildRandomTag(tagType = ONLY_LOWERCASE, hashtag = false), noinline action: suspend SandBoxInteraction.() -> Unit) {
 	registerSandBox(buildSandBox(vendor, identity, action))
 }
 

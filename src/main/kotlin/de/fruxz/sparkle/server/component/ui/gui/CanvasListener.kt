@@ -28,23 +28,21 @@ internal class CanvasListener : EventListener() {
 
 			val session = CanvasSessionManager.getSession(player)
 
-			val canvas = SparkleCache.canvas[session?.canvas]
+			val canvas = session?.canvas
 
 			if (canvas != null) {
 
 				if (canvas.flags.contains(NO_CLOSE)) {
 					canvas.display(player)
 				} else {
-					SparkleCache.canvasActions[session?.canvas]?.onClose?.let {
-						it(
-							CanvasCloseEvent(
-								player,
-								canvas,
-								event.view,
-								event
-							)
+					canvas.onClose(
+						CanvasCloseEvent(
+							player,
+							canvas,
+							event.view,
+							event
 						)
-					}
+					)
 					CanvasSessionManager.removeSession(player)
 				}
 
@@ -60,7 +58,7 @@ internal class CanvasListener : EventListener() {
 		val session = CanvasSessionManager.getSession(player)
 
 		if (session != null) {
-			val canvas = SparkleCache.canvas[session.canvas] ?: return
+			val canvas = session.canvas
 
 			CanvasClickEvent(player, canvas, event.slot, event.view, event, event.click).let { internalEvent ->
 
@@ -68,7 +66,7 @@ internal class CanvasListener : EventListener() {
 
 				if (!canvas.flags.contains(NO_CLICK_ACTIONS)) {
 
-					SparkleCache.canvasActions[session.canvas]?.onClicks?.forEach { it.invoke(internalEvent) }
+					session.canvas.onClicks.forEach { it.invoke(internalEvent) }
 
 				}
 
@@ -96,7 +94,7 @@ internal class CanvasListener : EventListener() {
 			}
 
 		if (session != null) {
-			val canvas = SparkleCache.canvas[session.canvas] ?: return
+			val canvas = session.canvas
 
 			if (canvas.flags.contains(NO_MOVE)) event.isCancelled = true
 
@@ -110,7 +108,7 @@ internal class CanvasListener : EventListener() {
 		val session = CanvasSessionManager.getSession(player)
 
 		if (session != null) {
-			val canvas = SparkleCache.canvas[session.canvas] ?: return
+			val canvas = session.canvas
 
 			if (canvas.flags.contains(NO_DRAG)) event.isCancelled = true
 
@@ -125,7 +123,7 @@ internal class CanvasListener : EventListener() {
 		event.isCancelled = true
 
 		if (session != null) {
-			val canvas = SparkleCache.canvas[session.canvas] ?: return
+			val canvas = session.canvas
 
 			if (open.contains(event.mainHandItem) || open.contains(event.offHandItem)) {
 

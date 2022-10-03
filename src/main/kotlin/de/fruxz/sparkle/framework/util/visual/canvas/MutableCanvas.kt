@@ -15,6 +15,7 @@ import de.fruxz.sparkle.framework.util.visual.canvas.CanvasFlag.*
 import de.fruxz.sparkle.framework.util.visual.canvas.design.AdaptiveCanvasCompose
 import de.fruxz.sparkle.framework.util.visual.item.ItemLike
 import de.fruxz.sparkle.framework.util.effect.sound.SoundEffect
+import de.fruxz.sparkle.framework.util.visual.canvas.CanvasBase.Companion
 import de.fruxz.stacked.extension.subKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -24,6 +25,7 @@ import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.Material
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
 
 /**
@@ -453,7 +455,7 @@ data class MutableCanvas(
  * @author Fruxz
  * @since 1.0
  */
-fun buildCanvas(base: CanvasBase = CanvasBase.ofLines(3)): MutableCanvas = // todo expand the given parameters about the MutableCanvas constructor!
+fun buildCanvas(base: CanvasBase = CanvasBase.ofLines(3)): MutableCanvas =
 	MutableCanvas(canvasBase = base)
 
 /**
@@ -466,5 +468,11 @@ fun buildCanvas(base: CanvasBase = CanvasBase.ofLines(3)): MutableCanvas = // to
  * @author Fruxz
  * @since 1.0
  */
-fun buildCanvas(base: CanvasBase = CanvasBase.ofLines(3), builder: MutableCanvas.() -> Unit): Canvas = // todo expand the given parameters about the MutableCanvas constructor!
+fun buildCanvas(base: CanvasBase = CanvasBase.ofLines(3), builder: MutableCanvas.() -> Unit): Canvas =
 	MutableCanvas(canvasBase = base).apply(builder).build()
+
+fun buildCanvas(size: Int, builder: MutableCanvas.() -> Unit): Canvas =
+	buildCanvas(CanvasBase.ofSize(size), builder)
+
+fun buildCanvas(inventoryType: InventoryType, builder: MutableCanvas.() -> Unit): Canvas =
+	buildCanvas(CanvasBase.ofType(inventoryType), builder)

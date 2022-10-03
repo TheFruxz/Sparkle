@@ -17,11 +17,10 @@ import de.fruxz.sparkle.framework.infrastructure.service.Service
 import de.fruxz.sparkle.framework.util.data.Preference
 import de.fruxz.sparkle.framework.util.data.Preference.PreferenceIndex
 import de.fruxz.sparkle.framework.util.extension.debugLog
-import de.fruxz.sparkle.framework.util.visual.canvas.Canvas
-import de.fruxz.sparkle.framework.util.visual.canvas.CanvasSessionManager.CanvasSession
 import de.fruxz.sparkle.framework.util.visual.item.action.ItemAction
 import de.fruxz.sparkle.framework.util.positioning.dependent.DependentCubicalShape
 import de.fruxz.sparkle.framework.util.scheduler.Tasky
+import de.fruxz.sparkle.framework.util.visual.canvas.CanvasSessionManager.CanvasSession
 import net.kyori.adventure.key.Key
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
@@ -71,11 +70,7 @@ object SparkleCache : AppCache {
 
 	var messageConversationPartners = mapOf<Player, Player>()
 
-	var canvasActions = mapOf<Identity<Canvas>, Canvas.Reaction>()
-
 	var canvasSessions = mapOf<Player, CanvasSession>()
-
-	var canvas = mapOf<Identity<Canvas>, Canvas>()
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
 		when {
@@ -83,7 +78,6 @@ object SparkleCache : AppCache {
 				buildModePlayers = buildModePlayers.filter { it.identity != "" + entityIdentity }.toSet()
 				playerMarkerBoxes = playerMarkerBoxes.filter { it.key.identity != "" + entityIdentity }
 				messageConversationPartners = messageConversationPartners.filter { it.value.uniqueId != entityIdentity && it.key.uniqueId != entityIdentity }
-				canvasSessions = canvasSessions.filter { it.key.uniqueId != entityIdentity }
 			}
 		}
 	}
@@ -106,8 +100,7 @@ object SparkleCache : AppCache {
 		if (dropDepth.isDeeperThanOrEquals(CLEAR)) {
 			debugLog("Cache clear 'CLEAR' reached")
 			itemActions = emptySet()
-			canvasActions = emptyMap()
-			canvas = emptyMap()
+			canvasSessions = emptyMap()
 		}
 
 		if (dropDepth.isDeeperThanOrEquals(KILL)) {

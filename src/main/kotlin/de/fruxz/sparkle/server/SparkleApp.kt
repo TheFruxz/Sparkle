@@ -52,9 +52,8 @@ import de.fruxz.sparkle.framework.util.effect.sound.SoundData
 import de.fruxz.sparkle.framework.util.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.util.effect.sound.SoundMelody
 import de.fruxz.sparkle.framework.util.extension.asPlayerOrNull
-import de.fruxz.sparkle.framework.util.extension.buildAndRegisterSandBox
 import de.fruxz.sparkle.framework.util.extension.coroutines.doAsync
-import de.fruxz.sparkle.framework.util.extension.coroutines.doSync
+import de.fruxz.sparkle.framework.util.extension.quickSandBox
 import de.fruxz.sparkle.framework.util.permission.Approval
 import de.fruxz.sparkle.framework.util.positioning.dependent.DependentComplexShape
 import de.fruxz.sparkle.framework.util.positioning.dependent.DependentCubicalShape
@@ -69,15 +68,16 @@ import de.fruxz.sparkle.framework.util.positioning.relative.LinearShape
 import de.fruxz.sparkle.framework.util.positioning.relative.PyramidalShape
 import de.fruxz.sparkle.framework.util.positioning.relative.Shape
 import de.fruxz.sparkle.framework.util.positioning.relative.SphereShape
-import kotlinx.coroutines.delay
+import de.fruxz.sparkle.framework.util.visual.canvas.buildCanvas
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerialization
-import org.bukkit.entity.EntityType.BEE
+import org.bukkit.event.inventory.InventoryType.BREWING
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
@@ -157,8 +157,6 @@ class SparkleApp : App() {
 		}
 
 		ConfigurationSerialization.registerClass(SimpleLocation::class.java)
-
-		// TODO: 19.10.2021 load language files to the lang-folder
 
 		debugLog("DebugMode preference loaded & set from file!")
 

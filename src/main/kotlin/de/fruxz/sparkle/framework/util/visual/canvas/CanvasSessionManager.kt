@@ -22,7 +22,7 @@ object CanvasSessionManager {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun getViewersInSession(queryCanvas: Key) =
+	fun getViewersOfCanvas(queryCanvas: Identity<Canvas>) =
 		getSessions(queryCanvas).map { it.key }
 
 	/**
@@ -31,8 +31,8 @@ object CanvasSessionManager {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun getSessions(queryCanvas: Key): Set<Map.Entry<Player, CanvasSession>> =
-		SparkleCache.canvasSessions.filter { it.value.canvas == queryCanvas }.entries
+	fun getSessions(queryCanvas: Identity<Canvas>): Set<Map.Entry<Player, CanvasSession>> =
+		SparkleCache.canvasSessions.filter { it.value.canvas.identityObject == queryCanvas }.entries
 
 	/**
 	 * This function returns every canvas session, viewing a
@@ -42,11 +42,11 @@ object CanvasSessionManager {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun getSession(sessionHost: Player, queryCanvas: Key): CanvasSession? =
-		getSession(sessionHost)?.takeIf { it.canvas == queryCanvas }
+	fun getSession(sessionHost: Player, queryCanvas: Identity<Canvas>): CanvasSession? =
+		getSession(sessionHost)?.takeIf { it.canvas.identityObject == queryCanvas }
 
 	/**
-	 * This function returns the [CanvasSession] of the given [sessionHost] entity.
+	 * This function returns the [OldCanvasSession] of the given [sessionHost] entity.
 	 * Or null if the entity is not officially viewing a canvas.
 	 * @author Fruxz
 	 * @since 1.0
@@ -63,7 +63,7 @@ object CanvasSessionManager {
 	fun hasSession(sessionHost: Player): Boolean = getSession(sessionHost) != null
 
 	/**
-	 * This function removes the [CanvasSession] of the given [sessionHost] entity.
+	 * This function removes the [OldCanvasSession] of the given [sessionHost] entity.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
@@ -72,11 +72,11 @@ object CanvasSessionManager {
 	}
 
 	/**
-	 * This function adds the [CanvasSession] of the given [sessionHost] entity.
+	 * This function adds the [OldCanvasSession] of the given [sessionHost] entity.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun putSession(sessionHost: Player, canvas: Identity<Canvas>, parameters: Map<Key, Any> = emptyMap()) {
+	fun putSession(sessionHost: Player, canvas: Canvas, parameters: Map<Key, Any> = emptyMap()) {
 		SparkleCache.canvasSessions += sessionHost to CanvasSession(
 			canvas = canvas,
 			parameters = parameters,
@@ -84,13 +84,8 @@ object CanvasSessionManager {
 		)
 	}
 
-	/**
-	 * This data class represents a canvas session.
-	 * @author Fruxz
-	 * @since 1.0
-	 */
 	data class CanvasSession(
-		val canvas: Identity<Canvas>,
+		val canvas: Canvas,
 		val parameters: Map<Key, Any>,
 		val created: Calendar = Calendar.now(),
 	)
