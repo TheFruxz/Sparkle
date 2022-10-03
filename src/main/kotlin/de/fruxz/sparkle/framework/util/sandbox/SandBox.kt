@@ -10,6 +10,7 @@ import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.APPLIED
 import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.ERROR
 import de.fruxz.sparkle.framework.util.attachment.Logging
+import de.fruxz.sparkle.framework.util.extension.coroutines.pluginCoroutineDispatcher
 import de.fruxz.sparkle.framework.util.extension.visual.notification
 import de.fruxz.sparkle.framework.util.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.util.identification.VendorsIdentifiable
@@ -37,7 +38,7 @@ data class SandBox(
     override val sectionLabel by lazy { identity }
 
     fun execute(executor: InterchangeExecutor, parameters: List<String> = emptyList()) {
-        SparkleApp.instance.coroutineScope.launch(Component.getInstance(SandBoxComponent::class).threadContext) {
+        SparkleApp.instance.coroutineScope.launch(context = vendor.pluginCoroutineDispatcher(true)) {
 
             try {
                 sectionLog.log(Level.INFO, "Executor '${executor.name}' is starting SandBox '$identity'!")

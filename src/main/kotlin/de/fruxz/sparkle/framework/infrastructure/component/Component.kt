@@ -9,10 +9,10 @@ import de.fruxz.sparkle.framework.infrastructure.component.Component.ComponentRe
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.*
 import de.fruxz.sparkle.framework.infrastructure.component.file.ComponentManager
-import de.fruxz.sparkle.framework.util.attachment.ContextualInstance
 import de.fruxz.sparkle.framework.util.attachment.Logging
 import de.fruxz.sparkle.framework.util.attachment.VendorOnDemand
 import de.fruxz.sparkle.framework.util.extension.debugLog
+import de.fruxz.sparkle.framework.util.identification.KeyedIdentifiable
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.subKey
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -23,8 +23,7 @@ abstract class Component(
 	open val behaviour: RunType = DISABLED,
 	open val isExperimental: Boolean = false,
 	final override val preferredVendor: App? = null,
-) : ContextualInstance<Component>, VendorOnDemand, Logging,
-	Hoster<ComponentRequestAnswer, ComponentRequestAnswer, Component> {
+) : KeyedIdentifiable<Component>, VendorOnDemand, Logging, Hoster<ComponentRequestAnswer, ComponentRequestAnswer, Component> {
 
 	init {
 
@@ -53,8 +52,6 @@ abstract class Component(
 		get() = SparkleCache.runningComponents.contains(identityObject)
 
 	override val identityKey by lazy { vendor.subKey(thisIdentity.lowercase(), CONTINUE) }
-
-	override val threadContext by lazy { @OptIn(DelicateCoroutinesApi::class) newSingleThreadContext(identity) }
 
 	/**
 	 * This function replaces the current [vendor] of this [Component]

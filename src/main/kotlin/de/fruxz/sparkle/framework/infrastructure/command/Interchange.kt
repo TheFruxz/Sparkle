@@ -14,7 +14,6 @@ import de.fruxz.sparkle.framework.util.annotation.LegacyCraftBukkitFeature
 import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level
 import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.ERROR
 import de.fruxz.sparkle.framework.util.permission.Approval
-import de.fruxz.sparkle.framework.util.attachment.ContextualInstance
 import de.fruxz.sparkle.framework.util.identification.Labeled
 import de.fruxz.sparkle.framework.util.attachment.Logging
 import de.fruxz.sparkle.framework.util.attachment.VendorOnDemand
@@ -25,10 +24,12 @@ import de.fruxz.sparkle.framework.util.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.util.extension.interchange.Parameters
 import de.fruxz.sparkle.framework.util.extension.asPlayer
 import de.fruxz.sparkle.framework.util.extension.asPlayerOrNull
+import de.fruxz.sparkle.framework.util.extension.coroutines.pluginCoroutineDispatcher
 import de.fruxz.sparkle.framework.util.extension.time.RunningCooldown
 import de.fruxz.sparkle.framework.util.extension.time.getCooldown
 import de.fruxz.sparkle.framework.util.extension.time.hasCooldown
 import de.fruxz.sparkle.framework.util.extension.time.setCooldown
+import de.fruxz.sparkle.framework.util.identification.KeyedIdentifiable
 import de.fruxz.stacked.buildComponent
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.asComponent
@@ -80,7 +81,7 @@ abstract class Interchange(
 	var forcedApproval: Approval? = null,
 	final override val preferredVendor: App? = null,
 	val cooldown: Duration = Duration.ZERO
-) : CommandExecutor, ContextualInstance<Interchange>, VendorOnDemand, Logging, Labeled {
+) : CommandExecutor, KeyedIdentifiable<Interchange>, VendorOnDemand, Logging, Labeled {
 
 	init {
 		completion.identity = label
@@ -135,22 +136,6 @@ abstract class Interchange(
 	 */
 	val tabCompleter = TabCompleter { executor, _, _, args ->
 		completion.computeCompletion(args.toList(), executor).takeIf { canExecuteBasePlate(executor) } ?: listOf(" ")
-	}
-
-	/**
-	 * This value represents the thread context (Kotlin Coroutines) of
-	 * this interchange. It is used, to process and execute the actions
-	 * of this interchange, so that a user cannot freeze the whole server,
-	 * by only using an interchange, that processes simple stuff.
-	 * The [threadContext] basically uses the [newSingleThreadContext]
-	 * function and uses the [identity] of this interchange as the name
-	 * of the bound thread.
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	override val threadContext by lazy {
-		@OptIn(DelicateCoroutinesApi::class)
-		newSingleThreadContext(identity)
 	}
 
 	/**
@@ -313,7 +298,7 @@ abstract class Interchange(
 
 	override fun onCommand(sender: InterchangeExecutor, command: Command, label: String, args: Parameters): Boolean {
 
-		vendor.coroutineScope.launch(context = threadContext) {
+		vendor.coroutineScope.launch(context = vendor.pluginCoroutineDispatcher(true)) {
 
 			val parameters = args.toList()
 			val executionProcess = this@Interchange::execution

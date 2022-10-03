@@ -33,6 +33,7 @@ import de.fruxz.sparkle.framework.util.extension.internalCommandMap
 import de.fruxz.sparkle.framework.util.extension.internalSyncCommands
 import de.fruxz.sparkle.framework.util.extension.coroutines.asSync
 import de.fruxz.sparkle.framework.util.extension.coroutines.delayed
+import de.fruxz.sparkle.framework.util.extension.coroutines.pluginCoroutineDispatcher
 import de.fruxz.sparkle.framework.util.extension.coroutines.task
 import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.ERROR
 import de.fruxz.stacked.text
@@ -420,7 +421,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 			SparkleCache.registeredComponents += component
 
-			coroutineScope.launch(context = component.threadContext) {
+			coroutineScope.launch(context = component.vendor.pluginCoroutineDispatcher(true)) {
 
 				component.register()
 
@@ -452,7 +453,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 					SparkleCache.runningComponents += componentIdentity.change<Component>() to Calendar.now()
 
-					coroutineScope.launch(context = component.threadContext) {
+					coroutineScope.launch(context = component.vendor.pluginCoroutineDispatcher(true)) {
 
 						component.start()
 
@@ -484,7 +485,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 						SparkleCache.runningComponents -= componentIdentity
 
-						coroutineScope.launch(context = component.threadContext) {
+						coroutineScope.launch(context = component.vendor.pluginCoroutineDispatcher(true)) {
 
 							component.stop()
 
