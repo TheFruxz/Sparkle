@@ -161,11 +161,15 @@ class SparkleApp : App() {
 
 		debugMode = SparkleData.systemConfig.debugMode
 
-		mainLog(
-			Level.INFO, """
-			Sparkle is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
-			https://www.jetbrains.com/ | https://kotlinlang.org/
-		""".trimIndent()
+		mainLog.info("""
+				Sparkle is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
+				https://www.jetbrains.com/ | https://www.kotlinlang.org/
+			""".trimIndent()
+		)
+		mainLog.info("""
+			Sparkles coroutine-system is inspired by the okkero/Skedule repository, which is licensed under the MIT License!
+			Definitely check out their repo: https://www.github.com/okkero/Skedule 
+			""".trimIndent()
 		)
 
 		SparkleCache.tmp_initSetupPreferences.forEach {
