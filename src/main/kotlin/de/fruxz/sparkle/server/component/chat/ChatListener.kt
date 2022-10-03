@@ -45,22 +45,29 @@ internal class ChatListener : EventListener() {
 				}
 
 				when {
-					setup.mentions.enabled && snippet.startsWith("@") && snippet.length > 2 && tagged != null && tagged !in notifiedPlayers -> {
-						this + "<${setup.mentions.mentionColor}>@${tagged.displayName().asString}</${setup.mentions.mentionColor}>".asStyledComponent
-							.hoverEvent(tagged).clickEvent(ClickEvent.suggestCommand("/msg ${tagged.name}"))
+					setup.mentions.enabled && snippet.startsWith("@") && snippet.length > 2 && tagged != null -> {
+						this + "<${setup.mentions.mentionColor}>@${tagged.displayName().asString}</${setup.mentions.mentionColor}>"
+							.asStyledComponent
+							.clickEvent(ClickEvent.suggestCommand("/msg ${tagged.name}"))
+							.hoverEvent(tagged)
 					}
 					setup.hashTags.enabled && snippet.startsWith("#") && snippet.length > 2 -> {
-						this + "<${setup.hashTags.hashTagColor}>$snippet</${setup.hashTags.hashTagColor}>".asStyledComponent.clickEvent(null).hoverEvent(null)
+						this + "<${setup.hashTags.hashTagColor}>$snippet</${setup.hashTags.hashTagColor}>"
+							.asStyledComponent
+							.clickEvent(null)
+							.hoverEvent(null)
 					}
 					setup.commands.enabled && snippet.startsWith("/") && snippet.length > 2 -> {
-						this + "<${setup.commands.commandColor}>$snippet</${setup.commands.commandColor}>".asStyledComponent.clickEvent(
-							ClickEvent.suggestCommand(snippet)
-						).hoverEvent("<${setup.commands.commandColor}>$snippet</${setup.commands.commandColor}>".asStyledComponent)
+						this + "<${setup.commands.commandColor}>$snippet</${setup.commands.commandColor}>"
+							.asStyledComponent
+							.clickEvent(ClickEvent.suggestCommand(snippet))
+							.hoverEvent("<${setup.commands.commandColor}>$snippet</${setup.commands.commandColor}>".asStyledComponent)
 					}
 					setup.items.enabled && snippet.equals("[items]", true) -> {
-						this + "<${setup.items.itemColor}>${player.inventory.itemInMainHand.displayName().asStyledString}</${setup.items.itemColor}>".asStyledComponent.hoverEvent(
-							player.inventory.itemInMainHand
-						).clickEvent(null)
+						this + "<${setup.items.itemColor}>${player.inventory.itemInMainHand.displayName().asStyledString}</${setup.items.itemColor}>"
+							.asStyledComponent
+							.clickEvent(null)
+							.hoverEvent(player.inventory.itemInMainHand)
 					}
 					else -> this + "<${setup.messageColor}>$snippet</${setup.messageColor}>".asStyledComponent.hoverEvent(null).clickEvent(null)
 				}
