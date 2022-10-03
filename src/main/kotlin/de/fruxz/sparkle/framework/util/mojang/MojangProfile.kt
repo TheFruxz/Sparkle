@@ -4,7 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile
 import com.destroystokyo.paper.profile.ProfileProperty
 import de.fruxz.sparkle.framework.util.extension.offlinePlayer
 import de.fruxz.sparkle.framework.util.extension.system
-import de.fruxz.sparkle.framework.util.extension.scheduler.doAsync
+import de.fruxz.sparkle.framework.util.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.util.visual.item.Item
 import de.fruxz.sparkle.framework.util.visual.item.quirk.Quirk
 import kotlinx.coroutines.launch

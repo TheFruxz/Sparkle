@@ -14,7 +14,7 @@ import de.fruxz.sparkle.framework.util.extension.visual.notification
 import de.fruxz.sparkle.framework.util.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.util.extension.mojang.applySkin
 import de.fruxz.sparkle.framework.util.extension.mojang.resetSkin
-import de.fruxz.sparkle.framework.util.extension.scheduler.asSync
+import de.fruxz.sparkle.framework.util.extension.coroutines.asSync
 import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.*
 import de.fruxz.stacked.extension.dyeGold
 import de.fruxz.stacked.extension.dyeGray

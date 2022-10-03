@@ -16,8 +16,8 @@ import de.fruxz.sparkle.framework.util.extension.positionX
 import de.fruxz.sparkle.framework.util.extension.positionY
 import de.fruxz.sparkle.framework.util.extension.positionZ
 import de.fruxz.sparkle.framework.util.extension.system
-import de.fruxz.sparkle.framework.util.extension.scheduler.asSync
-import de.fruxz.sparkle.framework.util.extension.scheduler.launch
+import de.fruxz.sparkle.framework.util.extension.coroutines.asSync
+import de.fruxz.sparkle.framework.util.extension.coroutines.launch
 import de.fruxz.sparkle.framework.util.effect.particle.ParticleType
 import de.fruxz.stacked.text
 import io.ktor.util.*

@@ -23,7 +23,7 @@ import de.fruxz.sparkle.framework.util.extension.internalSyncCommands
 import de.fruxz.sparkle.framework.util.extension.onlinePlayers
 import de.fruxz.sparkle.framework.util.extension.server
 import de.fruxz.sparkle.framework.util.extension.system
-import de.fruxz.sparkle.framework.util.extension.scheduler.asSync
+import de.fruxz.sparkle.framework.util.extension.coroutines.asSync
 import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.FAIL
 import de.fruxz.sparkle.framework.util.permission.Approval
 

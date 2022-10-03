@@ -1,4 +1,4 @@
-package de.fruxz.sparkle.framework.util.extension.scheduler
+package de.fruxz.sparkle.framework.util.extension.coroutines
 
 import de.fruxz.ascend.extension.dump
 import de.fruxz.sparkle.framework.infrastructure.app.App
@@ -43,14 +43,14 @@ fun task(
  * @author Fruxz
  * @since 1.0
  */
-suspend fun <T> asSync(delay: Duration = Duration.ZERO, process: () -> T): T {
+suspend fun <T> asSync(delay: Duration = Duration.ZERO, process: suspend () -> T): T {
 	val output = CompletableFuture<T>()
 
-	task(when {
-		delay.isPositive() -> TemporalAdvice.delayed(delay, async = false)
-		else -> TemporalAdvice.instant(async = false)
-	}) {
+	launch(isAsync = false) {
+		if (delay.isPositive()) delay(delay)
+
 		output.complete(process())
+
 	}
 
 	return output.await()
@@ -67,19 +67,22 @@ suspend fun <T> asSync(delay: Duration = Duration.ZERO, process: () -> T): T {
  * @author Fruxz
  * @since 1.0
  */
-fun <T> doSync(delay: Duration = Duration.ZERO, cycleDuration: Duration = Duration.ZERO, process: () -> T): T {
-	val output = CompletableFuture<T>()
-
-	task(when {
-		delay.isPositive() && !cycleDuration.isPositive() -> TemporalAdvice.delayed(delay, async = false)
-		delay.isPositive() && cycleDuration.isPositive() -> TemporalAdvice.ticking(delay, cycleDuration, async = false)
-		else -> TemporalAdvice.instant(async = false)
-	}) {
-		output.complete(process())
+fun doSync(delay: Duration = Duration.ZERO, cycleDuration: Duration = Duration.ZERO, process: suspend (CoroutineScope) -> Unit) =
+	launch(isAsync = false) { scope ->
+		when {
+			delay.isPositive() && !cycleDuration.isPositive() -> {
+				delay(delay)
+				process.invoke(scope)
+			}
+			delay.isPositive() && cycleDuration.isPositive() -> {
+				delay(delay)
+				while (scope.isActive) {
+					process.invoke(scope)
+				}
+			}
+			else -> process.invoke(scope)
+		}
 	}
-
-	return output.get()
-}
 
 /**
  * This function creates an async context using the KotlinX Coroutines Library.
@@ -94,10 +97,11 @@ fun <T> doSync(delay: Duration = Duration.ZERO, cycleDuration: Duration = Durati
  * @author Fruxz
  * @since 1.0
  */
-fun <T> asAsync(delay: Duration = Duration.ZERO, process: suspend (CoroutineScope) -> T): Deferred<T> = system.coroutineScope.async {
-	if (delay.isPositive()) delay(delay)
-	return@async process(system.coroutineScope)
-}
+fun <T> asAsync(delay: Duration = Duration.ZERO, process: suspend (CoroutineScope) -> T): Deferred<T> =
+	system.coroutineScope.async(context = system.pluginCoroutineDispatcher(true)) {
+		if (delay.isPositive()) delay(delay)
+		return@async process(system.coroutineScope)
+	}
 
 /**
  * This function executes the [process] asynchronously via the [launch] function.
@@ -108,22 +112,26 @@ fun <T> asAsync(delay: Duration = Duration.ZERO, process: suspend (CoroutineScop
  * @author Fruxz
  * @since 1.0
  */
-fun doAsync(delay: Duration = Duration.ZERO, cycleDuration: Duration = Duration.ZERO, process: suspend (CoroutineScope) -> Unit) = launch {
+fun doAsync(delay: Duration = Duration.ZERO, cycleDuration: Duration = Duration.ZERO, process: suspend (CoroutineScope) -> Unit) = launch(isAsync = true) { scope ->
 	if (delay.isPositive()) delay(delay)
 
 	if (cycleDuration.isPositive()) {
-		while (it.isActive) {
-			process.invoke(it)
+		while (scope.isActive) {
+			process.invoke(scope)
 		}
 	} else
-		process.invoke(it)
+		process.invoke(scope)
 
 }
 
+/**
+ * Launches a plugin schedule based coroutine.
+ */
 fun launch(
 	vendor: App = system,
+	isAsync: Boolean = true,
 	process: suspend (CoroutineScope) -> Unit,
-) = vendor.coroutineScope.launch(block = process)
+) = vendor.coroutineScope.launch(context = system.pluginCoroutineDispatcher(isAsync), block = process)
 
 suspend fun <T, O> T.wait(duration: Duration, code: suspend T.() -> O): O = asAsync(duration) {
 	code(this@wait)

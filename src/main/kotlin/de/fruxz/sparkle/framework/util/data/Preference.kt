@@ -10,8 +10,8 @@ import de.fruxz.sparkle.server.SparkleCache.registeredPreferenceCache
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel
 import de.fruxz.sparkle.framework.util.data.Preference.InputType.*
 import de.fruxz.sparkle.framework.util.extension.debugLog
-import de.fruxz.sparkle.framework.util.extension.scheduler.doAsync
-import de.fruxz.sparkle.framework.util.extension.scheduler.task
+import de.fruxz.sparkle.framework.util.extension.coroutines.doAsync
+import de.fruxz.sparkle.framework.util.extension.coroutines.task
 import de.fruxz.sparkle.framework.util.scheduler.TemporalAdvice.Companion.instant
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit.SECONDS

@@ -6,7 +6,7 @@ import de.fruxz.sparkle.framework.util.event.canvas.CanvasCloseEvent
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.util.extension.data.ticks
 import de.fruxz.sparkle.framework.util.extension.player
-import de.fruxz.sparkle.framework.util.extension.scheduler.task
+import de.fruxz.sparkle.framework.util.extension.coroutines.task
 import de.fruxz.sparkle.framework.util.visual.canvas.CanvasFlag.*
 import de.fruxz.sparkle.framework.util.visual.canvas.CanvasSessionManager
 import de.fruxz.sparkle.framework.util.scheduler.TemporalAdvice.Companion

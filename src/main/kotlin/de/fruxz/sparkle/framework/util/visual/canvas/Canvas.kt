@@ -16,8 +16,8 @@ import de.fruxz.sparkle.framework.util.extension.visual.ui.get
 import de.fruxz.sparkle.framework.util.extension.visual.ui.set
 import de.fruxz.sparkle.framework.util.extension.effect.playSoundEffect
 import de.fruxz.sparkle.framework.util.extension.system
-import de.fruxz.sparkle.framework.util.extension.scheduler.asAsync
-import de.fruxz.sparkle.framework.util.extension.scheduler.asSync
+import de.fruxz.sparkle.framework.util.extension.coroutines.asAsync
+import de.fruxz.sparkle.framework.util.extension.coroutines.asSync
 import de.fruxz.sparkle.framework.util.visual.canvas.Canvas.CanvasRender
 import de.fruxz.sparkle.framework.util.visual.canvas.CanvasFlag.*
 import de.fruxz.sparkle.framework.util.visual.item.ItemLike

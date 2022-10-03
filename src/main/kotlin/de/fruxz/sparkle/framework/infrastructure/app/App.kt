@@ -31,9 +31,9 @@ import de.fruxz.sparkle.framework.util.extension.mainLog
 import de.fruxz.sparkle.framework.util.extension.destroySandBox
 import de.fruxz.sparkle.framework.util.extension.internalCommandMap
 import de.fruxz.sparkle.framework.util.extension.internalSyncCommands
-import de.fruxz.sparkle.framework.util.extension.scheduler.asSync
-import de.fruxz.sparkle.framework.util.extension.scheduler.delayed
-import de.fruxz.sparkle.framework.util.extension.scheduler.task
+import de.fruxz.sparkle.framework.util.extension.coroutines.asSync
+import de.fruxz.sparkle.framework.util.extension.coroutines.delayed
+import de.fruxz.sparkle.framework.util.extension.coroutines.task
 import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.ERROR
 import de.fruxz.stacked.text
 import io.ktor.client.*
