@@ -9,7 +9,6 @@ import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.SparkleData
-import de.fruxz.sparkle.server.component.point.asset.Point
 import de.fruxz.sparkle.framework.util.sandbox.SandBox
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel
@@ -239,15 +238,6 @@ data class CompletionAsset<T>(
 			SoundLibrary.values().any { it.name.equals(input, ignoreCase) }
 		}.transformer {
 			SoundLibrary.values().firstOrNull { it.name == input }
-		}
-
-		@JvmStatic
-		val POINT = CompletionAsset<Point>(system, "POINT", true, listOf(InterchangeStructureInputRestriction.STRING)) {
-			SparkleData.savedPoints.content.points.map(Point::identity)
-		}.doCheck {
-			SparkleData.savedPoints.content.points.any { it.identity.equals(input, ignoreCase) }
-		}.transformer {
-			SparkleData.savedPoints.content.points.firstOrNull { it.identity == input }
 		}
 
 		@JvmStatic

@@ -46,18 +46,11 @@ import de.fruxz.sparkle.framework.util.positioning.world.SimpleLocation
 import de.fruxz.sparkle.framework.util.visual.item.Modification
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import de.fruxz.sparkle.server.component.app.AppComponent
-import de.fruxz.sparkle.server.component.buildMode.BuildModeComponent
-import de.fruxz.sparkle.server.component.chat.ChatComponent
 import de.fruxz.sparkle.server.component.completion.ProtectionComponent
 import de.fruxz.sparkle.server.component.component.ComponentComponent
 import de.fruxz.sparkle.server.component.events.EventsComponent
-import de.fruxz.sparkle.server.component.experimental.ExperimentalComponent
 import de.fruxz.sparkle.server.component.keeper.KeeperComponent
 import de.fruxz.sparkle.server.component.marking.MarkingComponent
-import de.fruxz.sparkle.server.component.messaging.MessagingComponent
-import de.fruxz.sparkle.server.component.point.PointComponent
-import de.fruxz.sparkle.server.component.point.asset.Point
-import de.fruxz.sparkle.server.component.point.asset.PointConfig
 import de.fruxz.sparkle.server.component.sandbox.SandBoxComponent
 import de.fruxz.sparkle.server.component.service.ServiceComponent
 import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent
@@ -103,8 +96,6 @@ class SparkleApp : App() {
 
 			polymorphic(Any::class) {
 
-				subclass(Point::class)
-				subclass(PointConfig::class)
 				subclass(MojangProfile::class)
 				subclass(MojangProfileCape::class)
 				subclass(MojangProfileRaw::class)
@@ -182,19 +173,14 @@ class SparkleApp : App() {
 		SparkleCache.tmp_initSetupPreferences = emptySet()
 
 		// NEW COMPONENTS
-		add(ChatComponent())
 		add(EventsComponent())
-		add(ExperimentalComponent())
 		add(SandBoxComponent())
 		add(ServiceComponent())
 		add(KeeperComponent())
-		add(PointComponent())
-		add(BuildModeComponent())
 		add(MarkingComponent())
 		add(UIComponent())
 		add(ComponentComponent())
 		add(ProtectionComponent())
-		add(MessagingComponent())
 		add(AdaptiveActionBarComponent())
 
 		add(SparkleInterchange())
