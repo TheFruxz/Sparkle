@@ -2,8 +2,6 @@ package de.fruxz.sparkle.framework.util.extension.entity
 
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.server.component.buildMode.BuildModeComponent
-import de.fruxz.sparkle.framework.util.annotation.RequiresComponent
 import de.fruxz.sparkle.framework.util.extension.fill
 import de.fruxz.sparkle.framework.util.positioning.dependent.DependentCubicalShape
 import org.bukkit.Bukkit
@@ -29,16 +27,6 @@ var LivingEntity.quickMaxHealth: Double
 fun LivingEntity.maxOutHealth() {
 	health = quickMaxHealth
 }
-
-@RequiresComponent(BuildModeComponent::class)
-var OfflinePlayer.buildMode: Boolean
-	get() = SparkleCache.buildModePlayers.contains(identityObject)
-	set(value) {
-		if (value) {
-			SparkleCache.buildModePlayers += identityObject
-		} else
-			SparkleCache.buildModePlayers -= identityObject
-	}
 
 /**
  * This computational property represents the current markings of
