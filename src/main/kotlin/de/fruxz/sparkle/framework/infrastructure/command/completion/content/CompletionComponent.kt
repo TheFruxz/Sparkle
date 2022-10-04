@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.framework.infrastructure.command.completion.content
 
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset.CompletionContext
-import de.fruxz.sparkle.framework.util.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.util.permission.Approval
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.permission.Approval
 
 sealed interface CompletionComponent {
 

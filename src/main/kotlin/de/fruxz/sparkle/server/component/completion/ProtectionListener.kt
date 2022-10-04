@@ -2,8 +2,8 @@ package de.fruxz.sparkle.server.component.completion
 
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
-import de.fruxz.sparkle.framework.util.extension.debugLog
-import de.fruxz.sparkle.framework.util.extension.interchange.getInterchange
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.interchange.getInterchange
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority.HIGHEST
 import org.bukkit.event.player.PlayerCommandSendEvent

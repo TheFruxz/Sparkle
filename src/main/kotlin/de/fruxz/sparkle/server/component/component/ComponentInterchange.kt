@@ -14,10 +14,10 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequire
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.component.file.ComponentManager
-import de.fruxz.sparkle.framework.util.extension.visual.notification
-import de.fruxz.sparkle.framework.util.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.util.extension.system
-import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
 import de.fruxz.stacked.extension.dyeDarkGray
 import de.fruxz.stacked.extension.dyeGold
 import de.fruxz.stacked.extension.dyeGray

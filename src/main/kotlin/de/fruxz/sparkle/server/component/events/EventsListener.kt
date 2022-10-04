@@ -2,11 +2,11 @@ package de.fruxz.sparkle.server.component.events
 
 import de.fruxz.ascend.extension.all
 import de.fruxz.ascend.extension.forceCast
-import de.fruxz.sparkle.framework.util.event.PlayerDamageByPlayerEvent
-import de.fruxz.sparkle.framework.util.event.interact.PlayerInteractAtBlockEvent
-import de.fruxz.sparkle.framework.util.event.interact.PlayerInteractAtItemEvent
+import de.fruxz.sparkle.framework.event.PlayerDamageByPlayerEvent
+import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtBlockEvent
+import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtItemEvent
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
-import de.fruxz.sparkle.framework.util.extension.visual.ui.item
+import de.fruxz.sparkle.framework.extension.visual.ui.item
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority.HIGHEST

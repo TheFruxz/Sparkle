@@ -15,27 +15,27 @@ import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.SparkleData
-import de.fruxz.sparkle.framework.util.extension.debugLog
-import de.fruxz.sparkle.framework.util.app.RunStatus
-import de.fruxz.sparkle.framework.util.app.RunStatus.*
-import de.fruxz.sparkle.framework.util.exception.IllegalActionException
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.app.RunStatus
+import de.fruxz.sparkle.framework.app.RunStatus.*
+import de.fruxz.sparkle.framework.exception.IllegalActionException
 import de.fruxz.sparkle.framework.infrastructure.Hoster
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.infrastructure.app.interchange.IssuedInterchange
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.service.Service
-import de.fruxz.sparkle.framework.util.data.file.SparklePath
-import de.fruxz.sparkle.framework.util.extension.visual.notification
-import de.fruxz.sparkle.framework.util.extension.mainLog
-import de.fruxz.sparkle.framework.util.extension.destroySandBox
-import de.fruxz.sparkle.framework.util.extension.internalCommandMap
-import de.fruxz.sparkle.framework.util.extension.internalSyncCommands
-import de.fruxz.sparkle.framework.util.extension.coroutines.asSync
-import de.fruxz.sparkle.framework.util.extension.coroutines.delayed
-import de.fruxz.sparkle.framework.util.extension.coroutines.pluginCoroutineDispatcher
-import de.fruxz.sparkle.framework.util.extension.coroutines.task
-import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.ERROR
+import de.fruxz.sparkle.framework.data.file.SparklePath
+import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.extension.mainLog
+import de.fruxz.sparkle.framework.extension.destroySandBox
+import de.fruxz.sparkle.framework.extension.internalCommandMap
+import de.fruxz.sparkle.framework.extension.internalSyncCommands
+import de.fruxz.sparkle.framework.extension.coroutines.asSync
+import de.fruxz.sparkle.framework.extension.coroutines.delayed
+import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
+import de.fruxz.sparkle.framework.extension.coroutines.task
+import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
 import de.fruxz.stacked.text
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -553,7 +553,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	/**
 	 * The current status of app-runtime
 	 */
-	var runStatus: RunStatus = OFFLINE
+	var runStatus: de.fruxz.sparkle.framework.app.RunStatus = OFFLINE
 		private set
 
 	var appRegistrationFile = YamlConfiguration()
@@ -618,7 +618,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	 */
 	open fun bye() {}
 
-	private suspend fun awaitState(waitFor: RunStatus, out: RunStatus, process: suspend () -> Unit) {
+	private suspend fun awaitState(waitFor: de.fruxz.sparkle.framework.app.RunStatus, out: de.fruxz.sparkle.framework.app.RunStatus, process: suspend () -> Unit) {
 
 		while (runStatus != out) {
 

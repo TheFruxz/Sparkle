@@ -16,15 +16,15 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.tracing.Comp
 import de.fruxz.sparkle.framework.infrastructure.command.completion.tracing.CompletionTraceResult.Conclusion.EMPTY
 import de.fruxz.sparkle.framework.infrastructure.command.completion.tracing.PossibleTraceWay
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
-import de.fruxz.sparkle.framework.util.extension.debugLog
-import de.fruxz.sparkle.framework.util.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.util.extension.asPlayer
-import de.fruxz.sparkle.framework.util.extension.asPlayerOrNull
-import de.fruxz.sparkle.framework.util.extension.time.getCooldown
-import de.fruxz.sparkle.framework.util.extension.time.hasCooldown
-import de.fruxz.sparkle.framework.util.extension.time.setCooldown
-import de.fruxz.sparkle.framework.util.permission.Approval
-import de.fruxz.sparkle.framework.util.permission.hasApproval
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.asPlayer
+import de.fruxz.sparkle.framework.extension.asPlayerOrNull
+import de.fruxz.sparkle.framework.extension.time.getCooldown
+import de.fruxz.sparkle.framework.extension.time.hasCooldown
+import de.fruxz.sparkle.framework.extension.time.setCooldown
+import de.fruxz.sparkle.framework.permission.Approval
+import de.fruxz.sparkle.framework.permission.hasApproval
 import org.bukkit.entity.Player
 import kotlin.time.Duration
 

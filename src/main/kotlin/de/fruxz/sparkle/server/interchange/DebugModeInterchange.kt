@@ -3,9 +3,9 @@ package de.fruxz.sparkle.server.interchange
 import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
-import de.fruxz.sparkle.framework.util.extension.visual.notification
-import de.fruxz.sparkle.framework.util.visual.message.Transmission
-import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.APPLIED
+import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.visual.message.Transmission
+import de.fruxz.sparkle.framework.visual.message.Transmission.Level.APPLIED
 import de.fruxz.stacked.plus
 import de.fruxz.stacked.text
 import net.kyori.adventure.text.format.NamedTextColor

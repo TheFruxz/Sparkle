@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.infrastructure.command.completion
 
-import de.fruxz.sparkle.framework.util.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 
 data class CompletionBranchConfiguration(
 	val supportedInputTypes: MutableList<InterchangeStructureInputRestriction<*>> = mutableListOf(

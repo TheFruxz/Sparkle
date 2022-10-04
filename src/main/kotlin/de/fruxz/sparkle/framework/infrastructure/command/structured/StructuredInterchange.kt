@@ -8,7 +8,7 @@ import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestrict
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction.NOT_RESTRICTED
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
-import de.fruxz.sparkle.framework.util.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import kotlin.time.Duration
 
 abstract class StructuredInterchange(

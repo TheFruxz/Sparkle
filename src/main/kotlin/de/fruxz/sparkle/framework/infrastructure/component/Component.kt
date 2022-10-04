@@ -9,10 +9,10 @@ import de.fruxz.sparkle.framework.infrastructure.component.Component.ComponentRe
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.*
 import de.fruxz.sparkle.framework.infrastructure.component.file.ComponentManager
-import de.fruxz.sparkle.framework.util.attachment.Logging
-import de.fruxz.sparkle.framework.util.attachment.VendorOnDemand
-import de.fruxz.sparkle.framework.util.extension.debugLog
-import de.fruxz.sparkle.framework.util.identification.KeyedIdentifiable
+import de.fruxz.sparkle.framework.attachment.Logging
+import de.fruxz.sparkle.framework.attachment.VendorOnDemand
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.subKey
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -23,7 +23,8 @@ abstract class Component(
 	open val behaviour: RunType = DISABLED,
 	open val isExperimental: Boolean = false,
 	final override val preferredVendor: App? = null,
-) : KeyedIdentifiable<Component>, VendorOnDemand, Logging, Hoster<ComponentRequestAnswer, ComponentRequestAnswer, Component> {
+) : KeyedIdentifiable<Component>, de.fruxz.sparkle.framework.attachment.VendorOnDemand,
+	de.fruxz.sparkle.framework.attachment.Logging, Hoster<ComponentRequestAnswer, ComponentRequestAnswer, Component> {
 
 	init {
 

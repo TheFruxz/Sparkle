@@ -2,12 +2,12 @@ package de.fruxz.sparkle.server.component.ui.gui
 
 import de.fruxz.ascend.extension.container.mapCast
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.framework.util.event.interact.PlayerInteractAtItemEvent
+import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtItemEvent
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
-import de.fruxz.sparkle.framework.util.extension.visual.ui.affectedItem
-import de.fruxz.sparkle.framework.util.extension.visual.ui.item
-import de.fruxz.sparkle.framework.util.visual.item.action.ItemAction
-import de.fruxz.sparkle.framework.util.visual.item.action.ItemActionType
+import de.fruxz.sparkle.framework.extension.visual.ui.affectedItem
+import de.fruxz.sparkle.framework.extension.visual.ui.item
+import de.fruxz.sparkle.framework.visual.item.action.ItemAction
+import de.fruxz.sparkle.framework.visual.item.action.ItemActionType
 import kotlinx.coroutines.launch
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler

@@ -5,11 +5,11 @@ import de.fruxz.sparkle.framework.infrastructure.command.Interchange
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructureInputRestriction
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
-import de.fruxz.sparkle.framework.util.visual.message.Transmission
-import de.fruxz.sparkle.framework.util.attachment.Logging
-import de.fruxz.sparkle.framework.util.extension.visual.message
-import de.fruxz.sparkle.framework.util.extension.visual.notification
-import de.fruxz.sparkle.framework.util.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.visual.message.Transmission
+import de.fruxz.sparkle.framework.attachment.Logging
+import de.fruxz.sparkle.framework.extension.visual.message
+import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.stacked.extension.asStyledComponent
 import de.fruxz.stacked.text
 import net.kyori.adventure.text.Component
@@ -24,7 +24,7 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	val label: String,
 	val parameters: List<String>,
 	val additionalParameters: List<String>,
-) : Logging {
+) : de.fruxz.sparkle.framework.attachment.Logging {
 
 	override val sectionLabel = "InterchangeRun/$vendor:$label"
 

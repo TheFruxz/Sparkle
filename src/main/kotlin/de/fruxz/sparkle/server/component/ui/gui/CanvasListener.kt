@@ -1,15 +1,15 @@
 package de.fruxz.sparkle.server.component.ui.gui
 
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.framework.util.event.canvas.CanvasClickEvent
-import de.fruxz.sparkle.framework.util.event.canvas.CanvasCloseEvent
+import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
+import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
-import de.fruxz.sparkle.framework.util.extension.data.ticks
-import de.fruxz.sparkle.framework.util.extension.player
-import de.fruxz.sparkle.framework.util.extension.coroutines.task
-import de.fruxz.sparkle.framework.util.visual.canvas.CanvasFlag.*
-import de.fruxz.sparkle.framework.util.visual.canvas.CanvasSessionManager
-import de.fruxz.sparkle.framework.util.scheduler.TemporalAdvice.Companion
+import de.fruxz.sparkle.framework.extension.data.ticks
+import de.fruxz.sparkle.framework.extension.player
+import de.fruxz.sparkle.framework.extension.coroutines.task
+import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
+import de.fruxz.sparkle.framework.visual.canvas.CanvasSessionManager
+import de.fruxz.sparkle.framework.scheduler.TemporalAdvice.Companion
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.inventory.InventoryClickEvent

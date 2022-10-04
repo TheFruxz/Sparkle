@@ -2,16 +2,16 @@ package de.fruxz.sparkle.framework.infrastructure.service
 
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.framework.infrastructure.Hoster
-import de.fruxz.sparkle.framework.util.attachment.Logging
-import de.fruxz.sparkle.framework.util.extension.debugLog
-import de.fruxz.sparkle.framework.util.extension.getApp
-import de.fruxz.sparkle.framework.util.scheduler.Tasky
-import de.fruxz.sparkle.framework.util.scheduler.TemporalAdvice
+import de.fruxz.sparkle.framework.attachment.Logging
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.getApp
+import de.fruxz.sparkle.framework.scheduler.Tasky
+import de.fruxz.sparkle.framework.scheduler.TemporalAdvice
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.subKey
 import net.kyori.adventure.key.Key
 
-interface Service : Hoster<Unit, Unit, Service>, Logging {
+interface Service : Hoster<Unit, Unit, Service>, de.fruxz.sparkle.framework.attachment.Logging {
 
 	val temporalAdvice: TemporalAdvice
 
