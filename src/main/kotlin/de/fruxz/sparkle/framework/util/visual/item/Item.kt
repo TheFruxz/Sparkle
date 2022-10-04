@@ -209,6 +209,7 @@ data class Item(
 		}
 	}
 
+	@ItemDsl
 	fun spawn(location: Location) = location.world.dropItem(location, produce())
 
 	// data processing
@@ -326,157 +327,202 @@ data class Item(
 
 	// smart-modify functions
 
+	@ItemDsl
 	fun annexModifications(vararg modifications: Modification) =
 		apply { this.modifications.addAll(modifications) }
 
+	@ItemDsl
 	fun annexModifications(modifications: Collection<Modification>) =
 		apply { this.modifications.addAll(modifications) }
 
+	@ItemDsl
 	fun annexModifications(vararg modifications: Pair<Enchantment, Int>) =
 		apply { this.modifications.addAll(modifications.map { Modification(it.first, it.second) }) }
 
+	@ItemDsl
 	fun putModifications(vararg modifications: Modification) =
 		apply { this.modifications = modifications.toMutableSet() }
 
+	@ItemDsl
 	fun putModifications(modifications: Collection<Modification>) =
 		apply { this.modifications = modifications.toMutableSet() }
 
+	@ItemDsl
 	fun putModifications(vararg modifications: Pair<Enchantment, Int>) =
 		apply { this.modifications = modifications.map { Modification(it.first, it.second) }.toMutableSet() }
 
+	@ItemDsl
 	fun hasModifications(vararg modifications: Modification) =
 		this.modifications.containsAll(modifications.toSet())
 
+	@ItemDsl
 	fun hasModifications(modifications: Collection<Modification>) =
 		this.modifications.containsAll(modifications)
 
+	@ItemDsl
 	fun hasModifications(vararg modifications: Pair<Enchantment, Int>) =
 		this.modifications.containsAll(modifications.map { Modification(it.first, it.second) })
 
+	@ItemDsl
 	fun dropModifications(vararg modifications: Modification) =
 		apply { this.modifications.removeAll(modifications.toSet()) }
 
+	@ItemDsl
 	fun dropModifications(modifications: Collection<Modification>) =
 		apply { this.modifications.removeAll(modifications.toSet()) }
 
-
+	@ItemDsl
 	fun annexFlags(flags: Collection<ItemFlag>) =
 		apply { this.flags.addAll(flags) }
 
+	@ItemDsl
 	fun annexFlags(vararg flags: ItemFlag) =
 		apply { this.flags.addAll(flags) }
 
+	@ItemDsl
 	fun hasFlags(flags: Collection<ItemFlag>) =
 		this.flags.containsAll(flags)
 
+	@ItemDsl
 	fun hasFlags(vararg flags: ItemFlag) =
 		this.flags.containsAll(flags.toSet())
 
+	@ItemDsl
 	fun putFlags(flags: Collection<ItemFlag>) =
 		apply { this.flags = flags.toMutableSet() }
 
+	@ItemDsl
 	fun putFlags(vararg flags: ItemFlag) =
 		apply { this.flags = flags.toMutableSet() }
 
+	@ItemDsl
 	fun dropFlags(flags: Collection<ItemFlag>) =
 		apply { this.flags.removeAll(flags.toSet()) }
 
+	@ItemDsl
 	fun dropFlags(vararg flags: ItemFlag) =
 		apply { this.flags.removeAll(flags.toSet()) }
 
-
+	@ItemDsl
 	fun annexPostProperties(postProperties: Collection<PostProperty>) =
 		apply { this.postProperties.addAll(postProperties) }
 
+	@ItemDsl
 	fun annexPostProperties(vararg postProperties: PostProperty) =
 		apply { this.postProperties.addAll(postProperties) }
 
+	@ItemDsl
 	fun hasPostProperties(postProperties: Collection<PostProperty>) =
 		apply { this.postProperties.containsAll(postProperties) }
 
+	@ItemDsl
 	fun hasPostProperties(vararg postProperties: PostProperty) =
 		apply { this.postProperties.containsAll(postProperties.toSet()) }
 
+	@ItemDsl
 	fun putPostProperties(postProperties: Collection<PostProperty>) =
 		apply { this.postProperties = postProperties.toMutableSet() }
 
+	@ItemDsl
 	fun putPostProperties(vararg postProperties: PostProperty) =
 		apply { this.postProperties = postProperties.toMutableSet() }
 
+	@ItemDsl
 	fun dropPostProperties(postProperties: Collection<PostProperty>) =
 		apply { this.postProperties.removeAll(postProperties.toSet()) }
 
+	@ItemDsl
 	fun dropPostProperties(vararg postProperties: PostProperty) =
 		apply { this.postProperties.removeAll(postProperties.toSet()) }
 
-	fun onClick(identity: String = "click_${buildRandomTag()}_${this.identity}", process: (InventoryClickEvent) -> Unit) =
-		attachActions(ItemClickAction(identity, executionProcess = process).also { it.register() })
+	@ItemDsl
+	fun onItemClick(identity: String = "click_${buildRandomTag()}_${this.identity}", process: (InventoryClickEvent) -> Unit) =
+		attachItemActions(ItemClickAction(identity, executionProcess = process).also { it.register() })
 
-	fun onClickWith(identity: String = "click_${buildRandomTag()}_${this.identity}", process: InventoryClickEvent.() -> Unit) =
-		onClick(identity, process)
+	@ItemDsl
+	fun onItemClickWith(identity: String = "click_${buildRandomTag()}_${this.identity}", process: InventoryClickEvent.() -> Unit) =
+		onItemClick(identity, process)
 
-	fun onInteract(identity: String = "interact_${buildRandomTag()}_${this.identity}", process: (PlayerInteractAtItemEvent) -> Unit) =
-		attachActions(ItemInteractAction(identity, executionProcess = process).also { it.register() })
+	@ItemDsl
+	fun onItemInteract(identity: String = "interact_${buildRandomTag()}_${this.identity}", process: (PlayerInteractAtItemEvent) -> Unit) =
+		attachItemActions(ItemInteractAction(identity, executionProcess = process).also { it.register() })
 
-	fun onInteractWith(identity: String = "interact_${buildRandomTag()}_${this.identity}", process: PlayerInteractAtItemEvent.() -> Unit) =
-		onInteract(identity, process)
+	@ItemDsl
+	fun onItemInteractWith(identity: String = "interact_${buildRandomTag()}_${this.identity}", process: PlayerInteractAtItemEvent.() -> Unit) =
+		onItemInteract(identity, process)
 
-	fun onDrop(identity: String = "click_${buildRandomTag()}_${this.identity}", process: (PlayerDropItemEvent) -> Unit) =
-		attachActions(ItemDropAction(identity, executionProcess = process).also { it.register() })
+	@ItemDsl
+	fun onItemDrop(identity: String = "click_${buildRandomTag()}_${this.identity}", process: (PlayerDropItemEvent) -> Unit) =
+		attachItemActions(ItemDropAction(identity, executionProcess = process).also { it.register() })
 
+	@ItemDsl
 	fun onDropWith(identity: String = "click_${buildRandomTag()}_${this.identity}", process: PlayerDropItemEvent.() -> Unit) =
-		onDrop(identity, process)
+		onItemDrop(identity, process)
 
-	fun attachActions(vararg itemActionTags: ItemActionTag) = apply {
+	@ItemDsl
+	fun attachItemActions(vararg itemActionTags: ItemActionTag) = apply {
 		this.itemActionTags += itemActionTags
 	}
 
-	fun attachActions(vararg itemActions: ItemAction<*>) =
-		attachActions(itemActionTags = itemActions.map { it.registrationTag }.toTypedArray())
+	@ItemDsl
+	fun attachItemActions(vararg itemActions: ItemAction<*>) =
+		attachItemActions(itemActionTags = itemActions.map { it.registrationTag }.toTypedArray())
 
-	// stupid-modify functions
+	// dsl-modify functions
 
-	fun putMaterial(material: Material) =
+	@ItemDsl
+	fun material(material: Material) =
 		apply { this.material = material }
 
-	fun putLabel(label: String, styled: Boolean = false) =
-		apply { this.label = if (styled) label.asStyledComponent else label.asComponent }
+	@ItemDsl
+	fun label(styledString: String) =
+		apply { this.label = styledString.asStyledComponent }
 
-	fun putLabel(label: Component) =
+	@ItemDsl
+	fun label(label: Component) =
 		apply { this.label = label }
 
-	fun putSize(size: Int) =
+	@ItemDsl
+	fun size(size: Int) =
 		apply { this.size = size }
 
-	fun putLore(lore: String, styled: Boolean = false) =
+	@ItemDsl
+	fun lore(lore: String, styled: Boolean = false) =
 		apply { this.lore = listOf(if (styled) lore.asStyledComponent else lore.asComponent) }
 
-	fun putLore(lore: List<String>, styled: Boolean = false) =
+	@ItemDsl
+	fun lore(lore: List<String>, styled: Boolean = false) =
 		apply { this.lore = lore.map { if (styled) it.asStyledComponent else it.asComponent } }
 
-	fun putLore(lore: Component) =
+	@ItemDsl
+	fun lore(lore: Component) =
 		apply { this.lore = lore.lines() }
 
+	@ItemDsl
 	@JvmName("putLoreComponents")
-	fun putLore(lore: List<Component>) =
+	fun lore(lore: List<Component>) =
 		apply { this.lore = lore }
 
-	fun putDamage(damage: Int) =
+	@ItemDsl
+	fun damage(damage: Int) =
 		apply { this.damage = damage }
 
-	fun putQuirk(quirk: Quirk) =
+	@ItemDsl
+	fun quirk(quirk: Quirk) =
 		apply { this.quirk = quirk }
 
-	fun putItemIdentity(itemIdentity: String) =
+	@ItemDsl
+	fun identity(itemIdentity: String) =
 		apply { this.itemIdentity = itemIdentity }
 
-	fun putBase(itemMetaBase: ItemMeta?) =
+	@ItemDsl
+	fun metaBase(itemMetaBase: ItemMeta?) =
 		apply { this.itemMetaBase = itemMetaBase }
 
 	// additional-modify functions
 
 	fun changeColor(newColorType: ColorType) =
-		apply { putMaterial(material.changeColor(newColorType)) }
+		apply { material(material.changeColor(newColorType)) }
 
 	fun hideItemData() =
 		apply { postProperties.add(NO_DATA) }
@@ -627,5 +673,9 @@ data class Item(
 		}
 
 	}
+
+	@DslMarker
+	@MustBeDocumented
+	annotation class ItemDsl
 
 }

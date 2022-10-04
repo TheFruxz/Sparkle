@@ -20,8 +20,14 @@ import de.fruxz.sparkle.framework.util.data.json.serializer.WorldSerializer
 import de.fruxz.sparkle.framework.util.effect.sound.SoundData
 import de.fruxz.sparkle.framework.util.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.util.effect.sound.SoundMelody
+import de.fruxz.sparkle.framework.util.extension.asPlayerOrNull
+import de.fruxz.sparkle.framework.util.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.util.extension.debugLog
 import de.fruxz.sparkle.framework.util.extension.mainLog
+import de.fruxz.sparkle.framework.util.extension.quickSandBox
+import de.fruxz.sparkle.framework.util.extension.visual.ui.item
+import de.fruxz.sparkle.framework.util.extension.visual.ui.set
+import de.fruxz.sparkle.framework.util.extension.visual.ui.skull
 import de.fruxz.sparkle.framework.util.mojang.MojangProfile
 import de.fruxz.sparkle.framework.util.mojang.MojangProfileCape
 import de.fruxz.sparkle.framework.util.mojang.MojangProfileRaw
@@ -43,6 +49,10 @@ import de.fruxz.sparkle.framework.util.positioning.relative.PyramidalShape
 import de.fruxz.sparkle.framework.util.positioning.relative.Shape
 import de.fruxz.sparkle.framework.util.positioning.relative.SphereShape
 import de.fruxz.sparkle.framework.util.positioning.world.SimpleLocation
+import de.fruxz.sparkle.framework.util.visual.canvas.Canvas
+import de.fruxz.sparkle.framework.util.visual.canvas.buildCanvas
+import de.fruxz.sparkle.framework.util.visual.color.ColorType
+import de.fruxz.sparkle.framework.util.visual.color.DyeableMaterial
 import de.fruxz.sparkle.framework.util.visual.item.Modification
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import de.fruxz.sparkle.server.component.app.AppComponent
@@ -65,18 +75,27 @@ import de.fruxz.sparkle.server.component.ui.gui.UIComponent
 import de.fruxz.sparkle.server.interchange.DebugModeInterchange
 import de.fruxz.sparkle.server.interchange.PlaygroundInterchange
 import de.fruxz.sparkle.server.interchange.SparkleInterchange
+import de.fruxz.stacked.color.KotlinColor
+import de.fruxz.stacked.extension.asComponent
+import de.fruxz.stacked.extension.dye
+import kotlinx.coroutines.cancel
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Location
+import org.bukkit.Material.GRANITE
+import org.bukkit.Material.IRON_DOOR
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import org.bukkit.event.inventory.InventoryType.BREWING
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
+import java.awt.Color
 import java.util.*
 import java.util.logging.Level
+import kotlin.time.Duration.Companion.seconds
 import de.fruxz.ascend.extension.data.addJsonContextualConfiguration as jsonContextual
 
 class SparkleApp : App() {
@@ -202,6 +221,32 @@ class SparkleApp : App() {
 		add(PlaygroundInterchange())
 
 		add(AppComponent())
+
+		quickSandBox {
+			buildCanvas {
+				label("Test".asComponent dye KotlinColor(Color.ORANGE.darker()))
+				base(BREWING)
+
+				setDeferred(0, Canvas.DeferredComposable {
+					skull("MHF_ArrowLeft")
+				})
+
+				onRender {
+					it.renderResult[1] = DyeableMaterial.STAINED_GLASS_PANE.withColor(ColorType.values().random())
+				}
+
+			}.let { canvas ->
+
+				canvas.display(executor.asPlayerOrNull).join()
+
+				doSync(cycleDuration = 5.seconds) {
+					if (canvas.viewers.isEmpty()) it.cancel()
+					debugLog("Update trigger...")
+					canvas.update(executor.asPlayerOrNull)
+				}
+
+			}
+		}
 
 	}
 

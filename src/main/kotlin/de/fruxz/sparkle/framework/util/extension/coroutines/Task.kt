@@ -73,20 +73,20 @@ suspend fun <T> asSync(delay: Duration = Duration.ZERO, process: suspend (Corout
  */
 fun doSync(delay: Duration = Duration.ZERO, cycleDuration: Duration = Duration.ZERO, process: suspend (CoroutineScope) -> Unit) =
 	launch(isAsync = false) { scope ->
+		if (delay.isPositive()) delay(delay)
+
 		when {
-			delay.isPositive() && !cycleDuration.isPositive() -> {
-				delay(delay)
-				process.invoke(scope)
-			}
-			delay.isPositive() && cycleDuration.isPositive() -> {
-				delay(delay)
+			cycleDuration.isPositive() -> {
 				while (scope.isActive) {
 					process.invoke(scope)
 					delay(cycleDuration)
 				}
 			}
-			else -> process.invoke(scope)
+			else -> {
+				process.invoke(scope)
+			}
 		}
+
 	}
 
 /**

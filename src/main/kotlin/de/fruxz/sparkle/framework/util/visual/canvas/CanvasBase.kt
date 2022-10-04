@@ -1,6 +1,7 @@
 package de.fruxz.sparkle.framework.util.visual.canvas
 
 import de.fruxz.ascend.extension.math.floorToInt
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.event.inventory.InventoryType
@@ -16,7 +17,7 @@ data class CanvasBase(
 
 	fun generateInventory(
 		owner: InventoryHolder? = null,
-		label: TextComponent? = null,
+		label: Component? = null,
 	) = when {
 		size != null -> {
 			if (label != null) {

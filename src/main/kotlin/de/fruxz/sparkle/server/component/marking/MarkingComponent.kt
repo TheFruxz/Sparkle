@@ -55,7 +55,7 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 				
 			""".trimIndent().asStyledComponents
 
-				onInteract { event ->
+				onItemInteract { event ->
 					val user = event.whoInteract
 					val targetBlock = user.rayTraceBlocks(15.0, ALWAYS)?.hitBlock
 					val actualBox = SparkleCache.playerMarkerBoxes[user.identityObject]

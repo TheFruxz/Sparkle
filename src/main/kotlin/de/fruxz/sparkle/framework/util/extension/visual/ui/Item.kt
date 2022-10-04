@@ -82,9 +82,9 @@ val ItemStack.itemMetaOrNull: ItemMeta?
 		else -> null
 	}
 
-fun Material.spawnEntity(location: Location, amount: Int = 1) = item.putSize(amount).spawn(location)
+fun Material.spawnEntity(location: Location, amount: Int = 1) = item.size(amount).spawn(location)
 
-fun ItemStack.spawnEntity(location: Location, amount: Int = 1) = item.putSize(amount).spawn(location)
+fun ItemStack.spawnEntity(location: Location, amount: Int = 1) = item.size(amount).spawn(location)
 
 fun item(material: Material) = material.item
 

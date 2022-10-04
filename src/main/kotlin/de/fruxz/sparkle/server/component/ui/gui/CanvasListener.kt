@@ -66,7 +66,9 @@ internal class CanvasListener : EventListener() {
 
 				if (!canvas.flags.contains(NO_CLICK_ACTIONS)) {
 
-					session.canvas.onClicks.forEach { it.invoke(internalEvent) }
+					session.canvas.onClicks
+						.let { (it[null] ?: emptyList()) + (it[event.slot] ?: emptyList()) }
+						.forEach { it.invoke(internalEvent) }
 
 				}
 

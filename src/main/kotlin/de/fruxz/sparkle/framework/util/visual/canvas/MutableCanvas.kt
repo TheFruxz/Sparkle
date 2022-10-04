@@ -1,7 +1,6 @@
 package de.fruxz.sparkle.framework.util.visual.canvas
 
 import de.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
-import de.fruxz.ascend.extension.data.RandomTagType.ONLY_LOWERCASE
 import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.tool.smart.Producible
 import de.fruxz.sparkle.framework.util.event.canvas.CanvasClickEvent
@@ -9,21 +8,20 @@ import de.fruxz.sparkle.framework.util.event.canvas.CanvasCloseEvent
 import de.fruxz.sparkle.framework.util.event.canvas.CanvasOpenEvent
 import de.fruxz.sparkle.framework.util.event.canvas.CanvasUpdateEvent
 import de.fruxz.sparkle.framework.util.extension.debugLog
-import de.fruxz.sparkle.framework.util.extension.system
 import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.framework.util.visual.canvas.CanvasFlag.*
 import de.fruxz.sparkle.framework.util.visual.canvas.design.AdaptiveCanvasCompose
 import de.fruxz.sparkle.framework.util.visual.item.ItemLike
 import de.fruxz.sparkle.framework.util.effect.sound.SoundEffect
+import de.fruxz.sparkle.framework.util.extension.coroutines.asSync
+import de.fruxz.sparkle.framework.util.extension.system
 import de.fruxz.sparkle.framework.util.visual.canvas.CanvasBase.Companion
-import de.fruxz.stacked.extension.subKey
-import kotlinx.coroutines.CoroutineScope
+import de.fruxz.stacked.extension.asStyledComponent
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import net.kyori.adventure.builder.AbstractBuilder
-import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.TextComponent
+import net.kyori.adventure.text.ComponentLike
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
@@ -32,7 +30,7 @@ import org.bukkit.inventory.ItemStack
  * This class helps to easily create ui's for players.
  * @param identityKey The key of the canvas, that is used to bind the actions to the canvas.
  * @param label The label, which the viewer will see on top of the inventory.
- * @param canvasBase The size of the canvas.
+ * @param base The size of the canvas.
  * @param content The content, which is placed inside the canvas
  * @param flags The individual habits of the canvas.
  * @param openSoundEffect The sound effect, which is played, when the canvas is opened.
@@ -40,22 +38,64 @@ import org.bukkit.inventory.ItemStack
  * @since 1.0
  */
 data class MutableCanvas(
-	override var label: TextComponent = Component.empty(),
-	override var canvasBase: CanvasBase = CanvasBase.ofLines(3),
+	override var label: Component = Component.empty(),
+	override var base: CanvasBase = CanvasBase.ofLines(3),
+	override var pagination: PaginationType = PaginationType.NONE,
 	override var content: Map<Int, ItemLike> = emptyMap(),
 	override var flags: Set<CanvasFlag> = emptySet(),
 	override var openSoundEffect: SoundEffect? = null,
 	override var asyncItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
-) : Canvas(label, canvasBase, content, flags, openSoundEffect, asyncItems), Producible<Canvas>, AbstractBuilder<Canvas> {
+) : Canvas(label, base, pagination, content, flags, openSoundEffect, asyncItems), Producible<Canvas>, AbstractBuilder<Canvas> {
 
 	override var onRender: CanvasRender = CanvasRender {  }
 	override var onOpen: CanvasOpenEvent.() -> Unit = { }
 	override var onUpdate: CanvasUpdateEvent.() -> Unit = { }
 	override var onClose: CanvasCloseEvent.() -> Unit = { }
-	override var onClicks: List<CanvasClickEvent.() -> Unit> = emptyList()
+	override var onClicks: Map<Int?, List<CanvasClickEvent.() -> Unit>> = emptyMap()
 	override var onUpdateNonClearableSlots: Set<Int> = emptySet()
 
 	override var identity = buildRandomTag(10, tagType = MIXED_CASE)
+
+	// properties
+
+	@CanvasDsl
+	fun label(component: ComponentLike) {
+		this.label = component.asComponent()
+	}
+
+	@CanvasDsl
+	fun label(styledString: String) = label(component = styledString.asStyledComponent)
+
+	@CanvasDsl
+	fun base(base: CanvasBase) {
+		this.base = base
+	}
+
+	@CanvasDsl
+	fun base(size: Int) = base(CanvasBase.ofSize(size))
+
+	@CanvasDsl
+	fun base(inventoryType: InventoryType) = base(Companion.ofType(inventoryType))
+
+	@CanvasDsl
+	fun pagination(pagination: PaginationType) {
+		this.pagination = pagination
+	}
+
+	@CanvasDsl
+	fun flags(flags: Iterable<CanvasFlag>) {
+		this.flags = flags.toSet()
+	}
+
+	@CanvasDsl
+	fun flags(vararg flags: CanvasFlag) = flags(flags.toSet())
+
+	@CanvasDsl
+	fun openingSound(soundEffect: SoundEffect?) {
+		this.openSoundEffect = soundEffect
+	}
+
+	// setters
 
 	operator fun set(slot: Int, itemLike: ItemLike?) {
 		if (itemLike != null) {
@@ -64,20 +104,20 @@ data class MutableCanvas(
 			content -= slot
 	}
 
-	fun setDeferred(slot: Int, itemLikeProcess: suspend CoroutineScope.() -> ItemLike) {
-		asyncItems += slot to SparkleApp.coroutineScope.async(block = itemLikeProcess)
+	fun setDeferred(slot: Int, itemLikeProcess: DeferredComposable<ItemLike>) {
+		asyncItems += slot to SparkleApp.coroutineScope.async(block = itemLikeProcess::compose)
 	}
 
 	operator fun set(slots: Iterable<Int>, itemLike: ItemLike?) =
 		slots.forEach { set(it, itemLike) }
 
-	fun setDeferred(slots: Iterable<Int>, process: suspend CoroutineScope.() -> ItemLike) =
+	fun setDeferred(slots: Iterable<Int>, process: DeferredComposable<ItemLike>) =
 		slots.forEach { setDeferred(it, process) }
 
 	operator fun set(vararg slots: Int, itemLike: ItemLike?) =
 		set(slots.toList(), itemLike)
 
-	fun setDeferred(vararg slots: Int, process: suspend CoroutineScope.() -> ItemLike) =
+	fun setDeferred(vararg slots: Int, process: DeferredComposable<ItemLike>) =
 		setDeferred(slots.toList(), process)
 
 
@@ -87,21 +127,21 @@ data class MutableCanvas(
 		set(slot, itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncItemStack")
-	fun setDeferred(slot: Int, itemStackProcess: suspend CoroutineScope.() -> ItemStack): Unit =
-		setDeferred(slot, itemLikeProcess = { ItemLike.of(itemStackProcess.invoke(this)) })
+	fun setDeferred(slot: Int, itemStackProcess: DeferredComposable<ItemStack>): Unit =
+		setDeferred(slot, itemLikeProcess = { asSync { ItemLike.of(itemStackProcess.compose(it)) } })
 
 	operator fun set(slots: Iterable<Int>, itemStack: ItemStack?) =
 		set(slots, itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncItemStack")
-	fun setDeferred(slots: Iterable<Int>, itemStackProcess: suspend CoroutineScope.() -> ItemStack): Unit =
+	fun setDeferred(slots: Iterable<Int>, itemStackProcess: DeferredComposable<ItemStack>): Unit =
 		slots.forEach { setDeferred(it, itemStackProcess) }
 
 	operator fun set(vararg slots: Int, itemStack: ItemStack?) =
 		set(slots.toList(), itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncItemStack")
-	fun setDeferred(vararg slots: Int, itemStackProcess: suspend CoroutineScope.() -> ItemStack): Unit =
+	fun setDeferred(vararg slots: Int, itemStackProcess: DeferredComposable<ItemStack>): Unit =
 		setDeferred(slots.toList(), itemStackProcess)
 
 	// Material support
@@ -109,23 +149,23 @@ data class MutableCanvas(
 	operator fun set(slot: Int, material: Material?) =
 		set(slot, material?.let { ItemLike.of(it) })
 
-	@JvmName("asyncMaterial")
-	fun setDeferred(slot: Int, materialProcess: suspend CoroutineScope.() -> Material): Unit =
-		setDeferred(slot, itemLikeProcess = { ItemLike.of(materialProcess.invoke(this)) })
+	@JvmName("asyncMaterial5")
+	fun setDeferred(slot: Int, materialProcess: DeferredComposable<Material>): Unit =
+		setDeferred(slot, itemLikeProcess = { ItemLike.of(materialProcess.compose(system.coroutineScope)) })
 
-	operator fun set(slots: Iterable<Int>, material: Material?) =
-		set(slots, material?.let { ItemLike.of(it) })
-
-	@JvmName("asyncMaterial")
-	fun setDeferred(slots: Iterable<Int>, materialProcess: suspend CoroutineScope.() -> Material): Unit =
-		slots.forEach { setDeferred(it, materialProcess) }
-
-	operator fun set(vararg slots: Int, material: Material?) =
-		set(slots.toList(), material?.let { ItemLike.of(it) })
+	operator fun set(slotIterable: Iterable<Int>, material: Material?): Unit =
+		set(slotIterable, material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncMaterial")
-	fun setDeferred(vararg slots: Int, materialProcess: suspend CoroutineScope.() -> Material): Unit =
-		setDeferred(slots.toList(), materialProcess)
+	fun setDeferred(slotIterable: Iterable<Int>, materialProcess: DeferredComposable<Material>): Unit =
+		slotIterable.forEach { setDeferred(it, materialProcess) }
+
+	operator fun set(vararg slotArray: Int, material: Material?): Unit =
+		set(slotArray.toList(), material?.let { ItemLike.of(it) })
+
+	@JvmName("asyncMaterial2")
+	fun setDeferred(vararg slotArray: Int, materialProcess: DeferredComposable<Material>): Unit =
+		setDeferred(slotIterable = slotArray.toList(), materialProcess)
 
 	// Adaptive support
 
@@ -146,7 +186,7 @@ data class MutableCanvas(
 		set(innerSlots[innerSlot], itemLike)
 	}
 
-	fun setInnerDeferred(innerSlot: Int, itemLikeProcess: suspend CoroutineScope.() -> ItemLike) {
+	fun setInnerDeferred(innerSlot: Int, itemLikeProcess: DeferredComposable<ItemLike>) {
 		if (innerSlot !in availableInnerSlots) throw IndexOutOfBoundsException("The inner slot $innerSlot is not available in this canvas.")
 
 		setDeferred(innerSlots[innerSlot], itemLikeProcess)
@@ -155,13 +195,13 @@ data class MutableCanvas(
 	fun setInner(innerSlots: Iterable<Int>, itemLike: ItemLike?) =
 		innerSlots.forEach { setInner(it, itemLike) }
 
-	fun setInnerDeferred(innerSlots: Iterable<Int>, itemLikeProcess: suspend CoroutineScope.() -> ItemLike) =
+	fun setInnerDeferred(innerSlots: Iterable<Int>, itemLikeProcess: DeferredComposable<ItemLike>) =
 		innerSlots.forEach { setInnerDeferred(it, itemLikeProcess) }
 
 	fun setInner(vararg innerSlots: Int, itemLike: ItemLike?) =
 		setInner(innerSlots.toList(), itemLike)
 
-	fun setInnerDeferred(vararg innerSlots: Int, itemLikeProcess: suspend CoroutineScope.() -> ItemLike) =
+	fun setInnerDeferred(vararg innerSlots: Int, itemLikeProcess: DeferredComposable<ItemLike>) =
 		setInnerDeferred(innerSlots.toList(), itemLikeProcess)
 
 	// Inner ItemStack support
@@ -170,21 +210,21 @@ data class MutableCanvas(
 		setInner(innerSlot, itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerItemStack")
-	fun setInnerDeferred(innerSlot: Int, itemStackProcess: suspend CoroutineScope.() -> ItemStack): Unit =
-		setInnerDeferred(innerSlot, itemLikeProcess = { ItemLike.of(itemStackProcess.invoke(this)) })
+	fun setInnerDeferred(innerSlot: Int, itemStackProcess: DeferredComposable<ItemStack>): Unit =
+		setInnerDeferred(innerSlot, itemLikeProcess = { ItemLike.of(itemStackProcess.compose(it)) })
 
 	fun setInner(innerSlots: Iterable<Int>, itemStack: ItemStack?) =
 		setInner(innerSlots, itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerItemStack")
-	fun setInnerDeferred(innerSlots: Iterable<Int>, itemStackProcess: suspend CoroutineScope.() -> ItemStack): Unit =
+	fun setInnerDeferred(innerSlots: Iterable<Int>, itemStackProcess: DeferredComposable<ItemStack>): Unit =
 		innerSlots.forEach { setInnerDeferred(it, itemStackProcess) }
 
 	fun setInner(vararg innerSlots: Int, itemStack: ItemStack?) =
 		setInner(innerSlots.toList(), itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerItemStack")
-	fun setInnerDeferred(vararg innerSlots: Int, itemStackProcess: suspend CoroutineScope.() -> ItemStack): Unit =
+	fun setInnerDeferred(vararg innerSlots: Int, itemStackProcess: DeferredComposable<ItemStack>): Unit =
 		setInnerDeferred(innerSlots.toList(), itemStackProcess)
 
 	// Inner Material support
@@ -193,21 +233,21 @@ data class MutableCanvas(
 		setInner(innerSlot, material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerMaterial")
-	fun setInnerDeferred(innerSlot: Int, materialProcess: suspend CoroutineScope.() -> Material): Unit =
-		setInnerDeferred(innerSlot, itemLikeProcess = { ItemLike.of(materialProcess.invoke(this)) })
+	fun setInnerDeferred(innerSlot: Int, materialProcess: DeferredComposable<Material>): Unit =
+		setInnerDeferred(innerSlot, itemLikeProcess = { ItemLike.of(materialProcess.compose(it)) })
 
 	fun setInner(innerSlots: Iterable<Int>, material: Material?) =
 		setInner(innerSlots, material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerMaterial")
-	fun setInnerDeferred(innerSlots: Iterable<Int>, materialProcess: suspend CoroutineScope.() -> Material): Unit =
+	fun setInnerDeferred(innerSlots: Iterable<Int>, materialProcess: DeferredComposable<Material>): Unit =
 		innerSlots.forEach { setInnerDeferred(it, materialProcess) }
 
 	fun setInner(vararg innerSlots: Int, material: Material?) =
 		setInner(innerSlots.toList(), material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerMaterial")
-	fun setInnerDeferred(vararg innerSlots: Int, materialProcess: suspend CoroutineScope.() -> Material): Unit =
+	fun setInnerDeferred(vararg innerSlots: Int, materialProcess: DeferredComposable<Material>): Unit =
 		setInnerDeferred(innerSlots.toList(), materialProcess)
 
 	// Inner Adaptive support
@@ -223,43 +263,45 @@ data class MutableCanvas(
 
 	// Interactions
 
-	operator fun set(slot: Int, onClick: CanvasClickEvent.() -> Unit) {
-		onClicks = onClicks + {
-			if (this.slot == slot) onClick(this)
-		}
+	@CanvasDsl
+	fun onCanvasClick(onClick: (CanvasClickEvent) -> Unit) {
+		onClicks += null to (onClicks.getOrDefault(null, emptyList()) + onClick)
 	}
 
+	@CanvasDsl
+	fun onCanvasClickWith(onClick: CanvasClickEvent.() -> Unit) =
+		onCanvasClick(onClick)
+
+	@CanvasDsl
+	fun onSlotClick(slot: Int, onClick: (CanvasClickEvent) -> Unit) {
+		onClicks += slot to (onClicks.getOrDefault(slot, emptyList()) + onClick)
+	}
+
+	@CanvasDsl
+	fun onSlotClickWith(slot: Int, onClick: CanvasClickEvent.() -> Unit) =
+		onSlotClick(slot, onClick)
+
+	@CanvasDsl
+	fun onSlotClick(slots: Iterable<Int>, onClick: (CanvasClickEvent) -> Unit) =
+		slots.forEach { slot -> onSlotClick(slot, onClick) }
+
+	@CanvasDsl
+	fun onSlotClickWith(slots: Iterable<Int>, onClick: CanvasClickEvent.() -> Unit) =
+		slots.forEach { slot -> onSlotClick(slot, onClick) }
+
+	@CanvasDsl
+	operator fun set(slot: Int, onClick: CanvasClickEvent.() -> Unit) =
+		onSlotClick(slot, onClick)
+
+	@CanvasDsl
 	operator fun set(slots: Iterable<Int>, onClick: CanvasClickEvent.() -> Unit) =
-		slots.forEach { set(it, onClick) }
+		slots.forEach { onSlotClick(it, onClick) }
 
+	@CanvasDsl
 	operator fun set(vararg slots: Int, onClick: CanvasClickEvent.() -> Unit) =
-		set(slots.toList(), onClick)
+		onSlotClick(slots.toList(), onClick)
 
-	operator fun invoke(slot: Int, onClick: CanvasClickEvent.() -> Unit) =
-		set(slot, onClick)
-
-	operator fun invoke(slots: Iterable<Int>, onClick: CanvasClickEvent.() -> Unit) =
-		set(slots, onClick)
-
-	fun onClick(onClick: (CanvasClickEvent) -> Unit) {
-		onClicks = onClicks + onClick
-	}
-
-	fun onClickWith(onClick: CanvasClickEvent.() -> Unit) {
-		onClicks = onClicks + onClick
-	}
-
-	fun onClick(slot: Int, onClick: (CanvasClickEvent) -> Unit) =
-		set(slot, onClick)
-
-	fun onClick(slots: Iterable<Int>, onClick: (CanvasClickEvent) -> Unit) =
-		slots.forEach { slot -> set(slot, onClick) }
-
-	fun onClickWith(slot: Int, onClick: CanvasClickEvent.() -> Unit) =
-		set(slot, onClick)
-
-	fun onClickWith(slots: Iterable<Int>, onClick: CanvasClickEvent.() -> Unit) =
-		slots.forEach { slot -> set(slot, onClick) }
+	// State change
 
 	fun onOpen(onOpen: (CanvasOpenEvent) -> Unit) {
 		this.onOpen = onOpen
@@ -296,7 +338,7 @@ data class MutableCanvas(
 	// Design
 
 	fun border(itemLike: ItemLike) =
-		set(canvasBase.borderSlots, itemLike)
+		set(base.borderSlots, itemLike)
 
 	fun border(material: Material) =
 		border(ItemLike.of(material))
@@ -305,7 +347,7 @@ data class MutableCanvas(
 		border(ItemLike.of(itemStack))
 
 	fun fill(itemLike: ItemLike) =
-		set(canvasBase.slots, itemLike)
+		set(base.slots, itemLike)
 
 	fun fill(material: Material) =
 		border(ItemLike.of(material))
@@ -314,7 +356,7 @@ data class MutableCanvas(
 		border(ItemLike.of(itemStack))
 
 	fun replace(replaceWith: ItemLike?, search: IndexedValue<ItemLike?>.() -> Boolean) =
-		canvasBase.slots.forEach { slot ->
+		base.slots.forEach { slot ->
 			if (search(IndexedValue(slot, this[slot]))) {
 				set(slot, replaceWith)
 			}
@@ -354,7 +396,8 @@ data class MutableCanvas(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun disablePlayerItemGrabbing(vararg flags: CanvasFlag = arrayOf(NO_GRAB, NO_DRAG, NO_SWAP, NO_MOVE)) = annexFlags(*flags)
+	@CanvasDsl
+	fun disablePlayerItemGrabbing(vararg flags: CanvasFlag = CanvasFlag.DEFAULT_PROTECTION.toTypedArray()) = annexFlags(*flags)
 
 	/**
 	 * This function removes the [NO_GRAB], [NO_DRAG], [NO_SWAP] and [NO_MOVE] flags
@@ -366,7 +409,8 @@ data class MutableCanvas(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun reEnablePlayerItemGrabbing(vararg flags: CanvasFlag = arrayOf(NO_GRAB, NO_DRAG, NO_SWAP, NO_MOVE)) = removeFlags(*flags)
+	@CanvasDsl
+	fun reEnablePlayerItemGrabbing(vararg flags: CanvasFlag = CanvasFlag.DEFAULT_PROTECTION.toTypedArray()) = removeFlags(*flags)
 
 	// Technical stuff
 
@@ -456,7 +500,7 @@ data class MutableCanvas(
  * @since 1.0
  */
 fun buildCanvas(base: CanvasBase = CanvasBase.ofLines(3)): MutableCanvas =
-	MutableCanvas(canvasBase = base)
+	MutableCanvas(base = base)
 
 /**
  * This function constructs a new [Canvas], created with the [MutableCanvas] edited
@@ -469,7 +513,7 @@ fun buildCanvas(base: CanvasBase = CanvasBase.ofLines(3)): MutableCanvas =
  * @since 1.0
  */
 fun buildCanvas(base: CanvasBase = CanvasBase.ofLines(3), builder: MutableCanvas.() -> Unit): Canvas =
-	MutableCanvas(canvasBase = base).apply(builder).build()
+	MutableCanvas(base = base).apply(builder).build()
 
 fun buildCanvas(size: Int, builder: MutableCanvas.() -> Unit): Canvas =
 	buildCanvas(CanvasBase.ofSize(size), builder)

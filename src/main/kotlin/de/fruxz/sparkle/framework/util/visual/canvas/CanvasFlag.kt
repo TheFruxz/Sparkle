@@ -67,4 +67,24 @@ enum class CanvasFlag {
 	 */
 	NO_UPDATE;
 
+	companion object {
+
+		/**
+		 * In the most cases, your UI is only a way of
+		 * showing information and buttons to navigate
+		 * the player or executing actions.
+		 * In these scenarios, where the player should
+		 * only interact and do not obtain the items from
+		 * the GUI, these flags are optimal.
+		 * You can use this set of flags, to quickly set
+		 * all of them in your [MutableCanvas], or use
+		 * the [MutableCanvas.disablePlayerItemGrabbing]
+		 * to add them with a short function call.
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		val DEFAULT_PROTECTION = setOf(NO_GRAB, NO_DRAG, NO_SWAP, NO_MOVE)
+
+	}
+
 }

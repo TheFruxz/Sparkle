@@ -64,7 +64,7 @@ interface Quirk {
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun <T : ItemMeta> Item.customQuirk(process: T.() -> Unit) = putQuirk(custom(process))
+		fun <T : ItemMeta> Item.customQuirk(process: T.() -> Unit) = quirk(custom(process))
 
 		/**
 		 * This function creates a [Quirk] instance, with a Banner target.
@@ -81,7 +81,7 @@ interface Quirk {
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun Item.bannerQuirk(process: BannerMeta.() -> Unit) = putQuirk(banner(process))
+		fun Item.bannerQuirk(process: BannerMeta.() -> Unit) = quirk(banner(process))
 
 		/**
 		 * This function creates a [Quirk] instance, with a Book target.
@@ -98,7 +98,7 @@ interface Quirk {
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun Item.bookQuirk(process: BookMeta.() -> Unit) = putQuirk(book(process))
+		fun Item.bookQuirk(process: BookMeta.() -> Unit) = quirk(book(process))
 
 		/**
 		 * This function creates a [Quirk] instance, with a Compass target.
@@ -115,7 +115,7 @@ interface Quirk {
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun Item.compassQuirk(process: CompassMeta.() -> Unit) = putQuirk(compass(process))
+		fun Item.compassQuirk(process: CompassMeta.() -> Unit) = quirk(compass(process))
 
 		/**
 		 * This function creates a [Quirk] instance, with a Crossbow target.
@@ -132,7 +132,7 @@ interface Quirk {
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun Item.crossbowQuirk(process: CrossbowMeta.() -> Unit) = putQuirk(crossbow(process))
+		fun Item.crossbowQuirk(process: CrossbowMeta.() -> Unit) = quirk(crossbow(process))
 
 		/**
 		 * This function creates a [Quirk] instance, with a Firework target.
@@ -149,7 +149,7 @@ interface Quirk {
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun Item.fireworkQuirk(process: FireworkMeta.() -> Unit) = putQuirk(firework(process))
+		fun Item.fireworkQuirk(process: FireworkMeta.() -> Unit) = quirk(firework(process))
 
 		/**
 		 * This function creates a [Quirk] instance, with a Leather Armor target.
@@ -166,7 +166,7 @@ interface Quirk {
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun Item.leatherArmorQuirk(process: LeatherArmorMeta.() -> Unit) = putQuirk(leatherArmor(process))
+		fun Item.leatherArmorQuirk(process: LeatherArmorMeta.() -> Unit) = quirk(leatherArmor(process))
 
 		/**
 		 * This function creates a [Quirk] instance, with a Map target.
@@ -183,7 +183,7 @@ interface Quirk {
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun Item.mapQuirk(process: MapMeta.() -> Unit) = putQuirk(map(process))
+		fun Item.mapQuirk(process: MapMeta.() -> Unit) = quirk(map(process))
 
 		/**
 		 * This function creates a [Quirk] instance, with a Skull target.
@@ -200,7 +200,7 @@ interface Quirk {
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun Item.skullQuirk(process: SkullMeta.() -> Unit) = putQuirk(skull(process))
+		fun Item.skullQuirk(process: SkullMeta.() -> Unit) = quirk(skull(process))
 
 		/**
 		 * This function creates a [Quirk] instance, with a Potion target.
@@ -217,7 +217,7 @@ interface Quirk {
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun Item.potionQuirk(process: PotionMeta.() -> Unit) = putQuirk(potion(process))
+		fun Item.potionQuirk(process: PotionMeta.() -> Unit) = quirk(potion(process))
 
 		/**
 		 * This function creates a [Quirk] instance, with a Spawn Egg target.
@@ -234,7 +234,7 @@ interface Quirk {
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun Item.spawnEggQuirk(process: SpawnEggMeta.() -> Unit) = putQuirk(spawnEgg(process))
+		fun Item.spawnEggQuirk(process: SpawnEggMeta.() -> Unit) = quirk(spawnEgg(process))
 
 	}
 
