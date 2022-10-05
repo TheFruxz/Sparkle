@@ -4,6 +4,7 @@ import de.fruxz.ascend.extension.container.distinctSetBy
 import de.fruxz.ascend.extension.container.forEachNotNull
 import de.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
 import de.fruxz.ascend.extension.data.buildRandomTag
+import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
@@ -21,6 +22,7 @@ import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasRender
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
 import de.fruxz.sparkle.framework.visual.item.ItemLike
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
+import de.fruxz.stacked.extension.subKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -55,7 +57,7 @@ import kotlin.time.Duration.Companion.seconds
 open class Canvas(
 	open val label: Component = Component.empty(),
 	open val base: CanvasBase = CanvasBase.ofLines(3),
-	open val pagination: PaginationType = PaginationType.NONE,
+	open val pagination: PaginationType<*> = PaginationType.none(),
 	open val content: Map<Int, ItemLike> = emptyMap(),
 	open val flags: Set<CanvasFlag> = emptySet(),
 	open val openSoundEffect: SoundEffect? = null,
@@ -116,13 +118,17 @@ open class Canvas(
 		if (NO_OPEN in flags) cancel()
 
 		val inventoryContent = async { asSync { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } }
+		val scrollableContent = async { pagination.contentRendering((data[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>().also { println("gotStateByProperty") } ?: 0).also { println("scrollstate: $it") }, ((base.virtualSize + 1) / 9).also { println("lines: $it") }, content) }
 
 		receivers.toList().forEachNotNull { receiver ->
 			var localInstance = base.generateInventory(
 				owner = owner,
 				label = label,
 			).apply {
-				this.contents = runBlocking { inventoryContent.await() }
+				this.contents = when {
+					(base.virtualSize % 9).also { println("debug1: $it") } != 0 -> runBlocking { inventoryContent.await() }
+					else -> runBlocking { (0 until base.virtualSize).map { slot -> scrollableContent.await()[slot]?.asItemStack() }.toTypedArray() }
+				}
 			}
 
 			if (receiver is Player) {
@@ -139,7 +145,12 @@ open class Canvas(
 
 						asSync {
 							receiver.openInventory(localInstance)
-							CanvasSessionManager.putSession(receiver, this@Canvas, data)
+							CanvasSessionManager.putSession(receiver, this@Canvas, event.data.also {
+								println("Displaying send information:")
+								it.forEach { t, u ->
+									System.err.println("l: ${t.asString()} = $u")
+								}
+							})
 						}
 
 						asyncItems.map { (key, value) ->
@@ -204,7 +215,7 @@ open class Canvas(
 	) = system.coroutineScope.launch {
 		if (NO_UPDATE in flags) cancel()
 
-		val inventoryContent = async { asSync { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } }
+		val inventoryContent = async { asSync { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } } // todo this is alsp effected by the pagination system
 
 		receivers.toList().forEachNotNull { receiver ->
 			var topInventory = receiver.openInventory.topInventory
@@ -285,7 +296,7 @@ open class Canvas(
 	fun toMutable(
 		label: Component = this.label,
 		canvasBase: CanvasBase = this.base,
-		pagination: PaginationType = this.pagination,
+		pagination: PaginationType<*> = this.pagination,
 		content: Map<Int, ItemLike> = this.content,
 		panelFlags: Set<CanvasFlag> = this.flags,
 		openSoundEffect: SoundEffect? = this.openSoundEffect,
@@ -318,5 +329,10 @@ open class Canvas(
 	@DslMarker
 	@MustBeDocumented
 	annotation class CanvasDsl
+
+	internal object CanvasButtons {
+		const val PREV_BUTTON_ID = "go.to.prev"
+		const val NEXT_BUTTON_ID = "go.to.next"
+	}
 
 }

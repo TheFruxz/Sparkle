@@ -25,6 +25,7 @@ import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.mainLog
 import de.fruxz.sparkle.framework.extension.quickSandBox
+import de.fruxz.sparkle.framework.extension.visual.ui.item
 import de.fruxz.sparkle.framework.extension.visual.ui.set
 import de.fruxz.sparkle.framework.extension.visual.ui.skull
 import de.fruxz.sparkle.framework.mojang.MojangProfile
@@ -49,6 +50,8 @@ import de.fruxz.sparkle.framework.positioning.relative.Shape
 import de.fruxz.sparkle.framework.positioning.relative.SphereShape
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import de.fruxz.sparkle.framework.visual.canvas.Canvas
+import de.fruxz.sparkle.framework.visual.canvas.PaginationType
+import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion
 import de.fruxz.sparkle.framework.visual.canvas.buildCanvas
 import de.fruxz.sparkle.framework.visual.color.ColorType
 import de.fruxz.sparkle.framework.visual.color.DyeableMaterial
@@ -207,28 +210,17 @@ class SparkleApp : App() {
 
 		quickSandBox {
 			buildCanvas {
-				label("Test".asComponent dye KotlinColor(Color.ORANGE.darker()))
-				base(BREWING)
+				label("<i>Hello!")
+				pagination(PaginationType.scroll())
+				base(9*6)
 
-				setDeferred(0, Canvas.DeferredComposable {
-					skull("MHF_ArrowLeft")
-				})
-
-				onRender {
-					it.renderResult[1] = DyeableMaterial.STAINED_GLASS_PANE.withColor(ColorType.values().random())
+				repeat(200) {
+					this[it] = DyeableMaterial.BANNER.withColor(ColorType.values().random()).item {
+						label("$it")
+					}
 				}
 
-			}.let { canvas ->
-
-				canvas.display(executor.asPlayerOrNull).join()
-
-				doSync(cycleDuration = 5.seconds) {
-					if (canvas.viewers.isEmpty()) it.cancel()
-					debugLog("Update trigger...")
-					canvas.update(executor.asPlayerOrNull)
-				}
-
-			}
+			}.display(executor.asPlayerOrNull)
 		}
 
 	}

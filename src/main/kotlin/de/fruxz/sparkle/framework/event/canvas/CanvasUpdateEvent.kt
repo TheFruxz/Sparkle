@@ -25,7 +25,7 @@ class CanvasUpdateEvent(
 	}
 
 	enum class UpdateReason {
-		PLUGIN, SCROLL, PAGE_TURN
+		PLUGIN, SCROLL, PAGE_TURN // TODO
 	}
 
 }

@@ -10,7 +10,7 @@ open class CanvasOpenEvent(
 	val player: Player,
 	override val canvas: Canvas,
 	val inventory: Inventory,
-	val data: Map<Key, Any>,
+	var data: Map<Key, Any>,
 ) : CanvasEvent(player, canvas) {
 
 	override fun getHandlers() = handlerList

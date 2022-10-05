@@ -40,7 +40,7 @@ import org.bukkit.inventory.ItemStack
 data class MutableCanvas(
 	override var label: Component = Component.empty(),
 	override var base: CanvasBase = CanvasBase.ofLines(3),
-	override var pagination: PaginationType = PaginationType.NONE,
+	override var pagination: PaginationType<*> = PaginationType.none(),
 	override var content: Map<Int, ItemLike> = emptyMap(),
 	override var flags: Set<CanvasFlag> = emptySet(),
 	override var openSoundEffect: SoundEffect? = null,
@@ -78,7 +78,7 @@ data class MutableCanvas(
 	fun base(inventoryType: InventoryType) = base(Companion.ofType(inventoryType))
 
 	@CanvasDsl
-	fun pagination(pagination: PaginationType) {
+	fun pagination(pagination: PaginationType<*>) {
 		this.pagination = pagination
 	}
 
