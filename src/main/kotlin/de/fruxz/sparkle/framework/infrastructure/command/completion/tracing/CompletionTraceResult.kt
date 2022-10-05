@@ -3,7 +3,7 @@ package de.fruxz.sparkle.framework.infrastructure.command.completion.tracing
 import de.fruxz.ascend.tree.TreeBranch
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.tracing.CompletionTraceResult.Conclusion.*
-import de.fruxz.sparkle.framework.util.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 
 data class CompletionTraceResult<EXECUTOR : InterchangeExecutor, BRANCH : TreeBranch<*, *, *>>(
 	val waysMatching: List<PossibleTraceWay<BRANCH>>, // the possible ways to execute the trace

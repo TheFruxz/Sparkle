@@ -3,7 +3,7 @@ package de.fruxz.sparkle.server.interchange
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
-import de.fruxz.sparkle.framework.util.extension.visual.notification
+import de.fruxz.sparkle.framework.extension.visual.notification
 
 internal class PlaygroundInterchange : StructuredInterchange("playground", buildInterchangeStructure {
 

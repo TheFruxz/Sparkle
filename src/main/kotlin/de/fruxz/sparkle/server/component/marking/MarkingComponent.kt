@@ -3,17 +3,17 @@ package de.fruxz.sparkle.server.component.marking
 import de.fruxz.ascend.extension.math.round
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.framework.util.event.interact.SparklePlayerInteractEvent.Companion.denyInteraction
+import de.fruxz.sparkle.framework.event.interact.SparklePlayerInteractEvent.Companion.denyInteraction
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.fruxz.sparkle.framework.infrastructure.component.SmartComponent
-import de.fruxz.sparkle.framework.util.extension.visual.notification
-import de.fruxz.sparkle.framework.util.extension.visual.ui.item
-import de.fruxz.sparkle.framework.util.extension.displayString
-import de.fruxz.sparkle.framework.util.extension.entity.identityObject
-import de.fruxz.sparkle.framework.util.extension.isPhysical
-import de.fruxz.sparkle.framework.util.extension.templateLocation
-import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.*
-import de.fruxz.sparkle.framework.util.positioning.dependent.DependentCubicalShape
+import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.extension.visual.ui.item
+import de.fruxz.sparkle.framework.extension.displayString
+import de.fruxz.sparkle.framework.extension.entity.identityObject
+import de.fruxz.sparkle.framework.extension.isPhysical
+import de.fruxz.sparkle.framework.extension.templateLocation
+import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import de.fruxz.stacked.extension.asComponent
 import de.fruxz.stacked.extension.asStyledComponents
 import de.fruxz.stacked.extension.dyeGray
@@ -55,7 +55,7 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 				
 			""".trimIndent().asStyledComponents
 
-				onInteract { event ->
+				onItemInteract { event ->
 					val user = event.whoInteract
 					val targetBlock = user.rayTraceBlocks(15.0, ALWAYS)?.hitBlock
 					val actualBox = SparkleCache.playerMarkerBoxes[user.identityObject]

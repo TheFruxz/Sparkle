@@ -7,7 +7,7 @@ import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction.ONLY_CONSOLE
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
-import de.fruxz.sparkle.framework.util.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import org.bukkit.command.ConsoleCommandSender
 import kotlin.time.Duration
 

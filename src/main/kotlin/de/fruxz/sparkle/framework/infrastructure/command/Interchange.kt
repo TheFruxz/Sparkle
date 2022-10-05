@@ -10,26 +10,26 @@ import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestrict
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.emptyInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
-import de.fruxz.sparkle.framework.util.annotation.LegacyCraftBukkitFeature
-import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level
-import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.ERROR
-import de.fruxz.sparkle.framework.util.permission.Approval
-import de.fruxz.sparkle.framework.util.identification.Labeled
-import de.fruxz.sparkle.framework.util.attachment.Logging
-import de.fruxz.sparkle.framework.util.attachment.VendorOnDemand
-import de.fruxz.sparkle.framework.util.extension.debugLog
-import de.fruxz.sparkle.framework.util.extension.visual.BOLD
-import de.fruxz.sparkle.framework.util.extension.visual.notification
-import de.fruxz.sparkle.framework.util.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.util.extension.interchange.Parameters
-import de.fruxz.sparkle.framework.util.extension.asPlayer
-import de.fruxz.sparkle.framework.util.extension.asPlayerOrNull
-import de.fruxz.sparkle.framework.util.extension.coroutines.pluginCoroutineDispatcher
-import de.fruxz.sparkle.framework.util.extension.time.RunningCooldown
-import de.fruxz.sparkle.framework.util.extension.time.getCooldown
-import de.fruxz.sparkle.framework.util.extension.time.hasCooldown
-import de.fruxz.sparkle.framework.util.extension.time.setCooldown
-import de.fruxz.sparkle.framework.util.identification.KeyedIdentifiable
+import de.fruxz.sparkle.framework.annotation.LegacyCraftBukkitFeature
+import de.fruxz.sparkle.framework.visual.message.Transmission.Level
+import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
+import de.fruxz.sparkle.framework.permission.Approval
+import de.fruxz.sparkle.framework.identification.Labeled
+import de.fruxz.sparkle.framework.attachment.Logging
+import de.fruxz.sparkle.framework.attachment.VendorOnDemand
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.visual.BOLD
+import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.interchange.Parameters
+import de.fruxz.sparkle.framework.extension.asPlayer
+import de.fruxz.sparkle.framework.extension.asPlayerOrNull
+import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
+import de.fruxz.sparkle.framework.extension.time.RunningCooldown
+import de.fruxz.sparkle.framework.extension.time.getCooldown
+import de.fruxz.sparkle.framework.extension.time.hasCooldown
+import de.fruxz.sparkle.framework.extension.time.setCooldown
+import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.stacked.buildComponent
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.asComponent
@@ -81,7 +81,8 @@ abstract class Interchange(
 	var forcedApproval: Approval? = null,
 	final override val preferredVendor: App? = null,
 	val cooldown: Duration = Duration.ZERO
-) : CommandExecutor, KeyedIdentifiable<Interchange>, VendorOnDemand, Logging, Labeled {
+) : CommandExecutor, KeyedIdentifiable<Interchange>, de.fruxz.sparkle.framework.attachment.VendorOnDemand,
+	de.fruxz.sparkle.framework.attachment.Logging, Labeled {
 
 	init {
 		completion.identity = label
@@ -409,7 +410,7 @@ enum class InterchangeAuthorizationType {
 
 	SPARKLE,
 
-	@LegacyCraftBukkitFeature
+	@de.fruxz.sparkle.framework.annotation.LegacyCraftBukkitFeature
 	CRAFTBUKKIT,
 
 	NONE;

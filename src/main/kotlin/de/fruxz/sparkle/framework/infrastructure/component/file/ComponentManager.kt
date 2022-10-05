@@ -7,7 +7,7 @@ import de.fruxz.ascend.extension.generateFileAndPath
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.infrastructure.component.Component
-import de.fruxz.sparkle.framework.util.data.file.SparklePath
+import de.fruxz.sparkle.framework.data.file.SparklePath
 
 object ComponentManager {
 

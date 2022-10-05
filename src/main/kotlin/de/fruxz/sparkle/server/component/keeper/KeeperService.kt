@@ -6,10 +6,10 @@ import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel.DUMP
 import de.fruxz.sparkle.framework.infrastructure.service.Service
-import de.fruxz.sparkle.framework.util.extension.debugLog
-import de.fruxz.sparkle.framework.util.extension.system
-import de.fruxz.sparkle.framework.util.scheduler.Tasky
-import de.fruxz.sparkle.framework.util.scheduler.TemporalAdvice
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.scheduler.Tasky
+import de.fruxz.sparkle.framework.scheduler.TemporalAdvice
 import java.util.logging.Level
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds

@@ -2,8 +2,8 @@ package de.fruxz.sparkle.server
 
 import de.fruxz.ascend.extension.data.fromJsonFileOrNull
 import de.fruxz.ascend.extension.data.writeJson
-import de.fruxz.sparkle.framework.util.data.file.SparklePath
-import de.fruxz.sparkle.framework.util.extension.system
+import de.fruxz.sparkle.framework.data.file.SparklePath
+import de.fruxz.sparkle.framework.extension.system
 import kotlinx.serialization.Serializable
 import kotlin.io.path.createDirectories
 import kotlin.io.path.div

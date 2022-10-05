@@ -8,8 +8,8 @@ import de.fruxz.ascend.extension.empty
 import de.fruxz.ascend.extension.math.isDouble
 import de.fruxz.ascend.extension.math.isLong
 import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.sparkle.framework.util.extension.offlinePlayer
-import de.fruxz.sparkle.framework.util.extension.playerOrNull
+import de.fruxz.sparkle.framework.extension.offlinePlayer
+import de.fruxz.sparkle.framework.extension.playerOrNull
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import java.util.*

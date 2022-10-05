@@ -6,7 +6,7 @@ import de.fruxz.ascend.extension.tryToCatch
 import de.fruxz.ascend.extension.tryToIgnore
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.framework.util.sandbox.SandBox
+import de.fruxz.sparkle.framework.sandbox.SandBox
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
@@ -14,18 +14,18 @@ import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.SUCCE
 import de.fruxz.sparkle.framework.infrastructure.command.execution
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.DISABLED
 import de.fruxz.sparkle.framework.infrastructure.service.Service
-import de.fruxz.sparkle.framework.util.extension.debugLog
-import de.fruxz.sparkle.framework.util.extension.visual.notification
-import de.fruxz.sparkle.framework.util.extension.buildSandBox
-import de.fruxz.sparkle.framework.util.extension.destroySandBox
-import de.fruxz.sparkle.framework.util.extension.internalCommandMap
-import de.fruxz.sparkle.framework.util.extension.internalSyncCommands
-import de.fruxz.sparkle.framework.util.extension.onlinePlayers
-import de.fruxz.sparkle.framework.util.extension.server
-import de.fruxz.sparkle.framework.util.extension.system
-import de.fruxz.sparkle.framework.util.extension.coroutines.asSync
-import de.fruxz.sparkle.framework.util.visual.message.Transmission.Level.FAIL
-import de.fruxz.sparkle.framework.util.permission.Approval
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.extension.buildSandBox
+import de.fruxz.sparkle.framework.extension.destroySandBox
+import de.fruxz.sparkle.framework.extension.internalCommandMap
+import de.fruxz.sparkle.framework.extension.internalSyncCommands
+import de.fruxz.sparkle.framework.extension.onlinePlayers
+import de.fruxz.sparkle.framework.extension.server
+import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.coroutines.asSync
+import de.fruxz.sparkle.framework.visual.message.Transmission.Level.FAIL
+import de.fruxz.sparkle.framework.permission.Approval
 
 abstract class SmartComponent(
 	override val behaviour: RunType = DISABLED,

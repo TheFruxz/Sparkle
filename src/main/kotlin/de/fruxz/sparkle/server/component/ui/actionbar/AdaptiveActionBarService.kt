@@ -3,10 +3,10 @@ package de.fruxz.sparkle.server.component.ui.actionbar
 import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.Companion.globalLayers
 import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.Companion.playerLayers
 import de.fruxz.sparkle.framework.infrastructure.service.Service
-import de.fruxz.sparkle.framework.util.extension.onlinePlayers
-import de.fruxz.sparkle.framework.util.extension.system
-import de.fruxz.sparkle.framework.util.scheduler.Tasky
-import de.fruxz.sparkle.framework.util.scheduler.TemporalAdvice
+import de.fruxz.sparkle.framework.extension.onlinePlayers
+import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.scheduler.Tasky
+import de.fruxz.sparkle.framework.scheduler.TemporalAdvice
 import kotlin.time.Duration.Companion.seconds
 
 internal class AdaptiveActionBarService : Service {

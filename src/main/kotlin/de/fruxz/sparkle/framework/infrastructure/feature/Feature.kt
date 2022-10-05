@@ -5,7 +5,7 @@ import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.feature.Feature.FeatureState.DISABLED
 import de.fruxz.sparkle.framework.infrastructure.feature.Feature.FeatureState.ENABLED
-import de.fruxz.sparkle.framework.util.identification.VendorsIdentifiable
+import de.fruxz.sparkle.framework.identification.VendorsIdentifiable
 
 class Feature(override val vendorIdentity: Identity<out App>, name: String, description: String = "", version: String = "1.0") :
     VendorsIdentifiable<Feature> {

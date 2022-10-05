@@ -1,15 +1,24 @@
 package de.fruxz.sparkle.server.component.ui.gui
 
-import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.framework.util.event.canvas.CanvasClickEvent
-import de.fruxz.sparkle.framework.util.event.canvas.CanvasCloseEvent
+import de.fruxz.ascend.extension.empty
+import de.fruxz.ascend.extension.math.ceilToInt
+import de.fruxz.ascend.extension.math.floorToInt
+import de.fruxz.ascend.extension.objects.takeIfInstance
+import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
+import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
+import de.fruxz.sparkle.framework.extension.coroutines.task
+import de.fruxz.sparkle.framework.extension.data.ticks
+import de.fruxz.sparkle.framework.extension.player
+import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.visual.ui.affectedItem
+import de.fruxz.sparkle.framework.extension.visual.ui.item
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
-import de.fruxz.sparkle.framework.util.extension.data.ticks
-import de.fruxz.sparkle.framework.util.extension.player
-import de.fruxz.sparkle.framework.util.extension.coroutines.task
-import de.fruxz.sparkle.framework.util.visual.canvas.CanvasFlag.*
-import de.fruxz.sparkle.framework.util.visual.canvas.CanvasSessionManager
-import de.fruxz.sparkle.framework.util.scheduler.TemporalAdvice.Companion
+import de.fruxz.sparkle.framework.scheduler.TemporalAdvice.Companion
+import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
+import de.fruxz.sparkle.framework.visual.canvas.CanvasSessionManager
+import de.fruxz.sparkle.framework.visual.canvas.PaginationType
+import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.PAGED
+import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.SCROLL
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -59,17 +68,46 @@ internal class CanvasListener : EventListener() {
 
 		if (session != null) {
 			val canvas = session.canvas
+			val affectedItem = event.affectedItem?.item
+			val scrollState = session.parameters[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>() ?: 0
+			val linesOfContent = ceilToInt((canvas.content.keys.max().toDouble() + 1) / 9)
 
-			CanvasClickEvent(player, canvas, event.slot, event.view, event, event.click).let { internalEvent ->
+			when (affectedItem?.dataGet(PaginationType.CANVAS_BUTTON_SCROLL)) {
+				0 -> {
+					event.isCancelled = true
+					if (scrollState > 0) {
+						canvas.display(player, data = session.parameters.toMutableMap().apply { // todo instead of display use update
+							this[PaginationType.CANVAS_SCROLL_STATE] = scrollState - 1
+							player.sendMessage("-1")
+						})
+					}
+				}
+				1 -> {
+					var parameters = session.parameters
+					event.isCancelled = true
 
-				if (!internalEvent.callEvent()) event.isCancelled = true
+					when (canvas.pagination.base) {
+						SCROLL -> {
+							if ((scrollState + floorToInt(event.inventory.size.toDouble() / 9)) <= linesOfContent+1) {
 
-				if (!canvas.flags.contains(NO_CLICK_ACTIONS)) {
+								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1)
+								player.sendMessage("+1")
+								canvas.display(player, data = parameters)
+							}
+						}
+						PAGED -> {
+							if (scrollState <= (linesOfContent / ceilToInt((event.inventory.size.toDouble() / 9)-1)) - 1) {
+								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1)
+								player.sendMessage("+1")
+								canvas.display(player, data = parameters)
+							}
+						}
+						else -> empty()
+					}
 
-					session.canvas.onClicks.forEach { it.invoke(internalEvent) }
 
 				}
-
+				else -> empty()
 			}
 
 			if (canvas.flags.contains(NO_GRAB)) {
@@ -80,6 +118,20 @@ internal class CanvasListener : EventListener() {
 				task(Companion.delayed(1.ticks)) {
 					player.inventory.setItemInOffHand(offhand)
 				}
+			}
+
+			CanvasClickEvent(player, canvas, event.slot, event.view, event, event.click).let { internalEvent ->
+
+				if (!internalEvent.callEvent()) event.isCancelled = true
+
+				if (!canvas.flags.contains(NO_CLICK_ACTIONS)) {
+
+					session.canvas.onClicks
+						.let { (it[null] ?: emptyList()) + (it[event.slot] ?: emptyList()) }
+						.forEach { it.invoke(internalEvent) }
+
+				}
+
 			}
 
 		}

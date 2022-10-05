@@ -3,7 +3,7 @@ package de.fruxz.sparkle.framework.infrastructure.app
 import de.fruxz.ascend.extension.forceCast
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.framework.util.identification.KeyedIdentifiable
+import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import net.kyori.adventure.key.Key
