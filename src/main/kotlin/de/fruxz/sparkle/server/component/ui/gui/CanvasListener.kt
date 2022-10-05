@@ -69,14 +69,10 @@ internal class CanvasListener : EventListener() {
 		if (session != null) {
 			val canvas = session.canvas
 			val affectedItem = event.affectedItem?.item
-			val scrollState = session.parameters[PaginationType.CANVAS_SCROLL_STATE].also { println("caught $it") }?.takeIfInstance<Int>() ?: 0
+			val scrollState = session.parameters[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>() ?: 0
 			val linesOfContent = ceilToInt((canvas.content.keys.max().toDouble() + 1) / 9)
 
-			session.parameters.forEach { t, u ->
-				System.err.println("I: ${t.asString()} = $u")
-			}
-
-			when (affectedItem?.dataGet(PaginationType.CANVAS_BUTTON_SCROLL).also { println("items contains $it") }) {
+			when (affectedItem?.dataGet(PaginationType.CANVAS_BUTTON_SCROLL)) {
 				0 -> {
 					event.isCancelled = true
 					if (scrollState > 0) {
@@ -94,14 +90,14 @@ internal class CanvasListener : EventListener() {
 						SCROLL -> {
 							if ((scrollState + floorToInt(event.inventory.size.toDouble() / 9)) <= linesOfContent+1) {
 
-								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState.also { println("p$it") } + 1).also { println("a$it") }
+								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1)
 								player.sendMessage("+1")
 								canvas.display(player, data = parameters)
 							}
 						}
 						PAGED -> {
 							if (scrollState <= (linesOfContent / ceilToInt((event.inventory.size.toDouble() / 9)-1)) - 1) {
-								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState.also { println("p$it") } + 1).also { println("a$it") }
+								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1)
 								player.sendMessage("+1")
 								canvas.display(player, data = parameters)
 							}

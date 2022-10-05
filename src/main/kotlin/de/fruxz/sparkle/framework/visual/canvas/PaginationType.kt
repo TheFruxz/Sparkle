@@ -41,7 +41,6 @@ interface PaginationType<C> {
 				override val configuration = configuration
 				override fun computeRealSlot(virtualSlot: Int) = virtualSlot + (floorToInt(virtualSlot.toDouble() / 8))
 				override fun contentRendering(scrollState: Int, lines: Int, contents: Map<Int, ItemLike>) = buildMap {
-					println("renderer called!")
 
 					for ((index, slotRequest) in ((8 * scrollState)..(((8 * lines) - 1) + (8 * scrollState))).withIndex()) {
 						contents[slotRequest]?.let { this[computeRealSlot(index)] = it }
@@ -49,7 +48,6 @@ interface PaginationType<C> {
 
 					if (lines > 1) {
 						val linesOfContent = ceilToInt((contents.keys.max().toDouble() + 1) / 9)
-						println("placing buttons!")
 						val isEndOfScroll = (scrollState + lines) > linesOfContent+1
 						this[8] = when (scrollState) {
 							0 -> configuration.emptyButton

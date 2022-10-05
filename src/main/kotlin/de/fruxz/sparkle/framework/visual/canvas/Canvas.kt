@@ -118,7 +118,7 @@ open class Canvas(
 		if (NO_OPEN in flags) cancel()
 
 		val inventoryContent = async { asSync { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } }
-		val scrollableContent = async { pagination.contentRendering((data[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>().also { println("gotStateByProperty") } ?: 0).also { println("scrollstate: $it") }, ((base.virtualSize + 1) / 9).also { println("lines: $it") }, content) }
+		val scrollableContent = async { pagination.contentRendering((data[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>() ?: 0), ((base.virtualSize + 1) / 9), content) }
 
 		receivers.toList().forEachNotNull { receiver ->
 			var localInstance = base.generateInventory(
@@ -126,7 +126,7 @@ open class Canvas(
 				label = label,
 			).apply {
 				this.contents = when {
-					(base.virtualSize % 9).also { println("debug1: $it") } != 0 -> runBlocking { inventoryContent.await() }
+					base.virtualSize % 9 != 0 -> runBlocking { inventoryContent.await() }
 					else -> runBlocking { (0 until base.virtualSize).map { slot -> scrollableContent.await()[slot]?.asItemStack() }.toTypedArray() }
 				}
 			}
@@ -145,12 +145,7 @@ open class Canvas(
 
 						asSync {
 							receiver.openInventory(localInstance)
-							CanvasSessionManager.putSession(receiver, this@Canvas, event.data.also {
-								println("Displaying send information:")
-								it.forEach { t, u ->
-									System.err.println("l: ${t.asString()} = $u")
-								}
-							})
+							CanvasSessionManager.putSession(receiver, this@Canvas, event.data)
 						}
 
 						asyncItems.map { (key, value) ->
