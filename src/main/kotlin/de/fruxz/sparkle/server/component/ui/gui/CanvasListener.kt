@@ -78,7 +78,6 @@ internal class CanvasListener : EventListener() {
 					if (scrollState > 0) {
 						canvas.display(player, data = session.parameters.toMutableMap().apply { // todo instead of display use update
 							this[PaginationType.CANVAS_SCROLL_STATE] = scrollState - 1
-							player.sendMessage("-1")
 						})
 					}
 				}
@@ -91,14 +90,12 @@ internal class CanvasListener : EventListener() {
 							if ((scrollState + floorToInt(event.inventory.size.toDouble() / 9)) <= linesOfContent+1) {
 
 								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1)
-								player.sendMessage("+1")
 								canvas.display(player, data = parameters)
 							}
 						}
 						PAGED -> {
 							if (scrollState <= (linesOfContent / ceilToInt((event.inventory.size.toDouble() / 9)-1)) - 1) {
 								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1)
-								player.sendMessage("+1")
 								canvas.display(player, data = parameters)
 							}
 						}
