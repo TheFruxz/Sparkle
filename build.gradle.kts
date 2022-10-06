@@ -74,7 +74,7 @@ dependencies {
 
     shadow("org.jetbrains.exposed:exposed-core:0.40.1")
     shadow("org.jetbrains.exposed:exposed-dao:0.40.1")
-    shadow("org.jetbrains.exposed:exposed-jdbc:0.39.2")
+    shadow("org.jetbrains.exposed:exposed-jdbc:0.40.1")
 
     // > Ktor
     shadow("io.ktor:ktor-client-cio:2.1.1")
