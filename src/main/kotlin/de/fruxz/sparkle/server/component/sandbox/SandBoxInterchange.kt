@@ -109,7 +109,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 					text {
 						this + text("List of all registered SandBoxes: ").dyeGray()
-						this + text("(Page $page of ${pageValue.availablePages.last})").dyeYellow()
+						this + text("(Page ${page + 1} of ${pageValue.availablePages.last})").dyeYellow()
 
 						pageValue.content.forEach { sandBox ->
 							this + newline() + text(sandBox.identity).dyeYellow() + text(" (from: ${sandBox.vendor.label})").dyeGray()
