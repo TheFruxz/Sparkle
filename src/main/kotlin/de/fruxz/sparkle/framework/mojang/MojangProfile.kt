@@ -8,18 +8,21 @@ import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.visual.item.Item
 import de.fruxz.sparkle.framework.visual.item.quirk.Quirk
 import kotlinx.coroutines.launch
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonNames
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.SkullMeta
 
 @Serializable
 @Suppress("DEPRECATION")
-data class MojangProfile(
+@OptIn(ExperimentalSerializationApi::class)
+data class MojangProfile constructor(
 	val uuid: String,
 	val username: String,
-	val username_history: List<MojangProfileUsernameHistoryEntry>,
+	@JsonNames("username_history") val usernameHistory: List<MojangProfileUsernameHistoryEntry>,
 	val textures: MojangProfileTextures,
-	val created_at: String?,
+	@JsonNames("created_at") val createdAt: String?,
 ) {
 
     private fun refresh(target: Player) {
@@ -37,21 +40,12 @@ data class MojangProfile(
         refresh(target)
     }
 
-    fun applyNameToPlayer(target: Player) {
-        edit(target) { name = this@MojangProfile.username }
-        refresh(target)
-    }
-
-	fun applySkinToSkullMeta(target: SkullMeta, replaceName: Boolean = true) {
+	fun applySkinToSkullMeta(target: SkullMeta) {
 
 		target.owningPlayer = offlinePlayer(username)
 
 		target.playerProfile = target.playerProfile?.apply {
-
 			setProperty(ProfileProperty("textures", this@MojangProfile.textures.raw.value, this@MojangProfile.textures.raw.signature))
-
-			if (replaceName) name = this@MojangProfile.username
-
 		}
 
 		system.coroutineScope.launch {
@@ -60,14 +54,10 @@ data class MojangProfile(
 
 	}
 
-	fun applySkinToSkull(item: Item, replaceName: Boolean = true) = item.apply {
+	fun applySkinToSkull(item: Item) = item.apply {
 		quirk = Quirk.skull {
 			playerProfile = playerProfile?.apply {
-
 				setProperty(ProfileProperty("textures", this@MojangProfile.textures.raw.value, this@MojangProfile.textures.raw.signature))
-
-				if (replaceName) name = this@MojangProfile.username
-
 				complete(true, true)
 			}
 		}
