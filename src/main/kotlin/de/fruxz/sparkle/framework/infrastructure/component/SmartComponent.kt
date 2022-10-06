@@ -86,15 +86,16 @@ abstract class SmartComponent(
 						command.name = interchange.label
 						command.tabCompleter = interchange.tabCompleter
 						command.usage = interchange.completion.buildSyntax(null)
-						command.aliases = emptyList()
-						command.aliases.mutableReplaceWith(interchange.aliases)
+						command.aliases = interchange.aliases.toList()
+						command.description = interchange.description
+						interchange.permissionMessage?.let(command::permissionMessage)
+						command.setExecutor(interchange)
 						interchange.requiredApproval
 							?.takeIf { interchange.requiresApproval }
 							?.let { approval ->
 								command.permission = approval.identity
 								debugLog("Interchange '${interchange.label}' permission set to '${approval.identity}'!")
 							}
-						command.setExecutor(interchange)
 
 						register(vendor.description.name, command)
 					}

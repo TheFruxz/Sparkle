@@ -15,7 +15,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration.BOLD
 import net.kyori.adventure.text.format.TextDecoration.ITALIC
 
-internal class SparkleInterchange : StructuredInterchange("sparkle", protectedAccess = false, structure = buildInterchangeStructure {
+internal class SparkleInterchange : StructuredInterchange("sparkle", protectedAccess = false, aliases = setOf("framework"), structure = buildInterchangeStructure {
 
 	concludedExecution {
 
