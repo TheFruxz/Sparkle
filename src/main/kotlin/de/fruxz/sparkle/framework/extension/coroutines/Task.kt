@@ -139,8 +139,6 @@ fun launch(
 	process: suspend (CoroutineScope) -> Unit,
 ) = vendor.coroutineScope.launch(context = system.pluginCoroutineDispatcher(isAsync), block = process)
 
-suspend fun <T, O> T.wait(duration: Duration, code: suspend T.() -> O): O = asAsync(duration) {
-	code(this@wait)
-}.await()
+suspend inline fun <O> wait(duration: Duration, crossinline code: suspend () -> O): O = asAsync(duration) { code() }.await()
 
-fun <T, O> T.delayed(duration: Duration, code: suspend T.() -> O) = asAsync { wait(duration, code) }.dump()
+inline fun <O> delayed(duration: Duration, crossinline code: suspend () -> O) = asAsync { wait(duration, code) }.dump()
