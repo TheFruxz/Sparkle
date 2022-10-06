@@ -21,7 +21,7 @@ class IssuedInterchange(
 ) : Interchange(
 	label = label,
 	aliases = aliases,
-	protectedAccess = false,
+	requiresApproval = false,
 	completion = emptyInterchangeStructure(),
 ) {
 

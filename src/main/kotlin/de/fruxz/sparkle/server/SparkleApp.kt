@@ -3,8 +3,6 @@ package de.fruxz.sparkle.server
 import com.destroystokyo.paper.ParticleBuilder
 import de.fruxz.ascend.extension.data.addAscendJsonModuleModification
 import de.fruxz.ascend.extension.forceCast
-import de.fruxz.sparkle.framework.infrastructure.app.App
-import de.fruxz.sparkle.framework.infrastructure.app.AppCompanion
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.data.json.JsonConfiguration
 import de.fruxz.sparkle.framework.data.json.JsonFileDataElement
@@ -21,13 +19,12 @@ import de.fruxz.sparkle.framework.effect.sound.SoundData
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.effect.sound.SoundMelody
 import de.fruxz.sparkle.framework.extension.asPlayerOrNull
-import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.mainLog
 import de.fruxz.sparkle.framework.extension.quickSandBox
 import de.fruxz.sparkle.framework.extension.visual.ui.item
-import de.fruxz.sparkle.framework.extension.visual.ui.set
-import de.fruxz.sparkle.framework.extension.visual.ui.skull
+import de.fruxz.sparkle.framework.infrastructure.app.App
+import de.fruxz.sparkle.framework.infrastructure.app.AppCompanion
 import de.fruxz.sparkle.framework.mojang.MojangProfile
 import de.fruxz.sparkle.framework.mojang.MojangProfileCape
 import de.fruxz.sparkle.framework.mojang.MojangProfileRaw
@@ -49,7 +46,6 @@ import de.fruxz.sparkle.framework.positioning.relative.PyramidalShape
 import de.fruxz.sparkle.framework.positioning.relative.Shape
 import de.fruxz.sparkle.framework.positioning.relative.SphereShape
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
-import de.fruxz.sparkle.framework.visual.canvas.Canvas
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion
 import de.fruxz.sparkle.framework.visual.canvas.buildCanvas
@@ -58,7 +54,6 @@ import de.fruxz.sparkle.framework.visual.color.DyeableMaterial
 import de.fruxz.sparkle.framework.visual.item.Modification
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import de.fruxz.sparkle.server.component.app.AppComponent
-import de.fruxz.sparkle.server.component.completion.ProtectionComponent
 import de.fruxz.sparkle.server.component.component.ComponentComponent
 import de.fruxz.sparkle.server.component.events.EventsComponent
 import de.fruxz.sparkle.server.component.keeper.KeeperComponent
@@ -70,10 +65,6 @@ import de.fruxz.sparkle.server.component.ui.gui.UIComponent
 import de.fruxz.sparkle.server.interchange.DebugModeInterchange
 import de.fruxz.sparkle.server.interchange.PlaygroundInterchange
 import de.fruxz.sparkle.server.interchange.SparkleInterchange
-import de.fruxz.stacked.color.KotlinColor
-import de.fruxz.stacked.extension.asComponent
-import de.fruxz.stacked.extension.dye
-import kotlinx.coroutines.cancel
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Location
@@ -81,14 +72,11 @@ import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerialization
-import org.bukkit.event.inventory.InventoryType.BREWING
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
-import java.awt.Color
 import java.util.*
 import java.util.logging.Level
-import kotlin.time.Duration.Companion.seconds
 import de.fruxz.ascend.extension.data.addJsonContextualConfiguration as jsonContextual
 
 class SparkleApp : App() {
@@ -199,7 +187,6 @@ class SparkleApp : App() {
 		add(MarkingComponent())
 		add(UIComponent())
 		add(ComponentComponent())
-		add(ProtectionComponent())
 		add(AdaptiveActionBarComponent())
 
 		add(SparkleInterchange())

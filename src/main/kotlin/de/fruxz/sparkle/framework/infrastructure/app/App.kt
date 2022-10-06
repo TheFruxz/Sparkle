@@ -33,8 +33,10 @@ import de.fruxz.sparkle.framework.extension.internalCommandMap
 import de.fruxz.sparkle.framework.extension.internalSyncCommands
 import de.fruxz.sparkle.framework.extension.coroutines.asSync
 import de.fruxz.sparkle.framework.extension.coroutines.delayed
+import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
 import de.fruxz.sparkle.framework.extension.coroutines.task
+import de.fruxz.sparkle.framework.extension.onlinePlayers
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
 import de.fruxz.stacked.text
 import io.ktor.client.*
@@ -252,6 +254,12 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 					command.usage = interchange.completion.buildSyntax(null)
 					command.aliases = emptyList()
 					command.aliases.mutableReplaceWith(aliases)
+					interchange.requiredApproval
+						?.takeIf { interchange.requiresApproval }
+						?.let { approval ->
+							command.permission = approval.identity
+							debugLog("Interchange '${interchange.label}' permission set to '${approval.identity}'!")
+						}
 					command.setExecutor(interchange)
 
 					debugLog("registering artificial command for '${interchange.label}'...")

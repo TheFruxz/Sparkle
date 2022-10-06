@@ -74,34 +74,40 @@ abstract class SmartComponent(
 
 		selfRegister.invoke()
 
-		interchanges.forEach {
+		interchanges.forEach { interchange ->
 			tryToCatch {
 
-				it.replaceVendor(vendor)
+				interchange.replaceVendor(vendor)
 
 				asSync { _ ->
 					server.internalCommandMap.apply {
-						val command = server.getPluginCommand(it.label) ?: vendor.createCommand(it)
+						val command = server.getPluginCommand(interchange.label) ?: vendor.createCommand(interchange)
 
-						command.name = it.label
-						command.tabCompleter = it.tabCompleter
-						command.usage = it.completion.buildSyntax(null)
+						command.name = interchange.label
+						command.tabCompleter = interchange.tabCompleter
+						command.usage = interchange.completion.buildSyntax(null)
 						command.aliases = emptyList()
-						command.aliases.mutableReplaceWith(it.aliases)
-						command.setExecutor(it)
+						command.aliases.mutableReplaceWith(interchange.aliases)
+						interchange.requiredApproval
+							?.takeIf { interchange.requiresApproval }
+							?.let { approval ->
+								command.permission = approval.identity
+								debugLog("Interchange '${interchange.label}' permission set to '${approval.identity}'!")
+							}
+						command.setExecutor(interchange)
 
 						register(vendor.description.name, command)
 					}
 
 					server.internalSyncCommands()
 
-					if (!isAutoStarting) vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval }))
+					if (!isAutoStarting) vendor.replace(interchange.thisIdentityObject, disabledComponentInterchange(identityObject, tryOrNull { interchange.requiredApproval }))
 
 				}
 
-				SparkleCache.registeredInterchanges += it
-				SparkleCache.disabledInterchanges += it.identityObject
-				debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!")
+				SparkleCache.registeredInterchanges += interchange
+				SparkleCache.disabledInterchanges += interchange.identityObject
+				debugLog("Interchange '${interchange.identity}' registered through '$identity' with disabled-interchange!")
 
 			}
 		}

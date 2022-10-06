@@ -1,8 +1,6 @@
 package de.fruxz.sparkle.framework.infrastructure.command.structured
 
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
-import de.fruxz.sparkle.framework.infrastructure.command.InterchangeAuthorizationType
-import de.fruxz.sparkle.framework.infrastructure.command.InterchangeAuthorizationType.SPARKLE
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction.ONLY_CONSOLE
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure
@@ -16,19 +14,15 @@ abstract class StructuredConsoleInterchange(
 	val structure: InterchangeStructure<ConsoleCommandSender>,
 	aliases: Set<String> = emptySet(),
 	protectedAccess: Boolean = true,
-	accessProtectionType: InterchangeAuthorizationType = SPARKLE,
-	hiddenFromRecommendation: Boolean = false,
 	ignoreInputValidation: Boolean = false,
 	cooldown: Duration = Duration.ZERO,
 ) : Interchange(
-	label,
-	aliases,
-	protectedAccess,
-	ONLY_CONSOLE,
-	accessProtectionType,
-	hiddenFromRecommendation,
-	structure,
-	ignoreInputValidation,
+	label = label,
+	aliases = aliases,
+	requiresApproval = protectedAccess,
+	requiredClient = ONLY_CONSOLE,
+	completion = structure,
+	ignoreInputValidation = ignoreInputValidation,
 	cooldown = cooldown,
 ) {
 

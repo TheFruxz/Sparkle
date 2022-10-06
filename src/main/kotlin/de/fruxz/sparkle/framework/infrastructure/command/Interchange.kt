@@ -3,33 +3,31 @@ package de.fruxz.sparkle.framework.infrastructure.command
 import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.extension.empty
 import de.fruxz.ascend.tool.smart.identification.Identity
+import de.fruxz.sparkle.framework.attachment.Logging
+import de.fruxz.sparkle.framework.attachment.VendorOnDemand
+import de.fruxz.sparkle.framework.extension.asPlayer
+import de.fruxz.sparkle.framework.extension.asPlayerOrNull
+import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.interchange.Parameters
+import de.fruxz.sparkle.framework.extension.time.RunningCooldown
+import de.fruxz.sparkle.framework.extension.time.getCooldown
+import de.fruxz.sparkle.framework.extension.time.hasCooldown
+import de.fruxz.sparkle.framework.extension.time.setCooldown
+import de.fruxz.sparkle.framework.extension.visual.BOLD
+import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
+import de.fruxz.sparkle.framework.identification.Labeled
 import de.fruxz.sparkle.framework.infrastructure.app.App
-import de.fruxz.sparkle.framework.infrastructure.command.InterchangeAuthorizationType.SPARKLE
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.*
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction.*
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.emptyInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
-import de.fruxz.sparkle.framework.annotation.LegacyCraftBukkitFeature
+import de.fruxz.sparkle.framework.permission.Approval
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
-import de.fruxz.sparkle.framework.permission.Approval
-import de.fruxz.sparkle.framework.identification.Labeled
-import de.fruxz.sparkle.framework.attachment.Logging
-import de.fruxz.sparkle.framework.attachment.VendorOnDemand
-import de.fruxz.sparkle.framework.extension.debugLog
-import de.fruxz.sparkle.framework.extension.visual.BOLD
-import de.fruxz.sparkle.framework.extension.visual.notification
-import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.extension.interchange.Parameters
-import de.fruxz.sparkle.framework.extension.asPlayer
-import de.fruxz.sparkle.framework.extension.asPlayerOrNull
-import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
-import de.fruxz.sparkle.framework.extension.time.RunningCooldown
-import de.fruxz.sparkle.framework.extension.time.getCooldown
-import de.fruxz.sparkle.framework.extension.time.hasCooldown
-import de.fruxz.sparkle.framework.extension.time.setCooldown
-import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.stacked.buildComponent
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.asComponent
@@ -41,9 +39,7 @@ import de.fruxz.stacked.extension.subKey
 import de.fruxz.stacked.hover
 import de.fruxz.stacked.plus
 import de.fruxz.stacked.text
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
@@ -59,10 +55,8 @@ import kotlin.time.DurationUnit
 /**
  * @param label is the interchange name, used as /<name> and as the identifier, defined inside your plugin.yml
  * @param aliases are the supported interchange-aliases, which can be used, to access the interchange
- * @param protectedAccess defines, if the [InterchangeExecutor] requires to have the permission 'interchange.<label>' to execute this interchange
- * @param userRestriction defines, which types of [InterchangeExecutor] are allowed, to execute the interchange
- * @param accessProtectionType defines the system, which is used, to check the [InterchangeExecutor]s ability to execute the interchange
- * @param hiddenFromRecommendation if enabled, this interchange will not be visible in the tab-recommendations of usable commands
+ * @param requiresApproval defines, if the [InterchangeExecutor] requires to have the permission 'interchange.<label>' to execute this interchange
+ * @param requiredClient defines, which types of [InterchangeExecutor] are allowed, to execute the interchange
  * @param completion defines the completions, that the interchange will display, during a [InterchangeExecutor]s input into console/chat
  * @param ignoreInputValidation defines, if the input of the user should not be checked of correctness
  * @param preferredVendor if not null, this overrides the automatic extrapolated [vendor] [App] on registering
@@ -72,17 +66,14 @@ import kotlin.time.DurationUnit
 abstract class Interchange(
 	final override val label: String,
 	val aliases: Set<String> = emptySet(),
-	val protectedAccess: Boolean = false,
-	val userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
-	val accessProtectionType: InterchangeAuthorizationType = SPARKLE,
-	val hiddenFromRecommendation: Boolean = false,
+	val requiresApproval: Boolean = false,
+	val requiredClient: InterchangeUserRestriction = NOT_RESTRICTED,
+	val cooldown: Duration = Duration.ZERO,
 	val completion: InterchangeStructure<out InterchangeExecutor> = emptyInterchangeStructure(),
 	val ignoreInputValidation: Boolean = false,
 	var forcedApproval: Approval? = null,
 	final override val preferredVendor: App? = null,
-	val cooldown: Duration = Duration.ZERO
-) : CommandExecutor, KeyedIdentifiable<Interchange>, de.fruxz.sparkle.framework.attachment.VendorOnDemand,
-	de.fruxz.sparkle.framework.attachment.Logging, Labeled {
+) : CommandExecutor, KeyedIdentifiable<Interchange>, VendorOnDemand, Logging, Labeled {
 
 	init {
 		completion.identity = label
@@ -136,7 +127,7 @@ abstract class Interchange(
 	 * @since 1.0
 	 */
 	val tabCompleter = TabCompleter { executor, _, _, args ->
-		completion.computeCompletion(args.toList(), executor).takeIf { canExecuteBasePlate(executor) } ?: listOf(" ")
+		completion.computeCompletion(args.toList(), executor)
 	}
 
 	/**
@@ -172,7 +163,7 @@ abstract class Interchange(
 	/**
 	 * This computed [lazy]-initialization value represents the required [Approval],
 	 * to be able to access this [Interchange] as a [InterchangeExecutor].
-	 * This value is computed from the [protectedAccess], [vendor] and [label]
+	 * This value is computed from the [requiresApproval], [vendor] and [label]
 	 * properties, to generate the [Approval].
 	 * This value can be null, if this [Interchange] does not have any [Approval]-
 	 * Requirements, to access this [Interchange], otherwise, the contained [Approval]-
@@ -183,7 +174,7 @@ abstract class Interchange(
 	 * @since 1.0
 	 */
 	val requiredApproval by lazy {
-		forcedApproval ?: Approval.fromApp(vendor, "interchange.$label").takeIf { protectedAccess }
+		forcedApproval ?: Approval.fromApp(vendor, "interchange.$label").takeIf { requiresApproval }
 	}
 
 	// parameters
@@ -215,14 +206,6 @@ abstract class Interchange(
 		)
 	}
 
-	/**
-	 * If the [executor] can execute the base of the interchange
-	 * with its approvals. (**Not looking for the parameters and
-	 * its own possible approvals!**)
-	 */
-	private fun canExecuteBasePlate(executor: InterchangeExecutor) =
-		accessProtectionType != SPARKLE || requiredApproval == null || requiredApproval?.hasApproval(executor) ?: true
-
 	private fun wrongApprovalFeedback(
 		receiver: InterchangeExecutor,
 	) {
@@ -231,10 +214,7 @@ abstract class Interchange(
 			this + text("You currently do ").dyeGray()
 			this + text("not").dyeRed()
 			this + text(" have the ").dyeGray()
-			this + text("required approval").dyeYellow().hover {
-				text("Required Approval: ").dyeGray()
-				text("${requiredApproval?.identity}").dyeYellow()
-			}
+			this + text("required approval").dyeYellow()
 			this + text(" to execute this interchange!").dyeGray()
 		}.notification(Level.FAIL, receiver).display()
 
@@ -261,7 +241,7 @@ abstract class Interchange(
 			this + text("This action ").dyeGray()
 			this + text("requires").dyeRed()
 			this + text(" you as a '").dyeGray()
-			this + text(userRestriction.name).dyeYellow()
+			this + text(requiredClient.name).dyeYellow()
 			this + text("', to be executed!").dyeGray()
 		}.notification(Level.FAIL, receiver).display()
 
@@ -304,78 +284,74 @@ abstract class Interchange(
 			val parameters = args.toList()
 			val executionProcess = this@Interchange::execution
 
-			if (canExecuteBasePlate(sender)) {
+			if (sender is ConsoleCommandSender || !cooldown.isPositive() || sender.asPlayerOrNull?.hasCooldown("interchange:$key") != true) {
 
-				if (sender is ConsoleCommandSender || !cooldown.isPositive() || sender.asPlayerOrNull?.hasCooldown("interchange:$key") != true) {
+				if (
+					(requiredClient == NOT_RESTRICTED)
+					|| (sender is Player && requiredClient == ONLY_PLAYERS)
+					|| (sender is ConsoleCommandSender && requiredClient == ONLY_CONSOLE)
+				) {
 
-					if (
-						(userRestriction == NOT_RESTRICTED)
-						|| (sender is Player && userRestriction == ONLY_PLAYERS)
-						|| (sender is ConsoleCommandSender && userRestriction == ONLY_CONSOLE)
-					) {
+					if (ignoreInputValidation || completion.validateInput(parameters, sender)) {
+						val clientType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE
 
-						if (ignoreInputValidation || completion.validateInput(parameters, sender)) {
-							val clientType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE
+						fun exception(exception: Exception) {
+							sectionLog.log(
+								WARNING,
+								"Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!"
+							)
+							catchException(exception)
+						}
 
-							fun exception(exception: Exception) {
-								sectionLog.log(
-									WARNING,
-									"Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!"
+						try {
+
+							when (executionProcess()(
+								InterchangeAccess(
+									vendor,
+									clientType,
+									sender,
+									this@Interchange,
+									label,
+									parameters,
+									emptyList()
 								)
-								catchException(exception)
-							}
+							)) {
 
-							try {
-
-								when (executionProcess()(
-									InterchangeAccess(
-										vendor,
-										clientType,
-										sender,
-										this@Interchange,
-										label,
-										parameters,
-										emptyList()
-									)
-								)) {
-
-									NOT_PERMITTED -> wrongApprovalFeedback(sender)
-									WRONG_CLIENT -> wrongClientFeedback(sender)
-									WRONG_USAGE -> wrongUsageFeedback(sender)
-									FAIL -> issueFeedback(sender)
-									BRANCH_COOLDOWN -> empty()
-									SUCCESS -> {
-										sender.asPlayerOrNull?.setCooldown("interchange:$key", cooldown)
-										debugLog("Executor ${sender.name} as ${clientType.name} successfully executed $label-interchange!")
-									}
-
+								NOT_PERMITTED -> wrongApprovalFeedback(sender)
+								WRONG_CLIENT -> wrongClientFeedback(sender)
+								WRONG_USAGE -> wrongUsageFeedback(sender)
+								FAIL -> issueFeedback(sender)
+								BRANCH_COOLDOWN -> empty()
+								SUCCESS -> {
+									sender.asPlayerOrNull?.setCooldown("interchange:$key", cooldown)
+									debugLog("Executor ${sender.name} as ${clientType.name} successfully executed $label-interchange!")
 								}
 
-							} catch (e: Exception) {
-								issueFeedback(sender)
-								exception(e)
-							} catch (e: java.lang.Exception) {
-								issueFeedback(sender)
-								exception(e)
-							} catch (e: NullPointerException) {
-								issueFeedback(sender)
-								exception(e)
-							} catch (e: NoSuchElementException) {
-								issueFeedback(sender)
-								exception(e)
 							}
 
-						} else
-							wrongUsageFeedback(sender)
+						} catch (e: Exception) {
+							issueFeedback(sender)
+							exception(e)
+						} catch (e: java.lang.Exception) {
+							issueFeedback(sender)
+							exception(e)
+						} catch (e: NullPointerException) {
+							issueFeedback(sender)
+							exception(e)
+						} catch (e: NoSuchElementException) {
+							issueFeedback(sender)
+							exception(e)
+						}
 
 					} else
-						wrongClientFeedback(sender)
+						wrongUsageFeedback(sender)
 
 				} else
-					cooldownFeedback(sender, sender.asPlayer.getCooldown("interchange:$key"))
+					wrongClientFeedback(sender)
 
 			} else
-				wrongApprovalFeedback(sender)
+				cooldownFeedback(sender, sender.asPlayer.getCooldown("interchange:$key"))
+
 
 		}
 
@@ -403,17 +379,6 @@ enum class InterchangeUserRestriction {
 			NOT_RESTRICTED -> true
 		}
 	}
-
-}
-
-enum class InterchangeAuthorizationType {
-
-	SPARKLE,
-
-	@de.fruxz.sparkle.framework.annotation.LegacyCraftBukkitFeature
-	CRAFTBUKKIT,
-
-	NONE;
 
 }
 

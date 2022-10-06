@@ -45,7 +45,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	address = address,
 	branchType = TreeBranchType.OBJECT,
 	subBranches = subBranches,
-	content = content
+	content = content,
 ) {
 
 	var configuration = configuration
@@ -135,11 +135,11 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 					true
 			}
 
-	private fun computeLocalCompletion(context: CompletionAsset.CompletionContext) = content.flatMap { it.completion(context) }
+	private fun computeLocalCompletion(context: CompletionContext) = content.flatMap { it.completion(context) }
 
 	private fun validInput(executor: InterchangeExecutor, input: String, inputQuery: List<String>) =
 		(!configuration.mustMatchOutput || this.computeLocalCompletion(
-			CompletionAsset.CompletionContext(
+			CompletionContext(
 			executor,
 			inputQuery,
 			input,
