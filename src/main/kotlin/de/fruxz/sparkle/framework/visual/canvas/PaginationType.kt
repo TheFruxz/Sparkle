@@ -63,9 +63,7 @@ interface PaginationType<C> {
 						if (lines > 2) {
 							val startPos = 1 + ceilToInt((lines-3) * (scrollState.toDouble() / (linesOfContent)))
 							val endPos = 1 + ceilToInt((lines-3) * (scrollState.toDouble() / (linesOfContent)))
-
-							println("start: $startPos -> $endPos")
-
+							
 							for (currentLine in 2 until lines) {
 								this[(currentLine * 9) - 1] = when (currentLine-1) {
 									in startPos..endPos -> configuration.barButton
