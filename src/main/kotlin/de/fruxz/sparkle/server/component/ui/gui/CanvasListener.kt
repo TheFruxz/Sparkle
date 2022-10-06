@@ -87,7 +87,7 @@ internal class CanvasListener : EventListener() {
 
 					when (canvas.pagination.base) {
 						SCROLL -> {
-							if ((scrollState + floorToInt(event.inventory.size.toDouble() / 9)) <= linesOfContent+1) {
+							if ((scrollState + floorToInt(event.inventory.size.toDouble() / 9)) <= linesOfContent+3) {
 
 								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1)
 								canvas.display(player, data = parameters)

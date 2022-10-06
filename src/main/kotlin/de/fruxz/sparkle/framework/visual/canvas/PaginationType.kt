@@ -48,23 +48,27 @@ interface PaginationType<C> {
 
 					if (lines > 1) {
 						val linesOfContent = ceilToInt((contents.keys.max().toDouble() + 1) / 9)
-						val isEndOfScroll = (scrollState + lines) > linesOfContent+1
+						val isEndOfScroll = (scrollState + lines) > linesOfContent+3
+
 						this[8] = when (scrollState) {
 							0 -> configuration.emptyButton
 							else -> configuration.backButton
 						}.copy().dataPut(CANVAS_BUTTON_SCROLL, 0)
+
 						this[(lines * 9) - 1] = when {
 							isEndOfScroll -> configuration.emptyButton
 							else -> configuration.nextButton
 						}.copy().dataPut(CANVAS_BUTTON_SCROLL, +1)
 
 						if (lines > 2) {
-							val startSlot = ceilToInt((lines-2) * (scrollState.toDouble() / linesOfContent))+2
-							val endSlot = ceilToInt((lines-2) * (scrollState.toDouble() / linesOfContent))+2
+							val startPos = 1 + ceilToInt((lines-3) * (scrollState.toDouble() / (linesOfContent)))
+							val endPos = 1 + ceilToInt((lines-3) * (scrollState.toDouble() / (linesOfContent)))
+
+							println("start: $startPos -> $endPos")
 
 							for (currentLine in 2 until lines) {
-								this[(currentLine * 9) - 1] = when (currentLine) {
-									in startSlot..endSlot -> configuration.barButton
+								this[(currentLine * 9) - 1] = when (currentLine-1) {
+									in startPos..endPos -> configuration.barButton
 									else -> configuration.barBackground
 								}.copy()
 							}
