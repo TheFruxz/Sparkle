@@ -72,7 +72,7 @@ dependencies {
     shadow("org.slf4j:slf4j-api:2.0.3")
     shadow("net.kyori:adventure-text-serializer-plain:4.11.0")
 
-    shadow("org.jetbrains.exposed:exposed-core:0.39.2")
+    shadow("org.jetbrains.exposed:exposed-core:0.40.1")
     shadow("org.jetbrains.exposed:exposed-dao:0.39.2")
     shadow("org.jetbrains.exposed:exposed-jdbc:0.39.2")
 
