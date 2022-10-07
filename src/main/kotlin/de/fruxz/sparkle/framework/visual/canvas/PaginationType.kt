@@ -52,25 +52,29 @@ interface PaginationType<C> {
 						val linesOfContent = ceilToInt((contents.keys.max().toDouble() + 1) / 8)
 						val isEndOfScroll = (scrollState + lines + 1) > linesOfContent
 
-						this[8] = when (scrollState) {
-							0 -> configuration.emptyButton
-							else -> configuration.backButton
-						}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 0)
+						if (configuration.renderButtons) {
+							this[8] = when (scrollState) {
+								0 -> configuration.emptyButton
+								else -> configuration.backButton
+							}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 0)
 
-						this[(lines * 9) - 1] = when {
-							isEndOfScroll -> configuration.emptyButton
-							else -> configuration.nextButton
-						}.copy().setPersistent(CANVAS_BUTTON_SCROLL, +1)
+							this[(lines * 9) - 1] = when {
+								isEndOfScroll -> configuration.emptyButton
+								else -> configuration.nextButton
+							}.copy().setPersistent(CANVAS_BUTTON_SCROLL, +1)
+						}
 
-						if (lines > 2) {
-							val startPos = 1 + ceilToInt((lines-3) * (scrollState.toDouble() / (linesOfContent)))
-							val endPos = 1 + ceilToInt((lines-3) * (scrollState.toDouble() / (linesOfContent)))
-							
-							for (currentLine in 2 until lines) {
-								this[(currentLine * 9) - 1] = when (currentLine-1) {
-									in startPos..endPos -> configuration.barButton
-									else -> configuration.barBackground
-								}.copy()
+						if (configuration.renderBar) {
+							if (lines > 2) {
+								val startPos = 1 + ceilToInt((lines - 3) * (scrollState.toDouble() / (linesOfContent)))
+								val endPos = 1 + ceilToInt((lines - 3) * (scrollState.toDouble() / (linesOfContent)))
+
+								for (currentLine in 2 until lines) {
+									this[(currentLine * 9) - 1] = when (currentLine - 1) {
+										in startPos..endPos -> configuration.barButton
+										else -> configuration.barBackground
+									}.copy()
+								}
 							}
 						}
 
@@ -90,18 +94,28 @@ interface PaginationType<C> {
 					lines: Int,
 					contents: Map<Int, ItemLike>
 				): Map<Int, ItemLike> = buildMap {
+
 					for ((index, value) in (0+((9*(lines-1))*scrollState)..(8+(9*(lines-2))+((9*(lines-1))*scrollState))).withIndex()) {
 						contents[value]?.let { put(index, it) }
 					}
-					this[(lines*9)-6] = when (scrollState) {
-						0 -> configuration.emptyButton
-						else -> configuration.backButton
-					}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 0)
-					this[(lines*9)-5] = configuration.pageIcon.copy().size((scrollState+1).limitTo(1..64))
-					this[(lines*9)-4] = when {
-						(scrollState > (contents.keys.max().toDouble() / 9 / (lines-1)) - 1) -> configuration.emptyButton
-						else -> configuration.nextButton
-					}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 1)
+
+					if (configuration.renderButtons) {
+
+						this[(lines * 9) - 6] = when (scrollState) {
+							0 -> configuration.emptyButton
+							else -> configuration.backButton
+						}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 0)
+
+						this[(lines*9)-4] = when {
+							(scrollState > (contents.keys.max().toDouble() / 9 / (lines-1)) - 1) -> configuration.emptyButton
+							else -> configuration.nextButton
+						}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 1)
+
+					}
+
+					if (configuration.renderIndicator) {
+						this[(lines*9)-5] = configuration.pageIcon.copy().size((scrollState+1).limitTo(1..64))
+					}
 				}
 			}
 
@@ -109,6 +123,8 @@ interface PaginationType<C> {
 		val CANVAS_SCROLL_STATE = system.subKey("state.scroll")
 
 		data class ScrollControlSetup(
+			val renderBar: Boolean = true,
+			val renderButtons: Boolean = true,
 			val backButton: Item = skull("MHF_ArrowUp", false).blankLabel(),
 			val nextButton: Item = skull("MHF_ArrowDown", false).blankLabel(),
 			val emptyButton: Item = skull("MHF_Wood", false).blankLabel(),
@@ -117,6 +133,8 @@ interface PaginationType<C> {
 		)
 
 		data class PageControlSetup(
+			val renderButtons: Boolean = true,
+			val renderIndicator: Boolean = true,
 			val backButton: Item = skull("MHF_ArrowLeft", false).blankLabel(),
 			val nextButton: Item = skull("MHF_ArrowRight", false).blankLabel(),
 			val emptyButton: Item = skull("MHF_Wood", false).blankLabel(),
