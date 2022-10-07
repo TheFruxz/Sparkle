@@ -1,9 +1,8 @@
 package de.fruxz.sparkle.framework.extension.coroutines
 
-import de.fruxz.ascend.extension.dump
-import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.extension.createKey
 import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.scheduler.Tasky
 import de.fruxz.sparkle.framework.scheduler.TemporalAdvice
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +18,7 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 
 /**
- * Exceptions are caught!
+ * Legacy tasky task.
  */
 fun task(
 	temporalAdvice: TemporalAdvice,
@@ -33,7 +32,7 @@ fun task(
 ) = Tasky.task(vendor, temporalAdvice, killAtError, onStart, onStop, onCrash, serviceVendor, process)
 
 /**
- * This function creates a sync task using the [Tasky] system.
+ * This function executes the code defined in [process] synchronously.
  * Internally a [CompletableFuture] is used to create the delayed result.
  * Because the [CompletableFuture.await] function uses the coroutine suspend
  * feature, this function also utilizes the suspend function feature, so the
@@ -67,7 +66,7 @@ suspend fun <T> asSync(
 }
 
 /**
- * This function creates a sync task using the [Tasky] system.
+ * This function executes the code defined in [process] synchronously.
  * Internally a [CompletableFuture] is used to create the delayed result.
  * Instead of the [asSync] function, this is not a suspending function, so
  * this function can be used anywhere you want!
@@ -153,7 +152,10 @@ fun doAsync(
 }
 
 /**
- * Launches a plugin schedule based coroutine.
+ * This function launches a new coroutine, using the provided
+ * [context] and preference of [isAsync] execution.
+ * @author Fruxz
+ * @since 1.0
  */
 fun launch(
 	vendor: App = system,
@@ -162,6 +164,19 @@ fun launch(
 	process: suspend (CoroutineScope) -> Unit,
 ) = vendor.coroutineScope.launch(context = context, block = process)
 
+/**
+ * This function executes the code provided in [code] asynchronously,
+ * with a delay of [duration]. The code waits for its execution to be
+ * finished before continuing.
+ * @author Fruxz
+ * @since 1.0
+ */
 suspend inline fun <O> wait(duration: Duration, crossinline code: suspend () -> O): O = asAsync(duration) { code() }.await()
 
-inline fun <O> delayed(duration: Duration, crossinline code: suspend () -> O) = asAsync { wait(duration, code) }.dump()
+/**
+ * This function executes the [wait] function, inside an artificially
+ * created [asAsync] execution block.
+ * @author Fruxz
+ * @since 1.0
+ */
+inline fun <O> delayed(duration: Duration, crossinline code: suspend () -> O) = asAsync { wait(duration, code) }
