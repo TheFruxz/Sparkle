@@ -26,6 +26,7 @@ import de.fruxz.stacked.extension.dyeGray
 import de.fruxz.stacked.extension.dyeGreen
 import de.fruxz.stacked.extension.dyeRed
 import de.fruxz.stacked.extension.dyeYellow
+import de.fruxz.stacked.extension.newlines
 import de.fruxz.stacked.plus
 import de.fruxz.stacked.text
 import net.kyori.adventure.text.Component.newline
@@ -114,6 +115,8 @@ internal class SandBoxInterchange : StructuredInterchange(
 						pageValue.content.forEach { sandBox ->
 							this + newline() + text(sandBox.identity).dyeYellow() + text(" (from: ${sandBox.vendor.label})").dyeGray()
 						}
+
+						newlines(1)
 
 					}.notification(GENERAL, executor).display()
 
