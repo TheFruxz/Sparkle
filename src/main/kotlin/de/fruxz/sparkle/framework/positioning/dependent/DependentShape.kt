@@ -1,6 +1,5 @@
 package de.fruxz.sparkle.framework.positioning.dependent
 
-import de.fruxz.ascend.extension.classType.UUID
 import de.fruxz.sparkle.framework.extension.worlds
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import de.fruxz.sparkle.framework.positioning.relative.Shape
@@ -9,6 +8,7 @@ import org.bukkit.World
 import org.bukkit.block.Block
 import org.bukkit.entity.Entity
 import org.bukkit.util.Vector
+import java.util.*
 
 interface DependentShape : Shape {
 

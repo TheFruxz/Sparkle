@@ -201,7 +201,7 @@ class SparkleApp : App() {
 			buildCanvas {
 				label("<i>Hello!")
 				pagination(PaginationType.scroll())
-				base(9*6)
+				base(9*2)
 
 				repeat(217) {
 					this[it] = DyeableMaterial.BANNER.withColor(ColorType.values().random()).item {

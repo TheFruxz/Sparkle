@@ -27,7 +27,7 @@ dependencies {
 
     // Internal
 
-    implementation("com.github.TheFruxz:Ascend:1.0.0-RC")
+    implementation("com.github.TheFruxz:Ascend:1.0.0-RC3a")
     implementation("com.github.TheFruxz:Stacked:1.0.0-RC")
 
     // Kotlin
@@ -77,10 +77,10 @@ dependencies {
     shadow("org.jetbrains.exposed:exposed-jdbc:0.40.1")
 
     // > Ktor
-    shadow("io.ktor:ktor-client-cio:2.1.1")
-    shadow("io.ktor:ktor-client-core-jvm:2.1.1")
-    shadow("io.ktor:ktor-serialization-kotlinx-json:2.1.1")
-    shadow("io.ktor:ktor-client-content-negotiation:2.1.1")
+    shadow("io.ktor:ktor-client-cio:2.1.2")
+    shadow("io.ktor:ktor-client-core-jvm:2.1.2")
+    shadow("io.ktor:ktor-serialization-kotlinx-json:2.1.2")
+    shadow("io.ktor:ktor-client-content-negotiation:2.1.2")
 
     shadow("net.kyori:adventure-api:4.11.0")
     shadow("net.kyori:adventure-text-serializer-legacy:4.11.0")

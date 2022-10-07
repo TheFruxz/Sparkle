@@ -1,6 +1,5 @@
 package de.fruxz.sparkle.server
 
-import de.fruxz.ascend.extension.classType.UUID
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.ascend.tool.timing.cooldown.StaticCooldown
@@ -25,6 +24,7 @@ import net.kyori.adventure.key.Key
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
+import java.util.*
 
 object SparkleCache : AppCache {
 

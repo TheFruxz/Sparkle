@@ -2,7 +2,8 @@ package de.fruxz.sparkle.framework.visual.canvas
 
 import de.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
 import de.fruxz.ascend.extension.data.buildRandomTag
-import de.fruxz.ascend.tool.smart.Producible
+import de.fruxz.ascend.tool.smart.composition.Producible
+import de.fruxz.ascend.tool.smart.composition.SuspendComposable
 import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasOpenEvent
@@ -105,20 +106,20 @@ data class MutableCanvas(
 			content -= slot
 	}
 
-	fun setDeferred(slot: Int, itemLikeProcess: DeferredComposable<ItemLike>) {
+	fun setDeferred(slot: Int, itemLikeProcess: SuspendComposable<ItemLike>) {
 		asyncItems += slot to SparkleApp.coroutineScope.async(block = itemLikeProcess::compose)
 	}
 
 	operator fun set(slots: Iterable<Int>, itemLike: ItemLike?) =
 		slots.forEach { set(it, itemLike) }
 
-	fun setDeferred(slots: Iterable<Int>, process: DeferredComposable<ItemLike>) =
+	fun setDeferred(slots: Iterable<Int>, process: SuspendComposable<ItemLike>) =
 		slots.forEach { setDeferred(it, process) }
 
 	operator fun set(vararg slots: Int, itemLike: ItemLike?) =
 		set(slots.toList(), itemLike)
 
-	fun setDeferred(vararg slots: Int, process: DeferredComposable<ItemLike>) =
+	fun setDeferred(vararg slots: Int, process: SuspendComposable<ItemLike>) =
 		setDeferred(slots.toList(), process)
 
 
@@ -128,21 +129,21 @@ data class MutableCanvas(
 		set(slot, itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncItemStack")
-	fun setDeferred(slot: Int, itemStackProcess: DeferredComposable<ItemStack>): Unit =
+	fun setDeferred(slot: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
 		setDeferred(slot, itemLikeProcess = { asSync { ItemLike.of(itemStackProcess.compose(it)) } })
 
 	operator fun set(slots: Iterable<Int>, itemStack: ItemStack?) =
 		set(slots, itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncItemStack")
-	fun setDeferred(slots: Iterable<Int>, itemStackProcess: DeferredComposable<ItemStack>): Unit =
+	fun setDeferred(slots: Iterable<Int>, itemStackProcess: SuspendComposable<ItemStack>): Unit =
 		slots.forEach { setDeferred(it, itemStackProcess) }
 
 	operator fun set(vararg slots: Int, itemStack: ItemStack?) =
 		set(slots.toList(), itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncItemStack")
-	fun setDeferred(vararg slots: Int, itemStackProcess: DeferredComposable<ItemStack>): Unit =
+	fun setDeferred(vararg slots: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
 		setDeferred(slots.toList(), itemStackProcess)
 
 	// Material support
@@ -151,21 +152,21 @@ data class MutableCanvas(
 		set(slot, material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncMaterial5")
-	fun setDeferred(slot: Int, materialProcess: DeferredComposable<Material>): Unit =
+	fun setDeferred(slot: Int, materialProcess: SuspendComposable<Material>): Unit =
 		setDeferred(slot, itemLikeProcess = { ItemLike.of(materialProcess.compose(system.coroutineScope)) })
 
 	operator fun set(slotIterable: Iterable<Int>, material: Material?): Unit =
 		set(slotIterable, material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncMaterial")
-	fun setDeferred(slotIterable: Iterable<Int>, materialProcess: DeferredComposable<Material>): Unit =
+	fun setDeferred(slotIterable: Iterable<Int>, materialProcess: SuspendComposable<Material>): Unit =
 		slotIterable.forEach { setDeferred(it, materialProcess) }
 
 	operator fun set(vararg slotArray: Int, material: Material?): Unit =
 		set(slotArray.toList(), material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncMaterial2")
-	fun setDeferred(vararg slotArray: Int, materialProcess: DeferredComposable<Material>): Unit =
+	fun setDeferred(vararg slotArray: Int, materialProcess: SuspendComposable<Material>): Unit =
 		setDeferred(slotIterable = slotArray.toList(), materialProcess)
 
 	// Adaptive support
@@ -187,7 +188,7 @@ data class MutableCanvas(
 		set(innerSlots[innerSlot], itemLike)
 	}
 
-	fun setInnerDeferred(innerSlot: Int, itemLikeProcess: DeferredComposable<ItemLike>) {
+	fun setInnerDeferred(innerSlot: Int, itemLikeProcess: SuspendComposable<ItemLike>) {
 		if (innerSlot !in availableInnerSlots) throw IndexOutOfBoundsException("The inner slot $innerSlot is not available in this canvas.")
 
 		setDeferred(innerSlots[innerSlot], itemLikeProcess)
@@ -196,13 +197,13 @@ data class MutableCanvas(
 	fun setInner(innerSlots: Iterable<Int>, itemLike: ItemLike?) =
 		innerSlots.forEach { setInner(it, itemLike) }
 
-	fun setInnerDeferred(innerSlots: Iterable<Int>, itemLikeProcess: DeferredComposable<ItemLike>) =
+	fun setInnerDeferred(innerSlots: Iterable<Int>, itemLikeProcess: SuspendComposable<ItemLike>) =
 		innerSlots.forEach { setInnerDeferred(it, itemLikeProcess) }
 
 	fun setInner(vararg innerSlots: Int, itemLike: ItemLike?) =
 		setInner(innerSlots.toList(), itemLike)
 
-	fun setInnerDeferred(vararg innerSlots: Int, itemLikeProcess: DeferredComposable<ItemLike>) =
+	fun setInnerDeferred(vararg innerSlots: Int, itemLikeProcess: SuspendComposable<ItemLike>) =
 		setInnerDeferred(innerSlots.toList(), itemLikeProcess)
 
 	// Inner ItemStack support
@@ -211,21 +212,21 @@ data class MutableCanvas(
 		setInner(innerSlot, itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerItemStack")
-	fun setInnerDeferred(innerSlot: Int, itemStackProcess: DeferredComposable<ItemStack>): Unit =
+	fun setInnerDeferred(innerSlot: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
 		setInnerDeferred(innerSlot, itemLikeProcess = { ItemLike.of(itemStackProcess.compose(it)) })
 
 	fun setInner(innerSlots: Iterable<Int>, itemStack: ItemStack?) =
 		setInner(innerSlots, itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerItemStack")
-	fun setInnerDeferred(innerSlots: Iterable<Int>, itemStackProcess: DeferredComposable<ItemStack>): Unit =
+	fun setInnerDeferred(innerSlots: Iterable<Int>, itemStackProcess: SuspendComposable<ItemStack>): Unit =
 		innerSlots.forEach { setInnerDeferred(it, itemStackProcess) }
 
 	fun setInner(vararg innerSlots: Int, itemStack: ItemStack?) =
 		setInner(innerSlots.toList(), itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerItemStack")
-	fun setInnerDeferred(vararg innerSlots: Int, itemStackProcess: DeferredComposable<ItemStack>): Unit =
+	fun setInnerDeferred(vararg innerSlots: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
 		setInnerDeferred(innerSlots.toList(), itemStackProcess)
 
 	// Inner Material support
@@ -234,21 +235,21 @@ data class MutableCanvas(
 		setInner(innerSlot, material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerMaterial")
-	fun setInnerDeferred(innerSlot: Int, materialProcess: DeferredComposable<Material>): Unit =
+	fun setInnerDeferred(innerSlot: Int, materialProcess: SuspendComposable<Material>): Unit =
 		setInnerDeferred(innerSlot, itemLikeProcess = { ItemLike.of(materialProcess.compose(it)) })
 
 	fun setInner(innerSlots: Iterable<Int>, material: Material?) =
 		setInner(innerSlots, material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerMaterial")
-	fun setInnerDeferred(innerSlots: Iterable<Int>, materialProcess: DeferredComposable<Material>): Unit =
+	fun setInnerDeferred(innerSlots: Iterable<Int>, materialProcess: SuspendComposable<Material>): Unit =
 		innerSlots.forEach { setInnerDeferred(it, materialProcess) }
 
 	fun setInner(vararg innerSlots: Int, material: Material?) =
 		setInner(innerSlots.toList(), material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerMaterial")
-	fun setInnerDeferred(vararg innerSlots: Int, materialProcess: DeferredComposable<Material>): Unit =
+	fun setInnerDeferred(vararg innerSlots: Int, materialProcess: SuspendComposable<Material>): Unit =
 		setInnerDeferred(innerSlots.toList(), materialProcess)
 
 	// Inner Adaptive support

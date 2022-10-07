@@ -317,10 +317,6 @@ open class Canvas(
 		suspend fun render(event: CanvasRenderEvent)
 	}
 
-	fun interface DeferredComposable<O> {
-		suspend fun compose(scope: CoroutineScope): O
-	}
-
 	@DslMarker
 	@MustBeDocumented
 	annotation class CanvasDsl
@@ -328,10 +324,5 @@ open class Canvas(
 	@MustBeDocumented
 	@RequiresOptIn(message = "This api is still in development and may not work like expected and may change in the future")
 	annotation class CanvasPrototypeAPI
-
-	internal object CanvasButtons {
-		const val PREV_BUTTON_ID = "go.to.prev"
-		const val NEXT_BUTTON_ID = "go.to.next"
-	}
 
 }

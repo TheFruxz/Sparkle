@@ -2,7 +2,7 @@ package de.fruxz.sparkle.framework.positioning.dependent
 
 import de.fruxz.ascend.extension.math.floor
 import de.fruxz.ascend.extension.math.floorToInt
-import de.fruxz.ascend.tool.smart.Producible
+import de.fruxz.ascend.tool.smart.composition.Producible
 import de.fruxz.sparkle.framework.extension.toSimpleLocation
 import de.fruxz.sparkle.framework.extension.velocityTo
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation

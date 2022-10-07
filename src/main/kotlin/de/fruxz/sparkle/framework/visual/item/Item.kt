@@ -1,11 +1,9 @@
 package de.fruxz.sparkle.framework.visual.item
 
-import de.fruxz.ascend.extension.classType.UUID
 import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.extension.forceCast
-import de.fruxz.ascend.extension.forceCastOrNull
 import de.fruxz.ascend.extension.objects.takeIfInstance
-import de.fruxz.ascend.tool.smart.Producible
+import de.fruxz.ascend.tool.smart.composition.Producible
 import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtItemEvent
 import de.fruxz.sparkle.framework.extension.debugLog
@@ -58,7 +56,9 @@ import org.bukkit.inventory.meta.Damageable
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.persistence.PersistentDataType
+import java.util.*
 import java.util.function.UnaryOperator
+import kotlin.ConcurrentModificationException
 import kotlin.time.Duration.Companion.seconds
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")

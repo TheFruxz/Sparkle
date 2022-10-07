@@ -2,7 +2,6 @@ package de.fruxz.sparkle.framework.infrastructure.command.completion
 
 import de.fruxz.ascend.extension.forceCast
 import de.fruxz.ascend.extension.math.maxTo
-import de.fruxz.ascend.tool.smart.identification.UUID
 import de.fruxz.ascend.tool.smart.positioning.Address
 import de.fruxz.ascend.tree.TreeBranch
 import de.fruxz.ascend.tree.TreeBranchType
@@ -26,10 +25,11 @@ import de.fruxz.sparkle.framework.extension.time.setCooldown
 import de.fruxz.sparkle.framework.permission.Approval
 import de.fruxz.sparkle.framework.permission.hasApproval
 import org.bukkit.entity.Player
+import java.util.UUID
 import kotlin.time.Duration
 
 class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
-	override var identity: String = UUID.randomString(),
+	override var identity: String = "${UUID.randomUUID()}",
 	override var address: Address<InterchangeStructure<EXECUTOR>> = Address.address("/"),
 	override var subBranches: List<InterchangeStructure<EXECUTOR>> = emptyList(),
 	configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
