@@ -12,8 +12,6 @@ import org.bukkit.persistence.PersistentDataType
 
 private val persistentDataLogger = App.createLog(system.identity, "PersistentData")
 
-fun <I, O> transformViaPersistentDataType(persistentDataType: PersistentDataType<I, O>, transforming: Any) = transforming.forceCastOrNull<O>()
-
 private val Any.persistentDataType: PersistentDataType<*, *>
 	get() = when (this) {
 		is Byte -> PersistentDataType.BYTE
