@@ -65,6 +65,8 @@ import java.io.InputStreamReader
 import java.nio.file.Path
 import java.util.logging.Level
 import java.util.logging.Logger
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
 import kotlin.reflect.jvm.isAccessible
 import kotlin.time.Duration
@@ -102,7 +104,10 @@ import kotlin.time.measureTime
  * @see de.fruxz.sparkle.runtime.SparkleApp
  * @constructor abstract
  */
-abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
+abstract class App(
+	private val systemOnLoadContext: CoroutineContext = EmptyCoroutineContext,
+	private val systemOnEnableContext: CoroutineContext = EmptyCoroutineContext,
+) : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 	// parameters
 
@@ -648,7 +653,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 			SparkleCache.registeredApps += this
 
-			coroutineScope.launch {
+			coroutineScope.launch(context = systemOnLoadContext) {
 
 				runStatus = PRE_LOAD
 				classLoader.getResourceAsStream("plugin.yml")?.let { resource ->
@@ -671,7 +676,7 @@ abstract class App : JavaPlugin(), Hoster<Unit, Unit, App> {
 	final override fun onEnable() {
 		tryToCatch {
 
-			coroutineScope.launch {
+			coroutineScope.launch(context = systemOnEnableContext) {
 
 				awaitState(LOAD, ENABLE) {
 					runStatus = PRE_ENABLE
