@@ -7,6 +7,7 @@ import de.fruxz.sparkle.framework.extension.subNamespacedKey
 import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.extension.visual.ui.item
 import de.fruxz.sparkle.framework.extension.visual.ui.skull
+import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasPrototypeAPI
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.PAGED
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.SCROLL
 import de.fruxz.sparkle.framework.visual.item.Item
@@ -35,6 +36,7 @@ interface PaginationType<C> {
 				override fun contentRendering(scrollState: Int, lines: Int, contents: Map<Int, ItemLike>) = contents
 			}
 
+		@CanvasPrototypeAPI
 		fun scroll(configuration: ScrollControlSetup = ScrollControlSetup()) =
 			object : PaginationType<ScrollControlSetup> {
 				override val base: PaginationBase = SCROLL
@@ -77,6 +79,7 @@ interface PaginationType<C> {
 				}
 			}
 
+		@CanvasPrototypeAPI
 		fun paged(configuration: PageControlSetup = PageControlSetup()) =
 			object : PaginationType<PageControlSetup> {
 				override val base: PaginationBase = PAGED

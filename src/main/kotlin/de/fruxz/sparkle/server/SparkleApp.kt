@@ -46,6 +46,7 @@ import de.fruxz.sparkle.framework.positioning.relative.PyramidalShape
 import de.fruxz.sparkle.framework.positioning.relative.Shape
 import de.fruxz.sparkle.framework.positioning.relative.SphereShape
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
+import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasPrototypeAPI
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion
 import de.fruxz.sparkle.framework.visual.canvas.buildCanvas
@@ -196,6 +197,7 @@ class SparkleApp : App() {
 		add(AppComponent())
 
 		quickSandBox {
+			@OptIn(CanvasPrototypeAPI::class)
 			buildCanvas {
 				label("<i>Hello!")
 				pagination(PaginationType.scroll())

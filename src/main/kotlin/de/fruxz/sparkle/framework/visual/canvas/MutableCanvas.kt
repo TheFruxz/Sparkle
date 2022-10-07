@@ -78,6 +78,7 @@ data class MutableCanvas(
 	fun base(inventoryType: InventoryType) = base(Companion.ofType(inventoryType))
 
 	@CanvasDsl
+	@CanvasPrototypeAPI
 	fun pagination(pagination: PaginationType<*>) {
 		this.pagination = pagination
 	}

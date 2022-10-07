@@ -325,6 +325,10 @@ open class Canvas(
 	@MustBeDocumented
 	annotation class CanvasDsl
 
+	@MustBeDocumented
+	@RequiresOptIn(message = "This api is still in development and may not work like expected and may change in the future")
+	annotation class CanvasPrototypeAPI
+
 	internal object CanvasButtons {
 		const val PREV_BUTTON_ID = "go.to.prev"
 		const val NEXT_BUTTON_ID = "go.to.next"
