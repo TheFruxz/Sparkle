@@ -16,9 +16,9 @@ fun Iterable<ComponentLike>.notification(level: Level, vararg participant: Inter
 		.promptSound(level.promptSound)
 		.participants(participant.toList())
 
-fun ComponentLike.message(vararg participant: InterchangeExecutor) = lines().message(*participant)
+fun ComponentLike.message(vararg participant: InterchangeExecutor) = lines.message(*participant)
 
-fun ComponentLike.notification(level: Level, vararg participant: InterchangeExecutor) = lines().notification(level, *participant)
+fun ComponentLike.notification(level: Level, vararg participant: InterchangeExecutor) = lines.notification(level, *participant)
 
 fun String.message(vararg participants: InterchangeExecutor) = lines().map(String::asStyledComponent).message(*participants)
 

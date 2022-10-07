@@ -125,12 +125,12 @@ data class Item(
 		(itemMetaBase ?: Bukkit.getItemFactory().getItemMeta(material)).apply {
 
 			label.let {
-				if (it.isNotEmpty()) {
+				if (it.isNotEmpty) {
 					displayName(Component.text().decoration(ITALIC, FALSE).append(it).build())
 				}
 			}
 
-			if (this@Item.lore.isNotEmpty() && this@Item.lore.any { it.isNotBlank() } )
+			if (this@Item.lore.isNotEmpty() && this@Item.lore.any { it.isNotBlank } )
 				lore(this@Item.lore.map { Component.text().decoration(ITALIC, FALSE).append(it).build() })
 
 			if (flags.isNotEmpty())
@@ -397,7 +397,7 @@ data class Item(
 
 	@ItemDsl
 	fun lore(lore: Component) =
-		apply { this.lore = lore.lines() }
+		apply { this.lore = lore.lines }
 
 	@ItemDsl
 	@JvmName("putLoreComponents")
