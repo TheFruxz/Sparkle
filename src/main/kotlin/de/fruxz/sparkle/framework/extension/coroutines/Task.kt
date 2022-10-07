@@ -15,6 +15,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import net.kyori.adventure.key.Key
 import java.util.concurrent.CompletableFuture
+import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 
 /**
@@ -43,10 +44,15 @@ fun task(
  * @author Fruxz
  * @since 1.0
  */
-suspend fun <T> asSync(delay: Duration = Duration.ZERO, process: suspend (CoroutineScope) -> T): T {
+suspend fun <T> asSync(
+	delay: Duration = Duration.ZERO,
+	vendor: App = system,
+	context: CoroutineContext = system.pluginCoroutineDispatcher(false),
+	process: suspend (CoroutineScope) -> T
+): T {
 	val output = CompletableFuture<T>()
 
-	launch(isAsync = false) {
+	launch(isAsync = false, vendor = vendor, context = context) {
 		if (delay.isPositive()) delay(delay)
 
 		try {
@@ -71,8 +77,14 @@ suspend fun <T> asSync(delay: Duration = Duration.ZERO, process: suspend (Corout
  * @author Fruxz
  * @since 1.0
  */
-fun doSync(delay: Duration = Duration.ZERO, cycleDuration: Duration = Duration.ZERO, process: suspend (CoroutineScope) -> Unit) =
-	launch(isAsync = false) { scope ->
+fun doSync(
+	delay: Duration = Duration.ZERO,
+	cycleDuration: Duration = Duration.ZERO,
+	vendor: App = system,
+	context: CoroutineContext = system.pluginCoroutineDispatcher(false),
+	process: suspend (CoroutineScope) -> Unit
+) =
+	launch(isAsync = false, vendor = vendor, context = context) { scope ->
 		if (delay.isPositive()) delay(delay)
 
 		when {
@@ -102,8 +114,12 @@ fun doSync(delay: Duration = Duration.ZERO, cycleDuration: Duration = Duration.Z
  * @author Fruxz
  * @since 1.0
  */
-fun <T> asAsync(delay: Duration = Duration.ZERO, process: suspend (CoroutineScope) -> T): Deferred<T> =
-	system.coroutineScope.async(context = system.pluginCoroutineDispatcher(true)) {
+fun <T> asAsync(
+	delay: Duration = Duration.ZERO,
+	context: CoroutineContext = system.pluginCoroutineDispatcher(true),
+	process: suspend (CoroutineScope) -> T
+): Deferred<T> =
+	system.coroutineScope.async(context = context) {
 		if (delay.isPositive()) delay(delay)
 		return@async process(system.coroutineScope)
 	}
@@ -117,7 +133,13 @@ fun <T> asAsync(delay: Duration = Duration.ZERO, process: suspend (CoroutineScop
  * @author Fruxz
  * @since 1.0
  */
-fun doAsync(delay: Duration = Duration.ZERO, cycleDuration: Duration = Duration.ZERO, process: suspend (CoroutineScope) -> Unit) = launch(isAsync = true) { scope ->
+fun doAsync(
+	delay: Duration = Duration.ZERO,
+	cycleDuration: Duration = Duration.ZERO,
+	vendor: App = system,
+	context: CoroutineContext = system.pluginCoroutineDispatcher(true),
+	process: suspend (CoroutineScope) -> Unit
+) = launch(isAsync = true, context = context, vendor = vendor) { scope ->
 	if (delay.isPositive()) delay(delay)
 
 	if (cycleDuration.isPositive()) {
@@ -136,8 +158,9 @@ fun doAsync(delay: Duration = Duration.ZERO, cycleDuration: Duration = Duration.
 fun launch(
 	vendor: App = system,
 	isAsync: Boolean = true,
+	context: CoroutineContext = system.pluginCoroutineDispatcher(isAsync),
 	process: suspend (CoroutineScope) -> Unit,
-) = vendor.coroutineScope.launch(context = system.pluginCoroutineDispatcher(isAsync), block = process)
+) = vendor.coroutineScope.launch(context = context, block = process)
 
 suspend inline fun <O> wait(duration: Duration, crossinline code: suspend () -> O): O = asAsync(duration) { code() }.await()
 
