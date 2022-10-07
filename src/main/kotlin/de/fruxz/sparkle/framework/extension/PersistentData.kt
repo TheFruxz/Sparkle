@@ -10,7 +10,26 @@ import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataHolder
 import org.bukkit.persistence.PersistentDataType
 
-private val persistentDataLogger = App.createLog(system.identity, "PersistentData")
+object PersistentData {
+
+	val persistentDataLogger = App.createLog(system.identity, "PersistentData")
+
+	val persistentDataTypes = setOf(
+		PersistentDataType.BYTE,
+		PersistentDataType.SHORT,
+		PersistentDataType.INTEGER,
+		PersistentDataType.LONG,
+		PersistentDataType.FLOAT,
+		PersistentDataType.DOUBLE,
+		PersistentDataType.STRING,
+		PersistentDataType.BYTE_ARRAY,
+		PersistentDataType.INTEGER_ARRAY,
+		PersistentDataType.LONG_ARRAY,
+		PersistentDataType.TAG_CONTAINER_ARRAY,
+		PersistentDataType.TAG_CONTAINER,
+	)
+
+}
 
 private val Any.persistentDataType: PersistentDataType<*, *>
 	get() = when (this) {
@@ -29,21 +48,6 @@ private val Any.persistentDataType: PersistentDataType<*, *>
 		else -> throw IllegalArgumentException("The data '$this' is not compatible with the data-cache")
 	}
 
-private val persistentDataTypes = setOf(
-	PersistentDataType.BYTE,
-	PersistentDataType.SHORT,
-	PersistentDataType.INTEGER,
-	PersistentDataType.LONG,
-	PersistentDataType.FLOAT,
-	PersistentDataType.DOUBLE,
-	PersistentDataType.STRING,
-	PersistentDataType.BYTE_ARRAY,
-	PersistentDataType.INTEGER_ARRAY,
-	PersistentDataType.LONG_ARRAY,
-	PersistentDataType.TAG_CONTAINER_ARRAY,
-	PersistentDataType.TAG_CONTAINER,
-)
-
 fun <T : Any> PersistentDataHolder.setPersistentData(key: Key, value: T) = tryOrNull {
 	fun <T> transform(type: PersistentDataType<T, T>, data: Any) = type.forceCast<PersistentDataType<T, T>>() to data.forceCast<T>()
 	val container = persistentDataContainer
@@ -51,13 +55,13 @@ fun <T : Any> PersistentDataHolder.setPersistentData(key: Key, value: T) = tryOr
 
 	container.set(NamespacedKey.fromString(key.asString())!!, type, smart)
 
-} ?: persistentDataLogger.warning("Transformation for '$key' failed at '$value' transform")
+} ?: PersistentData.persistentDataLogger.warning("Transformation for '$key' failed at '$value' transform")
 
 fun <T : Any> PersistentDataHolder.setPersistentData(name: String, value: T) =
 	setPersistentData(key = Key.key(name), value)
 
 fun <T : Any> PersistentDataHolder.getPersistentData(key: Key): T? {
-	persistentDataTypes.forEach { type ->
+	PersistentData.persistentDataTypes.forEach { type ->
 		persistentDataContainer.get(NamespacedKey.fromString(key.asString())!!, type)?.let {
 			return it.forceCastOrNull()
 		}

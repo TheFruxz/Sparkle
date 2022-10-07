@@ -3,6 +3,7 @@ package de.fruxz.sparkle.framework.visual.item
 import de.fruxz.ascend.extension.classType.UUID
 import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.extension.forceCast
+import de.fruxz.ascend.extension.forceCastOrNull
 import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.ascend.tool.smart.Producible
 import de.fruxz.sparkle.server.SparkleApp
@@ -210,6 +211,20 @@ data class Item(
 
 	@ItemDsl
 	fun spawn(location: Location) = location.world.dropItem(location, produce())
+
+	// persistentData
+
+	fun setPersistent(key: Key, value: Any) =
+		apply { persistentData += key to value }
+
+	fun setPersistent(name: String, value: Any) =
+		setPersistent(Key.key(name), value)
+
+	fun <T> getPersistent(key: Key): T? =
+		persistentData[key]?.forceCastOrNull()
+
+	fun <T> getPersistent(name: String): T? =
+		getPersistent(Key.key(name))
 
 	// smart-modify functions
 
