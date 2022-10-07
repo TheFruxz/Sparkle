@@ -3,6 +3,7 @@ package de.fruxz.sparkle.framework.extension
 import de.fruxz.ascend.extension.forceCast
 import de.fruxz.ascend.extension.forceCastOrNull
 import de.fruxz.ascend.extension.tryOrNull
+import de.fruxz.ascend.extension.tryToIgnore
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import net.kyori.adventure.key.Key
 import org.bukkit.NamespacedKey
@@ -62,8 +63,10 @@ fun <T : Any> PersistentDataHolder.setPersistentData(name: String, value: T) =
 
 fun <T : Any> PersistentDataHolder.getPersistentData(key: Key): T? {
 	PersistentData.persistentDataTypes.forEach { type ->
-		persistentDataContainer.get(NamespacedKey.fromString(key.asString())!!, type)?.let {
-			return it.forceCastOrNull()
+		tryToIgnore {
+			persistentDataContainer.get(NamespacedKey.fromString(key.asString())!!, type)?.let {
+				return it.forceCastOrNull()
+			}
 		}
 	}
 	return null
@@ -76,7 +79,7 @@ var PersistentDataHolder.persistentData: Map<Key, Any>
 	set(value) = value.forEach(this::setPersistentData)
 	get() = buildMap {
 		persistentDataContainer.keys.forEach { key ->
-			get(key)?.let { value ->
+			getPersistentData<Any>(Key.key(key.asString()))?.let { value ->
 				put(key, value)
 			}
 		}

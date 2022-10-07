@@ -221,7 +221,7 @@ data class Item(
 		setPersistent(Key.key(name), value)
 
 	fun <T> getPersistent(key: Key): T? =
-		persistentData[key]?.forceCastOrNull()
+		persistentData[key]?.forceCast()
 
 	fun <T> getPersistent(name: String): T? =
 		getPersistent(Key.key(name))
