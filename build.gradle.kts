@@ -28,7 +28,7 @@ dependencies {
     // Internal
 
     implementation("com.github.TheFruxz:Ascend:1.0.0-RC3a")
-    implementation("com.github.TheFruxz:Stacked:1.0.0-RC")
+    implementation("com.github.TheFruxz:Stacked:1.0.0-RC2")
 
     // Kotlin
 
