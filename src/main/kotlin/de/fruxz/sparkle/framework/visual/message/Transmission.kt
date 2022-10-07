@@ -68,7 +68,7 @@ data class Transmission(
 	fun display(): Transmission {
 		val nextRound = mutableSetOf<Entity>()
 
-		val prefix = (SparkleData.systemConfig.prefix[level.prefixLink.addressString.takeIf { prefixByLevel } ?: "general"] ?: "<dark_gray>⏵ ").asStyledComponent
+		val prefix = this.prefix ?: (SparkleData.systemConfig.prefix[level.prefixLink.addressString.takeIf { prefixByLevel } ?: "general"] ?: "<dark_gray>⏵ ").asStyledComponent
 
 		val displayObject = content.map { prefix.append(it) }
 
