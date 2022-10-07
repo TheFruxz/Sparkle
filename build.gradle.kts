@@ -12,7 +12,7 @@ plugins {
 
 var host = "github.com/TheFruxz/Sparkle"
 
-version = "1.0.0-PRE-18-RC3"
+version = "1.0.0-PRE-18-RC4"
 group = "de.fruxz"
 
 repositories {
