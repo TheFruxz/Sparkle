@@ -23,12 +23,15 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
 }
 
+val ascendVersion = "1.0.0-RC3a"
+val stackedVersion = "1.0.0-RC2"
+
 dependencies {
 
     // Internal
 
-    implementation("com.github.TheFruxz:Ascend:1.0.0-RC3a")
-    implementation("com.github.TheFruxz:Stacked:1.0.0-RC2")
+    implementation("com.github.TheFruxz:Ascend:$ascendVersion")
+    implementation("com.github.TheFruxz:Stacked:$stackedVersion")
 
     // Kotlin
 
@@ -56,10 +59,10 @@ dependencies {
 
     // Shadow
 
-    shadow("com.github.TheFruxz:Ascend:1.0.0-RC") {
+    shadow("com.github.TheFruxz:Ascend:$ascendVersion") {
         isTransitive = false
     }
-    shadow("com.github.TheFruxz:Stacked:1.0.0-RC") {
+    shadow("com.github.TheFruxz:Stacked:$stackedVersion") {
         isTransitive = false
     }
 
