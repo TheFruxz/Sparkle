@@ -47,18 +47,18 @@ interface PaginationType<C> {
 					}
 
 					if (lines > 1) {
-						val linesOfContent = ceilToInt((contents.keys.max().toDouble() + 1) / 9)
-						val isEndOfScroll = (scrollState + lines) > linesOfContent+3
+						val linesOfContent = ceilToInt((contents.keys.max().toDouble() + 1) / 8)
+						val isEndOfScroll = (scrollState + lines + 1) > linesOfContent
 
 						this[8] = when (scrollState) {
 							0 -> configuration.emptyButton
 							else -> configuration.backButton
-						}.copy().dataPut(CANVAS_BUTTON_SCROLL, 0)
+						}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 0)
 
 						this[(lines * 9) - 1] = when {
 							isEndOfScroll -> configuration.emptyButton
 							else -> configuration.nextButton
-						}.copy().dataPut(CANVAS_BUTTON_SCROLL, +1)
+						}.copy().setPersistent(CANVAS_BUTTON_SCROLL, +1)
 
 						if (lines > 2) {
 							val startPos = 1 + ceilToInt((lines-3) * (scrollState.toDouble() / (linesOfContent)))
@@ -93,12 +93,12 @@ interface PaginationType<C> {
 					this[(lines*9)-6] = when (scrollState) {
 						0 -> configuration.emptyButton
 						else -> configuration.backButton
-					}.copy().dataPut(CANVAS_BUTTON_SCROLL, 0)
+					}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 0)
 					this[(lines*9)-5] = configuration.pageIcon.copy().size((scrollState+1).limitTo(1..64))
 					this[(lines*9)-4] = when {
 						(scrollState > (contents.keys.max().toDouble() / 9 / (lines-1)) - 1) -> configuration.emptyButton
 						else -> configuration.nextButton
-					}.copy().dataPut(CANVAS_BUTTON_SCROLL, 1)
+					}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 1)
 				}
 			}
 

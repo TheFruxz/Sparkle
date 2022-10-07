@@ -8,8 +8,9 @@ import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.World
 import org.bukkit.entity.Entity
+import kotlin.time.Duration.Companion.seconds
 
-enum class SoundLibrary(val melody: SoundMelody) : SoundEffect {
+enum class SoundLibrary(val sound: SoundEffect) : SoundEffect {
 
 	NOTIFICATION_FAIL(buildMelody {
 
@@ -103,18 +104,36 @@ enum class SoundLibrary(val melody: SoundMelody) : SoundEffect {
 		beat(Sound.BLOCK_NOTE_BLOCK_BASS, pitch = 2)
 		beat(Sound.BLOCK_NOTE_BLOCK_BASS)
 
+	}),
+
+	UI_BUTTON_PRESS(buildMelody {
+		beat {
+			sound(Sound.BLOCK_LEVER_CLICK, pitch = .7)
+		}
+	}),
+	UI_BUTTON_PRESS_HEAVY(buildMelody {
+		beat {
+			sound(Sound.BLOCK_LEVER_CLICK, pitch = .4)
+			sound(Sound.ITEM_BOOK_PAGE_TURN, pitch = 1.5)
+		}
+	}),
+	UI_BUTTON_PRESS_PUNCH(buildMelody {
+		delayPerBeat = .05.seconds
+		beat(Sound.BLOCK_LEVER_CLICK, pitch = .6)
+		beat(Sound.BLOCK_LEVER_CLICK, pitch = .8)
+		beat(Sound.BLOCK_LEVER_CLICK, pitch = 1)
 	});
 
 	override fun play(vararg locations: Location?): Unit =
-		melody.play(*locations)
+		sound.play(*locations)
 
 	override fun play(vararg entities: Entity?, sticky: Boolean): Unit =
-		melody.play(*entities, sticky = sticky)
+		sound.play(*entities, sticky = sticky)
 
 	override fun play(vararg worlds: World?, sticky: Boolean): Unit =
-		melody.play(*worlds, sticky = sticky)
+		sound.play(*worlds, sticky = sticky)
 
 	override fun play(locations: Set<Location>, entities: Set<Entity>): Unit =
-		melody.play(locations, entities)
+		sound.play(locations, entities)
 
 }

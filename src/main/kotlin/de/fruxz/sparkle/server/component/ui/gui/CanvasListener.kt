@@ -3,13 +3,16 @@ package de.fruxz.sparkle.server.component.ui.gui
 import de.fruxz.ascend.extension.empty
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.floorToInt
+import de.fruxz.ascend.extension.math.maxTo
+import de.fruxz.ascend.extension.math.minTo
 import de.fruxz.ascend.extension.objects.takeIfInstance
+import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
 import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
 import de.fruxz.sparkle.framework.extension.coroutines.task
 import de.fruxz.sparkle.framework.extension.data.ticks
+import de.fruxz.sparkle.framework.extension.effect.playEffect
 import de.fruxz.sparkle.framework.extension.player
-import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.extension.visual.ui.affectedItem
 import de.fruxz.sparkle.framework.extension.visual.ui.item
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
@@ -70,14 +73,28 @@ internal class CanvasListener : EventListener() {
 			val canvas = session.canvas
 			val affectedItem = event.affectedItem?.item
 			val scrollState = session.parameters[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>() ?: 0
-			val linesOfContent = ceilToInt((canvas.content.keys.max().toDouble() + 1) / 9)
+			val linesOfContent = ceilToInt(canvas.content.keys.max().toDouble() / 8)
+			val inventoryLines = ceilToInt(event.inventory.size.toDouble() / 9)
 
-			when (affectedItem?.dataGet(PaginationType.CANVAS_BUTTON_SCROLL)) {
+			when (affectedItem?.getPersistent<Int>(PaginationType.CANVAS_BUTTON_SCROLL)) {
 				0 -> {
 					event.isCancelled = true
 					if (scrollState > 0) {
 						canvas.display(player, data = session.parameters.toMutableMap().apply { // todo instead of display use update
-							this[PaginationType.CANVAS_SCROLL_STATE] = scrollState - 1
+							when {
+								event.isShiftClick -> {
+									this[PaginationType.CANVAS_SCROLL_STATE] = 0
+									player.playEffect(SoundLibrary.UI_BUTTON_PRESS_PUNCH)
+								}
+								event.isLeftClick -> {
+									this[PaginationType.CANVAS_SCROLL_STATE] = scrollState - 1
+									player.playEffect(SoundLibrary.UI_BUTTON_PRESS)
+								}
+								event.isRightClick -> {
+									this[PaginationType.CANVAS_SCROLL_STATE] = (scrollState - 3).minTo(0)
+									player.playEffect(SoundLibrary.UI_BUTTON_PRESS_HEAVY)
+								}
+							}
 						})
 					}
 				}
@@ -87,9 +104,23 @@ internal class CanvasListener : EventListener() {
 
 					when (canvas.pagination.base) {
 						SCROLL -> {
-							if ((scrollState + floorToInt(event.inventory.size.toDouble() / 9)) <= linesOfContent+3) {
+							if ((scrollState + inventoryLines) <= linesOfContent) {
 
-								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1)
+								when {
+									event.isShiftClick -> {
+										parameters += PaginationType.CANVAS_SCROLL_STATE to (linesOfContent-(inventoryLines-1))
+										player.playEffect(SoundLibrary.UI_BUTTON_PRESS_PUNCH)
+									}
+									event.isLeftClick -> {
+										parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1).maxTo(linesOfContent)
+										player.playEffect(SoundLibrary.UI_BUTTON_PRESS)
+									}
+									event.isRightClick -> {
+										parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 3).maxTo(linesOfContent)
+										player.playEffect(SoundLibrary.UI_BUTTON_PRESS_HEAVY)
+									}
+								}
+
 								canvas.display(player, data = parameters)
 							}
 						}
