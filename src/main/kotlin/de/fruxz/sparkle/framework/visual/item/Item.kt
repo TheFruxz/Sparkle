@@ -7,8 +7,8 @@ import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.ascend.tool.smart.Producible
 import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtItemEvent
-import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.persistentData
 import de.fruxz.sparkle.framework.extension.visual.ui.changeColor
 import de.fruxz.sparkle.framework.extension.visual.ui.itemMetaOrNull
 import de.fruxz.sparkle.framework.extension.subNamespacedKey
@@ -56,7 +56,6 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
-import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
 import java.util.function.UnaryOperator
 import kotlin.time.Duration.Companion.seconds
@@ -73,7 +72,7 @@ data class Item(
 	var quirk: Quirk = Quirk.empty,
 	var postProperties: MutableSet<PostProperty> = mutableSetOf(),
 	var itemIdentity: String = "${UUID.randomUUID()}",
-	private var data: MutableMap<String, Any> = mutableMapOf(),
+	var persistentData: Map<Key, Any> = mapOf(),
 	var itemMetaBase: ItemMeta? = null,
 	var itemActionTags: Set<ItemActionTag> = emptySet(),
 	val productionPlugins: MutableSet<(ItemStack) -> Unit> = mutableSetOf(),
@@ -93,7 +92,7 @@ data class Item(
 			PLAYER_HEAD, PLAYER_WALL_HEAD -> Quirk.skull { owningPlayer = itemStack.itemMetaOrNull?.takeIfInstance<SkullMeta>()?.owningPlayer } // TODO only set if itemMeta and owningPlayers is indeed null
 			else -> Quirk.empty
 		},
-		data = readItemDataStorage(itemStack).toMutableMap(),
+		persistentData = itemStack.itemMetaOrNull?.persistentData ?: emptyMap(),
 		itemMetaBase = itemStack.itemMeta,
 		itemActionTags = itemStack.takeIf { it.hasItemMeta() }?.itemMeta?.persistentDataContainer?.getOrDefault(
 			actionsNamespace, PersistentDataType.STRING, "")?.split("|")?.map { ItemActionTag(it) }?.toSet() ?: emptySet(),
@@ -150,7 +149,7 @@ data class Item(
 
 		withContext(SparkleApp.coroutineScope.coroutineContext) {
 			@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
-			val persistentData = mutableMapOf<Pair<NamespacedKey, PersistentDataType<*, *>>, Any>()
+			val productionData = mutableMapOf<Pair<NamespacedKey, PersistentDataType<*, *>>, Any>()
 
 			if (itemMeta != null) {
 
@@ -163,11 +162,11 @@ data class Item(
 				itemMeta.addItemFlags(*flags.toTypedArray())
 
 				if (!postProperties.contains(NO_IDENTITY))
-					persistentData[identityNamespace to PersistentDataType.STRING] = this@Item.identity
+					productionData[identityNamespace to PersistentDataType.STRING] = this@Item.identity
 
 				if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
 
-				if (itemActionTags.isNotEmpty()) persistentData[actionsNamespace to PersistentDataType.STRING] =
+				if (itemActionTags.isNotEmpty()) productionData[actionsNamespace to PersistentDataType.STRING] =
 					itemActionTags.joinToString("|") { it.identity }
 
 				fun <I, O : Any> place(
@@ -186,12 +185,12 @@ data class Item(
 					}
 				}
 
-				persistentData.forEach { (key, value) ->
+				productionData.forEach { (key, value) ->
 					place(key.first, key.second, value)
 				}
 
-				if (!postProperties.contains(NO_DATA) && data.isNotEmpty())
-					itemMeta.persistentDataContainer.apply(itemStoreApplier)
+				if (!postProperties.contains(NO_DATA) && persistentData.isNotEmpty())
+					itemMeta.persistentData = persistentData
 
 				itemStack.itemMeta = itemMeta
 
@@ -211,119 +210,6 @@ data class Item(
 
 	@ItemDsl
 	fun spawn(location: Location) = location.world.dropItem(location, produce())
-
-	// data processing
-
-	val dataStorage: Map<String, Any>
-		get() = data
-
-	val dataKeys: Set<String>
-		get() = data.keys
-
-	val dataValues: Collection<Any>
-		get() = data.values
-
-	fun dataCompatibilityCheck(any: Any?, allowTransforming: Boolean = true): Boolean {
-		return if (any != null) {
-			when (any) {
-				is Byte, is Short, is Int, is Long, is Float, is Double -> true
-				is String -> true
-				is ByteArray, is IntArray, is LongArray -> true
-				is IntRange -> allowTransforming
-				else -> false.debugLog("checker is flown; ${any.javaClass.name}")
-			}
-		} else
-			false
-	}
-
-	fun dataContentType(any: Any): PersistentDataType<out Any, out Any> = when (any) {
-		is Byte -> PersistentDataType.BYTE
-		is Short -> PersistentDataType.SHORT
-		is Int -> PersistentDataType.INTEGER
-		is Long -> PersistentDataType.LONG
-		is Float -> PersistentDataType.FLOAT
-		is Double -> PersistentDataType.DOUBLE
-		is String -> PersistentDataType.STRING
-		is ByteArray -> PersistentDataType.BYTE_ARRAY
-		is IntArray -> PersistentDataType.INTEGER_ARRAY
-		is LongArray -> PersistentDataType.LONG_ARRAY
-		else -> throw IllegalArgumentException("The data '$any' is not compatible with the data-cache")
-	}
-
-	fun dataGet(path: NamespacedKey) = dataGet(path.toString())
-
-	fun dataGet(location: String) = data[location]
-
-	fun dataPut(path: NamespacedKey, data: Any?, allowTransforming: Boolean = true) = apply {
-		val transformedData = data.let {
-			if (allowTransforming) {
-				if (it is IntRange)
-					return@let it.toSet().toIntArray()
-			}
-
-			return@let it
-		}
-
-		if (dataCompatibilityCheck(transformedData, allowTransforming)) {
-
-			this.data[path.toString()] = data!!
-
-			debugLog("saved data '$data' under '$path' in item '${this.identity}'!")
-
-		} else
-			throw IllegalArgumentException("The data '$transformedData' is not compatible with the data-cache")
-
-	}
-
-	fun itemDataStoragePut(
-		vendor: App,
-		path: String,
-		data: Any?,
-		allowTransforming: Boolean = true
-	) = dataPut(vendor.subNamespacedKey(path, CONTINUE), data, allowTransforming)
-
-	fun dataContains(path: NamespacedKey) = dataGet(path) != null
-
-	fun dataContains(location: String) = dataGet(location) != null
-
-	val itemStoreApplier: (PersistentDataContainer) -> Unit = { container ->
-
-		debugLog("producing persistentDataContainer for item '${this@Item.identity}' started... ")
-
-		data.forEach { (key, value) ->
-
-			fun <T : Any> run() {
-				(dataContentType(value) to value).let { valueData ->
-
-					fun tryPut() {
-						runBlocking {
-							try {
-								container.set(
-									NamespacedKey.fromString(key)!!,
-									valueData.first.forceCast<PersistentDataType<T, T>>(),
-									valueData.second.forceCast()
-								)
-							} catch (e: ConcurrentModificationException) {
-								debugLog("Saving data '$value' under '$key' in item '$identity' failed, retrying in 0.1 seconds...")
-								delay(.1.seconds)
-								tryPut()
-							}
-						}
-					}
-
-					tryPut()
-
-					debugLog("|> produced $value into items-data container '${this@Item.identity}'")
-				}
-			}
-
-			run<Any>()
-
-		}
-
-		debugLog("producing persistentDataContainer for item '${this@Item.identity}' succeed!")
-
-	}
 
 	// smart-modify functions
 
@@ -639,37 +525,6 @@ data class Item(
 
 		private fun modificationsToEnchantments(modifications: Collection<Modification>) = modifications.associate {
 			it.enchantment to it.level
-		}
-
-		private fun readItemDataStorage(itemStack: ItemStack): Map<String, Any> = mutableMapOf<String, Any>().apply {
-			if (itemStack.itemMeta != null) {
-				val persistentDataContainer = itemStack.itemMeta.persistentDataContainer
-				val persistentDataTypes = setOf(
-					PersistentDataType.BYTE,
-					PersistentDataType.SHORT,
-					PersistentDataType.INTEGER,
-					PersistentDataType.LONG,
-					PersistentDataType.FLOAT,
-					PersistentDataType.DOUBLE,
-					PersistentDataType.STRING,
-					PersistentDataType.BYTE_ARRAY,
-					PersistentDataType.INTEGER_ARRAY,
-					PersistentDataType.LONG_ARRAY,
-					//PersistentDataType.TAG_CONTAINER_ARRAY, not supported
-					//PersistentDataType.TAG_CONTAINER, not supported
-				)
-
-				persistentDataContainer.keys.forEach {
-					persistentDataTypes.forEach { type ->
-						try {
-							persistentDataContainer[it, type]?.let { it1 -> put(it.toString(), it1) }
-						} catch (e: NullPointerException) {
-							throw NoSuchElementException("Element '$it' is not contained!")
-						} catch (ignore: IllegalArgumentException) {
-						}
-					}
-				}
-			}
 		}
 
 	}
