@@ -16,8 +16,8 @@ import de.fruxz.sparkle.framework.app.RunStatus
 import de.fruxz.sparkle.framework.app.RunStatus.*
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.exception.IllegalActionException
-import de.fruxz.sparkle.framework.extension.coroutines.asSync
 import de.fruxz.sparkle.framework.extension.coroutines.delayed
+import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
 import de.fruxz.sparkle.framework.extension.coroutines.task
 import de.fruxz.sparkle.framework.extension.debugLog
@@ -207,82 +207,90 @@ abstract class App(
 	/**
 	 * Add Interchange
 	 */
-	suspend fun add(interchange: Interchange) {
+	fun add(interchange: Interchange) {
 		val failFreeLabel = interchange::class.simpleName
 
-		mainLog(Level.INFO, "starting register of interchange '$failFreeLabel'!")
+		@OptIn(ExperimentalTime::class)
+		measureTime {
 
-		fun failed() {
-			val label = interchange.label
-			val aliases = try {
-				interchange.aliases
-			} catch (e: Exception) {
-				emptySet()
+			mainLog(Level.INFO, "starting register of interchange '$failFreeLabel'!")
+
+			fun failed() {
+				val label = interchange.label
+				val aliases = try {
+					interchange.aliases
+				} catch (e: Exception) {
+					emptySet()
+				}
+				val command = getCommand(interchange.label)
+
+				mainLog(Level.WARNING, "FAILED! try to register fail-interchange '$label' instead...")
+
+				if (command != null) {
+					val replace = IssuedInterchange(label, aliases)
+
+					command.setExecutor(replace)
+					command.tabCompleter = replace.tabCompleter
+					command.usage = replace.completion.buildSyntax(null)
+
+				} else
+					mainLog(Level.WARNING, "FAILED! failed to register fail-interchange for '$label'")
+
 			}
-			val command = getCommand(interchange.label)
 
-			mainLog(Level.WARNING, "FAILED! try to register fail-interchange '$label' instead...")
+			if (isEnabled) {
 
-			if (command != null) {
-				val replace = IssuedInterchange(label, aliases)
+				try {
 
-				command.setExecutor(replace)
-				command.tabCompleter = replace.tabCompleter
-				command.usage = replace.completion.buildSyntax(null)
+					doSync {
 
-			} else
-				mainLog(Level.WARNING, "FAILED! failed to register fail-interchange for '$label'")
+						val label = interchange.label
+						val command = getCommand(interchange.label) ?: createCommand(interchange)
 
-		}
+						interchange.replaceVendor(companion.instance)
 
-		if (isEnabled) {
+						command.name = label
+						command.tabCompleter = interchange.tabCompleter
+						command.usage = interchange.completion.buildSyntax(null)
+						command.aliases = interchange.aliases.toList()
+						command.description = interchange.description
+						interchange.permissionMessage?.let(command::permissionMessage)
+						command.setExecutor(interchange)
+						interchange.requiredApproval
+							?.takeIf { interchange.requiresApproval }
+							?.let { approval ->
+								command.permission = approval.identity
+								debugLog("Interchange '${interchange.label}' permission set to '${approval.identity}'!")
+							}
 
-			try {
+						debugLog("registering artificial command for '${interchange.label}'...")
 
-				asSync {
-
-					val label = interchange.label
-					val command = getCommand(interchange.label) ?: createCommand(interchange)
-
-					interchange.replaceVendor(companion.instance)
-
-					command.name = label
-					command.tabCompleter = interchange.tabCompleter
-					command.usage = interchange.completion.buildSyntax(null)
-					command.aliases = interchange.aliases.toList()
-					command.description = interchange.description
-					interchange.permissionMessage?.let(command::permissionMessage)
-					command.setExecutor(interchange)
-					interchange.requiredApproval
-						?.takeIf { interchange.requiresApproval }
-						?.let { approval ->
-							command.permission = approval.identity
-							debugLog("Interchange '${interchange.label}' permission set to '${approval.identity}'!")
+						server.internalCommandMap.apply {
+							register(description.name, command)
 						}
 
-					debugLog("registering artificial command for '${interchange.label}'...")
+						server.internalSyncCommands()
 
-					server.internalCommandMap.apply {
-						register(description.name, command)
+						debugLog("successfully registered artificial command for '${interchange.label}'!")
+
+						SparkleCache.registeredInterchanges += interchange
+
+						mainLog(Level.INFO, "register of interchange '$label' succeed!")
+
 					}
 
-					server.internalSyncCommands()
-
-					debugLog("successfully registered artificial command for '${interchange.label}'!")
-
-					SparkleCache.registeredInterchanges += interchange
-
-					mainLog(Level.INFO, "register of interchange '$label' succeed!")
-
+				} catch (exception: Exception) {
+					catchException(exception)
+					failed()
 				}
 
-			} catch (exception: Exception) {
-				catchException(exception)
-				failed()
-			}
+			} else
+				mainLog(Level.WARNING, "skipped registering '$failFreeLabel' interchange, app disabled!")
 
-		} else
-			mainLog(Level.WARNING, "skipped registering '$failFreeLabel' interchange, app disabled!")
+		}.also { time ->
+			debugLog("registered '$failFreeLabel' interchange in ${time}!")
+		}
+
 	}
 
 	fun add(eventListener: EventListener) {
@@ -416,29 +424,36 @@ abstract class App(
 	fun add(component: Component) {
 		tryToCatch {
 
-			component.replaceVendor(this)
+			@OptIn(ExperimentalTime::class)
+			measureTime {
 
-			if (SparkleCache.registeredComponents.any { it.identity == component.identity })
-				throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
+				component.replaceVendor(this)
 
-			component.firstContactHandshake()
+				if (SparkleCache.registeredComponents.any { it.identity == component.identity })
+					throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
 
-			SparkleCache.registeredComponents += component
+				component.firstContactHandshake()
 
-			coroutineScope.launch(context = component.vendor.pluginCoroutineDispatcher(true)) {
+				SparkleCache.registeredComponents += component
 
-				component.register()
+				coroutineScope.launch(context = component.vendor.pluginCoroutineDispatcher(true)) {
 
-				mainLog(Level.INFO, "registered '${component.identity}' component!")
+					component.register()
 
-				if (component.isAutoStarting) {
+					mainLog(Level.INFO, "registered '${component.identity}' component!")
 
-					mainLog(Level.INFO, "### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
+					if (component.isAutoStarting) {
 
-					start(component.identityObject)
+						mainLog(Level.INFO, "### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
+
+						start(component.identityObject)
+
+					}
 
 				}
 
+			}.let { time ->
+				debugLog("registered '${component.identity}' component in ${time}!")
 			}
 
 		}

@@ -15,7 +15,8 @@ import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent.UpdateReason
 import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent.UpdateReason.PLUGIN
 import de.fruxz.sparkle.framework.extension.coroutines.asAsync
-import de.fruxz.sparkle.framework.extension.coroutines.asSync
+import de.fruxz.sparkle.framework.extension.coroutines.asSyncDeferred
+import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.effect.playSoundEffect
 import de.fruxz.sparkle.framework.extension.system
@@ -117,7 +118,7 @@ open class Canvas(
 	) = system.coroutineScope.launch {
 		if (NO_OPEN in flags) cancel()
 
-		val inventoryContent = async { asSync { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } }
+		val inventoryContent = asSyncDeferred { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() }
 		val scrollableContent = async { pagination.contentRendering((data[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>() ?: 0), ((base.virtualSize + 1) / 9), content) }
 
 		receivers.toList().forEachNotNull { receiver ->
@@ -143,7 +144,7 @@ open class Canvas(
 					if (!triggerOpenEvent || event.callEvent()) {
 						localInstance = event.inventory
 
-						asSync {
+						doSync {
 							receiver.openInventory(localInstance)
 							CanvasSessionManager.putSession(receiver, this@Canvas, event.data)
 						}
@@ -211,7 +212,7 @@ open class Canvas(
 	) = system.coroutineScope.launch {
 		if (NO_UPDATE in flags) cancel()
 
-		val inventoryContent = async { asSync { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } } // todo this is alsp effected by the pagination system
+		val inventoryContent = asSyncDeferred { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } // todo this is also effected by the pagination system
 
 		receivers.toList().forEachNotNull { receiver ->
 			var topInventory = receiver.openInventory.topInventory
@@ -238,7 +239,7 @@ open class Canvas(
 					if (!triggerUpdateEvent || event.callEvent()) {
 						topInventory = event.inventory
 
-						asSync {
+						doSync {
 
 							if (topInventory.viewers.isNotEmpty() && receiver in viewers) { // just a check, to keep it bulletproof
 								debugLog("Updating ${receiver.name}'s inventory from $identity canvas")

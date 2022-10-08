@@ -5,7 +5,7 @@ import de.fruxz.ascend.extension.tryToCatch
 import de.fruxz.ascend.extension.tryToIgnore
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.extension.buildSandBox
-import de.fruxz.sparkle.framework.extension.coroutines.asSync
+import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.destroySandBox
 import de.fruxz.sparkle.framework.extension.internalCommandMap
@@ -79,7 +79,7 @@ abstract class SmartComponent(
 
 				interchange.replaceVendor(vendor)
 
-				asSync { _ ->
+				doSync { _ ->
 					server.internalCommandMap.apply {
 						val command = server.getPluginCommand(interchange.label) ?: vendor.createCommand(interchange)
 

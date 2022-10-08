@@ -1,11 +1,11 @@
 package de.fruxz.sparkle.server.component.marking
 
+import de.fruxz.sparkle.framework.extension.coroutines.doSync
+import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.extension.visual.ui.addItems
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.ignoreCase
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredPlayerInterchange
-import de.fruxz.sparkle.framework.extension.visual.notification
-import de.fruxz.sparkle.framework.extension.visual.ui.addItems
-import de.fruxz.sparkle.framework.extension.coroutines.asSync
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.APPLIED
 import de.fruxz.stacked.extension.dyeGold
 import de.fruxz.stacked.extension.dyeGray
@@ -24,7 +24,7 @@ internal class MarkingInterchange : StructuredPlayerInterchange(
 
 			concludedExecution {
 
-				asSync { executor.inventory.addItems(MarkingComponent.markingItem) }
+				doSync { executor.inventory.addItems(MarkingComponent.markingItem) }
 
 				text {
 					this + text("The ").dyeGray()

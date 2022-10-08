@@ -7,6 +7,9 @@ import de.fruxz.ascend.extension.math.round
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.tool.math.Percentage.Companion.percent
 import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.sparkle.framework.effect.particle.ParticleType
+import de.fruxz.sparkle.framework.extension.coroutines.doSync
+import de.fruxz.sparkle.framework.extension.coroutines.launch
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.effect.offset
 import de.fruxz.sparkle.framework.extension.effect.particleOf
@@ -16,9 +19,6 @@ import de.fruxz.sparkle.framework.extension.positionX
 import de.fruxz.sparkle.framework.extension.positionY
 import de.fruxz.sparkle.framework.extension.positionZ
 import de.fruxz.sparkle.framework.extension.system
-import de.fruxz.sparkle.framework.extension.coroutines.asSync
-import de.fruxz.sparkle.framework.extension.coroutines.launch
-import de.fruxz.sparkle.framework.effect.particle.ParticleType
 import de.fruxz.stacked.text
 import io.ktor.util.*
 import kotlinx.coroutines.delay
@@ -101,7 +101,7 @@ object EnhancedWorldTools {
 							heartBeat++
 
 							if (includeContainerContent) {
-								tryOrNull { block.state.takeIf { it !is Container } } ?: asSync {
+								tryOrNull { block.state.takeIf { it !is Container } } ?: doSync {
 									val iState = block.state
 									if (iState is Container) {
 										iState.snapshotInventory.let { inventory ->
