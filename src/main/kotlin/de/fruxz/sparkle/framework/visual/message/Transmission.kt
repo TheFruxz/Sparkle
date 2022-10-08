@@ -3,15 +3,15 @@ package de.fruxz.sparkle.framework.visual.message
 import de.fruxz.ascend.extension.dump
 import de.fruxz.ascend.tool.smart.positioning.Address
 import de.fruxz.ascend.tool.smart.positioning.Address.Companion.address
-import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.extension.consoleSender
-import de.fruxz.sparkle.framework.extension.onlinePlayers
-import de.fruxz.sparkle.server.SparkleData
-import de.fruxz.sparkle.framework.visual.message.DisplayType.*
 import de.fruxz.sparkle.framework.effect.EntityBasedEffect
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.GENERAL
 import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
+import de.fruxz.sparkle.framework.extension.consoleSender
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.onlinePlayers
+import de.fruxz.sparkle.framework.visual.message.DisplayType.*
+import de.fruxz.sparkle.framework.visual.message.Transmission.Level.GENERAL
+import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.stacked.extension.asComponent
 import de.fruxz.stacked.extension.asStyledComponent
 import de.fruxz.stacked.extension.asStyledString
@@ -23,7 +23,7 @@ import org.bukkit.entity.Entity
 data class Transmission(
 	var prefix: Component? = null,
 	var content: List<Component> = listOf(Component.empty()),
-	var participants: MutableList<InterchangeExecutor> = mutableListOf(), // TODO does it have to be a mutable list? CHECK!
+	var participants: Set<InterchangeExecutor> = setOf(),
 	var withoutPrefix: Boolean = false,
 	var displayType: DisplayType = DISPLAY_CHAT,
 	var promptSoundEffect: SoundEffect? = null,
@@ -55,7 +55,7 @@ data class Transmission(
 	@JvmName("contentStrings")
 	infix fun content(content: List<String>) = edit { this.content = content.map { it.asComponent } }
 
-	infix fun participants(participants: Collection<InterchangeExecutor>) = edit { this.participants = participants.toMutableList() }
+	infix fun participants(participants: Collection<InterchangeExecutor>) = edit { this.participants = participants.toSet() }
 
 	infix fun participants(participants: Array<InterchangeExecutor>) = participants(participants.toList())
 
