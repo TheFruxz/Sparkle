@@ -16,10 +16,8 @@ import de.fruxz.sparkle.framework.app.RunStatus
 import de.fruxz.sparkle.framework.app.RunStatus.*
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.exception.IllegalActionException
-import de.fruxz.sparkle.framework.extension.coroutines.delayed
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
-import de.fruxz.sparkle.framework.extension.coroutines.task
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.destroySandBox
 import de.fruxz.sparkle.framework.extension.internalCommandMap
@@ -316,87 +314,18 @@ abstract class App(
 			mainLog(Level.WARNING, "skipped registering '${eventListener.listenerIdentity}' listener, app disabled!")
 	}
 
-	fun register(service: Service) {
-		if (SparkleCache.registeredServices.none { it.identity == service.identity }) {
-			tryToCatch {
-				SparkleCache.registeredServices += service
-				mainLog(Level.INFO, "register of service '${service.identity}' succeed!")
-			}
-		} else
-			throw IllegalStateException("The service '${service.identity}' is already registered!")
-	}
+	fun register(service: Service) = service.requestRegister()
 
-	fun unregister(service: Service) {
-		if (SparkleCache.registeredServices.any { it.identity == service.identity }) {
-			tryToCatch {
-				if (service.isRunning) {
-					stop(service)
-				}
-				SparkleCache.registeredServices -= service
-				mainLog(Level.INFO, "unregister of service '${service.identity}' succeed!")
-			}
-		} else
-			throw IllegalStateException("The service '${service.identity}' is not registered!")
-	}
+	fun start(service: Service) = service.requestStart()
 
-	fun reset(service: Service) {
-		if (SparkleCache.registeredServices.any { it.identity == service.identity }) {
-			tryToCatch {
-				service.controller?.attempt = 0
-				mainLog(Level.INFO, "reset of service '${service.identity}' succeed!")
-			}
-		} else
-			throw IllegalStateException("The service '${service.identity}' is not registered!")
-	}
-
-	fun start(service: Service) {
-		if (SparkleCache.registeredServices.any { it.identity == service.identity }) {
-			if (!service.isRunning) {
-				tryToCatch {
-					task(
-						service.temporalAdvice,
-						process = service.process,
-						vendor = this,
-						onStart = service.onStart,
-						onStop = service.onStop,
-						onCrash = service.onCrash,
-						serviceVendor = service.key
-					)
-					mainLog(Level.INFO, "starting of service '${service.identity}' succeed!")
-				}
-			} else
-				throw IllegalStateException("The service '${service.identity}' is already running!")
-		} else
-			throw IllegalStateException("The service '${service.identity}' is not registered!")
-	}
-
-	fun stop(service: Service) {
-		if (service.isRunning) {
-			tryToCatch {
-				service.shutdown()
-				mainLog(Level.INFO, "stopping of service '${service.identity}' succeed!")
-			}
-		} else
-			throw IllegalStateException("The service '${service.identity}' is not running!")
-	}
+	fun stop(service: Service) = service.requestStop()
 
 	fun restart(service: Service) {
-		mainLog(Level.INFO, "--- --- --- --- --- --- --- --- --- --- --- ---")
-		mainLog(Level.INFO, "Attempting restart of service '${service.identity}'...")
-		try {
-			stop(service)
-		} catch (exception: IllegalStateException) {
-			mainLog(Level.WARNING, "skipped stop of service '${service.identity}', was already offline!")
-		}
-		mainLog(Level.INFO, "Waiting one second, let the service stop...")
-
-		delayed(1.seconds) {
-			start(service)
-		}
-
-		mainLog(Level.INFO, "Restart of service '${service.identity}' succeed!")
-		mainLog(Level.INFO, "--- --- --- --- --- --- --- --- --- --- --- ---")
+		stop(service)
+		start(service)
 	}
+
+	fun unregister(service: Service) = service.requestUnregister()
 
 	fun remove(eventListener: EventListener) {
 		if (isEnabled && eventListener.isVendorCurrentlySet) {
@@ -729,9 +658,9 @@ abstract class App(
 				true
 			}
 
-			SparkleCache.registeredServices.toList().forEach {
-				if (key() == it.vendor.key() && it.isRunning) {
-					it.shutdown()
+			SparkleCache.serviceStates.forEach { (_, state) ->
+				if (state.vendor.key() == this@App.key()) {
+					state.service.requestStop()
 				}
 			}
 

@@ -1,60 +1,143 @@
 package de.fruxz.sparkle.framework.infrastructure.service
 
-import de.fruxz.sparkle.framework.attachment.Logging
-import de.fruxz.sparkle.framework.extension.debugLog
-import de.fruxz.sparkle.framework.extension.getApp
+import de.fruxz.ascend.extension.container.firstOrNull
+import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
 import de.fruxz.sparkle.framework.infrastructure.Hoster
-import de.fruxz.sparkle.framework.scheduler.Tasky
-import de.fruxz.sparkle.framework.scheduler.TemporalAdvice
+import de.fruxz.sparkle.framework.infrastructure.app.App
+import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceState
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.subKey
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import net.kyori.adventure.key.Key
+import java.util.logging.Logger
+import kotlin.coroutines.CoroutineContext
+import kotlin.time.Duration
 
-interface Service : Hoster<Unit, Unit, Service>, Logging {
+interface Service : Hoster<Unit, Unit, Service> {
 
-	val temporalAdvice: TemporalAdvice
+	val vendor: App
 
-	val process: Tasky.() -> Unit
+	val serviceTimes: ServiceTimes
 
-	val onStart: Tasky.() -> Unit
-		get() = {}
+	val serviceActions: ServiceActions
 
-	val onStop: Tasky.() -> Unit
-		get() = {}
-
-	val onCrash: Tasky.() -> Unit
-		get() = {}
-
-	override val thisIdentity: String
-		get() = label.lowercase()
-
-	override val sectionLabel: String
-		get() = thisIdentity
+	val iteration: ServiceIteration
 
 	override val identityKey: Key
-		get() = vendor.subKey(thisIdentity, CONTINUE)
+		get() = vendor.subKey(label.lowercase().replace(" ", "_"))
 
-	var controller: Tasky?
-		get() = SparkleCache.runningServiceTaskController[key]
+	var serviceScope: CoroutineScope?
+		get() = SparkleCache.services.firstOrNull { it.key == identityKey }?.value
 		set(value) {
-			debugLog("Setting controller for $key to $value")
-			if (value != null)
-				SparkleCache.runningServiceTaskController += key to value
-			else
-				SparkleCache.runningServiceTaskController -= key
+			if (value != null) {
+				SparkleCache.services += identityKey to value
+			} else
+				SparkleCache.services -= identityKey
 		}
 
+	var serviceState: ServiceState?
+		get() = SparkleCache.serviceStates.firstOrNull { it.key == identityKey }?.value
+		set(value) {
+			if (value != null) {
+				SparkleCache.serviceStates += identityKey to value
+			} else
+				SparkleCache.serviceStates -= identityKey
+		}
+
+	val coroutineContext: CoroutineContext
+		get() = vendor.pluginCoroutineDispatcher(isAsync = serviceTimes.isAsync)
+
+	val serviceLogger: Logger
+		get() = App.createLog(vendor.thisIdentity, "service:<${thisIdentity}>")
+
+	val isRegistered: Boolean
+		get() = SparkleCache.services.containsKey(identityKey)
+
 	val isRunning: Boolean
-		get() = controller != null && SparkleCache.runningTasks.contains(controller!!.taskId)
+		get() = serviceState?.runningSince != null
 
-	fun shutdown() =
-		controller?.shutdown() ?: throw IllegalStateException("controller of '$key' is null!")
+	fun requestRegister() {
+		internalRegisteredScope()
+		serviceState = ServiceState(this, vendor, null, -1, serviceTimes)
+	}
 
-	override fun requestStart() =
-		vendor.getApp().start(this)
+	override fun requestStart() {
+		if (isRunning) return
 
-	override fun requestStop() =
-		shutdown()
+		internalRegisteredScope().also { originScope ->
+			val time = Calendar.now()
+
+			serviceState = ServiceState(this, vendor, time, -1, serviceTimes)
+
+			originScope.launch(context = coroutineContext) {
+				serviceActions.onStart.invoke(this@Service) // start-action
+				if (serviceTimes.delay.isPositive()) delay(serviceTimes.delay)
+
+				try {
+					if (serviceTimes.interval.isPositive()) {
+						var repetition = 0
+						while (originScope.isActive) {
+							val serviceState = ServiceState(this@Service, vendor, time, repetition++, serviceTimes)
+
+							iteration.invoke(serviceState.also {
+								this@Service.serviceState = serviceState
+							}, this)
+
+							delay(serviceTimes.interval)
+						}
+					} else iteration.invoke(ServiceState(this@Service, vendor, time, 0, serviceTimes), this)
+				} catch (e: Exception) {
+					e.printStackTrace()
+					serviceActions.onCrash.invoke(this@Service, e)
+				}
+
+			}
+		}
+
+	}
+
+	override fun requestStop() {
+		if (!isRunning) return
+
+		serviceActions.onStop(this)
+		serviceScope?.cancel()
+		serviceState = ServiceState(this, vendor, null, -1, serviceTimes)
+
+	}
+
+	fun requestUnregister() {
+		requestStop()
+		serviceScope = null
+		serviceState = null
+	}
+
+	private fun internalRegisteredScope() = CoroutineScope(coroutineContext).also { serviceScope = it }
+
+	data class ServiceTimes(
+		val delay: Duration = Duration.ZERO,
+		val interval: Duration = Duration.ZERO,
+		val isAsync: Boolean = true,
+	)
+
+	data class ServiceActions(
+		val onStart: suspend (Service) -> Unit = { },
+		val onStop: (Service) -> Unit = { },
+		val onCrash: suspend (Service, Exception) -> Unit = { _, _ -> },
+	)
+
+	data class ServiceState(
+		val service: Service,
+		val vendor: App,
+		val runningSince: Calendar?,
+		val repetition: Int,
+		val timing: ServiceTimes,
+	)
 
 }
+
+typealias ServiceIteration = suspend ServiceState.(CoroutineScope) -> Unit

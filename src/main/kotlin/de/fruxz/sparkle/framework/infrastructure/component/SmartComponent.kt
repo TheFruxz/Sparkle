@@ -133,7 +133,6 @@ abstract class SmartComponent(
 		services.forEach {
 			tryToCatch {
 				vendor.register(it)
-				SparkleCache.registeredServices += it
 				debugLog("Service '${it.identity}' registered through '$identity'!")
 				vendor.start(it)
 				debugLog("Service '${it.identity}' started through '$identity'!")

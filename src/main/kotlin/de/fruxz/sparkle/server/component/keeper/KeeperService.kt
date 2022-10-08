@@ -2,31 +2,30 @@ package de.fruxz.sparkle.server.component.keeper
 
 import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.extension.container.withForEach
-import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.server.SparkleApp
-import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel.DUMP
-import de.fruxz.sparkle.framework.infrastructure.service.Service
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.system
-import de.fruxz.sparkle.framework.scheduler.Tasky
-import de.fruxz.sparkle.framework.scheduler.TemporalAdvice
-import java.util.logging.Level
+import de.fruxz.sparkle.framework.infrastructure.app.App
+import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel.DUMP
+import de.fruxz.sparkle.framework.infrastructure.service.Service
+import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceActions
+import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceTimes
+import de.fruxz.sparkle.framework.infrastructure.service.ServiceIteration
+import de.fruxz.sparkle.server.SparkleApp
+import de.fruxz.sparkle.server.SparkleCache
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-internal class KeeperService : Service {
+internal class KeeperService(override val vendor: App = system) : Service {
 
-	override val vendor = system
+	override val label = "Cache-Cleaner"
 
-	override val label = "iKeeper"
+	override val serviceTimes = ServiceTimes(1.seconds, 20.minutes, false)
 
-	override val temporalAdvice = TemporalAdvice.ticking(1.seconds, 20.minutes, false)
+	override val serviceActions = ServiceActions(onStart = {
+		serviceLogger.info("Hey! I'm starting to clean your App-Caches!")
+	})
 
-	override val onStart: Tasky.() -> Unit = {
-		sectionLog.log(Level.INFO, "Hey! I'm starting to clean your App-Caches!")
-	}
-
-	override val process: Tasky.() -> Unit = {
+	override val iteration: ServiceIteration = {
 
 		// Cleaning the individual caches of the different registered apps
 		SparkleCache.registeredApps.withForEach {

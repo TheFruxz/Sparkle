@@ -3,8 +3,9 @@ package de.fruxz.sparkle.server.component.service
 import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.switchResult
-import de.fruxz.sparkle.server.SparkleCache.registeredServices
 import de.fruxz.sparkle.framework.Constants
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.SUCCESS
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.WRONG_USAGE
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructureInputRestriction
@@ -14,10 +15,8 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.content.Comp
 import de.fruxz.sparkle.framework.infrastructure.command.completion.ignoreCase
 import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequired
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
-import de.fruxz.sparkle.framework.extension.app
-import de.fruxz.sparkle.framework.extension.visual.notification
-import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.stacked.extension.dyeDarkGray
 import de.fruxz.stacked.extension.dyeGold
 import de.fruxz.stacked.extension.dyeGray
@@ -47,7 +46,7 @@ internal class ServiceInterchange : StructuredInterchange(
 			ignoreCase()
 
 			fun displayServices(executor: InterchangeExecutor, page: Int) {
-				val pageValue = registeredServices.page(page, Constants.ENTRIES_PER_PAGE)
+				val pageValue = SparkleCache.serviceStates.values.page(page, Constants.ENTRIES_PER_PAGE)
 
 				if (pageValue.content.isNotEmpty()) {
 
@@ -56,15 +55,15 @@ internal class ServiceInterchange : StructuredInterchange(
 						this + text("(Page ${pageValue.pageNumber} of ${pageValue.availablePages.last})").dyeYellow()
 						this + newline()
 
-						pageValue.content.forEach { service ->
+						pageValue.content.forEach { serviceState ->
 							this + newline()
-							this + service.isRunning.switchResult(
+							this + serviceState.service.isRunning.switchResult(
 								text(iconEnabled).dyeGreen(),
 								text(iconDisabled).dyeGray(),
 							)
 							this + text(" | ").dyeDarkGray()
 							this + text {
-								this + text(service.label).dyeGold().hover {
+								this + text(serviceState.service.label).dyeGold().hover {
 									text {
 										this + text("Label & Identity: ").style(NamedTextColor.BLUE, BOLD)
 										this + newline()
@@ -73,13 +72,18 @@ internal class ServiceInterchange : StructuredInterchange(
 										newlines(2)
 
 										this + text("Label: ").dyeGray()
-										this + text(service.label).dyeGreen()
+										this + text(serviceState.service.label).dyeGreen()
 										this + newline()
 										this + text("Identity: ").dyeGray()
-										this + text(service.key().asString()).dyeGreen()
+										this + text(serviceState.service.key().asString()).dyeGreen()
 									}
 								}
 							}
+
+							serviceState.runningSince?.durationToNow()?.let { time ->
+								this + text(" (running $time)").dyeGray()
+							}
+
 						}
 
 						newlines(2)
@@ -105,7 +109,7 @@ internal class ServiceInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(CompletionAsset.pageCompletion { ceilToInt(registeredServices.size.toDouble() / Constants.ENTRIES_PER_PAGE) })
+				addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.serviceStates.values.size.toDouble() / Constants.ENTRIES_PER_PAGE) })
 
 				isNotRequired()
 
@@ -141,15 +145,15 @@ internal class ServiceInterchange : StructuredInterchange(
 					ignoreCase()
 
 					concludedExecution {
-						val service = registeredServices.first { it.identity == getInput(1) }
+						val service = SparkleCache.serviceStates.values.first { it.service.identity == getInput(1) }
 
 						try {
 
-							app(service.vendor).start(service)
+							service.service.requestStart()
 
 							text {
 								this + text("The service '").dyeGray()
-								this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+								this + text(service.service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 								this + text("' has been started!").dyeGray()
 							}.notification(APPLIED, executor).display()
 
@@ -157,7 +161,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 							text {
 								this + text("The service '").dyeGray()
-								this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+								this + text(service.service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 								this + text("' is already online!").dyeGray()
 							}
 
@@ -174,15 +178,15 @@ internal class ServiceInterchange : StructuredInterchange(
 					ignoreCase()
 
 					concludedExecution {
-						val service = registeredServices.first { it.identity == getInput(1) }
+						val service = SparkleCache.serviceStates.values.first { it.service.identity == getInput(1) }
 
 						try {
 
-							app(service.vendor).stop(service)
+							service.service.requestStop()
 
 							text {
 								this + text("The service '").dyeGray()
-								this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+								this + text(service.service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 								this + text("' has been stopped!").dyeGray()
 							}.notification(APPLIED, executor).display()
 
@@ -190,7 +194,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 							text {
 								this + text("The service '").dyeGray()
-								this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+								this + text(service.service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 								this + text("' is already offline!").dyeGray()
 							}.notification(FAIL, executor).display()
 
@@ -207,13 +211,13 @@ internal class ServiceInterchange : StructuredInterchange(
 					ignoreCase()
 
 					concludedExecution {
-						val service = registeredServices.first { it.identity == getInput(1) }
+						val service = SparkleCache.serviceStates.values.first { it.service.identity == getInput(1) }
 
-						app(service.vendor).restart(service)
+						service.service.requestStop()
 
 						text {
 							this + text("The service '").dyeGray()
-							this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+							this + text(service.service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 							this + text("' has been restarted!").dyeGray()
 						}.notification(APPLIED, executor).display()
 
@@ -228,50 +232,17 @@ internal class ServiceInterchange : StructuredInterchange(
 					ignoreCase()
 
 					concludedExecution {
-						val service = registeredServices.first { it.identity == getInput(1) }
+						val service = SparkleCache.serviceStates.values.first { it.service.identity == getInput(1) }
 
 						try {
 
-							app(service.vendor).stop(service)
-							app(service.vendor).unregister(service)
+							service.service.requestStop()
+							service.service.requestStart()
 
 							text {
 								this + text("The service '").dyeGray()
-								this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
+								this + text(service.service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 								this + text("' has been unregistered!").dyeGray()
-							}.notification(APPLIED, executor).display()
-
-						} catch (exception: IllegalStateException) {
-
-							text {
-								this + text("The service '").dyeGray()
-								this + text(getInput(1)).dyeYellow()
-								this + text("' is not registered!").dyeGray()
-							}.notification(FAIL, executor).display()
-
-						}
-
-					}
-
-				}
-
-				branch {
-
-					addContent("reset")
-
-					ignoreCase()
-
-					concludedExecution {
-						val service = registeredServices.first { it.identity == getInput(1) }
-
-						try {
-
-							app(service.vendor).reset(service)
-
-							text {
-								this + text("The service '").dyeGray()
-								this + text(service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.identity).dyeYellow() }
-								this + text("' has been reset!").dyeGray()
 							}.notification(APPLIED, executor).display()
 
 						} catch (exception: IllegalStateException) {

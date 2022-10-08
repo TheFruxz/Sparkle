@@ -13,12 +13,13 @@ import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel.*
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
 import de.fruxz.sparkle.framework.infrastructure.component.Component
-import de.fruxz.sparkle.framework.infrastructure.service.Service
+import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceState
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import de.fruxz.sparkle.framework.sandbox.SandBox
 import de.fruxz.sparkle.framework.scheduler.Tasky
 import de.fruxz.sparkle.framework.visual.canvas.CanvasSessionManager.CanvasSession
 import de.fruxz.sparkle.framework.visual.item.action.ItemAction
+import kotlinx.coroutines.CoroutineScope
 import net.kyori.adventure.key.Key
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
@@ -45,15 +46,13 @@ object SparkleCache : AppCache {
 
 	var registeredComponents = setOf<Component>()
 
-	var registeredServices = setOf<Service>()
-
 	var registeredListeners = setOf<EventListener>()
 
 	var runningComponents = mapOf<Identity<out Component>, Calendar>()
 
 	var registeredPreferences = mapOf<Identity<out Preference<*>>, Preference<*>>()
 
-	var runningServiceTaskController = mapOf<Key, Tasky>()
+	var runningServiceTaskController = mapOf<Key, Tasky>() // TODO removal
 
 	var runningTasks = listOf<Int>()
 
@@ -68,6 +67,10 @@ object SparkleCache : AppCache {
 	var messageConversationPartners = mapOf<Player, Player>()
 
 	var canvasSessions = mapOf<Player, CanvasSession>()
+
+	var services = mapOf<Key, CoroutineScope>()
+
+	var serviceStates = mapOf<Key, ServiceState>()
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
 		when {
@@ -108,7 +111,8 @@ object SparkleCache : AppCache {
 			registeredCachedMutables = emptyMap()
 			registeredInterchanges = emptySet()
 			registeredComponents = emptySet()
-			registeredServices = emptySet()
+			services = emptyMap()
+			serviceStates = emptyMap()
 			registeredListeners = emptySet()
 			runningComponents = emptyMap()
 			registeredPreferences = emptyMap()

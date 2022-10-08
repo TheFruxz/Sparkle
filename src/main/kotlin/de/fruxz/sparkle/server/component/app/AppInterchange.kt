@@ -321,7 +321,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         this + newline() + text("Active since: ").dyeGray() + text(targetApp.activeSince.toString()).dyeYellow()
                         this + newline() + text("Components: ").dyeGray() + text("${SparkleCache.registeredComponents.filter { it.vendorIdentity == targetApp.identityObject }.size} Components").dyeYellow()
                         this + newline() + text("Interchanges: ").dyeGray() + text("${SparkleCache.registeredInterchanges.filter { it.vendorIdentity == targetApp.identityObject }.size} Interchanges").dyeYellow()
-                        this + newline() + text("Services: ").dyeGray() + text("${SparkleCache.registeredServices.filter { it.vendorIdentity == targetApp.identityObject }.size} Services").dyeYellow()
+                        this + newline() + text("Services: ").dyeGray() + text("${SparkleCache.serviceStates.filter { it.value.vendor.identityKey == targetApp.identityKey }.size} Services").dyeYellow()
                         this + newline() + text("SandBoxes: ").dyeGray() + text("${SparkleCache.registeredSandBoxes.filter { it.vendorIdentity == targetApp.identityObject }.size} SandBoxes").dyeYellow()
 
                         newlines(2)

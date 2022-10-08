@@ -173,11 +173,11 @@ data class CompletionAsset<T>(
 
 		@JvmStatic
 		val SERVICE = CompletionAsset<Service>(system, "SERVICE", true) {
-			SparkleCache.registeredServices.withMap { identity }
+			SparkleCache.services.map { it.key.asString() }
 		}.doCheck {
-			SparkleCache.registeredServices.any { it.identity.equals(input, ignoreCase) }
+			SparkleCache.services.any { it.key.asString().equals(input, ignoreCase) }
 		}.transformer {
-			SparkleCache.registeredServices.firstOrNull { it.identity == input }
+			SparkleCache.serviceStates.firstOrNull { it.key.asString() == input }?.value?.service
 		}
 
 		@JvmStatic

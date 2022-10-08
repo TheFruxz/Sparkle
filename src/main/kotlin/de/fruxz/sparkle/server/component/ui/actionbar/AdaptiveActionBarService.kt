@@ -1,23 +1,25 @@
 package de.fruxz.sparkle.server.component.ui.actionbar
 
-import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.Companion.globalLayers
-import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.Companion.playerLayers
-import de.fruxz.sparkle.framework.infrastructure.service.Service
 import de.fruxz.sparkle.framework.extension.onlinePlayers
 import de.fruxz.sparkle.framework.extension.system
-import de.fruxz.sparkle.framework.scheduler.Tasky
-import de.fruxz.sparkle.framework.scheduler.TemporalAdvice
+import de.fruxz.sparkle.framework.infrastructure.app.App
+import de.fruxz.sparkle.framework.infrastructure.service.Service
+import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceActions
+import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceTimes
+import de.fruxz.sparkle.framework.infrastructure.service.ServiceIteration
+import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.Companion.globalLayers
+import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.Companion.playerLayers
 import kotlin.time.Duration.Companion.seconds
 
-internal class AdaptiveActionBarService : Service {
+internal class AdaptiveActionBarService(override val vendor: App = system) : Service {
 
 	override val label = "AdaptiveActionBar"
 
-	override val vendor = system
+	override val serviceTimes = ServiceTimes(.5.seconds, .2.seconds, true)
+	override val serviceActions = ServiceActions()
 
-	override val temporalAdvice = TemporalAdvice.ticking(.5.seconds, .2.seconds, true)
+	override val iteration: ServiceIteration = {
 
-	override val process: Tasky.() -> Unit = {
 		val global = globalLayers
 
 		if (global.isNotEmpty() || playerLayers.isNotEmpty()) {
@@ -44,5 +46,6 @@ internal class AdaptiveActionBarService : Service {
 		}
 
 	}
+
 
 }
