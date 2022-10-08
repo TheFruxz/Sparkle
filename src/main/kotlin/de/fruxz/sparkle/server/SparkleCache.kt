@@ -115,6 +115,7 @@ object SparkleCache : AppCache {
 			registeredPreferences = emptyMap()
 			runningTasks = emptyList()
 			tmp_initSetupPreferences = emptySet()
+			disabledInterchanges = emptySet()
 		}
 
 	}
