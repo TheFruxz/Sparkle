@@ -418,8 +418,6 @@ abstract class App(
 
 			component.replaceVendor(this)
 
-//			if (!component.isBlocked) {
-
 			if (SparkleCache.registeredComponents.any { it.identity == component.identity })
 				throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
 
@@ -443,8 +441,6 @@ abstract class App(
 
 			}
 
-//			} else
-//				mainLog.warning("Component '${component.identity}' is blocked at components.json!")
 		}
 	}
 

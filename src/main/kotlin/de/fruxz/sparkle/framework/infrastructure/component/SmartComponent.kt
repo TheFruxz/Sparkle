@@ -68,6 +68,7 @@ abstract class SmartComponent(
 	}
 
 	final override suspend fun register() {
+		if (isBlocked) return
 
 		component() // register all objects
 
@@ -116,6 +117,7 @@ abstract class SmartComponent(
 	}
 
 	final override suspend fun start() {
+		if (isBlocked) return
 
 		selfStart.invoke()
 
@@ -164,6 +166,7 @@ abstract class SmartComponent(
 	}
 
 	final override suspend fun stop() {
+		if (isBlocked) return
 
 		selfStop.invoke()
 
