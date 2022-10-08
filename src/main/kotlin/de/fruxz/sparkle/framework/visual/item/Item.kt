@@ -4,14 +4,14 @@ import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.extension.forceCast
 import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.ascend.tool.smart.composition.Producible
-import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtItemEvent
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.persistentData
-import de.fruxz.sparkle.framework.extension.visual.ui.changeColor
-import de.fruxz.sparkle.framework.extension.visual.ui.itemMetaOrNull
 import de.fruxz.sparkle.framework.extension.subNamespacedKey
 import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.visual.ui.changeColor
+import de.fruxz.sparkle.framework.extension.visual.ui.itemMetaOrNull
+import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.framework.visual.color.ColorType
 import de.fruxz.sparkle.framework.visual.item.PostProperty.*
 import de.fruxz.sparkle.framework.visual.item.action.ItemAction
@@ -20,7 +20,7 @@ import de.fruxz.sparkle.framework.visual.item.action.ItemClickAction
 import de.fruxz.sparkle.framework.visual.item.action.ItemDropAction
 import de.fruxz.sparkle.framework.visual.item.action.ItemInteractAction
 import de.fruxz.sparkle.framework.visual.item.quirk.Quirk
-import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
+import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.stacked.extension.KEY_REGEX
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.asComponent
@@ -58,7 +58,6 @@ import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 import java.util.function.UnaryOperator
-import kotlin.ConcurrentModificationException
 import kotlin.time.Duration.Companion.seconds
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
@@ -90,7 +89,7 @@ data class Item(
 		modifications = enchantmentsToModifications(itemStack.enchantments).toMutableSet(),
 		flags = itemStack.itemFlags,
 		quirk = when (itemStack.type) {
-			PLAYER_HEAD, PLAYER_WALL_HEAD -> Quirk.skull { owningPlayer = itemStack.itemMetaOrNull?.takeIfInstance<SkullMeta>()?.owningPlayer } // TODO only set if itemMeta and owningPlayers is indeed null
+			PLAYER_HEAD, PLAYER_WALL_HEAD -> Quirk.skull { owningPlayer = itemStack.itemMetaOrNull?.takeIfInstance<SkullMeta>()?.owningPlayer }
 			else -> Quirk.empty
 		},
 		persistentData = itemStack.itemMetaOrNull?.persistentData ?: emptyMap(),
