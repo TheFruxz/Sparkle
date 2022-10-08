@@ -1,5 +1,6 @@
 package de.fruxz.sparkle.framework.visual.item
 
+import de.fruxz.ascend.extension.container.takeOrEmpty
 import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.extension.forceCast
 import de.fruxz.ascend.extension.objects.takeIfInstance
@@ -84,7 +85,7 @@ data class Item(
 		material = itemStack.type,
 		label = itemStack.itemMeta?.displayName() ?: Component.empty(),
 		size = itemStack.amount,
-		lore = itemStack.lore() ?: emptyList(),
+		lore = itemStack.lore().takeOrEmpty(),
 		damage = itemStack.itemMeta?.takeIfInstance<Damageable>()?.damage ?: 0,
 		modifications = enchantmentsToModifications(itemStack.enchantments).toMutableSet(),
 		flags = itemStack.itemFlags,

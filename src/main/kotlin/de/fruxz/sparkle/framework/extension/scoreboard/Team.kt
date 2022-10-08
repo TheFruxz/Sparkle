@@ -1,5 +1,6 @@
 package de.fruxz.sparkle.framework.extension.scoreboard
 
+import de.fruxz.ascend.extension.container.takeOrEmpty
 import de.fruxz.sparkle.framework.extension.offlinePlayer
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
@@ -13,7 +14,7 @@ import org.bukkit.scoreboard.Team
  * @since 1.0
  */
 val Team?.entriesAsOfflinePlayer: List<OfflinePlayer>
-    get() = this?.entries?.map { offlinePlayer(it) } ?: emptyList()
+    get() = this?.entries?.map { offlinePlayer(it) }.takeOrEmpty()
 
 /**
  * This value returns every entry from the [entriesAsOfflinePlayer] function, mapped to a [Player] object.

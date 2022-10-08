@@ -1,6 +1,7 @@
 package de.fruxz.sparkle.server.component.ui.gui
 
 import de.fruxz.ascend.extension.container.edited
+import de.fruxz.ascend.extension.container.takeOrEmpty
 import de.fruxz.ascend.extension.empty
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.maxTo
@@ -154,7 +155,7 @@ internal class CanvasListener : EventListener() {
 				if (!canvas.flags.contains(NO_CLICK_ACTIONS)) {
 
 					session.canvas.onClicks
-						.let { (it[null] ?: emptyList()) + (it[event.slot] ?: emptyList()) }
+						.let { (it[null].takeOrEmpty()) + (it[event.slot].takeOrEmpty()) }
 						.forEach { it.invoke(internalEvent) }
 
 				}
