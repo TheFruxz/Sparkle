@@ -3,8 +3,8 @@ package de.fruxz.sparkle.framework.data
 import de.fruxz.ascend.extension.container.toArrayList
 import de.fruxz.ascend.extension.data.fromJsonString
 import de.fruxz.ascend.extension.data.toJsonString
-import de.fruxz.sparkle.framework.visual.item.Item
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
+import de.fruxz.sparkle.framework.visual.item.Item
 import org.bukkit.Location
 
 data class DataTransformer<SHELL: Any, CORE: Any>(
@@ -16,19 +16,19 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 
 		@JvmStatic
 		fun <BOTH : Any> empty() =
-			de.fruxz.sparkle.framework.data.DataTransformer<BOTH, BOTH>({ this }, { this })
+			DataTransformer<BOTH, BOTH>({ this }, { this })
 
 		// JSON
 		@JvmStatic
 		inline fun <reified T : Any> json() =
-			de.fruxz.sparkle.framework.data.DataTransformer<T, String>(
+			DataTransformer<T, String>(
 				{ this.toJsonString() },
 				{ this.fromJsonString() },
 			)
 
 		@JvmStatic
 		fun jsonItem() =
-			de.fruxz.sparkle.framework.data.DataTransformer<Item, String>(
+			DataTransformer<Item, String>(
 				{ produceJson() },
 				{ Item.produceByJson(this)!! })
 
@@ -36,7 +36,7 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 
 		@JvmStatic
 		inline fun <reified SET> setCollection() =
-			de.fruxz.sparkle.framework.data.DataTransformer<Set<SET>, ArrayList<SET>>(
+			DataTransformer<Set<SET>, ArrayList<SET>>(
 				{ toArrayList() },
 				{ toSet() },
 			)
@@ -45,13 +45,13 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 
 		@JvmStatic
 		fun simpleLocationBukkit() =
-			de.fruxz.sparkle.framework.data.DataTransformer<Location, SimpleLocation>(
+			DataTransformer<Location, SimpleLocation>(
 				{ SimpleLocation.ofBukkit(this) },
 				{ bukkit })
 
 		@JvmStatic
 		fun simpleLocationListBukkit() =
-			de.fruxz.sparkle.framework.data.DataTransformer<List<Location>, List<SimpleLocation>>({
+			DataTransformer<List<Location>, List<SimpleLocation>>({
 				map {
 					SimpleLocation.ofBukkit(
 						it
@@ -61,7 +61,7 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 
 		@JvmStatic
 		fun simpleLocationArrayBukkit() =
-			de.fruxz.sparkle.framework.data.DataTransformer<Array<Location>, Array<SimpleLocation>>({
+			DataTransformer<Array<Location>, Array<SimpleLocation>>({
 				map {
 					SimpleLocation.ofBukkit(
 						it

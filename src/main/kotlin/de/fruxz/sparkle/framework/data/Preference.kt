@@ -5,14 +5,14 @@ import de.fruxz.ascend.extension.forceCast
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.server.SparkleCache.registeredPreferenceCache
-import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel
 import de.fruxz.sparkle.framework.data.Preference.InputType.*
-import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.extension.coroutines.task
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel
 import de.fruxz.sparkle.framework.scheduler.TemporalAdvice.Companion.instant
+import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.sparkle.server.SparkleCache.registeredPreferenceCache
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit.SECONDS
 import kotlin.time.Duration
@@ -27,7 +27,7 @@ data class Preference<SHELL : Any>(
 	val default: SHELL,
 	val useCache: Boolean = false,
 	val readAndWrite: Boolean = true,
-	var transformer: de.fruxz.sparkle.framework.data.DataTransformer<SHELL, out Any> = de.fruxz.sparkle.framework.data.DataTransformer.empty(),
+	var transformer: DataTransformer<SHELL, out Any> = DataTransformer.empty(),
 	var async: Boolean = false,
 	var forceUseOfTasks: Boolean = false,
 	var initTriggerSetup: Boolean = true,
@@ -162,11 +162,11 @@ data class Preference<SHELL : Any>(
 		toCore: (SHELL.() -> CORE),
 		toShell: (CORE.() -> SHELL),
 	) = apply {
-		transformer = de.fruxz.sparkle.framework.data.DataTransformer(toCore, toShell)
+		transformer = DataTransformer(toCore, toShell)
 	}
 
 	fun <CORE : Any> transformer(
-		transformer: de.fruxz.sparkle.framework.data.DataTransformer<SHELL, CORE>
+		transformer: DataTransformer<SHELL, CORE>
 	) = transformer(toCore = transformer.toCore, toShell = transformer.toShell)
 
 	fun reset() {

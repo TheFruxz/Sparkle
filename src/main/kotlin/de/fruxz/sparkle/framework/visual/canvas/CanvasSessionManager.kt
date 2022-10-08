@@ -46,8 +46,8 @@ object CanvasSessionManager {
 		getSession(sessionHost)?.takeIf { it.canvas.identityObject == queryCanvas }
 
 	/**
-	 * This function returns the [OldCanvasSession] of the given [sessionHost] entity.
-	 * Or null if the entity is not officially viewing a canvas.
+	 * This function returns the [Canvas] of the given [sessionHost] entity,
+	 * or null if the entity is not officially viewing a canvas.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
@@ -63,7 +63,7 @@ object CanvasSessionManager {
 	fun hasSession(sessionHost: Player): Boolean = getSession(sessionHost) != null
 
 	/**
-	 * This function removes the [OldCanvasSession] of the given [sessionHost] entity.
+	 * This function removes the [CanvasSession] of the given [sessionHost] entity.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
@@ -72,7 +72,7 @@ object CanvasSessionManager {
 	}
 
 	/**
-	 * This function adds the [OldCanvasSession] of the given [sessionHost] entity.
+	 * This function adds the [CanvasSession] of the given [sessionHost] entity.
 	 * @author Fruxz
 	 * @since 1.0
 	 */

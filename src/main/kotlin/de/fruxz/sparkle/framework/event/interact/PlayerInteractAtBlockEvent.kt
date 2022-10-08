@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.event.interact
 
-import de.fruxz.sparkle.server.component.events.EventsComponent
 import de.fruxz.sparkle.framework.annotation.RequiresComponent
+import de.fruxz.sparkle.server.component.events.EventsComponent
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
@@ -11,7 +11,7 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.event.player.PlayerInteractEvent
 
-@de.fruxz.sparkle.framework.annotation.RequiresComponent(EventsComponent::class)
+@RequiresComponent(EventsComponent::class)
 data class PlayerInteractAtBlockEvent(
 	val whoInteract: Player,
 	val block: Block,

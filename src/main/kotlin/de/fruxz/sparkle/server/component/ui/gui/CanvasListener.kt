@@ -2,7 +2,6 @@ package de.fruxz.sparkle.server.component.ui.gui
 
 import de.fruxz.ascend.extension.empty
 import de.fruxz.ascend.extension.math.ceilToInt
-import de.fruxz.ascend.extension.math.floorToInt
 import de.fruxz.ascend.extension.math.maxTo
 import de.fruxz.ascend.extension.math.minTo
 import de.fruxz.ascend.extension.objects.takeIfInstance

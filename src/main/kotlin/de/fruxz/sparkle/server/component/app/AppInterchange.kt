@@ -5,7 +5,11 @@ import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.limitTo
 import de.fruxz.sparkle.framework.Constants.ENTRIES_PER_PAGE
-import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.visual.message
+import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructureInputRestriction
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
@@ -13,14 +17,10 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.content.Comp
 import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequired
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
-import de.fruxz.sparkle.framework.extension.debugLog
-import de.fruxz.sparkle.framework.extension.visual.message
-import de.fruxz.sparkle.framework.extension.visual.notification
-import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.visual.message.Transmission
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.APPLIED
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.GENERAL
+import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.stacked.buildComponent
 import de.fruxz.stacked.extension.dyeDarkGray
 import de.fruxz.stacked.extension.dyeGold
@@ -37,7 +37,6 @@ import net.kyori.adventure.text.Component.newline
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
-import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.format.TextDecoration.BOLD
 import org.bukkit.Bukkit
 
@@ -211,7 +210,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
                     text {
                         this + text("Successfully") {
-                            style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD))
+                            style(Style.style(NamedTextColor.GREEN, BOLD))
                         }
                         this + text(" started the '") {
                             color(NamedTextColor.GRAY)
@@ -246,7 +245,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
                     text {
                         this + text("Successfully") {
-                            style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD))
+                            style(Style.style(NamedTextColor.GREEN, BOLD))
                         }
                         this + text(" stopped the '") {
                             color(NamedTextColor.GRAY)
@@ -283,7 +282,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
                     text {
                         this + text("Successfully") {
-                            style(Style.style(NamedTextColor.GREEN, TextDecoration.BOLD))
+                            style(Style.style(NamedTextColor.GREEN, BOLD))
                         }
                         this + text(" restarted the '") {
                             color(NamedTextColor.GRAY)

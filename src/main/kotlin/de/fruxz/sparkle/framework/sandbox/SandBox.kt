@@ -2,18 +2,16 @@ package de.fruxz.sparkle.framework.sandbox
 
 import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.server.component.sandbox.SandBoxComponent
-import de.fruxz.sparkle.server.SparkleApp
-import de.fruxz.sparkle.framework.infrastructure.app.App
-import de.fruxz.sparkle.framework.infrastructure.component.Component
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.APPLIED
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
-import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.identification.VendorsIdentifiable
+import de.fruxz.sparkle.framework.infrastructure.app.App
+import de.fruxz.sparkle.framework.visual.message.Transmission.Level.APPLIED
+import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
+import de.fruxz.sparkle.server.SparkleApp
+import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.stacked.extension.dyeGray
 import de.fruxz.stacked.extension.dyeYellow
 import de.fruxz.stacked.plus
@@ -27,7 +25,7 @@ data class SandBox(
     val creationTime: Calendar,
     val creationLocation: String,
     val process: suspend SandBoxInteraction.() -> Unit,
-) : VendorsIdentifiable<SandBox>, de.fruxz.sparkle.framework.attachment.Logging {
+) : VendorsIdentifiable<SandBox>, Logging {
 
     init {
     	if (thisIdentity.contains("[§: ]".toRegex())) throw IllegalArgumentException("It is not allowed, that the identity of a sandbox contains a '§', ':' or a ' '!")

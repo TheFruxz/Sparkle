@@ -7,9 +7,6 @@ import org.bukkit.Bukkit.getPluginCommand
 import org.bukkit.command.CommandSender
 import org.bukkit.command.SimpleCommandMap
 
-@Deprecated("Use InterchangeExecutor instead (Sparkle-Use)", ReplaceWith("de.fruxz.sparkle.extension.interchange.InterchangeExecutor"))
-typealias CommandSender = InterchangeExecutor
-
 typealias InterchangeExecutor = CommandSender
 
 typealias Parameters = Array<out String>

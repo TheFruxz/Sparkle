@@ -4,40 +4,38 @@ package de.fruxz.sparkle.framework.infrastructure.app
 
 import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.fruxz.ascend.extension.catchException
-import de.fruxz.ascend.extension.container.mutableReplaceWith
 import de.fruxz.ascend.extension.data.jsonBase
+import de.fruxz.ascend.extension.empty
 import de.fruxz.ascend.extension.tryToCatch
 import de.fruxz.ascend.extension.tryToIgnore
 import de.fruxz.ascend.extension.tryToPrint
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.server.SparkleApp.Infrastructure
-import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.server.SparkleData
-import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.app.RunStatus
 import de.fruxz.sparkle.framework.app.RunStatus.*
+import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.exception.IllegalActionException
+import de.fruxz.sparkle.framework.extension.coroutines.asSync
+import de.fruxz.sparkle.framework.extension.coroutines.delayed
+import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
+import de.fruxz.sparkle.framework.extension.coroutines.task
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.destroySandBox
+import de.fruxz.sparkle.framework.extension.internalCommandMap
+import de.fruxz.sparkle.framework.extension.internalSyncCommands
+import de.fruxz.sparkle.framework.extension.mainLog
+import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.Hoster
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.infrastructure.app.interchange.IssuedInterchange
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.service.Service
-import de.fruxz.sparkle.framework.data.file.SparklePath
-import de.fruxz.sparkle.framework.extension.visual.notification
-import de.fruxz.sparkle.framework.extension.mainLog
-import de.fruxz.sparkle.framework.extension.destroySandBox
-import de.fruxz.sparkle.framework.extension.internalCommandMap
-import de.fruxz.sparkle.framework.extension.internalSyncCommands
-import de.fruxz.sparkle.framework.extension.coroutines.asSync
-import de.fruxz.sparkle.framework.extension.coroutines.delayed
-import de.fruxz.sparkle.framework.extension.coroutines.doSync
-import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
-import de.fruxz.sparkle.framework.extension.coroutines.task
-import de.fruxz.sparkle.framework.extension.onlinePlayers
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
+import de.fruxz.sparkle.server.SparkleApp.Infrastructure
+import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.stacked.text
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -101,7 +99,6 @@ import kotlin.time.measureTime
  *
  * @author Fruxz (@TheFruxz)
  * @since 1.0-BETA-2 (preview)
- * @see de.fruxz.sparkle.runtime.SparkleApp
  * @constructor abstract
  */
 abstract class App(
@@ -133,8 +130,6 @@ abstract class App(
 	 *
 	 * @author Fruxz (@TheFruxz)
 	 * @since 1.0-BETA-2 (preview)
-	 * @see de.fruxz.sparkle.runtime.SparkleApp.Companion
-	 * @sample de.fruxz.sparkle.runtime.SparkleApp.companion
 	 * @constructor abstract
 	 */
 	abstract val companion: AppCompanion<out App>
@@ -166,8 +161,6 @@ abstract class App(
 	 *
 	 * @author Fruxz (@TheFruxz)
 	 * @since 1.0-BETA-2 (preview)
-	 * @see de.fruxz.sparkle.runtime.SparkleApp.label
-	 * @sample de.fruxz.sparkle.runtime.SparkleApp.label
 	 * @constructor abstract
 	 */
 	abstract override val label: String
@@ -180,9 +173,9 @@ abstract class App(
 	 */
 	abstract val appCache: AppCache
 
-	internal var loadTime: Duration? = null
+	private var loadTime: Duration? = null
 
-	internal var startTime: Duration? = null
+	private var startTime: Duration? = null
 
 	var activeSince: Calendar? = null
 		private set
@@ -566,7 +559,7 @@ abstract class App(
 	/**
 	 * The current status of app-runtime
 	 */
-	var runStatus: de.fruxz.sparkle.framework.app.RunStatus = OFFLINE
+	var runStatus: RunStatus = OFFLINE
 		private set
 
 	var appRegistrationFile = YamlConfiguration()
@@ -629,9 +622,9 @@ abstract class App(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	open fun bye() {}
+	open fun bye() = empty()
 
-	private suspend fun awaitState(waitFor: de.fruxz.sparkle.framework.app.RunStatus, out: de.fruxz.sparkle.framework.app.RunStatus, process: suspend () -> Unit) {
+	private suspend fun awaitState(waitFor: RunStatus, out: RunStatus, process: suspend () -> Unit) {
 
 		while (runStatus != out) {
 

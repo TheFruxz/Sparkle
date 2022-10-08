@@ -6,24 +6,23 @@ import de.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
 import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.ascend.tool.smart.identification.Identifiable
+import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasOpenEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasRenderEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent
-import de.fruxz.sparkle.framework.extension.debugLog
-import de.fruxz.sparkle.framework.extension.visual.ui.get
-import de.fruxz.sparkle.framework.extension.visual.ui.set
-import de.fruxz.sparkle.framework.extension.effect.playSoundEffect
-import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.extension.coroutines.asAsync
 import de.fruxz.sparkle.framework.extension.coroutines.asSync
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.effect.playSoundEffect
+import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.visual.ui.get
+import de.fruxz.sparkle.framework.extension.visual.ui.set
 import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasRender
-import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
+import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.NO_OPEN
+import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.NO_UPDATE
 import de.fruxz.sparkle.framework.visual.item.ItemLike
-import de.fruxz.sparkle.framework.effect.sound.SoundEffect
-import de.fruxz.stacked.extension.subKey
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
@@ -40,7 +39,6 @@ import kotlin.time.Duration.Companion.seconds
 
 /**
  * This class helps to easily create ui's for players.
- * @param identityKey The key of the canvas, that is used to bind the actions to the canvas.
  * This should be unique for each canvas, but if you want to share a canvas habits & actions, use the same.
  * Using shared keys can also improve memory-usage, if you do it cleverly. Why? because each registered action,
  * session and update is identified by the key! ***USING THE SAME KEY OR GENERATE A SINGLE CANVAS MULTIPLE

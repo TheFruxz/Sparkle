@@ -48,7 +48,6 @@ import de.fruxz.sparkle.framework.positioning.relative.SphereShape
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasPrototypeAPI
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType
-import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion
 import de.fruxz.sparkle.framework.visual.canvas.buildCanvas
 import de.fruxz.sparkle.framework.visual.color.ColorType
 import de.fruxz.sparkle.framework.visual.color.DyeableMaterial

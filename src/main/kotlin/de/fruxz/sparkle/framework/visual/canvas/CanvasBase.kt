@@ -2,7 +2,6 @@ package de.fruxz.sparkle.framework.visual.canvas
 
 import de.fruxz.ascend.extension.math.floorToInt
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.InventoryHolder

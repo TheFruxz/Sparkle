@@ -4,19 +4,20 @@ import de.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
 import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.tool.smart.composition.Producible
 import de.fruxz.ascend.tool.smart.composition.SuspendComposable
+import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasOpenEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent
+import de.fruxz.sparkle.framework.extension.coroutines.asSync
 import de.fruxz.sparkle.framework.extension.debugLog
-import de.fruxz.sparkle.server.SparkleApp
+import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasRender
+import de.fruxz.sparkle.framework.visual.canvas.CanvasBase.Companion
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
 import de.fruxz.sparkle.framework.visual.canvas.design.AdaptiveCanvasCompose
 import de.fruxz.sparkle.framework.visual.item.ItemLike
-import de.fruxz.sparkle.framework.effect.sound.SoundEffect
-import de.fruxz.sparkle.framework.extension.coroutines.asSync
-import de.fruxz.sparkle.framework.extension.system
-import de.fruxz.sparkle.framework.visual.canvas.CanvasBase.Companion
+import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.stacked.extension.asStyledComponent
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -29,7 +30,6 @@ import org.bukkit.inventory.ItemStack
 
 /**
  * This class helps to easily create ui's for players.
- * @param identityKey The key of the canvas, that is used to bind the actions to the canvas.
  * @param label The label, which the viewer will see on top of the inventory.
  * @param base The size of the canvas.
  * @param content The content, which is placed inside the canvas
@@ -495,8 +495,7 @@ data class MutableCanvas(
  * *If you immediately want a non-mutable [Canvas] as a return,
  * but want an [MutableCanvas] to build it, use the builder
  * parameter!*
- * @param key The identity of the [MutableCanvas] to create.
- * @param size The size of the canvas.
+ * @param base The size and shape of the canvas.
  * @return The created mutable [MutableCanvas].
  * @author Fruxz
  * @since 1.0
@@ -507,8 +506,7 @@ fun buildCanvas(base: CanvasBase = CanvasBase.ofLines(3)): MutableCanvas =
 /**
  * This function constructs a new [Canvas], created with the [MutableCanvas] edited
  * inside the given [builder] parameter process.
- * @param key The identity of the [Canvas] to create.
- * @param size The size of the canvas.
+ * @param base The size and shape of the canvas.
  * @param builder The builder function to use to edit the [MutableCanvas].
  * @return The created immutable [Canvas].
  * @author Fruxz

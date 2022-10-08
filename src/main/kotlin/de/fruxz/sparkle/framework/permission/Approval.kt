@@ -74,16 +74,3 @@ data class Approval(
  */
 fun Permissible.hasApproval(approval: Approval) =
 	approval.hasApproval(this)
-
-/**
- * This function checks, if this [Permissible] has the
- * given [approval].
- * @param approval the approval, which should be checked
- * @return true, if the given [approval] is granted, otherwise false
- * @see Approval.hasApproval
- * @author Fruxz
- * @since 1.0
- */
-@Deprecated("Use hasApproval(Approval) instead", ReplaceWith("hasApproval(approval)"))
-fun Permissible.hasPermission(approval: Approval) =
-	hasApproval(approval)

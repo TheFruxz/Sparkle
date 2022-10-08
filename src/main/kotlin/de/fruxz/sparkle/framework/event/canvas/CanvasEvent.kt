@@ -1,7 +1,6 @@
 package de.fruxz.sparkle.framework.event.canvas
 
 import de.fruxz.sparkle.framework.visual.canvas.Canvas
-import net.kyori.adventure.key.Key
 import org.bukkit.entity.HumanEntity
 import org.bukkit.event.Cancellable
 import org.bukkit.event.Event

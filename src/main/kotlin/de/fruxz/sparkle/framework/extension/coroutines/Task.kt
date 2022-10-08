@@ -1,5 +1,6 @@
 package de.fruxz.sparkle.framework.extension.coroutines
 
+import de.fruxz.ascend.extension.dump
 import de.fruxz.sparkle.framework.extension.createKey
 import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.infrastructure.app.App
@@ -174,9 +175,9 @@ fun launch(
 suspend inline fun <O> wait(duration: Duration, crossinline code: suspend () -> O): O = asAsync(duration) { code() }.await()
 
 /**
- * This function executes the [wait] function, inside an artificially
- * created [asAsync] execution block.
+ * This function creates a new async process using the [doAsync]
+ * function with the [code] process and a delay of [duration].
  * @author Fruxz
  * @since 1.0
  */
-inline fun <O> delayed(duration: Duration, crossinline code: suspend () -> O) = asAsync { wait(duration, code) }
+fun delayed(duration: Duration, code: suspend (CoroutineScope) -> Unit): Unit = doAsync(delay = duration, process = code).dump()

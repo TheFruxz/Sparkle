@@ -3,28 +3,25 @@ package de.fruxz.sparkle.framework.infrastructure.component
 import de.fruxz.ascend.extension.tryToResult
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.framework.infrastructure.Hoster
-import de.fruxz.sparkle.framework.infrastructure.component.Component.ComponentRequestAnswer
-import de.fruxz.sparkle.framework.infrastructure.app.App
-import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.*
-import de.fruxz.sparkle.framework.infrastructure.component.file.ComponentManager
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.attachment.VendorOnDemand
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
+import de.fruxz.sparkle.framework.infrastructure.Hoster
+import de.fruxz.sparkle.framework.infrastructure.app.App
+import de.fruxz.sparkle.framework.infrastructure.component.Component.ComponentRequestAnswer
+import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.*
+import de.fruxz.sparkle.framework.infrastructure.component.file.ComponentManager
+import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.subKey
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.newSingleThreadContext
 import kotlin.reflect.KClass
 
 abstract class Component(
 	open val behaviour: RunType = DISABLED,
 	open val isExperimental: Boolean = false,
 	final override val preferredVendor: App? = null,
-) : KeyedIdentifiable<Component>, de.fruxz.sparkle.framework.attachment.VendorOnDemand,
-	de.fruxz.sparkle.framework.attachment.Logging, Hoster<ComponentRequestAnswer, ComponentRequestAnswer, Component> {
+) : KeyedIdentifiable<Component>, VendorOnDemand, Logging, Hoster<ComponentRequestAnswer, ComponentRequestAnswer, Component> {
 
 	init {
 
@@ -178,10 +175,6 @@ abstract class Component(
 			}
 		}.let { return@let ComponentRequestAnswer(hasChanged, it.exceptionOrNull()) }
 
-	}
-
-	fun requestReset() {
-		// TODO
 	}
 
 	companion object {

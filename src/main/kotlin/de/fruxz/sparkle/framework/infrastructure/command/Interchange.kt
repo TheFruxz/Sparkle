@@ -1,22 +1,16 @@
 package de.fruxz.sparkle.framework.infrastructure.command
 
 import de.fruxz.ascend.extension.catchException
-import de.fruxz.ascend.extension.container.mutableReplaceWith
 import de.fruxz.ascend.extension.empty
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.attachment.VendorOnDemand
 import de.fruxz.sparkle.framework.extension.asPlayer
 import de.fruxz.sparkle.framework.extension.asPlayerOrNull
-import de.fruxz.sparkle.framework.extension.coroutines.asSync
 import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.interchange.Parameters
-import de.fruxz.sparkle.framework.extension.internalCommandMap
-import de.fruxz.sparkle.framework.extension.internalSyncCommands
-import de.fruxz.sparkle.framework.extension.mainLog
-import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.extension.time.RunningCooldown
 import de.fruxz.sparkle.framework.extension.time.getCooldown
 import de.fruxz.sparkle.framework.extension.time.hasCooldown
@@ -26,7 +20,6 @@ import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.framework.identification.Labeled
 import de.fruxz.sparkle.framework.infrastructure.app.App
-import de.fruxz.sparkle.framework.infrastructure.app.interchange.IssuedInterchange
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.*
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction.*
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure
@@ -35,7 +28,6 @@ import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
 import de.fruxz.sparkle.framework.permission.Approval
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
-import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.stacked.buildComponent
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.asComponent
@@ -51,16 +43,12 @@ import kotlinx.coroutines.launch
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
-import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.ConsoleCommandSender
-import org.bukkit.command.PluginCommand
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
-import org.bukkit.plugin.Plugin
 import java.util.logging.Level.WARNING
-import kotlin.reflect.jvm.isAccessible
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
@@ -157,7 +145,6 @@ abstract class Interchange(
 	 * This value is the second-part of the identity of this [Interchange],
 	 * used to track and identify this [Interchange], among the other
 	 * [Interchange]s, used by your or other [App]s.
-	 * @see ContextualInstance
 	 * @author Fruxz
 	 * @since 1.0
 	 */
@@ -167,7 +154,6 @@ abstract class Interchange(
 	 * This value is the first-part of the identity of this [Interchange],
 	 * used to track and identify this [Interchange], among the other
 	 * [Interchange]s, used by your or other [App]s.
-	 * @see ContextualInstance
 	 * @author Fruxz
 	 * @since 1.0
 	 */
@@ -198,7 +184,7 @@ abstract class Interchange(
 	 * [InterchangeExecutor]s input, the [Approval] checks (based on [requiredApproval])
 	 * and the completion-Checks (based on [completion]).
 	 * This execution block is a **suspend** block, because it gets executed, from the
-	 * [vendor]s [App.coroutineScope], at a [threadContext] context.
+	 * [vendor]s [App.coroutineScope]
 	 * To easily create your execution block, we recommend you, to use the [execution]
 	 * function!
 	 * @see execution

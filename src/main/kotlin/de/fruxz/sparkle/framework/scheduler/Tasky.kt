@@ -4,17 +4,17 @@ import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.extension.data.RandomTagType.ONLY_UPPERCASE
 import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.server.SparkleApp.Infrastructure
-import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.infrastructure.app.App
-import de.fruxz.sparkle.framework.attachment.Logging
+import de.fruxz.sparkle.server.SparkleApp.Infrastructure
+import de.fruxz.sparkle.server.SparkleCache
 import net.kyori.adventure.key.Key
 import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.logging.Level
 
-interface Tasky : de.fruxz.sparkle.framework.attachment.Logging {
+interface Tasky : Logging {
 
 	fun shutdown()
 
