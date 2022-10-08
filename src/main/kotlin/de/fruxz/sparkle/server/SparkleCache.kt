@@ -3,7 +3,9 @@ package de.fruxz.sparkle.server
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.ascend.tool.timing.cooldown.StaticCooldown
-import de.fruxz.sparkle.framework.sandbox.SandBox
+import de.fruxz.sparkle.framework.data.Preference
+import de.fruxz.sparkle.framework.data.Preference.PreferenceIndex
+import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.AppCache
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel
@@ -11,15 +13,12 @@ import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel.*
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
 import de.fruxz.sparkle.framework.infrastructure.component.Component
-import de.fruxz.sparkle.framework.infrastructure.feature.Feature
 import de.fruxz.sparkle.framework.infrastructure.service.Service
-import de.fruxz.sparkle.framework.data.Preference
-import de.fruxz.sparkle.framework.data.Preference.PreferenceIndex
-import de.fruxz.sparkle.framework.extension.debugLog
-import de.fruxz.sparkle.framework.visual.item.action.ItemAction
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
+import de.fruxz.sparkle.framework.sandbox.SandBox
 import de.fruxz.sparkle.framework.scheduler.Tasky
 import de.fruxz.sparkle.framework.visual.canvas.CanvasSessionManager.CanvasSession
+import de.fruxz.sparkle.framework.visual.item.action.ItemAction
 import net.kyori.adventure.key.Key
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
@@ -61,8 +60,6 @@ object SparkleCache : AppCache {
 	var buildModePlayers = setOf<Identity<out OfflinePlayer>>()
 
 	var playerMarkerBoxes = mapOf<Identity<out OfflinePlayer>, DependentCubicalShape>()
-
-	var featureStates = mapOf<Identity<Feature>, Feature.FeatureState>()
 
 	var tmp_initSetupPreferences = setOf<Preference<*>>()
 
@@ -117,7 +114,6 @@ object SparkleCache : AppCache {
 			registeredPreferences = emptyMap()
 			runningServiceTaskController = emptyMap()
 			runningTasks = emptyList()
-			featureStates = emptyMap()
 			tmp_initSetupPreferences = emptySet()
 		}
 
