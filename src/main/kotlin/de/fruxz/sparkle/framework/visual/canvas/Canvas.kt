@@ -114,7 +114,7 @@ open class Canvas(
 		data: Map<Key, Any> = emptyMap(),
 		triggerOpenEvent: Boolean = true,
 		triggerSound: Boolean = true,
-		owner: InventoryHolder? = null
+		owner: InventoryHolder? = null,
 	) = system.coroutineScope.launch {
 		if (NO_OPEN in flags) cancel()
 
@@ -314,6 +314,39 @@ open class Canvas(
 		this.onClicks = onClicks
 		this.onUpdateNonClearableSlots = onUpdateNonClearableSlots
 	}
+
+	/**
+	 * Utilizes the [display] function on the [canvas] to display
+	 * the canvas to [this] type of [Player].
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun Player.showCanvas(
+		canvas: Canvas,
+		data: Map<Key, Any> = emptyMap(),
+		triggerOpenEvent: Boolean = true,
+		triggerSound: Boolean = true,
+		owner: InventoryHolder? = null,
+	) = canvas.display(receivers = arrayOf(this), data, triggerOpenEvent, triggerSound, owner)
+
+	/**
+	 * Builds a [Canvas] using the [buildCanvas] function and
+	 * displays it via the [display] function.
+	 * ***Please do not use this function, if you don't know what you are doing!
+	 * Actions and processes bound to stuff, like item-actions, are still stored
+	 * again and again (if randomized identities are used), so that every creation
+	 * caches its own item-actions, which can lead to a big memory leak! Take care!***
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun Player.showCanvas(
+		base: CanvasBase = CanvasBase.ofLines(3),
+		data: Map<Key, Any> = emptyMap(),
+		triggerOpenEvent: Boolean = true,
+		triggerSound: Boolean = true,
+		owner: InventoryHolder? = null,
+		canvasBuilder: MutableCanvas.() -> Unit,
+	) = buildCanvas(base, canvasBuilder).display(receivers = arrayOf(this), data, triggerOpenEvent, triggerSound, owner)
 
 	fun interface CanvasRender {
 		suspend fun render(event: CanvasRenderEvent)

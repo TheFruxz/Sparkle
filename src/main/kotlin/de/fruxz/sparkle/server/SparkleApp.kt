@@ -3,6 +3,7 @@ package de.fruxz.sparkle.server
 import com.destroystokyo.paper.ParticleBuilder
 import de.fruxz.ascend.extension.data.addAscendJsonModuleModification
 import de.fruxz.ascend.extension.forceCast
+import de.fruxz.ascend.tool.smart.composition.SuspendComposable
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.data.json.JsonConfiguration
 import de.fruxz.sparkle.framework.data.json.JsonFileDataElement
@@ -20,9 +21,13 @@ import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.effect.sound.SoundMelody
 import de.fruxz.sparkle.framework.extension.asPlayerOrNull
 import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.effect.playSoundEffect
+import de.fruxz.sparkle.framework.extension.effect.soundOf
 import de.fruxz.sparkle.framework.extension.mainLog
+import de.fruxz.sparkle.framework.extension.player
 import de.fruxz.sparkle.framework.extension.quickSandBox
 import de.fruxz.sparkle.framework.extension.visual.ui.item
+import de.fruxz.sparkle.framework.extension.visual.ui.skull
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.AppCompanion
 import de.fruxz.sparkle.framework.mojang.MojangProfile
@@ -68,8 +73,10 @@ import de.fruxz.sparkle.server.interchange.SparkleInterchange
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
+import org.bukkit.Sound
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.inventory.ItemStack
@@ -194,7 +201,7 @@ class SparkleApp : App() {
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
 
-		quickSandBox {
+		quickSandBox(identity = "scrollCanvas") {
 			@OptIn(CanvasPrototypeAPI::class)
 			buildCanvas {
 				label("<i>Hello!")
@@ -208,6 +215,27 @@ class SparkleApp : App() {
 				}
 
 			}.display(executor.asPlayerOrNull)
+		}
+
+		quickSandBox(identity = "deferredCanvas") {
+
+			buildCanvas {
+				label("<i>Tech-Demo")
+				base(9*6)
+
+				border(Material.IRON_DOOR)
+				setInner(0, Material.BARREL.item {
+					label("Magic!")
+					onItemClick {
+						it.player.playSoundEffect(soundOf(Sound.ENTITY_CAT_BEG_FOR_FOOD))
+					}
+				})
+				setInnerDeferred(1, SuspendComposable {
+					skull("CoasterFreakDE")
+				})
+
+			}.display(executor.asPlayerOrNull)
+
 		}
 
 	}
