@@ -12,6 +12,8 @@ import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasOpenEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasRenderEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent
+import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent.UpdateReason
+import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent.UpdateReason.PLUGIN
 import de.fruxz.sparkle.framework.extension.coroutines.asAsync
 import de.fruxz.sparkle.framework.extension.coroutines.asSync
 import de.fruxz.sparkle.framework.extension.debugLog
@@ -205,6 +207,7 @@ open class Canvas(
 		triggerUpdateEvent: Boolean = true,
 		triggerSound: Boolean = true,
 		triggerOnOpenToo: Boolean = true,
+		updateReason: UpdateReason = PLUGIN,
 	) = system.coroutineScope.launch {
 		if (NO_UPDATE in flags) cancel()
 
@@ -231,7 +234,7 @@ open class Canvas(
 					topInventory = event.renderResult
 				}
 
-				CanvasUpdateEvent(receiver, this@Canvas, topInventory, data).let { event ->
+				CanvasUpdateEvent(receiver, this@Canvas, topInventory, data, updateReason).let { event ->
 					if (!triggerUpdateEvent || event.callEvent()) {
 						topInventory = event.inventory
 
