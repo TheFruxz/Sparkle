@@ -1,10 +1,11 @@
 package de.fruxz.sparkle.server.component.ui.actionbar
 
+import de.fruxz.ascend.extension.container.edited
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.LayerPosition.BACKGROUND
-import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.LayerPosition.FOREGROUND
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.fruxz.sparkle.framework.infrastructure.component.SmartComponent
+import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.LayerPosition.BACKGROUND
+import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.LayerPosition.FOREGROUND
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 import kotlin.time.Duration
@@ -44,7 +45,7 @@ class AdaptiveActionBarComponent : SmartComponent(AUTOSTART_MUTABLE, true) {
 
 		@JvmStatic
 		fun addGlobalLayer(positionIndex: Int, layer: ActionBarLayerSchematic) {
-			globalLayers = globalLayers.toMutableList().apply {
+			globalLayers = globalLayers.edited {
 				add(positionIndex, layer)
 			}
 		}
@@ -75,7 +76,7 @@ class AdaptiveActionBarComponent : SmartComponent(AUTOSTART_MUTABLE, true) {
 
 		@JvmStatic
 		fun addPlayerLayer(player: Player, positionIndex: Int, layer: ActionBarLayerSchematic) {
-			playerLayers += player to getPlayerLayers(player).toMutableList().apply {
+			playerLayers += player to getPlayerLayers(player).edited {
 				add(positionIndex, layer)
 			}
 		}

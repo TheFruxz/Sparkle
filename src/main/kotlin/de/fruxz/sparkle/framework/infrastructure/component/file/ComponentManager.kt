@@ -1,13 +1,14 @@
 package de.fruxz.sparkle.framework.infrastructure.component.file
 
+import de.fruxz.ascend.extension.container.edited
 import de.fruxz.ascend.extension.data.readJson
 import de.fruxz.ascend.extension.data.writeJson
 import de.fruxz.ascend.extension.div
 import de.fruxz.ascend.extension.generateFileAndPath
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.data.file.SparklePath
+import de.fruxz.sparkle.framework.infrastructure.component.Component
 
 object ComponentManager {
 
@@ -42,7 +43,7 @@ object ComponentManager {
 
 	fun editComponent(identity: Identity<out Component>, isAutoStart: Boolean = getComponent(identity)!!.isAutoStart, isBlocked: Boolean = getComponent(identity)!!.isBlocked) {
 		state = state.apply {
-			components = components.toMutableList().apply {
+			components = components.edited {
 				removeAll { it.identity == identity.identity }
 				add(ComponentConfigurationEntry(identity.identity, isAutoStart, isBlocked))
 			}

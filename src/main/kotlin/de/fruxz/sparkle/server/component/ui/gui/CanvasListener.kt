@@ -1,5 +1,6 @@
 package de.fruxz.sparkle.server.component.ui.gui
 
+import de.fruxz.ascend.extension.container.edited
 import de.fruxz.ascend.extension.empty
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.maxTo
@@ -79,7 +80,7 @@ internal class CanvasListener : EventListener() {
 				0 -> {
 					event.isCancelled = true
 					if (scrollState > 0) {
-						canvas.display(player, data = session.parameters.toMutableMap().apply { // todo instead of display use update
+						canvas.display(player, data = session.parameters.edited { // todo instead of display use update
 							when {
 								event.isShiftClick -> {
 									this[PaginationType.CANVAS_SCROLL_STATE] = 0
