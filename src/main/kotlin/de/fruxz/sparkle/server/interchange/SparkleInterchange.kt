@@ -1,9 +1,9 @@
 package de.fruxz.sparkle.server.interchange
 
-import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
-import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.extension.visual.message
 import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
+import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.GENERAL
 import de.fruxz.stacked.extension.style
 import de.fruxz.stacked.hover
