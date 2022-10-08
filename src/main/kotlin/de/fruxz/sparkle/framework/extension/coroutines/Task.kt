@@ -1,11 +1,8 @@
 package de.fruxz.sparkle.framework.extension.coroutines
 
 import de.fruxz.ascend.extension.dump
-import de.fruxz.sparkle.framework.extension.createKey
 import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.infrastructure.app.App
-import de.fruxz.sparkle.framework.scheduler.Tasky
-import de.fruxz.sparkle.framework.scheduler.TemporalAdvice
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -13,24 +10,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.future.await
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import net.kyori.adventure.key.Key
 import java.util.concurrent.CompletableFuture
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
-
-/**
- * Legacy tasky task.
- */
-fun task(
-	temporalAdvice: TemporalAdvice,
-	killAtError: Boolean = true,
-	vendor: App = system,
-	onStart: Tasky.() -> Unit = {},
-	onStop: Tasky.() -> Unit = {},
-	onCrash: Tasky.() -> Unit = {},
-	serviceVendor: Key = vendor.createKey("undefined"),
-	process: Tasky.() -> Unit,
-) = Tasky.task(vendor, temporalAdvice, killAtError, onStart, onStop, onCrash, serviceVendor, process)
 
 /**
  * This function executes the code defined in [process] synchronously.

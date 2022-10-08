@@ -9,14 +9,13 @@ import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
 import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
-import de.fruxz.sparkle.framework.extension.coroutines.task
-import de.fruxz.sparkle.framework.extension.data.ticks
+import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.effect.playEffect
 import de.fruxz.sparkle.framework.extension.player
+import de.fruxz.sparkle.framework.extension.time.minecraftTicks
 import de.fruxz.sparkle.framework.extension.visual.ui.affectedItem
 import de.fruxz.sparkle.framework.extension.visual.ui.item
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
-import de.fruxz.sparkle.framework.scheduler.TemporalAdvice.Companion
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
 import de.fruxz.sparkle.framework.visual.canvas.CanvasSessionManager
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType
@@ -143,7 +142,7 @@ internal class CanvasListener : EventListener() {
 
 				event.isCancelled = true
 
-				task(Companion.delayed(1.ticks)) {
+				doSync(1.minecraftTicks) {
 					player.inventory.setItemInOffHand(offhand)
 				}
 			}

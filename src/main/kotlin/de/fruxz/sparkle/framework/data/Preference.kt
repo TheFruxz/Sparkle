@@ -7,10 +7,8 @@ import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.data.Preference.InputType.*
 import de.fruxz.sparkle.framework.extension.coroutines.doAsync
-import de.fruxz.sparkle.framework.extension.coroutines.task
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel
-import de.fruxz.sparkle.framework.scheduler.TemporalAdvice.Companion.instant
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.SparkleCache.registeredPreferenceCache
 import java.util.concurrent.CompletableFuture
@@ -146,9 +144,7 @@ data class Preference<SHELL : Any>(
 			}
 
 			if (async || forceUseOfTasks) {
-				task(instant(async = async)) {
-					process()
-				}
+				doAsync { process() }
 			} else
 				process()
 

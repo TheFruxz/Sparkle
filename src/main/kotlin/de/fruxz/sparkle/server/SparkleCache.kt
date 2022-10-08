@@ -16,7 +16,6 @@ import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceState
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import de.fruxz.sparkle.framework.sandbox.SandBox
-import de.fruxz.sparkle.framework.scheduler.Tasky
 import de.fruxz.sparkle.framework.visual.canvas.CanvasSessionManager.CanvasSession
 import de.fruxz.sparkle.framework.visual.item.action.ItemAction
 import kotlinx.coroutines.CoroutineScope
@@ -51,8 +50,6 @@ object SparkleCache : AppCache {
 	var runningComponents = mapOf<Identity<out Component>, Calendar>()
 
 	var registeredPreferences = mapOf<Identity<out Preference<*>>, Preference<*>>()
-
-	var runningServiceTaskController = mapOf<Key, Tasky>() // TODO removal
 
 	var runningTasks = listOf<Int>()
 
@@ -116,7 +113,6 @@ object SparkleCache : AppCache {
 			registeredListeners = emptySet()
 			runningComponents = emptyMap()
 			registeredPreferences = emptyMap()
-			runningServiceTaskController = emptyMap()
 			runningTasks = emptyList()
 			tmp_initSetupPreferences = emptySet()
 		}
