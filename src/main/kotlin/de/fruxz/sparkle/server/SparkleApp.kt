@@ -180,20 +180,19 @@ class SparkleApp : App() {
 		SparkleCache.tmp_initSetupPreferences = emptySet()
 
 		// NEW COMPONENTS
-		add(EventsComponent())
-		add(SandBoxComponent())
+		add(AppComponent())
+		add(ComponentComponent())
 		add(ServiceComponent())
+		add(EventsComponent())
+		add(UIComponent())
+		add(SandBoxComponent())
+		add(AdaptiveActionBarComponent())
 		add(KeeperComponent())
 		add(MarkingComponent())
-		add(UIComponent())
-		add(ComponentComponent())
-		add(AdaptiveActionBarComponent())
 
 		add(SparkleInterchange())
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
-
-		add(AppComponent())
 
 		quickSandBox {
 			@OptIn(CanvasPrototypeAPI::class)
