@@ -69,14 +69,14 @@ fun <T> asSyncDeferred(
  * Instead of the [asSync] function, this is not a suspending function, so
  * this function can be used anywhere you want!
  * @param delay The delay before the process is executed; default none.
- * @param cycleDuration The delay before the process is executed again; default none.
+ * @param interval The delay before the process is executed again; default none.
  * @param process The process to be executed
  * @author Fruxz
  * @since 1.0
  */
 fun doSync(
 	delay: Duration = Duration.ZERO,
-	cycleDuration: Duration = Duration.ZERO,
+	interval: Duration = Duration.ZERO,
 	vendor: App = system,
 	context: CoroutineContext = system.pluginCoroutineDispatcher(false),
 	process: suspend (CoroutineScope) -> Unit
@@ -84,10 +84,10 @@ fun doSync(
 		if (delay.isPositive()) delay(delay)
 
 		when {
-			cycleDuration.isPositive() -> {
+			interval.isPositive() -> {
 				while (scope.isActive) {
 					process.invoke(scope)
-					delay(cycleDuration)
+					delay(interval)
 				}
 			}
 			else -> {
@@ -123,7 +123,7 @@ fun <T> asAsync(
 /**
  * This function executes the [process] asynchronously via the [launch] function.
  * @param delay The delay before the process is executed; default none.
- * @param cycleDuration The delay before the process is executed again; default none.
+ * @param interval The delay before the process is executed again; default none.
  * @param process The process to be executed.
  * @return The job executing this code *take a look at Kotlin Coroutines*
  * @author Fruxz
@@ -131,17 +131,17 @@ fun <T> asAsync(
  */
 fun doAsync(
 	delay: Duration = Duration.ZERO,
-	cycleDuration: Duration = Duration.ZERO,
+	interval: Duration = Duration.ZERO,
 	vendor: App = system,
 	context: CoroutineContext = system.pluginCoroutineDispatcher(true),
 	process: suspend (CoroutineScope) -> Unit
 ) = launch(isAsync = true, context = context, vendor = vendor) { scope ->
 	if (delay.isPositive()) delay(delay)
 
-	if (cycleDuration.isPositive()) {
+	if (interval.isPositive()) {
 		while (scope.isActive) {
 			process.invoke(scope)
-			delay(cycleDuration)
+			delay(interval)
 		}
 	} else
 		process.invoke(scope)
