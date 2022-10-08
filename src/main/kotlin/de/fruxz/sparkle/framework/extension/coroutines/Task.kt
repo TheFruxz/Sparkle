@@ -38,6 +38,9 @@ fun task(
  * Because the [CompletableFuture.await] function uses the coroutine suspend
  * feature, this function also utilizes the suspend function feature, so the
  * result can be easily managed into your existing Sparkle App.
+ * NOTE! Because the asSync (not the [doSync] and [asSyncDeferred]) function, awaits for its result,
+ * this can take up some time and freeze your code. So use this function only,
+ * if you really need to wait for the result, and you can not use [asSyncDeferred].
  * @param delay The delay before the process is executed; default none.
  * @param process The process to be executed.
  * @return The direct result of the process.
@@ -66,6 +69,18 @@ suspend fun <T> asSync(
 	return output.await()
 }
 
+fun <T> asSyncDeferred(
+	delay: Duration = Duration.ZERO,
+	vendor: App = system,
+	context: CoroutineContext = system.pluginCoroutineDispatcher(false),
+	process: suspend (CoroutineScope) -> T,
+): Deferred<T> = vendor.coroutineScope.async(context = context) {
+	if (delay.isPositive()) delay(delay)
+	return@async asSync(context = context) {
+		return@asSync process(this)
+	}
+}
+
 /**
  * This function executes the code defined in [process] synchronously.
  * Internally a [CompletableFuture] is used to create the delayed result.
@@ -83,8 +98,7 @@ fun doSync(
 	vendor: App = system,
 	context: CoroutineContext = system.pluginCoroutineDispatcher(false),
 	process: suspend (CoroutineScope) -> Unit
-) =
-	launch(isAsync = false, vendor = vendor, context = context) { scope ->
+) = launch(isAsync = false, vendor = vendor, context = context) { scope ->
 		if (delay.isPositive()) delay(delay)
 
 		when {
