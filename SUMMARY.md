@@ -18,9 +18,9 @@
 
 ## 🕹 Interchange
 
-* [The Interchanges](interchange/the-interchanges/README.md)
-  * [🔩 Completion](interchange/the-interchanges/completion.md)
-  * [🗻 StructuredInterchange](interchange/the-interchanges/structuredinterchange.md)
+* [🖨 Interchanges](interchange/interchanges.md)
+* [🔩 Completion](interchange/completion.md)
+* [🗻 StructuredInterchange](interchange/structuredinterchange.md)
 
 ## ⏱ Timing
 
