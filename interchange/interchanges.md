@@ -53,6 +53,6 @@ final override val preferredVendor: App? = null, // A app, another than the regi
 
 These are the properties, which can be modified. Some of them are nullable and by default null, which is 'modifiers'. This means, if they are null, the default-generated ones will be chosen. But if not null these will be used instead of the default ones.
 
-Another thing that you will find, which is unknown, is the complete property. This is a whole new topic to talk about because this is where the `fun` begins :smile:
+Another thing that you will find, which is unknown, is the complete property. This is a whole new topic to talk about (visit [InterchangeStructure](interchangestructure.md)) because this is where the `fun` begins :smile:
 
 <figure><img src="../.gitbook/assets/Kotlin fun.png" alt="Anakin Skywalking talking about, that there is the reason, where the fun begins"><figcaption><p>fun, the keyword for starting a new function in Kotlin. Funny, because fun can also mean enjoying something. Especially because Kotlin is the most enjoyable programming Language in the World.</p></figcaption></figure>

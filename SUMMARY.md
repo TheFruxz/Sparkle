@@ -19,7 +19,7 @@
 ## 🕹 Interchange
 
 * [🖨 Interchanges](interchange/interchanges.md)
-* [🔩 Completion](interchange/completion.md)
+* [🔩 InterchangeStructure](interchange/interchangestructure.md)
 * [🗻 StructuredInterchange](interchange/structuredinterchange.md)
 
 ## ⏱ Timing
