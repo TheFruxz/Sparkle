@@ -1,9 +1,9 @@
 package de.fruxz.sparkle.framework.infrastructure.app
 
 import de.fruxz.ascend.extension.forceCast
+import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import net.kyori.adventure.key.Key
@@ -42,7 +42,7 @@ abstract class AppCompanion<T : App> : KeyedIdentifiable<T> {
 	 * @since 1.0
 	 */
 	override val identityKey: Key
-		get() = Key.key(Infrastructure.SYSTEM_IDENTITY, predictedIdentity)
+		get() = Key.key(Infrastructure.SYSTEM_IDENTITY, predictedIdentity.lowercase())
 
 	/**
 	 * This value represents the identity, which is expected
