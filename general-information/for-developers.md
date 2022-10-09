@@ -1,3 +1,7 @@
+---
+description: wh47 15 5p4rk13 f0r m3?
+---
+
 # 👨💻 For developers
 
 Dear plugin developer!
