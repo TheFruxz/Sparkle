@@ -38,6 +38,12 @@ The doSync function is like the asSyncDeferred function, by executing the proces
 
 This function is used to only execute the code contained inside the process, without having to rely on and fill out a result. The use case is you want to execute something synchronously, without having to return something. But you can still execute a `.join()` function on the returning `Job` block, to await the completion of the contained code block. This might be the case if you have something to update synchronously and then get the updated code asynchronously.
 
+This function can also delay the computation of the process block, but not only that. With the Bukkit scheduler, you can specify, that you want to repeat the code in repetitions with specific time intervals. With the `doSync` function, you can do this too.
+
+To repeat your code, you can not only define the optional delay parameter, but also an optional interval parameter. Like the delay parameter, the interval parameter gets intact with being positive.  This means, if the interval gets positive, the code repeats itself until it is getting canceled.
+
+## `asAsync` - function
+
 
 
 
