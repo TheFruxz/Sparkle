@@ -44,7 +44,11 @@ To repeat your code, you can not only define the optional delay parameter, but a
 
 ## `asAsync` - function
 
+The asAsync function is like the [`asSyncDeferred`](scheduling-and-deferral.md#assyncdeferred-function) function, by executing the code, but asynchronously, without blocking the current code. The code computation is delay-able with a delay parameter and the function itself returns a Deferred object, with the returning type.
 
+## `doAsync` - function
+
+The doAsync function is like the [`doSync`](scheduling-and-deferral.md#dosync-function) function, by executing the code, but asynchronously. The code computation is delay-able with a delay parameter and repeatable with the interval parameter.
 
 
 
