@@ -5,14 +5,14 @@ description: Front view onto the use of Coroutines
 # ⏳ Scheduling & Deferral
 
 {% hint style="info" %}
-**More interested in the technological concept?** Then you may take a look at the [Coroutines](../apps/the-apps/coroutines.md) page, where exactly that is discussed!
+**More interested in the technological concept?** Then you may take a look at the [Coroutines](broken-reference) page, where exactly that is discussed!
 {% endhint %}
 
 ## Introduction
 
 If you want to develop your plugins with Sparkle, you should say bye-bye to your legacy Bukkit scheduler, it's finally time to move on!
 
-Our system is built with Coroutines in mind, if you want to know more about exactly that, visit the [Coroutines](../apps/the-apps/coroutines.md) page right now!
+Our system is built with Coroutines in mind, if you want to know more about exactly that, visit the [Coroutines](broken-reference) page right now!
 
 Not only because most of our systems are asynchronously built, but you may want to simply use sync & async code in your project, you can use our enhanced sync & async APIs to make your life easier.
 

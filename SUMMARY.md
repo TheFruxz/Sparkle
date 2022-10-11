@@ -10,9 +10,7 @@
 
 ## ⚙ Apps
 
-* [📱 Apps](apps/the-apps/README.md)
-  * [🦺 Structure](apps/the-apps/structure.md)
-  * [🏗 Coroutines](apps/the-apps/coroutines.md)
+* [📱 Apps](apps/apps.md)
 * [🚞 Components](apps/components.md)
 * [📦 Services](apps/services.md)
 
