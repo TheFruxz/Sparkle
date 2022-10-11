@@ -155,3 +155,24 @@ This is done, using the [`CompletionAsset`](../apps/components.md) system, which
 
 > CompletionAssets are components of your InterchangeStructure, which adaptivly generates content, based of the current situtation. It is possible to generate it on demand, everytime it gets called, or only one time, if it should be cached.
 
+The default CompletionAssets are directly accessible on the companion object and can be used.
+
+#### Branch configuration
+
+Define, what is allowed and what is not. By using the configure function, you can edit the configuration of the edit branch.
+
+```kotlin
+buildInterchangeStructure {
+   configure { 
+		
+   }
+}
+```
+
+Inside the configure code block you can set the rules and behavior, which the user have to follow, so that the input is accepted as "yes, you followed this branch".
+
+Because if the user's input does not match the requirements, it does not count toward the following branch, because the system tracks, which branch the user is in.
+
+{% hint style="info" %}
+The user branch following works like User is _**root -> way-1 -> way-0 -> way-1**_if the user's input at way-0 does not match the requirements, set in the configuration or content, the path would be **root -> way-1** instead of the full one. If the branch is set to infinite, the parameters used for the try of following the other paths, but failed, are used as input parameters for the first way-1 path. **(only for StructuredInterchanges)**
+{% endhint %}
