@@ -55,4 +55,4 @@ These are the properties, which can be modified. Some of them are nullable and b
 
 Another thing that you will find, which is unknown, is the complete property. This is a whole new topic to talk about (visit [InterchangeStructure](interchangestructure.md)) because this is where the `fun` begins :smile:
 
-<figure><img src="../.gitbook/assets/Kotlin fun.png" alt="Anakin Skywalking talking about, that there is the reason, where the fun begins"><figcaption><p>fun, the keyword for starting a new function in Kotlin. Funny, because fun can also mean enjoying something. Especially because Kotlin is the most enjoyable programming Language in the World.</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/Anakin having Kotlin fun.png" alt="Anakin Skywalking talking about, that there is the reason, where the fun begins"><figcaption><p>fun, the keyword for starting a new function in Kotlin. Funny, because fun can also mean enjoying something. Especially because Kotlin is the most enjoyable programming Language in the World.</p></figcaption></figure>
