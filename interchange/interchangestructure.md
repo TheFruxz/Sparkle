@@ -157,6 +157,27 @@ This is done, using the [`CompletionAsset`](../apps/components.md) system, which
 
 The default CompletionAssets are directly accessible on the companion object and can be used.
 
+And now a great example of that:
+
+```kotlin
+buildInterchangeStructure<Player> {
+
+   branch {
+      addContent("first-branch")
+   }
+	
+   branch {
+      addContent("second-branch", "2nd-branch")
+   }
+	
+   branch {
+      addContent("no-one")
+      addContent(CompletionAsset.ONLINE_PLAYER_NAME)
+   }
+
+}
+```
+
 #### Branch configuration
 
 Define, what is allowed and what is not. By using the configure function, you can edit the configuration of the edit branch.
