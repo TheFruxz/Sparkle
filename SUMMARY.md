@@ -18,6 +18,7 @@
 
 * [🖨 Interchanges](interchange/interchanges.md)
 * [🔩 InterchangeStructure](interchange/interchangestructure.md)
+* [🧫 CompletionAsset](interchange/completionasset.md)
 * [🗻 StructuredInterchange](interchange/structuredinterchange.md)
 
 ## ⏱ Timing
