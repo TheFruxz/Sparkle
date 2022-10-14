@@ -92,6 +92,7 @@ interface Service : Hoster<Unit, Unit, Service> {
 						}
 					} else iteration.invoke(ServiceState(this@Service, vendor, time, 0, serviceTimes), this)
 				} catch (e: Exception) {
+					serviceLogger.warning("Service '${key()}' failed:")
 					e.printStackTrace()
 					serviceActions.onCrash.invoke(this@Service, e)
 				}
