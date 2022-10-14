@@ -19,3 +19,35 @@ The apps can be viewed and managed via the /app interchange.
 With `/app list` you can see a list full of apps. All the running and currently not running apps are listed here, with each having multiple indicators, showing their current status and compatibility.
 
 ## The code
+
+```kotlin
+class MyApp : App() {
+
+   override val appIdentity = "MyApp"
+
+   override val label: String = "WOW; the App!"
+
+   override val companion: AppCompanion<out App> = Companion
+
+   override val appCache: AppCache = MyCache
+
+   override suspend fun hello() {
+      // Hello!
+   }
+
+   companion object : AppCompanion<MyApp>() {
+
+   override val predictedIdentity = "MyApp"
+
+   }
+
+}
+
+object MyCache : AppCache {
+
+   override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) = empty()
+
+   override fun dropEverything(dropDepth: CacheDepthLevel) = empty()
+
+}
+```
