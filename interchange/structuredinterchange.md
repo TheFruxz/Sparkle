@@ -83,3 +83,19 @@ Now the syntax is looking like this:
 
 This quite simply describes our needs, and is making the whole process, of understanding the process of the command, way easier!
 
+### cooldown(...)
+
+Sometimes, you want, that a user is only capable of executing your interchange again, after some time. For example, if huge computational power is happening, when the player is executing this, or the player is receiving something, due to the execution of the interchange.
+
+The duration is defined, via a Kotlin duration, so you can use simple code like `5.seconds` as the parameter input, to define, that a user has to wait 5 seconds until he can execute the interchange again.
+
+Here is a small example:
+
+```kotlin
+buildInterchangeStructure {
+   branch {
+      cooldown(5.seconds)
+   }
+}
+```
+
