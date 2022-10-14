@@ -31,8 +31,10 @@ internal class KeeperService(override val vendor: App = system) : Service {
 		SparkleCache.registeredApps.withForEach {
 			try {
 				val level = DUMP
-				appCache.dropEverything(level)
-				debugLog("removed appCache (level: ${level.name}) from app $label")
+				appCache?.let {
+					it.dropEverything(level)
+					debugLog("removed appCache (level: ${level.name}) from app $label")
+				}
 			} catch (exception: Exception) {
 
 				if (SparkleApp.debugMode) catchException(exception)

@@ -345,9 +345,10 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
                     debugLog("${interchangeAccess.executor.name} is clearing cache for '${targetApp.identity}' at level '$level'...")
 
-                    targetApp.appCache.dropEverything(level)
-
-                    debugLog("${interchangeAccess.executor.name} cleared cache for '${targetApp.identity}' at level '$level'!")
+                    targetApp.appCache?.let {
+                        it.dropEverything(level)
+                        debugLog("${interchangeAccess.executor.name} cleared cache for '${targetApp.identity}' at level '$level'!")
+                    }
 
                     text {
 

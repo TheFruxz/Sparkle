@@ -169,7 +169,7 @@ abstract class App(
 	/**
 	 * The cache of the application
 	 */
-	abstract val appCache: AppCache
+	abstract val appCache: AppCache?
 
 	private var loadTime: Duration? = null
 
