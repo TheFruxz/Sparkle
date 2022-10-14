@@ -248,7 +248,7 @@ The ignoreCase() function is making the input ignore the case if the completion 
 /command <restrictCase>^ <ignoreCase>
 ```
 
-The default setup is that the case has to be respected!
+<mark style="color:red;">The default setup is that the case has to be respected!</mark>
 
 </details>
 
@@ -256,7 +256,13 @@ The default setup is that the case has to be respected!
 
 <summary><code>limitedSubParameters</code>() / <code>infiniteSubParameters</code>()</summary>
 
+The infiniteSubParameters function allows the user, to input additional parameters after the end of the current branch. The additional input will be registered as additional parameters and can be accessed inside the execution block
 
+```atom
+/command <limitedSubParameters> <infiniteSubParameters>*
+```
+
+<mark style="color:red;">The default setup is that the parameter amount is limited!</mark>
 
 </details>
 
@@ -264,7 +270,15 @@ The default setup is that the case has to be respected!
 
 <summary><code>mustMatchOutput</code>() / <code>mustNotMatchOutput</code>()</summary>
 
+The mustNotMatchOutput function allows the user, to insert everything they want. This function disables the complete equals checking process.
 
+This can be quite handy if you want to be able to input names of players, which have never been on the server, but at the same time, you want to display the completion of online players.
+
+```atom
+/command <mustMatchOutput>= <mustNotMatchOutput>
+```
+
+<mark style="color:red;">The default setup is that the input must match the output!</mark>
 
 </details>
 
@@ -272,6 +286,8 @@ The default setup is that the case has to be respected!
 
 <summary><code>onlyAccept(...)</code></summary>
 
+The onlyAccept function gives the possibility to replace the InterchangeStructureInputRestrictions with the provided parameters.
 
+If this is done, only the specified types (you can create your own ones) are allowed!
 
 </details>
