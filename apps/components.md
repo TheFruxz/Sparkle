@@ -24,3 +24,46 @@ With `/component list` you can see a list full of components. All the running an
 
 ## The code
 
+```kotlin
+class MyComponent : Component(
+   behaviour = RunType.DISABLED,
+   isExperimental = false,
+   preferredVendor = null,
+) {
+
+   override val label = "MyComponent"
+
+   override suspend fun start() {
+      // start logic
+   }
+
+   override suspend fun stop() {
+      // stop logic
+   }
+
+}
+```
+
+### #behavior
+
+The behavior constructor parameter defines, how the component is reacting to a start & stop!
+
+These are the available RunType behaviors:
+
+{% tabs %}
+{% tab title="DISABLED" %}
+
+{% endtab %}
+
+{% tab title="AUTOSTART_IMMUTABLE" %}
+
+{% endtab %}
+
+{% tab title="AUTOSTART_MUTABLE" %}
+
+{% endtab %}
+
+{% tab title="ENABLED" %}
+
+{% endtab %}
+{% endtabs %}
