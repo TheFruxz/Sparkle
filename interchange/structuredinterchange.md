@@ -47,3 +47,39 @@ This parameter is by default set to SUCCESS. This replaces the need of returning
 ### label(...)
 
 The label function is a way, to give your input parameter(s) a grouping name, which will be displayed inside the usage information. A name, which indicates, what your wanting from the command executer, would be extremely helpful if the amount or complexity is getting out of hand.
+
+Here is an small example:
+
+```kotlin
+buildInterchangeStructure {
+   branch {
+      addContent(CompletionAsset.DOUBLE, CompletionAsset.LONG)
+   }
+}
+```
+
+Now the syntax is looking like:
+
+```
+/command <sparkle:DOUBLE>|<sparkle:LONG>
+```
+
+But, because we want to help our customers, understand our needs, we use the label function:
+
+```kotlin
+buildInterchangeStructure {
+   branch {
+      addContent(CompletionAsset.DOUBLE, CompletionAsset.LONG)
+      label("Number")
+   }
+}
+```
+
+Now the syntax is looking like this:
+
+```
+/command <Number>
+```
+
+This quite simply describes our needs, and is making the whole process, of understanding the process of the command, way easier!
+

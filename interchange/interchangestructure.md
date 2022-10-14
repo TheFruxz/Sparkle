@@ -197,23 +197,3 @@ Because if the user's input does not match the requirements, it does not count t
 {% hint style="info" %}
 The user branch following works like User is _**root -> way-1 -> way-0 -> way-1**_if the user's input at way-0 does not match the requirements, set in the configuration or content, the path would be **root -> way-1** instead of the full one. If the branch is set to infinite, the parameters used for the try of following the other paths, but failed, are used as input parameters for the first way-1 path. **(only for StructuredInterchanges)**
 {% endhint %}
-
-#### Branch approvals
-
-{% hint style="info" %}
-Approvals are basically permissions
-{% endhint %}
-
-Sometimes you want, that only a specific group of people have access to different commands. With the branch-specific required approvals, you can even close different areas of interchanges, to only allow specific people access to them.
-
-To specify a branch, as 'only with this approval', you can do the following:
-
-```kotlin
-buildInterchangeStructure {
-   branch {
-      requiredApproval(Approval("system.op"))
-   }
-}
-```
-
-Now, after the `requiredApproval` function is applied to your branch, the user has to have the `system.op` permission, to be able, to execute or event preview this branch.
