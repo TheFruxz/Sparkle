@@ -60,7 +60,7 @@ buildInterchangeStructure {
 
 Now the syntax is looking like:
 
-```
+```atom
 /command <sparkle:DOUBLE>|<sparkle:LONG>
 ```
 
@@ -77,7 +77,7 @@ buildInterchangeStructure {
 
 Now the syntax is looking like this:
 
-```
+```atom
 /command <Number>
 ```
 

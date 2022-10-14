@@ -197,3 +197,81 @@ Because if the user's input does not match the requirements, it does not count t
 {% hint style="info" %}
 The user branch following works like User is _**root -> way-1 -> way-0 -> way-1**_if the user's input at way-0 does not match the requirements, set in the configuration or content, the path would be **root -> way-1** instead of the full one. If the branch is set to infinite, the parameters used for the try of following the other paths, but failed, are used as input parameters for the first way-1 path. **(only for StructuredInterchanges)**
 {% endhint %}
+
+#### Branch approvals
+
+{% hint style="info" %}
+Approvals are basically permissions
+{% endhint %}
+
+Sometimes you want, that only a specific group of people have access to different commands. With the branch-specific required approvals, you can even close different areas of interchanges, to only allow specific people access to them.
+
+To specify a branch, as 'only with this approval', you can do the following:
+
+```kotlin
+buildInterchangeStructure {
+   branch {
+      requiredApproval(Approval("system.op"))
+   }
+}
+```
+
+Now, after the `requiredApproval` function is applied to your branch, the user has to have the `system.op` permission, to be able, to execute or event preview this branch.
+
+#### Branch quick behavior-edits
+
+There are some functions available, which can help you, easily edit the configuration part of your branch, without the configure function.
+
+<details>
+
+<summary><code>isRequired()</code> / <code>isNotRequired()</code></summary>
+
+The isNotRequired() function is making the current branch optional, so that you can only fill out the parent branch, without getting the "not complete" issue.
+
+An example would be a page parameter, where you do not have to fill out the page number because the default page is always 1
+
+```atom
+/command <isRequired> (<isNotRequired>)
+```
+
+<mark style="color:red;">The default setup is that the branch is required!</mark>
+
+</details>
+
+<details>
+
+<summary><code>restrictCase</code>() / <code>ignoreCase</code>()</summary>
+
+The ignoreCase() function is making the input ignore the case if the completion assets are accepting it! Static content is also supporting it because static content is strings.
+
+```atom
+/command <restrictCase>^ <ignoreCase>
+```
+
+The default setup is that the case has to be respected!
+
+</details>
+
+<details>
+
+<summary><code>limitedSubParameters</code>() / <code>infiniteSubParameters</code>()</summary>
+
+
+
+</details>
+
+<details>
+
+<summary><code>mustMatchOutput</code>() / <code>mustNotMatchOutput</code>()</summary>
+
+
+
+</details>
+
+<details>
+
+<summary><code>onlyAccept(...)</code></summary>
+
+
+
+</details>
