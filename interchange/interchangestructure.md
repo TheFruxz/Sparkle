@@ -231,7 +231,7 @@ The isNotRequired() function is making the current branch optional, so that you 
 An example would be a page parameter, where you do not have to fill out the page number because the default page is always 1
 
 ```atom
-/command <isRequired> (<isNotRequired>)
+/command <isRequired> <isNotRequired>?
 ```
 
 <mark style="color:red;">The default setup is that the branch is required!</mark>
