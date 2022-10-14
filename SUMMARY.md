@@ -25,3 +25,7 @@
 
 * [🛣 Coroutines](timing/coroutines.md)
 * [⏳ Scheduling & Deferral](timing/scheduling-and-deferral.md)
+
+## ⚗ Other
+
+* [🧬 Debug](other/debug.md)
