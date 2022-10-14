@@ -2,9 +2,9 @@ package de.fruxz.sparkle.framework.mojang
 
 import com.destroystokyo.paper.profile.PlayerProfile
 import com.destroystokyo.paper.profile.ProfileProperty
+import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.extension.offlinePlayer
 import de.fruxz.sparkle.framework.extension.system
-import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.visual.item.Item
 import de.fruxz.sparkle.framework.visual.item.quirk.Quirk
 import kotlinx.coroutines.launch
@@ -15,7 +15,6 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.SkullMeta
 
 @Serializable
-@Suppress("DEPRECATION")
 @OptIn(ExperimentalSerializationApi::class)
 data class MojangProfile constructor(
 	val uuid: String,
