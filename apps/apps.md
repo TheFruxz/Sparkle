@@ -52,5 +52,5 @@ object MyCache : AppCache {
 }
 ```
 
-Apps are seperated in three different segments: The app, the AppCompanion and the AppCache.
+Apps are separated into three different segments: The app, the AppCompanion, and the AppCache.
 
