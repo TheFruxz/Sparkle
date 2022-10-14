@@ -25,6 +25,7 @@ import de.fruxz.sparkle.framework.extension.visual.ui.set
 import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasRender
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.NO_OPEN
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.NO_UPDATE
+import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager
 import de.fruxz.sparkle.framework.visual.item.ItemLike
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async

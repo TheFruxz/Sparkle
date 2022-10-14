@@ -16,7 +16,7 @@ import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceState
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import de.fruxz.sparkle.framework.sandbox.SandBox
-import de.fruxz.sparkle.framework.visual.canvas.CanvasSessionManager.CanvasSession
+import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager.CanvasSession
 import de.fruxz.sparkle.framework.visual.item.action.ItemAction
 import kotlinx.coroutines.CoroutineScope
 import net.kyori.adventure.key.Key

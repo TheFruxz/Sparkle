@@ -18,7 +18,7 @@ import de.fruxz.sparkle.framework.extension.visual.ui.affectedItem
 import de.fruxz.sparkle.framework.extension.visual.ui.item
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
-import de.fruxz.sparkle.framework.visual.canvas.CanvasSessionManager
+import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.PAGED
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.SCROLL

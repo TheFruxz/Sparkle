@@ -1,5 +1,6 @@
-package de.fruxz.sparkle.framework.visual.canvas
+package de.fruxz.sparkle.framework.visual.canvas.session
 
+import de.fruxz.sparkle.framework.visual.canvas.Canvas
 import net.kyori.adventure.key.Key
 import org.bukkit.entity.Player
 
