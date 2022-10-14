@@ -98,21 +98,78 @@ The isAsync only specifies, if the code, specified in iteration, should be execu
 
 ### #serviceActions
 
-Sometimes, you want to prepare your plugin, before something like a cleaning service is executing its code. But sometimes you want to do something too, if your service is about to crash!
+Sometimes, you want to prepare your plugin, before something like a cleaning service is executing its code. But sometimes you want to do something too if your service is about to crash!
 
 With the serviceActions, you can define the actions executed, on these special events!
 
 ```kotlin
 override val serviceActions: ServiceActions = ServiceActions(
    onStart = { serviceLogger.info("I, (${key()}), have been started!") },
-   onCrash = { _, _ -> serviceLogger.warning("Oh no! I have made an crash! O.O") },
+   onCrash = { _, _ -> serviceLogger.warning("Oh no! I have made a crash! O.O") },
    onStop = { serviceLogger.info("I, (${key()}), have been stopped!") }
 )
 ```
 
 ### #iteration
 
-And finally, the most important part, the executed code itself!
+And finally, the most important part is the executed code itself!
 
+```kotlin
+override val iteration: ServiceIteration = {
+   // executed code
+}
+```
 
+This is the process, which will be executed if the services start. The ServiceIteration is only a type alias for the following:
 
+```kotlin
+suspend ServiceState.(CoroutineScope) -> Unit
+```
+
+The ServiceState is a filled data class, representing the current state of service execution, like the current repetition (how often has it been executed?):
+
+```kotlin
+data class ServiceState(
+   val service: Service,
+   val vendor: App,
+   val runningSince: Calendar?,
+   val repetition: Int,
+   val timing: ServiceTimes,
+)
+```
+
+And the CoroutineScope, provided in the ServiceIteration, is the scope, on which the service is getting executed!
+
+## An example
+
+Now, after you know how services from Sparkle are working, you can build your own service, for example, a service like this:&#x20;
+
+```kotlin
+class MyService(override val vendor: App = SparkleApp.instance) : Service {
+
+   override val label = "MyService"
+
+   override val serviceTimes: ServiceTimes = ServiceTimes(
+      delay = 10.seconds,
+      interval = 1.minutes,
+      isAsync = true,
+   )
+
+   override val serviceActions: ServiceActions = ServiceActions(
+      onStart = { serviceLogger.info("I, (${key()}), have been started!") },
+      onCrash = { _, _ -> serviceLogger.warning("Oh no! I have made a crash! O.O") },
+      onStop = { serviceLogger.info("I, (${key()}), have been stopped!") }
+   )
+
+   override val iteration: ServiceIteration = {
+
+      broadcast(text {
+         this+"<green>I'm running since ${runningSince?.getFormatted()}!"
+      })
+
+   }
+
+}
+```
+
+&#x20;
