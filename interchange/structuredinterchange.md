@@ -23,13 +23,27 @@ If you access the `executor` property inside the StructuredInterchange, you will
 ## InterchangeStructure
 
 {% hint style="info" %}
-This section builds ontop of the knowledge, presented in InterchangeStructure
+This section builds on top of the knowledge, presented in InterchangeStructure
 {% endhint %}
 
-Now the challange is, to make the InterchangeStructure work, like an execution based completion tree. To do that, some additional functions and properties have been added to the whole system.
+Now the challenge is, to make the InterchangeStructure work, like an execution-based completion tree. To do that, some additional functions and properties have been added to the whole system.
 
 Here are the most presented:
 
 ### execution(...)
 
-If you are getting into a branch by using the interchange
+If you want to make a branch 'executable', so that the user can choose to execute it with the command, you can use the execution function.
+
+This function defines the code, which will be executed if everything is entered correctly, according to the used CompletionAssets.
+
+The code block, which the execution function needs, have to return an InterchangeResult, which indicates the result of executing this branch.
+
+### concludedExecution(...)
+
+This function is like the execution function, but with one additional parameter inside the function: the result parameter.
+
+This parameter is by default set to SUCCESS. This replaces the need of returning the result inside an execution block because now it is concluded directly at the start because the return is always the value of the result parameter.
+
+### label(...)
+
+The label function is a way, to give your input parameter(s) a grouping name, which will be displayed inside the usage information. A name, which indicates, what your wanting from the command executer, would be extremely helpful if the amount or complexity is getting out of hand.
