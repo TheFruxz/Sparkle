@@ -112,7 +112,11 @@ tasks {
     }
 
     processResources {
-        expand("version" to project.version, "name" to project.name, "website" to "https://$host")
+        expand(
+            "version" to project.version,
+            "name" to project.name,
+            "website" to "https://$host"
+        )
     }
 
     test {

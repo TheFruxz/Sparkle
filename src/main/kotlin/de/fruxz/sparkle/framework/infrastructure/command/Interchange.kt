@@ -5,13 +5,10 @@ import de.fruxz.ascend.extension.empty
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.attachment.VendorOnDemand
-import de.fruxz.sparkle.framework.extension.asPlayer
-import de.fruxz.sparkle.framework.extension.asPlayerOrNull
+import de.fruxz.sparkle.framework.extension.*
 import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
-import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.interchange.Parameters
-import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.extension.time.RunningCooldown
 import de.fruxz.sparkle.framework.extension.time.getCooldown
 import de.fruxz.sparkle.framework.extension.time.hasCooldown
@@ -49,7 +46,6 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
-import java.util.logging.Level.WARNING
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
@@ -206,12 +202,7 @@ abstract class Interchange(
 		exception: Exception,
 		executor: InterchangeExecutor,
 		executorType: InterchangeUserRestriction
-	) {
-		sectionLog.log(
-			WARNING,
-			"Executor ${executor.name} as ${executorType.name} caused an error at execution at ${with(exception.stackTrace[0]) { "$className:$methodName" }}!"
-		)
-	}
+	) = sectionLog.warning("Executor ${executor.name} as ${executorType.name} caused an error at execution at ${with(exception.stackTrace[0]) { "$className:$methodName" }}!")
 
 	private fun wrongApprovalFeedback(
 		receiver: InterchangeExecutor,
@@ -303,10 +294,7 @@ abstract class Interchange(
 						val clientType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE
 
 						fun exception(exception: Exception) {
-							sectionLog.log(
-								WARNING,
-								"Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!"
-							)
+							sectionLog.warning("Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!")
 							catchException(exception)
 						}
 
