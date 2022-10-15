@@ -16,7 +16,7 @@ It can also help, to provide features, that only a specific group of people need
 
 ## The control
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption><p>Output of the <code>/component list</code> interchange</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption><p>Output of the <code>/component list</code> interchange</p></figcaption></figure>
 
 The components can be viewed and managed via the /component interchange.
 

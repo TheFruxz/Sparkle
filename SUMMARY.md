@@ -29,3 +29,4 @@
 ## ⚗ Other
 
 * [🧬 Debug](other/debug.md)
+* [🏜 SandBox](other/sandbox.md)
