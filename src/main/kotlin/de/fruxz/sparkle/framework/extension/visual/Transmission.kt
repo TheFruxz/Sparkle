@@ -8,13 +8,13 @@ import de.fruxz.stacked.extension.lines
 import net.kyori.adventure.text.ComponentLike
 
 fun Iterable<ComponentLike>.message(vararg participant: InterchangeExecutor) =
-	Transmission(content = this.toList().map(ComponentLike::asComponent))
-		.participants(participant.toList())
+	Transmission(content = this.map(ComponentLike::asComponent))
+		.participants(participant.toSet())
 
 fun Iterable<ComponentLike>.notification(level: Level, vararg participant: InterchangeExecutor) =
-	Transmission(content = this.toList().map(ComponentLike::asComponent), level = level)
+	Transmission(content = this.map(ComponentLike::asComponent), level = level)
 		.promptSound(level.promptSound)
-		.participants(participant.toList())
+		.participants(participant.toSet())
 
 fun ComponentLike.message(vararg participant: InterchangeExecutor) = lines.message(*participant)
 

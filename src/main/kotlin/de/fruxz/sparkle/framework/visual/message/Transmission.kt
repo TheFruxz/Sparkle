@@ -1,6 +1,7 @@
 package de.fruxz.sparkle.framework.visual.message
 
 import de.fruxz.ascend.extension.dump
+import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.ascend.tool.smart.positioning.Address
 import de.fruxz.ascend.tool.smart.positioning.Address.Companion.address
 import de.fruxz.sparkle.framework.effect.EntityBasedEffect
@@ -15,6 +16,7 @@ import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.stacked.extension.asComponent
 import de.fruxz.stacked.extension.asStyledComponent
 import de.fruxz.stacked.extension.asStyledString
+import de.fruxz.stacked.extension.joinToComponent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.title.Title
@@ -65,23 +67,23 @@ data class Transmission(
 
 	infix fun promptSound(soundEffect: SoundEffect?) = edit { this.promptSoundEffect = soundEffect }
 
-	fun display(): Transmission {
+	fun display(receivers: Set<InterchangeExecutor> = participants): Transmission {
 		var nextRound = setOf<Entity>()
 
-		val prefix = this.prefix ?: (SparkleData.systemConfig.prefix[level.prefixLink.addressString.takeIf { prefixByLevel } ?: "general"] ?: "<dark_gray>⏵ ").asStyledComponent
+		val prefix = this.prefix ?: (SparkleData.systemConfig.prefix[level.prefixLink.addressString.takeIf { prefixByLevel } ?: "prefix.general"] ?: "<dark_gray>⏵ ").asStyledComponent
 
 		val displayObject = content.map { prefix.append(it) }
 
-		for (participant in participants) {
+		for (receiver in receivers) {
 
 			when (displayType) {
-				DISPLAY_CHAT -> displayObject.forEach { participant.sendMessage(it) }
-				DISPLAY_ACTIONBAR -> participant.sendActionBar(displayObject.first())
-				DISPLAY_TITLE -> participant.showTitle(Title.title(displayObject.first(), Component.empty()))
-				DISPLAY_SUBTITLE -> participant.showTitle(Title.title(Component.empty(), displayObject.first()))
+				DISPLAY_CHAT -> displayObject.forEach { receiver.sendMessage(it) }
+				DISPLAY_ACTIONBAR -> receiver.sendActionBar(displayObject.joinToComponent())
+				DISPLAY_TITLE -> receiver.showTitle(Title.title(displayObject.joinToComponent(), Component.empty()))
+				DISPLAY_SUBTITLE -> receiver.showTitle(Title.title(Component.empty(), displayObject.joinToComponent()))
 			}
 
-			if (participant is Entity) nextRound += participant
+			if (receiver is Entity) nextRound += receiver
 		}
 
 		promptSoundEffect?.play(*nextRound.toTypedArray())
@@ -95,11 +97,9 @@ data class Transmission(
 		.display()
 
 	override fun play(vararg entities: Entity?) =
-		copy().participants(entities.mapNotNull {
-			if (it is InterchangeExecutor) it else null
-		}).display().dump()
+		copy().participants(entities.mapNotNull { it?.takeIfInstance<InterchangeExecutor>() }).display().dump()
 
-	override fun toString() = content.map(Component::asStyledString).joinToString("\n")
+	override fun toString() = content.joinToString("\n", transform = Component::asStyledString)
 
 	enum class Level(
 		val promptSound: SoundEffect,
