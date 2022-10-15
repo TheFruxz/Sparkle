@@ -5,6 +5,13 @@ import de.fruxz.ascend.extension.math.maxTo
 import de.fruxz.ascend.tool.smart.positioning.Address
 import de.fruxz.ascend.tree.TreeBranch
 import de.fruxz.ascend.tree.TreeBranchType
+import de.fruxz.sparkle.framework.extension.asPlayer
+import de.fruxz.sparkle.framework.extension.asPlayerOrNull
+import de.fruxz.sparkle.framework.extension.debugLog
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.time.getCooldown
+import de.fruxz.sparkle.framework.extension.time.hasCooldown
+import de.fruxz.sparkle.framework.extension.time.setCooldown
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.*
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure.BranchStatus.*
@@ -15,17 +22,10 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.tracing.Comp
 import de.fruxz.sparkle.framework.infrastructure.command.completion.tracing.CompletionTraceResult.Conclusion.EMPTY
 import de.fruxz.sparkle.framework.infrastructure.command.completion.tracing.PossibleTraceWay
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
-import de.fruxz.sparkle.framework.extension.debugLog
-import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.extension.asPlayer
-import de.fruxz.sparkle.framework.extension.asPlayerOrNull
-import de.fruxz.sparkle.framework.extension.time.getCooldown
-import de.fruxz.sparkle.framework.extension.time.hasCooldown
-import de.fruxz.sparkle.framework.extension.time.setCooldown
 import de.fruxz.sparkle.framework.permission.Approval
 import de.fruxz.sparkle.framework.permission.hasApproval
 import org.bukkit.entity.Player
-import java.util.UUID
+import java.util.*
 import kotlin.time.Duration
 
 class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
@@ -160,11 +160,11 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	}
 
 	fun trace(inputQuery: List<String>, executor: InterchangeExecutor, availableExecutionRepresentsSolution: Boolean = true): CompletionTraceResult<EXECUTOR, InterchangeStructure<EXECUTOR>> {
-		val waysMatching = mutableListOf<PossibleTraceWay<InterchangeStructure<EXECUTOR>>>()
-		val waysOverflow = mutableListOf<PossibleTraceWay<InterchangeStructure<EXECUTOR>>>()
-		val waysIncomplete = mutableListOf<PossibleTraceWay<InterchangeStructure<EXECUTOR>>>()
-		val waysFailed = mutableListOf<PossibleTraceWay<InterchangeStructure<EXECUTOR>>>()
-		val waysNoDestination = mutableListOf<PossibleTraceWay<InterchangeStructure<EXECUTOR>>>()
+		var waysMatching = listOf<PossibleTraceWay<InterchangeStructure<EXECUTOR>>>()
+		var waysOverflow = listOf<PossibleTraceWay<InterchangeStructure<EXECUTOR>>>()
+		var waysIncomplete = listOf<PossibleTraceWay<InterchangeStructure<EXECUTOR>>>()
+		var waysFailed = listOf<PossibleTraceWay<InterchangeStructure<EXECUTOR>>>()
+		var waysNoDestination = listOf<PossibleTraceWay<InterchangeStructure<EXECUTOR>>>()
 
 		fun innerTrace(currentBranch: InterchangeStructure<EXECUTOR>, currentDepth: Int, parentBranchStatus: BranchStatus) {
 			debugLog("tracing branch ${currentBranch.identity}[${currentBranch.address}] with depth '$currentDepth' from parentStatus $parentBranchStatus")
@@ -238,11 +238,11 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 			)
 
 			when (currentResult) {
-				FAILED -> waysFailed.add(outputBuild.forceCast())
-				OVERFLOW -> waysOverflow.add(outputBuild.forceCast())
-				INCOMPLETE -> waysIncomplete.add(outputBuild.forceCast())
-				MATCHING -> waysMatching.add(outputBuild.forceCast())
-				NO_DESTINATION -> waysNoDestination.add(outputBuild.forceCast())
+				FAILED -> waysFailed += outputBuild
+				OVERFLOW -> waysOverflow += outputBuild
+				INCOMPLETE -> waysIncomplete += outputBuild
+				MATCHING -> waysMatching += outputBuild
+				NO_DESTINATION -> waysNoDestination += outputBuild
 			}
 
 			if (!currentBranch.isRoot) {

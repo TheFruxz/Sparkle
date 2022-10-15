@@ -68,15 +68,15 @@ data class Item(
 	var size: Int = 1,
 	var lore: List<Component> = emptyList(),
 	var damage: Int = 0,
-	var modifications: MutableSet<Modification> = mutableSetOf(),
-	var flags: MutableSet<ItemFlag> = mutableSetOf(),
+	var modifications: Set<Modification> = setOf(),
+	var flags: HashSet<ItemFlag> = hashSetOf(),
 	var quirk: Quirk = Quirk.empty,
-	var postProperties: MutableSet<PostProperty> = mutableSetOf(),
+	var postProperties: HashSet<PostProperty> = hashSetOf(),
 	var itemIdentity: String = "${UUID.randomUUID()}",
 	var persistentData: Map<Key, Any> = mapOf(),
 	var itemMetaBase: ItemMeta? = null,
 	var itemActionTags: Set<ItemActionTag> = emptySet(),
-	val productionPlugins: MutableSet<(ItemStack) -> Unit> = mutableSetOf(),
+	var productionPlugins: Set<(ItemStack) -> Unit> = setOf(),
 ) : ItemLike, KeyedIdentifiable<Item>, Producible<ItemStack>, HoverEventSource<ShowItem> {
 
 	constructor(source: Material) : this(material = source)
@@ -87,8 +87,8 @@ data class Item(
 		size = itemStack.amount,
 		lore = itemStack.lore().takeOrEmpty(),
 		damage = itemStack.itemMeta?.takeIfInstance<Damageable>()?.damage ?: 0,
-		modifications = enchantmentsToModifications(itemStack.enchantments).toMutableSet(),
-		flags = itemStack.itemFlags,
+		modifications = enchantmentsToModifications(itemStack.enchantments),
+		flags = itemStack.itemFlags.toHashSet(),
 		quirk = when (itemStack.type) {
 			PLAYER_HEAD, PLAYER_WALL_HEAD -> Quirk.skull { owningPlayer = itemStack.itemMetaOrNull?.takeIfInstance<SkullMeta>()?.owningPlayer }
 			else -> Quirk.empty
@@ -150,7 +150,7 @@ data class Item(
 
 		withContext(SparkleApp.coroutineScope.coroutineContext) {
 			@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
-			val productionData = mutableMapOf<Pair<NamespacedKey, PersistentDataType<*, *>>, Any>()
+			var productionData = mapOf<Pair<NamespacedKey, PersistentDataType<*, *>>, Any>()
 
 			if (itemMeta != null) {
 
@@ -163,12 +163,11 @@ data class Item(
 				itemMeta.addItemFlags(*flags.toTypedArray())
 
 				if (!postProperties.contains(NO_IDENTITY))
-					productionData[identityNamespace to PersistentDataType.STRING] = this@Item.identity
+					productionData += (identityNamespace to PersistentDataType.STRING) to this@Item.identity
 
 				if (postProperties.contains(BLANK_LABEL)) itemMeta.displayName(Component.text(" "))
 
-				if (itemActionTags.isNotEmpty()) productionData[actionsNamespace to PersistentDataType.STRING] =
-					itemActionTags.joinToString("|") { it.identity }
+				if (itemActionTags.isNotEmpty()) productionData += (actionsNamespace to PersistentDataType.STRING) to (itemActionTags.joinToString("|") { it.identity })
 
 				fun <I, O : Any> place(
 					namespacedKey: NamespacedKey,
@@ -230,27 +229,27 @@ data class Item(
 
 	@ItemDsl
 	fun annexModifications(vararg modifications: Modification) =
-		apply { this.modifications.addAll(modifications) }
+		apply { this.modifications += modifications }
 
 	@ItemDsl
 	fun annexModifications(modifications: Collection<Modification>) =
-		apply { this.modifications.addAll(modifications) }
+		apply { this.modifications += modifications }
 
 	@ItemDsl
 	fun annexModifications(vararg modifications: Pair<Enchantment, Int>) =
-		apply { this.modifications.addAll(modifications.map { Modification(it.first, it.second) }) }
+		apply { this.modifications += modifications.map { Modification(it.first, it.second) } }
 
 	@ItemDsl
 	fun putModifications(vararg modifications: Modification) =
-		apply { this.modifications = modifications.toMutableSet() }
+		apply { this.modifications = modifications.toSet() }
 
 	@ItemDsl
 	fun putModifications(modifications: Collection<Modification>) =
-		apply { this.modifications = modifications.toMutableSet() }
+		apply { this.modifications = modifications.toSet() }
 
 	@ItemDsl
 	fun putModifications(vararg modifications: Pair<Enchantment, Int>) =
-		apply { this.modifications = modifications.map { Modification(it.first, it.second) }.toMutableSet() }
+		apply { this.modifications = modifications.map { Modification(it.first, it.second) }.toSet() }
 
 	@ItemDsl
 	fun hasModifications(vararg modifications: Modification) =
@@ -266,11 +265,11 @@ data class Item(
 
 	@ItemDsl
 	fun dropModifications(vararg modifications: Modification) =
-		apply { this.modifications.removeAll(modifications.toSet()) }
+		apply { this.modifications -= modifications.toSet() }
 
 	@ItemDsl
 	fun dropModifications(modifications: Collection<Modification>) =
-		apply { this.modifications.removeAll(modifications.toSet()) }
+		apply { this.modifications -= modifications.toSet() }
 
 	@ItemDsl
 	fun annexFlags(flags: Collection<ItemFlag>) =
@@ -290,11 +289,11 @@ data class Item(
 
 	@ItemDsl
 	fun putFlags(flags: Collection<ItemFlag>) =
-		apply { this.flags = flags.toMutableSet() }
+		apply { this.flags = flags.toHashSet() }
 
 	@ItemDsl
 	fun putFlags(vararg flags: ItemFlag) =
-		apply { this.flags = flags.toMutableSet() }
+		apply { this.flags = flags.toHashSet() }
 
 	@ItemDsl
 	fun dropFlags(flags: Collection<ItemFlag>) =
@@ -322,11 +321,11 @@ data class Item(
 
 	@ItemDsl
 	fun putPostProperties(postProperties: Collection<PostProperty>) =
-		apply { this.postProperties = postProperties.toMutableSet() }
+		apply { this.postProperties = postProperties.toHashSet() }
 
 	@ItemDsl
 	fun putPostProperties(vararg postProperties: PostProperty) =
-		apply { this.postProperties = postProperties.toMutableSet() }
+		apply { this.postProperties = postProperties.toHashSet() }
 
 	@ItemDsl
 	fun dropPostProperties(postProperties: Collection<PostProperty>) =
@@ -536,7 +535,7 @@ data class Item(
 
 		private fun enchantmentsToModifications(map: Map<Enchantment, Int>) = map.map {
 			Modification(it.key, it.value)
-		}
+		}.toSet()
 
 		private fun modificationsToEnchantments(modifications: Collection<Modification>) = modifications.associate {
 			it.enchantment to it.level

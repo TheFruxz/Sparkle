@@ -3,8 +3,8 @@ package de.fruxz.sparkle.framework.positioning.dependent
 import de.fruxz.ascend.annotation.NotPerfect
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.floorToInt
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import de.fruxz.sparkle.framework.positioning.relative.PyramidalShape
+import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
@@ -34,13 +34,13 @@ data class DependentPyramidalShape(
 	override val fullDepth: Double = groundDepth
 
 	override val blockLocations: List<SimpleLocation> by lazy {
-		val locations = mutableListOf<SimpleLocation>()
+		var locations = listOf<SimpleLocation>()
 
 		for (x in (peakLocation.x-(groundWidth / 2)).floorToInt()..(peakLocation.x+(groundWidth / 2)).ceilToInt()) {
 			for (z in (peakLocation.z-(groundDepth / 2)).floorToInt()..(peakLocation.z+(groundDepth / 2)).ceilToInt()) {
 				for (y in (peakLocation.y-height).floorToInt()..peakLocation.y.ceilToInt()) {
 					if (contains(Vector(x, y, z))) {
-						locations.add(SimpleLocation(peakLocation.world, x, y, z))
+						locations += SimpleLocation(peakLocation.world, x, y, z)
 					}
 				}
 			}

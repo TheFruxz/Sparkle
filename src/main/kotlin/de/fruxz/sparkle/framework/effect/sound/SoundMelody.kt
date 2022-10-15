@@ -17,7 +17,7 @@ class SoundMelody(
 	private var ticksPerBeat: Long = 10,
 	private var ticksPerSound: Long = 0,
 	var repetitions: Int = 0,
-	private val _structure: MutableList<MutableList<SoundData>> = mutableListOf(),
+	private var _structure: List<List<SoundData>> = listOf(),
 ) : SoundEffect {
 
 	var delayPerBeat: Duration
@@ -32,26 +32,25 @@ class SoundMelody(
 			ticksPerSound = value.inWholeMinecraftTicks
 		}
 
-	val structure: List<List<SoundData>>
+	var structure: List<List<SoundData>>
 		get() = _structure
+		set(value) { _structure = value }
 
 	fun beat(process: SoundMelodyBeat.() -> Unit) {
-		_structure.add(SoundMelodyBeat().apply(process).content.toMutableList())
+		_structure = _structure.plusElement(SoundMelodyBeat().apply(process).content)
 	}
 
-	fun beat(soundData: SoundData): Unit = beat {
-		sound(soundData)
-	}
+	fun beat(soundData: SoundData): Unit = beat { sound(soundData) }
 
 	data class SoundMelodyBeat(
-		private val _content: MutableList<SoundData> = mutableListOf(),
+		private var _content: List<SoundData> = listOf(),
 	) {
 
 		val content: List<SoundData>
 			get() = _content
 
 		fun sound(soundData: SoundData) {
-			_content.add(soundData)
+			_content += soundData
 		}
 
 	}

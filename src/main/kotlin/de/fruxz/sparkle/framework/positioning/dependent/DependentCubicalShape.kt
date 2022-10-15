@@ -5,9 +5,9 @@ import de.fruxz.ascend.extension.math.floorToInt
 import de.fruxz.ascend.tool.smart.composition.Producible
 import de.fruxz.sparkle.framework.extension.toSimpleLocation
 import de.fruxz.sparkle.framework.extension.velocityTo
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import de.fruxz.sparkle.framework.positioning.relative.CubicalShape
 import de.fruxz.sparkle.framework.positioning.relative.Shape
+import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
@@ -80,9 +80,9 @@ data class DependentCubicalShape(
 	}
 
 	val corners: List<SimpleLocation> by lazy {
-		val corners = mutableListOf<SimpleLocation>()
+		var corners = listOf<SimpleLocation>()
 
-		corners.addAll(listOf(
+		corners += listOf(
 			center.copy(
 				x = center.x - (fullWidth / 2),
 				y = center.y - (fullHeight / 2),
@@ -123,7 +123,7 @@ data class DependentCubicalShape(
 				y = center.y + (fullHeight / 2),
 				z = center.z + (fullDepth / 2),
 			),
-		))
+		)
 
 		return@lazy corners
 	}
@@ -218,7 +218,14 @@ data class DependentCubicalShape(
 			for (x in xL.first().floorToInt()..xL.last().floorToInt()) {
 				for (y in yL.first().floorToInt()..yL.last().floorToInt()) {
 					for (z in zL.first().floorToInt()..zL.last().floorToInt()) {
-						add(SimpleLocation(first.world, x.toDouble().floor() + .5, y.toDouble().floor() + .5, z.toDouble().floor() + .5))
+						add(
+							SimpleLocation(
+								first.world,
+								x.toDouble().floor() + .5,
+								y.toDouble().floor() + .5,
+								z.toDouble().floor() + .5
+							)
+						)
 					}
 				}
 			}

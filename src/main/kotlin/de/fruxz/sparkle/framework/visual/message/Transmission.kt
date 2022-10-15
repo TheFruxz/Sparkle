@@ -66,7 +66,7 @@ data class Transmission(
 	infix fun promptSound(soundEffect: SoundEffect?) = edit { this.promptSoundEffect = soundEffect }
 
 	fun display(): Transmission {
-		val nextRound = mutableSetOf<Entity>()
+		var nextRound = setOf<Entity>()
 
 		val prefix = this.prefix ?: (SparkleData.systemConfig.prefix[level.prefixLink.addressString.takeIf { prefixByLevel } ?: "general"] ?: "<dark_gray>⏵ ").asStyledComponent
 
@@ -81,8 +81,7 @@ data class Transmission(
 				DISPLAY_SUBTITLE -> participant.showTitle(Title.title(Component.empty(), displayObject.first()))
 			}
 
-			if (participant is Entity)
-				nextRound.add(participant)
+			if (participant is Entity) nextRound += participant
 		}
 
 		promptSoundEffect?.play(*nextRound.toTypedArray())

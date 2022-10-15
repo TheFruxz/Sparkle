@@ -2,8 +2,8 @@ package de.fruxz.sparkle.framework.positioning.dependent
 
 import de.fruxz.sparkle.framework.extension.toSimpleLocation
 import de.fruxz.sparkle.framework.extension.velocityTo
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import de.fruxz.sparkle.framework.positioning.relative.LinearShape
+import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
@@ -43,13 +43,13 @@ data class DependentLinearShape(
     }
 
     override val blockLocations: List<SimpleLocation> by lazy {
-        val result = mutableListOf<SimpleLocation>()
+        var result = listOf<SimpleLocation>()
         val directionVector = fromLocation velocityTo toLocation
         val directionVectorLength = directionVector.length()
 
         for (i in 0 until directionVectorLength.roundToInt()) {
             val location = fromLocation.toVector().add(directionVector.clone().multiply(i.toDouble()).divide(Vector(directionVectorLength, directionVectorLength, directionVectorLength))).toLocation(fromLocation.bukkitWorld).toSimpleLocation()
-            result.add(location)
+            result += location
         }
 
         return@lazy result

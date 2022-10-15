@@ -2,9 +2,9 @@ package de.fruxz.sparkle.framework.positioning.dependent
 
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.floorToInt
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import de.fruxz.sparkle.framework.positioning.relative.CylindricalShape
 import de.fruxz.sparkle.framework.positioning.relative.Shape
+import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
@@ -49,7 +49,8 @@ data class DependentCylindricalShape(
 	}
 
 	override val blockLocations: List<SimpleLocation> by lazy {
-		val output = mutableListOf<SimpleLocation>()
+		var output = listOf<SimpleLocation>()
+
 		var attempts = 0
 		val zLocations: IntRange
 		val xLocations: IntRange
@@ -79,7 +80,7 @@ data class DependentCylindricalShape(
 					val location = SimpleLocation(center.world, x, y, z)
 					attempts++
 					if (contains(location)) {
-						output.add(location)
+						output += location
 					}
 				}
 			}
