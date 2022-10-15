@@ -66,6 +66,12 @@ interface InterchangeStructureInputRestriction<DATATYPE> {
 			override fun transformer(input: String) = input.toDouble()
 		}
 
+        val NUMBER = object : InterchangeStructureInputRestriction<Number> {
+			override val type = null
+			override fun isValid(input: String) = input.isLong() || input.isDouble()
+			override fun transformer(input: String): Number = input.toLongOrNull() ?: input.toDouble()
+		}
+
 		@JvmStatic
 		val BOOLEAN = object : InterchangeStructureInputRestriction<Boolean> {
 			override val type = BoolArgumentType.bool()

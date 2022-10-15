@@ -95,6 +95,15 @@ data class CompletionAsset<T>(
 			input.toDouble()
 		}
 
+        @JvmStatic
+        val NUMBER = CompletionAsset<Number>(system, "NUMBER", false, listOf(InterchangeStructureInputRestriction.NUMBER)) {
+			setOf(0, .5, 1, 1.5, 2).mapToString()
+        }.doCheck {
+			input.isLong() || input.isDouble()
+        }.transformer {
+			input.toLongOrNull() ?: input.toDoubleOrNull()
+        }
+
 		@JvmStatic
 		val ONLINE_PLAYER_NAME = CompletionAsset<Player>(system, "ONLINE_PLAYER_NAME", true, listOf(
 			InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
