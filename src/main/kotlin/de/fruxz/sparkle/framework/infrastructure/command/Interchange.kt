@@ -5,10 +5,13 @@ import de.fruxz.ascend.extension.empty
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.attachment.VendorOnDemand
-import de.fruxz.sparkle.framework.extension.*
+import de.fruxz.sparkle.framework.extension.asPlayer
+import de.fruxz.sparkle.framework.extension.asPlayerOrNull
 import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
+import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.interchange.Parameters
+import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.extension.time.RunningCooldown
 import de.fruxz.sparkle.framework.extension.time.getCooldown
 import de.fruxz.sparkle.framework.extension.time.hasCooldown
@@ -194,7 +197,7 @@ abstract class Interchange(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	abstract val execution: suspend InterchangeAccess<out InterchangeExecutor>.() -> InterchangeResult
+	abstract val execution: InterchangeExecution
 
 	// runtime-functions
 
@@ -377,6 +380,4 @@ enum class InterchangeUserRestriction {
 
 }
 
-@Suppress("UnusedReceiverParameter") // todo use Interchange as context, when the kotlin context API is ready
-fun Interchange.execution(execution: suspend InterchangeAccess<out InterchangeExecutor>.() -> InterchangeResult) =
-	execution
+typealias InterchangeExecution = suspend InterchangeAccess<out InterchangeExecutor>.() -> InterchangeResult

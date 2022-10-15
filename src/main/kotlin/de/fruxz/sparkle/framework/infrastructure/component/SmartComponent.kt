@@ -17,8 +17,8 @@ import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
+import de.fruxz.sparkle.framework.infrastructure.command.InterchangeExecution
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.SUCCESS
-import de.fruxz.sparkle.framework.infrastructure.command.execution
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.DISABLED
 import de.fruxz.sparkle.framework.infrastructure.service.Service
 import de.fruxz.sparkle.framework.permission.Approval
@@ -222,7 +222,7 @@ abstract class SmartComponent(
 
 		internal fun disabledComponentInterchange(identity: Identity<out Component>, requiredApproval: Approval? = null) = object : Interchange("", ignoreInputValidation = true, forcedApproval = requiredApproval) {
 
-			override val execution = execution {
+			override val execution: InterchangeExecution = {
 
 				"<red><bold>SORRY!</bold><gray> The providing component '<yellow>$identity<gray>' is currently <red>disabled<gray>!"
 					.notification(FAIL, executor).display()

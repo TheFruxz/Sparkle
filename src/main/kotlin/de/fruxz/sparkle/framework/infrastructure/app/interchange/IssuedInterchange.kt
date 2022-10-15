@@ -1,10 +1,10 @@
 package de.fruxz.sparkle.framework.infrastructure.app.interchange
 
+import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
+import de.fruxz.sparkle.framework.infrastructure.command.InterchangeExecution
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.SUCCESS
 import de.fruxz.sparkle.framework.infrastructure.command.completion.emptyInterchangeStructure
-import de.fruxz.sparkle.framework.infrastructure.command.execution
-import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
 import de.fruxz.stacked.extension.dyeGray
 import de.fruxz.stacked.extension.dyeRed
@@ -25,7 +25,7 @@ class IssuedInterchange(
 	completion = emptyInterchangeStructure(),
 ) {
 
-	override val execution = execution {
+	override val execution: InterchangeExecution = {
 
 		text {
 			this + text("Oops!").style(NamedTextColor.RED, BOLD)
