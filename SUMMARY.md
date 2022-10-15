@@ -21,6 +21,21 @@
 * [🧫 CompletionAsset](interchange/completionasset.md)
 * [🗻 StructuredInterchange](interchange/structuredinterchange.md)
 
+## 🖥 User Experience
+
+* [📨 Transmission](user-experience/transmission.md)
+* [🎨 Canvas](user-experience/canvas.md)
+* [🧑🚀 Effects](user-experience/effects/README.md)
+  * [⛓ Types](user-experience/effects/types.md)
+  * [🗯 ParticleEffect](user-experience/effects/particleeffect.md)
+  * [🔊 SoundEffect](user-experience/effects/soundeffect.md)
+
+## 🗺 World
+
+* [🖍 DyeableMaterial](world/dyeablematerial.md)
+* [🌈 ColorType](world/colortype.md)
+* [🏙 Shapes](world/shapes.md)
+
 ## ⏱ Timing
 
 * [🛣 Coroutines](timing/coroutines.md)
