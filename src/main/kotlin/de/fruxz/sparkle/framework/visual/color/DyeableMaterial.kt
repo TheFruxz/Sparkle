@@ -3,8 +3,8 @@ package de.fruxz.sparkle.framework.visual.color
 import de.fruxz.ascend.extension.container.replace
 import de.fruxz.sparkle.framework.extension.createKey
 import de.fruxz.sparkle.framework.extension.system
-import de.fruxz.sparkle.server.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import de.fruxz.sparkle.framework.visual.color.ColorType.WHITE
+import de.fruxz.sparkle.server.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.key.Keyed
 import org.bukkit.Material
@@ -79,3 +79,7 @@ enum class DyeableMaterial(
 	}
 
 }
+
+operator fun DyeableMaterial.plus(colorType: ColorType) = this.withColor(colorType)
+
+infix fun DyeableMaterial.dye(colorType: ColorType) = this + colorType
