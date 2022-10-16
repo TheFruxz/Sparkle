@@ -1,9 +1,9 @@
 package de.fruxz.sparkle.framework.permission
 
 import de.fruxz.ascend.tool.smart.identification.Identifiable
-import de.fruxz.sparkle.framework.infrastructure.app.App
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import net.kyori.adventure.key.Keyed
 import org.bukkit.permissions.Permissible
 
 /**
@@ -56,8 +56,8 @@ data class Approval(
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun fromApp(vendor: Identifiable<App>, subPermission: String) =
-			Approval("${vendor.identity}.$subPermission")
+		fun fromApp(vendor: Keyed, subPermission: String) =
+			Approval("${vendor.key().value()}.$subPermission")
 
 	}
 
