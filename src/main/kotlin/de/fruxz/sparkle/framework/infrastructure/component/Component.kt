@@ -49,7 +49,7 @@ abstract class Component(
 	val isRunning: Boolean
 		get() = SparkleCache.runningComponents.contains(identityObject)
 
-	override val identityKey by lazy { vendor.subKey(thisIdentity.lowercase(), CONTINUE) }
+	override val identityKey by lazy { vendor.subKey(label, CONTINUE) }
 
 	/**
 	 * This function replaces the current [vendor] of this [Component]

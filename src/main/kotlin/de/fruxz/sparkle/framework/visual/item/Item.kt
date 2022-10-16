@@ -106,7 +106,7 @@ data class Item(
 	)
 
 	override val identityKey: Key
-		get() = Key.key(SparkleApp.Infrastructure.SYSTEM_IDENTITY + "_items", itemIdentity.lowercase().filter { KEY_REGEX.matches("$it") })
+		get() = Key.key(SparkleApp.Infrastructure.SYSTEM_IDENTITY + "_items", itemIdentity.lowercase(Locale.ENGLISH).filter { KEY_REGEX.matches("$it") })
 
 	val displayObject: Component
 		get() = Component.text()

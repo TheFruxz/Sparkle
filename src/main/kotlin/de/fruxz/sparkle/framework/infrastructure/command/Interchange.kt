@@ -101,7 +101,7 @@ abstract class Interchange(
 		system.pluginCoroutineDispatcher(true)
 	}
 
-	override val identityKey by lazy { vendor.subKey(label.lowercase(), CONTINUE) }
+	override val identityKey by lazy { vendor.subKey(label, CONTINUE) }
 
 	/**
 	 * This function replaces the current [vendor] of this [Interchange]

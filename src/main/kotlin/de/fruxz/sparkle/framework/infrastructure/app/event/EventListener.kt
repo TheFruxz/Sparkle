@@ -35,10 +35,7 @@ abstract class EventListener(
 	val listenerIdentity: String
 		get() = tryOrNull { this::class.simpleName } ?: "${UUID.randomUUID()}"
 
-	override val vendorIdentity: Identity<App>
-		get() = vendor.identityObject
-
-	override val thisIdentity: String
-		get() = listenerIdentity
+	override val identityKey: Key
+		get() = vendor.subKey(listenerIdentity, KeyingStrategy.CONTINUE)
 
 }
