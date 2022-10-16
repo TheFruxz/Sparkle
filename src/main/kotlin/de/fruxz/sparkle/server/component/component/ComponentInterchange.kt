@@ -1,11 +1,11 @@
 package de.fruxz.sparkle.server.component.component
 
-import de.fruxz.ascend.extension.container.mapToString
 import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.framework.Constants
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructureInputRestriction
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
@@ -14,10 +14,8 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequire
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.component.file.ComponentManager
-import de.fruxz.sparkle.framework.extension.visual.notification
-import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.stacked.extension.dyeDarkGray
 import de.fruxz.stacked.extension.dyeGold
 import de.fruxz.stacked.extension.dyeGray
@@ -298,16 +296,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 
 			branch {
 
-				addContent(
-					CompletionAsset<Long>(
-						vendor = system,
-						thisIdentity = "componentPage",
-						refreshing = true,
-						supportedInputType = listOf(InterchangeStructureInputRestriction.LONG),
-						generator = {
-							(1..ceilToInt(SparkleCache.registeredComponents.size.toDouble() / Constants.ENTRIES_PER_PAGE)).mapToString()
-						})
-				)
+				addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.registeredComponents.size.toDouble() / Constants.ENTRIES_PER_PAGE) })
 				isNotRequired()
 
 				concludedExecution {

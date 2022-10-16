@@ -163,17 +163,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
         branch {
 
-            addContent(
-                CompletionAsset<Long>(
-                    vendor = system,
-                    thisIdentity = "appPage",
-                    refreshing = true,
-                    supportedInputType = listOf(InterchangeStructureInputRestriction.LONG),
-                    generator = {
-                        (1..ceilToInt(SparkleCache.registeredApps.size.toDouble() / ENTRIES_PER_PAGE)).mapToString()
-                    }
-                )
-            )
+            addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.registeredApps.size.toDouble() / ENTRIES_PER_PAGE) })
 
             concludedExecution {
                 val page = getInput(restrictiveAsset = CompletionAsset.LONG).limitTo(Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()).toInt()
