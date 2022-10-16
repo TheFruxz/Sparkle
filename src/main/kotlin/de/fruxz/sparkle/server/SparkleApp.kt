@@ -55,7 +55,7 @@ import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasPrototypeAPI
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType
 import de.fruxz.sparkle.framework.visual.canvas.buildCanvas
 import de.fruxz.sparkle.framework.visual.color.ColorType
-import de.fruxz.sparkle.framework.visual.color.DyeableMaterial
+import de.fruxz.sparkle.framework.visual.color.DyeableMaterial.BANNER
 import de.fruxz.sparkle.framework.visual.item.Modification
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import de.fruxz.sparkle.server.component.app.AppComponent
@@ -73,17 +73,16 @@ import de.fruxz.sparkle.server.interchange.SparkleInterchange
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Location
-import org.bukkit.Material
+import org.bukkit.Material.BARREL
+import org.bukkit.Material.IRON_DOOR
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
-import org.bukkit.Sound
+import org.bukkit.Sound.ENTITY_CAT_BEG_FOR_FOOD
 import org.bukkit.World
-import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import java.util.*
-import java.util.logging.Level
 import de.fruxz.ascend.extension.data.addJsonContextualConfiguration as jsonContextual
 
 class SparkleApp : App() {
@@ -154,24 +153,24 @@ class SparkleApp : App() {
 			}
 		}
 
-		ConfigurationSerialization.registerClass(SimpleLocation::class.java)
-
-		debugLog("DebugMode preference loaded & set from file!")
+		register(SimpleLocation::class)
 
 	}
 
 	override suspend fun hello() {
 
-		debugMode = SparkleData.systemConfig.debugMode
+		debugMode = SparkleData.systemConfig.debugMode.also {
+			debugLog("DebugMode preference loaded & set from file!")
+		}
 
 		mainLog.info("""
-				Sparkle is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
-				https://www.jetbrains.com/ | https://www.kotlinlang.org/
-			""".trimIndent()
-		)
-		mainLog.info("""
+			
+			Sparkle is compiled & running with the Kotlin Language made by JetBrains. Special thanks to them!
+			https://www.jetbrains.com/ | https://www.kotlinlang.org/
+			
 			Sparkles coroutine-system is inspired by the okkero/Skedule repository, which is licensed under the MIT License!
-			Definitely check out their repo: https://www.github.com/okkero/Skedule 
+			Definitely check out their repo: https://www.github.com/okkero/Skedule
+			
 			""".trimIndent()
 		)
 
@@ -179,7 +178,7 @@ class SparkleApp : App() {
 			fun <T : Any> proceed(default: T) {
 				val preference = it.forceCast<Preference<T>>()
 				preference.content = default
-				mainLog(Level.INFO, "Init-Setup '${preference.identity}' with '$default'(${default::class.simpleName})")
+				mainLog.info("Init-Setup '${preference.identity}' with '$default'(${default::class.simpleName})")
 			}
 			proceed(it.default)
 		}
@@ -209,7 +208,7 @@ class SparkleApp : App() {
 				base(9*6)
 
 				repeat(217) {
-					this[it] = DyeableMaterial.BANNER.withColor(ColorType.values().random()).item {
+					this[it] = BANNER.withColor(ColorType.values().random()).item {
 						label("$it")
 					}
 				}
@@ -223,11 +222,11 @@ class SparkleApp : App() {
 				label("<i>Tech-Demo")
 				base(9*6)
 
-				border(Material.IRON_DOOR)
-				setInner(0, Material.BARREL.item {
+				border(IRON_DOOR)
+				setInner(0, BARREL.item {
 					label("Magic!")
 					onItemClick {
-						it.player.playSoundEffect(soundOf(Sound.ENTITY_CAT_BEG_FOR_FOOD))
+						it.player.playSoundEffect(soundOf(ENTITY_CAT_BEG_FOR_FOOD))
 					}
 				})
 				setInnerDeferred(1, SuspendComposable {

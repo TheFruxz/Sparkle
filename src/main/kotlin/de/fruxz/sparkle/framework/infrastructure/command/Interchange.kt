@@ -2,7 +2,6 @@ package de.fruxz.sparkle.framework.infrastructure.command
 
 import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.extension.empty
-import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.attachment.VendorOnDemand
 import de.fruxz.sparkle.framework.extension.asPlayer
@@ -146,25 +145,6 @@ abstract class Interchange(
 	 * @since 1.0
 	 */
 	final override val sectionLabel = "InterchangeEngine"
-
-	/**
-	 * This value is the second-part of the identity of this [Interchange],
-	 * used to track and identify this [Interchange], among the other
-	 * [Interchange]s, used by your or other [App]s.
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	override val thisIdentity = label
-
-	/**
-	 * This value is the first-part of the identity of this [Interchange],
-	 * used to track and identify this [Interchange], among the other
-	 * [Interchange]s, used by your or other [App]s.
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	final override val vendorIdentity: Identity<App>
-		get() = vendor.identityObject
 
 	/**
 	 * This computed [lazy]-initialization value represents the required [Approval],

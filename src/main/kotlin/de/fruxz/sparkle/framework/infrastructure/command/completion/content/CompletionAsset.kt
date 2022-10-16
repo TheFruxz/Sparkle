@@ -6,7 +6,6 @@ import de.fruxz.ascend.extension.container.withMap
 import de.fruxz.ascend.extension.math.isDouble
 import de.fruxz.ascend.extension.math.isLong
 import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
@@ -16,7 +15,7 @@ import de.fruxz.sparkle.framework.extension.onlinePlayers
 import de.fruxz.sparkle.framework.extension.playerOrNull
 import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.extension.worlds
-import de.fruxz.sparkle.framework.identification.VendorsIdentifiable
+import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
@@ -28,6 +27,8 @@ import de.fruxz.sparkle.framework.visual.color.ColorType
 import de.fruxz.sparkle.framework.visual.color.DyeableMaterial
 import de.fruxz.sparkle.framework.visual.message.Transmission
 import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.stacked.extension.subKey
+import net.kyori.adventure.key.Key
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -41,14 +42,13 @@ import org.bukkit.structure.Structure
 import java.util.*
 
 data class CompletionAsset<T>(
-	val vendor: Identifiable<out App>,
-	override val thisIdentity: String,
+	override val identityKey: Key,
 	val refreshing: Boolean,
 	val supportedInputType: List<InterchangeStructureInputRestriction<*>> = listOf(InterchangeStructureInputRestriction.STRING),
 	var check: (CompletionContext.() -> Boolean)? = null,
 	var transformer: (CompletionContext.() -> T?)? = null,
 	val generator: CompletionContext.(CompletionAsset<T>) -> Collection<String>,
-) : VendorsIdentifiable<CompletionAsset<T>> {
+) : KeyedIdentifiable<CompletionAsset<T>> {
 
 	data class CompletionContext(
 		val executor: InterchangeExecutor,
@@ -56,8 +56,6 @@ data class CompletionAsset<T>(
 		val input: String,
 		val ignoreCase: Boolean,
 	)
-
-	override val vendorIdentity = vendor.identityObject
 
 	fun computedContent(context: CompletionContext): Set<String> = if (!refreshing && SparkleCache.registeredCompletionAssetStateCache.containsKey(identity)) {
 		SparkleCache.registeredCompletionAssetStateCache[identity]!!
@@ -78,7 +76,7 @@ data class CompletionAsset<T>(
 	companion object {
 
 		@JvmStatic
-		val LONG = CompletionAsset<Long>(system, "LONG", false, listOf(InterchangeStructureInputRestriction.LONG)) {
+		val LONG = CompletionAsset<Long>(system.subKey("long"), false, listOf(InterchangeStructureInputRestriction.LONG)) {
 			(0..99).mapToString()
 		}.doCheck {
 			input.isLong()
@@ -87,7 +85,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val DOUBLE = CompletionAsset<Double>(system, "DOUBLE", false, listOf(InterchangeStructureInputRestriction.DOUBLE)) {
+		val DOUBLE = CompletionAsset<Double>(system.subKey("double"), false, listOf(InterchangeStructureInputRestriction.DOUBLE)) {
 			setOf(.0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0).mapToString()
 		}.doCheck {
 			input.isDouble()
@@ -96,7 +94,7 @@ data class CompletionAsset<T>(
 		}
 
         @JvmStatic
-        val NUMBER = CompletionAsset<Number>(system, "NUMBER", false, listOf(InterchangeStructureInputRestriction.NUMBER)) {
+        val NUMBER = CompletionAsset<Number>(system.subKey("number"), false, listOf(InterchangeStructureInputRestriction.NUMBER)) {
 			setOf(0, .5, 1, 1.5, 2).mapToString()
         }.doCheck {
 			input.isLong() || input.isDouble()
@@ -105,7 +103,7 @@ data class CompletionAsset<T>(
         }
 
 		@JvmStatic
-		val ONLINE_PLAYER_NAME = CompletionAsset<Player>(system, "ONLINE_PLAYER_NAME", true, listOf(
+		val ONLINE_PLAYER_NAME = CompletionAsset<Player>(system.subKey("online_player_name"), true, listOf(
 			InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
 			onlinePlayers.withMap { name }
 		}.doCheck {
@@ -115,7 +113,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val ONLINE_PLAYER_UUID = CompletionAsset<Player>(system, "ONLINE_PLAYER_UUID", true, listOf(
+		val ONLINE_PLAYER_UUID = CompletionAsset<Player>(system.subKey("online_player_uuid"), true, listOf(
 			InterchangeStructureInputRestriction.ONLINE_PLAYER)) {
 			onlinePlayers.withMap { "$uniqueId" }
 		}.doCheck {
@@ -125,7 +123,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val OFFLINE_PLAYER_NAME = CompletionAsset<OfflinePlayer>(system, "OFFLINE_PLAYER_NAME", true, listOf(
+		val OFFLINE_PLAYER_NAME = CompletionAsset<OfflinePlayer>(system.subKey("offline_player_name"), true, listOf(
 			InterchangeStructureInputRestriction.OFFLINE_PLAYER)) {
 			offlinePlayers.withMap { name }.filterNotNull()
 		}.doCheck {
@@ -135,7 +133,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val OFFLINE_PLAYER_UUID = CompletionAsset<OfflinePlayer>(system, "OFFLINE_PLAYER_UUID", true, listOf(
+		val OFFLINE_PLAYER_UUID = CompletionAsset<OfflinePlayer>(system.subKey("offline_player_uuid"), true, listOf(
 			InterchangeStructureInputRestriction.OFFLINE_PLAYER)) {
 			offlinePlayers.withMap { "$uniqueId" }
 		}.doCheck {
@@ -145,7 +143,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val ENTITY_TYPE = CompletionAsset<EntityType>(system, "ENTITY_TYPE", false) {
+		val ENTITY_TYPE = CompletionAsset<EntityType>(system.subKey("entity_type"), false) {
 			EntityType.values().withMap { name }
 		}.doCheck {
 			EntityType.values().any { it.name.equals(input, ignoreCase) }
@@ -154,7 +152,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val WORLD_NAME = CompletionAsset<World>(system, "WORLD_NAME", true) {
+		val WORLD_NAME = CompletionAsset<World>(system.subKey("world_name"), true) {
 			worlds.withMap { name }
 		}.doCheck {
 			worlds.any { it.name.equals(input, ignoreCase) }
@@ -163,7 +161,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val APP = CompletionAsset<App>(system, "APP", true) {
+		val APP = CompletionAsset<App>(system.subKey("app"), true) {
 			SparkleCache.registeredApps.withMap { identity }
 		}.doCheck {
 			SparkleCache.registeredApps.any { it.identity.equals(input, ignoreCase) }
@@ -172,7 +170,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val INTERCHANGE = CompletionAsset<Interchange>(system, "INTERCHANGE", true) {
+		val INTERCHANGE = CompletionAsset<Interchange>(system.subKey("interchange"), true) {
 			SparkleCache.registeredInterchanges.withMap { identity }
 		}.doCheck {
 			SparkleCache.registeredInterchanges.any { it.identity.equals(input, ignoreCase) }
@@ -181,7 +179,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val SERVICE = CompletionAsset<Service>(system, "SERVICE", true) {
+		val SERVICE = CompletionAsset<Service>(system.subKey("service"), true) {
 			SparkleCache.services.map { it.key.asString() }
 		}.doCheck {
 			SparkleCache.services.any { it.key.asString().equals(input, ignoreCase) }
@@ -190,7 +188,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val COMPONENT = CompletionAsset<Component>(system, "COMPONENT", true, listOf(
+		val COMPONENT = CompletionAsset<Component>(system.subKey("component"), true, listOf(
 			InterchangeStructureInputRestriction.STRING)) {
 			SparkleCache.registeredComponents.withMap { identity }
 		}.doCheck {
@@ -200,7 +198,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val SANDBOX = CompletionAsset<SandBox>(system, "SANDBOX", true, listOf(InterchangeStructureInputRestriction.STRING)) {
+		val SANDBOX = CompletionAsset<SandBox>(system.subKey("sandbox"), true, listOf(InterchangeStructureInputRestriction.STRING)) {
 			SparkleCache.registeredSandBoxes.withMap { identity }
 		}.doCheck {
 			SparkleCache.registeredSandBoxes.any { it.identity.equals(input, ignoreCase) }
@@ -209,7 +207,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val PREFERENCE = CompletionAsset<Preference<*>>(system, "PREFERENCE", true, listOf(
+		val PREFERENCE = CompletionAsset<Preference<*>>(system.subKey("preference"), true, listOf(
 			InterchangeStructureInputRestriction.STRING)) {
 			SparkleCache.registeredPreferences.keys.withMap { identity }
 		}.doCheck {
@@ -219,7 +217,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val CACHE_DEPTH_LEVEL = CompletionAsset<CacheDepthLevel>(system, "CACHE_DEPTH_LEVEL", false, listOf(
+		val CACHE_DEPTH_LEVEL = CompletionAsset<CacheDepthLevel>(system.subKey("cache_depth"), false, listOf(
 			InterchangeStructureInputRestriction.STRING)) {
 			CacheDepthLevel.values().withMap { name }
 		}.doCheck {
@@ -229,7 +227,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val TRANSMISSION_LEVEL = CompletionAsset<Transmission.Level>(system, "TRANSMISSION_LEVEL", false, listOf(
+		val TRANSMISSION_LEVEL = CompletionAsset<Transmission.Level>(system.subKey("transmission_level"), false, listOf(
 			InterchangeStructureInputRestriction.STRING)) {
 			Transmission.Level.values().withMap { name }
 		}.doCheck {
@@ -239,7 +237,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val LIBRARY_SOUND_MELODY = CompletionAsset<SoundLibrary>(system, "LIBRARY_SOUND_MELODY", false, listOf(
+		val LIBRARY_SOUND = CompletionAsset<SoundLibrary>(system.subKey("library_sound"), false, listOf(
 			InterchangeStructureInputRestriction.STRING)) {
 			SoundLibrary.values().withMap { name }
 		}.doCheck {
@@ -249,7 +247,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val MATERIAL = CompletionAsset<Material>(system, "MATERIAL", false, listOf(InterchangeStructureInputRestriction.STRING)) {
+		val MATERIAL = CompletionAsset<Material>(system.subKey("material"), false, listOf(InterchangeStructureInputRestriction.STRING)) {
 			Material.values().withMap { name }
 		}.doCheck {
 			Material.values().any { it.name.equals(input, ignoreCase) }
@@ -258,7 +256,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val MATERIAL_VARIANT = CompletionAsset<Material>(system, "MATERIAL_VARIANT", false, listOf(
+		val MATERIAL_VARIANT = CompletionAsset<Material>(system.subKey("material_variant"), false, listOf(
 			InterchangeStructureInputRestriction.STRING)) {
 			buildSet {
 				DyeableMaterial.values().forEach { flex ->
@@ -275,7 +273,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val MATERIAL_CODE = CompletionAsset<Material>(system, "MATERIAL_CODE", false, listOf(
+		val MATERIAL_CODE = CompletionAsset<Material>(system.subKey("material_codew"), false, listOf(
 			InterchangeStructureInputRestriction.STRING)) {
 			buildSet {
 
@@ -294,7 +292,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val EXECUTOR_HEALTH = CompletionAsset<Double>(system, "EXECUTOR_HEALTH", true, listOf(
+		val EXECUTOR_HEALTH = CompletionAsset<Double>(system.subKey("executor_health"), true, listOf(
 			InterchangeStructureInputRestriction.DOUBLE)) {
 			if (executor is Player) {
 				listOf("${executor.health}")
@@ -307,7 +305,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val EXECUTOR_LOCATION = CompletionAsset<Location>(system, "EXECUTOR_LOCATION", true, listOf(
+		val EXECUTOR_LOCATION = CompletionAsset<Location>(system.subKey("executor_location"), true, listOf(
 			InterchangeStructureInputRestriction.STRING)) {
 			if (executor is Player) {
 				listOf(
@@ -344,7 +342,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val LOADED_STRUCTURE = CompletionAsset<Structure>(system, "LOADED_STRUCTURE", true) {
+		val LOADED_STRUCTURE = CompletionAsset<Structure>(system.subKey("structure_loaded"), true) {
 			Bukkit.getStructureManager().structures.map { it.key.asString() }
 		}.doCheck {
 			Bukkit.getStructureManager().structures.any { it.key.asString() == input }
@@ -353,7 +351,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val STRUCTURE_ROTATION = CompletionAsset<StructureRotation>(system, "STRUCTURE_ROTATION", false) {
+		val STRUCTURE_ROTATION = CompletionAsset<StructureRotation>(system.subKey("structure_rotation"), false) {
 			StructureRotation.values().withMap { name }
 		}.doCheck {
 			StructureRotation.values().any { it.name.equals(input, ignoreCase) }
@@ -362,7 +360,7 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val STRUCTURE_MIRROR = CompletionAsset<Mirror>(system, "STRUCTURE_MIRROR", false) {
+		val STRUCTURE_MIRROR = CompletionAsset<Mirror>(system.subKey("structure_mirror"), false) {
 			Mirror.values().withMap { name }
 		}.doCheck {
 			StructureRotation.values().any { it.name.equals(input, ignoreCase) }
@@ -372,10 +370,9 @@ data class CompletionAsset<T>(
 
 		@JvmStatic
 		fun pageCompletion(pages: () -> Number) = CompletionAsset<Number>(
-			vendor = system,
-			thisIdentity = "Page",
-			true,
-			listOf(InterchangeStructureInputRestriction.LONG),
+			identityKey = system.subKey("page"),
+			refreshing = true,
+			supportedInputType = listOf(InterchangeStructureInputRestriction.LONG),
 			generator = {
 				(1..pages().toLong()).mapToString()
 			},

@@ -1,17 +1,14 @@
 package de.fruxz.sparkle.server.component.app
 
-import de.fruxz.ascend.extension.container.mapToString
 import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.limitTo
 import de.fruxz.sparkle.framework.Constants.ENTRIES_PER_PAGE
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.extension.visual.message
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel
-import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructureInputRestriction
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequired
@@ -309,10 +306,10 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         this + newline() + text("Display-Name: ").dyeGray() + text(targetApp.label).dyeYellow()
                         this + newline() + text("Identity: ").dyeGray() + text(targetApp.identity).dyeYellow()
                         this + newline() + text("Active since: ").dyeGray() + text(targetApp.activeSince.toString()).dyeYellow()
-                        this + newline() + text("Components: ").dyeGray() + text("${SparkleCache.registeredComponents.filter { it.vendorIdentity == targetApp.identityObject }.size} Components").dyeYellow()
-                        this + newline() + text("Interchanges: ").dyeGray() + text("${SparkleCache.registeredInterchanges.filter { it.vendorIdentity == targetApp.identityObject }.size} Interchanges").dyeYellow()
-                        this + newline() + text("Services: ").dyeGray() + text("${SparkleCache.serviceStates.filter { it.value.vendor.identityKey == targetApp.identityKey }.size} Services").dyeYellow()
-                        this + newline() + text("SandBoxes: ").dyeGray() + text("${SparkleCache.registeredSandBoxes.filter { it.vendorIdentity == targetApp.identityObject }.size} SandBoxes").dyeYellow()
+                        this + newline() + text("Components: ").dyeGray() + text("${SparkleCache.registeredComponents.filter { it.vendor.key == targetApp.key }.size} Components").dyeYellow()
+                        this + newline() + text("Interchanges: ").dyeGray() + text("${SparkleCache.registeredInterchanges.filter { it.vendor.key == targetApp.key }.size} Interchanges").dyeYellow()
+                        this + newline() + text("Services: ").dyeGray() + text("${SparkleCache.serviceStates.filter { it.value.vendor.key == targetApp.key }.size} Services").dyeYellow()
+                        this + newline() + text("SandBoxes: ").dyeGray() + text("${SparkleCache.registeredSandBoxes.filter { it.vendor.key == targetApp.key }.size} SandBoxes").dyeYellow()
 
                         newlines(2)
                     }.notification(Transmission.Level.GENERAL, executor).display()
@@ -330,7 +327,9 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
                     text("Starting cache-clear of app '${targetApp.label}'...")
                         .color(NamedTextColor.GRAY)
-                        .hoverEvent(text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY))
+                        .hover {
+                            text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY)
+                        }
                         .message(interchangeAccess.executor).display()
 
                     debugLog("${interchangeAccess.executor.name} is clearing cache for '${targetApp.identity}' at level '$level'...")

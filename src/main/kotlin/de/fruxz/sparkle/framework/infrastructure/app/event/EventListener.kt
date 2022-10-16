@@ -1,16 +1,18 @@
 package de.fruxz.sparkle.framework.infrastructure.app.event
 
 import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.attachment.VendorOnDemand
-import de.fruxz.sparkle.framework.identification.VendorsIdentifiable
+import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.framework.infrastructure.app.App
+import de.fruxz.stacked.extension.KeyingStrategy
+import de.fruxz.stacked.extension.subKey
+import net.kyori.adventure.key.Key
 import org.bukkit.event.Listener
 import java.util.*
 
 abstract class EventListener(
 	final override val preferredVendor: App? = null
-) : Listener, VendorsIdentifiable<EventListener>, VendorOnDemand {
+) : Listener, KeyedIdentifiable<EventListener>, VendorOnDemand {
 
 	init {
 

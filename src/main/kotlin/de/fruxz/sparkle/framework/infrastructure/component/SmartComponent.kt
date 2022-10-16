@@ -102,7 +102,7 @@ abstract class SmartComponent(
 
 					server.internalSyncCommands()
 
-					if (!isAutoStarting) vendor.replace(interchange.thisIdentityObject, disabledComponentInterchange(identityObject, tryOrNull { interchange.requiredApproval }))
+					if (!isAutoStarting) vendor.replace(interchange.identityObject, disabledComponentInterchange(identityObject, tryOrNull { interchange.requiredApproval }))
 
 				}
 
@@ -123,7 +123,7 @@ abstract class SmartComponent(
 
 		interchanges.forEach {
 			tryToCatch {
-				vendor.replace(it.thisIdentityObject, it)
+				vendor.replace(it.identityObject, it)
 				SparkleCache.registeredInterchanges += it
 				SparkleCache.disabledInterchanges -= it.identityObject
 				debugLog("Interchange '${it.identity}' replaced through '$identity' with original interchange-value!")
@@ -157,7 +157,7 @@ abstract class SmartComponent(
 
 		sandboxes.forEach {
 			tryToCatch {
-				buildSandBox(this@SmartComponent.vendor, it.identity, it.process)
+				buildSandBox(this@SmartComponent.vendor, it.key, it.process)
 			}
 		}
 
@@ -171,7 +171,7 @@ abstract class SmartComponent(
 
 		interchanges.forEach {
 			tryToCatch {
-				vendor.replace(it.thisIdentityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval }))
+				vendor.replace(it.identityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval }))
 				SparkleCache.registeredInterchanges -= it
 				SparkleCache.disabledInterchanges += it.identityObject
 				tryToIgnore { debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!") }

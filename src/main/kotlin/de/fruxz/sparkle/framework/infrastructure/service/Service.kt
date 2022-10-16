@@ -7,6 +7,7 @@ import de.fruxz.sparkle.framework.infrastructure.Hoster
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceState
 import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.subKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
@@ -29,7 +30,7 @@ interface Service : Hoster<Unit, Unit, Service> {
 	val iteration: ServiceIteration
 
 	override val identityKey: Key
-		get() = vendor.subKey(label.lowercase().replace(" ", "_"))
+		get() = vendor.subKey(label, CONTINUE)
 
 	var serviceScope: CoroutineScope?
 		get() = SparkleCache.services.firstOrNull { it.key == identityKey }?.value
@@ -53,7 +54,7 @@ interface Service : Hoster<Unit, Unit, Service> {
 		get() = vendor.pluginCoroutineDispatcher(isAsync = serviceTimes.isAsync)
 
 	val serviceLogger: Logger
-		get() = App.createLog(vendor.thisIdentity, "service:<${thisIdentity}>")
+		get() = App.createLog(vendor.key.value(), key.value())
 
 	val isRegistered: Boolean
 		get() = SparkleCache.services.containsKey(identityKey)

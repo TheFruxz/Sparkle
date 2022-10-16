@@ -1,7 +1,6 @@
 package de.fruxz.sparkle.framework.infrastructure.component
 
 import de.fruxz.ascend.extension.tryToResult
-import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.attachment.VendorOnDemand
@@ -36,12 +35,6 @@ abstract class Component(
 
 	val isVendorCurrentlySet: Boolean
 		get() = this::vendor.isInitialized
-
-	override val thisIdentity: String
-		get() = label.lowercase()
-
-	override val vendorIdentity: Identity<out App>
-		get() = vendor.identityObject
 
 	override val sectionLabel: String
 		get() = "component/$identity"

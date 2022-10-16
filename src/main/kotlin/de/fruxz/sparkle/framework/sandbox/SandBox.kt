@@ -6,7 +6,7 @@ import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.visual.notification
-import de.fruxz.sparkle.framework.identification.VendorsIdentifiable
+import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.APPLIED
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
@@ -17,21 +17,16 @@ import de.fruxz.stacked.extension.dyeYellow
 import de.fruxz.stacked.plus
 import de.fruxz.stacked.text
 import kotlinx.coroutines.launch
+import net.kyori.adventure.key.Key
 import java.util.logging.Level
 
 data class SandBox(
     override val vendor: App,
-    override val thisIdentity: String,
+    override val identityKey: Key,
     val creationTime: Calendar,
     val creationLocation: String,
     val process: suspend SandBoxInteraction.() -> Unit,
-) : VendorsIdentifiable<SandBox>, Logging {
-
-    init {
-    	if (thisIdentity.contains("[§: ]".toRegex())) throw IllegalArgumentException("It is not allowed, that the identity of a sandbox contains a '§', ':' or a ' '!")
-    }
-
-    override val vendorIdentity = vendor.identityObject
+) : KeyedIdentifiable<SandBox>, Logging {
 
     override val sectionLabel by lazy { identity }
 
