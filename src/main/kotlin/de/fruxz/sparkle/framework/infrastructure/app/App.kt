@@ -1,5 +1,3 @@
-@file:Suppress("LeakingThis")
-
 package de.fruxz.sparkle.framework.infrastructure.app
 
 import com.destroystokyo.paper.utils.PaperPluginLogger
@@ -12,7 +10,6 @@ import de.fruxz.ascend.extension.tryToPrint
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.exception.IllegalActionException
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
@@ -50,22 +47,18 @@ import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.PluginCommand
-import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
-import java.io.InputStreamReader
-import java.nio.file.Path
 import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
 import kotlin.reflect.jvm.isAccessible
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
@@ -172,10 +165,6 @@ abstract class App(
 	 * The cache of the application
 	 */
 	abstract val appCache: AppCache?
-
-	private var loadTime: Duration? = null
-
-	private var startTime: Duration? = null
 
 	var activeSince: Calendar? = null
 		private set
@@ -504,8 +493,6 @@ abstract class App(
 	var runStatus: RunStatus = OFFLINE
 		private set
 
-	var appRegistrationFile = YamlConfiguration()
-
 	val coroutineScope: CoroutineScope
 		get() = companion.coroutineScope
 
@@ -530,9 +517,6 @@ abstract class App(
 		classLoader.getResourceAsStream(path)?.reader()?.readText()
 
 	private val pluginManager = server.pluginManager
-
-	val appFolder: Path
-		get() = SparklePath.appPath(this)
 
 	// override base-mechanics
 
@@ -591,15 +575,12 @@ abstract class App(
 			coroutineScope.launch(context = systemOnLoadContext) {
 
 				runStatus = PRE_LOAD
-				classLoader.getResourceAsStream("plugin.yml")?.let { resource ->
-					appRegistrationFile.load(InputStreamReader(resource))
-				}
-				measureTime {
-					preHello()
-				}.let { requiredTime ->
-					log.info("Loading (::preHello) of '$identityKey' took $requiredTime!")
-					loadTime = requiredTime
-				}
+
+				measureTime { preHello() }
+					.let { requiredTime ->
+						log.info("Loading (::preHello) of '$identityKey' took $requiredTime!")
+					}
+
 				runStatus = LOAD
 
 			}
@@ -615,14 +596,14 @@ abstract class App(
 
 				awaitState(LOAD, ENABLE) {
 					runStatus = PRE_ENABLE
-					measureTime {
-						hello()
-					}.let { requiredTime ->
-						startTime = requiredTime
-						runStatus = ENABLE
 
-						delay(1.seconds)
-						log.info("Enabling (::hello) of '$identityKey' took $requiredTime!")
+					measureTime { hello() }
+						.let { requiredTime ->
+
+							runStatus = ENABLE
+
+							delay(1.seconds) // TODO investigate, for what this delay is needed
+							log.info("Enabling (::hello) of '$identityKey' took $requiredTime!")
 
 					}
 				}
@@ -637,11 +618,11 @@ abstract class App(
 		tryToCatch {
 
 			runStatus = SHUTDOWN
-			measureTime {
-				bye()
-			}.let { requiredTime ->
-				log.info("Disabling (::bye) of '$identityKey' took $requiredTime!")
-			}
+
+			measureTime { bye() }
+				.let { requiredTime ->
+					log.info("Disabling (::bye) of '$identityKey' took $requiredTime!")
+				}
 
 			with(coroutineScope) {
 				coroutineContext.cancelChildren()
