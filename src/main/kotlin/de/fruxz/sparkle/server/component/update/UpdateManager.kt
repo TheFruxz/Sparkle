@@ -1,5 +1,6 @@
 package de.fruxz.sparkle.server.component.update
 
+import de.fruxz.ascend.extension.createFileAndDirectories
 import de.fruxz.ascend.extension.div
 import de.fruxz.ascend.extension.network.downloadTo
 import de.fruxz.sparkle.framework.attachment.Logging
@@ -11,9 +12,6 @@ import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.component.update.UpdateManager.UpdateResult.FAILED
 import kotlinx.coroutines.Job
 import org.bukkit.Bukkit
-import kotlin.io.path.createDirectories
-import kotlin.io.path.createFile
-import kotlin.io.path.exists
 
 object UpdateManager : Logging {
 
@@ -44,8 +42,7 @@ object UpdateManager : Logging {
 					val fileName = url.path.split("/").last()
 					val destination = Bukkit.getPluginsFolder().toPath() / "update" / fileName
 
-					destination.parent.createDirectories()
-					destination.takeIf { !it.exists() }?.createFile()
+					destination.createFileAndDirectories()
 
 					sectionLog.info("Foundation for update established! Starting download...")
 
