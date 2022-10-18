@@ -3,7 +3,6 @@ package de.fruxz.sparkle.server
 import com.destroystokyo.paper.ParticleBuilder
 import de.fruxz.ascend.extension.data.addAscendJsonModuleModification
 import de.fruxz.ascend.extension.forceCast
-import de.fruxz.ascend.tool.smart.composition.SuspendComposable
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.data.json.JsonConfiguration
 import de.fruxz.sparkle.framework.data.json.JsonFileDataElement
@@ -19,15 +18,8 @@ import de.fruxz.sparkle.framework.data.json.serializer.WorldSerializer
 import de.fruxz.sparkle.framework.effect.sound.SoundData
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.effect.sound.SoundMelody
-import de.fruxz.sparkle.framework.extension.asPlayerOrNull
 import de.fruxz.sparkle.framework.extension.debugLog
-import de.fruxz.sparkle.framework.extension.effect.playSoundEffect
-import de.fruxz.sparkle.framework.extension.effect.soundOf
 import de.fruxz.sparkle.framework.extension.mainLog
-import de.fruxz.sparkle.framework.extension.player
-import de.fruxz.sparkle.framework.extension.quickSandBox
-import de.fruxz.sparkle.framework.extension.visual.ui.item
-import de.fruxz.sparkle.framework.extension.visual.ui.skull
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.AppCompanion
 import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater
@@ -52,11 +44,6 @@ import de.fruxz.sparkle.framework.positioning.relative.PyramidalShape
 import de.fruxz.sparkle.framework.positioning.relative.Shape
 import de.fruxz.sparkle.framework.positioning.relative.SphereShape
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
-import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasPrototypeAPI
-import de.fruxz.sparkle.framework.visual.canvas.PaginationType
-import de.fruxz.sparkle.framework.visual.canvas.buildCanvas
-import de.fruxz.sparkle.framework.visual.color.ColorType
-import de.fruxz.sparkle.framework.visual.color.DyeableMaterial.BANNER
 import de.fruxz.sparkle.framework.visual.item.Modification
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import de.fruxz.sparkle.server.component.app.AppComponent
@@ -69,18 +56,14 @@ import de.fruxz.sparkle.server.component.service.ServiceComponent
 import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent
 import de.fruxz.sparkle.server.component.ui.gui.UIComponent
 import de.fruxz.sparkle.server.component.update.UpdateComponent
-import de.fruxz.sparkle.server.component.update.UpdateManager
 import de.fruxz.sparkle.server.interchange.DebugModeInterchange
 import de.fruxz.sparkle.server.interchange.PlaygroundInterchange
 import de.fruxz.sparkle.server.interchange.SparkleInterchange
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.bukkit.Location
-import org.bukkit.Material.BARREL
-import org.bukkit.Material.IRON_DOOR
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
-import org.bukkit.Sound.ENTITY_CAT_BEG_FOR_FOOD
 import org.bukkit.World
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.BoundingBox
@@ -204,49 +187,6 @@ class SparkleApp : App() {
 		add(SparkleInterchange())
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
-
-		quickSandBox(identity = "scrollCanvas") {
-			@OptIn(CanvasPrototypeAPI::class)
-			buildCanvas {
-				label("<i>Hello!")
-				pagination(PaginationType.scroll())
-				base(9*6)
-
-				repeat(217) {
-					this[it] = BANNER.withColor(ColorType.values().random()).item {
-						label("$it")
-					}
-				}
-
-			}.display(executor.asPlayerOrNull)
-		}
-
-		quickSandBox(identity = "deferredCanvas") {
-
-			buildCanvas {
-				label("<i>Tech-Demo")
-				base(9*6)
-
-				border(IRON_DOOR)
-				setInner(0, BARREL.item {
-					label("Magic!")
-					onItemClick {
-						it.player.playSoundEffect(soundOf(ENTITY_CAT_BEG_FOR_FOOD))
-					}
-				})
-				setInnerDeferred(1, SuspendComposable {
-					skull("CoasterFreakDE")
-				})
-
-			}.display(executor.asPlayerOrNull)
-
-		}
-
-		quickSandBox(identity = "updateSparkle") {
-
-			println("result: " + UpdateManager.performUpdate(this@SparkleApp))
-
-		}
 
 	}
 
