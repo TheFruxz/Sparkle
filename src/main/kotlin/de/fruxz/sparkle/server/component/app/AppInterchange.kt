@@ -4,28 +4,29 @@ import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.limitTo
 import de.fruxz.sparkle.framework.Constants.ENTRIES_PER_PAGE
+import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.visual.message
 import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel
+import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater.UpdateState.*
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequired
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.visual.message.Transmission
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.APPLIED
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.GENERAL
+import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
 import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.sparkle.server.component.update.UpdateComponent
+import de.fruxz.sparkle.server.component.update.UpdateComponent.Companion.updateStates
+import de.fruxz.sparkle.server.component.update.UpdateManager
+import de.fruxz.sparkle.server.component.update.UpdateManager.UpdateResult
+import de.fruxz.sparkle.server.component.update.UpdateManager.UpdateResult.SUCCESSFUL
 import de.fruxz.stacked.buildComponent
-import de.fruxz.stacked.extension.dyeDarkGray
-import de.fruxz.stacked.extension.dyeGold
-import de.fruxz.stacked.extension.dyeGray
-import de.fruxz.stacked.extension.dyeGreen
-import de.fruxz.stacked.extension.dyeYellow
-import de.fruxz.stacked.extension.newlines
-import de.fruxz.stacked.extension.style
+import de.fruxz.stacked.extension.*
 import de.fruxz.stacked.hover
 import de.fruxz.stacked.plus
 import de.fruxz.stacked.text
@@ -43,118 +44,9 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
         addContent("list")
 
-        fun displayPage(executor: InterchangeExecutor, page: Int) {
-
-            val paged = SparkleCache.registeredApps.page(page - 1, ENTRIES_PER_PAGE)
-
-            buildComponent {
-
-                this + text("List of all running apps").dyeGray()
-                this + text(" (Page ${paged.pageNumber} of ${paged.availablePages.last})") {
-                    plus(NamedTextColor.YELLOW)
-                    hover {
-                        text("${paged.content.size} App" + (if (paged.content.size == 1) "" else "s") + " listed").dyeGray()
-                    }
-                }
-                this + text(":").dyeGray()
-
-                this + newline() + text("⏻ Power; ⌘ Naggable; ⏹ API-Compatible").dyeGray()
-
-                this + newline()
-
-                paged.content.forEach { app ->
-                    this + newline()
-                    this + text(if (app.isEnabled) "⏻" else "⭘") {
-                        plus(if (app.isEnabled) NamedTextColor.GREEN else NamedTextColor.GRAY)
-                        hover {
-                            buildComponent {
-                                this + text("Power-Indicator: ").style(NamedTextColor.BLUE, BOLD)
-                                this + newline()
-                                this + text("Indicates, if the plugin is currently enabled & running").dyeYellow()
-                                this + newline() + newline()
-                                this + text("CLICK").style(NamedTextColor.GREEN, BOLD) +
-                                        text(" to toggle the state of the app").dyeGray()
-                            }
-                        }
-                        clickEvent(ClickEvent.suggestCommand(
-                            if (app.isEnabled) "/app @ ${app.key()} stop" else "/app @ ${app.key()} start"
-                        ))
-                    }
-                    this + text(" ⌘") {
-                        color(if (app.isNaggable) NamedTextColor.GREEN else NamedTextColor.GRAY)
-                        hover {
-                            buildComponent {
-                                this + text("Naggable-Indicator: ").style(NamedTextColor.BLUE, BOLD)
-                                this + newline()
-                                this + text("Indicates, if we can still nag to the logs about things").dyeYellow()
-                            }
-                        }
-                    }
-                    this + text(" ⏹") {
-                        plus(if (Bukkit.getMinecraftVersion().startsWith("" + app.description.apiVersion)) NamedTextColor.GREEN else NamedTextColor.GRAY)
-                        hover {
-                            buildComponent {
-                                this + text("Compatibility-Indicator: ").style(NamedTextColor.BLUE, BOLD)
-                                this + newline()
-                                this + text("Indicates, if the plugins target version is compatible with the current server version").dyeYellow()
-                                this + newline()
-                                this + newline() + text("Apps target version: ").dyeGray()
-                                this + text(app.description.apiVersion ?: "None").dyeGreen()
-                                this + newline() + text("Server version: ").dyeGray()
-                                this + text(Bukkit.getMinecraftVersion()).dyeGreen()
-
-                            }
-                        }
-                    }
-                    this + text(" | ").dyeDarkGray()
-                    this + text(app.label) {
-                        plus(NamedTextColor.YELLOW)
-                        hover {
-                            buildComponent {
-                                this + text("Label & Identity: ") {
-                                    plus(Style.style(NamedTextColor.BLUE, BOLD))
-                                }
-                                this + newline()
-                                this + text("The label is used to display the app in lists and information, the identity is used to identify the app in the system") {
-                                    plus(NamedTextColor.YELLOW)
-                                }
-                                this + newline()
-                                this + newline() + text("Label: ") {
-                                    plus(NamedTextColor.GRAY)
-                                } + text(app.label) {
-                                    plus(NamedTextColor.GREEN)
-                                }
-                                this + newline() + text("Identity: ") {
-                                    plus(NamedTextColor.GRAY)
-                                } + text(app.key().asString()) {
-                                    plus(NamedTextColor.GREEN)
-                                }
-                            }
-                        }
-                    }
-                    this + text(" ") {
-                        plus(NamedTextColor.GRAY)
-                    }
-                    this + text(app.description.version) {
-                        plus(NamedTextColor.GRAY)
-                    }
-                    this + text(" → ") {
-                        plus(NamedTextColor.GRAY)
-                    }
-                    this + text(app.description.apiVersion ?: "None") {
-                        plus(NamedTextColor.GRAY)
-                    }
-                }
-
-                newlines(2)
-
-            }.notification(GENERAL, executor).display()
-
-        }
-
         concludedExecution {
 
-            displayPage(executor, 1)
+            displayList(executor, 1)
 
         }
 
@@ -163,9 +55,9 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
             addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.registeredApps.size.toDouble() / ENTRIES_PER_PAGE) })
 
             concludedExecution {
-                val page = getInput(restrictiveAsset = CompletionAsset.LONG).limitTo(Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()).toInt()
+                val page = getInput(fromAsset = CompletionAsset.LONG).limitTo(Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()).toInt()
 
-                displayPage(executor, page)
+                displayList(executor, page)
 
             }
 
@@ -186,7 +78,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 addContent("start")
 
                 concludedExecution {
-                    val targetApp = getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
+                    val targetApp = getInput(slot = 1, fromAsset = CompletionAsset.APP)
 
                     text("Starting the app '${targetApp.label}'...")
                         .color(NamedTextColor.GRAY)
@@ -222,7 +114,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 addContent("stop")
 
                 concludedExecution {
-                    val targetApp = getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
+                    val targetApp = getInput(slot = 1, fromAsset = CompletionAsset.APP)
 
                     text("Stopping the app '${targetApp.label}'...").dyeGray()
                         .hoverEvent(text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY))
@@ -257,7 +149,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 addContent("restart")
 
                 concludedExecution {
-                    val targetApp = getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
+                    val targetApp = getInput(slot = 1, fromAsset = CompletionAsset.APP)
 
                     text("Restarting the app '${targetApp.label}'...")
                         .color(NamedTextColor.GRAY)
@@ -294,7 +186,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 addContent("info")
 
                 concludedExecution {
-                    val targetApp = getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
+                    val targetApp = getInput(slot = 1, fromAsset = CompletionAsset.APP)
 
                     text {
                         this + text("Information about the app '").dyeGray()
@@ -320,10 +212,23 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
             branch {
 
+                addContent("install-update")
+
+                concludedExecution {
+                    val targetApp = getInput(slot = 1, fromAsset = CompletionAsset.APP)
+
+                    installUpdate(executor, listOf(targetApp))
+
+                }
+
+            }
+
+            branch {
+
                 addContent("clear-cache")
 
                 fun cacheClear(interchangeAccess: InterchangeAccess<*>, level: CacheDepthLevel) {
-                    val targetApp = interchangeAccess.getInput(slot = 1, restrictiveAsset = CompletionAsset.APP)
+                    val targetApp = interchangeAccess.getInput(slot = 1, fromAsset = CompletionAsset.APP)
 
                     text("Starting cache-clear of app '${targetApp.label}'...")
                         .color(NamedTextColor.GRAY)
@@ -384,7 +289,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                     addContent(CompletionAsset.CACHE_DEPTH_LEVEL)
 
                     concludedExecution {
-                        val level = getInput(restrictiveAsset = CompletionAsset.CACHE_DEPTH_LEVEL)
+                        val level = getInput(fromAsset = CompletionAsset.CACHE_DEPTH_LEVEL)
 
                         cacheClear(this, level)
 
@@ -398,4 +303,291 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
     }
 
-})
+    branch {
+
+        addContent("update")
+
+        branch {
+
+            addContent("all", "*")
+
+            concludedExecution {
+
+                installUpdate(executor, SparkleCache.registeredApps)
+
+            }
+
+        }
+
+        branch {
+
+            addContent(CompletionAsset.APP)
+
+            concludedExecution {
+
+                installUpdate(executor, listOf(getInput(fromAsset = CompletionAsset.APP)))
+
+            }
+
+        }
+
+    }
+
+}) {
+
+    private companion object {
+
+        fun installUpdate(executor: InterchangeExecutor, apps: Iterable<App>) {
+
+            text("Installing updates for '${apps.joinToString { it.key.asString() }}'...").dyeGray().notification(
+                PROCESS, executor).display()
+
+            doAsync {
+                apps.forEach { app ->
+                    UpdateManager.performUpdate(app).let {
+                        when (it) {
+                            UpdateResult.UP_TO_DATE -> {
+                                text {
+                                    this + text("The app '").dyeGray()
+                                    this + text(app.key.asString()).dyeYellow()
+                                    this + text("' is currently running ").dyeGray()
+                                    this + text("the latest").dyeLightPurple()
+                                    this + text(" known version!").dyeGray()
+                                }.notification(WARNING, executor).display()
+                            }
+                            UpdateResult.FAILED -> {
+                                text {
+                                    this + text("The update of '").dyeGray()
+                                    this + text(app.key.asString()).dyeYellow()
+                                    this + text("' ").dyeGray()
+                                    this + text("failed").dyeRed()
+                                    this + text(" to install!").dyeGray()
+                                }.notification(ERROR, executor).display()
+                            }
+                            SUCCESSFUL -> {
+                                text {
+                                    this + text("The app '").dyeGray()
+                                    this + text(app.key.asString()).dyeYellow()
+                                    this + text("' got ").dyeGray()
+                                    this + text("successfully").dyeGreen()
+                                    this + text(" updated!").dyeGray()
+                                }.notification(APPLIED, executor).display()
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        fun displayList(executor: InterchangeExecutor, page: Int) {
+
+            val paged = SparkleCache.registeredApps.page(page - 1, ENTRIES_PER_PAGE)
+
+            buildComponent {
+
+                this + text("List of all running apps").dyeGray()
+                this + text(" (Page ${paged.pageNumber} of ${paged.availablePages.last})") {
+                    plus(NamedTextColor.YELLOW)
+                    hover {
+                        text("${paged.content.size} App" + (if (paged.content.size == 1) "" else "s") + " listed").dyeGray()
+                    }
+                }
+                this + text(":").dyeGray()
+
+                this + newline() + text("⏻ Power; ⏹ API-Compatible; ⏏ Updates").dyeGray()
+
+                this + newline()
+
+                paged.content.forEach { app ->
+                    this + newline()
+                    this + text(if (app.isEnabled) "⏻" else "⭘") {
+                        plus(if (app.isEnabled) NamedTextColor.GREEN else NamedTextColor.GRAY)
+                        hover {
+                            buildComponent {
+                                this + text("Power-Indicator: ").style(NamedTextColor.BLUE, BOLD)
+                                this + newline()
+                                this + text("Indicates, if the plugin is currently enabled & running").dyeYellow()
+                                this + newline() + newline()
+                                this + text("CLICK").style(NamedTextColor.GREEN, BOLD) +
+                                        text(" to toggle the state of the app").dyeGray()
+                            }
+                        }
+                        clickEvent(ClickEvent.suggestCommand(
+                            if (app.isEnabled) "/app @ ${app.key()} stop" else "/app @ ${app.key()} start"
+                        ))
+                    }
+                    this + text(" ⏹") {
+                        plus(if (Bukkit.getMinecraftVersion().startsWith("" + app.description.apiVersion)) NamedTextColor.GREEN else NamedTextColor.GRAY)
+                        hover {
+                            buildComponent {
+                                this + text("Compatibility-Indicator: ").style(NamedTextColor.BLUE, BOLD)
+                                this + newline()
+                                this + text("Indicates, if the plugins target version is compatible with the current server version").dyeYellow()
+                                this + newline()
+                                this + newline() + text("Apps target version: ").dyeGray()
+                                this + text(app.description.apiVersion ?: "None").dyeGreen()
+                                this + newline() + text("Server version: ").dyeGray()
+                                this + text(Bukkit.getMinecraftVersion()).dyeGreen()
+
+                            }
+                        }
+                    }
+                    this + text(" ⏏") {
+
+                        when (updateStates[app]?.type) {
+                            null -> {
+                                dyeGray()
+                                hover {
+                                    text {
+                                        this + text("Update-Indicator: ").style(NamedTextColor.BLUE, BOLD)
+                                        newlines(2)
+                                        this + text {
+                                            this + text("The app '").dyeGray()
+                                            this + text("${app.key}").dyeYellow()
+                                            this + text("' is currently ").dyeGray()
+                                            this + text("not providing").dyeRed()
+                                            this + text(" a working update solution!").dyeGray()
+                                        }
+                                    }
+                                }
+                            }
+                            UP_TO_DATE -> {
+                                dyeGreen()
+                                hover {
+                                    text {
+                                        this + text("Update-Indicator: ").style(NamedTextColor.BLUE, BOLD)
+                                        newlines(2)
+                                        this + text {
+                                            text("The app '").dyeGray()
+                                            text("${app.key}").dyeYellow()
+                                            text("' is currently reporting to be ").dyeGray()
+                                            text("up-to-date").dyeGreen()
+                                            text("!").dyeGray()
+                                        }
+                                    }
+                                }
+                            }
+                            FAILED -> {
+                                dyeRed()
+                                hover {
+                                    text {
+                                        this + text("Update-Indicator: ").style(NamedTextColor.BLUE, BOLD)
+                                        newlines(2)
+                                        this + text {
+                                            text("The app '").dyeGray()
+                                            text("${app.key}").dyeYellow()
+                                            text("' is currently ").dyeGray()
+                                            text("not properly reporting").dyeRed()
+                                            text(" the current available updates!").dyeGray()
+                                        }
+                                    }
+                                }
+                            }
+                            UPDATE_AVAILABLE -> {
+                                if (UpdateComponent.updateProcesses[app]?.isCompleted == true) {
+                                    dyeAqua()
+                                    hover {
+                                        text {
+                                            this + text("Update-Indicator: ").style(NamedTextColor.BLUE, BOLD)
+                                            newlines(2)
+                                            this + text {
+                                                this + text("The app '").dyeGray()
+                                                this + text("${app.key}").dyeYellow()
+                                                this + text("' has been ").dyeGray()
+                                                this + text("successfully updated").dyeGreen()
+                                                this + text("! Only a ").dyeGray()
+                                                this + text("reload/restart").dyeAqua()
+                                                this + text(" is required!").dyeGray()
+                                            }
+                                        }
+                                    }
+                                } else if (UpdateComponent.updateProcesses[app] != null) {
+                                    dyeDarkAqua()
+                                    hover {
+                                        text {
+                                            this + text("Update-Indicator: ").style(NamedTextColor.BLUE, BOLD)
+                                            newlines(2)
+                                            this + text {
+                                                this + text("The app '").dyeGray()
+                                                this + text("${app.key}").dyeYellow()
+                                                this + text("' is currently ").dyeGray()
+                                                this + text("installing").dyeGreen()
+                                                this + text(" its update!").dyeGray()
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    dyeYellow()
+                                    hover {
+                                        text {
+                                            this + text("Update-Indicator: ").style(NamedTextColor.BLUE, BOLD)
+                                            newlines(2)
+                                            this + text {
+                                                this + text("The app '").dyeGray()
+                                                this + text("${app.key}").dyeYellow()
+                                                this + text("' reported to Sparkle, that an update is ").dyeGray()
+                                                this + text("available").dyeYellow()
+                                                this + text("!").dyeGray()
+                                            }
+                                            newlines(2)
+                                            this + text {
+                                                this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
+                                                this + text("to update this app now!").dyeGray()
+                                            }
+                                        }
+                                    }
+                                    clickEvent(ClickEvent.runCommand("/app @ ${app.key()} install-update"))
+                                }
+                            }
+                        }
+                    }
+                    this + text(" | ").dyeDarkGray()
+                    this + text(app.label) {
+                        plus(NamedTextColor.YELLOW)
+                        hover {
+                            buildComponent {
+                                this + text("Label & Identity: ") {
+                                    plus(Style.style(NamedTextColor.BLUE, BOLD))
+                                }
+                                this + newline()
+                                this + text("The label is used to display the app in lists and information, the identity is used to identify the app in the system") {
+                                    plus(NamedTextColor.YELLOW)
+                                }
+                                this + newline()
+                                this + newline() + text("Label: ") {
+                                    plus(NamedTextColor.GRAY)
+                                } + text(app.label) {
+                                    plus(NamedTextColor.GREEN)
+                                }
+                                this + newline() + text("Identity: ") {
+                                    plus(NamedTextColor.GRAY)
+                                } + text(app.key().asString()) {
+                                    plus(NamedTextColor.GREEN)
+                                }
+                            }
+                        }
+                    }
+                    this + text(" ") {
+                        plus(NamedTextColor.GRAY)
+                    }
+                    this + text(app.description.version) {
+                        plus(NamedTextColor.GRAY)
+                    }
+                    this + text(" → ") {
+                        plus(NamedTextColor.GRAY)
+                    }
+                    this + text(app.description.apiVersion ?: "None") {
+                        plus(NamedTextColor.GRAY)
+                    }
+                }
+
+                newlines(2)
+
+            }.notification(GENERAL, executor).display()
+
+        }
+
+    }
+
+}

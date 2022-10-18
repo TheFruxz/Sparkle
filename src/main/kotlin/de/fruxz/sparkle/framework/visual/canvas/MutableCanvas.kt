@@ -11,7 +11,7 @@ import de.fruxz.sparkle.framework.event.canvas.CanvasOpenEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent
 import de.fruxz.sparkle.framework.extension.coroutines.asSync
 import de.fruxz.sparkle.framework.extension.debugLog
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasRender
 import de.fruxz.sparkle.framework.visual.canvas.CanvasBase.Companion
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
@@ -153,7 +153,7 @@ data class MutableCanvas(
 
 	@JvmName("asyncMaterial5")
 	fun setDeferred(slot: Int, materialProcess: SuspendComposable<Material>): Unit =
-		setDeferred(slot, itemLikeProcess = { ItemLike.of(materialProcess.compose(system.coroutineScope)) })
+		setDeferred(slot, itemLikeProcess = { ItemLike.of(materialProcess.compose(sparkle.coroutineScope)) })
 
 	operator fun set(slotIterable: Iterable<Int>, material: Material?): Unit =
 		set(slotIterable, material?.let { ItemLike.of(it) })

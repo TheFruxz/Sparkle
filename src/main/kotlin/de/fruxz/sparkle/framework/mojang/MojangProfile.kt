@@ -4,7 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile
 import com.destroystokyo.paper.profile.ProfileProperty
 import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.extension.offlinePlayer
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.visual.item.Item
 import de.fruxz.sparkle.framework.visual.item.quirk.Quirk
 import kotlinx.coroutines.launch
@@ -47,7 +47,7 @@ data class MojangProfile constructor(
 			setProperty(ProfileProperty("textures", this@MojangProfile.textures.raw.value, this@MojangProfile.textures.raw.signature))
 		}
 
-		system.coroutineScope.launch {
+		sparkle.coroutineScope.launch {
 			target.playerProfile?.complete()
 		}
 

@@ -19,7 +19,7 @@ import de.fruxz.sparkle.framework.extension.coroutines.asSyncDeferred
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.effect.playSoundEffect
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.visual.ui.get
 import de.fruxz.sparkle.framework.extension.visual.ui.set
 import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasRender
@@ -116,7 +116,7 @@ open class Canvas(
 		triggerOpenEvent: Boolean = true,
 		triggerSound: Boolean = true,
 		owner: InventoryHolder? = null,
-	) = system.coroutineScope.launch {
+	) = sparkle.coroutineScope.launch {
 		if (NO_OPEN in flags) cancel()
 
 		val inventoryContent = asSyncDeferred { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() }
@@ -159,7 +159,7 @@ open class Canvas(
 								result
 							}
 						}.let { result ->
-							system.coroutineScope.launch {
+							sparkle.coroutineScope.launch {
 								while (true) {
 									if (result.none { it.isActive }) {
 										onFinishedDeferred.invoke(result)
@@ -210,7 +210,7 @@ open class Canvas(
 		triggerSound: Boolean = true,
 		triggerOnOpenToo: Boolean = true,
 		updateReason: UpdateReason = PLUGIN,
-	) = system.coroutineScope.launch {
+	) = sparkle.coroutineScope.launch {
 		if (NO_UPDATE in flags) cancel()
 
 		val inventoryContent = asSyncDeferred { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } // todo this is also effected by the pagination system
@@ -261,7 +261,7 @@ open class Canvas(
 								result
 							}
 						}.let { result ->
-							system.coroutineScope.launch {
+							sparkle.coroutineScope.launch {
 								while (true) {
 									if (result.none { it.isActive }) {
 										onFinishedDeferred.invoke(result)

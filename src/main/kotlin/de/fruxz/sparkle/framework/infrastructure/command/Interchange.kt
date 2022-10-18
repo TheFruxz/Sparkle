@@ -10,7 +10,7 @@ import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.interchange.Parameters
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.time.RunningCooldown
 import de.fruxz.sparkle.framework.extension.time.getCooldown
 import de.fruxz.sparkle.framework.extension.time.hasCooldown
@@ -97,7 +97,7 @@ abstract class Interchange(
 		private set
 
 	val executionContext: CoroutineContext by lazy {
-		system.pluginCoroutineDispatcher(true)
+		sparkle.pluginCoroutineDispatcher(true)
 	}
 
 	override val identityKey by lazy { vendor.subKey(label, CONTINUE) }

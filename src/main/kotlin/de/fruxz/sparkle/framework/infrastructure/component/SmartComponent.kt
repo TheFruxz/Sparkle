@@ -12,7 +12,7 @@ import de.fruxz.sparkle.framework.extension.internalCommandMap
 import de.fruxz.sparkle.framework.extension.internalSyncCommands
 import de.fruxz.sparkle.framework.extension.onlinePlayers
 import de.fruxz.sparkle.framework.extension.server
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
@@ -230,7 +230,7 @@ abstract class SmartComponent(
 				SUCCESS
 			}
 		}.apply {
-			replaceVendor(system)
+			replaceVendor(sparkle)
 		}
 
 	}

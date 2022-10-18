@@ -2,7 +2,7 @@ package de.fruxz.sparkle.framework.effect.sound
 
 import de.fruxz.ascend.extension.dump
 import de.fruxz.ascend.extension.time.inWholeMinecraftTicks
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.time.minecraftTicks
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -55,7 +55,7 @@ class SoundMelody(
 
 	}
 
-	private fun executePlay(process: SoundData.() -> Unit): Unit = system.coroutineScope.launch {
+	private fun executePlay(process: SoundData.() -> Unit): Unit = sparkle.coroutineScope.launch {
 		if (repetitions < 0) throw IllegalArgumentException("repetitions cannot be negative")
 		if (delayPerSound.isNegative()) throw IllegalArgumentException("delayPerSound cannot be negative")
 		if (delayPerBeat.isNegative()) throw IllegalArgumentException("delayPerBeat cannot be negative")

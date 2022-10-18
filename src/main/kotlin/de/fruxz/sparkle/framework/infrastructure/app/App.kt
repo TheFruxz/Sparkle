@@ -12,8 +12,6 @@ import de.fruxz.ascend.extension.tryToPrint
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.framework.app.RunStatus
-import de.fruxz.sparkle.framework.app.RunStatus.*
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.exception.IllegalActionException
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
@@ -25,8 +23,10 @@ import de.fruxz.sparkle.framework.extension.internalSyncCommands
 import de.fruxz.sparkle.framework.extension.mainLog
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.Hoster
+import de.fruxz.sparkle.framework.infrastructure.app.RunStatus.*
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.infrastructure.app.interchange.IssuedInterchange
+import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.service.Service
@@ -162,6 +162,8 @@ abstract class App(
 	 * @constructor abstract
 	 */
 	abstract override val label: String
+
+	abstract val updater: AppUpdater?
 
 	override val identityKey: Key
 		get() = Key.key(Infrastructure.SYSTEM_IDENTITY, companion.predictedIdentity.lowercase())

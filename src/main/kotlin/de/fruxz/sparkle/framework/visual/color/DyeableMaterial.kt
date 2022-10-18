@@ -2,7 +2,7 @@ package de.fruxz.sparkle.framework.visual.color
 
 import de.fruxz.ascend.extension.container.replace
 import de.fruxz.sparkle.framework.extension.createKey
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.visual.color.ColorType.WHITE
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import net.kyori.adventure.key.Key
@@ -31,7 +31,7 @@ enum class DyeableMaterial(
 
 	fun withColor(color: ColorType) = produceMaterialProcess(color)
 
-	override fun key(): Key = system.createKey(name)
+	override fun key(): Key = sparkle.createKey(name)
 
 	companion object {
 

@@ -8,8 +8,8 @@ import de.fruxz.ascend.tool.smart.composition.Producible
 import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtItemEvent
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.persistentData
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.subNamespacedKey
-import de.fruxz.sparkle.framework.extension.system
 import de.fruxz.sparkle.framework.extension.visual.ui.changeColor
 import de.fruxz.sparkle.framework.extension.visual.ui.itemMetaOrNull
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
@@ -526,9 +526,9 @@ data class Item(
 
 	companion object {
 
-		val identityNamespace = system.subNamespacedKey("item.identity", CONTINUE)
+		val identityNamespace = sparkle.subNamespacedKey("item.identity", CONTINUE)
 
-		val actionsNamespace = system.subNamespacedKey("item.actions", CONTINUE)
+		val actionsNamespace = sparkle.subNamespacedKey("item.actions", CONTINUE)
 
 		@JvmStatic
 		fun produceByJson(json: String) = JsonItemStack.fromJson(json)?.let { Item(it) }

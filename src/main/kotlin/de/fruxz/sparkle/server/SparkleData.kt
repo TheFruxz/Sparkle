@@ -3,7 +3,7 @@ package de.fruxz.sparkle.server
 import de.fruxz.ascend.extension.data.fromJsonFileOrNull
 import de.fruxz.ascend.extension.data.writeJson
 import de.fruxz.sparkle.framework.data.file.SparklePath
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import kotlinx.serialization.Serializable
 import kotlin.io.path.createDirectories
 import kotlin.io.path.div
@@ -12,7 +12,7 @@ object SparkleData {
 
 	private var _systemConfig: SparkleConfig? = null
 
-	private val systemConfigPath = SparklePath.appPath(system) / "settings.json"
+	private val systemConfigPath = SparklePath.appPath(sparkle) / "settings.json"
 
 	var systemConfig: SparkleConfig
 		get() = _systemConfig ?: systemConfigPath.fromJsonFileOrNull() ?: SparkleConfig().also {

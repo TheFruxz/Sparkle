@@ -13,7 +13,7 @@ import org.bukkit.persistence.PersistentDataType
 
 object PersistentData {
 
-	val persistentDataLogger = App.createLog(system.identity, "PersistentData")
+	val persistentDataLogger = App.createLog(sparkle.identity, "PersistentData")
 
 	val persistentDataTypes = setOf(
 		PersistentDataType.BYTE,

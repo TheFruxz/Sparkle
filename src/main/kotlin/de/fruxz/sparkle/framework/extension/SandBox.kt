@@ -40,7 +40,7 @@ fun getSandBox(fullIdentity: String) = registeredSandBoxes.firstOrNull { it.iden
 fun destroySandBox(fullIdentity: String) {
 	registeredSandBoxes = registeredSandBoxes.filter { it.identity != fullIdentity }.toSet()
 	registeredSandBoxCalls = registeredSandBoxCalls.filter { it.key.identity != fullIdentity }
-	system.log.info("removing SandBox '$fullIdentity'!")
+	sparkle.log.info("removing SandBox '$fullIdentity'!")
 }
 
 fun destroySandBox(sandBox: SandBox) =

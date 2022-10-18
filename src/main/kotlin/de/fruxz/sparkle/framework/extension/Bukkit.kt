@@ -3,6 +3,7 @@
 package de.fruxz.sparkle.framework.extension
 
 import de.fruxz.ascend.tool.smart.identification.Identifiable
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.asStyledComponent
@@ -19,7 +20,6 @@ import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 import java.util.*
-import kotlin.NoSuchElementException
 
 /**
  * This value represents the [ConsoleCommandSender] (the console).
@@ -55,6 +55,15 @@ val onlinePlayers: Set<Player>
  */
 val offlinePlayers: Set<OfflinePlayer>
 	get() = Bukkit.getOfflinePlayers().toSet()
+
+/**
+ * This computational value returns every [onlinePlayers] and the [consoleSender] inside
+ * a [Set] of [InterchangeExecutor]s.
+ * @author Fruxz
+ * @since 1.0
+ */
+val everyone: Set<InterchangeExecutor>
+	get() = (onlinePlayers + consoleSender)
 
 /**
  * This function searches for an online-[Player], which

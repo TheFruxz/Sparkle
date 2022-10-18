@@ -18,7 +18,7 @@ import de.fruxz.sparkle.framework.extension.onlinePlayers
 import de.fruxz.sparkle.framework.extension.positionX
 import de.fruxz.sparkle.framework.extension.positionY
 import de.fruxz.sparkle.framework.extension.positionZ
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.stacked.text
 import io.ktor.util.*
 import kotlinx.coroutines.delay
@@ -54,7 +54,7 @@ object EnhancedWorldTools {
 		var lastTrackerAmount = 0
 
 		"Starting analysis ($scanId) of ${chunks.size} chunks with $blockAmount blocks...".let { startingMessage ->
-			if (consoleLog) system.logger.info(startingMessage) else debugLog(startingMessage)
+			if (consoleLog) sparkle.logger.info(startingMessage) else debugLog(startingMessage)
 		}
 
 		// Displaying the bar the first time, to display the preparing message
@@ -73,7 +73,7 @@ object EnhancedWorldTools {
 				})
 
 				if (timeTrackerRun % 10 == 0) {
-					if (consoleLog) system.logger.info("Chunk-Analyzer $scanId: $displayLabel")
+					if (consoleLog) sparkle.logger.info("Chunk-Analyzer $scanId: $displayLabel")
 					onlinePlayers.forEach { it.showBossBar(progressBar) }
 				}
 
@@ -120,7 +120,7 @@ object EnhancedWorldTools {
 							progressBar.progress((heartBeat outOf blockAmount).percent.decimal.toFloat() % 1F)
 
 						} catch (exception: Exception) {
-							system.logger.warning("Chunk-Analyzer $scanId: Error while analyzing block at $analyzingX, $analyzingY, $analyzingZ; Stacktrace following:")
+							sparkle.logger.warning("Chunk-Analyzer $scanId: Error while analyzing block at $analyzingX, $analyzingY, $analyzingZ; Stacktrace following:")
 							exception.printStackTrace()
 						}
 					}

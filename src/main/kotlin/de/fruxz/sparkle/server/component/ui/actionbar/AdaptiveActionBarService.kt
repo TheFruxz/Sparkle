@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.server.component.ui.actionbar
 
 import de.fruxz.sparkle.framework.extension.onlinePlayers
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.service.Service
 import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceActions
@@ -11,7 +11,7 @@ import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent
 import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.Companion.playerLayers
 import kotlin.time.Duration.Companion.seconds
 
-internal class AdaptiveActionBarService(override val vendor: App = system) : Service {
+internal class AdaptiveActionBarService(override val vendor: App = sparkle) : Service {
 
 	override val label = "AdaptiveActionBar"
 

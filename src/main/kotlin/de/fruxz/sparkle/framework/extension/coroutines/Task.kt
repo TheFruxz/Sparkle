@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.extension.coroutines
 
 import de.fruxz.ascend.extension.dump
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -31,8 +31,8 @@ import kotlin.time.Duration
  */
 suspend fun <T> asSync(
 	delay: Duration = Duration.ZERO,
-	vendor: App = system,
-	context: CoroutineContext = system.pluginCoroutineDispatcher(false),
+	vendor: App = sparkle,
+	context: CoroutineContext = sparkle.pluginCoroutineDispatcher(false),
 	process: suspend (CoroutineScope) -> T
 ): T {
 	val output = CompletableFuture<T>()
@@ -53,8 +53,8 @@ suspend fun <T> asSync(
 
 fun <T> asSyncDeferred(
 	delay: Duration = Duration.ZERO,
-	vendor: App = system,
-	context: CoroutineContext = system.pluginCoroutineDispatcher(false),
+	vendor: App = sparkle,
+	context: CoroutineContext = sparkle.pluginCoroutineDispatcher(false),
 	process: suspend (CoroutineScope) -> T,
 ): Deferred<T> = vendor.coroutineScope.async(context = context) {
 	if (delay.isPositive()) delay(delay)
@@ -77,8 +77,8 @@ fun <T> asSyncDeferred(
 fun doSync(
 	delay: Duration = Duration.ZERO,
 	interval: Duration = Duration.ZERO,
-	vendor: App = system,
-	context: CoroutineContext = system.pluginCoroutineDispatcher(false),
+	vendor: App = sparkle,
+	context: CoroutineContext = sparkle.pluginCoroutineDispatcher(false),
 	process: suspend (CoroutineScope) -> Unit
 ) = launch(isAsync = false, vendor = vendor, context = context) { scope ->
 		if (delay.isPositive()) delay(delay)
@@ -112,12 +112,12 @@ fun doSync(
  */
 fun <T> asAsync(
 	delay: Duration = Duration.ZERO,
-	context: CoroutineContext = system.pluginCoroutineDispatcher(true),
+	context: CoroutineContext = sparkle.pluginCoroutineDispatcher(true),
 	process: suspend (CoroutineScope) -> T
 ): Deferred<T> =
-	system.coroutineScope.async(context = context) {
+	sparkle.coroutineScope.async(context = context) {
 		if (delay.isPositive()) delay(delay)
-		return@async process(system.coroutineScope)
+		return@async process(sparkle.coroutineScope)
 	}
 
 /**
@@ -132,8 +132,8 @@ fun <T> asAsync(
 fun doAsync(
 	delay: Duration = Duration.ZERO,
 	interval: Duration = Duration.ZERO,
-	vendor: App = system,
-	context: CoroutineContext = system.pluginCoroutineDispatcher(true),
+	vendor: App = sparkle,
+	context: CoroutineContext = sparkle.pluginCoroutineDispatcher(true),
 	process: suspend (CoroutineScope) -> Unit
 ) = launch(isAsync = true, context = context, vendor = vendor) { scope ->
 	if (delay.isPositive()) delay(delay)
@@ -155,9 +155,9 @@ fun doAsync(
  * @since 1.0
  */
 fun launch(
-	vendor: App = system,
+	vendor: App = sparkle,
 	isAsync: Boolean = true,
-	context: CoroutineContext = system.pluginCoroutineDispatcher(isAsync),
+	context: CoroutineContext = sparkle.pluginCoroutineDispatcher(isAsync),
 	process: suspend (CoroutineScope) -> Unit,
 ) = vendor.coroutineScope.launch(context = context, block = process)
 

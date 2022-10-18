@@ -2,7 +2,7 @@ package de.fruxz.sparkle.framework.data.file
 
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.component.Component
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import kotlin.io.path.Path
 import kotlin.io.path.div
@@ -15,7 +15,7 @@ object SparklePath {
         homePath / "main@${app.key().value()}"
 
     fun rootPath() =
-        appPath(system)
+        appPath(sparkle)
 
     fun componentPath(component: KeyedIdentifiable<out Component>) =
         homePath / with(component.key()) {

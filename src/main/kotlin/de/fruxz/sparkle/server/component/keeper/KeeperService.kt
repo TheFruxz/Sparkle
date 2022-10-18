@@ -3,7 +3,7 @@ package de.fruxz.sparkle.server.component.keeper
 import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.extension.container.withForEach
 import de.fruxz.sparkle.framework.extension.debugLog
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel.DUMP
 import de.fruxz.sparkle.framework.infrastructure.service.Service
@@ -15,7 +15,7 @@ import de.fruxz.sparkle.server.SparkleCache
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-internal class KeeperService(override val vendor: App = system) : Service {
+internal class KeeperService(override val vendor: App = sparkle) : Service {
 
 	override val label = "Cache-Cleaner"
 

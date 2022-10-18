@@ -58,22 +58,22 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	 * By default, the [slot] is set to the last index of the input-[parameters], so the [getInput]
 	 * function is very quick to use inside the StructuredInterchanges, because an execution block
 	 * itself hosts the last input-parameter any time.
-	 * This function also converts the output String to the given [T] using the [restriction] [InterchangeStructureInputRestriction].
+	 * This function also converts the output String to the given [T] using the [fromRestriction] [InterchangeStructureInputRestriction].
 	 *
 	 * Example:
 	 * User-Input: "/test foo bar baz"; slot: 1 -> "bar"
 	 *
 	 * @param slot The index-position of the input-parameter to return.
-	 * @param restriction The restriction to check if the input-parameter is valid and also converts the input to the [T] result.
+	 * @param fromRestriction The restriction to check if the input-parameter is valid and also converts the input to the [T] result.
 	 * @return The input-parameter at the given index-position [slot].
 	 * @throws IndexOutOfBoundsException if the given [slot] is out of bounds.
 	 * @throws IllegalArgumentException if the given restrictions at the given [slot] are not met.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun <T> getInput(slot: Int = inputLength - 1, restriction: InterchangeStructureInputRestriction<T>) =
-		if (restriction.isValid(parameters[slot])) {
-			restriction.transformer(parameters[slot])
+	fun <T> getInput(slot: Int = inputLength - 1, fromRestriction: InterchangeStructureInputRestriction<T>) =
+		if (fromRestriction.isValid(parameters[slot])) {
+			fromRestriction.transformer(parameters[slot])
 		} else {
 			throw IllegalArgumentException("Input restriction not followed!")
 		}
@@ -84,13 +84,13 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	 * By default, the [slot] is set to the last index of the input-[parameters], so the [getInput]
 	 * function is very quick to use inside the StructuredInterchanges, because an execution block
 	 * itself hosts the last input-parameter any time.
-	 * This function also converts the output String to the given [T] using the [restrictiveAsset] [CompletionAsset].
+	 * This function also converts the output String to the given [T] using the [fromAsset] [CompletionAsset].
 	 *
 	 * Example:
 	 * User-Input: "/test foo bar baz"; slot: 1 -> "bar"
 	 *
 	 * @param slot The index-position of the input-parameter to return.
-	 * @param restrictiveAsset The restriction to check if the input-parameter is valid and also converts the input to the [T] result.
+	 * @param fromAsset The restriction to check if the input-parameter is valid and also converts the input to the [T] result.
 	 * @return The input-parameter at the given index-position [slot].
 	 * @throws IndexOutOfBoundsException if the given [slot] is out of bounds.
 	 * @throws IllegalArgumentException if the given restrictions at the given [slot] are not met.
@@ -98,16 +98,16 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun <T : Any> getInput(slot: Int = inputLength - 1, restrictiveAsset: CompletionAsset<T>): T {
-		if (restrictiveAsset.transformer == null) throw IllegalArgumentException("Asset '${restrictiveAsset.identity}' provides no transformer!")
+	fun <T : Any> getInput(slot: Int = inputLength - 1, fromAsset: CompletionAsset<T>): T {
+		if (fromAsset.transformer == null) throw IllegalArgumentException("Asset '${fromAsset.identity}' provides no transformer!")
 
-		return getInput(slot).let { input -> restrictiveAsset.transformer?.invoke(
+		return getInput(slot).let { input -> fromAsset.transformer?.invoke(
 			CompletionAsset.CompletionContext(
 			executor = executor,
 			fullLineInput = parameters,
 			input = parameters.getOrNull(slot) ?: "",
 			ignoreCase = true
-		)) ?: throw IllegalStateException("Asset '${restrictiveAsset.identity}' transformer produces null at input '$input'!") }
+		)) ?: throw IllegalStateException("Asset '${fromAsset.identity}' transformer produces null at input '$input'!") }
 
 	}
 

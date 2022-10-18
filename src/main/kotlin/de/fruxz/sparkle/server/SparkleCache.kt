@@ -11,6 +11,7 @@ import de.fruxz.sparkle.framework.infrastructure.app.AppCache
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel.*
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
+import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater.UpdateCheckResult
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceState
@@ -19,6 +20,7 @@ import de.fruxz.sparkle.framework.sandbox.SandBox
 import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager.CanvasSession
 import de.fruxz.sparkle.framework.visual.item.action.ItemAction
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import net.kyori.adventure.key.Key
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
@@ -68,6 +70,10 @@ object SparkleCache : AppCache {
 	var services = mapOf<Key, CoroutineScope>()
 
 	var serviceStates = mapOf<Key, ServiceState>()
+
+	var updateProcesses = mapOf<App, Job>()
+
+	var updateStates = mapOf<App, UpdateCheckResult>()
 
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
 		when {

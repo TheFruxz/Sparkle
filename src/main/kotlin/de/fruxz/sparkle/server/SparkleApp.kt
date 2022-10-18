@@ -30,6 +30,7 @@ import de.fruxz.sparkle.framework.extension.visual.ui.item
 import de.fruxz.sparkle.framework.extension.visual.ui.skull
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.AppCompanion
+import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater
 import de.fruxz.sparkle.framework.mojang.MojangProfile
 import de.fruxz.sparkle.framework.mojang.MojangProfileCape
 import de.fruxz.sparkle.framework.mojang.MojangProfileRaw
@@ -67,6 +68,8 @@ import de.fruxz.sparkle.server.component.sandbox.SandBoxComponent
 import de.fruxz.sparkle.server.component.service.ServiceComponent
 import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent
 import de.fruxz.sparkle.server.component.ui.gui.UIComponent
+import de.fruxz.sparkle.server.component.update.UpdateComponent
+import de.fruxz.sparkle.server.component.update.UpdateManager
 import de.fruxz.sparkle.server.interchange.DebugModeInterchange
 import de.fruxz.sparkle.server.interchange.PlaygroundInterchange
 import de.fruxz.sparkle.server.interchange.SparkleInterchange
@@ -92,6 +95,7 @@ class SparkleApp : App() {
 	override val appIdentity: String = SYSTEM_IDENTITY
 	override val label = "Sparkle"
 	override val appCache: SparkleCache = SparkleCache
+	override val updater = AppUpdater.modrinth("18DGRA2p")
 
 	override suspend fun preHello() {
 
@@ -195,6 +199,7 @@ class SparkleApp : App() {
 		add(AdaptiveActionBarComponent())
 		add(KeeperComponent())
 		add(MarkingComponent())
+		add(UpdateComponent())
 
 		add(SparkleInterchange())
 		add(DebugModeInterchange())
@@ -234,6 +239,12 @@ class SparkleApp : App() {
 				})
 
 			}.display(executor.asPlayerOrNull)
+
+		}
+
+		quickSandBox(identity = "updateSparkle") {
+
+			println("result: " + UpdateManager.performUpdate(this@SparkleApp))
 
 		}
 

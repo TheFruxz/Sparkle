@@ -1,10 +1,10 @@
 package de.fruxz.sparkle.framework.extension
 
 import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.server.SparkleApp
-import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
+import de.fruxz.sparkle.framework.infrastructure.app.App
+import de.fruxz.sparkle.server.SparkleApp
+import de.fruxz.sparkle.server.SparkleCache
 import java.util.logging.Level
 
 fun <T : Any?> T.debugLog(message: String, level: Level = Level.WARNING) = also {
@@ -23,17 +23,20 @@ fun mainLog(level: Level = Level.INFO, message: String) = SparkleApp.instance.lo
 
 val mainLog = SparkleApp.instance.log
 
-internal val system: SparkleApp
+val sparkle: SparkleApp
 	get() = SparkleApp.instance
 
-@Throws(NoSuchElementException::class)
-fun app(appIdentity: String) = SparkleCache.registeredApps.first { it.appIdentity == appIdentity }
+val apps: Set<App>
+	get() = SparkleCache.registeredApps
 
 @Throws(NoSuchElementException::class)
-fun app(vendor: KeyedIdentifiable<out App>) = SparkleCache.registeredApps.first { it.key() == vendor.key() }
+fun app(appIdentity: String) = apps.first { it.appIdentity == appIdentity }
 
 @Throws(NoSuchElementException::class)
-fun app(vendorIdentity: Identity<out App>) = SparkleCache.registeredApps.first { it.identityObject == vendorIdentity }
+fun app(vendor: KeyedIdentifiable<out App>) = apps.first { it.key() == vendor.key() }
+
+@Throws(NoSuchElementException::class)
+fun app(vendorIdentity: Identity<out App>) = apps.first { it.identityObject == vendorIdentity }
 
 @Throws(NoSuchElementException::class)
 fun KeyedIdentifiable<out App>.getApp() = app(this)

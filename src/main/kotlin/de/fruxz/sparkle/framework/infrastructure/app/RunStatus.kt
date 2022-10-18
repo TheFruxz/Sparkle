@@ -1,4 +1,4 @@
-package de.fruxz.sparkle.framework.app
+package de.fruxz.sparkle.framework.infrastructure.app
 
 enum class RunStatus {
 

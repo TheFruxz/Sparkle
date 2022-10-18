@@ -4,7 +4,7 @@ package de.fruxz.sparkle.framework.visual.color
 
 import de.fruxz.ascend.annotation.NotPerfect
 import de.fruxz.sparkle.framework.extension.createKey
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.key.Keyed
@@ -37,7 +37,7 @@ enum class ColorType : RGBLike, Keyed {
 	RED,
 	BLACK;
 
-	override fun key(): Key = system.createKey(name)
+	override fun key(): Key = sparkle.createKey(name)
 
 	val dyeColor: DyeColor by lazy {
 		when (this) {

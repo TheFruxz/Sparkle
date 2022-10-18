@@ -4,7 +4,7 @@ import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.floorToInt
 import de.fruxz.ascend.extension.math.limitTo
 import de.fruxz.sparkle.framework.extension.subNamespacedKey
-import de.fruxz.sparkle.framework.extension.system
+import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.visual.ui.item
 import de.fruxz.sparkle.framework.extension.visual.ui.skull
 import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasPrototypeAPI
@@ -119,8 +119,8 @@ interface PaginationType<C> {
 				}
 			}
 
-		val CANVAS_BUTTON_SCROLL = system.subNamespacedKey("canvas.scroll")
-		val CANVAS_SCROLL_STATE = system.subKey("state.scroll")
+		val CANVAS_BUTTON_SCROLL = sparkle.subNamespacedKey("canvas.scroll")
+		val CANVAS_SCROLL_STATE = sparkle.subKey("state.scroll")
 
 		data class ScrollControlSetup(
 			val renderBar: Boolean = true,
