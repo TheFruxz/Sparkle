@@ -2,6 +2,7 @@ package de.fruxz.sparkle.framework.effect.particle
 
 import com.destroystokyo.paper.ParticleBuilder
 import de.fruxz.ascend.extension.dump
+import de.fruxz.sparkle.framework.effect.EffectDsl
 import de.fruxz.sparkle.framework.positioning.relative.CubicalShape
 import org.bukkit.Location
 import org.bukkit.entity.Entity
@@ -11,12 +12,15 @@ data class ParticleData<T : Any>(
 	val type: ParticleType<T>,
 ) : ParticleBuilder(type.type), ParticleEffect {
 
+    @EffectDsl
     fun putData(data: T) =
         data(data)
 
+    @EffectDsl
     fun offset(cube: CubicalShape) =
         offset(cube.length, cube.height, cube.depth)
 
+    @EffectDsl
     fun edit(block: ParticleData<T>.() -> Unit) = apply(block)
 
     override fun play(): Unit = spawn().dump()

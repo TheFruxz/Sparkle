@@ -1,13 +1,15 @@
 package de.fruxz.sparkle.framework.extension.effect
 
 import com.destroystokyo.paper.ParticleBuilder
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
+import de.fruxz.sparkle.framework.effect.EffectDsl
 import de.fruxz.sparkle.framework.effect.particle.ParticleData
 import de.fruxz.sparkle.framework.effect.particle.ParticleType
+import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.entity.Player
 
+@EffectDsl
 @Throws(IllegalStateException::class)
 fun ParticleBuilder.playParticleEffect(reach: Double = .0) {
 	val location = location()
@@ -29,21 +31,28 @@ fun ParticleBuilder.playParticleEffect(reach: Double = .0) {
 		throw IllegalStateException("'location'[bukkit.Location] of ParticleBuilder cannot be null!")
 }
 
+@EffectDsl
 @Throws(IllegalStateException::class)
 fun ParticleBuilder.playParticleEffect(reach: Number = .0) =
 	playParticleEffect(reach.toDouble())
 
+@EffectDsl
 fun ParticleBuilder.playParticleEffect() =
 	playParticleEffect(.0)
 
+@EffectDsl
 fun ParticleBuilder.offset(offset: Number) = offset(offset.toDouble(), offset.toDouble(), offset.toDouble())
 
+@EffectDsl
 fun ParticleBuilder.offset(offsetX: Number, offsetZ: Number) = offset(offsetX.toDouble(), .0, offsetZ.toDouble())
 
+@EffectDsl
 fun ParticleBuilder.location(simpleLocation: SimpleLocation) = location(simpleLocation.bukkit)
 
+@EffectDsl
 fun <T : Any> particleOf(particleType: ParticleType<T>): ParticleData<T> = ParticleData(particleType)
 
+@EffectDsl
 fun <T : Any> buildParticle(particleType: ParticleType<T>, builder: ParticleData<T>.() -> Unit) =
 	ParticleData(particleType).apply(builder)
 

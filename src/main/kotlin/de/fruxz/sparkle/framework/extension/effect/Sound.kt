@@ -1,5 +1,6 @@
 package de.fruxz.sparkle.framework.extension.effect
 
+import de.fruxz.sparkle.framework.effect.EffectDsl
 import de.fruxz.sparkle.framework.effect.sound.SoundData
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.effect.sound.SoundMelody
@@ -25,6 +26,7 @@ import org.bukkit.entity.Entity
  * @author Fruxz
  * @since 1.0
  */
+@EffectDsl
 fun soundOf(
 	type: Sound.Type, volume: Number = 1, pitch: Number = 1, soundSource: Sound.Source = MASTER,
 ) = SoundEffect.soundOf(type, volume, pitch, soundSource)
@@ -43,6 +45,7 @@ fun soundOf(
  * @author Fruxz
  * @since 1.0
  */
+@EffectDsl
 fun soundOf(
 	key: Key, volume: Number = 1, pitch: Number = 1, soundSource: Sound.Source = MASTER,
 ) = SoundEffect.soundOf(key, volume, pitch, soundSource)
@@ -60,6 +63,7 @@ fun soundOf(
  * @author Fruxz
  * @since 1.0
  */
+@EffectDsl
 fun SoundMelodyBeat.sound(
 	type: Sound.Type, volume: Number = 1, pitch: Number = 1, soundSource: Sound.Source = MASTER,
 ) = sound(SoundData(type, volume, pitch, soundSource))
@@ -77,6 +81,7 @@ fun SoundMelodyBeat.sound(
  * @author Fruxz
  * @since 1.0
  */
+@EffectDsl
 fun SoundMelodyBeat.sound(
 	key: Key, volume: Number = 1, pitch: Number = 1, soundSource: Sound.Source = MASTER,
 ) = sound(SoundData(key, volume, pitch, soundSource))
@@ -96,6 +101,7 @@ fun SoundMelodyBeat.sound(
  * @author Fruxz
  * @since 1.0
  */
+@EffectDsl
 fun SoundMelody.beat(
 	type: Sound.Type, volume: Number = 1, pitch: Number = 1, soundSource: Sound.Source = MASTER,
 ) = beat(SoundData(type, volume, pitch, soundSource))
@@ -115,6 +121,7 @@ fun SoundMelody.beat(
  * @author Fruxz
  * @since 1.0
  */
+@EffectDsl
 fun SoundMelody.beat(
 	key: Key, volume: Number = 1, pitch: Number = 1, soundSource: Sound.Source = MASTER,
 ) = beat(SoundData(key, volume, pitch, soundSource))
@@ -126,6 +133,7 @@ fun SoundMelody.beat(
  * @author Fruxz
  * @since 1.0
  */
+@EffectDsl
 fun buildMelody(process: SoundMelody.() -> Unit): SoundMelody = SoundMelody().apply(process)
 
 /**
@@ -135,6 +143,7 @@ fun buildMelody(process: SoundMelody.() -> Unit): SoundMelody = SoundMelody().ap
  * @author Fruxz
  * @since 1.0
  */
+@EffectDsl
 fun Entity.playSoundEffect(
 	vararg soundEffects: SoundEffect,
 ): Unit = playEffect(*soundEffects)
@@ -146,6 +155,7 @@ fun Entity.playSoundEffect(
  * @author Fruxz
  * @since 1.0
  */
+@EffectDsl
 fun World.playSoundEffect(
 	vararg soundEffects: SoundEffect,
 ) = soundEffects.forEach { effect ->
@@ -159,6 +169,7 @@ fun World.playSoundEffect(
  * @author Fruxz
  * @since 1.0
  */
+@EffectDsl
 fun Location.playSoundEffect(
 	vararg soundEffects: SoundEffect,
 ) = playEffect(*soundEffects)

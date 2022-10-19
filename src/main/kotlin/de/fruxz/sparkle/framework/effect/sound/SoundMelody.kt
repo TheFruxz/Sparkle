@@ -2,6 +2,7 @@ package de.fruxz.sparkle.framework.effect.sound
 
 import de.fruxz.ascend.extension.dump
 import de.fruxz.ascend.extension.time.inWholeMinecraftTicks
+import de.fruxz.sparkle.framework.effect.EffectDsl
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.time.minecraftTicks
 import kotlinx.coroutines.delay
@@ -36,10 +37,12 @@ class SoundMelody(
 		get() = _structure
 		set(value) { _structure = value }
 
+	@EffectDsl
 	fun beat(process: SoundMelodyBeat.() -> Unit) {
 		_structure = _structure.plusElement(SoundMelodyBeat().apply(process).content)
 	}
 
+	@EffectDsl
 	fun beat(soundData: SoundData): Unit = beat { sound(soundData) }
 
 	data class SoundMelodyBeat(
@@ -49,6 +52,7 @@ class SoundMelody(
 		val content: List<SoundData>
 			get() = _content
 
+		@EffectDsl
 		fun sound(soundData: SoundData) {
 			_content += soundData
 		}
