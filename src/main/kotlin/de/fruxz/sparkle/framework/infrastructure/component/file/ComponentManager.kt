@@ -1,10 +1,10 @@
 package de.fruxz.sparkle.framework.infrastructure.component.file
 
 import de.fruxz.ascend.extension.container.edited
+import de.fruxz.ascend.extension.createFileAndDirectories
 import de.fruxz.ascend.extension.data.readJson
 import de.fruxz.ascend.extension.data.writeJson
 import de.fruxz.ascend.extension.div
-import de.fruxz.ascend.extension.generateFileAndPath
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.data.file.SparklePath
@@ -18,12 +18,12 @@ object ComponentManager {
 
 	var state: ComponentConfiguration
 		get() = _state ?: tryOrNull { path.readJson() } ?: ComponentConfiguration().also {
-			path.toFile().generateFileAndPath()
+			path.createFileAndDirectories()
 			state = it
 		}
 		set(value) {
 			_state = value
-			path.toFile().generateFileAndPath()
+			path.createFileAndDirectories()
 			path.writeJson(value)
 		}
 
