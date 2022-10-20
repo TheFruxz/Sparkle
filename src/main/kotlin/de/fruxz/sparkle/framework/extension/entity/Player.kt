@@ -2,7 +2,7 @@ package de.fruxz.sparkle.framework.extension.entity
 
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.framework.extension.fill
+import de.fruxz.sparkle.framework.extension.world.fill
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer

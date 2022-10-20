@@ -1,4 +1,4 @@
-package de.fruxz.sparkle.framework.extension
+package de.fruxz.sparkle.framework.extension.world
 
 import de.fruxz.ascend.tool.math.Percentage
 import de.fruxz.ascend.tool.math.Percentage.Companion.percent

@@ -2,7 +2,7 @@ package de.fruxz.sparkle.framework.positioning.dependent
 
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.floorToInt
-import de.fruxz.sparkle.framework.extension.toSimpleLocation
+import de.fruxz.sparkle.framework.extension.world.toSimpleLocation
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import de.fruxz.sparkle.framework.positioning.relative.SphereShape
 import kotlinx.serialization.Serializable

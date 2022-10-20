@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.data.json.serializer
 
-import de.fruxz.sparkle.framework.extension.Location
+import de.fruxz.sparkle.framework.extension.world.Location
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element

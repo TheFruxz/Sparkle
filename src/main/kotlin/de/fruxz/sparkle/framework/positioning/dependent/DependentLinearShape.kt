@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.positioning.dependent
 
-import de.fruxz.sparkle.framework.extension.toSimpleLocation
-import de.fruxz.sparkle.framework.extension.velocityTo
+import de.fruxz.sparkle.framework.extension.world.toSimpleLocation
+import de.fruxz.sparkle.framework.extension.world.velocityTo
 import de.fruxz.sparkle.framework.positioning.relative.LinearShape
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import kotlinx.serialization.Serializable

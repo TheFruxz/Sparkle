@@ -1,10 +1,12 @@
-package de.fruxz.sparkle.framework.extension
+package de.fruxz.sparkle.framework.extension.world
 
 import com.destroystokyo.paper.ParticleBuilder
 import de.fruxz.ascend.extension.dump
+import de.fruxz.sparkle.framework.extension.world
+import de.fruxz.sparkle.framework.extension.worldOrNull
+import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import de.fruxz.sparkle.framework.positioning.world.ChunkLocation
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
-import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import org.bukkit.Chunk
 import org.bukkit.Location
 import org.bukkit.World

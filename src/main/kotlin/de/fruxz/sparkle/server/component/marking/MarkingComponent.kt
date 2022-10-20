@@ -8,7 +8,7 @@ import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.AUT
 import de.fruxz.sparkle.framework.infrastructure.component.SmartComponent
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.extension.visual.ui.item
-import de.fruxz.sparkle.framework.extension.displayString
+import de.fruxz.sparkle.framework.extension.world.displayString
 import de.fruxz.sparkle.framework.extension.entity.identityObject
 import de.fruxz.sparkle.framework.extension.isPhysical
 import de.fruxz.sparkle.framework.extension.templateLocation

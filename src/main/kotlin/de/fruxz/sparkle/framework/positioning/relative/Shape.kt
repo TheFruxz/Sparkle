@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.framework.positioning.relative
 
 import de.fruxz.ascend.annotation.NotPerfect
-import de.fruxz.sparkle.framework.extension.add
-import de.fruxz.sparkle.framework.extension.toSimpleLocation
+import de.fruxz.sparkle.framework.extension.world.add
+import de.fruxz.sparkle.framework.extension.world.toSimpleLocation
 import de.fruxz.sparkle.framework.positioning.dependent.DependentComplexShape
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCylindricalShape

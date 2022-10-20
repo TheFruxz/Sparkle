@@ -13,11 +13,11 @@ import de.fruxz.sparkle.framework.extension.coroutines.launch
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.effect.offset
 import de.fruxz.sparkle.framework.extension.effect.particleOf
-import de.fruxz.sparkle.framework.extension.location
+import de.fruxz.sparkle.framework.extension.world.location
 import de.fruxz.sparkle.framework.extension.onlinePlayers
-import de.fruxz.sparkle.framework.extension.positionX
-import de.fruxz.sparkle.framework.extension.positionY
-import de.fruxz.sparkle.framework.extension.positionZ
+import de.fruxz.sparkle.framework.extension.world.positionX
+import de.fruxz.sparkle.framework.extension.world.positionY
+import de.fruxz.sparkle.framework.extension.world.positionZ
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.stacked.text
 import io.ktor.util.*
