@@ -413,7 +413,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                         text(" to toggle the state of the app").dyeGray()
                             }
                         }
-                        clickEvent(ClickEvent.suggestCommand(
+                        clickEvent(ClickEvent.runCommand(
                             if (app.isEnabled) "/app @ ${app.key()} stop" else "/app @ ${app.key()} start"
                         ))
                     }

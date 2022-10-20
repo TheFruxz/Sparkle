@@ -29,6 +29,7 @@ import de.fruxz.stacked.plus
 import de.fruxz.stacked.text
 import net.kyori.adventure.text.Component.newline
 import net.kyori.adventure.text.Component.space
+import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration.BOLD
 
@@ -68,6 +69,11 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 									this + text("Enabled: ").style(NamedTextColor.BLUE, BOLD)
 									this + newline()
 									this + text("This component is currently running and executing its code!").dyeGray()
+									newlines(2)
+									this + text {
+										this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
+										this + text("to disable this component").dyeGray()
+									}
 								}
 							}.dyeGreen()
 							else -> text(iconDisabled).hover {
@@ -75,9 +81,18 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 									this + text("Disabled: ").style(NamedTextColor.BLUE, BOLD)
 									this + newline()
 									this + text("This component is currently not running and not executing its code!").dyeGray()
+									newlines(2)
+									this + text {
+										this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
+										this + text("to enable this component").dyeGray()
+									}
 								}
 							}.dyeGray()
-						}
+						}.clickEvent(when {
+							component.isRunning -> ClickEvent.runCommand("/component @ ${component.key} disable")
+							!component.isRunning -> ClickEvent.runCommand("/component @ ${component.key} enable")
+							else -> null
+						})
 
 						this + space()
 
@@ -87,10 +102,26 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 									this + text("Autostart: ").style(NamedTextColor.BLUE, BOLD)
 									this + newline()
 									this + text("This component will be started automatically on server start!").dyeGray()
+									newlines(2)
+									this + text {
+										this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
+										this + text("to disable autostart for this component").dyeGray()
+									}
 								}
 							}.dyeGreen()
-							else -> text(iconAutoStart).dyeGray()
-						}
+							else -> text(iconAutoStart).dyeGray().hover {
+								text {
+									this + text("Autostart: ").style(NamedTextColor.BLUE, BOLD)
+									this + newline()
+									this + text("This component will not automatically be started on server start!").dyeGray()
+									newlines(2)
+									this + text {
+										this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
+										this + text("to enable autostart for this component").dyeGray()
+									}
+								}
+							}
+						}.clickEvent(ClickEvent.runCommand("/component @ ${component.key} autostart"))
 
 						this + space()
 
