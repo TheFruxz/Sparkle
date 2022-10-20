@@ -23,7 +23,7 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
 }
 
-val ascendVersion = "9b39845a73"
+val ascendVersion = "7a97a3e59a"
 val stackedVersion = "3cf9a6a914"
 
 dependencies {
@@ -69,7 +69,7 @@ dependencies {
     @Suppress("DependencyOnStdlib") shadow(kotlin("stdlib"))
     shadow(kotlin("reflect"))
 
-    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
     shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
     shadow("org.slf4j:slf4j-api:2.0.3")

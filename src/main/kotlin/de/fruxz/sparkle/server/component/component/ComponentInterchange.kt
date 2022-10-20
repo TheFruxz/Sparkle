@@ -89,8 +89,8 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 								}
 							}.dyeGray()
 						}.clickEvent(when {
-							component.isRunning -> ClickEvent.runCommand("/component @ ${component.key} disable")
-							!component.isRunning -> ClickEvent.runCommand("/component @ ${component.key} enable")
+							component.isRunning -> ClickEvent.runCommand("/component @ ${component.key} stop")
+							!component.isRunning -> ClickEvent.runCommand("/component @ ${component.key} start")
 							else -> null
 						})
 

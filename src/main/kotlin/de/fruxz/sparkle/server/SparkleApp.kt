@@ -78,7 +78,7 @@ class SparkleApp : App() {
 	override val appIdentity: String = SYSTEM_IDENTITY
 	override val label = "Sparkle"
 	override val appCache: SparkleCache = SparkleCache
-	override val updater = AppUpdater.modrinth("18DGRA2p")
+	override val updater = AppUpdater.github("TheFruxz/Sparkle") { it.contains("Runnable", true) }
 
 	override suspend fun preHello() {
 
