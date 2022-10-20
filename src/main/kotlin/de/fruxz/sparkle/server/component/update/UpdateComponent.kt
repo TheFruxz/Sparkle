@@ -2,6 +2,7 @@ package de.fruxz.sparkle.server.component.update
 
 import de.fruxz.ascend.extension.data.readJson
 import de.fruxz.ascend.extension.data.writeJsonIfNotExists
+import de.fruxz.ascend.extension.div
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.fruxz.sparkle.framework.infrastructure.component.SmartComponent
@@ -21,7 +22,7 @@ class UpdateComponent : SmartComponent(AUTOSTART_MUTABLE) {
 	}
 
 	val updateConfiguration by lazy {
-		SparklePath.componentPath(this).writeJsonIfNotExists(Configuration()).readJson<Configuration>()
+		(SparklePath.componentPath(this) / "settings.json").writeJsonIfNotExists(Configuration()).readJson<Configuration>()
 	}
 
 	@Serializable

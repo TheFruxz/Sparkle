@@ -32,7 +32,7 @@ class UpdateService(component: UpdateComponent, override val vendor: App = spark
 				val oldState = UpdateComponent.updateStates[app]
 				val newState = UpdateManager.getUpdate(app)
 
-				if (oldState != newState) {
+				if (oldState?.type != newState?.type) {
 
 					if (newState != null) {
 						UpdateComponent.updateStates += app to newState
