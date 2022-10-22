@@ -3,8 +3,12 @@ package de.fruxz.sparkle.server.component.sandbox
 import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.framework.Constants
+import de.fruxz.sparkle.framework.extension.allSandBoxes
+import de.fruxz.sparkle.framework.extension.destroyAllSandBoxes
+import de.fruxz.sparkle.framework.extension.destroySandBox
+import de.fruxz.sparkle.framework.extension.getSandBox
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.SUCCESS
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.WRONG_USAGE
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructureInputRestriction
@@ -14,13 +18,9 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.ignoreCase
 import de.fruxz.sparkle.framework.infrastructure.command.completion.infiniteSubParameters
 import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequired
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
-import de.fruxz.sparkle.framework.extension.visual.notification
-import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.extension.allSandBoxes
-import de.fruxz.sparkle.framework.extension.destroyAllSandBoxes
-import de.fruxz.sparkle.framework.extension.destroySandBox
-import de.fruxz.sparkle.framework.extension.getSandBox
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.stacked.extension.dyeGold
 import de.fruxz.stacked.extension.dyeGray
 import de.fruxz.stacked.extension.dyeGreen
@@ -104,7 +104,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 			ignoreCase()
 
 			fun displaySandBoxes(executor: InterchangeExecutor, page: Int) {
-				val pageValue = allSandBoxes.page(page, Constants.ENTRIES_PER_PAGE)
+				val pageValue = allSandBoxes.page(page, SparkleData.systemConfig.entriesPerListPage)
 
 				if (pageValue.content.isNotEmpty()) {
 
@@ -139,7 +139,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(CompletionAsset.pageCompletion { ceilToInt(allSandBoxes.size.toDouble() / Constants.ENTRIES_PER_PAGE) })
+				addContent(CompletionAsset.pageCompletion { ceilToInt(allSandBoxes.size.toDouble() / SparkleData.systemConfig.entriesPerListPage) })
 
 				isNotRequired()
 

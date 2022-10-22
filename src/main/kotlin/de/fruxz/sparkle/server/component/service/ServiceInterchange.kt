@@ -3,7 +3,6 @@ package de.fruxz.sparkle.server.component.service
 import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.switchResult
-import de.fruxz.sparkle.framework.Constants
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.SUCCESS
@@ -17,6 +16,7 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequire
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
 import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.stacked.extension.dyeDarkGray
 import de.fruxz.stacked.extension.dyeGold
 import de.fruxz.stacked.extension.dyeGray
@@ -47,7 +47,7 @@ internal class ServiceInterchange : StructuredInterchange(
 			ignoreCase()
 
 			fun displayServices(executor: InterchangeExecutor, page: Int) {
-				val pageValue = SparkleCache.serviceStates.values.page(page, Constants.ENTRIES_PER_PAGE)
+				val pageValue = SparkleCache.serviceStates.values.page(page, SparkleData.systemConfig.entriesPerListPage)
 
 				if (pageValue.content.isNotEmpty()) {
 
@@ -140,7 +140,7 @@ internal class ServiceInterchange : StructuredInterchange(
 			}
 
 			branch {
-				addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.serviceStates.values.size.toDouble() / Constants.ENTRIES_PER_PAGE) })
+				addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.serviceStates.values.size.toDouble() / SparkleData.systemConfig.entriesPerListPage) })
 
 				isNotRequired()
 

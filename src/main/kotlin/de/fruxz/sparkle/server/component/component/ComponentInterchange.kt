@@ -3,7 +3,6 @@ package de.fruxz.sparkle.server.component.component
 import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.framework.Constants
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructureInputRestriction
@@ -16,6 +15,7 @@ import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.component.file.ComponentManager
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
 import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.stacked.extension.dyeDarkGray
 import de.fruxz.stacked.extension.dyeGold
 import de.fruxz.stacked.extension.dyeGray
@@ -43,7 +43,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 		val iconBlocked = "✘"
 
 		fun list(page: Int, executor: InterchangeExecutor) {
-			SparkleCache.registeredComponents.page(page - 1, Constants.ENTRIES_PER_PAGE).let { (page, pages, content) ->
+			SparkleCache.registeredComponents.page(page - 1, SparkleData.systemConfig.entriesPerListPage).let { (page, pages, content) ->
 
 				text {
 
@@ -327,7 +327,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 
 			branch {
 
-				addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.registeredComponents.size.toDouble() / Constants.ENTRIES_PER_PAGE) })
+				addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.registeredComponents.size.toDouble() / SparkleData.systemConfig.entriesPerListPage) })
 				isNotRequired()
 
 				concludedExecution {

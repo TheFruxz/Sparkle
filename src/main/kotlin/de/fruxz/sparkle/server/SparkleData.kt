@@ -28,6 +28,7 @@ object SparkleData {
 	data class SparkleConfig(
 		val debugMode: Boolean = false,
 		val httpClientCaching: Boolean = false,
+		val entriesPerListPage: Int = 9,
 		val prefix: Map<String, String> = mapOf(
 			"prefix.general" to "<dark_gray>⏵ ",
 			"prefix.fail" to "<#FF5A00>✘ <dark_gray>⏵ ",

@@ -3,7 +3,6 @@ package de.fruxz.sparkle.server.component.app
 import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.limitTo
-import de.fruxz.sparkle.framework.Constants.ENTRIES_PER_PAGE
 import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
@@ -20,6 +19,7 @@ import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredIn
 import de.fruxz.sparkle.framework.visual.message.Transmission
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
 import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.sparkle.server.component.update.UpdateComponent
 import de.fruxz.sparkle.server.component.update.UpdateComponent.Companion.updateStates
 import de.fruxz.sparkle.server.component.update.UpdateManager
@@ -52,7 +52,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
         branch {
 
-            addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.registeredApps.size.toDouble() / ENTRIES_PER_PAGE) })
+            addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.registeredApps.size.toDouble() / SparkleData.systemConfig.entriesPerListPage) })
 
             concludedExecution {
                 val page = getInput(fromAsset = CompletionAsset.LONG).limitTo(Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()).toInt()
@@ -382,7 +382,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
         fun displayList(executor: InterchangeExecutor, page: Int) {
 
-            val paged = SparkleCache.registeredApps.page(page - 1, ENTRIES_PER_PAGE)
+            val paged = SparkleCache.registeredApps.page(page - 1, SparkleData.systemConfig.entriesPerListPage)
 
             buildComponent {
 
