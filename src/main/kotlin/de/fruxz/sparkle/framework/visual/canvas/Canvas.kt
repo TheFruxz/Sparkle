@@ -359,6 +359,6 @@ open class Canvas(
 
 	@MustBeDocumented
 	@RequiresOptIn(message = "This api is still in development and may not work like expected and may change in the future")
-	annotation class CanvasPrototypeAPI
+	annotation class ExperimentalCanvasApi
 
 }

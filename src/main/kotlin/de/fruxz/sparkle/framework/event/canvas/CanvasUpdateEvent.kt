@@ -1,6 +1,7 @@
 package de.fruxz.sparkle.framework.event.canvas
 
 import de.fruxz.sparkle.framework.visual.canvas.Canvas
+import de.fruxz.sparkle.framework.visual.canvas.Canvas.ExperimentalCanvasApi
 import net.kyori.adventure.key.Key
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
@@ -26,7 +27,9 @@ class CanvasUpdateEvent(
 	}
 
 	enum class UpdateReason {
-		PLUGIN, SCROLL, PAGE_TURN;
+		PLUGIN,
+		@ExperimentalCanvasApi SCROLL,
+		@ExperimentalCanvasApi PAGE_TURN;
 	}
 
 }

@@ -11,7 +11,7 @@ import de.fruxz.sparkle.framework.extension.visual.ui.skull
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
-import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasPrototypeAPI
+import de.fruxz.sparkle.framework.visual.canvas.Canvas.ExperimentalCanvasApi
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType
 import de.fruxz.sparkle.framework.visual.canvas.buildCanvas
 import de.fruxz.sparkle.framework.visual.color.ColorType
@@ -96,7 +96,7 @@ internal class PlaygroundInterchange : StructuredInterchange("playground", build
 
 		}
 
-		val canvasScrollable = @OptIn(CanvasPrototypeAPI::class)
+		val canvasScrollable = @OptIn(ExperimentalCanvasApi::class)
 		buildCanvas {
 			label("<i>Hello!")
 			pagination(PaginationType.scroll())

@@ -30,6 +30,4 @@ data class ComplexEffect(
 		effects += effect
 	}
 
-
-
 }
