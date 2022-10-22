@@ -1,6 +1,7 @@
 package de.fruxz.sparkle.server.component.update
 
 import de.fruxz.ascend.extension.empty
+import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.sparkle.framework.extension.apps
 import de.fruxz.sparkle.framework.extension.consoleSender
 import de.fruxz.sparkle.framework.extension.onlinePlayers
@@ -65,7 +66,17 @@ class UpdateService(component: UpdateComponent, override val vendor: App = spark
 
 			}
 
+			lastUpdateCheck = Calendar.now()
+
 		}
 
 	}
+
+	companion object {
+
+		var lastUpdateCheck: Calendar? = null
+			private set
+
+	}
+
 }

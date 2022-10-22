@@ -29,6 +29,7 @@ import de.fruxz.stacked.hover
 import de.fruxz.stacked.plus
 import de.fruxz.stacked.text
 import net.kyori.adventure.text.Component.newline
+import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration.BOLD
 
@@ -58,8 +59,38 @@ internal class ServiceInterchange : StructuredInterchange(
 						pageValue.content.forEach { serviceState ->
 							this + newline()
 							this + serviceState.service.isRunning.switchResult(
-								text(iconEnabled).dyeGreen(),
-								text(iconDisabled).dyeGray(),
+								text(iconEnabled) {
+									dyeGreen()
+									hover {
+										text {
+											this + text("Enabled: ").style(NamedTextColor.BLUE, BOLD)
+											this + newline()
+											this + text("This service is currently iterating and executing its code!").dyeGray()
+											newlines(2)
+											this + text {
+												this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
+												this + text("to disable this service").dyeGray()
+											}
+										}
+									}
+									clickEvent(ClickEvent.runCommand("/service @ ${serviceState.service.key} stop"))
+								},
+								text(iconDisabled) {
+									dyeGray()
+									hover {
+										text {
+											this + text("Disabled: ").style(NamedTextColor.BLUE, BOLD)
+											this + newline()
+											this + text("This service is currently not executing its code!").dyeGray()
+											newlines(2)
+											this + text {
+												this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
+												this + text("to enable this service").dyeGray()
+											}
+										}
+									}
+									clickEvent(ClickEvent.runCommand("/service @ ${serviceState.service.key} start"))
+								},
 							)
 							this + text(" | ").dyeDarkGray()
 							this + text {
@@ -147,21 +178,23 @@ internal class ServiceInterchange : StructuredInterchange(
 					concludedExecution {
 						val service = SparkleCache.serviceStates.values.first { it.service.identity == getInput(1) }
 
-						try {
+						if (!service.service.isRunning) {
 
 							service.service.requestStart()
 
 							text {
 								this + text("The service '").dyeGray()
-								this + text(service.service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
+								this + text(service.service.label).dyeYellow()
+									.hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 								this + text("' has been started!").dyeGray()
 							}.notification(APPLIED, executor).display()
 
-						} catch (exception: IllegalStateException) {
+						} else {
 
 							text {
 								this + text("The service '").dyeGray()
-								this + text(service.service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
+								this + text(service.service.label).dyeYellow()
+									.hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 								this + text("' is already online!").dyeGray()
 							}
 
@@ -180,21 +213,23 @@ internal class ServiceInterchange : StructuredInterchange(
 					concludedExecution {
 						val service = SparkleCache.serviceStates.values.first { it.service.identity == getInput(1) }
 
-						try {
+						if (service.service.isRunning) {
 
 							service.service.requestStop()
 
 							text {
 								this + text("The service '").dyeGray()
-								this + text(service.service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
+								this + text(service.service.label).dyeYellow()
+									.hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 								this + text("' has been stopped!").dyeGray()
 							}.notification(APPLIED, executor).display()
 
-						} catch (exception: IllegalStateException) {
+						} else {
 
 							text {
 								this + text("The service '").dyeGray()
-								this + text(service.service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
+								this + text(service.service.label).dyeYellow()
+									.hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 								this + text("' is already offline!").dyeGray()
 							}.notification(FAIL, executor).display()
 
@@ -214,10 +249,12 @@ internal class ServiceInterchange : StructuredInterchange(
 						val service = SparkleCache.serviceStates.values.first { it.service.identity == getInput(1) }
 
 						service.service.requestStop()
+						service.service.requestStart()
 
 						text {
 							this + text("The service '").dyeGray()
-							this + text(service.service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
+							this + text(service.service.label).dyeYellow()
+								.hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 							this + text("' has been restarted!").dyeGray()
 						}.notification(APPLIED, executor).display()
 
@@ -241,7 +278,8 @@ internal class ServiceInterchange : StructuredInterchange(
 
 							text {
 								this + text("The service '").dyeGray()
-								this + text(service.service.label).dyeYellow().hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
+								this + text(service.service.label).dyeYellow()
+									.hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 								this + text("' has been unregistered!").dyeGray()
 							}.notification(APPLIED, executor).display()
 

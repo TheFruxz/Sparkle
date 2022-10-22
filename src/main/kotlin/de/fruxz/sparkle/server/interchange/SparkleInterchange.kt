@@ -1,5 +1,6 @@
 package de.fruxz.sparkle.server.interchange
 
+import de.fruxz.sparkle.framework.extension.asPlayerOrNull
 import de.fruxz.sparkle.framework.extension.visual.message
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
@@ -14,6 +15,7 @@ import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration.BOLD
 import net.kyori.adventure.text.format.TextDecoration.ITALIC
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class SparkleInterchange : StructuredInterchange("sparkle", protectedAccess = false, aliases = setOf("framework"), structure = buildInterchangeStructure {
 
@@ -107,9 +109,10 @@ internal class SparkleInterchange : StructuredInterchange("sparkle", protectedAc
 
 		concludedExecution {
 
-			Component.text("PONG!")
-				.style(NamedTextColor.GOLD, ITALIC, BOLD)
-				.notification(GENERAL, executor).display()
+			text("PONG!") {
+				style(NamedTextColor.GOLD, ITALIC, BOLD)
+				clickEvent(ClickEvent.suggestCommand("Your Ping is ${executor.asPlayerOrNull?.ping?.milliseconds}"))
+			}.notification(GENERAL, executor).display()
 
 		}
 

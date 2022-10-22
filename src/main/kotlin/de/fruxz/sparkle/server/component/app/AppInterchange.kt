@@ -25,6 +25,7 @@ import de.fruxz.sparkle.server.component.update.UpdateComponent.Companion.update
 import de.fruxz.sparkle.server.component.update.UpdateManager
 import de.fruxz.sparkle.server.component.update.UpdateManager.UpdateResult
 import de.fruxz.sparkle.server.component.update.UpdateManager.UpdateResult.SUCCESSFUL
+import de.fruxz.sparkle.server.component.update.UpdateService
 import de.fruxz.stacked.buildComponent
 import de.fruxz.stacked.extension.*
 import de.fruxz.stacked.hover
@@ -393,6 +394,12 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                     }
                 }
                 this + text(":").dyeGray()
+
+                this + Component.newline() + text {
+                    this + text("The last update-check is ").dyeGray()
+                    this + text(UpdateService.lastUpdateCheck?.durationToNow()?.toString() ?: "never checked").dyeLightPurple()
+                    this + text(" ago.").dyeGray()
+                }
 
                 this + Component.newline() + text("⏻ Power; ⏹ API-Compatible; ⏏ Updates").dyeGray()
 
