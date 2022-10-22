@@ -15,8 +15,10 @@ object SparkleData {
 	private val systemConfigPath = SparklePath.appPath(sparkle) / "settings.json"
 
 	var systemConfig: SparkleConfig
-		get() = _systemConfig ?: systemConfigPath.fromJsonFileOrNull() ?: SparkleConfig().also {
-			systemConfig = it
+		get() = _systemConfig ?: systemConfigPath.fromJsonFileOrNull<SparkleConfig>()?.also {
+			systemConfig = it // Update saved file, if it is outdated
+		} ?: SparkleConfig().also {
+			systemConfig = it // Create new file, because it does not exist or is invalid
 		}
 		set(value) {
 			_systemConfig = value
