@@ -55,7 +55,6 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:2.1.2")
 
     implementation("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT") // PaperMC
-    compileOnly("me.clip:placeholderapi:2.11.2") // PlaceholderAPI
 
     // Shadow
 
