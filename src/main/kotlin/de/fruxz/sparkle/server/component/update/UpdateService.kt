@@ -40,26 +40,30 @@ class UpdateService(component: UpdateComponent, override val vendor: App = spark
 					} else
 						UpdateComponent.updateStates -= app
 
-					when (newState?.type) {
-						UP_TO_DATE -> text {
-							this + text("The app '").dyeGray()
-							this + text(app.key.asString()).dyeYellow()
-							this + text("' is now up to date again!").dyeGray()
-						}.notification(Level.GENERAL).display(alertReceivers)
+					if (!(oldState == null && newState?.type == UP_TO_DATE)) {
 
-						UPDATE_AVAILABLE -> text {
-							this + text("The app '").dyeGray()
-							this + text(app.key.asString()).dyeYellow()
-							this + text("' can now be updated!").dyeGray()
-						}.notification(Level.GENERAL).display(alertReceivers)
+						when (newState?.type) {
+							UP_TO_DATE -> text {
+								this + text("The app '").dyeGray()
+								this + text(app.key.asString()).dyeYellow()
+								this + text("' is now up to date again!").dyeGray()
+							}.notification(Level.GENERAL).display(alertReceivers)
 
-						FAILED -> text {
-							this + text("The app '").dyeGray()
-							this + text(app.key.asString()).dyeYellow()
-							this + text("' just failed to search for updates!").dyeGray()
-						}.notification(Level.GENERAL).display(alertReceivers)
+							UPDATE_AVAILABLE -> text {
+								this + text("The app '").dyeGray()
+								this + text(app.key.asString()).dyeYellow()
+								this + text("' can now be updated!").dyeGray()
+							}.notification(Level.GENERAL).display(alertReceivers)
 
-						null -> empty()
+							FAILED -> text {
+								this + text("The app '").dyeGray()
+								this + text(app.key.asString()).dyeYellow()
+								this + text("' just failed to search for updates!").dyeGray()
+							}.notification(Level.GENERAL).display(alertReceivers)
+
+							null -> empty()
+						}
+
 					}
 
 				}
