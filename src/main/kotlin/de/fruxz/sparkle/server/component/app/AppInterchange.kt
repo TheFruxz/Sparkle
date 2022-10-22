@@ -31,7 +31,6 @@ import de.fruxz.stacked.hover
 import de.fruxz.stacked.plus
 import de.fruxz.stacked.text
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.Component.newline
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
@@ -193,15 +192,15 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         this + text(targetApp.label).dyeGold()
                         this + text("'").dyeGray()
 
-                        this + newline()
+                        newline()
 
-                        this + newline() + text("Display-Name: ").dyeGray() + text(targetApp.label).dyeYellow()
-                        this + newline() + text("Identity: ").dyeGray() + text(targetApp.identity).dyeYellow()
-                        this + newline() + text("Active since: ").dyeGray() + text(targetApp.activeSince.toString()).dyeYellow()
-                        this + newline() + text("Components: ").dyeGray() + text("${SparkleCache.registeredComponents.filter { it.vendor.key == targetApp.key }.size} Components").dyeYellow()
-                        this + newline() + text("Interchanges: ").dyeGray() + text("${SparkleCache.registeredInterchanges.filter { it.vendor.key == targetApp.key }.size} Interchanges").dyeYellow()
-                        this + newline() + text("Services: ").dyeGray() + text("${SparkleCache.serviceStates.filter { it.value.vendor.key == targetApp.key }.size} Services").dyeYellow()
-                        this + newline() + text("SandBoxes: ").dyeGray() + text("${SparkleCache.registeredSandBoxes.filter { it.vendor.key == targetApp.key }.size} SandBoxes").dyeYellow()
+                        this + Component.newline() + text("Display-Name: ").dyeGray() + text(targetApp.label).dyeYellow()
+                        this + Component.newline() + text("Identity: ").dyeGray() + text(targetApp.identity).dyeYellow()
+                        this + Component.newline() + text("Active since: ").dyeGray() + text(targetApp.activeSince.toString()).dyeYellow()
+                        this + Component.newline() + text("Components: ").dyeGray() + text("${SparkleCache.registeredComponents.filter { it.vendor.key == targetApp.key }.size} Components").dyeYellow()
+                        this + Component.newline() + text("Interchanges: ").dyeGray() + text("${SparkleCache.registeredInterchanges.filter { it.vendor.key == targetApp.key }.size} Interchanges").dyeYellow()
+                        this + Component.newline() + text("Services: ").dyeGray() + text("${SparkleCache.serviceStates.filter { it.value.vendor.key == targetApp.key }.size} Services").dyeYellow()
+                        this + Component.newline() + text("SandBoxes: ").dyeGray() + text("${SparkleCache.registeredSandBoxes.filter { it.vendor.key == targetApp.key }.size} SandBoxes").dyeYellow()
 
                         newlines(2)
                     }.notification(Transmission.Level.GENERAL, executor).display()
@@ -395,22 +394,21 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 }
                 this + text(":").dyeGray()
 
-                this + newline() + text("⏻ Power; ⏹ API-Compatible; ⏏ Updates").dyeGray()
+                this + Component.newline() + text("⏻ Power; ⏹ API-Compatible; ⏏ Updates").dyeGray()
 
-                this + newline()
+                newline()
 
                 paged.content.forEach { app ->
-                    this + newline()
+                    newline()
                     this + text(if (app.isEnabled) "⏻" else "⭘") {
                         plus(if (app.isEnabled) NamedTextColor.GREEN else NamedTextColor.GRAY)
                         hover {
                             buildComponent {
                                 this + text("Power-Indicator: ").style(NamedTextColor.BLUE, BOLD)
-                                this + newline()
+                                newline()
                                 this + text("Indicates, if the plugin is currently enabled & running").dyeYellow()
-                                this + newline() + newline()
-                                this + text("CLICK").style(NamedTextColor.GREEN, BOLD) +
-                                        text(" to toggle the state of the app").dyeGray()
+                                newlines(2)
+                                this + text("CLICK").style(NamedTextColor.GREEN, BOLD) + text(" to toggle the state of the app").dyeGray()
                             }
                         }
                         clickEvent(ClickEvent.runCommand(
@@ -422,12 +420,13 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         hover {
                             buildComponent {
                                 this + text("Compatibility-Indicator: ").style(NamedTextColor.BLUE, BOLD)
-                                this + newline()
+                                newline()
                                 this + text("Indicates, if the plugins target version is compatible with the current server version").dyeYellow()
-                                this + newline()
-                                this + newline() + text("Apps target version: ").dyeGray()
+                                newlines(2)
+                                this + text("Apps target version: ").dyeGray()
                                 this + text(app.description.apiVersion ?: "None").dyeGreen()
-                                this + newline() + text("Server version: ").dyeGray()
+                                newline()
+                                this + text("Server version: ").dyeGray()
                                 this + text(Bukkit.getMinecraftVersion()).dyeGreen()
 
                             }
@@ -550,17 +549,18 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                 this + text("Label & Identity: ") {
                                     plus(Style.style(NamedTextColor.BLUE, BOLD))
                                 }
-                                this + newline()
+                                newline()
                                 this + text("The label is used to display the app in lists and information, the identity is used to identify the app in the system") {
                                     plus(NamedTextColor.YELLOW)
                                 }
-                                this + newline()
-                                this + newline() + text("Label: ") {
+                                newlines(2)
+                                this + text("Label: ") {
                                     plus(NamedTextColor.GRAY)
                                 } + text(app.label) {
                                     plus(NamedTextColor.GREEN)
                                 }
-                                this + newline() + text("Identity: ") {
+                                newline()
+                                this + text("Identity: ") {
                                     plus(NamedTextColor.GRAY)
                                 } + text(app.key().asString()) {
                                     plus(NamedTextColor.GREEN)
