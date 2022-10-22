@@ -97,13 +97,14 @@ object SparkleCache : AppCache {
 
 		if (dropDepth.isDeeperThanOrEquals(CLEAN)) {
 			debugLog("Cache clear 'CLEAN' reached")
-
+			updateStates = emptyMap()
 		}
 
 		if (dropDepth.isDeeperThanOrEquals(CLEAR)) {
 			debugLog("Cache clear 'CLEAR' reached")
 			itemActions = emptySet()
 			canvasSessions = emptyMap()
+			updateProcesses = emptyMap()
 		}
 
 		if (dropDepth.isDeeperThanOrEquals(KILL)) {
