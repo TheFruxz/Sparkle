@@ -65,7 +65,7 @@ class SoundMelody(
 		if (delayPerBeat.isNegative()) throw IllegalArgumentException("delayPerBeat cannot be negative")
 
 		repeat(1 + repetitions) {
-			_structure.toList().forEach { beat ->
+			_structure.forEach { beat ->
 
 				beat.forEach { soundData ->
 					soundData.process()
