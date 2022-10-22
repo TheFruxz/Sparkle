@@ -335,10 +335,7 @@ abstract class App(
 			}
 
 		} else
-			mainLog(
-				Level.WARNING,
-				"skipped unregistering '${eventListener.listenerIdentity}' listener, app disabled or vendor unreachable!"
-			)
+			mainLog.fine("skipped unregistering '${eventListener.listenerIdentity}' listener, app disabled or vendor unreachable!")
 	}
 
 	fun add(component: Component) {
@@ -459,10 +456,7 @@ abstract class App(
 				if (component.isVendorCurrentlySet) {
 					SparkleCache.registeredComponents -= component
 				} else
-					mainLog(
-						Level.WARNING,
-						"skipped unregistering '${component.identity}' component, app disabled or vendor unreachable!"
-					)
+					mainLog.fine("skipped unregistering '${component.identity}' component, app disabled or vendor unreachable!")
 
 			} else
 				throw NoSuchElementException("The component '$componentIdentity' is already not registered!")
