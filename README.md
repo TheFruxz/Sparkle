@@ -4,6 +4,10 @@ description: The Sparkle welcomes you to a new journey!
 
 # 👋 Welcome to Sparkle!
 
+{% hint style="danger" %}
+This was last updated to Sparkle 1.0.0-PRE-18, the current version is 1.0.0-PRE-19. The changes affect only a small part of this wiki, but it will be updated soon!
+{% endhint %}
+
 Welcome to Sparkle! This is the Wiki for this Framework, here you can find helpful information and details about the Framework, its APIs, and its Systems, so you don't have to worry about, reading the code, to get your questions answered.
 
 ## Apps & System
