@@ -3,6 +3,7 @@ package de.fruxz.sparkle.server.component.app
 import de.fruxz.ascend.extension.container.page
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.limitTo
+import de.fruxz.sparkle.framework.extension.componentOrNull
 import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
@@ -37,6 +38,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration.BOLD
 import org.bukkit.Bukkit
+import de.fruxz.sparkle.framework.infrastructure.component.Component as SparkleComponent
 
 internal class AppInterchange : StructuredInterchange("app", buildInterchangeStructure {
 
@@ -395,10 +397,12 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 }
                 this + text(":").dyeGray()
 
-                this + Component.newline() + text {
-                    this + text("The last update-check is ").dyeGray()
-                    this + text(UpdateService.lastUpdateCheck?.durationToNow()?.toString() ?: "never checked").dyeLightPurple()
-                    this + text(" ago.").dyeGray()
+                if (componentOrNull(UpdateComponent::class)?.updateConfiguration?.updateUpdateNotifications == true && SparkleComponent.isEnabled(UpdateComponent::class)) {
+                    this + Component.newline() + text {
+                        this + text("The last update-check is ").dyeGray()
+                        this + text(UpdateService.lastUpdateCheck?.durationToNow()?.toString() ?: "never checked").dyeLightPurple()
+                        this + text(" ago.").dyeGray()
+                    }
                 }
 
                 this + Component.newline() + text("⏻ Power; ⏹ API-Compatible; ⏏ Updates").dyeGray()
