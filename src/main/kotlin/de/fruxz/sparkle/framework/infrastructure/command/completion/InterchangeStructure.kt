@@ -1,6 +1,7 @@
 package de.fruxz.sparkle.framework.infrastructure.command.completion
 
 import de.fruxz.ascend.extension.forceCast
+import de.fruxz.ascend.extension.logging.getLogger
 import de.fruxz.ascend.extension.math.maxTo
 import de.fruxz.ascend.tool.smart.positioning.Address
 import de.fruxz.ascend.tree.TreeBranch
@@ -46,7 +47,9 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	branchType = TreeBranchType.OBJECT,
 	subBranches = subBranches,
 	content = content,
-) {
+){
+
+	private val log = getLogger("InterchangeStructure")
 
 	var configuration = configuration
 		private set
@@ -101,6 +104,8 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 		content(content = completionComponents.toList())
 
 	fun execution(process: (suspend InterchangeAccess<EXECUTOR>.() -> InterchangeResult)?) {
+		if (onExecution != null) log.warning("Overwriting existing execution process!")
+
 		onExecution = process
 	}
 
@@ -118,6 +123,8 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	 */
 	@JvmName("executionWithoutReturn")
 	fun concludedExecution(result: InterchangeResult = SUCCESS, process: suspend InterchangeAccess<EXECUTOR>.() -> Unit) {
+		if (onExecution != null) log.warning("Overwriting existing execution process!")
+
 		onExecution = {
 			process()
 			result
