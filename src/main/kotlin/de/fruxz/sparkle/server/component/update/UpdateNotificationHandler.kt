@@ -1,5 +1,6 @@
 package de.fruxz.sparkle.server.component.update
 
+import de.fruxz.sparkle.framework.extension.component
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater.UpdateState.UPDATE_AVAILABLE
@@ -18,12 +19,12 @@ import net.kyori.adventure.text.format.TextDecoration.BOLD
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerJoinEvent
 
-class UpdateNotificationHandler(private val updateComponent: UpdateComponent) : EventListener() {
+class UpdateNotificationHandler(private val component: UpdateComponent = component(UpdateComponent::class)) : EventListener() {
 
 	@EventHandler
 	fun onJoin(event: PlayerJoinEvent) = with(event) {
 
-		if (updateComponent.updateConfiguration.updateJoinNotifications && player.isOp) {
+		if (component.updateConfiguration.updateJoinNotifications && player.isOp) {
 			val availableUpdates = UpdateComponent.updateStates.filter { it.value.type == UPDATE_AVAILABLE }
 
 			if (availableUpdates.isNotEmpty()) {

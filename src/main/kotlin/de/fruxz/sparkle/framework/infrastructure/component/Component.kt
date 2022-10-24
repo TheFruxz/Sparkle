@@ -1,5 +1,6 @@
 package de.fruxz.sparkle.framework.infrastructure.component
 
+import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.ascend.extension.tryToResult
 import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.sparkle.framework.attachment.Logging
@@ -173,8 +174,13 @@ abstract class Component(
 	companion object {
 
 		@JvmStatic
-		fun getInstance(componentClass: KClass<out Component>): Component {
-			return SparkleCache.registeredComponents.first { it::class == componentClass }
+		inline fun <reified T : Component> getInstance(componentClass: KClass<T>): T? {
+			return SparkleCache.registeredComponents.firstOrNull { it::class == componentClass }?.takeIfInstance<T>()
+		}
+
+		@JvmStatic
+		inline fun <reified T : Component> isEnabled(componentClass: KClass<T>): Boolean {
+			return getInstance(componentClass)?.identityObject?.let {SparkleCache.runningComponents.containsKey(it)} == true
 		}
 
 	}

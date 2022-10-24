@@ -16,8 +16,8 @@ class UpdateComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 	override suspend fun component() {
 
-		service(UpdateService(this))
-		listener(UpdateNotificationHandler(this))
+		service(UpdateService())
+		listener(UpdateNotificationHandler())
 
 	}
 
