@@ -2,6 +2,7 @@ package de.fruxz.sparkle.framework.infrastructure.app
 
 import de.fruxz.ascend.extension.forceCast
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
+import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure
 import de.fruxz.sparkle.server.SparkleCache
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +33,12 @@ abstract class AppCompanion<T : App> : KeyedIdentifiable<T> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val coroutineScope = CoroutineScope(SupervisorJob())
+	val coroutineScope: CoroutineScope by lazy {
+		if (predictedIdentity == SparkleApp.predictedIdentity) {
+			CoroutineScope(SupervisorJob())
+		} else
+			CoroutineScope(SupervisorJob() + SparkleApp.coroutineScope.coroutineContext)
+	}
 
 	/**
 	 * This value represents the identity of this [App].
