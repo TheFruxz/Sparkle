@@ -17,7 +17,6 @@ import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.destroySandBox
 import de.fruxz.sparkle.framework.extension.internalCommandMap
 import de.fruxz.sparkle.framework.extension.internalSyncCommands
-import de.fruxz.sparkle.framework.extension.mainLog
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.Hoster
 import de.fruxz.sparkle.framework.infrastructure.app.RunStatus.*
@@ -53,7 +52,6 @@ import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
-import java.util.logging.Level
 import java.util.logging.Logger
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
@@ -202,7 +200,7 @@ abstract class App(
 		@OptIn(ExperimentalTime::class)
 		measureTime {
 
-			mainLog(Level.INFO, "starting register of interchange '$failFreeLabel'!")
+			log.info("starting register of interchange '$failFreeLabel'!")
 
 			fun failed() {
 				val label = interchange.label
@@ -213,7 +211,7 @@ abstract class App(
 				}
 				val command = getCommand(interchange.label)
 
-				mainLog(Level.WARNING, "FAILED! try to register fail-interchange '$label' instead...")
+				log.warning("FAILED! try to register fail-interchange '$label' instead...")
 
 				if (command != null) {
 					val replace = IssuedInterchange(label, aliases)
@@ -223,7 +221,7 @@ abstract class App(
 					command.usage = replace.completion.buildSyntax(null)
 
 				} else
-					mainLog(Level.WARNING, "FAILED! failed to register fail-interchange for '$label'")
+					log.warning("FAILED! failed to register fail-interchange for '$label'")
 
 			}
 
@@ -264,7 +262,7 @@ abstract class App(
 
 						SparkleCache.registeredInterchanges += interchange
 
-						mainLog(Level.INFO, "register of interchange '$label' succeed!")
+						log.info("register of interchange '$label' succeed!")
 
 					}
 
@@ -274,7 +272,7 @@ abstract class App(
 				}
 
 			} else
-				mainLog(Level.WARNING, "skipped registering '$failFreeLabel' interchange, app disabled!")
+				log.warning("skipped registering '$failFreeLabel' interchange, app disabled!")
 
 		}.also { time ->
 			debugLog("registered '$failFreeLabel' interchange in ${time}!")
@@ -291,18 +289,18 @@ abstract class App(
 
 				pluginManager.registerEvents(eventListener as Listener, this)
 				SparkleCache.registeredListeners += eventListener
-				mainLog(Level.INFO, "registered '${eventListener.listenerIdentity}' listener!")
+				log.info("registered '${eventListener.listenerIdentity}' listener!")
 
 			} catch (e: Exception) {
 
-				mainLog(Level.WARNING, "Error during adding handler")
+				log.warning("Error during adding handler")
 
 				tryToPrint { catchException(e) }
 
 			}
 
 		} else
-			mainLog(Level.WARNING, "skipped registering '${eventListener.listenerIdentity}' listener, app disabled!")
+			log.warning("skipped registering '${eventListener.listenerIdentity}' listener, app disabled!")
 	}
 
 	fun register(service: Service) = service.requestRegister()
@@ -325,17 +323,17 @@ abstract class App(
 
 				HandlerList.unregisterAll(eventListener)
 				SparkleCache.registeredListeners = SparkleCache.registeredListeners.filter { it.listenerIdentity != eventListener.listenerIdentity }.toSet()
-				mainLog(Level.INFO, "unregistered '${eventListener.listenerIdentity}' listener!")
+				log.info("unregistered '${eventListener.listenerIdentity}' listener!")
 
 			} catch (e: Exception) {
 
-				mainLog(Level.WARNING, "Error during removing handler")
+				log.warning("Error during removing handler")
 				catchException(e)
 
 			}
 
 		} else
-			mainLog.fine("skipped unregistering '${eventListener.listenerIdentity}' listener, app disabled or vendor unreachable!")
+			log.fine("skipped unregistering '${eventListener.listenerIdentity}' listener, app disabled or vendor unreachable!")
 	}
 
 	fun add(component: Component) {
@@ -357,11 +355,11 @@ abstract class App(
 
 					component.register()
 
-					mainLog(Level.INFO, "registered '${component.identity}' component!")
+					log.info("registered '${component.identity}' component!")
 
 					if (component.isAutoStarting) {
 
-						mainLog(Level.INFO, "### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
+						log.info("### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
 
 						start(component.identityObject)
 
@@ -391,7 +389,7 @@ abstract class App(
 
 						component.start()
 
-						mainLog(Level.INFO, "started '${componentIdentity.identity}' component!")
+						log.info("started '${componentIdentity.identity}' component!")
 
 					}
 
@@ -399,7 +397,7 @@ abstract class App(
 					throw IllegalStateException("The component '$componentIdentity' is already running!")
 
 			} else
-				mainLog.warning("Component '${componentIdentity.identity}' is blocked at components.json!")
+				log.warning("Component '${componentIdentity.identity}' is blocked at components.json!")
 
 		} else
 			throw NoSuchElementException("The component '$componentIdentity' is currently not registered! ADD IT!")
@@ -426,7 +424,7 @@ abstract class App(
 							if (unregisterComponent)
 								unregister(componentIdentity)
 
-							mainLog(Level.INFO, "stopped '${component.identity}' component!")
+							log.info("stopped '${component.identity}' component!")
 
 						}
 
@@ -437,10 +435,7 @@ abstract class App(
 					throw IllegalActionException("The component '$componentIdentity' can't be stopped, due to its behavior '${component.behaviour}'!")
 
 			} else
-				mainLog(
-					Level.WARNING,
-					"skipped stopping '${component.identity}' component, app disabled or vendor unreachable!"
-				)
+				log.warning("skipped stopping '${component.identity}' component, app disabled or vendor unreachable!")
 
 		} else
 			throw NoSuchElementException("The component '$componentIdentity' is currently not registered! ADD IT!")
@@ -456,7 +451,7 @@ abstract class App(
 				if (component.isVendorCurrentlySet) {
 					SparkleCache.registeredComponents -= component
 				} else
-					mainLog.fine("skipped unregistering '${component.identity}' component, app disabled or vendor unreachable!")
+					log.fine("skipped unregistering '${component.identity}' component, app disabled or vendor unreachable!")
 
 			} else
 				throw NoSuchElementException("The component '$componentIdentity' is already not registered!")
@@ -466,7 +461,7 @@ abstract class App(
 
 	fun register(serializable: Class<out ConfigurationSerializable>) = tryToCatch {
 		ConfigurationSerialization.registerClass(serializable)
-		mainLog(Level.INFO, "successfully registered '${serializable.simpleName}' as serializable!")
+		log.info("successfully registered '${serializable.simpleName}' as serializable!")
 	}
 
 	fun register(serializable: KClass<out ConfigurationSerializable>) =
@@ -659,7 +654,7 @@ abstract class App(
 					tabCompleter = null
 				}
 
-				mainLog(Level.INFO, "Command '$it' disabled")
+				log.info("Command '$it' disabled")
 			}
 
 			runStatus = OFFLINE
