@@ -30,6 +30,7 @@ import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.stacked.extension.subKey
 import net.kyori.adventure.key.Key
 import org.bukkit.Bukkit
+import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
@@ -140,6 +141,15 @@ data class CompletionAsset<T>(
 			tryOrNull { offlinePlayer(UUID.fromString(input)).name } != null
 		}.transformer {
 			tryOrNull { offlinePlayer(UUID.fromString(input)) }
+		}
+
+		@JvmStatic
+		val GAME_MODE = CompletionAsset<GameMode>(sparkle.subKey("gamemode"), false) {
+			GameMode.values().withMap { name }
+		}.doCheck {
+			GameMode.values().any { it.name.equals(input, ignoreCase) }
+		}.transformer {
+			GameMode.values().firstOrNull { it.name.equals(input, ignoreCase) }
 		}
 
 		@JvmStatic
