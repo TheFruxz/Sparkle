@@ -23,7 +23,7 @@ abstract class AppCompanion<T : App> : KeyedIdentifiable<T> {
 	 */
 	val instance: T
 		get() = SparkleCache.registeredApps.firstOrNull { it.identityKey == identityKey }?.forceCast<T>()
-			?: error("This app is not registered inside the 'registeredApps' instance! Maybe Sparkle is shadowed inside the plugin using Sparkle? This would lead to this error!")
+			?: error("This app is not registered inside the 'registeredApps' instance! Maybe Sparkle is shadowed inside the plugin using Sparkle? This would lead to such an error!")
 
 	/**
 	 * This value represents the coroutine scope of the [App], that
