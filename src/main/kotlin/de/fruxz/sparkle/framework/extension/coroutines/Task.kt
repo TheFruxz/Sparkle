@@ -32,7 +32,7 @@ import kotlin.time.Duration
 suspend fun <T> asSync(
 	delay: Duration = Duration.ZERO,
 	vendor: App = sparkle,
-	context: CoroutineContext = sparkle.pluginCoroutineDispatcher(false),
+	context: CoroutineContext = vendor.syncDispatcher,
 	process: suspend (CoroutineScope) -> T
 ): T {
 	val output = CompletableFuture<T>()
@@ -54,7 +54,7 @@ suspend fun <T> asSync(
 fun <T> asSyncDeferred(
 	delay: Duration = Duration.ZERO,
 	vendor: App = sparkle,
-	context: CoroutineContext = sparkle.pluginCoroutineDispatcher(false),
+	context: CoroutineContext = vendor.syncDispatcher,
 	process: suspend (CoroutineScope) -> T,
 ): Deferred<T> = vendor.coroutineScope.async(context = context) {
 	if (delay.isPositive()) delay(delay)
@@ -78,7 +78,7 @@ fun doSync(
 	delay: Duration = Duration.ZERO,
 	interval: Duration = Duration.ZERO,
 	vendor: App = sparkle,
-	context: CoroutineContext = sparkle.pluginCoroutineDispatcher(false),
+	context: CoroutineContext = vendor.syncDispatcher,
 	process: suspend (CoroutineScope) -> Unit
 ) = launch(isAsync = false, vendor = vendor, context = context) { scope ->
 		if (delay.isPositive()) delay(delay)
@@ -112,10 +112,11 @@ fun doSync(
  */
 fun <T> asAsync(
 	delay: Duration = Duration.ZERO,
-	context: CoroutineContext = sparkle.pluginCoroutineDispatcher(true),
+	vendor: App = sparkle,
+	context: CoroutineContext = vendor.asyncDispatcher,
 	process: suspend (CoroutineScope) -> T
 ): Deferred<T> =
-	sparkle.coroutineScope.async(context = context) {
+	vendor.coroutineScope.async(context = context) {
 		if (delay.isPositive()) delay(delay)
 		return@async process(sparkle.coroutineScope)
 	}
@@ -133,7 +134,7 @@ fun doAsync(
 	delay: Duration = Duration.ZERO,
 	interval: Duration = Duration.ZERO,
 	vendor: App = sparkle,
-	context: CoroutineContext = sparkle.pluginCoroutineDispatcher(true),
+	context: CoroutineContext = vendor.asyncDispatcher,
 	process: suspend (CoroutineScope) -> Unit
 ) = launch(isAsync = true, context = context, vendor = vendor) { scope ->
 	if (delay.isPositive()) delay(delay)
@@ -157,7 +158,7 @@ fun doAsync(
 fun launch(
 	vendor: App = sparkle,
 	isAsync: Boolean = true,
-	context: CoroutineContext = sparkle.pluginCoroutineDispatcher(isAsync),
+	context: CoroutineContext = vendor.asyncDispatcher,
 	process: suspend (CoroutineScope) -> Unit,
 ) = vendor.coroutineScope.launch(context = context, block = process)
 

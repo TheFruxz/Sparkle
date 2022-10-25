@@ -485,6 +485,9 @@ abstract class App(
 	val coroutineScope: CoroutineScope
 		get() = companion.coroutineScope
 
+	val syncDispatcher by lazy { pluginCoroutineDispatcher(false) }
+	val asyncDispatcher by lazy { pluginCoroutineDispatcher(true) }
+
 	/**
 	 * This [lazy] value represents a [HttpClient] via Ktor.
 	 * It's not occupied at default, so you can use it freely!
