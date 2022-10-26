@@ -10,6 +10,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.PlayerInventory
 
 fun buildInventory(size: Int, process: Inventory.() -> Unit) = Bukkit.createInventory(null, size).apply(process)
 
@@ -59,3 +60,11 @@ val Inventory.center: Int get() = (size / 2) - 1
  */
 val InventoryClickEvent.affectedItem: ItemStack?
 	get() = currentItem ?: cursor
+
+var PlayerInventory.mainHand: ItemLike
+	get() = itemInMainHand.itemLike
+	set(value) = setItemInMainHand(value.asItemStack())
+
+var PlayerInventory.offHand: ItemLike
+	get() = itemInOffHand.itemLike
+	set(value) = setItemInOffHand(value.asItemStack())
