@@ -1,6 +1,7 @@
 package de.fruxz.sparkle.framework.extension.coroutines
 
 import de.fruxz.ascend.extension.dump
+import de.fruxz.ascend.extension.switchResult
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import kotlinx.coroutines.CoroutineScope
@@ -158,7 +159,7 @@ fun doAsync(
 fun launch(
 	vendor: App = sparkle,
 	isAsync: Boolean = true,
-	context: CoroutineContext = vendor.asyncDispatcher,
+	context: CoroutineContext = isAsync.switchResult(vendor.asyncDispatcher, vendor.syncDispatcher),
 	process: suspend (CoroutineScope) -> Unit,
 ) = vendor.coroutineScope.launch(context = context, block = process)
 
