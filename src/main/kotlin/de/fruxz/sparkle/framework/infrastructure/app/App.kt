@@ -351,7 +351,7 @@ abstract class App(
 
 				SparkleCache.registeredComponents += component
 
-				coroutineScope.launch(context = component.vendor.pluginCoroutineDispatcher(true)) {
+				coroutineScope.launch(context = component.vendor.asyncDispatcher) {
 
 					component.register()
 
@@ -385,7 +385,7 @@ abstract class App(
 
 					SparkleCache.runningComponents += componentIdentity.change<Component>() to Calendar.now()
 
-					coroutineScope.launch(context = component.vendor.pluginCoroutineDispatcher(true)) {
+					coroutineScope.launch(context = component.vendor.asyncDispatcher) {
 
 						component.start()
 
@@ -417,7 +417,7 @@ abstract class App(
 
 						SparkleCache.runningComponents -= componentIdentity
 
-						coroutineScope.launch(context = component.vendor.pluginCoroutineDispatcher(true)) {
+						coroutineScope.launch(context = component.vendor.asyncDispatcher) {
 
 							component.stop()
 

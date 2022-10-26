@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.framework.infrastructure.service
 
 import de.fruxz.ascend.extension.container.firstOrNull
+import de.fruxz.ascend.extension.switchResult
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
 import de.fruxz.sparkle.framework.infrastructure.Hoster
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceState
@@ -51,7 +51,7 @@ interface Service : Hoster<Unit, Unit, Service> {
 		}
 
 	val coroutineContext: CoroutineContext
-		get() = vendor.pluginCoroutineDispatcher(isAsync = serviceTimes.isAsync)
+		get() = serviceTimes.isAsync.switchResult(vendor.asyncDispatcher, vendor.syncDispatcher)
 
 	val serviceLogger: Logger
 		get() = App.createLog(vendor.key.value(), key.value())

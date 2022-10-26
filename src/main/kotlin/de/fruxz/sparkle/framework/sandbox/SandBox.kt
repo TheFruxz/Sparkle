@@ -3,7 +3,6 @@ package de.fruxz.sparkle.framework.sandbox
 import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.sparkle.framework.attachment.Logging
-import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
@@ -31,7 +30,7 @@ data class SandBox(
     override val sectionLabel by lazy { identity }
 
     fun execute(executor: InterchangeExecutor, parameters: List<String> = emptyList()) {
-        SparkleApp.instance.coroutineScope.launch(context = vendor.pluginCoroutineDispatcher(true)) {
+        SparkleApp.instance.coroutineScope.launch(context = vendor.asyncDispatcher) {
 
             try {
                 sectionLog.log(Level.INFO, "Executor '${executor.name}' is starting SandBox '$identity'!")

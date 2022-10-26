@@ -6,11 +6,9 @@ import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.attachment.VendorOnDemand
 import de.fruxz.sparkle.framework.extension.asPlayer
 import de.fruxz.sparkle.framework.extension.asPlayerOrNull
-import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.interchange.Parameters
-import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.time.RunningCooldown
 import de.fruxz.sparkle.framework.extension.time.getCooldown
 import de.fruxz.sparkle.framework.extension.time.hasCooldown
@@ -98,10 +96,6 @@ abstract class Interchange(
 	 */
 	final override lateinit var vendor: App
 		private set
-
-	val executionContext: CoroutineContext by lazy {
-		sparkle.pluginCoroutineDispatcher(true)
-	}
 
 	override val identityKey by lazy { vendor.subKey(label, CONTINUE) }
 
@@ -267,7 +261,7 @@ abstract class Interchange(
 
 	override fun onCommand(sender: InterchangeExecutor, command: Command, label: String, args: Parameters): Boolean {
 
-		vendor.coroutineScope.launch(context = forcedExecutionContext ?: executionContext) {
+		vendor.coroutineScope.launch(context = forcedExecutionContext ?: vendor.asyncDispatcher) {
 
 			val parameters = args.toList()
 			val executionProcess = this@Interchange::execution
