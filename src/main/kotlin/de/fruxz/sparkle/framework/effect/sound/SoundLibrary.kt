@@ -3,6 +3,7 @@ package de.fruxz.sparkle.framework.effect.sound
 import de.fruxz.sparkle.framework.extension.effect.beat
 import de.fruxz.sparkle.framework.extension.effect.buildMelody
 import de.fruxz.sparkle.framework.extension.effect.sound
+import de.fruxz.sparkle.framework.extension.effect.soundOf
 import de.fruxz.sparkle.framework.extension.time.minecraftTicks
 import org.bukkit.Location
 import org.bukkit.Sound
@@ -122,6 +123,14 @@ enum class SoundLibrary(val sound: SoundEffect) : SoundEffect {
 		beat(Sound.BLOCK_LEVER_CLICK, pitch = .6)
 		beat(Sound.BLOCK_LEVER_CLICK, pitch = .8)
 		beat(Sound.BLOCK_LEVER_CLICK, pitch = 1)
+	}),
+
+	ITEM_RECEIVE(buildMelody {
+		beat {
+			sound(soundOf(Sound.ENTITY_ITEM_PICKUP, pitch = .8, volume = .6))
+			sound(soundOf(Sound.ITEM_ARMOR_EQUIP_CHAIN, pitch = 1, volume = 1))
+			sound(soundOf(Sound.BLOCK_WOODEN_DOOR_OPEN, pitch = 2, volume = .6))
+		}
 	});
 
 	override fun play(vararg locations: Location?): Unit =
