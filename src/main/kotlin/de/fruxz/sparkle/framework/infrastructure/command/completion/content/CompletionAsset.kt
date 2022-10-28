@@ -40,7 +40,12 @@ import org.bukkit.block.structure.StructureRotation
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.structure.Structure
+import java.nio.file.Path
 import java.util.*
+import kotlin.io.path.ExperimentalPathApi
+import kotlin.io.path.pathString
+import kotlin.io.path.relativeToOrSelf
+import kotlin.io.path.walk
 
 data class CompletionAsset<T>(
 	override val identityKey: Key,
@@ -385,6 +390,17 @@ data class CompletionAsset<T>(
 			supportedInputType = listOf(InterchangeStructureInputRestriction.LONG),
 			generator = {
 				(1..pages().toLong()).mapToString()
+			},
+		)
+
+		@JvmStatic
+		fun files(path: Path, filter: (Path) -> Boolean = { true }, output: (String) -> String = { it }) = CompletionAsset<Path>(
+			identityKey = sparkle.subKey("file"),
+			refreshing = true,
+			supportedInputType = listOf(InterchangeStructureInputRestriction.STRING),
+			generator = {
+				@OptIn(ExperimentalPathApi::class)
+				path.walk().filter(filter).map { output(it.relativeToOrSelf(path).pathString) }.toList()
 			},
 		)
 
