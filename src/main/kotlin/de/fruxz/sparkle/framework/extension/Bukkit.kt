@@ -19,6 +19,7 @@ import org.bukkit.World
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
+import org.bukkit.structure.StructureManager
 import java.util.*
 
 /**
@@ -64,6 +65,14 @@ val offlinePlayers: Set<OfflinePlayer>
  */
 val everyone: Set<InterchangeExecutor>
 	get() = (onlinePlayers + consoleSender)
+
+/**
+ * This computational value returns the current [Bukkit.getStructureManager].
+ * @author Fruxz
+ * @since 1.0
+ */
+val structureManager: StructureManager
+	get() = Bukkit.getStructureManager()
 
 /**
  * This function searches for an online-[Player], which
