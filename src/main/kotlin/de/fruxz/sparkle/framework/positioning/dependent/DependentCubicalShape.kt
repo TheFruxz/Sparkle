@@ -3,15 +3,18 @@ package de.fruxz.sparkle.framework.positioning.dependent
 import de.fruxz.ascend.extension.math.floor
 import de.fruxz.ascend.extension.math.floorToInt
 import de.fruxz.ascend.tool.smart.composition.Producible
+import de.fruxz.sparkle.framework.extension.structureManager
 import de.fruxz.sparkle.framework.extension.world.toSimpleLocation
 import de.fruxz.sparkle.framework.extension.world.velocityTo
 import de.fruxz.sparkle.framework.positioning.relative.CubicalShape
 import de.fruxz.sparkle.framework.positioning.relative.Shape
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import kotlinx.serialization.Serializable
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.structure.Structure
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import kotlin.math.abs
@@ -366,6 +369,12 @@ data class DependentCubicalShape(
 		first = SimpleLocation(first.world, minX, minY, minZ),
 		second = SimpleLocation(second.world, maxX, maxY, maxZ),
 	)
+
+	fun structure(includeEntities: Boolean = false): Structure = with(sorted()) {
+		structureManager.createStructure().apply {
+			fill(firstLocation, secondLocation, includeEntities)
+		}
+	}
 
 	/**
 	 * This function creates a [BoundingBox] from the provided
