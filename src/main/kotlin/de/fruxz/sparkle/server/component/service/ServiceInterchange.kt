@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.server.component.service
 
-import de.fruxz.ascend.extension.container.page
+import de.fruxz.ascend.extension.container.paged
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.switchResult
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
@@ -47,7 +47,7 @@ internal class ServiceInterchange : StructuredInterchange(
 			ignoreCase()
 
 			fun displayServices(executor: InterchangeExecutor, page: Int) {
-				val pageValue = SparkleCache.serviceStates.values.page(page, SparkleData.systemConfig.entriesPerListPage)
+				val pageValue = SparkleCache.serviceStates.values.paged(page, SparkleData.systemConfig.entriesPerListPage)
 
 				if (pageValue.content.isNotEmpty()) {
 

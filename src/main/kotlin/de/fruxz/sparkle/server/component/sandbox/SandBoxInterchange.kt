@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.server.component.sandbox
 
-import de.fruxz.ascend.extension.container.page
+import de.fruxz.ascend.extension.container.paged
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.sparkle.framework.extension.allSandBoxes
@@ -104,7 +104,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 			ignoreCase()
 
 			fun displaySandBoxes(executor: InterchangeExecutor, page: Int) {
-				val pageValue = allSandBoxes.page(page, SparkleData.systemConfig.entriesPerListPage)
+				val pageValue = allSandBoxes.paged(page, SparkleData.systemConfig.entriesPerListPage)
 
 				if (pageValue.content.isNotEmpty()) {
 

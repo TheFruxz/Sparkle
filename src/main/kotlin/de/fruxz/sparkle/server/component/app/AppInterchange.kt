@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.server.component.app
 
-import de.fruxz.ascend.extension.container.page
+import de.fruxz.ascend.extension.container.paged
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.limitTo
 import de.fruxz.sparkle.framework.extension.componentOrNull
@@ -384,7 +384,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
         fun displayList(executor: InterchangeExecutor, page: Int) {
 
-            val paged = SparkleCache.registeredApps.page(page - 1, SparkleData.systemConfig.entriesPerListPage)
+            val paged = SparkleCache.registeredApps.paged(page - 1, SparkleData.systemConfig.entriesPerListPage)
 
             buildComponent {
 

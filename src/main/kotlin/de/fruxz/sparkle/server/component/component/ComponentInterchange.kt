@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.server.component.component
 
-import de.fruxz.ascend.extension.container.page
+import de.fruxz.ascend.extension.container.paged
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
@@ -43,7 +43,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 		val iconBlocked = "✘"
 
 		fun list(page: Int, executor: InterchangeExecutor) {
-			SparkleCache.registeredComponents.page(page - 1, SparkleData.systemConfig.entriesPerListPage).let { (page, pages, content) ->
+			SparkleCache.registeredComponents.paged(page - 1, SparkleData.systemConfig.entriesPerListPage).let { (page, pages, content) ->
 
 				text {
 
