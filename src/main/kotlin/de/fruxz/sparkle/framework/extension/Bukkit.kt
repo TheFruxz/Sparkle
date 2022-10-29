@@ -281,6 +281,12 @@ fun pluginOrNull(name: String) = Bukkit.getPluginManager().getPlugin(name)
  */
 fun plugin(name: String) = pluginOrNull(name) ?: NoSuchElementException("Plugin '$name'(Name) not found")
 
+val plugins: Set<Plugin>
+	get() = Bukkit.getPluginManager().plugins.toSet()
+
+val appsAndPlugins: Pair<List<App>, List<Plugin>>
+	get() = plugins.partition { it is App }.let { pair -> pair.first.map { it as App } to pair.second }
+
 /**
  * This function broadcasts the [component] to every individual player and console on the server.
  * If the [permission] is not blank, only everyone having the given permission will receive the message.

@@ -8,11 +8,13 @@ import de.fruxz.ascend.extension.math.isLong
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
+import de.fruxz.sparkle.framework.extension.coroutines.key
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.offlinePlayer
 import de.fruxz.sparkle.framework.extension.offlinePlayers
 import de.fruxz.sparkle.framework.extension.onlinePlayers
 import de.fruxz.sparkle.framework.extension.playerOrNull
+import de.fruxz.sparkle.framework.extension.plugins
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.worlds
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
@@ -39,6 +41,7 @@ import org.bukkit.block.structure.Mirror
 import org.bukkit.block.structure.StructureRotation
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
+import org.bukkit.plugin.Plugin
 import org.bukkit.structure.Structure
 import java.nio.file.Path
 import java.util.*
@@ -182,6 +185,15 @@ data class CompletionAsset<T>(
 			SparkleCache.registeredApps.any { it.identity.equals(input, ignoreCase) }
 		}.transformer {
 			SparkleCache.registeredApps.firstOrNull { it.identity == input }
+		}
+
+		@JvmStatic
+		val PLUGIN = CompletionAsset<Plugin>(sparkle.subKey("plugin"), true) {
+			plugins.withMap { key.asString() }
+		}.doCheck {
+			plugins.any { it.name.lowercase().equals(input.split(":").lastOrNull(), ignoreCase) }
+		}.transformer {
+			plugins.firstOrNull { it.name.lowercase().equals(input.split(":").lastOrNull(), ignoreCase) }
 		}
 
 		@JvmStatic
