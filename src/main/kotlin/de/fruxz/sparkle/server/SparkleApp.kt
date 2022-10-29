@@ -50,7 +50,7 @@ import de.fruxz.sparkle.server.component.app.AppComponent
 import de.fruxz.sparkle.server.component.component.ComponentComponent
 import de.fruxz.sparkle.server.component.events.EventsComponent
 import de.fruxz.sparkle.server.component.keeper.KeeperComponent
-import de.fruxz.sparkle.server.component.marking.MarkingComponent
+import de.fruxz.sparkle.server.component.marking.MarkerComponent
 import de.fruxz.sparkle.server.component.sandbox.SandBoxComponent
 import de.fruxz.sparkle.server.component.service.ServiceComponent
 import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent
@@ -181,7 +181,7 @@ class SparkleApp : App() {
 		add(SandBoxComponent())
 		add(AdaptiveActionBarComponent())
 		add(KeeperComponent())
-		add(MarkingComponent())
+		add(MarkerComponent())
 		add(UpdateComponent())
 
 		add(SparkleInterchange())

@@ -1,19 +1,25 @@
 package de.fruxz.sparkle.server.component.marking
 
+import de.fruxz.ascend.extension.div
 import de.fruxz.ascend.extension.math.round
 import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.sparkle.framework.data.file.SparklePath
+import de.fruxz.sparkle.framework.effect.particle.ParticleType
 import de.fruxz.sparkle.framework.event.interact.SparklePlayerInteractEvent.Companion.denyInteraction
-import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.AUTOSTART_MUTABLE
-import de.fruxz.sparkle.framework.infrastructure.component.SmartComponent
-import de.fruxz.sparkle.framework.extension.visual.notification
-import de.fruxz.sparkle.framework.extension.visual.ui.item
-import de.fruxz.sparkle.framework.extension.world.displayString
+import de.fruxz.sparkle.framework.extension.component
+import de.fruxz.sparkle.framework.extension.effect.offset
+import de.fruxz.sparkle.framework.extension.effect.particleOf
 import de.fruxz.sparkle.framework.extension.entity.identityObject
 import de.fruxz.sparkle.framework.extension.isPhysical
 import de.fruxz.sparkle.framework.extension.templateLocation
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.extension.visual.ui.item
+import de.fruxz.sparkle.framework.extension.world.displayString
+import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.AUTOSTART_MUTABLE
+import de.fruxz.sparkle.framework.infrastructure.component.SmartComponent
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
+import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.stacked.extension.asComponent
 import de.fruxz.stacked.extension.asStyledComponents
 import de.fruxz.stacked.extension.dyeGray
@@ -23,23 +29,42 @@ import de.fruxz.stacked.hover
 import de.fruxz.stacked.plus
 import de.fruxz.stacked.text
 import net.kyori.adventure.text.Component.newline
+import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.NamedTextColor.YELLOW
 import net.kyori.adventure.text.format.Style.style
 import net.kyori.adventure.text.format.TextDecoration.BOLD
+import org.bukkit.Color
 import org.bukkit.FluidCollisionMode.ALWAYS
 import org.bukkit.Material
+import org.bukkit.Particle.DustTransition
+import java.nio.file.Path
+import kotlin.io.path.ExperimentalPathApi
+import kotlin.io.path.createDirectories
+import kotlin.io.path.extension
+import kotlin.io.path.walk
 
-internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
+internal class MarkerComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
-	override val label = "Markings"
+	override val label = "Marker"
 
 	override suspend fun component() {
 
-		interchange(MarkingInterchange())
+		additionalStart {
+			Companion::markingItem.get() // initialize the marking item
+			saves.createDirectories() // create the save directory
+		}
+
+		interchange(MarkerInterchange())
 
 	}
 
 	companion object {
+
+		val saves: Path by lazy { SparklePath.componentPath(component(MarkerComponent::class)) / "saves" }
+
+		@OptIn(ExperimentalPathApi::class)
+		val savedFiles: List<Path>
+			get() = saves.walk().filter { it.extension == "json" }.toList()
 
 		val markingItem by lazy {
 
@@ -57,7 +82,7 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 
 				onItemInteract { event ->
 					val user = event.whoInteract
-					val targetBlock = user.rayTraceBlocks(15.0, ALWAYS)?.hitBlock
+					val targetBlock = user.rayTraceBlocks(25.0, ALWAYS)?.hitBlock
 					val actualBox = SparkleCache.playerMarkerBoxes[user.identityObject]
 					val currentBox = actualBox ?: DependentCubicalShape(targetBlock?.location ?: templateLocation)
 
@@ -133,10 +158,19 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 											}
 											.notification(APPLIED, user).display()
 
+										particleOf(ParticleType.DUST_COLOR_TRANSITION)
+											.putData(DustTransition(
+												Color.fromRGB(NamedTextColor.LIGHT_PURPLE.value()),
+												Color.fromRGB(NamedTextColor.DARK_PURPLE.value()),
+												1F,
+											))
+											.offset(.3)
+											.location(targetLocation)
+											.count(30)
+											.spawn()
+
 									} else {
-
 										actionAlreadySet().notification(FAIL, user).display()
-
 									}
 								}
 
@@ -157,10 +191,19 @@ internal class MarkingComponent : SmartComponent(AUTOSTART_MUTABLE) {
 											}
 											.notification(APPLIED, user).display()
 
+										particleOf(ParticleType.DUST_COLOR_TRANSITION)
+											.putData(DustTransition(
+												Color.fromRGB(NamedTextColor.LIGHT_PURPLE.value()),
+												Color.fromRGB(NamedTextColor.DARK_PURPLE.value()),
+												1F,
+											))
+											.offset(.3)
+											.location(targetLocation)
+											.count(30)
+											.spawn()
+
 									} else {
-
 										actionAlreadySet().notification(FAIL, user).display()
-
 									}
 								}
 							}
