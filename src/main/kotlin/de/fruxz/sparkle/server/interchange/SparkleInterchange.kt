@@ -3,6 +3,7 @@ package de.fruxz.sparkle.server.interchange
 import de.fruxz.sparkle.framework.extension.asPlayerOrNull
 import de.fruxz.sparkle.framework.extension.visual.message
 import de.fruxz.sparkle.framework.extension.visual.notification
+import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction.ONLY_PLAYERS
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.visual.message.Transmission.Level.GENERAL
@@ -103,7 +104,7 @@ internal class SparkleInterchange : StructuredInterchange("sparkle", protectedAc
 
 	}
 
-	branch {
+	branch(ONLY_PLAYERS) {
 
 		addContent("ping")
 

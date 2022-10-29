@@ -15,6 +15,8 @@ import de.fruxz.sparkle.framework.extension.time.hasCooldown
 import de.fruxz.sparkle.framework.extension.time.setCooldown
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.*
+import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction
+import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction.*
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure.BranchStatus.*
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset.CompletionContext
@@ -41,6 +43,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	var cooldown: Duration = Duration.ZERO,
 	var onExecution: (suspend InterchangeAccess<EXECUTOR>.() -> InterchangeResult)? = null,
 	var label: String = "",
+	var userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
 ) : TreeBranch<InterchangeStructure<EXECUTOR>, List<CompletionComponent>, TreeBranchType>(
 	identity = identity,
 	address = address,
@@ -57,41 +60,46 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	fun buildSyntax(executor: InterchangeExecutor?) = buildString {
 		fun construct(level: Int = 0, internalExecutor: InterchangeExecutor?, subBranches: List<InterchangeStructure<EXECUTOR>>) {
 
-			subBranches.filter { it.requiredApprovals.all { approval -> executor?.hasApproval(approval) != false } }.forEach { subBranch ->
-				val branchConfig = subBranch.configuration
-				appendLine(buildString {
-					repeat(level) { append("  ") }
-					if (level > 0) append("|- ") else append("/")
-					append(buildString {
-						if (level > 0) append("(")
+			subBranches
+				.filter {
+					it.requiredApprovals.all { approval -> executor?.hasApproval(approval) != false }
+							&& executor?.let { it1 -> it.userRestriction.match(it1) } != false // remove wrong user types
+				}
+				.forEach { subBranch ->
+					val branchConfig = subBranch.configuration
+					appendLine(buildString {
+						repeat(level) { append("  ") }
+						if (level > 0) append("|- ") else append("/")
+						append(buildString {
+							if (level > 0) append("(")
 
-						append(
-							when {
-								label.isNotBlank() -> label
-								else -> subBranch.content
-									.joinToString("|") { it.label }
-									.let { display ->
-										display.ifBlank { subBranch.identity }
-									}
+							append(
+								when {
+									label.isNotBlank() -> label
+									else -> subBranch.content
+										.joinToString("|") { it.label }
+										.let { display ->
+											display.ifBlank { subBranch.identity }
+										}
+								}
+							)
+
+							if (level > 0) {
+								append(")")
+								if (subBranch.isRoot && subBranch.onExecution != null) append("<")
+								if (!branchConfig.isRequired) append("?")
+								if (!branchConfig.ignoreCase) append("^")
+								if (branchConfig.mustMatchOutput) append("=")
+								if (branchConfig.infiniteSubParameters) append("*")
+
 							}
-						)
-
-						if (level > 0) {
-							append(")")
-							if (subBranch.isRoot && subBranch.onExecution != null) append("<")
-							if (!branchConfig.isRequired) append("?")
-							if (!branchConfig.ignoreCase) append("^")
-							if (branchConfig.mustMatchOutput) append("=")
-							if (branchConfig.infiniteSubParameters) append("*")
-
-						}
+						})
 					})
-				})
 
-				val subSubBranches = subBranch.subBranches.filter { it.requiredApprovals.all { approval -> executor?.hasApproval(approval) != false } }
+					val subSubBranches = subBranch.subBranches.filter { it.requiredApprovals.all { approval -> executor?.hasApproval(approval) != false } }
 
-				if (subSubBranches.isNotEmpty())
-					construct(level + 1, internalExecutor, subSubBranches.forceCast())
+					if (subSubBranches.isNotEmpty())
+						construct(level + 1, internalExecutor, subSubBranches.forceCast())
 
 			}
 		}
@@ -188,40 +196,46 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 				INCOMPLETE -> currentResult = INCOMPLETE
 				NO_DESTINATION, OVERFLOW, MATCHING -> {
 
-					if (currentBranch.requiredApprovals.all { executor.hasApproval(it) }) { // check if executor has all required approvals
-						if (currentInputValid) {
-							if (currentBranch.parent?.isRoot == true || (waysMatching + waysOverflow + waysNoDestination).any { t -> t.address == currentBranch.parent?.address }) {
-								currentResult = if (currentBranch.subBranches.any { it.configuration.isRequired } && inputQuery.lastIndex < currentDepth) {
-									INCOMPLETE
-								} else if (currentDepth >= inputQuery.lastIndex || currentBranch.configuration.infiniteSubParameters) {
-									if ((currentSubBranches.isNotEmpty() && currentSubBranches.all { it.configuration.isRequired }) && !(availableExecutionRepresentsSolution && currentBranch.onExecution != null)) {
-										NO_DESTINATION // This branch has to be completed with its sub-branches
+					if (currentBranch.userRestriction.match(executor)) {
+						if (currentBranch.requiredApprovals.all { executor.hasApproval(it) }) { // check if executor has all required approvals
+							if (currentInputValid) {
+								if (currentBranch.parent?.isRoot == true || (waysMatching + waysOverflow + waysNoDestination).any { t -> t.address == currentBranch.parent?.address }) {
+									currentResult =
+										if (currentBranch.subBranches.any { it.configuration.isRequired } && inputQuery.lastIndex < currentDepth) {
+											INCOMPLETE
+										} else if (currentDepth >= inputQuery.lastIndex || currentBranch.configuration.infiniteSubParameters) {
+											if ((currentSubBranches.isNotEmpty() && currentSubBranches.all { it.configuration.isRequired }) && !(availableExecutionRepresentsSolution && currentBranch.onExecution != null)) {
+												NO_DESTINATION // This branch has to be completed with its sub-branches
+											} else {
+												MATCHING
+											}
+										} else {
+											OVERFLOW
+										}
+
+								} else {
+									currentResult =
+										if (waysIncomplete.any { t -> t.address == currentBranch.parent?.address }) {
+											INCOMPLETE
+										} else {
+											FAILED
+										}
+								}
+
+							} else if (isAccessTargetValidRoot) {
+								currentResult = MATCHING
+							} else {
+								currentResult =
+									if (((waysMatching + waysOverflow + waysNoDestination).any { it.address == currentBranch.parent?.address } && currentLevelInput.isBlank()) || (currentBranch.parent?.isRoot == true && inputQuery.isEmpty())) {
+										INCOMPLETE
 									} else {
-										MATCHING
+										FAILED
 									}
-								} else {
-									OVERFLOW
-								}
-
-							} else {
-								currentResult = if (waysIncomplete.any { t -> t.address == currentBranch.parent?.address }) {
-									INCOMPLETE
-								} else {
-									FAILED
-								}
 							}
-
-						} else if (isAccessTargetValidRoot) {
-							currentResult = MATCHING
-						} else {
-							currentResult = if (((waysMatching + waysOverflow + waysNoDestination).any { it.address == currentBranch.parent?.address } && currentLevelInput.isBlank()) || (currentBranch.parent?.isRoot == true && inputQuery.isEmpty())) {
-								INCOMPLETE
-							} else {
-								FAILED
-							}
-						}
+						} else
+							currentResult = FAILED // not enough approvals!
 					} else
-						currentResult = FAILED // not enough approvals!
+						currentResult = FAILED // user restriction not met
 				}
 			}
 
@@ -346,6 +360,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	 * @throws IllegalStateException if the new branch follows an infinite-parameter branch
 	 */
 	fun branch(
+		userRestriction: InterchangeUserRestriction = this.userRestriction,
 		identity: String = (parent?.identity ?: "") + "/way-${parent?.subBranches?.size ?: 0}",
 		path: Address<InterchangeStructure<EXECUTOR>> = this.address / identity,
 		configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
@@ -354,6 +369,14 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 
 		if (parent != null && parent.configuration.infiniteSubParameters)
 			throw IllegalStateException("Cannot branch a branch with infinite sub-parameters")
+
+		if (parent != null) {
+			when {
+				parent.userRestriction != NOT_RESTRICTED && userRestriction == NOT_RESTRICTED -> throw IllegalStateException("Cannot branch a restricted branch with a non-restricted branch")
+				parent.userRestriction == ONLY_PLAYERS && userRestriction != ONLY_PLAYERS -> throw IllegalStateException("Cannot branch a player-only branch with a non-player branch")
+				parent.userRestriction == ONLY_CONSOLE && userRestriction != ONLY_CONSOLE -> throw IllegalStateException("Cannot branch a console-only branch with a non-console branch")
+			}
+		}
 
 		isBranched = true
 		subBranches += InterchangeStructure(
@@ -364,6 +387,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 			content = emptyList(),
 			parent = this,
 			requiredApprovals = requiredApprovals,
+			userRestriction = userRestriction,
 		).apply(process)
 	}
 
@@ -387,6 +411,10 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 
 	fun label(label: String) {
 		this.label = label
+	}
+
+	fun restrict(restriction: InterchangeUserRestriction) {
+		this.userRestriction = restriction
 	}
 
 }
