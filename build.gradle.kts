@@ -49,7 +49,7 @@ dependencies {
     implementation("com.mojang:brigadier:1.0.500")
 
     // > Ktor
-    implementation("io.ktor:ktor-client-cio:2.1.2")
+    implementation("io.ktor:ktor-client-cio:2.1.3")
     implementation("io.ktor:ktor-client-core-jvm:2.1.2")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.2")
     implementation("io.ktor:ktor-client-content-negotiation:2.1.2")
