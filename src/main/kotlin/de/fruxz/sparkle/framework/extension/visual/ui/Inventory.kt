@@ -68,3 +68,6 @@ var PlayerInventory.mainHand: ItemLike
 var PlayerInventory.offHand: ItemLike
 	get() = itemInOffHand.itemLike
 	set(value) = setItemInOffHand(value.asItemStack())
+
+val Inventory.slots: IntRange
+	get() = 0 until size
