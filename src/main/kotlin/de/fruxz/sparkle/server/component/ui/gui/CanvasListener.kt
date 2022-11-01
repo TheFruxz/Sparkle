@@ -18,10 +18,10 @@ import de.fruxz.sparkle.framework.extension.visual.ui.affectedItem
 import de.fruxz.sparkle.framework.extension.visual.ui.item
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
-import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.PAGED
 import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.SCROLL
+import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -73,7 +73,7 @@ internal class CanvasListener : EventListener() {
 			val canvas = session.canvas
 			val affectedItem = event.affectedItem?.item
 			val scrollState = session.parameters[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>() ?: 0
-			val linesOfContent = ceilToInt(canvas.content.keys.max().toDouble() / 8)
+			val linesOfContent = ceilToInt(canvas.virtualSlots.last.toDouble() / 8)
 			val inventoryLines = ceilToInt(event.inventory.size.toDouble() / 9)
 
 			when (affectedItem?.getPersistent<Int>(PaginationType.CANVAS_BUTTON_SCROLL)) {
@@ -144,7 +144,7 @@ internal class CanvasListener : EventListener() {
 				event.isCancelled = true
 
 				doSync(1.minecraftTicks) {
-					player.inventory.setItemInOffHand(offhand)
+					player.inventory.setItemInOffHand(offhand) // workaround for offhand non-cancelable
 				}
 			}
 

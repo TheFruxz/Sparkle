@@ -22,9 +22,12 @@ import de.fruxz.sparkle.framework.extension.effect.playSoundEffect
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.visual.ui.get
 import de.fruxz.sparkle.framework.extension.visual.ui.set
+import de.fruxz.sparkle.framework.extension.visual.ui.slots
 import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasRender
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.NO_OPEN
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.NO_UPDATE
+import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.PAGED
+import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.SCROLL
 import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager
 import de.fruxz.sparkle.framework.visual.item.ItemLike
 import kotlinx.coroutines.Deferred
@@ -39,6 +42,7 @@ import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
+import kotlin.math.max
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -91,6 +95,9 @@ open class Canvas(
 	val center: Int
 		get() = base.virtualSize / 2 - 1
 
+	val virtualSlots: IntRange
+		get() = 0..(if (pagination.base == null) base.virtualSize-1 else max(base.virtualSize-1, pagination.computeRealSlot(asyncItems.maxOf { it.key })))
+
 	operator fun get(slot: Int): ItemLike? {
 		return content[slot]
 	}
@@ -119,8 +126,9 @@ open class Canvas(
 	) = sparkle.coroutineScope.launch {
 		if (NO_OPEN in flags) cancel()
 
+		val scrollState = (data[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>() ?: 0)
 		val inventoryContent = asSyncDeferred { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() }
-		val scrollableContent = async { pagination.contentRendering((data[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>() ?: 0), ((base.virtualSize + 1) / 9), content) }
+		val scrollableContent = async { pagination.contentRendering(scrollState, this@Canvas) }
 
 		receivers.toList().forEachNotNull { receiver ->
 			var localInstance = base.generateInventory(
@@ -150,13 +158,19 @@ open class Canvas(
 							CanvasSessionManager.putSession(receiver, this@Canvas, event.data)
 						}
 
-						asyncItems.map { (key, value) ->
-							asAsync {
-								val result = value.await().asItemStack()
+						asyncItems.mapNotNull { (key, value) ->
+							when (pagination.base) { // \/ now produce relative position to canvas viewpoint
+								null -> pagination.computeRealSlot(key).takeIf { it in localInstance.slots }
+								SCROLL -> pagination.computeRealSlot(key - (scrollState * 8)).takeIf { it in localInstance.slots }
+								PAGED -> (key - (scrollState * (base.virtualSize - 9))).takeIf { it in localInstance.slots.toList().dropLast(9) }
+							}?.let { slot ->
+								asAsync {
+									val result = value.await().asItemStack()
 
-								localInstance.setItem(key, result)
+									localInstance.setItem(slot, result)
 
-								result
+									result
+								}
 							}
 						}.let { result ->
 							sparkle.coroutineScope.launch {
