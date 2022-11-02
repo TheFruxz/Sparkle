@@ -33,7 +33,6 @@ import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.Paginat
 import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager
 import de.fruxz.sparkle.framework.visual.item.ItemLike
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -43,7 +42,6 @@ import net.kyori.adventure.text.Component
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
@@ -126,67 +124,22 @@ open class Canvas(
 		data: Map<Key, Any> = emptyMap(),
 		triggerOpenEvent: Boolean = true,
 		triggerSound: Boolean = true,
-		owner: InventoryHolder? = null,
 	) = sparkle.coroutineScope.launch {
 		if (NO_OPEN in flags) cancel()
 
-		val scrollState = (data[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>() ?: 0)
-		val inventoryContent = asSyncDeferred { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() }
-		val scrollableContent = async { pagination.contentRendering(scrollState, this@Canvas) }
-
 		receivers.toList().forEachNotNull { receiver ->
-			var localInstance = base.generateInventory(
-				owner = owner,
-				label = label,
-			).apply {
-				this.contents = when {
-					base.virtualSize % 9 != 0 -> runBlocking { inventoryContent.await() }
-					else -> runBlocking { (0 until base.virtualSize).map { slot -> scrollableContent.await()[slot]?.asItemStack() }.toTypedArray() }
-				}
-			}
 
 			if (receiver is Player) {
 
-				CanvasRenderEvent(receiver, this@Canvas, localInstance).let { event ->
-					event.callEvent()
-					event.apply { onRender.render(this) }
-					localInstance = event.renderResult
-				}
+				var (renderResult, _) = render(receiver, data = data) ?: return@forEachNotNull
 
-				CanvasOpenEvent(receiver, this@Canvas, localInstance, data).let { event ->
+				CanvasOpenEvent(receiver, this@Canvas, renderResult, data).let { event ->
 					if (!triggerOpenEvent || event.callEvent()) {
-						localInstance = event.inventory
+						renderResult = event.inventory
 
 						doSync {
-							receiver.openInventory(localInstance)
+							receiver.openInventory(renderResult)
 							CanvasSessionManager.putSession(receiver, this@Canvas, event.data)
-						}
-
-						asyncItems.mapNotNull { (key, value) ->
-							when (pagination.base) { // \/ now produce relative position to canvas viewpoint
-								null -> pagination.computeRealSlot(key).takeIf { it in localInstance.slots }
-								SCROLL -> pagination.computeRealSlot(key - (scrollState * 8)).takeIf { it in localInstance.slots }
-								PAGED -> (key - (scrollState * (base.virtualSize - 9))).takeIf { it in localInstance.slots.toList().dropLast(9) }
-							}?.let { slot ->
-								asAsync {
-									val result = value.await().asItemStack()
-
-									localInstance.setItem(slot, result)
-
-									result
-								}
-							}
-						}.let { result ->
-							sparkle.coroutineScope.launch {
-								while (true) {
-									if (result.none { it.isActive }) {
-										onFinishedDeferred.invoke(result.toSet()) // todo <- toSet is quick fix
-										cancel()
-										break
-									}
-									delay(.1.seconds)
-								}
-							}
 						}
 
 						event.apply(onOpen)
@@ -451,8 +404,7 @@ open class Canvas(
 		data: Map<Key, Any> = emptyMap(),
 		triggerOpenEvent: Boolean = true,
 		triggerSound: Boolean = true,
-		owner: InventoryHolder? = null,
-	) = canvas.display(receivers = arrayOf(this), data, triggerOpenEvent, triggerSound, owner)
+	) = canvas.display(receivers = arrayOf(this), data, triggerOpenEvent, triggerSound)
 
 	/**
 	 * Builds a [Canvas] using the [buildCanvas] function and
@@ -469,9 +421,8 @@ open class Canvas(
 		data: Map<Key, Any> = emptyMap(),
 		triggerOpenEvent: Boolean = true,
 		triggerSound: Boolean = true,
-		owner: InventoryHolder? = null,
 		canvasBuilder: MutableCanvas.() -> Unit,
-	) = buildCanvas(base, canvasBuilder).display(receivers = arrayOf(this), data, triggerOpenEvent, triggerSound, owner)
+	) = buildCanvas(base, canvasBuilder).display(receivers = arrayOf(this), data, triggerOpenEvent, triggerSound)
 
 	fun interface CanvasRender {
 		suspend fun render(event: CanvasRenderEvent)
