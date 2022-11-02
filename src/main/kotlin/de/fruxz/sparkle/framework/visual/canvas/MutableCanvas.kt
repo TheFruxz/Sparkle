@@ -110,6 +110,7 @@ data class MutableCanvas(
 	}
 
 	@CanvasDsl
+	@JvmName("deferredItemLikeSet")
 	operator fun set(slot: Int, itemLikeProcess: SuspendComposable<ItemLike>): Unit =
 		deferred(slot, itemLikeProcess)
 
@@ -124,6 +125,7 @@ data class MutableCanvas(
 		slots.forEach { deferred(it, itemLikeProcess) }
 
 	@CanvasDsl
+	@JvmName("deferredItemLikesSet")
 	operator fun set(slots: Iterable<Int>, itemLikeProcess: SuspendComposable<ItemLike>): Unit =
 		deferred(slots, itemLikeProcess)
 
@@ -138,6 +140,7 @@ data class MutableCanvas(
 		deferred(slots.toList(), itemLikeProcess)
 
 	@CanvasDsl
+	@JvmName("deferredItemLikeArraySet")
 	operator fun set(vararg slots: Int, itemLikeProcess: SuspendComposable<ItemLike>): Unit =
 		deferred(slots = slots, itemLikeProcess)
 
@@ -147,12 +150,13 @@ data class MutableCanvas(
 	operator fun set(slot: Int, itemStack: ItemStack?): Unit =
 		set(slot, itemStack?.let { ItemLike.of(it) })
 
-	@JvmName("asyncItemStack")
 	@CanvasDsl
+	@JvmName("asyncItemStack")
 	fun deferred(slot: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
 		deferred(slot, itemLikeProcess = { asSync { ItemLike.of(itemStackProcess.compose(it)) } })
 
 	@CanvasDsl
+	@JvmName("deferredItemStackSet")
 	operator fun set(slot: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
 		deferred(slot, itemStackProcess)
 
@@ -162,12 +166,13 @@ data class MutableCanvas(
 	operator fun set(slots: Iterable<Int>, itemStack: ItemStack?): Unit =
 		set(slots, itemStack?.let { ItemLike.of(it) })
 
-	@JvmName("asyncItemStack")
 	@CanvasDsl
+	@JvmName("asyncItemStack")
 	fun deferred(slots: Iterable<Int>, itemStackProcess: SuspendComposable<ItemStack>): Unit =
 		slots.forEach { deferred(it, itemStackProcess) }
 
 	@CanvasDsl
+	@JvmName("deferredItemStacksSet")
 	operator fun set(slots: Iterable<Int>, itemStackProcess: SuspendComposable<ItemStack>): Unit =
 		deferred(slots, itemStackProcess)
 
@@ -177,12 +182,13 @@ data class MutableCanvas(
 	operator fun set(vararg slots: Int, itemStack: ItemStack?): Unit =
 		set(slots.toList(), itemStack?.let { ItemLike.of(it) })
 
-	@JvmName("asyncItemStack")
 	@CanvasDsl
+	@JvmName("asyncItemStack")
 	fun deferred(vararg slots: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
 		deferred(slots.toList(), itemStackProcess)
 
 	@CanvasDsl
+	@JvmName("deferredItemStackArraySet")
 	operator fun set(vararg slots: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
 		deferred(slots = slots, itemStackProcess)
 
@@ -193,12 +199,13 @@ data class MutableCanvas(
 	operator fun set(slot: Int, material: Material?): Unit =
 		set(slot, material?.let { ItemLike.of(it) })
 
-	@JvmName("asyncMaterial")
 	@CanvasDsl
+	@JvmName("asyncMaterial")
 	fun deferred(slot: Int, materialProcess: SuspendComposable<Material>): Unit =
 		deferred(slot, itemLikeProcess = { ItemLike.of(materialProcess.compose(sparkle.coroutineScope)) })
 
 	@CanvasDsl
+	@JvmName("deferredMaterialSet")
 	operator fun set(slot: Int, materialProcess: SuspendComposable<Material>): Unit =
 		deferred(slot, materialProcess)
 
@@ -208,12 +215,13 @@ data class MutableCanvas(
 	operator fun set(slotIterable: Iterable<Int>, material: Material?): Unit =
 		set(slotIterable, material?.let { ItemLike.of(it) })
 
-	@JvmName("asyncMaterial")
 	@CanvasDsl
+	@JvmName("asyncMaterial")
 	fun deferred(slotIterable: Iterable<Int>, materialProcess: SuspendComposable<Material>): Unit =
 		slotIterable.forEach { deferred(it, materialProcess) }
 
 	@CanvasDsl
+	@JvmName("deferredMaterialsSet")
 	operator fun set(slotIterable: Iterable<Int>, materialProcess: SuspendComposable<Material>): Unit =
 		deferred(slotIterable, materialProcess)
 
@@ -223,12 +231,13 @@ data class MutableCanvas(
 	operator fun set(vararg slotArray: Int, material: Material?): Unit =
 		set(slotArray.toList(), material?.let { ItemLike.of(it) })
 
-	@JvmName("asyncMaterial")
 	@CanvasDsl
+	@JvmName("asyncMaterial")
 	fun deferred(vararg slotArray: Int, materialProcess: SuspendComposable<Material>): Unit =
 		deferred(slotIterable = slotArray.toList(), materialProcess)
 
 	@CanvasDsl
+	@JvmName("deferredMaterialArraySet")
 	operator fun set(vararg slotArray: Int, materialProcess: SuspendComposable<Material>): Unit =
 		deferred(slotArray = slotArray, materialProcess)
 
