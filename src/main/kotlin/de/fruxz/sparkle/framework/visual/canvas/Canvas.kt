@@ -16,6 +16,7 @@ import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent.UpdateReason
 import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent.UpdateReason.PLUGIN
 import de.fruxz.sparkle.framework.extension.coroutines.asAsync
 import de.fruxz.sparkle.framework.extension.coroutines.asSyncDeferred
+import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.effect.playSoundEffect
@@ -23,6 +24,7 @@ import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.visual.ui.get
 import de.fruxz.sparkle.framework.extension.visual.ui.set
 import de.fruxz.sparkle.framework.extension.visual.ui.slots
+import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasRender
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.NO_OPEN
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.NO_UPDATE
@@ -40,8 +42,10 @@ import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
+import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
 import kotlin.time.Duration.Companion.seconds
 
@@ -75,7 +79,7 @@ open class Canvas(
 	open val onClose: CanvasCloseEvent.() -> Unit = { }
 	open val onUpdate: CanvasUpdateEvent.() -> Unit = { }
 	open val onClicks: Map<Int?, List<CanvasClickEvent.() -> Unit>> = emptyMap()
-	open val onFinishedDeferred: List<Deferred<ItemStack>>.() -> Unit = { }
+	open val onFinishedDeferred: suspend Set<Deferred<ItemStack>>.() -> Unit = { }
 	open val onUpdateNonClearableSlots: Set<Int> = emptySet()
 
 	override val identity = buildRandomTag(10, tagType = MIXED_CASE)
@@ -176,7 +180,7 @@ open class Canvas(
 							sparkle.coroutineScope.launch {
 								while (true) {
 									if (result.none { it.isActive }) {
-										onFinishedDeferred.invoke(result)
+										onFinishedDeferred.invoke(result.toSet()) // todo <- toSet is quick fix
 										cancel()
 										break
 									}
@@ -278,7 +282,7 @@ open class Canvas(
 							sparkle.coroutineScope.launch {
 								while (true) {
 									if (result.none { it.isActive }) {
-										onFinishedDeferred.invoke(result)
+										onFinishedDeferred.invoke(result.toSet()) // todo <- toSet is quick fix
 										cancel()
 										break
 									}
@@ -302,6 +306,112 @@ open class Canvas(
 			// INSERT STOP
 
 		}
+
+	}
+
+	suspend fun render(
+		target: Player? = null, // todo check if target is indeed set, even if it is possible to be null
+		vendor: App = sparkle,
+		syncContext: CoroutineContext = vendor.syncDispatcher,
+		asyncContext: CoroutineContext = vendor.asyncDispatcher,
+		data: Map<Key, Any> = emptyMap(),
+		onCompletion: suspend CanvasRenderResult.() -> Unit = {  }, // on whole completion, every deferred is also set!
+	): CanvasRenderResult? {
+
+		var state = base.generateInventory(target, label)
+		val scrollState = (data[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>() ?: 0)
+		val staticContent = asSyncDeferred(
+			vendor = vendor,
+			context = syncContext,
+		) {
+			when {
+				base.virtualSize % 9 != 0 -> (0 until base.virtualSize).map { slot ->
+					content[slot]?.asItemStack()
+				}
+				else -> ((0 until base.virtualSize) to pagination.contentRendering(scrollState, this)).let { (slots, paginated) ->
+					slots.map { paginated[it]?.asItemStack() }
+				}
+			}
+		}
+
+		// Phase 1 - place static content
+
+		state.contents = staticContent.await().toTypedArray()
+
+		// Phase 2 - call render event
+
+		CanvasRenderEvent(target, this, state).let { event ->
+			if (!event.callEvent()) return null
+
+			event.apply { onRender.render(this) }
+			state = event.renderResult
+
+		}
+
+		// Phase 3 - place deferred content
+		var deferredItemQueue: Set<Deferred<ItemStack>> = emptySet()
+
+		asyncItems.forEach { (placedSlot, value) ->
+			when (pagination.base) { // \/ now producing relative position to current point-of-view
+				null -> pagination.computeRealSlot(placedSlot).takeIf { it in state.slots } // <- expecting non-pagination, but still use computeRealSlot for 3rd party software
+				SCROLL -> pagination.computeRealSlot(placedSlot - (scrollState * 8)).takeIf { it in state.slots } // <- items placed for scroll panels
+				PAGED -> (placedSlot - (scrollState * (base.virtualSize - 9))).takeIf { it in state.slots.toList().dropLast(9) }
+			}?.let { slot ->
+
+				deferredItemQueue += asAsync(vendor = vendor, context = asyncContext) {
+					value.await().asItemStack().also {
+						state.setItem(slot, it)
+					}
+				}.apply {
+					invokeOnCompletion {
+						doAsync(vendor = vendor, context = asyncContext) {
+							val queue = deferredItemQueue
+
+							if (queue.all { it.isCompleted }) {
+								onFinishedDeferred.invoke(queue)
+								onCompletion.invoke(CanvasRenderResult(state, queue))
+							}
+
+						}
+					}
+				}
+
+			}
+		}
+
+		// Phase 4 - return result
+
+		return CanvasRenderResult(
+			inventory = state,
+			deferredItems = deferredItemQueue,
+		)
+
+	}
+
+	data class CanvasRenderResult(
+		val inventory: Inventory,
+		val deferredItems: Set<Deferred<ItemStack>>,
+	) {
+
+		/**
+		 * This computational value returns, if every single
+		 * deferred item-production got completed.
+		 * This utilizes [Deferred.isCompleted]!
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		val isCompleted: Boolean
+			get() = deferredItems.all { it.isCompleted }
+
+		/**
+		 * This computational value returns, if any of the
+		 * deferred item-productions got cancelled on any
+		 * time. This utilizes [Deferred.isCancelled]!
+		 * @author Fruxz
+		 * @since 1.0
+		 */
+		val isCancelled: Boolean
+			get() = deferredItems.any { it.isCancelled }
 
 	}
 
