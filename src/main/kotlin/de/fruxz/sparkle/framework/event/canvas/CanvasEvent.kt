@@ -6,7 +6,7 @@ import org.bukkit.event.Cancellable
 import org.bukkit.event.Event
 
 abstract class CanvasEvent(
-	val host: HumanEntity,
+	val host: HumanEntity?,
 	open val canvas: Canvas,
 	val isAsync: Boolean = true,
 	@set:JvmName("kotlinCancelled") var cancelled: Boolean = false,

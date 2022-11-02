@@ -6,7 +6,7 @@ import org.bukkit.event.HandlerList
 import org.bukkit.inventory.Inventory
 
 data class CanvasRenderEvent(
-	val player: Player,
+	val player: Player?,
 	override val canvas: Canvas,
 	val renderResult: Inventory,
 ) : CanvasEvent(player, canvas) {
