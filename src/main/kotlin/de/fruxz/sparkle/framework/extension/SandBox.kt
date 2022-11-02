@@ -29,7 +29,7 @@ inline fun quickSandBox(vendor: App = SparkleApp.instance, key: Key = vendor.sub
 }
 
 @Suppress("NOTHING_TO_INLINE") // required, because of the Throwable
-inline fun quickSandBox(vendor: App = SparkleApp.instance, identity: String, noinline action: suspend SandBoxInteraction.() -> Unit) =
+inline fun quickSandBox(identity: String, vendor: App = SparkleApp.instance, noinline action: suspend SandBoxInteraction.() -> Unit) =
 	quickSandBox(vendor, vendor.subKey(identity.lowercase(), CONTINUE), action)
 
 val allSandBoxes: Set<SandBox>
