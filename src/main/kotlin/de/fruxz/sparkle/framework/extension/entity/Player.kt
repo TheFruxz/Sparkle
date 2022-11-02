@@ -1,12 +1,13 @@
 package de.fruxz.sparkle.framework.extension.entity
 
 import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.framework.extension.world.fill
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
+import de.fruxz.sparkle.server.SparkleCache
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.attribute.Attribute
+import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.structure.Structure
@@ -26,6 +27,11 @@ var LivingEntity.quickMaxHealth: Double
 
 fun LivingEntity.maxOutHealth() {
 	health = quickMaxHealth
+}
+
+fun HumanEntity.maxOutFood(withSaturation: Boolean = true) {
+	foodLevel = 20
+	if (withSaturation) saturation = 20F
 }
 
 /**
