@@ -4,7 +4,8 @@
 
 ## 👋 Welcome to Sparkle
 
-Placeholder
+Sparkle is a framework, developed for the Kotlin programming language and Paper as the Minecraft-Server platform.
+This project provides a feature-rich architecture for Minecraft-Plugins, which is powerful and filled with rocket science.
 
 ## ⚙️ Setup
 
