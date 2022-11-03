@@ -99,3 +99,8 @@ buildInterchangeStructure {
 }
 ```
 
+### restrict(...)
+
+You may encounter the situtation, that you want a branch to be only accessible to a type of user, maybe a `/command [admin]` branch, which should only be accessible through the console of the server. Than you can use the `restrict(...)` function, which defines the required type of executor, to execute the execution block of this AND the sub-branches!
+
+To define a restrictive user type, you have to select one from the InterchangeUserRestrictions, which you may know from the [Interchange](interchanges.md)s itself!

@@ -10,6 +10,10 @@ The CompletionAssets allows you, to prived completion and execution content, whi
 
 This allows you to generate organic content, adapt to changes inside the server, and give the player the possibility, to react to changing situations.
 
+## Immutability
+
+CompletionAssets are deeply immutable, so you can't change the completion asset after the creation, but you can create modified copies of the assets, to 'modify' them.
+
 ## Take a look!
 
 The CompletionAssets do have multiple properties, which allows them to create their result, check the input and transform the input to its representing type.
@@ -30,12 +34,12 @@ supportedInputType currently may not really affect the computational processing
 | transformer        | null           | Transforms the input of the user into the requested object of type T                                        |
 | generator          | /              | The process, which generates the collection of completions, aka. the output.                                |
 
-To set these different properties, you can just pass them through the constructor, or you can choose to edit them with these post-edit functions:
+To set these different properties, you can just pass them through the constructor, or you can choose to create a modified copy with these post-edit functions:
 
-| Function    | Description                                                                    |
-| ----------- | ------------------------------------------------------------------------------ |
-| doCheck     | Sets the check process, which checks if the user input is valid for this asset |
-| transformer | Sets the transformer process, which transforms the user input to the T type    |
+| Function    | Description                                                                                |
+| ----------- | ------------------------------------------------------------------------------------------ |
+| doCheck     | Creates a copy with this `doCheck`, which checks if the user input is valid for this asset |
+| transformer | Creates a copy with this `transformer`, which transforms the user input to the T type      |
 
 If you look at an example, you can really quickly learn, how you can use the CompletionAssets, to provide your own content:
 
