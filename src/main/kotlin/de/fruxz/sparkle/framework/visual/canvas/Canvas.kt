@@ -34,9 +34,7 @@ import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager
 import de.fruxz.sparkle.framework.visual.item.ItemLike
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.HumanEntity
@@ -45,7 +43,6 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
-import kotlin.time.Duration.Companion.seconds
 
 /**
  * This class helps to easily create ui's for players.
@@ -184,28 +181,20 @@ open class Canvas(
 	) = sparkle.coroutineScope.launch {
 		if (NO_UPDATE in flags) cancel()
 
-		val inventoryContent = asSyncDeferred { (0 until base.virtualSize).map { slot -> content[slot]?.asItemStack() }.toTypedArray() } // todo this is also effected by the pagination system
-
 		receivers.toList().forEachNotNull { receiver ->
 			var topInventory = receiver.openInventory.topInventory
 
-			// INSERT START
-
 			if (receiver is Player && topInventory.viewers.isNotEmpty() && receiver in viewers) {
-				// now the topInventory is safe to use
 
-				runBlocking { inventoryContent.await() }.forEachIndexed { index, itemStack ->
-					if (topInventory[index] != itemStack &&
-						index !in asyncItems.keys &&
-						!(itemStack == null && index in onUpdateNonClearableSlots)
-					) topInventory[index] = itemStack
-				}
-
-				CanvasRenderEvent(receiver, this@Canvas, topInventory).let { event ->
-					event.callEvent()
-					event.apply { onRender.render(this) }
-					topInventory = event.renderResult
-				}
+				doAsync { // todo maybe doAsync lets the update struggle with pagination? because async inv generation is invalid???
+					render(receiver, data = data) {
+						this.inventory.contents.forEachIndexed { index, itemStack ->
+							if (topInventory[index] != itemStack && index !in asyncItems.keys && !(itemStack == null && index in onUpdateNonClearableSlots)) {
+								topInventory[index] = itemStack
+							}
+						}
+					}
+				}.join()
 
 				CanvasUpdateEvent(receiver, this@Canvas, topInventory, data, updateReason).let { event ->
 					if (!triggerUpdateEvent || event.callEvent()) {
@@ -216,32 +205,12 @@ open class Canvas(
 							if (topInventory.viewers.isNotEmpty() && receiver in viewers) { // just a check, to keep it bulletproof
 								debugLog("Updating ${receiver.name}'s inventory from $identity canvas")
 
-								receiver.openInventory(topInventory)
+								receiver.openInventory(topInventory) // TODO check, if this is really needed, because the inventory is already open
+								// TODO for above: maybe only do it, if the inventory is not the same as the topInventory aka. is not open
 
 								CanvasSessionManager.putSession(receiver, this@Canvas, data)
 							} else
 								debugLog("Updating ${receiver.name}'s inventory blocked, during last check")
-						}
-
-						asyncItems.map { (key, value) ->
-							asAsync {
-								val result = value.await().asItemStack()
-
-								if (result != topInventory[key]) topInventory.setItem(key, result)
-
-								result
-							}
-						}.let { result ->
-							sparkle.coroutineScope.launch {
-								while (true) {
-									if (result.none { it.isActive }) {
-										onFinishedDeferred.invoke(result.toSet()) // todo <- toSet is quick fix
-										cancel()
-										break
-									}
-									delay(.1.seconds)
-								}
-							}
 						}
 
 						event.apply(onUpdate)
@@ -256,14 +225,12 @@ open class Canvas(
 
 			}
 
-			// INSERT STOP
-
 		}
 
 	}
 
 	suspend fun render(
-		target: Player? = null, // todo check if target is indeed set, even if it is possible to be null
+		target: Player? = null, // todo check if target is indeed set in the implementations of these function, even if it is possible to be null
 		vendor: App = sparkle,
 		syncContext: CoroutineContext = vendor.syncDispatcher,
 		asyncContext: CoroutineContext = vendor.asyncDispatcher,

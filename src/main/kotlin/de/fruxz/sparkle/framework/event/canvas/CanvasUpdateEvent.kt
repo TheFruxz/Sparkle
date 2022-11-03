@@ -1,7 +1,6 @@
 package de.fruxz.sparkle.framework.event.canvas
 
 import de.fruxz.sparkle.framework.visual.canvas.Canvas
-import de.fruxz.sparkle.framework.visual.canvas.Canvas.ExperimentalCanvasApi
 import net.kyori.adventure.key.Key
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
@@ -12,7 +11,7 @@ class CanvasUpdateEvent(
 	canvas: Canvas,
 	inventory: Inventory,
 	data: Map<Key, Any>,
-	val updateReason: UpdateReason, // TODO implement, when pagination utilizes the update function!
+	val reason: UpdateReason, // TODO implement, when pagination utilizes the update function!
 ) : CanvasOpenEvent(player, canvas, inventory, data) {
 
 	override fun getHandlers() = handlerList
@@ -28,8 +27,8 @@ class CanvasUpdateEvent(
 
 	enum class UpdateReason {
 		PLUGIN,
-		@ExperimentalCanvasApi SCROLL,
-		@ExperimentalCanvasApi PAGE_TURN;
+		SCROLL,
+		PAGE_TURN;
 	}
 
 }

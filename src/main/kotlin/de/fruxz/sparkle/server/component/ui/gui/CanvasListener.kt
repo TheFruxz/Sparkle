@@ -10,6 +10,7 @@ import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
 import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
+import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent.UpdateReason
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.effect.playEffect
 import de.fruxz.sparkle.framework.extension.player
@@ -80,7 +81,7 @@ internal class CanvasListener : EventListener() {
 				0 -> {
 					event.isCancelled = true
 					if (scrollState > 0) {
-						canvas.display(player, data = session.parameters.edited { // todo instead of display use update
+						canvas.update(player, data = session.parameters.edited {
 							when {
 								event.isShiftClick -> {
 									this[PaginationType.CANVAS_SCROLL_STATE] = 0
@@ -95,6 +96,10 @@ internal class CanvasListener : EventListener() {
 									player.playEffect(SoundLibrary.UI_BUTTON_PRESS_HEAVY)
 								}
 							}
+						}, updateReason = when (canvas.pagination.base) {
+							PAGED -> UpdateReason.PAGE_TURN
+							SCROLL -> UpdateReason.SCROLL
+							else -> UpdateReason.PLUGIN
 						})
 					}
 				}
@@ -121,13 +126,13 @@ internal class CanvasListener : EventListener() {
 									}
 								}
 
-								canvas.display(player, data = parameters)
+								canvas.update(player, data = parameters, updateReason = UpdateReason.SCROLL)
 							}
 						}
 						PAGED -> {
 							if (scrollState <= (linesOfContent / ceilToInt((event.inventory.size.toDouble() / 9)-1)) - 1) {
 								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1)
-								canvas.display(player, data = parameters)
+								canvas.update(player, data = parameters, updateReason = UpdateReason.PAGE_TURN)
 							}
 						}
 						else -> empty()
