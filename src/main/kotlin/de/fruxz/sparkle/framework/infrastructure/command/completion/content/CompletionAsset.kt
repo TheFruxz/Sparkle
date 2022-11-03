@@ -54,8 +54,8 @@ data class CompletionAsset<T>(
 	override val identityKey: Key,
 	val refreshing: Boolean,
 	val supportedInputType: List<InterchangeStructureInputRestriction<*>> = listOf(InterchangeStructureInputRestriction.STRING),
-	var check: (CompletionContext.() -> Boolean)? = null,
-	var transformer: (CompletionContext.() -> T?)? = null,
+	val check: (CompletionContext.() -> Boolean)? = null,
+	val transformer: (CompletionContext.() -> T?)? = null,
 	val generator: CompletionContext.(CompletionAsset<T>) -> Collection<String>,
 ) : KeyedIdentifiable<CompletionAsset<T>> {
 
@@ -74,13 +74,9 @@ data class CompletionAsset<T>(
 		}
 	}
 
-	fun doCheck(check: (CompletionContext.() -> Boolean)?) = apply {
-		this.check = check
-	}
+	fun doCheck(check: (CompletionContext.() -> Boolean)?) = copy(check = check)
 
-	fun transformer(transformer: (CompletionContext.() -> T?)?) = apply {
-		this.transformer = transformer
-	}
+	fun transformer(transformer: (CompletionContext.() -> T?)?) = copy(transformer = transformer)
 
 	companion object {
 

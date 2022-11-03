@@ -101,7 +101,7 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	fun <T : Any> getInput(slot: Int = inputLength - 1, fromAsset: CompletionAsset<T>): T {
 		if (fromAsset.transformer == null) throw IllegalArgumentException("Asset '${fromAsset.identity}' provides no transformer!")
 
-		return getInput(slot).let { input -> fromAsset.transformer?.invoke(
+		return getInput(slot).let { input -> fromAsset.transformer.invoke(
 			CompletionAsset.CompletionContext(
 			executor = executor,
 			fullLineInput = parameters,
