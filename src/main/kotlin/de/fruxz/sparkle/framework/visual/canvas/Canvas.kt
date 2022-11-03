@@ -95,7 +95,10 @@ open class Canvas(
 		get() = base.virtualSize / 2 - 1
 
 	val virtualSlots: IntRange
-		get() = 0..(if (pagination.base == null) base.virtualSize-1 else max(base.virtualSize-1, pagination.computeRealSlot(asyncItems.maxOf { it.key })))
+		get() = 0..(when (pagination.base) {
+			null -> base.virtualSize-1
+			else -> max(base.virtualSize-1, pagination.computeRealSlot(asyncItems.maxOfOrNull { it.key } ?: 0))
+		})
 
 	operator fun get(slot: Int): ItemLike? {
 		return content[slot]
