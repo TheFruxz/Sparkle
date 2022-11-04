@@ -23,6 +23,7 @@ abstract class StructuredPlayerInterchange(
 	permissionMessage: Component? = null,
 	cooldown: Duration = Duration.ZERO,
 	forcedWrongUsageReaction: InterchangeReaction? = null,
+	forcedWrongClientReaction: InterchangeReaction? = null,
 	forcedApproval: Approval? = null,
 	forcedExecutionContext: CoroutineContext? = null,
 ) : Interchange(
@@ -36,6 +37,7 @@ abstract class StructuredPlayerInterchange(
 	permissionMessage = permissionMessage,
 	cooldown = cooldown,
 	forcedWrongUsageReaction = forcedWrongUsageReaction,
+	forcedWrongClientReaction = forcedWrongClientReaction,
 	forcedApproval = forcedApproval,
 	forcedExecutionContext = forcedExecutionContext,
 ) {
