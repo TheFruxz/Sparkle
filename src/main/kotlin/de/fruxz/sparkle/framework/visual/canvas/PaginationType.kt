@@ -53,7 +53,7 @@ interface PaginationType<C> {
 
 					if (lines > 1) {
 						val linesOfContent = ceilToInt((maxVirtualSlot.toDouble() + 1) / 8)
-						val isEndOfScroll = (scrollState + lines + 1) > linesOfContent
+						val isEndOfScroll = (scrollState + 1) > linesOfContent
 
 						if (configuration.renderButtons) {
 							this[8] = when (scrollState) {

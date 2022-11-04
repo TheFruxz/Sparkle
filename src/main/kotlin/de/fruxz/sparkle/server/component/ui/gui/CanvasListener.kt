@@ -74,8 +74,11 @@ internal class CanvasListener : EventListener() {
 			val canvas = session.canvas
 			val affectedItem = event.affectedItem?.item
 			val scrollState = session.parameters[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>() ?: 0
-			val linesOfContent = ceilToInt(canvas.virtualSlots.last.toDouble() / 8)
-			val inventoryLines = ceilToInt(event.inventory.size.toDouble() / 9)
+			val linesOfContent = ceilToInt(canvas.virtualSlots.last.toDouble() / 9)
+			val inventoryLines = ceilToInt(event.inventory.size.toDouble() / when (canvas.pagination.base) {
+				SCROLL -> 8
+				else -> 9
+			})
 
 			when (affectedItem?.getPersistent<Int>(PaginationType.CANVAS_BUTTON_SCROLL)) {
 				0 -> {
@@ -127,10 +130,11 @@ internal class CanvasListener : EventListener() {
 								}
 
 								canvas.update(player, data = parameters, updateReason = UpdateReason.SCROLL)
+
 							}
 						}
 						PAGED -> {
-							if (scrollState <= (linesOfContent / ceilToInt((event.inventory.size.toDouble() / 9)-1)) - 1) {
+							if (scrollState <= (linesOfContent / ceilToInt((event.inventory.size.toDouble() / 9)-1)) - 1) { // todo check, if the last line of event.inventory.size should be removed from the dividation number
 								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1)
 								canvas.update(player, data = parameters, updateReason = UpdateReason.PAGE_TURN)
 							}

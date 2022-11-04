@@ -96,8 +96,16 @@ open class Canvas(
 
 	val virtualSlots: IntRange
 		get() = 0..(when (pagination.base) {
-			null -> base.virtualSize-1
-			else -> max(base.virtualSize-1, pagination.computeRealSlot(asyncItems.maxOfOrNull { it.key } ?: 0))
+			null -> base.virtualSize - 1
+			else -> max(
+				a = pagination.computeRealSlot(content.maxOf { it.key }).also { println("a:$it") }, // TODO <- maybe this fixes the pagination (to few pages/scrolls) issue
+				b = max(
+					a = (base.virtualSize - 1).also { println("b:$it") },
+					b = pagination.computeRealSlot(
+						asyncItems.maxOfOrNull { it.key } ?: 0
+					).also { println("c:$it") }
+				)
+			)
 		})
 
 	operator fun get(slot: Int): ItemLike? {
@@ -189,41 +197,43 @@ open class Canvas(
 
 			if (receiver is Player && topInventory.viewers.isNotEmpty() && receiver in viewers) {
 
-				doAsync { // todo maybe doAsync lets the update struggle with pagination? because async inv generation is invalid???
-					render(receiver, data = data) {
-						this.inventory.contents.forEachIndexed { index, itemStack ->
-							if (topInventory[index] != itemStack && index !in asyncItems.keys && !(itemStack == null && index in onUpdateNonClearableSlots)) {
-								topInventory[index] = itemStack
-							}
+				render(receiver, data = data) {
+
+					this.inventory.contents.forEachIndexed { index, itemStack ->
+						if (topInventory[index] != itemStack && !(itemStack == null && index in onUpdateNonClearableSlots)) {
+							topInventory[index] = itemStack
 						}
 					}
-				}.join()
 
-				CanvasUpdateEvent(receiver, this@Canvas, topInventory, data, updateReason).let { event ->
-					if (!triggerUpdateEvent || event.callEvent()) {
-						topInventory = event.inventory
+					CanvasUpdateEvent(receiver, this@Canvas, topInventory, data, updateReason).let { event ->
+						if (!triggerUpdateEvent || event.callEvent()) {
+							topInventory = event.inventory
 
-						doSync {
+							doSync {
 
-							if (topInventory.viewers.isNotEmpty() && receiver in viewers) { // just a check, to keep it bulletproof
-								debugLog("Updating ${receiver.name}'s inventory from $identity canvas")
+								if (topInventory.viewers.isNotEmpty() && receiver in viewers) { // just a check, to keep it bulletproof
+									debugLog("Updating ${receiver.name}'s inventory from $identity canvas")
 
-								receiver.openInventory(topInventory) // TODO check, if this is really needed, because the inventory is already open
-								// TODO for above: maybe only do it, if the inventory is not the same as the topInventory aka. is not open
+									receiver.openInventory(topInventory) // TODO check, if this is really needed, because the inventory is already open
+									// TODO for above: maybe only do it, if the inventory is not the same as the topInventory aka. is not open
 
-								CanvasSessionManager.putSession(receiver, this@Canvas, data)
-							} else
-								debugLog("Updating ${receiver.name}'s inventory blocked, during last check")
+									CanvasSessionManager.putSession(receiver, this@Canvas, data)
+								} else
+									debugLog("Updating ${receiver.name}'s inventory blocked, during last check")
+
+							}.join()
+
+							event.apply(onUpdate)
+							if (triggerOnOpenToo) event.apply(onOpen)
+
+							if (triggerSound) openSoundEffect?.let { receiver.playSoundEffect(it) }
+
+						} else {
+							return@let
 						}
-
-						event.apply(onUpdate)
-						if (triggerOnOpenToo) event.apply(onOpen)
-
-						if (triggerSound) openSoundEffect?.let { receiver.playSoundEffect(it) }
-
-					} else {
-						return@forEachNotNull
 					}
+
+
 				}
 
 			}
@@ -300,6 +310,10 @@ open class Canvas(
 				}
 
 			}
+		}
+
+		if (asyncItems.isEmpty()) {
+			onCompletion.invoke(CanvasRenderResult(state, deferredItemQueue)) // when no async items are placed, the render is already finished
 		}
 
 		// Phase 4 - return result
