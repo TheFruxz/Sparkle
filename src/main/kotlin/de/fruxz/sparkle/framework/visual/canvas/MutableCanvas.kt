@@ -17,8 +17,8 @@ import de.fruxz.sparkle.framework.visual.canvas.CanvasBase.Companion
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
 import de.fruxz.sparkle.framework.visual.canvas.design.AdaptiveCanvasCompose
 import de.fruxz.sparkle.framework.visual.item.ItemLike
-import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.stacked.extension.asStyledComponent
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import net.kyori.adventure.builder.AbstractBuilder
@@ -27,6 +27,7 @@ import net.kyori.adventure.text.ComponentLike
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
+import kotlin.coroutines.CoroutineContext
 
 /**
  * This class helps to easily create ui's for players.
@@ -46,9 +47,10 @@ data class MutableCanvas(
 	override var flags: Set<CanvasFlag> = emptySet(),
 	override var openSoundEffect: SoundEffect? = null,
 	override var asyncItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
-) : Canvas(label, base, pagination, content, flags, openSoundEffect, asyncItems), Producible<Canvas>, AbstractBuilder<Canvas> {
+) : Canvas(label, base, pagination, content, flags, openSoundEffect, asyncItems), Producible<Canvas>,
+	AbstractBuilder<Canvas> {
 
-	override var onRender: CanvasRender = CanvasRender {  }
+	override var onRender: CanvasRender = CanvasRender { }
 	override var onOpen: CanvasOpenEvent.() -> Unit = { }
 	override var onUpdate: CanvasUpdateEvent.() -> Unit = { }
 	override var onClose: CanvasCloseEvent.() -> Unit = { }
@@ -105,14 +107,28 @@ data class MutableCanvas(
 			?: run { content -= slot }
 
 	@CanvasDsl
-	fun deferred(slot: Int, itemLikeProcess: SuspendComposable<ItemLike>) {
-		asyncItems += slot to SparkleApp.coroutineScope.async(block = itemLikeProcess::compose) // todo coroutineScope and async context should be optionally configurable
+	fun deferred(
+		slot: Int,
+		itemLikeProcess: SuspendComposable<ItemLike>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	) {
+		asyncItems += slot to coroutineScope.async(
+			context = coroutineContext,
+			block = itemLikeProcess::compose
+		)
 	}
 
 	@CanvasDsl
 	@JvmName("deferredItemLikeSet")
-	operator fun set(slot: Int, itemLikeProcess: SuspendComposable<ItemLike>): Unit =
-		deferred(slot, itemLikeProcess)
+	operator fun set(
+		slot: Int,
+		itemLikeProcess: SuspendComposable<ItemLike>
+	): Unit =
+		deferred(
+			slot = slot,
+			itemLikeProcess = itemLikeProcess,
+		)
 
 	//// iterable
 
@@ -121,13 +137,30 @@ data class MutableCanvas(
 		slots.forEach { set(it, itemLike) }
 
 	@CanvasDsl
-	fun deferred(slots: Iterable<Int>, itemLikeProcess: SuspendComposable<ItemLike>): Unit =
-		slots.forEach { deferred(it, itemLikeProcess) }
+	fun deferred(
+		slots: Iterable<Int>,
+		itemLikeProcess: SuspendComposable<ItemLike>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit =
+		slots.forEach {
+			deferred(
+				slot = it,
+				coroutineScope = coroutineScope,
+				coroutineContext = coroutineContext,
+				itemLikeProcess = itemLikeProcess,
+			)
+		}
 
 	@CanvasDsl
 	@JvmName("deferredItemLikesSet")
-	operator fun set(slots: Iterable<Int>, itemLikeProcess: SuspendComposable<ItemLike>): Unit =
-		deferred(slots, itemLikeProcess)
+	operator fun set(
+		slots: Iterable<Int>,
+		itemLikeProcess: SuspendComposable<ItemLike>
+	): Unit = deferred(
+		slots = slots,
+		itemLikeProcess = itemLikeProcess
+	)
 
 	//// vararg
 
@@ -136,13 +169,27 @@ data class MutableCanvas(
 		set(slots.toList(), itemLike)
 
 	@CanvasDsl
-	fun deferred(vararg slots: Int, itemLikeProcess: SuspendComposable<ItemLike>): Unit =
-		deferred(slots.toList(), itemLikeProcess)
+	fun deferred(
+		vararg slots: Int,
+		itemLikeProcess: SuspendComposable<ItemLike>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = deferred(
+		slots = slots.toList(),
+		coroutineScope = coroutineScope,
+		coroutineContext = coroutineContext,
+		itemLikeProcess = itemLikeProcess,
+	)
 
 	@CanvasDsl
 	@JvmName("deferredItemLikeArraySet")
-	operator fun set(vararg slots: Int, itemLikeProcess: SuspendComposable<ItemLike>): Unit =
-		deferred(slots = slots, itemLikeProcess)
+	operator fun set(
+		vararg slots: Int,
+		itemLikeProcess: SuspendComposable<ItemLike>
+	): Unit = deferred(
+		slots = slots,
+		itemLikeProcess = itemLikeProcess,
+	)
 
 	// ItemStack support
 	//// single
@@ -152,13 +199,27 @@ data class MutableCanvas(
 
 	@CanvasDsl
 	@JvmName("asyncItemStack")
-	fun deferred(slot: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
-		deferred(slot, itemLikeProcess = { asSync { ItemLike.of(itemStackProcess.compose(it)) } })
+	fun deferred(
+		slot: Int,
+		itemStackProcess: SuspendComposable<ItemStack>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = deferred(
+		slot = slot,
+		coroutineScope = coroutineScope,
+		coroutineContext = coroutineContext,
+		itemLikeProcess = { asSync { ItemLike.of(itemStackProcess.compose(it)) } },
+	)
 
 	@CanvasDsl
 	@JvmName("deferredItemStackSet")
-	operator fun set(slot: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
-		deferred(slot, itemStackProcess)
+	operator fun set(
+		slot: Int,
+		itemStackProcess: SuspendComposable<ItemStack>
+	): Unit = deferred(
+		slot = slot,
+		itemStackProcess = itemStackProcess
+	)
 
 	//// iterable
 
@@ -168,13 +229,29 @@ data class MutableCanvas(
 
 	@CanvasDsl
 	@JvmName("asyncItemStack")
-	fun deferred(slots: Iterable<Int>, itemStackProcess: SuspendComposable<ItemStack>): Unit =
-		slots.forEach { deferred(it, itemStackProcess) }
+	fun deferred(
+		slots: Iterable<Int>,
+		itemStackProcess: SuspendComposable<ItemStack>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = slots.forEach {
+		deferred(
+			slot = it,
+			coroutineScope = coroutineScope,
+			coroutineContext = coroutineContext,
+			itemStackProcess = itemStackProcess,
+		)
+	}
 
 	@CanvasDsl
 	@JvmName("deferredItemStacksSet")
-	operator fun set(slots: Iterable<Int>, itemStackProcess: SuspendComposable<ItemStack>): Unit =
-		deferred(slots, itemStackProcess)
+	operator fun set(
+		slots: Iterable<Int>,
+		itemStackProcess: SuspendComposable<ItemStack>
+	): Unit = deferred(
+		slots = slots,
+		itemStackProcess = itemStackProcess
+	)
 
 	//// vararg
 
@@ -184,13 +261,27 @@ data class MutableCanvas(
 
 	@CanvasDsl
 	@JvmName("asyncItemStack")
-	fun deferred(vararg slots: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
-		deferred(slots.toList(), itemStackProcess)
+	fun deferred(
+		vararg slots: Int,
+		itemStackProcess: SuspendComposable<ItemStack>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = deferred(
+		slots = slots.toList(),
+		coroutineScope = coroutineScope,
+		coroutineContext = coroutineContext,
+		itemStackProcess = itemStackProcess,
+	)
 
 	@CanvasDsl
 	@JvmName("deferredItemStackArraySet")
-	operator fun set(vararg slots: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
-		deferred(slots = slots, itemStackProcess)
+	operator fun set(
+		vararg slots: Int,
+		itemStackProcess: SuspendComposable<ItemStack>
+	): Unit = deferred(
+		slots = slots,
+		itemStackProcess = itemStackProcess
+	)
 
 	// Material support
 	//// single
@@ -201,13 +292,27 @@ data class MutableCanvas(
 
 	@CanvasDsl
 	@JvmName("asyncMaterial")
-	fun deferred(slot: Int, materialProcess: SuspendComposable<Material>): Unit =
-		deferred(slot, itemLikeProcess = { ItemLike.of(materialProcess.compose(sparkle.coroutineScope)) })
+	fun deferred(
+		slot: Int,
+		materialProcess: SuspendComposable<Material>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = deferred(
+		slot = slot,
+		coroutineScope = coroutineScope,
+		coroutineContext = coroutineContext,
+		itemLikeProcess = { ItemLike.of(materialProcess.compose(sparkle.coroutineScope)) },
+	)
 
 	@CanvasDsl
 	@JvmName("deferredMaterialSet")
-	operator fun set(slot: Int, materialProcess: SuspendComposable<Material>): Unit =
-		deferred(slot, materialProcess)
+	operator fun set(
+		slot: Int,
+		materialProcess: SuspendComposable<Material>
+	): Unit = deferred(
+		slot = slot,
+		materialProcess = materialProcess
+	)
 
 	//// iterable
 
@@ -217,13 +322,29 @@ data class MutableCanvas(
 
 	@CanvasDsl
 	@JvmName("asyncMaterial")
-	fun deferred(slotIterable: Iterable<Int>, materialProcess: SuspendComposable<Material>): Unit =
-		slotIterable.forEach { deferred(it, materialProcess) }
+	fun deferred(
+		slotIterable: Iterable<Int>,
+		materialProcess: SuspendComposable<Material>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = slotIterable.forEach {
+		deferred(
+			slot = it,
+			coroutineScope = coroutineScope,
+			coroutineContext = coroutineContext,
+			materialProcess = materialProcess,
+		)
+	}
 
 	@CanvasDsl
 	@JvmName("deferredMaterialsSet")
-	operator fun set(slotIterable: Iterable<Int>, materialProcess: SuspendComposable<Material>): Unit =
-		deferred(slotIterable, materialProcess)
+	operator fun set(
+		slotIterable: Iterable<Int>,
+		materialProcess: SuspendComposable<Material>
+	): Unit = deferred(
+		slotIterable = slotIterable,
+		materialProcess = materialProcess
+	)
 
 	//// vararg
 
@@ -233,13 +354,27 @@ data class MutableCanvas(
 
 	@CanvasDsl
 	@JvmName("asyncMaterial")
-	fun deferred(vararg slotArray: Int, materialProcess: SuspendComposable<Material>): Unit =
-		deferred(slotIterable = slotArray.toList(), materialProcess)
+	fun deferred(
+		vararg slotArray: Int,
+		materialProcess: SuspendComposable<Material>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = deferred(
+		slotIterable = slotArray.toList(),
+		coroutineScope = coroutineScope,
+		coroutineContext = coroutineContext,
+		materialProcess = materialProcess,
+	)
 
 	@CanvasDsl
 	@JvmName("deferredMaterialArraySet")
-	operator fun set(vararg slotArray: Int, materialProcess: SuspendComposable<Material>): Unit =
-		deferred(slotArray = slotArray, materialProcess)
+	operator fun set(
+		vararg slotArray: Int,
+		materialProcess: SuspendComposable<Material>
+	): Unit = deferred(
+		slotArray = slotArray,
+		materialProcess = materialProcess
+	)
 
 	// Adaptive support
 
@@ -263,23 +398,53 @@ data class MutableCanvas(
 		set(innerSlots[innerSlot], itemLike)
 	}
 
-	fun setInnerDeferred(innerSlot: Int, itemLikeProcess: SuspendComposable<ItemLike>) {
+	fun setInnerDeferred(
+		innerSlot: Int,
+		itemLikeProcess: SuspendComposable<ItemLike>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	) {
 		if (innerSlot !in availableInnerSlots) throw IndexOutOfBoundsException("The inner slot $innerSlot is not available in this canvas.")
 
-		deferred(innerSlots[innerSlot], itemLikeProcess)
+		deferred(
+			slot = innerSlots[innerSlot],
+			coroutineScope = coroutineScope,
+			coroutineContext = coroutineContext,
+			itemLikeProcess = itemLikeProcess,
+		)
 	}
 
 	fun setInner(innerSlots: Iterable<Int>, itemLike: ItemLike?) =
 		innerSlots.forEach { setInner(it, itemLike) }
 
-	fun setInnerDeferred(innerSlots: Iterable<Int>, itemLikeProcess: SuspendComposable<ItemLike>) =
-		innerSlots.forEach { setInnerDeferred(it, itemLikeProcess) }
+	fun setInnerDeferred(
+		innerSlots: Iterable<Int>,
+		itemLikeProcess: SuspendComposable<ItemLike>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	) = innerSlots.forEach {
+		setInnerDeferred(
+			innerSlot = it,
+			coroutineScope = coroutineScope,
+			coroutineContext = coroutineContext,
+			itemLikeProcess = itemLikeProcess,
+		)
+	}
 
 	fun setInner(vararg innerSlots: Int, itemLike: ItemLike?) =
 		setInner(innerSlots.toList(), itemLike)
 
-	fun setInnerDeferred(vararg innerSlots: Int, itemLikeProcess: SuspendComposable<ItemLike>) =
-		setInnerDeferred(innerSlots.toList(), itemLikeProcess)
+	fun setInnerDeferred(
+		vararg innerSlots: Int,
+		itemLikeProcess: SuspendComposable<ItemLike>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	) = setInnerDeferred(
+		innerSlots = innerSlots.toList(),
+		coroutineScope = coroutineScope,
+		coroutineContext = coroutineContext,
+		itemLikeProcess = itemLikeProcess,
+	)
 
 	// Inner ItemStack support
 
@@ -287,22 +452,51 @@ data class MutableCanvas(
 		setInner(innerSlot, itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerItemStack")
-	fun setInnerDeferred(innerSlot: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
-		setInnerDeferred(innerSlot, itemLikeProcess = { ItemLike.of(itemStackProcess.compose(it)) })
+	fun setInnerDeferred(
+		innerSlot: Int,
+		itemStackProcess: SuspendComposable<ItemStack>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = setInnerDeferred(
+		innerSlot = innerSlot,
+		coroutineScope = coroutineScope,
+		coroutineContext = coroutineContext,
+		itemLikeProcess = { ItemLike.of(itemStackProcess.compose(it)) },
+	)
 
 	fun setInner(innerSlots: Iterable<Int>, itemStack: ItemStack?) =
 		setInner(innerSlots, itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerItemStack")
-	fun setInnerDeferred(innerSlots: Iterable<Int>, itemStackProcess: SuspendComposable<ItemStack>): Unit =
-		innerSlots.forEach { setInnerDeferred(it, itemStackProcess) }
+	fun setInnerDeferred(
+		innerSlots: Iterable<Int>,
+		itemStackProcess: SuspendComposable<ItemStack>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = innerSlots.forEach {
+		setInnerDeferred(
+			innerSlot = it,
+			coroutineScope = coroutineScope,
+			coroutineContext = coroutineContext,
+			itemStackProcess = itemStackProcess,
+		)
+	}
 
 	fun setInner(vararg innerSlots: Int, itemStack: ItemStack?) =
 		setInner(innerSlots.toList(), itemStack?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerItemStack")
-	fun setInnerDeferred(vararg innerSlots: Int, itemStackProcess: SuspendComposable<ItemStack>): Unit =
-		setInnerDeferred(innerSlots.toList(), itemStackProcess)
+	fun setInnerDeferred(
+		vararg innerSlots: Int,
+		itemStackProcess: SuspendComposable<ItemStack>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = setInnerDeferred(
+		innerSlots = innerSlots.toList(),
+		coroutineScope = coroutineScope,
+		coroutineContext = coroutineContext,
+		itemStackProcess = itemStackProcess,
+	)
 
 	// Inner Material support
 
@@ -310,22 +504,51 @@ data class MutableCanvas(
 		setInner(innerSlot, material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerMaterial")
-	fun setInnerDeferred(innerSlot: Int, materialProcess: SuspendComposable<Material>): Unit =
-		setInnerDeferred(innerSlot, itemLikeProcess = { ItemLike.of(materialProcess.compose(it)) })
+	fun setInnerDeferred(
+		innerSlot: Int,
+		materialProcess: SuspendComposable<Material>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = setInnerDeferred(
+		innerSlot = innerSlot,
+		coroutineScope = coroutineScope,
+		coroutineContext = coroutineContext,
+		itemLikeProcess = { ItemLike.of(materialProcess.compose(it)) },
+	)
 
 	fun setInner(innerSlots: Iterable<Int>, material: Material?) =
 		setInner(innerSlots, material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerMaterial")
-	fun setInnerDeferred(innerSlots: Iterable<Int>, materialProcess: SuspendComposable<Material>): Unit =
-		innerSlots.forEach { setInnerDeferred(it, materialProcess) }
+	fun setInnerDeferred(
+		innerSlots: Iterable<Int>,
+		materialProcess: SuspendComposable<Material>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = innerSlots.forEach {
+		setInnerDeferred(
+			innerSlot = it,
+			coroutineScope = coroutineScope,
+			coroutineContext = coroutineContext,
+			materialProcess = materialProcess,
+		)
+	}
 
 	fun setInner(vararg innerSlots: Int, material: Material?) =
 		setInner(innerSlots.toList(), material?.let { ItemLike.of(it) })
 
 	@JvmName("asyncInnerMaterial")
-	fun setInnerDeferred(vararg innerSlots: Int, materialProcess: SuspendComposable<Material>): Unit =
-		setInnerDeferred(innerSlots.toList(), materialProcess)
+	fun setInnerDeferred(
+		vararg innerSlots: Int,
+		materialProcess: SuspendComposable<Material>,
+		coroutineScope: CoroutineScope = sparkle.coroutineScope,
+		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
+	): Unit = setInnerDeferred(
+		innerSlots = innerSlots.toList(),
+		coroutineScope = coroutineScope,
+		coroutineContext = coroutineContext,
+		materialProcess = materialProcess,
+	)
 
 	// Inner Adaptive support
 
@@ -474,7 +697,8 @@ data class MutableCanvas(
 	 * @since 1.0
 	 */
 	@CanvasDsl
-	fun disablePlayerItemGrabbing(vararg flags: CanvasFlag = CanvasFlag.DEFAULT_PROTECTION.toTypedArray()) = annexFlags(*flags)
+	fun disablePlayerItemGrabbing(vararg flags: CanvasFlag = CanvasFlag.DEFAULT_PROTECTION.toTypedArray()) =
+		annexFlags(*flags)
 
 	/**
 	 * This function removes the [NO_GRAB], [NO_DRAG], [NO_SWAP] and [NO_MOVE] flags
@@ -487,7 +711,8 @@ data class MutableCanvas(
 	 * @since 1.0
 	 */
 	@CanvasDsl
-	fun reEnablePlayerItemGrabbing(vararg flags: CanvasFlag = CanvasFlag.DEFAULT_PROTECTION.toTypedArray()) = removeFlags(*flags)
+	fun reEnablePlayerItemGrabbing(vararg flags: CanvasFlag = CanvasFlag.DEFAULT_PROTECTION.toTypedArray()) =
+		removeFlags(*flags)
 
 	// Technical stuff
 
