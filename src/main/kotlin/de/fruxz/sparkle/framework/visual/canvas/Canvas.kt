@@ -98,12 +98,12 @@ open class Canvas(
 		get() = 0..(when (pagination.base) {
 			null -> base.virtualSize - 1
 			else -> max(
-				a = pagination.computeRealSlot(content.maxOf { it.key }).also { println("a:$it") }, // TODO <- maybe this fixes the pagination (to few pages/scrolls) issue
+				a = pagination.computeRealSlot(content.maxOf { it.key }),
 				b = max(
-					a = (base.virtualSize - 1).also { println("b:$it") },
+					a = base.virtualSize - 1,
 					b = pagination.computeRealSlot(
 						asyncItems.maxOfOrNull { it.key } ?: 0
-					).also { println("c:$it") }
+					)
 				)
 			)
 		})
@@ -197,9 +197,9 @@ open class Canvas(
 
 			if (receiver is Player && topInventory.viewers.isNotEmpty() && receiver in viewers) {
 
-				render(receiver, data = data) {
+				render(receiver, data = data) { (renderResult, _) ->
 
-					this.inventory.contents.forEachIndexed { index, itemStack ->
+					renderResult.contents.forEachIndexed { index, itemStack ->
 						if (topInventory[index] != itemStack && !(itemStack == null && index in onUpdateNonClearableSlots)) {
 							topInventory[index] = itemStack
 						}
@@ -207,6 +207,7 @@ open class Canvas(
 
 					CanvasUpdateEvent(receiver, this@Canvas, topInventory, data, updateReason).let { event ->
 						if (!triggerUpdateEvent || event.callEvent()) {
+
 							topInventory = event.inventory
 
 							doSync {
@@ -214,8 +215,9 @@ open class Canvas(
 								if (topInventory.viewers.isNotEmpty() && receiver in viewers) { // just a check, to keep it bulletproof
 									debugLog("Updating ${receiver.name}'s inventory from $identity canvas")
 
-									receiver.openInventory(topInventory) // TODO check, if this is really needed, because the inventory is already open
-									// TODO for above: maybe only do it, if the inventory is not the same as the topInventory aka. is not open
+									if (receiver.openInventory != topInventory) {
+										receiver.openInventory(topInventory)
+									}
 
 									CanvasSessionManager.putSession(receiver, this@Canvas, data)
 								} else
@@ -243,12 +245,12 @@ open class Canvas(
 	}
 
 	suspend fun render(
-		target: Player? = null, // todo check if target is indeed set in the implementations of these function, even if it is possible to be null
+		target: Player? = null,
 		vendor: App = sparkle,
 		syncContext: CoroutineContext = vendor.syncDispatcher,
 		asyncContext: CoroutineContext = vendor.asyncDispatcher,
 		data: Map<Key, Any> = emptyMap(),
-		onCompletion: suspend CanvasRenderResult.() -> Unit = {  }, // on whole completion, every deferred is also set!
+		onCompletion: suspend (CanvasRenderResult) -> Unit = {  }, // on whole completion, every deferred is also set!
 	): CanvasRenderResult? {
 
 		var state = base.generateInventory(target, label)
@@ -257,13 +259,8 @@ open class Canvas(
 			vendor = vendor,
 			context = syncContext,
 		) {
-			when {
-				base.virtualSize % 9 != 0 -> (0 until base.virtualSize).map { slot ->
-					content[slot]?.asItemStack()
-				}
-				else -> ((0 until base.virtualSize) to pagination.contentRendering(scrollState, this)).let { (slots, paginated) ->
-					slots.map { paginated[it]?.asItemStack() }
-				}
+			((0 until base.virtualSize) to pagination.contentRendering(scrollState, this)).let { (slots, paginated) ->
+				slots.map { paginated[it]?.asItemStack() }
 			}
 		}
 
@@ -283,13 +280,25 @@ open class Canvas(
 
 		// Phase 3 - place deferred content
 		var deferredItemQueue: Set<Deferred<ItemStack>> = emptySet()
-
-		asyncItems.forEach { (placedSlot, value) ->
-			when (pagination.base) { // \/ now producing relative position to current point-of-view
+		val involvedAsyncItems = asyncItems.mapNotNull { (placedSlot, value) ->
+			val slot = when (pagination.base) { // \/ now producing relative position to current point-of-view
 				null -> pagination.computeRealSlot(placedSlot).takeIf { it in state.slots } // <- expecting non-pagination, but still use computeRealSlot for 3rd party software
 				SCROLL -> pagination.computeRealSlot(placedSlot - (scrollState * 8)).takeIf { it in state.slots } // <- items placed for scroll panels
 				PAGED -> (placedSlot - (scrollState * (base.virtualSize - 9))).takeIf { it in state.slots.toList().dropLast(9) }
-			}?.let { slot ->
+			}
+
+			return@mapNotNull if (slot != null) {
+				slot to value
+			} else null
+
+		}
+
+		if (involvedAsyncItems.isEmpty()) {
+			onFinishedDeferred.invoke(deferredItemQueue)
+			onCompletion.invoke(CanvasRenderResult(state, deferredItemQueue)) // when no async items are placed, the render is already finished
+		} else {
+
+			involvedAsyncItems.forEach { (slot, value) ->
 
 				deferredItemQueue += asAsync(vendor = vendor, context = asyncContext) {
 					value.await().asItemStack().also {
@@ -297,36 +306,33 @@ open class Canvas(
 					}
 				}.apply {
 					invokeOnCompletion {
-						doAsync(vendor = vendor, context = asyncContext) {
-							val queue = deferredItemQueue
+						val queue = deferredItemQueue
 
-							if (queue.all { it.isCompleted }) {
+						if (queue.all { it.isCompleted }) {
+							doAsync(vendor = vendor, context = asyncContext) {
 								onFinishedDeferred.invoke(queue)
 								onCompletion.invoke(CanvasRenderResult(state, queue))
 							}
-
 						}
+
 					}
 				}
 
 			}
-		}
 
-		if (asyncItems.isEmpty()) {
-			onCompletion.invoke(CanvasRenderResult(state, deferredItemQueue)) // when no async items are placed, the render is already finished
 		}
 
 		// Phase 4 - return result
 
 		return CanvasRenderResult(
-			inventory = state,
+			renderResult = state,
 			deferredItems = deferredItemQueue,
 		)
 
 	}
 
 	data class CanvasRenderResult(
-		val inventory: Inventory,
+		val renderResult: Inventory,
 		val deferredItems: Set<Deferred<ItemStack>>,
 	) {
 

@@ -11,7 +11,7 @@ class CanvasUpdateEvent(
 	canvas: Canvas,
 	inventory: Inventory,
 	data: Map<Key, Any>,
-	val reason: UpdateReason, // TODO implement, when pagination utilizes the update function!
+	val reason: UpdateReason,
 ) : CanvasOpenEvent(player, canvas, inventory, data) {
 
 	override fun getHandlers() = handlerList

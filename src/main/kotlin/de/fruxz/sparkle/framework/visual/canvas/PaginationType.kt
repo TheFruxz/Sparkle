@@ -62,7 +62,7 @@ interface PaginationType<C> {
 							}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 0)
 
 							this[(lines * 9) - 1] = when {
-								isEndOfScroll -> configuration.emptyButton
+								isEndOfScroll -> configuration.emptyButton.label("<red>end")
 								else -> configuration.nextButton
 							}.copy().setPersistent(CANVAS_BUTTON_SCROLL, +1)
 						}
