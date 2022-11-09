@@ -430,8 +430,22 @@ data class Item(
 	fun showItemData() =
 		apply { postProperties.remove(NO_DATA) }
 
-	fun blankLabel() =
-		apply { postProperties.add(BLANK_LABEL) }
+	/**
+	 * This function makes the label of the item going blank.
+	 * If [immutable] is true, the blank label will be applied
+	 * through a [Item.postProperties] flag, which is executed
+	 * in the post-production phase.
+	 * So effectively, the label will be blank, even if the label
+	 * property of the item is not.
+	 * If [immutable] is false, which is the default, the label will be only set to a
+	 * blank text component, which can be overwritten later.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun blankLabel(immutable: Boolean = false) = when (immutable) { // immutable default true would lead to confusion
+		true -> apply { postProperties.add(BLANK_LABEL) }
+		else -> apply { label = Component.text(" ") }
+	}
 
 	fun filledLabel() =
 		apply { postProperties.remove(BLANK_LABEL) }
