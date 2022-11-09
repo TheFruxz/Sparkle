@@ -3,10 +3,8 @@ package de.fruxz.sparkle.server.component.ui.gui
 import de.fruxz.ascend.extension.container.edited
 import de.fruxz.ascend.extension.container.takeOrEmpty
 import de.fruxz.ascend.extension.empty
-import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.maxTo
 import de.fruxz.ascend.extension.math.minTo
-import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
 import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
@@ -19,9 +17,10 @@ import de.fruxz.sparkle.framework.extension.visual.ui.affectedItem
 import de.fruxz.sparkle.framework.extension.visual.ui.item
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
-import de.fruxz.sparkle.framework.visual.canvas.PaginationType
-import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.PAGED
-import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.SCROLL
+import de.fruxz.sparkle.framework.visual.canvas.pagination.CanvasPageInformation
+import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType
+import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Companion.PaginationBase.PAGED
+import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Companion.PaginationBase.SCROLL
 import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -73,17 +72,12 @@ internal class CanvasListener : EventListener() {
 		if (session != null) {
 			val canvas = session.canvas
 			val affectedItem = event.affectedItem?.item
-			val scrollState = session.parameters[PaginationType.CANVAS_SCROLL_STATE]?.takeIfInstance<Int>() ?: 0
-			val linesOfContent = ceilToInt(canvas.virtualSlots.last.toDouble() / 9)
-			val inventoryLines = ceilToInt(event.inventory.size.toDouble() / when (canvas.pagination.base) {
-				SCROLL -> 8
-				else -> 9
-			})
+			val (pageState, renderedLines, utilizableLines, isLastPosition) = CanvasPageInformation.of(event.inventory, session)
 
 			when (affectedItem?.getPersistent<Int>(PaginationType.CANVAS_BUTTON_SCROLL)) {
 				0 -> {
 					event.isCancelled = true
-					if (scrollState > 0) {
+					if (pageState > 0) {
 						canvas.update(player, data = session.parameters.edited {
 							when {
 								event.isShiftClick -> {
@@ -91,11 +85,11 @@ internal class CanvasListener : EventListener() {
 									player.playEffect(SoundLibrary.UI_BUTTON_PRESS_PUNCH)
 								}
 								event.isLeftClick -> {
-									this[PaginationType.CANVAS_SCROLL_STATE] = scrollState - 1
+									this[PaginationType.CANVAS_SCROLL_STATE] = pageState - 1
 									player.playEffect(SoundLibrary.UI_BUTTON_PRESS)
 								}
 								event.isRightClick -> {
-									this[PaginationType.CANVAS_SCROLL_STATE] = (scrollState - 3).minTo(0)
+									this[PaginationType.CANVAS_SCROLL_STATE] = (pageState - 3).minTo(0)
 									player.playEffect(SoundLibrary.UI_BUTTON_PRESS_HEAVY)
 								}
 							}
@@ -112,19 +106,19 @@ internal class CanvasListener : EventListener() {
 
 					when (canvas.pagination.base) {
 						SCROLL -> {
-							if ((scrollState + inventoryLines) <= linesOfContent) {
+							if (!isLastPosition) {
 
 								when {
 									event.isShiftClick -> {
-										parameters += PaginationType.CANVAS_SCROLL_STATE to (linesOfContent-(inventoryLines-1))
+										parameters += PaginationType.CANVAS_SCROLL_STATE to (renderedLines-(utilizableLines-1))
 										player.playEffect(SoundLibrary.UI_BUTTON_PRESS_PUNCH)
 									}
 									event.isLeftClick -> {
-										parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1).maxTo(linesOfContent)
+										parameters += PaginationType.CANVAS_SCROLL_STATE to (pageState + 1).maxTo(renderedLines)
 										player.playEffect(SoundLibrary.UI_BUTTON_PRESS)
 									}
 									event.isRightClick -> {
-										parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 3).maxTo(linesOfContent)
+										parameters += PaginationType.CANVAS_SCROLL_STATE to (pageState + 3).maxTo(renderedLines)
 										player.playEffect(SoundLibrary.UI_BUTTON_PRESS_HEAVY)
 									}
 								}
@@ -134,8 +128,8 @@ internal class CanvasListener : EventListener() {
 							}
 						}
 						PAGED -> {
-							if (scrollState <= (linesOfContent / ceilToInt((event.inventory.size.toDouble() / 9)-1)) - 1) { // todo check, if the last line of event.inventory.size should be removed from the dividation number
-								parameters += PaginationType.CANVAS_SCROLL_STATE to (scrollState + 1)
+							if (!isLastPosition) {
+								parameters += PaginationType.CANVAS_SCROLL_STATE to (pageState + 1)
 								canvas.update(player, data = parameters, updateReason = UpdateReason.PAGE_TURN)
 							}
 						}

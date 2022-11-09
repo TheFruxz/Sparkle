@@ -1,4 +1,4 @@
-package de.fruxz.sparkle.framework.visual.canvas
+package de.fruxz.sparkle.framework.visual.canvas.pagination
 
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.floorToInt
@@ -7,18 +7,22 @@ import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.subNamespacedKey
 import de.fruxz.sparkle.framework.extension.visual.ui.item
 import de.fruxz.sparkle.framework.extension.visual.ui.skull
+import de.fruxz.sparkle.framework.visual.canvas.Canvas
 import de.fruxz.sparkle.framework.visual.canvas.Canvas.ExperimentalCanvasApi
-import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.PAGED
-import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.SCROLL
+import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Companion.PaginationBase.PAGED
+import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Companion.PaginationBase.SCROLL
 import de.fruxz.sparkle.framework.visual.item.Item
 import de.fruxz.sparkle.framework.visual.item.ItemLike
+import de.fruxz.stacked.extension.dyeDarkGray
 import de.fruxz.stacked.extension.subKey
+import de.fruxz.stacked.text
 import org.bukkit.Material
 
 
 interface PaginationType<C> {
 
 	val base: PaginationBase?
+	val lineSize: Int?
 
 	val configuration: C
 
@@ -31,6 +35,7 @@ interface PaginationType<C> {
 		fun none() =
 			object : PaginationType<Unit> {
 				override val base: PaginationBase? = null
+				override val lineSize = null
 				override val configuration = Unit
 				override fun computeRealSlot(virtualSlot: Int) = virtualSlot
 				override fun contentRendering(scrollState: Int, canvas: Canvas) = canvas.content
@@ -40,10 +45,11 @@ interface PaginationType<C> {
 		fun scroll(configuration: ScrollControlSetup = ScrollControlSetup()) =
 			object : PaginationType<ScrollControlSetup> {
 				override val base: PaginationBase = SCROLL
+				override val lineSize = 8
 				override val configuration = configuration
 				override fun computeRealSlot(virtualSlot: Int) = virtualSlot + (floorToInt(virtualSlot.toDouble() / 8))
 				override fun contentRendering(scrollState: Int, canvas: Canvas) = buildMap {
-					val lines = ((canvas.base.virtualSize + 1) / 9)
+					val lines = ((canvas.base.virtualSize + 1) / lineSize) // todo lineSize was 9, because the real size of the canvas is 9?
 					val contents = canvas.content
 					val maxVirtualSlot = canvas.virtualSlots.last
 
@@ -52,8 +58,8 @@ interface PaginationType<C> {
 					}
 
 					if (lines > 1) {
-						val linesOfContent = ceilToInt((maxVirtualSlot.toDouble() + 1) / 8)
-						val isEndOfScroll = (scrollState + 1) > linesOfContent
+						val linesOfContent = ceilToInt((1.0 + maxVirtualSlot) / 8)
+						val (_, _, _, isEndOfScroll) = CanvasPageInformation.of(canvas.base.virtualSize, scrollState, canvas.virtualSlots.last, canvas.pagination.base) // most variables wasted, but it's okay
 
 						if (configuration.renderButtons) {
 							this[8] = when (scrollState) {
@@ -62,19 +68,19 @@ interface PaginationType<C> {
 							}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 0)
 
 							this[(lines * 9) - 1] = when {
-								isEndOfScroll -> configuration.emptyButton.label("<red>end")
+								isEndOfScroll -> configuration.emptyButton
 								else -> configuration.nextButton
 							}.copy().setPersistent(CANVAS_BUTTON_SCROLL, +1)
 						}
 
 						if (configuration.renderBar) {
 							if (lines > 2) {
-								val startPos = 1 + ceilToInt((lines - 3) * (scrollState.toDouble() / (linesOfContent)))
-								val endPos = 1 + ceilToInt((lines - 3) * (scrollState.toDouble() / (linesOfContent)))
+								val start = 1 + ((lines - 2).toDouble() * (scrollState.toDouble() / linesOfContent)).floorToInt()
+								val stop = 1 + ((lines - 2).toDouble() * (scrollState.toDouble() / linesOfContent)).ceilToInt()
 
 								for (currentLine in 2 until lines) {
 									this[(currentLine * 9) - 1] = when (currentLine - 1) {
-										in startPos..endPos -> configuration.barButton
+										in start..stop -> configuration.barButton
 										else -> configuration.barBackground
 									}.copy()
 								}
@@ -90,6 +96,7 @@ interface PaginationType<C> {
 		fun paged(configuration: PageControlSetup = PageControlSetup()) =
 			object : PaginationType<PageControlSetup> {
 				override val base: PaginationBase = PAGED
+				override val lineSize = 9
 				override val configuration = configuration
 				override fun computeRealSlot(virtualSlot: Int) = virtualSlot
 				override fun contentRendering(scrollState: Int, canvas: Canvas): Map<Int, ItemLike> = buildMap {
@@ -109,7 +116,7 @@ interface PaginationType<C> {
 						}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 0)
 
 						this[(lines*9)-4] = when {
-							(scrollState > (maxVirtualSlot.toDouble() / 9 / (lines-1)) - 1) -> configuration.emptyButton
+							CanvasPageInformation.of(canvas.base.virtualSize, scrollState, maxVirtualSlot, base).isLastPosition -> configuration.emptyButton
 							else -> configuration.nextButton
 						}.copy().setPersistent(CANVAS_BUTTON_SCROLL, 1)
 
@@ -129,7 +136,7 @@ interface PaginationType<C> {
 			val renderButtons: Boolean = true,
 			val backButton: Item = skull("MHF_ArrowUp", false).blankLabel(),
 			val nextButton: Item = skull("MHF_ArrowDown", false).blankLabel(),
-			val emptyButton: Item = skull("MHF_Wood", false).blankLabel(),
+			val emptyButton: Item = skull("MHF_Wood", false).label(text("End of content").dyeDarkGray()),
 			val barBackground: Item = Material.BLACK_STAINED_GLASS_PANE.item.blankLabel(),
 			val barButton: Item = Material.WHITE_STAINED_GLASS_PANE.item.blankLabel(),
 		)
@@ -139,7 +146,7 @@ interface PaginationType<C> {
 			val renderIndicator: Boolean = true,
 			val backButton: Item = skull("MHF_ArrowLeft", false).blankLabel(),
 			val nextButton: Item = skull("MHF_ArrowRight", false).blankLabel(),
-			val emptyButton: Item = skull("MHF_Wood", false).blankLabel(),
+			val emptyButton: Item = skull("MHF_Wood", false).label(text("End of content").dyeDarkGray()),
 			val pageIcon: Item = Material.BOOK.item.blankLabel()
 		)
 

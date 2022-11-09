@@ -28,8 +28,9 @@ import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasRender
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.NO_OPEN
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.NO_UPDATE
-import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.PAGED
-import de.fruxz.sparkle.framework.visual.canvas.PaginationType.Companion.PaginationBase.SCROLL
+import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType
+import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Companion.PaginationBase.PAGED
+import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Companion.PaginationBase.SCROLL
 import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager
 import de.fruxz.sparkle.framework.visual.item.ItemLike
 import kotlinx.coroutines.Deferred

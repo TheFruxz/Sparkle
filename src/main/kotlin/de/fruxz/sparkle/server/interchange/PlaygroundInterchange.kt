@@ -12,7 +12,7 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterch
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.visual.canvas.Canvas.ExperimentalCanvasApi
-import de.fruxz.sparkle.framework.visual.canvas.PaginationType
+import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType
 import de.fruxz.sparkle.framework.visual.canvas.buildCanvas
 import de.fruxz.sparkle.framework.visual.color.ColorType
 import de.fruxz.sparkle.framework.visual.color.DyeableMaterial.BANNER

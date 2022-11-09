@@ -16,6 +16,7 @@ import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasRender
 import de.fruxz.sparkle.framework.visual.canvas.CanvasBase.Companion
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
 import de.fruxz.sparkle.framework.visual.canvas.design.AdaptiveCanvasCompose
+import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType
 import de.fruxz.sparkle.framework.visual.item.ItemLike
 import de.fruxz.stacked.extension.asStyledComponent
 import kotlinx.coroutines.CoroutineScope
