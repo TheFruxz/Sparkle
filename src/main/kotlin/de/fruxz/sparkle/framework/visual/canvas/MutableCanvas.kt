@@ -396,7 +396,7 @@ data class MutableCanvas(
 	fun setInner(innerSlot: Int, itemLike: ItemLike?) {
 		if (innerSlot !in availableInnerSlots) throw IndexOutOfBoundsException("The inner slot $innerSlot is not available in this canvas.")
 
-		set(innerSlots[innerSlot], itemLike)
+		set(virtualInnerSlots[innerSlot], itemLike)
 	}
 
 	fun setInnerDeferred(
@@ -408,7 +408,7 @@ data class MutableCanvas(
 		if (innerSlot !in availableInnerSlots) throw IndexOutOfBoundsException("The inner slot $innerSlot is not available in this canvas.")
 
 		deferred(
-			slot = innerSlots[innerSlot],
+			slot = virtualInnerSlots[innerSlot],
 			coroutineScope = coroutineScope,
 			coroutineContext = coroutineContext,
 			itemLikeProcess = itemLikeProcess,
@@ -554,7 +554,7 @@ data class MutableCanvas(
 	// Inner Adaptive support
 
 	fun setInner(innerSlotIterable: Iterable<Int>, adaptiveCanvasCompose: AdaptiveCanvasCompose) =
-		adaptiveCanvasCompose.place(this, innerSlotIterable.map { innerSlots[it] })
+		adaptiveCanvasCompose.place(this, innerSlotIterable.map { virtualInnerSlots[it] })
 
 	fun setInner(innerSlot: Int, adaptiveCanvasCompose: AdaptiveCanvasCompose) =
 		setInner(listOf(innerSlot), adaptiveCanvasCompose)
@@ -639,7 +639,7 @@ data class MutableCanvas(
 	// Design
 
 	fun border(itemLike: ItemLike) =
-		set(base.borderSlots, itemLike)
+		set(virtualBorderSlots, itemLike)
 
 	fun border(material: Material) =
 		border(ItemLike.of(material))

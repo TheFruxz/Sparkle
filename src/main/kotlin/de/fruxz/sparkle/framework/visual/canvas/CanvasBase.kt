@@ -1,15 +1,14 @@
 package de.fruxz.sparkle.framework.visual.canvas
 
-import de.fruxz.ascend.extension.math.floorToInt
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.InventoryHolder
-import kotlin.math.roundToInt
 
 data class CanvasBase(
 	val size: Int?,
 	val type: InventoryType?,
+	val lineSize: Int,
 ) {
 
 	init { assert(size != null || type != null) { "size or type have to be non-null!" } }
@@ -41,38 +40,17 @@ data class CanvasBase(
 		else -> throw illegalState()
 	}
 
-	val lines = floorToInt(virtualSize.toDouble() / 9)
-
 	val slots = 0 until virtualSize
-
-	val borderSlots by lazy {
-		val sideRows = if (virtualSize >= 9 * 2) {
-			(virtualSize.toDouble() / 9.0).let { lines ->
-				lines.roundToInt().takeIf { lines >= 3 } ?: 0
-			}
-		} else
-			0
-
-		var sideSlots = setOf<Int>()
-
-		if (sideRows > 0) {
-			for ((index, _) in (1..(sideRows - 2)).withIndex()) {
-				sideSlots += (setOf(9 + (index * 9), 17 + (index * 9)))
-			}
-		}
-
-		(0..8).toSet() + (virtualSize - 9 until virtualSize).toSet() + sideSlots
-	}
 
 	private fun illegalState() = IllegalStateException("Both parameters of CanvasBase are null, which should not be possible!")
 
 	companion object {
 
-		fun ofSize(size: Int) = CanvasBase(size, null)
+		fun ofSize(size: Int, lineSize: Int = 9) = CanvasBase(size, null, lineSize)
 
-		fun ofLines(lines: Int) = CanvasBase(lines * 9, null)
+		fun ofLines(lines: Int, lineSize: Int = 9) = CanvasBase(lines * lineSize, null, lineSize)
 
-		fun ofType(type: InventoryType) = CanvasBase(null, type)
+		fun ofType(type: InventoryType, lineSize: Int = 9) = CanvasBase(null, type, lineSize)
 
 	}
 

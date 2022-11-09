@@ -4,6 +4,8 @@ import de.fruxz.ascend.extension.container.distinctSetBy
 import de.fruxz.ascend.extension.container.forEachNotNull
 import de.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
 import de.fruxz.ascend.extension.data.buildRandomTag
+import de.fruxz.ascend.extension.math.ceilToInt
+import de.fruxz.ascend.extension.math.minTo
 import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
@@ -80,20 +82,70 @@ open class Canvas(
 
 	override val identity = buildRandomTag(10, tagType = MIXED_CASE)
 
-	val innerSlots: List<Int>
+	/**
+	 * This computational value computes a list of slots, on which
+	 * slots are being referred as the inner slots of the virtual canvas.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val virtualInnerSlots: List<Int>
 		get() = buildList {
-			for (x in 1..(base.lines - 2)) {
-				for (x2 in ((1 + (x * 9))..(7 + (x * 9)))) {
-					add(x2)
-				}
+			for (x in 1..(virtualLines.last - 2)) {
+				addAll((1 + (x * virtualLineSize))..(7 + (x * virtualLineSize)))
 			}
 		}
 
+	/**
+	 * This computational value returns the current size
+	 * of a virtual line inside the canvas.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val virtualLineSize: Int
+		get() = pagination.lineSize ?: base.lineSize
+
+	/**
+	 * This computational value computes the current
+	 * amount of virtual lines.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val virtualLines: IntRange
+		get() = 1..(virtualSlots.last.toDouble() / virtualLineSize).ceilToInt().minTo(1)
+
+	/**
+	 * This computational value computes the current available
+	 * space out of the current virtual dimensions.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val virtualSpace: Int
+		get() = virtualLines.last * virtualLineSize
+
+	/**
+	 * This computational value computes the current available
+	 * slots, which are located inside a border frame.
+	 * @author Fruxz
+	 * @1.0
+	 */
 	val availableInnerSlots
-		get() = innerSlots.indices
+		get() = virtualInnerSlots.indices
 
 	val center: Int
 		get() = base.virtualSize / 2 - 1
+
+	val virtualBorderSlots by lazy {
+		val sideRows = (virtualLines.last.takeIf { it >= 3 && virtualSpace >= virtualLineSize * 2 } ?: 0)
+		var sideSlots = setOf<Int>()
+
+		if (sideRows > 0) {
+			for ((index, _) in (1..(sideRows - 2)).withIndex()) {
+				sideSlots += (setOf(virtualLineSize + (index * virtualLineSize), ((virtualLineSize*2)-1) + (index * virtualLineSize)))
+			}
+		}
+
+		(0 until virtualLineSize).toSet() + (virtualSpace - virtualLineSize until virtualSpace).toSet() + sideSlots
+	}
 
 	val virtualSlots: IntRange
 		get() = 0..(when (pagination.base) {
