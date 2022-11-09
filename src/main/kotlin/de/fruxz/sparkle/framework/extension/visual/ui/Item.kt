@@ -9,10 +9,8 @@ import de.fruxz.sparkle.framework.visual.color.DyeableMaterial
 import de.fruxz.sparkle.framework.visual.item.Item
 import de.fruxz.sparkle.framework.visual.item.ItemLike
 import de.fruxz.sparkle.framework.visual.item.quirk.Quirk.Companion.skullQuirk
-import de.fruxz.stacked.text
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
@@ -104,8 +102,6 @@ fun item(itemStack: ItemStack) = itemStack.item
  */
 fun skull(ownerName: String, httpRequest: Boolean = true, timeout: Duration = 5.seconds): Item = Material.PLAYER_HEAD.item {
 
-	runBlocking { withTimeoutOrNull(timeout) { offlinePlayer(ownerName).name } }?.let { label = text(it).color(NamedTextColor.YELLOW) }
-
 	skullQuirk {
 
 		if (httpRequest) {
@@ -128,7 +124,7 @@ fun skull(ownerName: String, httpRequest: Boolean = true, timeout: Duration = 5.
 				playerProfile!!.complete(true, true)
 			}
 		} else
-			owningPlayer = offlinePlayer(ownerName)
+			this.ownerProfile = offlinePlayer(ownerName).playerProfile // todo replace with new api if papers #8543 gets merged
 
 	}
 }
