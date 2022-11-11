@@ -15,62 +15,29 @@ data class DependentComplexShape(
 		dependentShapes.sumOf { it.volume }
 	}
 
-	override val fullHeight: Double by lazy {
-		var outgoing = dependentShapes.first().center
-		var minHeight = -.0
-		var maxHeight = .0
+	override val fullHeight: Double
+		get() {
+			val highest = dependentShapes.maxBy { it.center.y }
+			val lowest = dependentShapes.maxBy { it.center.y }
 
-		for (shape in dependentShapes) {
-			val height = shape.center.y - outgoing.y
-			if (height < minHeight) {
-				minHeight = height
-			}
-			if (height > maxHeight) {
-				maxHeight = height
-			}
-			outgoing = shape.center
+			return ((highest.fullHeight / 2) - (lowest.fullHeight / 2))
 		}
 
-		return@lazy maxHeight - minHeight
-	}
+	override val fullWidth: Double
+		get() {
+			val highest = dependentShapes.maxBy { it.center.x }
+			val lowest = dependentShapes.maxBy { it.center.x }
 
-	override val fullWidth: Double by lazy {
-		var outgoing = dependentShapes.first().center
-		var minWidth = -.0
-		var maxWidth = .0
-
-		for (shape in dependentShapes) {
-			val width = shape.center.x - outgoing.x
-			if (width < minWidth) {
-				minWidth = width
-			}
-			if (width > maxWidth) {
-				maxWidth = width
-			}
-			outgoing = shape.center
+			return ((highest.fullWidth / 2) - (lowest.fullWidth / 2))
 		}
 
-		return@lazy maxWidth - minWidth
-	}
+	override val fullDepth: Double
+		get() {
+			val highest = dependentShapes.maxBy { it.center.z }
+			val lowest = dependentShapes.maxBy { it.center.z }
 
-	override val fullDepth: Double by lazy {
-		var outgoing = dependentShapes.first().center
-		var minDepth = -.0
-		var maxDepth = .0
-
-		for (shape in dependentShapes) {
-			val depth = shape.center.z - outgoing.z
-			if (depth < minDepth) {
-				minDepth = depth
-			}
-			if (depth > maxDepth) {
-				maxDepth = depth
-			}
-			outgoing = shape.center
+			return ((highest.fullDepth / 2) - (lowest.fullDepth / 2))
 		}
-
-		return@lazy maxDepth - minDepth
-	}
 
 	override val center: SimpleLocation by lazy {
 		SimpleLocation(
