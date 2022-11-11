@@ -20,7 +20,7 @@ data class DependentComplexShape(
 			val highest = dependentShapes.maxBy { it.center.y }
 			val lowest = dependentShapes.maxBy { it.center.y }
 
-			return ((highest.fullHeight / 2) - (lowest.fullHeight / 2))
+			return (highest.center.y - lowest.center.y) + (highest.fullHeight / 2) + (lowest.fullHeight / 2)
 		}
 
 	override val fullWidth: Double
@@ -28,7 +28,7 @@ data class DependentComplexShape(
 			val highest = dependentShapes.maxBy { it.center.x }
 			val lowest = dependentShapes.maxBy { it.center.x }
 
-			return ((highest.fullWidth / 2) - (lowest.fullWidth / 2))
+			return (highest.center.x - lowest.center.x) + (highest.fullWidth / 2) + (lowest.fullWidth / 2)
 		}
 
 	override val fullDepth: Double
@@ -36,7 +36,7 @@ data class DependentComplexShape(
 			val highest = dependentShapes.maxBy { it.center.z }
 			val lowest = dependentShapes.maxBy { it.center.z }
 
-			return ((highest.fullDepth / 2) - (lowest.fullDepth / 2))
+			return (highest.center.z - lowest.center.z) + (highest.fullDepth / 2) + (lowest.fullDepth / 2)
 		}
 
 	override val center: SimpleLocation by lazy {
