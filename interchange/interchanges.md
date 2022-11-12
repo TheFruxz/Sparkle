@@ -30,7 +30,7 @@ class TestInterchange : Interchange(
 
 This is a simple Interchange, with simple and fully coded functionality. No input checks, just some background systematic, enough to be an easy-to-go solution.
 
-You can see, that the execution property is the code block, which will be executed if the executor performs the command.
+You can see, that the execution property is the code block, which will be invoked asynchronously if the executor performs the command/interchange properly.
 
 In the constructor, we can see some setup lines, which set the command name, aliases, and if the interchange execution requires permission. Some of these things are normally registered via the plugin.yml file, but Sparkle automatically registers the added interchanges into the runtime representation of this file, so you don't have to specify the commands in your plugin.yml
 
@@ -58,7 +58,7 @@ final override val preferredVendor: App? = null, // A app, another than the regi
 **`forcedWrongUsageReaction: InterchangeReaction?`** is a new feature, introduced in **1.0.0-PRE-20**, to override wrong-usage reaction
 {% endhint %}
 
-These are the properties, which can be modified. Some of them are nullable and by default null, which is 'modifiers'. This means, if they are null, the default-generated ones will be chosen. But if not null these will be used instead of the default ones.
+These are the properties, which can be modified. Some of them are nullable and by default null, which is 'modifiers'. This means, if they are null, the default-generated ones will be chosen. But if not null, these will be used instead of the default ones.
 
 Another thing that you will find, which is unknown, is the complete property. This is a whole new topic to talk about (visit [InterchangeStructure](interchangestructure.md)) because this is where the `fun` begins :smile:
 
