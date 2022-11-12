@@ -291,17 +291,3 @@ The onlyAccept function gives the possibility to replace the InterchangeStructur
 If this is done, only the specified types (you can create your own ones) are allowed!
 
 </details>
-
-There is another configuration function, which does not directly modify the configuration part, but the branch itself:
-
-<details>
-
-<summary><code>restrict(...)</code></summary>
-
-The restrict function allows the user, to limit the type of allowed executors to a specific type, like a branch, only for the console!
-
-This helps you to create branches only for 'root' access or a branch, where only players can execute the code. For example, a teleport command, because you cannot teleport a console to a location!
-
-<mark style="color:red;">The default setup is that the user restriction is the restriction of the parent branch or if not parent exists, NOT\_RESTRICTED is the default!</mark>
-
-</details>
