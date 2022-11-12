@@ -61,7 +61,9 @@ import de.fruxz.sparkle.server.interchange.PlaygroundInterchange
 import de.fruxz.sparkle.server.interchange.SparkleInterchange
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import net.kyori.adventure.key.Key
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.World
@@ -91,6 +93,7 @@ class SparkleApp : App() {
 		jsonContextual(BoundingBox::class, BoundingBoxSerializer)
 		jsonContextual(World::class, WorldSerializer)
 		jsonContextual(NamespacedKey::class, NamespacedKeySerializer)
+		jsonContextual(Key::class, AdventureKeySerializer)
 
 		addAscendJsonModuleModification {
 
