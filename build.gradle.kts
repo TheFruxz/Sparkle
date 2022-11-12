@@ -47,14 +47,22 @@ dependencies {
 
     implementation("org.slf4j:slf4j-api:2.0.3")
     implementation("com.mojang:brigadier:1.0.500")
-
-    // > Ktor
-    implementation("io.ktor:ktor-client-cio:2.1.3")
-    implementation("io.ktor:ktor-client-core-jvm:2.1.3")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.3")
-    implementation("io.ktor:ktor-client-content-negotiation:2.1.3")
-
     implementation("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT") // PaperMC
+
+    setOf(
+        "io.ktor:ktor-client-cio:2.1.3",
+        "io.ktor:ktor-client-core-jvm:2.1.3",
+        "io.ktor:ktor-serialization-kotlinx-json:2.1.3",
+        "io.ktor:ktor-client-content-negotiation:2.1.3",
+
+        "net.kyori:adventure-api:4.11.0",
+        "net.kyori:adventure-text-serializer-legacy:4.11.0",
+        "net.kyori:adventure-text-minimessage:4.11.0",
+        "net.kyori:adventure-text-serializer-gson:4.11.0",
+    ).forEach {
+        implementation(it)
+        shadow(it)
+    }
 
     // Shadow
 
@@ -77,16 +85,6 @@ dependencies {
     shadow("org.jetbrains.exposed:exposed-core:0.40.1")
     shadow("org.jetbrains.exposed:exposed-dao:0.40.1")
     shadow("org.jetbrains.exposed:exposed-jdbc:0.40.1")
-
-    // > Ktor
-    shadow("io.ktor:ktor-client-cio:2.1.2")
-    shadow("io.ktor:ktor-client-core-jvm:2.1.2")
-    shadow("io.ktor:ktor-serialization-kotlinx-json:2.1.2")
-    shadow("io.ktor:ktor-client-content-negotiation:2.1.2")
-
-    shadow("net.kyori:adventure-api:4.11.0")
-    shadow("net.kyori:adventure-text-serializer-legacy:4.11.0")
-    shadow("net.kyori:adventure-text-minimessage:4.11.0")
 
 }
 
