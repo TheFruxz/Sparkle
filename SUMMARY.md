@@ -24,6 +24,7 @@
 ## 🖥 User Experience
 
 * [📨 Transmission](user-experience/transmission.md)
+* [🗳 Items](user-experience/items.md)
 * [🎨 Canvas](user-experience/canvas.md)
 * [🧑🚀 Effects](user-experience/effects/README.md)
   * [⛓ Types](user-experience/effects/types.md)
