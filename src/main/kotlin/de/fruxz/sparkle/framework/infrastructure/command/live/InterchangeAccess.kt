@@ -36,6 +36,40 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	fun inputLength(checkIf: Int) = parameters.size == checkIf
 
 	/**
+	 * This function returns the given user-input string, at the given [slot]
+	 * and every other passed parameter, beyond this slot index. By default, the
+	 * [slot] is set to the last index of the input-[parameters], so the [getInputAndBeyond]
+	 * is easy to use, but you should specify the right slot, to get the output
+	 * you want to get.
+	 *
+	 * Example:
+	 * User-Input: "/test foo bar baz"; slot: 1 -> ["bar", "baz"]
+	 *
+	 * @param slot The index-position of the first input-parameter to return.
+	 * @return The input-parameters at the given index-position [slot] and beyond.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun getInputAndBeyond(slot: Int = inputLength - 1) = parameters.subList(slot, inputLength)
+
+	/**
+	 * This function returns the given user-input string, at the given [slot]
+	 * and every other passed parameter, beyond this slot index, joined into a
+	 * single String. By default, the [slot] is set to the last index of the
+	 * input-[parameters], so the [getInputAndBeyond] is easy to use, but you
+	 * should specify the right slot, to get the output you want to get.
+	 *
+	 * Example:
+	 * User-Input: "/test foo bar baz"; slot: 1 -> "bar baz"
+	 *
+	 * @param slot The index-position of the first input-parameter to return.
+	 * @return The input-parameters at the given index-position [slot] and beyond.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun joinInputAndBeyond(slot: Int = inputLength - 1) = getInputAndBeyond(slot).joinToString(" ")
+
+	/**
 	 * This function returns the given user-input string, at the given index-position [slot].
 	 * By default, the [slot] is set to the last index of the input-[parameters], so the [getInput]
 	 * function is very quick to use inside the StructuredInterchanges, because an execution block
@@ -47,7 +81,6 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	 * @param slot The index-position of the input-parameter to return.
 	 * @return The input-parameter at the given index-position [slot].
 	 * @throws IndexOutOfBoundsException if the given [slot] is out of bounds.
-	 * @throws IllegalArgumentException if the given restrictions at the given [slot] are not met.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
