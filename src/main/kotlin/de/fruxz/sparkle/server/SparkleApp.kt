@@ -6,15 +6,7 @@ import de.fruxz.ascend.extension.forceCast
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.data.json.JsonConfiguration
 import de.fruxz.sparkle.framework.data.json.JsonFileDataElement
-import de.fruxz.sparkle.framework.data.json.serializer.BoundingBoxSerializer
-import de.fruxz.sparkle.framework.data.json.serializer.ItemStackSerializer
-import de.fruxz.sparkle.framework.data.json.serializer.LocationSerializer
-import de.fruxz.sparkle.framework.data.json.serializer.NamespacedKeySerializer
-import de.fruxz.sparkle.framework.data.json.serializer.ParticleBuilderSerializer
-import de.fruxz.sparkle.framework.data.json.serializer.ParticleSerializer
-import de.fruxz.sparkle.framework.data.json.serializer.UUIDSerializer
-import de.fruxz.sparkle.framework.data.json.serializer.VectorSerializer
-import de.fruxz.sparkle.framework.data.json.serializer.WorldSerializer
+import de.fruxz.sparkle.framework.data.json.serializer.*
 import de.fruxz.sparkle.framework.effect.sound.SoundData
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.effect.sound.SoundMelody
@@ -44,6 +36,7 @@ import de.fruxz.sparkle.framework.positioning.relative.PyramidalShape
 import de.fruxz.sparkle.framework.positioning.relative.Shape
 import de.fruxz.sparkle.framework.positioning.relative.SphereShape
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
+import de.fruxz.sparkle.framework.visual.item.Item
 import de.fruxz.sparkle.framework.visual.item.Modification
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import de.fruxz.sparkle.server.component.app.AppComponent
@@ -63,7 +56,6 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.key.Key
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.World
@@ -90,6 +82,7 @@ class SparkleApp : App() {
 		jsonContextual(Particle::class, ParticleSerializer)
 		jsonContextual(ParticleBuilder::class, ParticleBuilderSerializer)
 		jsonContextual(ItemStack::class, ItemStackSerializer)
+		jsonContextual(Item::class, ItemSerializer)
 		jsonContextual(BoundingBox::class, BoundingBoxSerializer)
 		jsonContextual(World::class, WorldSerializer)
 		jsonContextual(NamespacedKey::class, NamespacedKeySerializer)
