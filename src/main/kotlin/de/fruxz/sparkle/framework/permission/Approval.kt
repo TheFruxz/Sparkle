@@ -46,18 +46,18 @@ data class Approval(
 	companion object {
 
 		/**
-		 * This function creates a new approval for the given [vendor]
+		 * This function creates a new approval for the given [hostKey]
 		 * and is based on the [subPermission].
-		 * It is structure like this: ***<vendor-identity>.<sub-permission>***
-		 * @param vendor the app, which provides the permission
+		 * It is structure like this: ***<host-identity>.<sub-permission>***
+		 * @param hostKey the host, which provides the permission
 		 * @param subPermission the sub-permission, which should be added
 		 * @return the approval
 		 * @author Fruxz
 		 * @since 1.0
 		 */
 		@JvmStatic
-		fun fromApp(vendor: Keyed, subPermission: String) =
-			Approval("${vendor.key().value()}.$subPermission")
+		fun fromHost(hostKey: Keyed, subPermission: String) =
+			Approval("${hostKey.key().value()}.$subPermission")
 
 	}
 

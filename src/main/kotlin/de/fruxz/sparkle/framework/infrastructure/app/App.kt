@@ -4,6 +4,7 @@ import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.extension.data.jsonBase
 import de.fruxz.ascend.extension.empty
+import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.extension.tryToCatch
 import de.fruxz.ascend.extension.tryToIgnore
 import de.fruxz.ascend.extension.tryToPrint
@@ -50,6 +51,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
+import org.bukkit.permissions.Permission
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Logger
@@ -204,11 +206,7 @@ abstract class App(
 
 			fun failed() {
 				val label = interchange.label
-				val aliases = try {
-					interchange.aliases
-				} catch (e: Exception) {
-					emptySet()
-				}
+				val aliases = tryOrNull { interchange.commandProperties.aliases } ?: emptySet()
 				val command = getCommand(interchange.label)
 
 				log.warning("FAILED! try to register fail-interchange '$label' instead...")
@@ -239,14 +237,17 @@ abstract class App(
 						command.name = label
 						command.tabCompleter = interchange.tabCompleter
 						command.usage = interchange.completion.buildSyntax(null)
-						command.aliases = interchange.aliases.toList()
-						command.description = interchange.description
-						interchange.permissionMessage?.let(command::permissionMessage)
+
+						with(interchange.commandProperties) {
+							command.aliases = aliases.toList()
+							command.description = description
+							permissionMessage?.let(command::permissionMessage)
+						}
+
 						command.setExecutor(interchange)
-						interchange.requiredApproval
-							?.takeIf { interchange.requiresApproval }
+						interchange.requiredApproval?.compose(this)
 							?.let { approval ->
-								command.permission = approval.identity
+								command.permission = Permission(approval.identity, interchange.commandProperties.permissionDefault).name
 								debugLog("Interchange '${interchange.label}' permission set to '${approval.identity}'!")
 							}
 

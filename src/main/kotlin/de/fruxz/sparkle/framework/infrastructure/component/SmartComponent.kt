@@ -4,6 +4,7 @@ import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.extension.tryToCatch
 import de.fruxz.ascend.extension.tryToIgnore
 import de.fruxz.ascend.tool.smart.identification.Identity
+import de.fruxz.sparkle.framework.context.AppComposable
 import de.fruxz.sparkle.framework.extension.buildSandBox
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.debugLog
@@ -25,6 +26,7 @@ import de.fruxz.sparkle.framework.permission.Approval
 import de.fruxz.sparkle.framework.sandbox.SandBox
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.sparkle.server.SparkleCache
+import org.bukkit.permissions.Permission
 
 abstract class SmartComponent(
 	override val behaviour: RunType = DISABLED,
@@ -86,14 +88,13 @@ abstract class SmartComponent(
 						command.name = interchange.label
 						command.tabCompleter = interchange.tabCompleter
 						command.usage = interchange.completion.buildSyntax(null)
-						command.aliases = interchange.aliases.toList()
-						command.description = interchange.description
-						interchange.permissionMessage?.let(command::permissionMessage)
+						command.aliases = interchange.commandProperties.aliases.toList()
+						command.description = interchange.commandProperties.description
+						interchange.commandProperties.permissionMessage?.let(command::permissionMessage)
 						command.setExecutor(interchange)
-						interchange.requiredApproval
-							?.takeIf { interchange.requiresApproval }
+						interchange.requiredApproval?.compose(interchange.vendor)
 							?.let { approval ->
-								command.permission = approval.identity
+								command.permission = Permission(approval.identity, interchange.commandProperties.permissionDefault).name
 								debugLog("Interchange '${interchange.label}' permission set to '${approval.identity}'!")
 							}
 
@@ -102,7 +103,7 @@ abstract class SmartComponent(
 
 					server.internalSyncCommands()
 
-					if (!isAutoStarting) vendor.replace(interchange.identityObject, disabledComponentInterchange(identityObject, tryOrNull { interchange.requiredApproval }))
+					if (!isAutoStarting) vendor.replace(interchange.identityObject, disabledComponentInterchange(identityObject, tryOrNull { interchange.requiredApproval?.compose(interchange.vendor) }))
 
 				}
 
@@ -171,7 +172,7 @@ abstract class SmartComponent(
 
 		interchanges.forEach {
 			tryToCatch {
-				vendor.replace(it.identityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval }))
+				vendor.replace(it.identityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval?.compose(vendor) }))
 				SparkleCache.registeredInterchanges -= it
 				SparkleCache.disabledInterchanges += it.identityObject
 				tryToIgnore { debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!") }
@@ -220,7 +221,7 @@ abstract class SmartComponent(
 
 	companion object {
 
-		internal fun disabledComponentInterchange(identity: Identity<out Component>, requiredApproval: Approval? = null) = object : Interchange("", ignoreInputValidation = true, forcedApproval = requiredApproval) {
+		internal fun disabledComponentInterchange(identity: Identity<out Component>, requiredApproval: Approval? = null) = object : Interchange("", ignoreInputValidation = true, requiredApproval = AppComposable { requiredApproval }) {
 
 			override val execution: InterchangeExecution = {
 

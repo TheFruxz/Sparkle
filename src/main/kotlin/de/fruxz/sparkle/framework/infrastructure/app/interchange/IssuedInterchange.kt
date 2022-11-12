@@ -20,8 +20,8 @@ class IssuedInterchange(
 	aliases: Set<String>,
 ) : Interchange(
 	label = label,
-	aliases = aliases,
-	requiresApproval = false,
+	requiredApproval = null,
+	commandProperties = CommandProperties(aliases = aliases),
 	completion = emptyInterchangeStructure(),
 ) {
 

@@ -34,7 +34,9 @@ import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration.BOLD
 
-internal class ComponentInterchange : StructuredInterchange("component", protectedAccess = true, structure = buildInterchangeStructure {
+internal class ComponentInterchange : StructuredInterchange(
+	label = "component",
+	structure = buildInterchangeStructure {
 
 		val iconDisabled = "⭘"
 		val iconEnabled = "⏻"
@@ -44,137 +46,145 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 		val iconBlocked = "✘"
 
 		fun list(page: Int, executor: InterchangeExecutor) {
-			SparkleCache.registeredComponents.paged(page - 1, SparkleData.systemConfig.entriesPerListPage).let { (page, pages, content) ->
+			SparkleCache.registeredComponents.paged(page - 1, SparkleData.systemConfig.entriesPerListPage)
+				.let { (page, pages, content) ->
 
-				text {
+					text {
 
-					this + text("List of all registered components: ").dyeGray()
-					this + text("(Page $page of ${pages.last})").dyeYellow()
-					this + newline()
-					this + text("$iconDisabled/$iconEnabled Power; $iconAutoStart Autostart; $iconForced Forced; $iconExperimental Experimental; $iconBlocked Blocked").dyeGray()
-					this + newline()
-
-					content.forEach { component ->
-
+						this + text("List of all registered components: ").dyeGray()
+						this + text("(Page $page of ${pages.last})").dyeYellow()
 						this + newline()
-						this + when {
-							component.isBlocked -> text(iconBlocked).hover {
-								text {
-									this + text("Blocked: ").style(NamedTextColor.BLUE, BOLD)
-									this + newline()
-									this + text("This component is blocked by the server owner (via file) and cannot be used!").dyeGray()
-								}
-							}.dyeRed()
-							component.isRunning -> text(iconEnabled).hover {
-								text {
-									this + text("Enabled: ").style(NamedTextColor.BLUE, BOLD)
-									this + newline()
-									this + text("This component is currently running and executing its code!").dyeGray()
-									newlines(2)
-									this + text {
-										this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
-										this + text("to disable this component").dyeGray()
-									}
-								}
-							}.dyeGreen()
-							else -> text(iconDisabled).hover {
-								text {
-									this + text("Disabled: ").style(NamedTextColor.BLUE, BOLD)
-									this + newline()
-									this + text("This component is currently not running and not executing its code!").dyeGray()
-									newlines(2)
-									this + text {
-										this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
-										this + text("to enable this component").dyeGray()
-									}
-								}
-							}.dyeGray()
-						}.clickEvent(when {
-							component.isRunning -> ClickEvent.runCommand("/component @ ${component.key} stop")
-							!component.isRunning -> ClickEvent.runCommand("/component @ ${component.key} start")
-							else -> null
-						})
+						this + text("$iconDisabled/$iconEnabled Power; $iconAutoStart Autostart; $iconForced Forced; $iconExperimental Experimental; $iconBlocked Blocked").dyeGray()
+						this + newline()
 
-						this + space()
+						content.forEach { component ->
 
-						this + when {
-							component.isAutoStarting -> text(iconAutoStart).hover {
-								text {
-									this + text("Autostart: ").style(NamedTextColor.BLUE, BOLD)
-									this + newline()
-									this + text("This component will be started automatically on server start!").dyeGray()
-									newlines(2)
-									this + text {
-										this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
-										this + text("to disable autostart for this component").dyeGray()
+							this + newline()
+							this + when {
+								component.isBlocked -> text(iconBlocked).hover {
+									text {
+										this + text("Blocked: ").style(NamedTextColor.BLUE, BOLD)
+										this + newline()
+										this + text("This component is blocked by the server owner (via file) and cannot be used!").dyeGray()
+									}
+								}.dyeRed()
+
+								component.isRunning -> text(iconEnabled).hover {
+									text {
+										this + text("Enabled: ").style(NamedTextColor.BLUE, BOLD)
+										this + newline()
+										this + text("This component is currently running and executing its code!").dyeGray()
+										newlines(2)
+										this + text {
+											this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
+											this + text("to disable this component").dyeGray()
+										}
+									}
+								}.dyeGreen()
+
+								else -> text(iconDisabled).hover {
+									text {
+										this + text("Disabled: ").style(NamedTextColor.BLUE, BOLD)
+										this + newline()
+										this + text("This component is currently not running and not executing its code!").dyeGray()
+										newlines(2)
+										this + text {
+											this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
+											this + text("to enable this component").dyeGray()
+										}
+									}
+								}.dyeGray()
+							}.clickEvent(
+								when {
+									component.isRunning -> ClickEvent.runCommand("/component @ ${component.key} stop")
+									!component.isRunning -> ClickEvent.runCommand("/component @ ${component.key} start")
+									else -> null
+								}
+							)
+
+							this + space()
+
+							this + when {
+								component.isAutoStarting -> text(iconAutoStart).hover {
+									text {
+										this + text("Autostart: ").style(NamedTextColor.BLUE, BOLD)
+										this + newline()
+										this + text("This component will be started automatically on server start!").dyeGray()
+										newlines(2)
+										this + text {
+											this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
+											this + text("to disable autostart for this component").dyeGray()
+										}
+									}
+								}.dyeGreen()
+
+								else -> text(iconAutoStart).dyeGray().hover {
+									text {
+										this + text("Autostart: ").style(NamedTextColor.BLUE, BOLD)
+										this + newline()
+										this + text("This component will not automatically be started on server start!").dyeGray()
+										newlines(2)
+										this + text {
+											this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
+											this + text("to enable autostart for this component").dyeGray()
+										}
 									}
 								}
-							}.dyeGreen()
-							else -> text(iconAutoStart).dyeGray().hover {
-								text {
-									this + text("Autostart: ").style(NamedTextColor.BLUE, BOLD)
-									this + newline()
-									this + text("This component will not automatically be started on server start!").dyeGray()
-									newlines(2)
-									this + text {
-										this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
-										this + text("to enable autostart for this component").dyeGray()
+							}.clickEvent(ClickEvent.runCommand("/component @ ${component.key} autostart"))
+
+							this + space()
+
+							this + when {
+								component.isForced -> text(iconForced).hover {
+									text {
+										this + text("Forced: ").style(NamedTextColor.BLUE, BOLD)
+										this + newline()
+										this + text("This component is forced to be started and cannot be stopped!").dyeGray()
 									}
+								}.dyeGreen()
+
+								else -> text(iconForced).dyeGray()
+							}
+
+							this + space()
+
+							this + when {
+								component.isExperimental -> text(iconExperimental).hover {
+									text {
+										this + text("Experimental: ").style(NamedTextColor.BLUE, BOLD)
+										this + newline()
+										this + text("This component is experimental and may not work as expected!").dyeGray()
+									}
+								}.dyeYellow()
+
+								else -> text(iconExperimental).dyeGray()
+							}
+
+							this + text(" | ").dyeDarkGray()
+
+							this + text(component.label).dyeGold().hover {
+								text {
+									this + text("Label & Identity: ").style(NamedTextColor.BLUE, BOLD)
+									this + newline()
+									this + text("The label is used to display the component in lists and information, the identity is used to identify the component in the system").dyeYellow()
+									this + newline() + newline()
+									this + text("Label: ").dyeGray()
+									this + text(component.label).dyeGreen()
+									this + newline()
+									this + text("Identity: ").dyeGray()
+									this + text(component.key().asString()).dyeGreen()
 								}
 							}
-						}.clickEvent(ClickEvent.runCommand("/component @ ${component.key} autostart"))
 
-						this + space()
+							this + space()
 
-						this + when {
-							component.isForced -> text(iconForced).hover {
-								text {
-									this + text("Forced: ").style(NamedTextColor.BLUE, BOLD)
-									this + newline()
-									this + text("This component is forced to be started and cannot be stopped!").dyeGray()
-								}
-							}.dyeGreen()
-							else -> text(iconForced).dyeGray()
 						}
 
-						this + space()
+						newlines(2)
 
-						this + when {
-							component.isExperimental -> text(iconExperimental).hover {
-								text {
-									this + text("Experimental: ").style(NamedTextColor.BLUE, BOLD)
-									this + newline()
-									this + text("This component is experimental and may not work as expected!").dyeGray()
-								}
-							}.dyeYellow()
-							else -> text(iconExperimental).dyeGray()
-						}
+					}.notification(TransmissionAppearance.GENERAL, executor).display()
 
-						this + text(" | ").dyeDarkGray()
-
-						this + text(component.label).dyeGold().hover {
-							text {
-								this + text("Label & Identity: ").style(NamedTextColor.BLUE, BOLD)
-								this + newline()
-								this + text("The label is used to display the component in lists and information, the identity is used to identify the component in the system").dyeYellow()
-								this + newline() + newline()
-								this + text("Label: ").dyeGray()
-								this + text(component.label).dyeGreen()
-								this + newline()
-								this + text("Identity: ").dyeGray()
-								this + text(component.key().asString()).dyeGreen()
-							}
-						}
-
-						this + space()
-
-					}
-
-					newlines(2)
-
-				}.notification(TransmissionAppearance.GENERAL, executor).display()
-
-			}
+				}
 		}
 
 		fun start(component: Component, executor: InterchangeExecutor) {
@@ -307,7 +317,9 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 				this + newline() + text("Configuration: ").dyeGray() + text(component.behaviour.name).dyeYellow()
 				this + newline() + text("AutoStart: ").dyeGray() + text(component.isAutoStarting.toDisplay()).dyeYellow()
 				this + newline() + text("Experimental: ").dyeGray() + text(component.isExperimental.toDisplay()).dyeYellow()
-				this + newline() + text("Running since: ").dyeGray() + text(component.runningSince?.durationToNow()?.toString() ?: "-/-").dyeYellow()
+				this + newline() + text("Running since: ").dyeGray() + text(
+					component.runningSince?.durationToNow()?.toString() ?: "-/-"
+				).dyeYellow()
 
 				newlines(2)
 
@@ -479,4 +491,5 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 
 		}
 
-	})
+	}
+)

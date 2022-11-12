@@ -6,11 +6,9 @@ import de.fruxz.ascend.extension.math.maxTo
 import de.fruxz.ascend.tool.smart.positioning.Address
 import de.fruxz.ascend.tree.TreeBranch
 import de.fruxz.ascend.tree.TreeBranchType
-import de.fruxz.sparkle.framework.extension.asPlayer
 import de.fruxz.sparkle.framework.extension.asPlayerOrNull
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.extension.time.getCooldown
 import de.fruxz.sparkle.framework.extension.time.hasCooldown
 import de.fruxz.sparkle.framework.extension.time.setCooldown
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult
@@ -315,7 +313,9 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 						extrapolatedBranch.onExecution?.invoke(access.copy(additionalParameters = access.parameters.drop(extrapolatedTrace.tracingDepth + 1)).forceCast()) ?: WRONG_USAGE
 
 					} else {
-						access.interchange.cooldownFeedback(access.executor, access.executor.asPlayer.getCooldown(access.interchange.key() to extrapolatedBranch.address))
+						with(access.interchange.cooldownReaction) {
+							access.reaction()
+						}
 						BRANCH_COOLDOWN
 					}
 

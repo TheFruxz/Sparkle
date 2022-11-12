@@ -52,7 +52,6 @@ import kotlin.time.Duration.Companion.seconds
 
 internal class MarkerInterchange : StructuredPlayerInterchange(
 	label = "marker",
-	protectedAccess = true,
 	structure = buildInterchangeStructure {
 
 		branch {

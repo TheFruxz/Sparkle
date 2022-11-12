@@ -36,7 +36,6 @@ import net.kyori.adventure.text.format.TextDecoration.BOLD
 
 internal class ServiceInterchange : StructuredInterchange(
 	label = "service",
-	protectedAccess = true,
 	structure = buildInterchangeStructure {
 
 		val iconDisabled = "⭘"

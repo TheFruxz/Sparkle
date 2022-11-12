@@ -33,8 +33,7 @@ import de.fruxz.stacked.text
 import net.kyori.adventure.text.Component.newline
 
 internal class SandBoxInterchange : StructuredInterchange(
-	"sandbox",
-	protectedAccess = true,
+	label = "sandbox",
 	structure = buildInterchangeStructure {
 
 		branch {
