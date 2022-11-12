@@ -7,8 +7,7 @@ import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.framework.infrastructure.app.App
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.APPLIED
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.stacked.extension.dyeGray
@@ -41,7 +40,7 @@ data class SandBox(
                     this + text("You're now running the SandBox '").dyeGray()
                     this + text(identity).dyeYellow()
                     this + text("'!").dyeGray()
-                }.notification(APPLIED, executor).display()
+                }.notification(TransmissionAppearance.APPLIED, executor).display()
 
                 process(SandBoxInteraction(this@SandBox, executor, parameters))
 
@@ -53,7 +52,7 @@ data class SandBox(
                     this + text("The SandBox '").dyeGray()
                     this + text(identity).dyeYellow()
                     this + text("' failed!").dyeGray()
-                }.notification(ERROR, executor).display()
+                }.notification(TransmissionAppearance.ERROR, executor).display()
 
             }
 

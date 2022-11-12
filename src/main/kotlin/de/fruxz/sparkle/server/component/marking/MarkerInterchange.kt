@@ -22,7 +22,8 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.content.Comp
 import de.fruxz.sparkle.framework.infrastructure.command.completion.mustNotMatchOutput
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredPlayerInterchange
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.APPLIED
 import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.sparkle.server.component.marking.MarkerManager.loadMarking
 import de.fruxz.sparkle.server.component.marking.MarkerManager.saveMarking
@@ -93,8 +94,8 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 					executor.asPlayerOrNull?.let {
 						loadMarking(it, getInput()).invokeOnCompletion {
 							when (it) {
-								null -> text("Marking loaded successfully!").dyeLightPurple().notification(APPLIED, executor).display()
-								else -> text("The marking '${getInput()}' could not be loaded!!").dyeRed().notification(ERROR, executor).display()
+								null -> text("Marking loaded successfully!").dyeLightPurple().notification(TransmissionAppearance.APPLIED, executor).display()
+								else -> text("The marking '${getInput()}' could not be loaded!!").dyeRed().notification(TransmissionAppearance.ERROR, executor).display()
 							}
 						}
 					} ?: text("You must be a player to load a marker!").dyeRed().message(executor).display()
@@ -118,8 +119,8 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 					executor.asPlayerOrNull?.let {
 						saveMarking(it, getInput()).invokeOnCompletion {
 							when (it) {
-								null -> text("Marking saved successfully!").dyeLightPurple().notification(APPLIED, executor).display()
-								else -> text("No save-able marking got found!").dyeRed().notification(ERROR, executor).display()
+								null -> text("Marking saved successfully!").dyeLightPurple().notification(TransmissionAppearance.APPLIED, executor).display()
+								else -> text("No save-able marking got found!").dyeRed().notification(TransmissionAppearance.ERROR, executor).display()
 							}
 						}
 					} ?: text("You must be a player to save a marker!").dyeRed().message(executor).display()
@@ -216,13 +217,13 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 					text {
 						this + text("Successfully").style(NamedTextColor.GREEN, BOLD)
 						this + text(" displayed the marker!").dyeGray()
-					}.notification(GENERAL, executor).display()
+					}.notification(TransmissionAppearance.GENERAL, executor).display()
 
 				} ?: text {
 					this + text("You have currently ").dyeGray()
 					this + text("no").dyeRed()
 					this + text(" no marker set.").dyeGray()
-				}.notification(FAIL, executor).display()
+				}.notification(TransmissionAppearance.FAIL, executor).display()
 
 			}
 
@@ -248,7 +249,7 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 						text {
 							this + text("Successfully").style(NamedTextColor.GREEN, BOLD)
 							this + text(" teleported to center of the marker!").dyeGray()
-						}.notification(GENERAL, executor).display()
+						}.notification(TransmissionAppearance.GENERAL, executor).display()
 
 					} ?: text("You must be a player to visit a marker!").dyeRed().message(executor).display()
 
@@ -256,7 +257,7 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 					this + text("You have currently ").dyeGray()
 					this + text("no").dyeRed()
 					this + text(" no marker set.").dyeGray()
-				}.notification(FAIL, executor).display()
+				}.notification(TransmissionAppearance.FAIL, executor).display()
 			}
 
 		}
@@ -297,7 +298,7 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 
 				newline()
 
-			}.notification(GENERAL, executor).display()
+			}.notification(TransmissionAppearance.GENERAL, executor).display()
 
 		}
 

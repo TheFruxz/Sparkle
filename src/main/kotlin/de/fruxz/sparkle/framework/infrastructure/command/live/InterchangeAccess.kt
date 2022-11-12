@@ -10,6 +10,7 @@ import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestrict
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructureInputRestriction
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.visual.message.Transmission
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.stacked.extension.asStyledComponent
 import de.fruxz.stacked.text
 import net.kyori.adventure.text.Component
@@ -111,7 +112,7 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 
 	}
 
-	fun feedback(componentLike: Component, notificationLevel: Transmission.Level? = null): Transmission =
+	fun feedback(componentLike: Component, notificationLevel: TransmissionAppearance? = null): Transmission =
 		componentLike.let {
 			when (notificationLevel) {
 				null -> it.message(executor)
@@ -119,10 +120,10 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 			}
 		}.display()
 
-	fun feedback(styledString: String, notificationLevel: Transmission.Level? = null): Transmission =
+	fun feedback(styledString: String, notificationLevel: TransmissionAppearance? = null): Transmission =
 		feedback(styledString.asStyledComponent, notificationLevel)
 
-	fun feedback(notificationLevel: Transmission.Level? = null, builder: TextComponent.Builder.() -> Unit): Transmission =
+	fun feedback(notificationLevel: TransmissionAppearance? = null, builder: TextComponent.Builder.() -> Unit): Transmission =
 		feedback(text(builder), notificationLevel)
 
 }

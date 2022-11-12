@@ -25,8 +25,7 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.emptyInterch
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeReaction
 import de.fruxz.sparkle.framework.permission.Approval
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.stacked.buildComponent
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.asComponent
@@ -199,7 +198,7 @@ abstract class Interchange(
 			this + text(" have the ").dyeGray()
 			this + text("required approval").dyeYellow()
 			this + text(" to execute this interchange!").dyeGray()
-		}.notification(Level.FAIL, receiver).display()
+		}.notification(TransmissionAppearance.FAIL, receiver).display()
 
 	}
 
@@ -211,7 +210,7 @@ abstract class Interchange(
 			this + text("Follow the ").dyeGray()
 			this + text("syntax").dyeRed()
 			this + text(", to execute this! See:").dyeGray()
-		}.notification(Level.FAIL, receiver).display()
+		}.notification(TransmissionAppearance.FAIL, receiver).display()
 
 		receiver.sendMessage(Component.text(completion.buildSyntax(receiver), NamedTextColor.YELLOW))
 	}
@@ -226,7 +225,7 @@ abstract class Interchange(
 			this + text(" you as a '").dyeGray()
 			this + text(requiredClient.name).dyeYellow()
 			this + text("', to be executed!").dyeGray()
-		}.notification(Level.FAIL, receiver).display()
+		}.notification(TransmissionAppearance.FAIL, receiver).display()
 
 	}
 
@@ -239,7 +238,7 @@ abstract class Interchange(
 			this + text(" A").dyeGray()
 			this + text(" critical error ").dyeRed()
 			this + text("occurred, while executing this interchange!").dyeGray()
-		}.notification(ERROR, receiver).display()
+		}.notification(TransmissionAppearance.ERROR, receiver).display()
 
 	}
 
@@ -255,7 +254,7 @@ abstract class Interchange(
 					cooldown?.destination?.getFormatted(receiver.asPlayer.locale())?.asComponent?.color(NamedTextColor.GRAY)
 				}
 			this + "until you can execute this (sub-)interchange again!".asComponent.color(NamedTextColor.GRAY)
-		}.notification(Level.FAIL, receiver).display()
+		}.notification(TransmissionAppearance.FAIL, receiver).display()
 	}
 
 	// logic

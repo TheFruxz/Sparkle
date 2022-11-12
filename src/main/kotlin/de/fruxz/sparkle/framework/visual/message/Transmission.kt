@@ -2,17 +2,12 @@ package de.fruxz.sparkle.framework.visual.message
 
 import de.fruxz.ascend.extension.dump
 import de.fruxz.ascend.extension.objects.takeIfInstance
-import de.fruxz.ascend.tool.smart.positioning.Address
-import de.fruxz.ascend.tool.smart.positioning.Address.Companion.address
 import de.fruxz.sparkle.framework.effect.EntityBasedEffect
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
-import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
 import de.fruxz.sparkle.framework.extension.consoleSender
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.onlinePlayers
 import de.fruxz.sparkle.framework.visual.message.DisplayType.*
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.GENERAL
-import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.stacked.extension.asComponent
 import de.fruxz.stacked.extension.asStyledComponent
 import de.fruxz.stacked.extension.asStyledString
@@ -29,7 +24,7 @@ data class Transmission(
 	var withoutPrefix: Boolean = false,
 	var displayType: DisplayType = DISPLAY_CHAT,
 	var promptSoundEffect: SoundEffect? = null,
-	var level: Level = GENERAL,
+	var experience: TransmissionAppearance = TransmissionAppearance.GENERAL,
 	var prefixByLevel: Boolean = true,
 ) : EntityBasedEffect {
 
@@ -70,7 +65,7 @@ data class Transmission(
 	fun display(receivers: Set<InterchangeExecutor> = participants): Transmission {
 		var nextRound = setOf<Entity>()
 
-		val prefix = this.prefix ?: (SparkleData.systemConfig.prefix[level.prefixLink.addressString.takeIf { prefixByLevel } ?: "prefix.general"] ?: "<dark_gray>⏵ ").asStyledComponent
+		val prefix = this.prefix ?: experience.prefix.invoke().asComponent()
 
 		val displayObject = content.map { prefix.append(it) }
 
@@ -100,22 +95,5 @@ data class Transmission(
 		copy().participants(entities.mapNotNull { it?.takeIfInstance<InterchangeExecutor>() }).display().dump()
 
 	override fun toString() = content.joinToString("\n", transform = Component::asStyledString)
-
-	enum class Level(
-		val promptSound: SoundEffect,
-		val prefixLink: Address<Level>,
-	) {
-
-		GENERAL(SoundLibrary.NOTIFICATION_GENERAL, address("prefix.general")),
-		PROCESS(SoundLibrary.NOTIFICATION_PROCESS, address("prefix.process")),
-		FAIL(SoundLibrary.NOTIFICATION_FAIL, address("prefix.fail")),
-		ERROR(SoundLibrary.NOTIFICATION_ERROR, address("prefix.error")),
-		LEVEL(SoundLibrary.NOTIFICATION_LEVEL, address("prefix.level")),
-		WARNING(SoundLibrary.NOTIFICATION_WARNING, address("prefix.warning")),
-		ATTENTION(SoundLibrary.NOTIFICATION_ATTENTION, address("prefix.attention")),
-		PAYMENT(SoundLibrary.NOTIFICATION_PAYMENT, address("prefix.payment")),
-		APPLIED(SoundLibrary.NOTIFICATION_APPLIED, address("prefix.applied")),
-
-	}
 
 }

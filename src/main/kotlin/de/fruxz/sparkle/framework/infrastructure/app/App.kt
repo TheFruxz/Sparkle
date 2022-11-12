@@ -26,7 +26,7 @@ import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.service.Service
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.ERROR
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.SparkleData

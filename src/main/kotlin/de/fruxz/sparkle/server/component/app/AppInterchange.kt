@@ -17,8 +17,9 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.content.Comp
 import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequired
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
-import de.fruxz.sparkle.framework.visual.message.Transmission
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.APPLIED
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.PROCESS
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.sparkle.server.component.update.UpdateComponent
@@ -105,7 +106,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         this + text("' component!") {
                             color(NamedTextColor.GRAY)
                         }
-                    }.notification(Transmission.Level.APPLIED, executor).display()
+                    }.notification(TransmissionAppearance.APPLIED, executor).display()
 
                 }
 
@@ -140,7 +141,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         this + text("' component!") {
                             color(NamedTextColor.GRAY)
                         }
-                    }.notification(Transmission.Level.APPLIED, executor).display()
+                    }.notification(TransmissionAppearance.APPLIED, executor).display()
 
                 }
 
@@ -177,7 +178,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         this + text("' component!") {
                             color(NamedTextColor.GRAY)
                         }
-                    }.notification(Transmission.Level.APPLIED, executor).display()
+                    }.notification(TransmissionAppearance.APPLIED, executor).display()
 
                 }
 
@@ -206,7 +207,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         this + Component.newline() + text("SandBoxes: ").dyeGray() + text("${SparkleCache.registeredSandBoxes.filter { it.vendor.key == targetApp.key }.size} SandBoxes").dyeYellow()
 
                         newlines(2)
-                    }.notification(Transmission.Level.GENERAL, executor).display()
+                    }.notification(TransmissionAppearance.GENERAL, executor).display()
 
                 }
 
@@ -239,11 +240,11 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                         }
                         .message(interchangeAccess.executor).display()
 
-                    debugLog("${interchangeAccess.executor.name} is clearing cache for '${targetApp.identity}' at level '$level'...")
+                    debugLog("${interchangeAccess.executor.name} is clearing cache for '${targetApp.identity}' at experience '$level'...")
 
                     targetApp.appCache?.let {
                         it.dropEverything(level)
-                        debugLog("${interchangeAccess.executor.name} cleared cache for '${targetApp.identity}' at level '$level'!")
+                        debugLog("${interchangeAccess.executor.name} cleared cache for '${targetApp.identity}' at experience '$level'!")
                     }
 
                     text {
@@ -261,7 +262,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                             hoverEvent(Component.text("App-Identity: ${targetApp.identity}").color(NamedTextColor.GRAY))
                         }
 
-                        this + text("' at level '") {
+                        this + text("' at experience '") {
                             color(NamedTextColor.GRAY)
                         }
 
@@ -355,7 +356,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                     this + text("' is currently running ").dyeGray()
                                     this + text("the latest").dyeLightPurple()
                                     this + text(" known version!").dyeGray()
-                                }.notification(WARNING, executor).display()
+                                }.notification(TransmissionAppearance.WARNING, executor).display()
                             }
                             UpdateResult.FAILED -> {
                                 text {
@@ -364,7 +365,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                     this + text("' ").dyeGray()
                                     this + text("failed").dyeRed()
                                     this + text(" to install!").dyeGray()
-                                }.notification(ERROR, executor).display()
+                                }.notification(TransmissionAppearance.ERROR, executor).display()
                             }
                             SUCCESSFUL -> {
                                 text {
@@ -595,7 +596,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
                 newlines(2)
 
-            }.notification(GENERAL, executor).display()
+            }.notification(TransmissionAppearance.GENERAL, executor).display()
 
         }
 

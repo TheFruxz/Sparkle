@@ -5,7 +5,7 @@ import de.fruxz.sparkle.framework.infrastructure.command.Interchange
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeExecution
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.SUCCESS
 import de.fruxz.sparkle.framework.infrastructure.command.completion.emptyInterchangeStructure
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.ERROR
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.ERROR
 import de.fruxz.stacked.extension.dyeGray
 import de.fruxz.stacked.extension.dyeRed
 import de.fruxz.stacked.extension.dyeYellow

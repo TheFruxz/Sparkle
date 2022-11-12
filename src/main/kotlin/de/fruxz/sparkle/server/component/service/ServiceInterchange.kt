@@ -14,7 +14,8 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.content.Comp
 import de.fruxz.sparkle.framework.infrastructure.command.completion.ignoreCase
 import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequired
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.APPLIED
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.stacked.extension.dyeDarkGray
@@ -119,7 +120,7 @@ internal class ServiceInterchange : StructuredInterchange(
 
 						newlines(2)
 
-					}.notification(GENERAL, executor).display()
+					}.notification(TransmissionAppearance.GENERAL, executor).display()
 
 				} else {
 
@@ -127,7 +128,7 @@ internal class ServiceInterchange : StructuredInterchange(
 						this + text("There are currently ").dyeGray()
 						this + text("no services").dyeRed()
 						this + text(" registered!").dyeGray()
-					}.notification(FAIL, executor).display()
+					}.notification(TransmissionAppearance.FAIL, executor).display()
 
 				}
 			}
@@ -231,7 +232,7 @@ internal class ServiceInterchange : StructuredInterchange(
 								this + text(service.service.label).dyeYellow()
 									.hover { text("Identity: ").dyeGray() + text(service.service.identity).dyeYellow() }
 								this + text("' is already offline!").dyeGray()
-							}.notification(FAIL, executor).display()
+							}.notification(TransmissionAppearance.FAIL, executor).display()
 
 						}
 
@@ -289,7 +290,7 @@ internal class ServiceInterchange : StructuredInterchange(
 								this + text("The service '").dyeGray()
 								this + text(getInput(1)).dyeYellow()
 								this + text("' is not registered!").dyeGray()
-							}.notification(FAIL, executor).display()
+							}.notification(TransmissionAppearance.FAIL, executor).display()
 
 						}
 

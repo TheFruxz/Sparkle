@@ -14,7 +14,7 @@ import de.fruxz.sparkle.framework.infrastructure.service.Service
 import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceActions
 import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceTimes
 import de.fruxz.sparkle.framework.infrastructure.service.ServiceIteration
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.stacked.extension.dyeGray
 import de.fruxz.stacked.extension.dyeYellow
 import de.fruxz.stacked.plus
@@ -48,19 +48,19 @@ class UpdateService(private val component: UpdateComponent = component(UpdateCom
 								this + text("The app '").dyeGray()
 								this + text(app.key.asString()).dyeYellow()
 								this + text("' is now up to date again!").dyeGray()
-							}.notification(Level.GENERAL).display(alertReceivers)
+							}.notification(TransmissionAppearance.GENERAL).display(alertReceivers)
 
 							UPDATE_AVAILABLE -> text {
 								this + text("The app '").dyeGray()
 								this + text(app.key.asString()).dyeYellow()
 								this + text("' can now be updated!").dyeGray()
-							}.notification(Level.GENERAL).display(alertReceivers)
+							}.notification(TransmissionAppearance.GENERAL).display(alertReceivers)
 
 							FAILED -> text {
 								this + text("The app '").dyeGray()
 								this + text(app.key.asString()).dyeYellow()
 								this + text("' just failed to search for updates!").dyeGray()
-							}.notification(Level.GENERAL).display(alertReceivers)
+							}.notification(TransmissionAppearance.GENERAL).display(alertReceivers)
 
 							null -> empty()
 						}

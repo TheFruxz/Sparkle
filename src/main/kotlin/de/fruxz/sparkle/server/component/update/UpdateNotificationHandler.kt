@@ -4,7 +4,7 @@ import de.fruxz.sparkle.framework.extension.component
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater.UpdateState.UPDATE_AVAILABLE
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.stacked.extension.dyeGray
 import de.fruxz.stacked.extension.dyeLightPurple
 import de.fruxz.stacked.extension.newlines
@@ -50,7 +50,7 @@ class UpdateNotificationHandler(private val component: UpdateComponent = compone
 						clickEvent(ClickEvent.runCommand("/app list"))
 					}
 					this + text(" available to install!").dyeGray()
-				}.notification(Level.ATTENTION, player).display()
+				}.notification(TransmissionAppearance.ATTENTION, player).display()
 			}
 		}
 

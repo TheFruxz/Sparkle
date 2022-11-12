@@ -23,7 +23,7 @@ import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.DIS
 import de.fruxz.sparkle.framework.infrastructure.service.Service
 import de.fruxz.sparkle.framework.permission.Approval
 import de.fruxz.sparkle.framework.sandbox.SandBox
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.FAIL
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.sparkle.server.SparkleCache
 
 abstract class SmartComponent(
@@ -225,7 +225,7 @@ abstract class SmartComponent(
 			override val execution: InterchangeExecution = {
 
 				"<red><bold>SORRY!</bold><gray> The providing component '<yellow>$identity<gray>' is currently <red>disabled<gray>!"
-					.notification(FAIL, executor).display()
+					.notification(TransmissionAppearance.FAIL, executor).display()
 
 				SUCCESS
 			}

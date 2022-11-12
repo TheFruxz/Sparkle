@@ -13,7 +13,8 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequire
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.component.file.ComponentManager
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.APPLIED
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.stacked.extension.dyeDarkGray
@@ -171,7 +172,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 
 					newlines(2)
 
-				}.notification(GENERAL, executor).display()
+				}.notification(TransmissionAppearance.GENERAL, executor).display()
 
 			}
 		}
@@ -186,7 +187,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 						this + text("The component '").dyeGray()
 						this + text(component.label).dyeYellow()
 						this + text("' has been started!").dyeGray()
-					}.notification(APPLIED, executor).display()
+					}.notification(TransmissionAppearance.APPLIED, executor).display()
 
 				} else {
 
@@ -194,7 +195,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 						this + text("The component '").dyeGray()
 						this + text(component.label).dyeYellow()
 						this + text("' is already running!").dyeGray()
-					}.notification(FAIL, executor).display()
+					}.notification(TransmissionAppearance.FAIL, executor).display()
 
 				}
 			} else {
@@ -203,7 +204,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 					this + text("The component '").dyeGray()
 					this + text(component.label).dyeYellow()
 					this + text("' is blocked and cannot be started!").dyeGray()
-				}.notification(FAIL, executor).display()
+				}.notification(TransmissionAppearance.FAIL, executor).display()
 
 			}
 		}
@@ -227,7 +228,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 						this + text("The component '").dyeGray()
 						this + text(component.label).dyeYellow()
 						this + text("' is forced and cannot be stopped!").dyeGray()
-					}.notification(FAIL, executor).display()
+					}.notification(TransmissionAppearance.FAIL, executor).display()
 
 				}
 
@@ -237,7 +238,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 					this + text("The component '").dyeGray()
 					this + text(component.label).dyeYellow()
 					this + text("' is not running!").dyeGray()
-				}.notification(FAIL, executor).display()
+				}.notification(TransmissionAppearance.FAIL, executor).display()
 
 			}
 		}
@@ -266,7 +267,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 					this + text("The component '").dyeGray()
 					this + text(component.label).dyeYellow()
 					this + text("' cannot be added to the autostart list!").dyeGray()
-				}.notification(FAIL, executor).display()
+				}.notification(TransmissionAppearance.FAIL, executor).display()
 
 			}
 		}
@@ -310,7 +311,7 @@ internal class ComponentInterchange : StructuredInterchange("component", protect
 
 				newlines(2)
 
-			}.notification(GENERAL, executor).display()
+			}.notification(TransmissionAppearance.GENERAL, executor).display()
 
 		}
 

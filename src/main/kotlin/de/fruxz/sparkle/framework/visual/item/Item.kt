@@ -63,7 +63,6 @@ import java.util.function.UnaryOperator
 import kotlin.time.Duration.Companion.seconds
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-// TODO upcoming @Serializable
 data class Item(
 	var material: Material = STONE,
 	var label: Component = Component.empty(),

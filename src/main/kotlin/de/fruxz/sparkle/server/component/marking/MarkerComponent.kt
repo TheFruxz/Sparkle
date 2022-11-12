@@ -18,7 +18,8 @@ import de.fruxz.sparkle.framework.extension.world.displayString
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.fruxz.sparkle.framework.infrastructure.component.SmartComponent
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.APPLIED
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.stacked.extension.asComponent
 import de.fruxz.stacked.extension.asStyledComponents
@@ -106,7 +107,7 @@ internal class MarkerComponent : SmartComponent(AUTOSTART_MUTABLE) {
 									this + text("The selection contains a volume of ").dyeGray()
 									this + text("${currentBox.blockVolume} Block(s)").dyeLightPurple()
 								}
-							}.notification(GENERAL, user).display()
+							}.notification(TransmissionAppearance.GENERAL, user).display()
 
 						} else {
 
@@ -114,7 +115,7 @@ internal class MarkerComponent : SmartComponent(AUTOSTART_MUTABLE) {
 								this + text("You have currently ").dyeGray()
 								this + text("no locations ").dyeRed()
 								this + text("marked, that are valid for this action.").dyeGray()
-							}.notification(FAIL, user).display()
+							}.notification(TransmissionAppearance.FAIL, user).display()
 
 						}
 
@@ -170,7 +171,7 @@ internal class MarkerComponent : SmartComponent(AUTOSTART_MUTABLE) {
 											.spawn()
 
 									} else {
-										actionAlreadySet().notification(FAIL, user).display()
+										actionAlreadySet().notification(TransmissionAppearance.FAIL, user).display()
 									}
 								}
 
@@ -203,7 +204,7 @@ internal class MarkerComponent : SmartComponent(AUTOSTART_MUTABLE) {
 											.spawn()
 
 									} else {
-										actionAlreadySet().notification(FAIL, user).display()
+										actionAlreadySet().notification(TransmissionAppearance.FAIL, user).display()
 									}
 								}
 							}
@@ -216,7 +217,7 @@ internal class MarkerComponent : SmartComponent(AUTOSTART_MUTABLE) {
 								this + text(" looking at a ").dyeGray()
 								this + text("valid block").dyeRed()
 								this + text("!").dyeGray()
-							}.notification(FAIL, user).display()
+							}.notification(TransmissionAppearance.FAIL, user).display()
 
 						}
 

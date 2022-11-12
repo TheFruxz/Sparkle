@@ -27,7 +27,7 @@ import de.fruxz.sparkle.framework.infrastructure.service.Service
 import de.fruxz.sparkle.framework.sandbox.SandBox
 import de.fruxz.sparkle.framework.visual.color.ColorType
 import de.fruxz.sparkle.framework.visual.color.DyeableMaterial
-import de.fruxz.sparkle.framework.visual.message.Transmission
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.stacked.extension.subKey
 import net.kyori.adventure.key.Key
@@ -250,13 +250,13 @@ data class CompletionAsset<T>(
 		}
 
 		@JvmStatic
-		val TRANSMISSION_LEVEL = CompletionAsset<Transmission.Level>(sparkle.subKey("transmission_level"), false, listOf(
+		val TRANSMISSION_LEVEL = CompletionAsset<TransmissionAppearance>(sparkle.subKey("transmission_level"), false, listOf(
 			InterchangeStructureInputRestriction.STRING)) {
-			Transmission.Level.values().withMap { name }
+			TransmissionAppearance.values.withMap { name }
 		}.doCheck {
-			Transmission.Level.values().any { it.name.equals(input, ignoreCase) }
+			TransmissionAppearance.values.any { it.name.equals(input, ignoreCase) }
 		}.transformer {
-			Transmission.Level.values().firstOrNull { it.name.equals(input, true) }
+			TransmissionAppearance.values.firstOrNull { it.name.equals(input, true) }
 		}
 
 		@JvmStatic

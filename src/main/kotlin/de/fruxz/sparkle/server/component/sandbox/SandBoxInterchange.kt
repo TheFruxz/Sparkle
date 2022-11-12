@@ -18,7 +18,8 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.ignoreCase
 import de.fruxz.sparkle.framework.infrastructure.command.completion.infiniteSubParameters
 import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequired
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.*
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.APPLIED
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.stacked.extension.dyeGold
@@ -52,7 +53,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 					destroyAllSandBoxes()
 
-					message.notification(APPLIED, executor).display()
+					message.notification(TransmissionAppearance.APPLIED, executor).display()
 
 				} else {
 
@@ -60,7 +61,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 						this + text("There are currently ").dyeGray()
 						this + text("no sandboxes").dyeRed()
 						this + text(" registered!").dyeGray()
-					}.notification(FAIL, executor).display()
+					}.notification(TransmissionAppearance.FAIL, executor).display()
 
 				}
 			}
@@ -83,7 +84,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 					text {
 						this + text("Successfully").dyeGreen()
 						this + text(" started ${allSandBoxes.size} sandboxes").dyeGray()
-					}.notification(APPLIED, executor).display()
+					}.notification(TransmissionAppearance.APPLIED, executor).display()
 
 				} else {
 
@@ -91,7 +92,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 						this + text("There are currently ").dyeGray()
 						this + text("no sandboxes").dyeRed()
 						this + text(" registered!").dyeGray()
-					}.notification(FAIL, executor).display()
+					}.notification(TransmissionAppearance.FAIL, executor).display()
 
 				}
 			}
@@ -118,7 +119,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 						newlines(1)
 
-					}.notification(GENERAL, executor).display()
+					}.notification(TransmissionAppearance.GENERAL, executor).display()
 
 				} else {
 
@@ -126,7 +127,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 						this + text("There are currently ").dyeGray()
 						this + text("no sandboxes").dyeRed()
 						this + text(" registered!").dyeGray()
-					}.notification(FAIL, executor).display()
+					}.notification(TransmissionAppearance.FAIL, executor).display()
 
 				}
 			}
@@ -217,7 +218,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 							this + newline() + text("Since: ").dyeGold() + text(sandBox.creationTime.durationTo(Calendar.now()).toString()).dyeYellow()
 							this + newline() + text("Creation-Position: ").dyeGold() + text(sandBox.creationLocation).dyeYellow()
 							this + newline() + text("Cached Calls: ").dyeGold() + text((SparkleCache.registeredSandBoxCalls[sandBox.identityObject]?.toString() ?: "none")).dyeYellow()
-						}.notification(GENERAL, executor).display()
+						}.notification(TransmissionAppearance.GENERAL, executor).display()
 
 					}
 

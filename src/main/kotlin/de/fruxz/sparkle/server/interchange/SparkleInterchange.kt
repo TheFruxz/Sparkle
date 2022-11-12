@@ -6,7 +6,7 @@ import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction.ONLY_PLAYERS
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
-import de.fruxz.sparkle.framework.visual.message.Transmission.Level.GENERAL
+import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.stacked.extension.style
 import de.fruxz.stacked.hover
 import de.fruxz.stacked.plus
@@ -35,7 +35,7 @@ internal class SparkleInterchange : StructuredInterchange("sparkle", protectedAc
 				style(NamedTextColor.GOLD, BOLD)
 			} + Component.newline()
 
-		}.notification(GENERAL, executor).display()
+		}.notification(TransmissionAppearance.GENERAL, executor).display()
 
 		text("Sparkle is running & developed with Kotlin (the programming Language) from JetBrains. Check out their work https://jetbrains.com or https://kotlinlang.org")
 			.color(NamedTextColor.YELLOW)
@@ -62,7 +62,7 @@ internal class SparkleInterchange : StructuredInterchange("sparkle", protectedAc
 					this + text(vendor.description.apiVersion ?: "none")
 					color(NamedTextColor.GRAY)
 				}
-			}.notification(GENERAL, executor).display()
+			}.notification(TransmissionAppearance.GENERAL, executor).display()
 
 		}
 
@@ -97,7 +97,7 @@ internal class SparkleInterchange : StructuredInterchange("sparkle", protectedAc
 					}
 				}
 			}.clickEvent(ClickEvent.openUrl(vendor.description.website ?: "bug"))
-				.notification(GENERAL, executor)
+				.notification(TransmissionAppearance.GENERAL, executor)
 				.display()
 
 		}
@@ -113,7 +113,7 @@ internal class SparkleInterchange : StructuredInterchange("sparkle", protectedAc
 			text("PONG!") {
 				style(NamedTextColor.GOLD, ITALIC, BOLD)
 				clickEvent(ClickEvent.suggestCommand("Your Ping is ${executor.asPlayerOrNull?.ping?.milliseconds}"))
-			}.notification(GENERAL, executor).display()
+			}.notification(TransmissionAppearance.GENERAL, executor).display()
 
 		}
 
