@@ -4,7 +4,6 @@ import de.fruxz.ascend.extension.container.toArrayList
 import de.fruxz.ascend.extension.data.fromJsonString
 import de.fruxz.ascend.extension.data.toJsonString
 import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
-import de.fruxz.sparkle.framework.visual.item.Item
 import org.bukkit.Location
 
 data class DataTransformer<SHELL: Any, CORE: Any>(
@@ -25,12 +24,6 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 				{ this.toJsonString() },
 				{ this.fromJsonString() },
 			)
-
-		@JvmStatic
-		fun jsonItem() =
-			DataTransformer<Item, String>(
-				{ produceJson() },
-				{ Item.produceByJson(this)!! })
 
 		// collections
 

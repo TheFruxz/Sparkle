@@ -141,8 +141,6 @@ data class Item(
 		}
 	} else null
 
-	fun produceJson() = JsonItemStack.toJson(produce())
-
 	override fun asItem(): Item = copy()
 
 	override fun asItemStack(): ItemStack = produce()
@@ -545,10 +543,6 @@ data class Item(
 		val identityNamespace = sparkle.subNamespacedKey("item.identity", CONTINUE)
 
 		val actionsNamespace = sparkle.subNamespacedKey("item.actions", CONTINUE)
-
-		@JvmStatic
-		@Deprecated("This way of json will be removed in the future. Currently no replacement is available.")
-		fun produceByJson(json: String) = JsonItemStack.fromJson(json)?.let { Item(it) }
 
 		private fun enchantmentsToModifications(map: Map<Enchantment, Int>) = map.map {
 			Modification(it.key, it.value)
