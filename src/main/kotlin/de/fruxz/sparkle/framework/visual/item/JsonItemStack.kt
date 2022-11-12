@@ -40,6 +40,7 @@ import java.util.function.Consumer
  * https://github.com/DevSrSouza/
  * You can find updates here https://gist.github.com/DevSrSouza
  */
+@Deprecated("This way of json will be removed in the future. Currently no replacement is available.")
 object JsonItemStack {
     private val BYPASS_CLASS = arrayOf(
         "CraftMetaBlockState", "CraftMetaItem" /*Glowstone Support*/, "GlowMetaItem"

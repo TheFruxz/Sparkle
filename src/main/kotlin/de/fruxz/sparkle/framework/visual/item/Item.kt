@@ -33,6 +33,7 @@ import de.fruxz.stacked.extension.lines
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.Contextual
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.HoverEvent.ShowItem
@@ -62,6 +63,7 @@ import java.util.function.UnaryOperator
 import kotlin.time.Duration.Companion.seconds
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
+// TODO upcoming @Serializable
 data class Item(
 	var material: Material = STONE,
 	var label: Component = Component.empty(),
@@ -73,10 +75,10 @@ data class Item(
 	var quirk: Quirk = Quirk.empty,
 	var postProperties: HashSet<PostProperty> = hashSetOf(),
 	var itemIdentity: String = "${UUID.randomUUID()}",
-	var persistentData: Map<Key, Any> = mapOf(),
+	var persistentData: Map<Key, @Contextual Any> = mapOf(),
 	var itemMetaBase: ItemMeta? = null,
 	var itemActionTags: Set<ItemActionTag> = emptySet(),
-	var productionPlugins: Set<(ItemStack) -> Unit> = setOf(),
+	var productionPlugins: Set<(@Contextual ItemStack) -> Unit> = setOf(),
 ) : ItemLike, KeyedIdentifiable<Item>, Producible<ItemStack>, HoverEventSource<ShowItem> {
 
 	constructor(source: Material) : this(material = source)
@@ -545,6 +547,7 @@ data class Item(
 		val actionsNamespace = sparkle.subNamespacedKey("item.actions", CONTINUE)
 
 		@JvmStatic
+		@Deprecated("This way of json will be removed in the future. Currently no replacement is available.")
 		fun produceByJson(json: String) = JsonItemStack.fromJson(json)?.let { Item(it) }
 
 		private fun enchantmentsToModifications(map: Map<Enchantment, Int>) = map.map {
