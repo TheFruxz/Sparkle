@@ -88,7 +88,6 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 
 	/**
 	 * This function returns the given user-input strings, at the given index-positions [slots].
-	 * By default, the [slots] are set to every index-position of the input-[parameters].
 	 *
 	 * Example:
 	 * User-Input: "/test foo bar baz"; slots: 0, 2 -> ["foo", "baz"]
@@ -99,12 +98,11 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun getInput(slots: Iterable<Int> = (0 until inputLength)) = slots.map { getInput(it) }
+	fun getInput(slots: Iterable<Int>) = slots.map { getInput(it) }
 
 	/**
 	 * This function returns the given user-input strings, at the given index-positions [slots]
 	 * joined into a single string.
-	 * By default, the [slots] are set to every index-position of the input-[parameters].
 	 *
 	 * Example:
 	 * User-Input: "/test foo bar baz"; slots: 0, 2 -> "foo baz"
@@ -115,7 +113,7 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun joinInput(slots: Iterable<Int> = (0 until inputLength)) = getInput(slots).joinToString(" ")
+	fun joinInput(slots: Iterable<Int>) = getInput(slots).joinToString(" ")
 
 	/**
 	 *
