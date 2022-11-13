@@ -224,7 +224,7 @@ abstract class Interchange(
 						}
 
 					} else {
-						with(wrongClientReaction) {
+						with(wrongUsageReaction) {
 							InterchangeAccess(
 								vendor = vendor,
 								executorType = if (sender is Player) ONLY_PLAYERS else ONLY_CONSOLE,
