@@ -143,7 +143,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 				if (content.filterIsInstance<CompletionComponent.Static>().isNotEmpty()) {
 					true
 				} else if (internal.isNotEmpty()) {
-					return@let internal.any { it.isValid(input) }
+					return@let internal.none { !it.isValid(input) }
 				} else
 					true
 			}
@@ -157,9 +157,8 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 			inputQuery,
 			input,
 			this.configuration.ignoreCase,
-		))
-			.any { it.equals(input, configuration.ignoreCase) })
-				&& configuration.supportedInputTypes.any { it.isValid(input) }
+		)).none { !it.equals(input, configuration.ignoreCase) })
+				&& configuration.supportedInputTypes.none { !it.isValid(input) }
 				&& isInputAllowedByTypes(input)
 				&& (!configuration.isRequired || input.isNotBlank())
 
