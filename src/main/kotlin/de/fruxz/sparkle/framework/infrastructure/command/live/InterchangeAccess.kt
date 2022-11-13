@@ -87,6 +87,37 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	fun getInput(slot: Int = inputLength - 1) = parameters[slot]
 
 	/**
+	 * This function returns the given user-input strings, at the given index-positions [slots].
+	 * By default, the [slots] are set to every index-position of the input-[parameters].
+	 *
+	 * Example:
+	 * User-Input: "/test foo bar baz"; slots: 0, 2 -> ["foo", "baz"]
+	 *
+	 * @param slots The index-positions of the input-parameters to return. ([IntRange]s and [IntProgression]s are also supported)
+	 * @return The input-parameters at the given index-positions [slots].
+	 * @throws IndexOutOfBoundsException if any of the given [slots] is out of bounds.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun getInput(slots: Iterable<Int> = (0 until inputLength)) = slots.map { getInput(it) }
+
+	/**
+	 * This function returns the given user-input strings, at the given index-positions [slots]
+	 * joined into a single string.
+	 * By default, the [slots] are set to every index-position of the input-[parameters].
+	 *
+	 * Example:
+	 * User-Input: "/test foo bar baz"; slots: 0, 2 -> "foo baz"
+	 *
+	 * @param slots The index-positions of the input-parameters to return. ([IntRange]s and [IntProgression]s are also supported)
+	 * @return The input-parameters at the given index-positions [slots].
+	 * @throws IndexOutOfBoundsException if any of the given [slots] is out of bounds.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	fun joinInput(slots: Iterable<Int> = (0 until inputLength)) = getInput(slots).joinToString(" ")
+
+	/**
 	 *
 	 * This function returns the given user-input string, at the given index-position [slot].
 	 * By default, the [slot] is set to the last index of the input-[parameters], so the [getInput]
