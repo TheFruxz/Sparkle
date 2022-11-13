@@ -4,6 +4,10 @@ description: The commands, with some Sparkle
 
 # 🖨 Interchanges
 
+{% hint style="warning" %}
+Interchange constructors and the names of some properties may slightly change in upcoming future version **PRE-20**. Stay tuned!
+{% endhint %}
+
 ## What are Interchanges?
 
 Interchanges can quite simply translate to commands with automation and systems hidden in the background, to ensure a good user experience.
