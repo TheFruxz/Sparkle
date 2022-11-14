@@ -51,6 +51,15 @@ data class DependentCubicalShape(
 	constructor(map: Map<String, Any?>) : this(map["first"] as SimpleLocation, map["second"] as SimpleLocation)
 
 	/**
+	 * This lazy val represents the [BoundingBox] of this [DependentCubicalShape].
+	 * @author Fruxz
+	 * @since 1.0
+	 */
+	val box: BoundingBox by lazy {
+		BoundingBox.of(first.bukkit, second.bukkit)
+	}
+
+	/**
 	 * Both locations [first] and [second] represented as
 	 * a [Pair] of [Location]s.
 	 * @return A [Pair] of [Location]s.
@@ -170,7 +179,7 @@ data class DependentCubicalShape(
 	 * @since 1.0
 	 */
 	val centerVector: Vector by lazy {
-		produce().center
+		box.center
 	}
 
 	/**
@@ -184,7 +193,7 @@ data class DependentCubicalShape(
 	 * @since 1.0
 	 */
 	val centerLocation: Location by lazy {
-		produce().center.toLocation(first.bukkit.world)
+		box.center.toLocation(first.bukkit.world)
 	}
 
 	override val center: SimpleLocation by lazy {
@@ -196,15 +205,15 @@ data class DependentCubicalShape(
 	}
 
 	override val fullWidth: Double by lazy {
-		produce().widthX
+		box.widthX
 	}
 
 	override val fullHeight: Double by lazy {
-		produce().height
+		box.height
 	}
 
 	override val fullDepth: Double by lazy {
-		produce().widthZ
+		box.widthZ
 	}
 
 	override val fullSizeShape: DependentCubicalShape by lazy {
@@ -234,7 +243,7 @@ data class DependentCubicalShape(
 		}
 	}
 
-	override fun contains(vector: Vector) = produce().contains(vector)
+	override fun contains(vector: Vector) = box.contains(vector)
 
 	override fun contains(location: Location) = contains(location.toVector())
 
@@ -381,7 +390,7 @@ data class DependentCubicalShape(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	override fun produce() = BoundingBox.of(first.bukkit, second.bukkit)
+	override fun produce() = box
 
 	override fun serialize() = mapOf(
 		"first" to first,
