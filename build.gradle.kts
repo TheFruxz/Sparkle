@@ -84,7 +84,7 @@ dependencies {
 
     shadow("org.jetbrains.exposed:exposed-core:0.41.1")
     shadow("org.jetbrains.exposed:exposed-dao:0.40.1")
-    shadow("org.jetbrains.exposed:exposed-jdbc:0.40.1")
+    shadow("org.jetbrains.exposed:exposed-jdbc:0.41.1")
 
 }
 
