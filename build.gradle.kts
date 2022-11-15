@@ -83,7 +83,7 @@ dependencies {
     shadow("net.kyori:adventure-text-serializer-plain:4.11.0")
 
     shadow("org.jetbrains.exposed:exposed-core:0.41.1")
-    shadow("org.jetbrains.exposed:exposed-dao:0.40.1")
+    shadow("org.jetbrains.exposed:exposed-dao:0.41.1")
     shadow("org.jetbrains.exposed:exposed-jdbc:0.41.1")
 
 }
