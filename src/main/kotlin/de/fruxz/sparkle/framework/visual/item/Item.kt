@@ -60,6 +60,7 @@ import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 import java.util.function.UnaryOperator
+import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration.Companion.seconds
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
@@ -78,6 +79,7 @@ data class Item(
 	var itemMetaBase: ItemMeta? = null,
 	var itemActionTags: Set<ItemActionTag> = emptySet(),
 	var productionPlugins: Set<(@Contextual ItemStack) -> Unit> = setOf(),
+	var productionContext: CoroutineContext = SparkleApp.coroutineScope.coroutineContext,
 ) : ItemLike, KeyedIdentifiable<Item>, Producible<ItemStack>, HoverEventSource<ShowItem> {
 
 	constructor(source: Material) : this(material = source)
@@ -147,7 +149,7 @@ data class Item(
 	override fun produce(): ItemStack = runBlocking {
 		val itemMeta = produceItemMeta()
 
-		withContext(SparkleApp.coroutineScope.coroutineContext) {
+		withContext(productionContext) {
 			@Suppress("DEPRECATION") var itemStack = ItemStack(material, size, damage.toShort())
 			var productionData = mapOf<Pair<NamespacedKey, PersistentDataType<*, *>>, Any>()
 
