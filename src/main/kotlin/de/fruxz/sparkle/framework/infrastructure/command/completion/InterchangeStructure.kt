@@ -40,7 +40,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	private var isBranched: Boolean = false,
 	var userRestriction: InterchangeUserRestriction = NOT_RESTRICTED,
 	var requiredApprovals: List<Approval> = emptyList(),
-	configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
+	var configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
 	var onExecution: (suspend InterchangeAccess<EXECUTOR>.() -> InterchangeResult)? = null,
 ) : TreeBranch<InterchangeStructure<EXECUTOR>, List<CompletionComponent>, TreeBranchType>(
 	identity = identity,
@@ -51,9 +51,6 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 ){
 
 	private val log = getLogger("InterchangeStructure")
-
-	var configuration = configuration
-		private set
 
 	fun buildSyntax(executor: InterchangeExecutor?) = buildString {
 		fun construct(level: Int = 0, internalExecutor: InterchangeExecutor?, subBranches: List<InterchangeStructure<EXECUTOR>>) {
