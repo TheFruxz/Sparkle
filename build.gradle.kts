@@ -23,7 +23,7 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
 }
 
-val ascendVersion = "4.0.0"
+val ascendVersion = "5.0.0"
 val stackedVersion = "3.0.1"
 
 dependencies {
