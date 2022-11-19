@@ -47,9 +47,8 @@ data class MutableCanvas(
 	override var content: Map<Int, ItemLike> = emptyMap(),
 	override var flags: Set<CanvasFlag> = emptySet(),
 	override var openSoundEffect: SoundEffect? = null,
-	override var asyncItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
-) : Canvas(label, base, pagination, content, flags, openSoundEffect, asyncItems), Producible<Canvas>,
-	AbstractBuilder<Canvas> {
+	override var lazyItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
+) : Canvas(label, base, pagination, content, flags, openSoundEffect, lazyItems), Producible<Canvas>, AbstractBuilder<Canvas> {
 
 	override var onRender: CanvasRender = CanvasRender { }
 	override var onOpen: CanvasOpenEvent.() -> Unit = { }
@@ -114,7 +113,7 @@ data class MutableCanvas(
 		coroutineScope: CoroutineScope = sparkle.coroutineScope,
 		coroutineContext: CoroutineContext = sparkle.asyncDispatcher,
 	) {
-		asyncItems += slot to coroutineScope.async(
+		lazyItems += slot to coroutineScope.async(
 			context = coroutineContext,
 			block = itemLikeProcess::compose
 		)

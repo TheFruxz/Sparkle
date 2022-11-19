@@ -69,7 +69,7 @@ open class Canvas(
 	open val content: Map<Int, ItemLike> = emptyMap(),
 	open val flags: Set<CanvasFlag> = emptySet(),
 	open val openSoundEffect: SoundEffect? = null,
-	open val asyncItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
+	open val lazyItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
 ) : Identifiable<Canvas> {
 
 	open val onRender: CanvasRender = CanvasRender {  }
@@ -155,7 +155,7 @@ open class Canvas(
 				b = max(
 					a = base.virtualSize - 1,
 					b = pagination.computeRealSlot(
-						asyncItems.maxOfOrNull { it.key } ?: 0
+						lazyItems.maxOfOrNull { it.key } ?: 0
 					)
 				)
 			)
@@ -331,9 +331,9 @@ open class Canvas(
 
 		}
 
-		// Phase 3 - place deferred content
+		// Phase 3 - place lazy content
 		var deferredItemQueue: Set<Deferred<ItemStack>> = emptySet()
-		val involvedAsyncItems = asyncItems.mapNotNull { (placedSlot, value) ->
+		val involvedAsyncItems = lazyItems.mapNotNull { (placedSlot, value) ->
 			val slot = when (pagination.base) { // \/ now producing relative position to current point-of-view
 				null -> pagination.computeRealSlot(placedSlot).takeIf { it in state.slots } // <- expecting non-pagination, but still use computeRealSlot for 3rd party software
 				SCROLL -> pagination.computeRealSlot(placedSlot - (scrollState * 8)).takeIf { it in state.slots } // <- items placed for scroll panels
@@ -424,7 +424,7 @@ open class Canvas(
 		onClose: CanvasCloseEvent.() -> Unit = this.onClose,
 		onClicks: Map<Int?, List<CanvasClickEvent.() -> Unit>> = this.onClicks,
 		onUpdateNonClearableSlots: Set<Int> = emptySet(),
-		asyncItems: Map<Int, Deferred<ItemLike>> = this.asyncItems,
+		asyncItems: Map<Int, Deferred<ItemLike>> = this.lazyItems,
 		identity: String = this.identity
 	): MutableCanvas = MutableCanvas(label, canvasBase, pagination, content, panelFlags, openSoundEffect, asyncItems).apply {
 		this.identity = identity
