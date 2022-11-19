@@ -332,8 +332,8 @@ open class Canvas(
 		}
 
 		// Phase 3 - place lazy content
-		var deferredItemQueue: Set<Deferred<ItemStack>> = emptySet()
-		val involvedAsyncItems = lazyItems.mapNotNull { (placedSlot, value) ->
+		var lazyItemQueue: Set<Deferred<ItemStack>> = emptySet()
+		val involvedLazyItems = lazyItems.mapNotNull { (placedSlot, value) ->
 			val slot = when (pagination.base) { // \/ now producing relative position to current point-of-view
 				null -> pagination.computeRealSlot(placedSlot).takeIf { it in state.slots } // <- expecting non-pagination, but still use computeRealSlot for 3rd party software
 				SCROLL -> pagination.computeRealSlot(placedSlot - (scrollState * 8)).takeIf { it in state.slots } // <- items placed for scroll panels
@@ -346,20 +346,20 @@ open class Canvas(
 
 		}
 
-		if (involvedAsyncItems.isEmpty()) {
-			onFinishedDeferred.invoke(deferredItemQueue)
-			onCompletion.invoke(CanvasRenderResult(state, deferredItemQueue)) // when no async items are placed, the render is already finished
+		if (involvedLazyItems.isEmpty()) {
+			onFinishedDeferred.invoke(lazyItemQueue)
+			onCompletion.invoke(CanvasRenderResult(state, lazyItemQueue)) // when no async items are placed, the render is already finished
 		} else {
 
-			involvedAsyncItems.forEach { (slot, value) ->
+			involvedLazyItems.forEach { (slot, value) ->
 
-				deferredItemQueue += asAsync(vendor = vendor, context = asyncContext) {
+				lazyItemQueue += asAsync(vendor = vendor, context = asyncContext) {
 					value.await().asItemStack().also {
 						state.setItem(slot, it)
 					}
 				}.apply {
 					invokeOnCompletion {
-						val queue = deferredItemQueue
+						val queue = lazyItemQueue
 
 						if (queue.all { it.isCompleted }) {
 							doAsync(vendor = vendor, context = asyncContext) {
@@ -379,7 +379,7 @@ open class Canvas(
 
 		return CanvasRenderResult(
 			renderResult = state,
-			deferredItems = deferredItemQueue,
+			deferredItems = lazyItemQueue,
 		)
 
 	}
