@@ -48,7 +48,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	branchType = TreeBranchType.OBJECT,
 	subBranches = subBranches,
 	content = content,
-){
+) {
 
 	private val log = getLogger("InterchangeStructure")
 
