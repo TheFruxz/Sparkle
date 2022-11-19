@@ -70,9 +70,12 @@ open class Canvas(
 	open val flags: Set<CanvasFlag> = emptySet(),
 	open val openSoundEffect: SoundEffect? = null,
 	open val lazyItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
+	open val vendor: App = sparkle,
+	open val displayContext: CoroutineContext = vendor.coroutineScope.coroutineContext,
+	open val updateContext: CoroutineContext = displayContext,
 ) : Identifiable<Canvas> {
 
-	open val onRender: CanvasRender = CanvasRender {  }
+	open val onRender: CanvasRender = CanvasRender { }
 	open val onOpen: CanvasOpenEvent.() -> Unit = { }
 	open val onClose: CanvasCloseEvent.() -> Unit = { }
 	open val onUpdate: CanvasUpdateEvent.() -> Unit = { }
@@ -185,7 +188,9 @@ open class Canvas(
 		data: Map<Key, Any> = emptyMap(),
 		triggerOpenEvent: Boolean = true,
 		triggerSound: Boolean = true,
-	) = sparkle.coroutineScope.launch {
+		coroutineContext: CoroutineContext = this.displayContext,
+		displayContext: CoroutineContext = vendor.syncDispatcher,
+	) = vendor.coroutineScope.launch(context = coroutineContext) {
 		if (NO_OPEN in flags) cancel()
 
 		receivers.toList().forEachNotNull { receiver ->
@@ -198,7 +203,7 @@ open class Canvas(
 					if (!triggerOpenEvent || event.callEvent()) {
 						renderResult = event.inventory
 
-						doSync {
+						doSync(vendor = vendor, context = displayContext) {
 							receiver.openInventory(renderResult)
 							CanvasSessionManager.putSession(receiver, this@Canvas, event.data)
 						}
@@ -242,7 +247,9 @@ open class Canvas(
 		triggerSound: Boolean = true,
 		triggerOnOpenToo: Boolean = true,
 		updateReason: UpdateReason = PLUGIN,
-	) = sparkle.coroutineScope.launch {
+		coroutineContext: CoroutineContext = this.updateContext,
+		displayContext: CoroutineContext = vendor.syncDispatcher,
+	) = vendor.coroutineScope.launch(context = coroutineContext) {
 		if (NO_UPDATE in flags) cancel()
 
 		receivers.toList().forEachNotNull { receiver ->
@@ -263,7 +270,7 @@ open class Canvas(
 
 							topInventory = event.inventory
 
-							doSync {
+							doSync(vendor = vendor, context = displayContext) {
 
 								if (topInventory.viewers.isNotEmpty() && receiver in viewers) { // just a check, to keep it bulletproof
 									debugLog("Updating ${receiver.name}'s inventory from $identity canvas")
@@ -299,7 +306,7 @@ open class Canvas(
 
 	suspend fun render(
 		target: Player? = null,
-		vendor: App = sparkle,
+		vendor: App = this.vendor,
 		syncContext: CoroutineContext = vendor.syncDispatcher,
 		asyncContext: CoroutineContext = vendor.asyncDispatcher,
 		data: Map<Key, Any> = emptyMap(),
