@@ -12,6 +12,7 @@ import de.fruxz.sparkle.framework.event.canvas.CanvasUpdateEvent
 import de.fruxz.sparkle.framework.extension.coroutines.asSync
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.sparkle
+import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.visual.canvas.Canvas.CanvasRender
 import de.fruxz.sparkle.framework.visual.canvas.CanvasBase.Companion
 import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
@@ -48,6 +49,9 @@ data class MutableCanvas(
 	override var flags: Set<CanvasFlag> = emptySet(),
 	override var openSoundEffect: SoundEffect? = null,
 	override var lazyItems: Map<Int, Deferred<ItemLike>> = emptyMap(),
+	override val vendor: App = sparkle,
+	override val displayContext: CoroutineContext = sparkle.coroutineScope.coroutineContext,
+	override val updateContext: CoroutineContext = displayContext,
 ) : Canvas(label, base, pagination, content, flags, openSoundEffect, lazyItems), Producible<Canvas>, AbstractBuilder<Canvas> {
 
 	override var onRender: CanvasRender = CanvasRender { }
@@ -55,6 +59,7 @@ data class MutableCanvas(
 	override var onUpdate: CanvasUpdateEvent.() -> Unit = { }
 	override var onClose: CanvasCloseEvent.() -> Unit = { }
 	override var onClicks: Map<Int?, List<CanvasClickEvent.() -> Unit>> = emptyMap()
+	override val onFinishedDeferred: suspend Set<Deferred<ItemStack>>.() -> Unit = { }
 	override var onUpdateNonClearableSlots: Set<Int> = emptySet()
 
 	override var identity = buildRandomTag(10, tagType = MIXED_CASE)
