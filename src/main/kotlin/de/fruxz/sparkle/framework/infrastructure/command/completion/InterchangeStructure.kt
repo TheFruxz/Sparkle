@@ -5,7 +5,6 @@ import de.fruxz.ascend.extension.logging.getLogger
 import de.fruxz.ascend.extension.math.maxTo
 import de.fruxz.ascend.tool.smart.positioning.Address
 import de.fruxz.ascend.tree.TreeBranch
-import de.fruxz.ascend.tree.TreeBranchType
 import de.fruxz.sparkle.framework.extension.asPlayerOrNull
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
@@ -42,10 +41,9 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	var requiredApprovals: List<Approval> = emptyList(),
 	var configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
 	var onExecution: (suspend InterchangeAccess<EXECUTOR>.() -> InterchangeResult)? = null,
-) : TreeBranch<InterchangeStructure<EXECUTOR>, List<CompletionComponent>, TreeBranchType>(
+) : TreeBranch<InterchangeStructure<EXECUTOR>, List<CompletionComponent>>(
 	identity = identity,
 	address = address,
-	branchType = TreeBranchType.OBJECT,
 	subBranches = subBranches,
 	content = content,
 ) {

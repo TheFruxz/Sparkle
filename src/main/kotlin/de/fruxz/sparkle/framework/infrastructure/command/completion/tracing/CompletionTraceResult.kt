@@ -1,11 +1,11 @@
 package de.fruxz.sparkle.framework.infrastructure.command.completion.tracing
 
 import de.fruxz.ascend.tree.TreeBranch
+import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.tracing.CompletionTraceResult.Conclusion.*
-import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 
-data class CompletionTraceResult<EXECUTOR : InterchangeExecutor, BRANCH : TreeBranch<*, *, *>>(
+data class CompletionTraceResult<EXECUTOR : InterchangeExecutor, BRANCH : TreeBranch<*, *>>(
 	val waysMatching: List<PossibleTraceWay<BRANCH>>, // the possible ways to execute the trace
 	val waysIncomplete: List<PossibleTraceWay<BRANCH>>, // the possible, but uncompleted ways to execute the trace - more input is needed to complete the trace
 	val waysOverflow: List<PossibleTraceWay<BRANCH>>, // the arguments are too many, but the whole trace way path matches to the input
