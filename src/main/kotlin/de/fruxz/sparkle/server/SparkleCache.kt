@@ -37,8 +37,6 @@ object SparkleCache : AppCache {
 
 	var registeredCompletionAssetStateCache = mapOf<String, Set<String>>()
 
-	var registeredCachedMutables = mapOf<String, Any?>()
-
 	var registeredPreferenceCache = mapOf<PreferenceIndex<*>, Any>()
 
 	var registeredInterchanges = setOf<Interchange>()
@@ -53,17 +51,11 @@ object SparkleCache : AppCache {
 
 	var registeredPreferences = mapOf<Identity<out Preference<*>>, Preference<*>>()
 
-	var runningTasks = listOf<Int>()
-
-	var buildModePlayers = setOf<Identity<out OfflinePlayer>>()
-
 	var playerMarkerBoxes = mapOf<Identity<out OfflinePlayer>, DependentCubicalShape>()
 
 	var tmp_initSetupPreferences = setOf<Preference<*>>()
 
 	var itemActions = setOf<ItemAction<out Event>>()
-
-	var messageConversationPartners = mapOf<Player, Player>()
 
 	var canvasSessions = mapOf<Player, CanvasSession>()
 
@@ -78,9 +70,7 @@ object SparkleCache : AppCache {
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
 		when {
 			dropDepth.isDeeperThanOrEquals(CLEAR) -> {
-				buildModePlayers = buildModePlayers.filter { it.identity != "" + entityIdentity }.toSet()
 				playerMarkerBoxes = playerMarkerBoxes.filter { it.key.identity != "" + entityIdentity }
-				messageConversationPartners = messageConversationPartners.filter { it.value.uniqueId != entityIdentity && it.key.uniqueId != entityIdentity }
 			}
 		}
 	}
@@ -112,7 +102,6 @@ object SparkleCache : AppCache {
 			registeredApps = emptySet()
 			registeredSandBoxes = emptySet()
 			registeredSandBoxCalls = emptyMap()
-			registeredCachedMutables = emptyMap()
 			registeredInterchanges = emptySet()
 			registeredComponents = emptySet()
 			services = emptyMap()
@@ -120,7 +109,6 @@ object SparkleCache : AppCache {
 			registeredListeners = emptySet()
 			runningComponents = emptyMap()
 			registeredPreferences = emptyMap()
-			runningTasks = emptyList()
 			tmp_initSetupPreferences = emptySet()
 			disabledInterchanges = emptySet()
 		}
