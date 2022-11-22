@@ -34,10 +34,12 @@ abstract class EventListener(
 	val isVendorCurrentlySet: Boolean
 		get() = this::vendor.isInitialized
 
-	val listenerIdentity: String
-		get() = tryOrNull { this::class.simpleName } ?: "${UUID.randomUUID()}"
+	val listenerIdentity: String by lazy {
+		tryOrNull { this::class.simpleName } ?: "${UUID.randomUUID()}"
+	}
 
-	override val identityKey: Key
-		get() = vendor.subKey(listenerIdentity, KeyingStrategy.CONTINUE)
+	override val identityKey: Key by lazy {
+		vendor.subKey(listenerIdentity, KeyingStrategy.CONTINUE)
+	}
 
 }
