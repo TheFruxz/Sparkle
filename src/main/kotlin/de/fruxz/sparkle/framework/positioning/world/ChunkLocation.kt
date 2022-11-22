@@ -20,6 +20,12 @@ data class ChunkLocation(
 	val z: Int,
 ) {
 
+	constructor(
+		world: World,
+		x: Int,
+		z: Int,
+	) : this(world.key, x, z)
+
 	/**
 	 * This lazy value represents the world, where the chunk should be located at.
 	 * This utilizes the [worldKey] property, to determine the world using the
