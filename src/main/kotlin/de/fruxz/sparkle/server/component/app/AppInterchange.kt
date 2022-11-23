@@ -58,7 +58,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
             addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.registeredApps.size.toDouble() / SparkleData.systemConfig.entriesPerListPage) })
 
             concludedExecution {
-                val page = getInput(fromAsset = CompletionAsset.LONG).limitTo(Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()).toInt()
+                val page = getInput(translationAsset = CompletionAsset.LONG).limitTo(Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()).toInt()
 
                 displayList(executor, page)
 
@@ -81,7 +81,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 addContent("start")
 
                 concludedExecution {
-                    val targetApp = getInput(slot = 1, fromAsset = CompletionAsset.APP)
+                    val targetApp = getInput(slot = 1, translationAsset = CompletionAsset.APP)
 
                     text("Starting the app '${targetApp.label}'...")
                         .color(NamedTextColor.GRAY)
@@ -117,7 +117,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 addContent("stop")
 
                 concludedExecution {
-                    val targetApp = getInput(slot = 1, fromAsset = CompletionAsset.APP)
+                    val targetApp = getInput(slot = 1, translationAsset = CompletionAsset.APP)
 
                     text("Stopping the app '${targetApp.label}'...").dyeGray()
                         .hoverEvent(text("Identity: ${targetApp.identity}").color(NamedTextColor.GRAY))
@@ -152,7 +152,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 addContent("restart")
 
                 concludedExecution {
-                    val targetApp = getInput(slot = 1, fromAsset = CompletionAsset.APP)
+                    val targetApp = getInput(slot = 1, translationAsset = CompletionAsset.APP)
 
                     text("Restarting the app '${targetApp.label}'...")
                         .color(NamedTextColor.GRAY)
@@ -189,7 +189,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 addContent("info")
 
                 concludedExecution {
-                    val targetApp = getInput(slot = 1, fromAsset = CompletionAsset.APP)
+                    val targetApp = getInput(slot = 1, translationAsset = CompletionAsset.APP)
 
                     text {
                         this + text("Information about the app '").dyeGray()
@@ -218,7 +218,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 addContent("install-update")
 
                 concludedExecution {
-                    val targetApp = getInput(slot = 1, fromAsset = CompletionAsset.APP)
+                    val targetApp = getInput(slot = 1, translationAsset = CompletionAsset.APP)
 
                     installUpdate(executor, listOf(targetApp))
 
@@ -231,7 +231,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                 addContent("clear-cache")
 
                 fun cacheClear(interchangeAccess: InterchangeAccess<*>, level: CacheDepthLevel) {
-                    val targetApp = interchangeAccess.getInput(slot = 1, fromAsset = CompletionAsset.APP)
+                    val targetApp = interchangeAccess.getInput(slot = 1, translationAsset = CompletionAsset.APP)
 
                     text("Starting cache-clear of app '${targetApp.label}'...")
                         .color(NamedTextColor.GRAY)
@@ -292,7 +292,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                     addContent(CompletionAsset.CACHE_DEPTH_LEVEL)
 
                     concludedExecution {
-                        val level = getInput(fromAsset = CompletionAsset.CACHE_DEPTH_LEVEL)
+                        val level = getInput(translationAsset = CompletionAsset.CACHE_DEPTH_LEVEL)
 
                         cacheClear(this, level)
 
@@ -328,7 +328,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
 
             concludedExecution {
 
-                installUpdate(executor, listOf(getInput(fromAsset = CompletionAsset.APP)))
+                installUpdate(executor, listOf(getInput(translationAsset = CompletionAsset.APP)))
 
             }
 

@@ -7,7 +7,6 @@ import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.command.Interchange
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction
-import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructureInputRestriction
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.visual.message.Transmission
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
@@ -121,39 +120,13 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	 * By default, the [slot] is set to the last index of the input-[parameters], so the [getInput]
 	 * function is very quick to use inside the StructuredInterchanges, because an execution block
 	 * itself hosts the last input-parameter any time.
-	 * This function also converts the output String to the given [T] using the [fromRestriction] [InterchangeStructureInputRestriction].
+	 * This function also converts the output String to the given [T] using the [translationAsset] [CompletionAsset].
 	 *
 	 * Example:
 	 * User-Input: "/test foo bar baz"; slot: 1 -> "bar"
 	 *
 	 * @param slot The index-position of the input-parameter to return.
-	 * @param fromRestriction The restriction to check if the input-parameter is valid and also converts the input to the [T] result.
-	 * @return The input-parameter at the given index-position [slot].
-	 * @throws IndexOutOfBoundsException if the given [slot] is out of bounds.
-	 * @throws IllegalArgumentException if the given restrictions at the given [slot] are not met.
-	 * @author Fruxz
-	 * @since 1.0
-	 */
-	fun <T> getInput(slot: Int = inputLength - 1, fromRestriction: InterchangeStructureInputRestriction<T>) =
-		if (fromRestriction.isValid(parameters[slot])) {
-			fromRestriction.transformer(parameters[slot])
-		} else {
-			throw IllegalArgumentException("Input restriction not followed!")
-		}
-
-	/**
-	 *
-	 * This function returns the given user-input string, at the given index-position [slot].
-	 * By default, the [slot] is set to the last index of the input-[parameters], so the [getInput]
-	 * function is very quick to use inside the StructuredInterchanges, because an execution block
-	 * itself hosts the last input-parameter any time.
-	 * This function also converts the output String to the given [T] using the [fromAsset] [CompletionAsset].
-	 *
-	 * Example:
-	 * User-Input: "/test foo bar baz"; slot: 1 -> "bar"
-	 *
-	 * @param slot The index-position of the input-parameter to return.
-	 * @param fromAsset The restriction to check if the input-parameter is valid and also converts the input to the [T] result.
+	 * @param translationAsset The restriction to check if the input-parameter is valid and also converts the input to the [T] result.
 	 * @return The input-parameter at the given index-position [slot].
 	 * @throws IndexOutOfBoundsException if the given [slot] is out of bounds.
 	 * @throws IllegalArgumentException if the given restrictions at the given [slot] are not met.
@@ -161,16 +134,16 @@ data class InterchangeAccess<EXECUTOR : InterchangeExecutor>(
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	fun <T : Any> getInput(slot: Int = inputLength - 1, fromAsset: CompletionAsset<T>): T {
-		if (fromAsset.transformer == null) throw IllegalArgumentException("Asset '${fromAsset.identity}' provides no transformer!")
+	fun <T : Any> getInput(slot: Int = inputLength - 1, translationAsset: CompletionAsset<T>): T {
+		if (translationAsset.transformer == null) throw IllegalArgumentException("Asset '${translationAsset.identity}' provides no transformer!")
 
-		return getInput(slot).let { input -> fromAsset.transformer.invoke(
+		return getInput(slot).let { input -> translationAsset.transformer.invoke(
 			CompletionAsset.CompletionContext(
 			executor = executor,
 			fullLineInput = parameters,
 			input = parameters.getOrNull(slot) ?: "",
 			ignoreCase = true
-		)) ?: throw IllegalStateException("Asset '${fromAsset.identity}' transformer produces null at input '$input'!") }
+		)) ?: throw IllegalStateException("Asset '${translationAsset.identity}' transformer produces null at input '$input'!") }
 
 	}
 

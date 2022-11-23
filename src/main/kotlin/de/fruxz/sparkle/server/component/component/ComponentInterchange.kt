@@ -5,7 +5,6 @@ import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.visual.notification
-import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructureInputRestriction
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.infrastructure.command.completion.ignoreCase
@@ -345,7 +344,7 @@ internal class ComponentInterchange : StructuredInterchange(
 
 				concludedExecution {
 
-					val page = getInput(1, InterchangeStructureInputRestriction.LONG)
+					val page = getInput(1).toIntOrNull() ?: 1
 
 					list(page.toInt(), executor)
 

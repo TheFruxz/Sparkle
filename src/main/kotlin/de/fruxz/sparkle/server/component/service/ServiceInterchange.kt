@@ -7,7 +7,6 @@ import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.SUCCESS
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.WRONG_USAGE
-import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructureInputRestriction
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionComponent
@@ -145,7 +144,7 @@ internal class ServiceInterchange : StructuredInterchange(
 				isNotRequired()
 
 				execution {
-					val page = getInput(1, InterchangeStructureInputRestriction.LONG).toInt() - 1
+					val page = (getInput(1).toIntOrNull() ?: 1) - 1
 
 					if (page >= 0) {
 						displayServices(executor, page)

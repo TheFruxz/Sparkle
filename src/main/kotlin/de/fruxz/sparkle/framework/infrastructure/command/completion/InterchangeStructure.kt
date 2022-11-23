@@ -132,17 +132,6 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 		}
 	}
 
-	private fun isInputAllowedByTypes(input: String) =
-		content.flatMap { if (it is CompletionComponent.Asset) it.asset.supportedInputType else emptyList() }
-			.let { internal ->
-				if (content.filterIsInstance<CompletionComponent.Static>().isNotEmpty()) {
-					true
-				} else if (internal.isNotEmpty()) {
-					return@let internal.none { !it.isValid(input) }
-				} else
-					true
-			}
-
 	private fun computeLocalCompletion(context: CompletionContext) = content.flatMap { it.completion(context) }
 
 	private fun validInput(executor: InterchangeExecutor, input: String, inputQuery: List<String>) =
@@ -152,10 +141,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 			inputQuery,
 			input,
 			this.configuration.ignoreCase,
-		)).none { !it.equals(input, configuration.ignoreCase) })
-				&& configuration.supportedInputTypes.none { !it.isValid(input) }
-				&& isInputAllowedByTypes(input)
-				&& (!configuration.isRequired || input.isNotBlank())
+		)).none { !it.equals(input, configuration.ignoreCase) }) && (!configuration.isRequired || input.isNotBlank())
 
 
 	enum class BranchStatus {

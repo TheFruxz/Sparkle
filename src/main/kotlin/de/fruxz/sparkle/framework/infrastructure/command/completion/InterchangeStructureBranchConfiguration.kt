@@ -1,10 +1,8 @@
 package de.fruxz.sparkle.framework.infrastructure.command.completion
 
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructureInputRestriction.Companion.ANY
 
 data class CompletionBranchConfiguration(
-	var supportedInputTypes: Set<InterchangeStructureInputRestriction<*>> = setOf(ANY),
 	var isRequired: Boolean = true,
 	var ignoreCase: Boolean = false,
 	var mustMatchOutput: Boolean = true,
@@ -32,7 +30,3 @@ fun <EXECUTOR : InterchangeExecutor> InterchangeStructure<EXECUTOR>.infiniteSubP
 }
 
 fun <EXECUTOR : InterchangeExecutor> InterchangeStructure<EXECUTOR>.limitedSubParameters() = configure { infiniteSubParameters = false }
-
-fun <EXECUTOR : InterchangeExecutor> InterchangeStructure<EXECUTOR>.onlyAccept(vararg inputTypes: InterchangeStructureInputRestriction<*>) = configure {
-	supportedInputTypes = inputTypes.toSet()
-}
