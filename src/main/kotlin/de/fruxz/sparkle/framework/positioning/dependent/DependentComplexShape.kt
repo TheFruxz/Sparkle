@@ -1,6 +1,5 @@
 package de.fruxz.sparkle.framework.positioning.dependent
 
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
@@ -39,8 +38,8 @@ data class DependentComplexShape(
 			return (highest.center.z - lowest.center.z) + (highest.fullDepth / 2) + (lowest.fullDepth / 2)
 		}
 
-	override val center: SimpleLocation by lazy {
-		SimpleLocation(
+	override val center: Location by lazy {
+		Location(
 			dependentShapes.first().center.world,
 			dependentShapes.map { it.center.x }.average(),
 			dependentShapes.map { it.center.y }.average(),
@@ -48,7 +47,7 @@ data class DependentComplexShape(
 		)
 	}
 
-	override val blockLocations: List<SimpleLocation> by lazy {
+	override val blockLocations: List<Location> by lazy {
 		dependentShapes.flatMap { it.blockLocations }.distinctBy { it.x to it.y to it.z }
 	}
 

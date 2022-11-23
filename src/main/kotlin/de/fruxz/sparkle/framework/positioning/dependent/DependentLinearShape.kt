@@ -1,9 +1,9 @@
 package de.fruxz.sparkle.framework.positioning.dependent
 
-import de.fruxz.sparkle.framework.extension.world.toSimpleLocation
+import de.fruxz.sparkle.framework.extension.world.copy
 import de.fruxz.sparkle.framework.extension.world.velocityTo
 import de.fruxz.sparkle.framework.positioning.relative.LinearShape
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
@@ -13,16 +13,16 @@ import kotlin.math.roundToInt
 
 @Serializable
 data class DependentLinearShape(
-    val fromLocation: SimpleLocation,
-    val toLocation: SimpleLocation,
+    @Contextual val fromLocation: Location,
+    @Contextual val toLocation: Location,
 ) : DependentShape, LinearShape {
 
     override val length: Double = fromLocation.toVector().distance(toLocation.toVector())
 
     override val volume: Double = .0
 
-    override val center: SimpleLocation by lazy {
-        SimpleLocation(
+    override val center: Location by lazy {
+        Location(
             fromLocation.world,
             (fromLocation.x + toLocation.x) / 2,
             (fromLocation.y + toLocation.y) / 2,
@@ -42,13 +42,13 @@ data class DependentLinearShape(
         abs(fromLocation.z - toLocation.z)
     }
 
-    override val blockLocations: List<SimpleLocation> by lazy {
-        var result = listOf<SimpleLocation>()
+    override val blockLocations: List<Location> by lazy {
+        var result = listOf<Location>()
         val directionVector = fromLocation velocityTo toLocation
         val directionVectorLength = directionVector.length()
 
         for (i in 0 until directionVectorLength.roundToInt()) {
-            val location = fromLocation.toVector().add(directionVector.clone().multiply(i.toDouble()).divide(Vector(directionVectorLength, directionVectorLength, directionVectorLength))).toLocation(fromLocation.bukkitWorld).toSimpleLocation()
+            val location = fromLocation.toVector().add(directionVector.clone().multiply(i.toDouble()).divide(Vector(directionVectorLength, directionVectorLength, directionVectorLength))).toLocation(fromLocation.world)
             result += location
         }
 
@@ -60,8 +60,8 @@ data class DependentLinearShape(
     override fun contains(location: Location) = false
 
     override fun asShifted(toWorld: World): DependentShape = copy(
-        fromLocation = fromLocation.copy(world = toWorld.name),
-        toLocation = toLocation.copy(world = toWorld.name)
+        fromLocation = fromLocation.copy(world = toWorld),
+        toLocation = toLocation.copy(world = toWorld)
     )
 
 }

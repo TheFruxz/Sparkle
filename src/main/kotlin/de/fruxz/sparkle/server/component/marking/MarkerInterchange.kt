@@ -7,7 +7,6 @@ import de.fruxz.sparkle.framework.extension.asPlayerOrNull
 import de.fruxz.sparkle.framework.extension.component
 import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
-import de.fruxz.sparkle.framework.extension.effect.location
 import de.fruxz.sparkle.framework.extension.effect.particleOf
 import de.fruxz.sparkle.framework.extension.entity.markerOrNull
 import de.fruxz.sparkle.framework.extension.structureManager
@@ -239,7 +238,7 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 
 						doSync { _ ->
 
-							player.teleportAsync(it.centerLocation) // quick and cheap teleportation
+							player.teleportAsync(it.center) // quick and cheap teleportation
 
 							if (player.allowFlight) player.isFlying = true // if can fly, do fly, because of possibility of being in the air
 

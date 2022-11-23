@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.positioning.dependent
 
+import de.fruxz.sparkle.framework.extension.world.copy
 import de.fruxz.sparkle.framework.extension.worlds
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import de.fruxz.sparkle.framework.positioning.relative.Shape
 import org.bukkit.Location
 import org.bukkit.World
@@ -27,7 +27,7 @@ interface DependentShape : Shape {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val center: SimpleLocation
+	val center: Location
 
 	/**
 	 * This computational value represents the minHeight..maxHeight of the shape.
@@ -81,7 +81,7 @@ interface DependentShape : Shape {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	val blockLocations: List<SimpleLocation>
+	val blockLocations: List<Location>
 
 	/**
 	 * Returns, if the [Vector.x], [Vector.y] and [Vector.z] values of the given [Vector] are inside the shape.
@@ -108,21 +108,6 @@ interface DependentShape : Shape {
 	 * @since 1.0
 	 */
 	fun contains(location: Location): Boolean
-
-	/**
-	 * Returns, if the given [Block] is inside the [DependentShape].
-	 * This is done by using the [DependentShape.contains] function with the [Location] parameter.
-	 * So its precise and respects every aspect of the [SimpleLocation], like the world and the chunk.
-	 * To use the [DependentShape.contains] function, the [simpleLocation] parameter is converted to
-	 * a Bukkit [Location], via the [SimpleLocation.bukkit] computational value.
-	 * @param simpleLocation The [SimpleLocation] to check
-	 * @return True, if the [SimpleLocation] is inside the [DependentShape], false otherwise
-	 * @author Fruxz
-	 * @since 1.0
-	 * @see DependentShape.contains
-	 * @see SimpleLocation.bukkit
-	 */
-	fun contains(simpleLocation: SimpleLocation): Boolean = contains(location = simpleLocation.bukkit)
 
 	/**
 	 * Returns, if the given [Entity] is inside the [DependentShape].

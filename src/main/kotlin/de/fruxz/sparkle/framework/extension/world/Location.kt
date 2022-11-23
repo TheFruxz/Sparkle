@@ -6,7 +6,7 @@ import de.fruxz.sparkle.framework.extension.world
 import de.fruxz.sparkle.framework.extension.worldOrNull
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import de.fruxz.sparkle.framework.positioning.world.ChunkLocation
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
+import de.fruxz.sparkle.framework.positioning.world.LazyLocation
 import org.bukkit.Chunk
 import org.bukkit.Location
 import org.bukkit.World
@@ -18,8 +18,8 @@ import kotlin.math.roundToInt
 
 /**
  * This function creates a new [DependentCubicalShape] by using
- * [this] location as the [DependentCubicalShape.first] and the
- * [location] as the [DependentCubicalShape.second].
+ * [this] location as the [DependentCubicalShape.firstLocation] and the
+ * [location] as the [DependentCubicalShape.secondLocation].
  * @param location The location to use as the second location of the [DependentCubicalShape]
  * @return A new [DependentCubicalShape] with [this] location as the first location and the [location] as the second location
  * @author Fruxz
@@ -121,7 +121,7 @@ infix fun Location.velocityTo(destination: Location) = toVector() velocityTo des
  * @author Fruxz
  * @since 1.0
  */
-infix fun SimpleLocation.velocityTo(destination: SimpleLocation) = toVector() velocityTo destination.toVector()
+infix fun LazyLocation.velocityTo(destination: LazyLocation) = asVector velocityTo destination.asVector
 
 /**
  * This computational value computes the exact representation
@@ -251,25 +251,14 @@ fun Location.subtract(x: Number = 0, y: Number = 0, z: Number = 0) =
  * @author Fruxz
  * @since 1.0
  */
-fun Location.toSimpleLocation() = with(this) { SimpleLocation(world.name, x, y, z) }
-
-/**
- * This computational value represents the [Entity.getLocation] of the entity
- * as a new [SimpleLocation] object.
- * @author Fruxz
- * @since 1.0
- */
-val Entity.simpleLocation: SimpleLocation
-	get() = location.toSimpleLocation()
-
-/**
- * This computational value represents the [Block.getLocation] of the block
- * as a new [SimpleLocation] object.
- * @author Fruxz
- * @since 1.0
- */
-val Block.simpleLocation: SimpleLocation
-	get() = location.toSimpleLocation()
+fun Location.lazy(
+	world: String = this.world.name,
+	x: Double = this.x,
+	y: Double = this.y,
+	z: Double = this.z,
+	yaw: Float = this.yaw,
+	pitch: Float = this.pitch
+) = LazyLocation(world, x, y, z, yaw, pitch)
 
 /**
  * This function creates a copy of [this] [Location],

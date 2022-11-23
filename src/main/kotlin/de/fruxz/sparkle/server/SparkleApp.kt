@@ -10,8 +10,11 @@ import de.fruxz.sparkle.framework.data.json.serializer.*
 import de.fruxz.sparkle.framework.effect.sound.SoundData
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.effect.sound.SoundMelody
+import de.fruxz.sparkle.framework.extension.asPlayerOrNull
+import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.mainLog
+import de.fruxz.sparkle.framework.extension.quickSandBox
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.AppCompanion
 import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater
@@ -35,7 +38,7 @@ import de.fruxz.sparkle.framework.positioning.relative.LinearShape
 import de.fruxz.sparkle.framework.positioning.relative.PyramidalShape
 import de.fruxz.sparkle.framework.positioning.relative.Shape
 import de.fruxz.sparkle.framework.positioning.relative.SphereShape
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
+import de.fruxz.sparkle.framework.positioning.world.LazyLocation
 import de.fruxz.sparkle.framework.visual.item.Item
 import de.fruxz.sparkle.framework.visual.item.Modification
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure.SYSTEM_IDENTITY
@@ -56,6 +59,7 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.key.Key
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.World
@@ -101,7 +105,7 @@ class SparkleApp : App() {
 				subclass(JsonConfiguration::class)
 				subclass(JsonFileDataElement::class)
 				subclass(Modification::class)
-				subclass(SimpleLocation::class)
+				subclass(LazyLocation::class)
 				subclass(SoundData::class)
 				subclass(Approval::class)
 
@@ -136,7 +140,7 @@ class SparkleApp : App() {
 			}
 		}
 
-		register(SimpleLocation::class)
+		register(LazyLocation::class)
 
 	}
 
@@ -183,6 +187,18 @@ class SparkleApp : App() {
 		add(SparkleInterchange())
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
+
+		quickSandBox {
+			executor.asPlayerOrNull?.location?.let {
+				Shape.cube(center = it, 10.0).outlineBlockLocations.let { blocks ->
+					doSync {
+						blocks.forEach { block ->
+							block.block.type = Material.REDSTONE_BLOCK
+						}
+					}
+				}
+			}
+		}
 
 	}
 

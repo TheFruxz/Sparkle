@@ -2,9 +2,10 @@ package de.fruxz.sparkle.framework.positioning.dependent
 
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.floorToInt
+import de.fruxz.sparkle.framework.extension.world.copy
 import de.fruxz.sparkle.framework.positioning.relative.CylindricalShape
 import de.fruxz.sparkle.framework.positioning.relative.Shape
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
@@ -13,7 +14,7 @@ import kotlin.math.pow
 
 @Serializable
 data class DependentCylindricalShape(
-	override val center: SimpleLocation,
+	@Contextual override val center: Location,
 	override val direction: Shape.Direction,
 	override val height: Double,
 	override val radius: Double,
@@ -48,8 +49,8 @@ data class DependentCylindricalShape(
 		}
 	}
 
-	override val blockLocations: List<SimpleLocation> by lazy {
-		var output = listOf<SimpleLocation>()
+	override val blockLocations: List<Location> by lazy {
+		var output = listOf<Location>()
 
 		var attempts = 0
 		val zLocations: IntRange
@@ -77,7 +78,7 @@ data class DependentCylindricalShape(
 		for (x in xLocations) {
 			for (y in yLocations) {
 				for (z in zLocations) {
-					val location = SimpleLocation(center.world, x, y, z)
+					val location = Location(center.world, x.toDouble(), y.toDouble(), z.toDouble())
 					attempts++
 					if (contains(location)) {
 						output += location
@@ -112,7 +113,7 @@ data class DependentCylindricalShape(
 			}
 		}
 
-		return x.contains(vector.x) && y.contains(vector.y) && z.contains(vector.z) && vector.distance(center.bukkit.toVector().apply {
+		return x.contains(vector.x) && y.contains(vector.y) && z.contains(vector.z) && vector.distance(center.toVector().apply {
 			when (direction) {
 				Shape.Direction.X -> {
 					setX(vector.x)
@@ -129,11 +130,11 @@ data class DependentCylindricalShape(
 	}
 
 	override fun contains(location: Location): Boolean {
-		return contains(location.toVector()) && center.world == location.world.name
+		return contains(location.toVector()) && center.world == location.world
 	}
 
 	override fun asShifted(toWorld: World): DependentShape = copy(
-		center = center.copy(world = toWorld.name)
+		center = center.copy(world = toWorld)
 	)
 
 }

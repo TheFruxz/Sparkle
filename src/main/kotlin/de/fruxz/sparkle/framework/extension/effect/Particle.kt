@@ -4,7 +4,6 @@ import com.destroystokyo.paper.ParticleBuilder
 import de.fruxz.sparkle.framework.effect.EffectDsl
 import de.fruxz.sparkle.framework.effect.particle.ParticleData
 import de.fruxz.sparkle.framework.effect.particle.ParticleType
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.entity.Player
@@ -45,9 +44,6 @@ fun ParticleBuilder.offset(offset: Number) = offset(offset.toDouble(), offset.to
 
 @EffectDsl
 fun ParticleBuilder.offset(offsetX: Number, offsetZ: Number) = offset(offsetX.toDouble(), .0, offsetZ.toDouble())
-
-@EffectDsl
-fun ParticleBuilder.location(simpleLocation: SimpleLocation) = location(simpleLocation.bukkit)
 
 @EffectDsl
 fun <T : Any> particleOf(particleType: ParticleType<T>): ParticleData<T> = ParticleData(particleType)

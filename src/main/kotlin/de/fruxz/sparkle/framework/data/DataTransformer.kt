@@ -3,8 +3,6 @@ package de.fruxz.sparkle.framework.data
 import de.fruxz.ascend.extension.container.toArrayList
 import de.fruxz.ascend.extension.data.fromJsonString
 import de.fruxz.ascend.extension.data.toJsonString
-import de.fruxz.sparkle.framework.positioning.world.SimpleLocation
-import org.bukkit.Location
 
 data class DataTransformer<SHELL: Any, CORE: Any>(
 	val toCore: SHELL.() -> CORE,
@@ -35,32 +33,6 @@ data class DataTransformer<SHELL: Any, CORE: Any>(
 			)
 
 		// simple location
-
-		@JvmStatic
-		fun simpleLocationBukkit() =
-			DataTransformer<Location, SimpleLocation>(
-				{ SimpleLocation.ofBukkit(this) },
-				{ bukkit })
-
-		@JvmStatic
-		fun simpleLocationListBukkit() =
-			DataTransformer<List<Location>, List<SimpleLocation>>({
-				map {
-					SimpleLocation.ofBukkit(
-						it
-					)
-				}
-			}, { map { it.bukkit } })
-
-		@JvmStatic
-		fun simpleLocationArrayBukkit() =
-			DataTransformer<Array<Location>, Array<SimpleLocation>>({
-				map {
-					SimpleLocation.ofBukkit(
-						it
-					)
-				}.toTypedArray()
-			}, { map { it.bukkit }.toTypedArray() })
 
 	}
 

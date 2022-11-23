@@ -2,7 +2,6 @@ package de.fruxz.sparkle.framework.positioning.relative
 
 import de.fruxz.ascend.annotation.NotPerfect
 import de.fruxz.sparkle.framework.extension.world.add
-import de.fruxz.sparkle.framework.extension.world.toSimpleLocation
 import de.fruxz.sparkle.framework.positioning.dependent.DependentComplexShape
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCylindricalShape
@@ -108,7 +107,7 @@ interface Shape {
          * @since 1.0
          */
         @JvmStatic
-        fun cylinder(center: Location, height: Double, radius: Double, direction: Direction = Y) = DependentCylindricalShape(center.toSimpleLocation(), direction, height, radius)
+        fun cylinder(center: Location, height: Double, radius: Double, direction: Direction = Y) = DependentCylindricalShape(center, direction, height, radius)
 
         /**
          * This function creates a new [CylindricalShape] from the given parameters.
@@ -137,7 +136,7 @@ interface Shape {
          */
         @JvmStatic
         @NotPerfect
-        fun pyramid(peak: Location, height: Double, groundWidth: Double, groundDepth: Double) = DependentPyramidalShape(peak.toSimpleLocation(), height, groundWidth, groundDepth)
+        fun pyramid(peak: Location, height: Double, groundWidth: Double, groundDepth: Double) = DependentPyramidalShape(peak, height, groundWidth, groundDepth)
 
         /**
          * This function creates a new [DependentPyramidalShape] from the given parameters.
@@ -207,7 +206,7 @@ interface Shape {
          * @since 1.0
          */
         @JvmStatic
-        fun line(start: Location, end: Location) = DependentLinearShape(start.toSimpleLocation(), end.toSimpleLocation())
+        fun line(start: Location, end: Location) = DependentLinearShape(start, end)
 
         /**
          * This function creates a new [LinearShape] from the given parameters.
