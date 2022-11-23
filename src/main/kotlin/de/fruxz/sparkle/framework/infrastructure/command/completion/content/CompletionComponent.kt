@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.infrastructure.command.completion.content
 
-import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset.CompletionContext
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
+import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset.CompletionContext
 import de.fruxz.sparkle.framework.permission.Approval
 
 sealed interface CompletionComponent {
@@ -68,7 +68,7 @@ sealed interface CompletionComponent {
 		override val label = "<${asset.identity}>"
 
 		override val inputExpressionCheck: CompletionContext.() -> Boolean = check@{
-			return@check asset.check?.invoke(this) ?: true
+			return@check asset.validation?.invoke(this) ?: true
 		}
 
 	}

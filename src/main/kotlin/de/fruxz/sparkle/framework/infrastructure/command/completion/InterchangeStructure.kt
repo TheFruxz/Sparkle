@@ -141,7 +141,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 			inputQuery,
 			input,
 			this.configuration.ignoreCase,
-		)).none { !it.equals(input, configuration.ignoreCase) }) && (!configuration.isRequired || input.isNotBlank())
+		)).any { it.equals(input, configuration.ignoreCase) }) && (!configuration.isRequired || input.isNotBlank())
 
 
 	enum class BranchStatus {
@@ -309,7 +309,9 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 		val query = (parameters.lastOrNull() ?: "")
 		val traceBase = parameters.dropLast(1)
 		val tracing = trace(traceBase, executor)
-		val tracingContent = tracing.let { return@let (it.waysIncomplete + it.waysMatching + it.waysNoDestination) }
+		val tracingContent = tracing.let { return@let (it.waysIncomplete + it.waysMatching + it.waysNoDestination) }.also {
+			println("at $parameters output: $it" )
+		}
 		val filteredContent = tracingContent.filter { it.tracingDepth == parameters.lastIndex }
 		val flattenedContentCompletion = filteredContent.flatMap { it.cachedCompletion }
 		val distinctCompletion = flattenedContentCompletion.distinct()

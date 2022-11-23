@@ -46,17 +46,18 @@ import kotlin.io.path.walk
 
 data class CompletionAsset<T>(
 	override val identityKey: Key,
-	val refreshing: Boolean,
-	val check: (CompletionContext.() -> Boolean)? = null,
-	val transformer: (CompletionContext.() -> T?)? = null,
-	val generator: CompletionContext.(CompletionAsset<T>) -> Collection<String>,
+	val isContentDynamic: Boolean,
+	val validation: (CompletionContext.() -> Boolean)? = null,
+	val translation: (CompletionContext.() -> T?)? = null,
+	val completion: CompletionContext.(CompletionAsset<T>) -> Collection<String>,
 ) : KeyedIdentifiable<CompletionAsset<T>> {
 
-	fun computedContent(context: CompletionContext): Set<String> = if (!refreshing && SparkleCache.registeredCompletionAssetStateCache.containsKey(identity)) {
-		SparkleCache.registeredCompletionAssetStateCache[identity]!!
-	} else {
-		generator(context, this).toSortedSet().apply {
-			if (!refreshing) SparkleCache.registeredCompletionAssetStateCache += identity to this
+	fun computedContent(context: CompletionContext): SortedSet<String> = when {
+		(!isContentDynamic && SparkleCache.registeredCompletionAssetStateCache.containsKey(identity)) -> SparkleCache.registeredCompletionAssetStateCache[identity]!!
+		else -> {
+			completion(context, this).toSortedSet().apply {
+				if (!isContentDynamic) SparkleCache.registeredCompletionAssetStateCache += identity to this
+			}
 		}
 	}
 

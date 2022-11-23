@@ -35,7 +35,7 @@ object SparkleCache : AppCache {
 
 	var registeredSandBoxCalls = mapOf<Identity<SandBox>, Int>()
 
-	var registeredCompletionAssetStateCache = mapOf<String, Set<String>>()
+	var registeredCompletionAssetStateCache = mapOf<String, SortedSet<String>>()
 
 	var registeredPreferenceCache = mapOf<PreferenceIndex<*>, Any>()
 

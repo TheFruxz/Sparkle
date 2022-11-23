@@ -22,10 +22,10 @@ data class CompletionAssetBuilder<T>(
 		assert(completion != null) { "Completion must not be null!" }
 		return CompletionAsset(
 			identityKey = key,
-			refreshing = dynamic,
-			check = validation,
-			transformer = translation,
-			generator = completion!!,
+			isContentDynamic = dynamic,
+			validation = validation,
+			translation = translation,
+			completion = completion!!,
 		)
 	}
 
