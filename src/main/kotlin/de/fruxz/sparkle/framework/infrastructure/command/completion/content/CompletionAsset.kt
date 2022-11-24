@@ -38,11 +38,10 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import java.nio.file.Path
 import java.util.*
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.exists
+import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.pathString
 import kotlin.io.path.relativeToOrSelf
-import kotlin.io.path.walk
 
 data class CompletionAsset<T>(
 	override val identityKey: Key,
@@ -288,8 +287,11 @@ data class CompletionAsset<T>(
 		@JvmStatic
 		fun files(path: Path, filter: (Path) -> Boolean = { true }, output: (String) -> String = { it }) = buildAsset(sparkle.subKey("file")) {
 			complete {
-				@OptIn(ExperimentalPathApi::class)
-				path.walk().filter(filter).map { output(it.relativeToOrSelf(path).pathString) }.toList()
+				path.listDirectoryEntries().mapNotNull {
+					if (filter(it)) {
+						output(it.relativeToOrSelf(path).pathString)
+					} else null
+				}
 			}
 			validate { (path / input).exists() }
 			translate { path / input }
