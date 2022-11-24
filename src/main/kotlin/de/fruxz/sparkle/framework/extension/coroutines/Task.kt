@@ -181,7 +181,14 @@ fun launch(
 	isAsync: Boolean = true,
 	context: CoroutineContext = isAsync.switchResult(vendor.asyncDispatcher, vendor.syncDispatcher),
 	process: suspend (CoroutineScope) -> Unit,
-) = vendor.coroutineScope.launch(context = context, block = process)
+) = vendor.coroutineScope.launch(context = context, block = {
+	try {
+		process.invoke(this)
+	} catch (e: Exception) {
+		e.debugLog("Last level launch-exception detected (may already been printed publicly):")
+		e.printStackTrace()
+	}
+})
 
 /**
  * This function executes the code provided in [code] asynchronously,
