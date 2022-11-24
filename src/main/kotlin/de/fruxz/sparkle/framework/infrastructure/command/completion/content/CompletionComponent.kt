@@ -12,7 +12,7 @@ sealed interface CompletionComponent {
 
 	val displayRequirement: ((executor: InterchangeExecutor, parameters: Array<String>, completion: Set<String>) -> Boolean)?
 
-	val inputExpressionCheck: (CompletionContext) -> Boolean
+	val inputExpressionCheck: (CompletionContext) -> Boolean // TODO validation is NEVER USED????
 
 	val accessApproval: Approval?
 
