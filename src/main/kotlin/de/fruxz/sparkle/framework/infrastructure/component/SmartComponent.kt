@@ -38,7 +38,6 @@ abstract class SmartComponent(
 	private var selfStart: suspend () -> Unit = {}
 	private var selfStop: suspend () -> Unit = {}
 
-
 	var interchanges = setOf<Interchange>()
 
 	fun interchange(vararg interchange: Interchange) { interchanges += interchange }
@@ -70,151 +69,184 @@ abstract class SmartComponent(
 	}
 
 	final override suspend fun register() {
-		if (isBlocked) return
-
-		component() // register all objects
-
-		selfRegister.invoke()
-
-		interchanges.forEach { interchange ->
-			tryToCatch {
-
-				interchange.replaceVendor(vendor)
-
-				doSync { _ ->
-					server.internalCommandMap.apply {
-						val command = server.getPluginCommand(interchange.label) ?: vendor.createCommand(interchange)
-
-						command.name = interchange.label
-						command.tabCompleter = interchange.tabCompleter
-						command.usage = interchange.completion.buildSyntax(null)
-						command.aliases = interchange.commandProperties.aliases.toList()
-						command.description = interchange.commandProperties.description
-						interchange.commandProperties.permissionMessage?.let(command::permissionMessage)
-						command.setExecutor(interchange)
-						interchange.requiredApproval?.compose(interchange.vendor)
-							?.let { approval ->
-								command.permission = Permission(approval.identity, interchange.commandProperties.permissionDefault).name
-								debugLog("Interchange '${interchange.label}' permission set to '${approval.identity}'!")
-							}
-
-						register(vendor.description.name, command)
-					}
-
-					server.internalSyncCommands()
-
-					if (!isAutoStarting) vendor.replace(interchange.identityObject, disabledComponentInterchange(identityObject, tryOrNull { interchange.requiredApproval?.compose(interchange.vendor) }))
-
-				}
-
-				SparkleCache.registeredInterchanges += interchange
-				SparkleCache.disabledInterchanges += interchange.identityObject
-				debugLog("Interchange '${interchange.identity}' registered through '$identity' with disabled-interchange!")
-
-			}
+		if (isBlocked) {
+			debugLog("Component $label is blocked and will not be registered.")
+			return
 		}
 
-		updateCommands()
+		try {
+
+			component() // register all objects
+
+			selfRegister.invoke()
+
+			interchanges.forEach { interchange ->
+				tryToCatch {
+
+					interchange.replaceVendor(vendor)
+
+					doSync { _ ->
+						server.internalCommandMap.apply {
+							val command = server.getPluginCommand(interchange.label) ?: vendor.createCommand(interchange)
+
+							command.name = interchange.label
+							command.tabCompleter = interchange.tabCompleter
+							command.usage = interchange.completion.buildSyntax(null)
+							command.aliases = interchange.commandProperties.aliases.toList()
+							command.description = interchange.commandProperties.description
+							interchange.commandProperties.permissionMessage?.let(command::permissionMessage)
+							command.setExecutor(interchange)
+							interchange.requiredApproval?.compose(interchange.vendor)
+								?.let { approval ->
+									command.permission = Permission(approval.identity, interchange.commandProperties.permissionDefault).name
+									debugLog("Interchange '${interchange.label}' permission set to '${approval.identity}'!")
+								}
+
+							register(vendor.description.name, command)
+						}
+
+						server.internalSyncCommands()
+
+						if (!isAutoStarting) vendor.replace(interchange.identityObject, disabledComponentInterchange(identityObject, tryOrNull { interchange.requiredApproval?.compose(interchange.vendor) }))
+
+					}
+
+					SparkleCache.registeredInterchanges += interchange
+					SparkleCache.disabledInterchanges += interchange.identityObject
+					debugLog("Interchange '${interchange.identity}' registered through '$identity' with disabled-interchange!")
+
+				}
+			}
+
+			updateCommands()
+
+		} catch (e: Exception) {
+			sectionLog.warning("Failed to smart-register component '$identity' due to this exception:")
+			e.printStackTrace()
+		}
+
 	}
 
 	final override suspend fun start() {
-		if (isBlocked) return
-
-		selfStart.invoke()
-
-		interchanges.forEach {
-			tryToCatch {
-				vendor.replace(it.identityObject, it)
-				SparkleCache.registeredInterchanges += it
-				SparkleCache.disabledInterchanges -= it.identityObject
-				debugLog("Interchange '${it.identity}' replaced through '$identity' with original interchange-value!")
-			}
+		if (isBlocked) {
+			debugLog("Component $label is blocked and will not be started.")
+			return
 		}
 
-		services.forEach {
-			tryToCatch {
-				vendor.register(it)
-				debugLog("Service '${it.identity}' registered through '$identity'!")
-				vendor.start(it)
-				debugLog("Service '${it.identity}' started through '$identity'!")
+		try {
+
+			selfStart.invoke()
+
+			interchanges.forEach {
+				tryToCatch {
+					vendor.replace(it.identityObject, it)
+					SparkleCache.registeredInterchanges += it
+					SparkleCache.disabledInterchanges -= it.identityObject
+					debugLog("Interchange '${it.identity}' replaced through '$identity' with original interchange-value!")
+				}
 			}
+
+			services.forEach {
+				tryToCatch {
+					vendor.register(it)
+					debugLog("Service '${it.identity}' registered through '$identity'!")
+					vendor.start(it)
+					debugLog("Service '${it.identity}' started through '$identity'!")
+				}
+			}
+
+			components.forEach {
+				tryToCatch {
+					vendor.add(it)
+					SparkleCache.registeredComponents += it
+					debugLog("Component '${it.identity}' added through '$identity'!")
+				}
+			}
+
+			listeners.forEach {
+				tryToCatch {
+					vendor.add(it)
+					SparkleCache.registeredListeners += it
+					debugLog("Listener '${it.identity}' added through '$identity'!")
+				}
+			}
+
+			sandboxes.forEach {
+				tryToCatch {
+					buildSandBox(this@SmartComponent.vendor, it.key, it.process)
+				}
+			}
+
+			updateCommands()
+
+		} catch (e: Exception) {
+			sectionLog.warning("Failed to smart-start component '$identity' due to this exception:")
+			e.printStackTrace()
 		}
 
-		components.forEach {
-			tryToCatch {
-				vendor.add(it)
-				SparkleCache.registeredComponents += it
-				debugLog("Component '${it.identity}' added through '$identity'!")
-			}
-		}
-
-		listeners.forEach {
-			tryToCatch {
-				vendor.add(it)
-				SparkleCache.registeredListeners += it
-				debugLog("Listener '${it.identity}' added through '$identity'!")
-			}
-		}
-
-		sandboxes.forEach {
-			tryToCatch {
-				buildSandBox(this@SmartComponent.vendor, it.key, it.process)
-			}
-		}
-
-		updateCommands()
 	}
 
 	final override suspend fun stop() {
-		if (isBlocked) return
-
-		selfStop.invoke()
-
-		interchanges.forEach {
-			tryToCatch {
-				vendor.replace(it.identityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval?.compose(vendor) }))
-				SparkleCache.registeredInterchanges -= it
-				SparkleCache.disabledInterchanges += it.identityObject
-				tryToIgnore { debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!") }
-			}
+		if (isBlocked) {
+			debugLog("Component $label is blocked and will not be stopped.")
+			return
 		}
 
-		services.forEach {
-			tryToCatch {
+		try {
 
-				if (it.isRunning) {
-					vendor.stop(it)
-					tryToIgnore { debugLog("Service '${it.identity}' stopped through '$identity'!") }
+			selfStop.invoke()
+
+			interchanges.forEach {
+				tryToCatch {
+					vendor.replace(it.identityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval?.compose(vendor) }))
+					SparkleCache.registeredInterchanges -= it
+					SparkleCache.disabledInterchanges += it.identityObject
+					tryToIgnore { debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!") }
 				}
-
-				vendor.unregister(it)
-
-				tryToIgnore { debugLog("Service '${it.identity}' unregistered through '$identity'!") }
 			}
-		}
 
-		components.forEach {
-			tryToCatch {
-				vendor.stop(it.identityObject)
-				SparkleCache.registeredComponents -= it
-				tryToIgnore { debugLog("Component '${it.identity}' stopped through '$identity'!") }
+			services.forEach {
+				tryToCatch {
+
+					if (it.isRunning) {
+						vendor.stop(it)
+						tryToIgnore { debugLog("Service '${it.identity}' stopped through '$identity'!") }
+					}
+
+					vendor.unregister(it)
+
+					tryToIgnore { debugLog("Service '${it.identity}' unregistered through '$identity'!") }
+				}
 			}
-		}
 
-		listeners.forEach {
+			components.forEach {
+				tryToCatch {
+					vendor.stop(it.identityObject)
+					SparkleCache.registeredComponents -= it
+					tryToIgnore { debugLog("Component '${it.identity}' stopped through '$identity'!") }
+				}
+			}
+
+			listeners.forEach {
 				tryToCatch {
 					vendor.remove(it)
 					tryToIgnore { debugLog("Service '${it.identity}' removed through '$identity'") }
 				}
-		}
-
-		sandboxes.forEach {
-			tryToCatch {
-				destroySandBox(it.identity)
 			}
+
+			sandboxes.forEach {
+				tryToCatch {
+					destroySandBox(it.identity)
+				}
+			}
+
+			updateCommands()
+
+		} catch (e: Exception) {
+			sectionLog.warning("Failed to smart-stop component '$identity' due to this exception:")
+			e.printStackTrace()
 		}
 
-		updateCommands()
 	}
 
 	abstract suspend fun component()
