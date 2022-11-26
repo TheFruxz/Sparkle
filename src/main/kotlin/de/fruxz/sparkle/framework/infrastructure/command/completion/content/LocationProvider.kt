@@ -20,16 +20,16 @@ enum class LocationProvider(private val process: (Player?, World?) -> Location?)
 		player?.rayTraceBlocks(50.0)?.hitPosition?.toLocation(player.world, player.location.yaw, player.location.pitch)
 	}),
 	BED({ player, _ ->
-		player?.potentialBedLocation // TODO what means potential?
+		player?.potentialBedLocation // last slept bed location, doesn't have to still exist
 	}),
 	ATTACKER({ player, _ ->
 		player?.lastDamageCause?.entity?.location
 	}),
 	HIGHEST_BLOCK({ player, _ ->
-		player?.location?.toHighestLocation() // TODO does that means highest block?
+		player?.location?.toHighestLocation() // highest block at player location
 	}),
 	HIGHEST_BLOCK_ABOVE({ player, _ ->
-		player?.location?.toHighestLocation()?.add(y = 1)
+		player?.location?.toHighestLocation()?.add(y = 1) // above the highest block at player location
 	});
 
 	fun compute(player: Player?) = this.process.invoke(player, null)
