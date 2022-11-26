@@ -144,7 +144,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 		)).any { it.equals(input, configuration.ignoreCase) }) && (!configuration.isRequired || input.isNotBlank())
 
 	fun trace(executor: InterchangeExecutor, rawInput: List<String>): TraceResult<EXECUTOR, InterchangeStructure<EXECUTOR>> {
-		val processedInput = rawInput // TODO here the input should be split, if configuration allows multi-word input
+		val processedInput = rawInput
 
 		return TraceResult(
 			base = this,
@@ -164,8 +164,8 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 
 					debugLog("tracing branch ${currentBranch.identity}[${currentBranch.address}] with depth '$currentDepth' from parentStatus $parentStatus")
 
-					val localInput = processedInput.getOrNull(currentDepth) ?: "" // TODO check if this is correct -> edit: should be correct, because start is 0
-					val localInputAccepted = currentBranch.validInput(executor, localInput, processedInput) // TODO check if processed input can be used by validInput function (compatible with multi-words?)
+					val localInput = processedInput.getOrNull(currentDepth) ?: ""
+					val localInputAccepted = currentBranch.validInput(executor, localInput, processedInput)
 					val isLocalExecutableRoot = currentBranch.isRoot && processedInput.isEmpty() && currentBranch.onExecution != null
 
 					// Starting trace
@@ -180,8 +180,8 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 								!localInputAccepted && isLocalExecutableRoot -> TraceStatus.MATCHING // root is executable and input is not accepted/existing
 								!localInputAccepted && !isLocalExecutableRoot -> {
 									when {
-										(get(TraceStatus.MATCHING)!! + get(TraceStatus.OVERFLOW)!! + get(TraceStatus.NO_DESTINATION)!!).any { it.address == currentBranch.parent?.address } && localInput.isBlank() -> TraceStatus.INCOMPLETE
-										currentBranch.parent?.isRoot == true && processedInput.isEmpty() -> TraceStatus.INCOMPLETE // TODO check if this is used at all
+										(get(TraceStatus.MATCHING)!! + get(TraceStatus.OVERFLOW)!! + get(TraceStatus.NO_DESTINATION)!!).any { it.branch.address == currentBranch.parent?.address } && localInput.isBlank() -> TraceStatus.INCOMPLETE
+										currentBranch.parent?.isRoot == true && processedInput.isEmpty() -> TraceStatus.INCOMPLETE
 										else -> TraceStatus.FAILED
 									}
 								}
@@ -200,9 +200,8 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 
 					this[localStatus]!!.add(
 						TraceWay(
-							address = currentBranch.address,
 							branch = currentBranch,
-							cachedCompletion = currentBranch.computeLocalCompletion( // TODO check, if not computeCompletion(...) is better!
+							cachedCompletion = currentBranch.computeLocalCompletion(
 								context = CompletionContext(
 									executor = executor,
 									fullLineInput = processedInput,
@@ -228,7 +227,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 				// Start tracing
 
 				(subBranches + this@InterchangeStructure).forEach {
-					inner(it.forceCast(), 0, TraceStatus.MATCHING) // TODO this also pretends, that the root is matching, even if it does not!!!
+					inner(it.forceCast(), 0, TraceStatus.MATCHING)
 				}
 
 			}
@@ -269,7 +268,6 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 
 	data class TraceWay<T : TreeBranch<*, *>>(
 		val branch: T,
-		val address: Address<T>, // todo check, if this definitely needed, because address is computed from branch
 		val cachedCompletion: List<String>,
 		val depth: Int,
 		val usedQuery: List<String>,
