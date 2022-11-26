@@ -29,6 +29,9 @@ interface Service : Hoster<Unit, Unit, Service> {
 
 	val iteration: ServiceIteration
 
+	val crashBehavior: CrashBehavior
+		get() = CrashBehavior.CONTINUE
+
 	override val identityKey: Key
 		get() = vendor.subKey(label, CONTINUE)
 
@@ -85,17 +88,35 @@ interface Service : Hoster<Unit, Unit, Service> {
 						while (originScope.isActive) {
 							val serviceState = ServiceState(this@Service, vendor, time, repetition++, serviceTimes)
 
-							iteration.invoke(serviceState.also {
-								this@Service.serviceState = serviceState
-							}, this)
+							try {
+
+								iteration.invoke(serviceState.also {
+									this@Service.serviceState = serviceState
+								}, this)
+
+							} catch (exception: Exception) {
+								when (crashBehavior) {
+									CrashBehavior.STOP -> throw exception
+									CrashBehavior.CONTINUE -> {
+										serviceLogger.warning("Service '$key' throw exception, but continues:")
+										exception.printStackTrace()
+									}
+									CrashBehavior.RESTART -> {
+										serviceLogger.warning("Service '$key' throw exception, now restarting:")
+										exception.printStackTrace()
+										requestStop()
+										requestStart()
+									}
+								}
+							}
 
 							delay(serviceTimes.interval)
 						}
 					} else iteration.invoke(ServiceState(this@Service, vendor, time, 0, serviceTimes), this)
-				} catch (e: Exception) {
-					serviceLogger.warning("Service '${key()}' failed:")
-					e.printStackTrace()
-					serviceActions.onCrash.invoke(this@Service, e)
+				} catch (exception: Exception) {
+					serviceLogger.warning("Service '${key}' crashed:")
+					exception.printStackTrace()
+					serviceActions.onCrash.invoke(this@Service, exception)
 				}
 
 			}
@@ -139,6 +160,12 @@ interface Service : Hoster<Unit, Unit, Service> {
 		val repetition: Int,
 		val timing: ServiceTimes,
 	)
+
+	enum class CrashBehavior {
+		CONTINUE,
+		STOP,
+		RESTART;
+	}
 
 }
 

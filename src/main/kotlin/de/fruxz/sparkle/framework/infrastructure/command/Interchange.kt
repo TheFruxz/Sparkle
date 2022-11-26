@@ -189,7 +189,7 @@ abstract class Interchange(
 						)
 
 						fun exception(exception: Exception) {
-							sectionLog.warning("Executor ${sender.name} as ${clientType.name} caused an error at execution of $label-command!")
+							sectionLog.warning("Executor ${sender.name} as ${clientType.name} caused an error at execution of '$label' interchange!")
 							catchException(exception)
 						}
 

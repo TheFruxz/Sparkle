@@ -2,6 +2,7 @@ package de.fruxz.sparkle.framework.extension.coroutines
 
 import de.fruxz.ascend.extension.dump
 import de.fruxz.ascend.extension.switchResult
+import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import kotlinx.coroutines.CoroutineScope
@@ -45,6 +46,8 @@ suspend fun <T> asSync(
 			output.complete(process(it))
 		} catch (e: Exception) {
 			output.completeExceptionally(e)
+			e.debugLog("asSync process failed future with exception:")
+			e.printStackTrace()
 		}
 
 	}
@@ -84,16 +87,21 @@ fun doSync(
 ) = launch(isAsync = false, vendor = vendor, context = context) { scope ->
 		if (delay.isPositive()) delay(delay)
 
-		when {
-			interval.isPositive() -> {
-				while (scope.isActive) {
+		try {
+			when {
+				interval.isPositive() -> {
+					while (scope.isActive) {
+						process.invoke(scope)
+						delay(interval)
+					}
+				}
+				else -> {
 					process.invoke(scope)
-					delay(interval)
 				}
 			}
-			else -> {
-				process.invoke(scope)
-			}
+		} catch (e: Exception) {
+			e.debugLog("doSync process failed with exception:")
+			e.printStackTrace()
 		}
 
 	}
@@ -116,10 +124,17 @@ fun <T> asAsync(
 	vendor: App = sparkle,
 	context: CoroutineContext = vendor.asyncDispatcher,
 	process: suspend (CoroutineScope) -> T
-): Deferred<T> =
-	vendor.coroutineScope.async(context = context) {
+): Deferred<T> = vendor.coroutineScope.async(context = context) {
 		if (delay.isPositive()) delay(delay)
-		return@async process(sparkle.coroutineScope)
+
+		try {
+			return@async process(sparkle.coroutineScope)
+		} catch (e: Exception) {
+			e.debugLog("asAsync process failed with (invisble) exception:")
+			e.printStackTrace()
+			throw e
+		}
+
 	}
 
 /**
@@ -140,13 +155,18 @@ fun doAsync(
 ) = launch(isAsync = true, context = context, vendor = vendor) { scope ->
 	if (delay.isPositive()) delay(delay)
 
-	if (interval.isPositive()) {
-		while (scope.isActive) {
+	try {
+		if (interval.isPositive()) {
+			while (scope.isActive) {
+				process.invoke(scope)
+				delay(interval)
+			}
+		} else
 			process.invoke(scope)
-			delay(interval)
-		}
-	} else
-		process.invoke(scope)
+	} catch (e: Exception) {
+		e.debugLog("doAsync process failed with exception:")
+		e.printStackTrace()
+	}
 
 }
 
@@ -161,7 +181,14 @@ fun launch(
 	isAsync: Boolean = true,
 	context: CoroutineContext = isAsync.switchResult(vendor.asyncDispatcher, vendor.syncDispatcher),
 	process: suspend (CoroutineScope) -> Unit,
-) = vendor.coroutineScope.launch(context = context, block = process)
+) = vendor.coroutineScope.launch(context = context, block = {
+	try {
+		process.invoke(this)
+	} catch (e: Exception) {
+		e.debugLog("Last level launch-exception detected (may already been printed publicly):")
+		e.printStackTrace()
+	}
+})
 
 /**
  * This function executes the code provided in [code] asynchronously,
