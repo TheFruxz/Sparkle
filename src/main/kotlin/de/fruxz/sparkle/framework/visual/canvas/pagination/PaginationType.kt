@@ -49,7 +49,7 @@ interface PaginationType<C> {
 				override val configuration = configuration
 				override fun computeRealSlot(virtualSlot: Int) = virtualSlot + (floorToInt(virtualSlot.toDouble() / 8))
 				override fun contentRendering(scrollState: Int, canvas: Canvas) = buildMap {
-					val lines = ((canvas.base.virtualSize + 1) / lineSize) // todo lineSize was 9, because the real size of the canvas is 9?
+					val lines = ((canvas.base.virtualSize + 1) / lineSize)
 					val contents = canvas.content
 					val maxVirtualSlot = canvas.virtualSlots.last
 

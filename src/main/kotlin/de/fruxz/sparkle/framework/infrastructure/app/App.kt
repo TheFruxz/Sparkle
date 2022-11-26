@@ -595,7 +595,7 @@ abstract class App(
 
 							runStatus = ENABLE
 
-							delay(1.seconds) // TODO investigate, for what this delay is needed
+							delay(1.seconds) // a bit of time, to be displayed at the bottom of the console
 							log.info("Enabling (::hello) of '$identityKey' took $requiredTime!")
 
 					}
