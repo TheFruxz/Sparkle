@@ -2,10 +2,13 @@ package de.fruxz.sparkle.server
 
 import com.destroystokyo.paper.ParticleBuilder
 import de.fruxz.ascend.extension.data.addAscendJsonModuleModification
+import de.fruxz.ascend.extension.data.buildRandomTag
+import de.fruxz.ascend.extension.div
 import de.fruxz.ascend.extension.forceCast
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.data.json.JsonConfiguration
 import de.fruxz.sparkle.framework.data.json.JsonFileDataElement
+import de.fruxz.sparkle.framework.data.json.configuration.preference
 import de.fruxz.sparkle.framework.data.json.serializer.*
 import de.fruxz.sparkle.framework.effect.sound.SoundData
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
@@ -58,6 +61,7 @@ import de.fruxz.sparkle.server.interchange.SparkleInterchange
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.key.Key
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -200,6 +204,10 @@ class SparkleApp : App() {
 			}
 		}
 
+		quickSandBox("roll") {
+			test = buildRandomTag()
+		}
+
 	}
 
 	companion object : AppCompanion<SparkleApp>() {
@@ -209,6 +217,10 @@ class SparkleApp : App() {
 
 		@JvmStatic
 		var debugMode: Boolean = true
+
+		var test: String by preference(Bukkit.getPluginsFolder().parentFile.toPath() / "test.json", "test") {
+			"Hello World!"
+		}
 
 	}
 

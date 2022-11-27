@@ -137,10 +137,10 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	private fun validInput(executor: InterchangeExecutor, input: String, inputQuery: List<String>) =
 		(!configuration.mustMatchOutput || this.computeLocalCompletion(
 			CompletionContext(
-				executor,
-				inputQuery,
-				input,
-				this.configuration.ignoreCase,
+				executor = executor,
+				fullLineInput = inputQuery,
+				input = input,
+				ignoreCase = this.configuration.ignoreCase,
 		)).any { it.equals(input, configuration.ignoreCase) }) && (!configuration.isRequired || input.isNotBlank())
 
 	fun trace(executor: InterchangeExecutor, rawInput: List<String>): TraceResult<EXECUTOR, InterchangeStructure<EXECUTOR>> = TraceResult(
