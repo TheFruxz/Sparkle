@@ -1,6 +1,7 @@
 package de.fruxz.sparkle.framework.scheduler
 
 import de.fruxz.ascend.extension.time.inWholeMinecraftTicks
+import de.fruxz.sparkle.framework.extension.debugLog
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Delay
@@ -18,6 +19,10 @@ class PluginCoroutineDispatcher(
 	private val bukkitPlugin: Plugin,
 	private val isAsync: Boolean = true,
 ) : CoroutineDispatcher(), Delay {
+
+	init {
+		debugLog { "Created new PluginCoroutineDispatcher for ${bukkitPlugin.name} with isAsync=$isAsync" }
+	}
 
 	override fun dispatch(context: CoroutineContext, block: Runnable) {
 		if (!context.isActive) return
