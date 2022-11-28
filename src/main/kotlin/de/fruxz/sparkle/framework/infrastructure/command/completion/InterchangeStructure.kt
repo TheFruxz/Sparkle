@@ -25,8 +25,6 @@ import de.fruxz.sparkle.framework.permission.hasApproval
 import org.bukkit.entity.Player
 import java.util.*
 import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
-import kotlin.time.measureTimedValue
 
 class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	override var identity: String = "${UUID.randomUUID()}",
@@ -274,8 +272,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 		trace(executor, parameters).conclusion == RESULT
 
 	suspend fun performExecution(access: InterchangeAccess<out InterchangeExecutor>): InterchangeResult {
-		@OptIn(ExperimentalTime::class)
-		return measureTimedValue { trace(access.executor, access.parameters) }.let { (trace, duration) ->
+		return trace(access.executor, access.parameters).let { trace ->
 			when (trace.traced[TraceStatus.MATCHING]!!.size.maxTo(2)) {
 				0, 2 -> WRONG_USAGE
 				else -> {

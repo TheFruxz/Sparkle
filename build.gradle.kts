@@ -45,7 +45,6 @@ dependencies {
 
     @Suppress("DependencyOnStdlib") implementation(kotlin("stdlib"))
 
-    implementation("org.slf4j:slf4j-api:2.0.5")
     implementation("com.mojang:brigadier:1.0.500")
     implementation("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT") // PaperMC
 
@@ -56,7 +55,7 @@ dependencies {
         "io.ktor:ktor-client-content-negotiation:2.1.3",
 
         "net.kyori:adventure-api:4.12.0",
-        "net.kyori:adventure-text-serializer-legacy:4.11.0",
+        "net.kyori:adventure-text-serializer-legacy:4.12.0",
         "net.kyori:adventure-text-minimessage:4.12.0",
         "net.kyori:adventure-text-serializer-gson:4.12.0",
     ).forEach {

@@ -18,6 +18,8 @@ interface KeyedIdentifiable<T> : Identifiable<T>, Key, Keyed {
 
     override fun asString(): String = identityKey.asString()
 
+    override fun key() = key
+
     override fun getKey() = NamespacedKey.fromString(asString())!!
 
     companion object {
