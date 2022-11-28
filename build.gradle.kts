@@ -45,7 +45,7 @@ dependencies {
 
     @Suppress("DependencyOnStdlib") implementation(kotlin("stdlib"))
 
-    implementation("org.slf4j:slf4j-api:2.0.4")
+    implementation("org.slf4j:slf4j-api:2.0.5")
     implementation("com.mojang:brigadier:1.0.500")
     implementation("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT") // PaperMC
 
@@ -79,7 +79,7 @@ dependencies {
     shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
     shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
-    shadow("org.slf4j:slf4j-api:2.0.3")
+    shadow("org.slf4j:slf4j-api:2.0.5")
     shadow("net.kyori:adventure-text-serializer-plain:4.11.0")
 
     shadow("org.jetbrains.exposed:exposed-core:0.41.1")
