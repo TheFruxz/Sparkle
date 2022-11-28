@@ -80,7 +80,7 @@ dependencies {
     shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
     shadow("org.slf4j:slf4j-api:2.0.5")
-    shadow("net.kyori:adventure-text-serializer-plain:4.11.0")
+    shadow("net.kyori:adventure-text-serializer-plain:4.12.0")
 
     shadow("org.jetbrains.exposed:exposed-core:0.41.1")
     shadow("org.jetbrains.exposed:exposed-dao:0.41.1")
