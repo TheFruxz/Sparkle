@@ -58,7 +58,7 @@ dependencies {
         "net.kyori:adventure-api:4.11.0",
         "net.kyori:adventure-text-serializer-legacy:4.11.0",
         "net.kyori:adventure-text-minimessage:4.11.0",
-        "net.kyori:adventure-text-serializer-gson:4.11.0",
+        "net.kyori:adventure-text-serializer-gson:4.12.0",
     ).forEach {
         implementation(it)
         shadow(it)
