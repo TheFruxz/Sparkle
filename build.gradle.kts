@@ -55,7 +55,7 @@ dependencies {
         "io.ktor:ktor-serialization-kotlinx-json:2.1.3",
         "io.ktor:ktor-client-content-negotiation:2.1.3",
 
-        "net.kyori:adventure-api:4.11.0",
+        "net.kyori:adventure-api:4.12.0",
         "net.kyori:adventure-text-serializer-legacy:4.11.0",
         "net.kyori:adventure-text-minimessage:4.11.0",
         "net.kyori:adventure-text-serializer-gson:4.11.0",
