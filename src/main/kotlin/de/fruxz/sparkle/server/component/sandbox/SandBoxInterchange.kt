@@ -1,32 +1,23 @@
 package de.fruxz.sparkle.server.component.sandbox
 
-import de.fruxz.ascend.extension.container.paged
-import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.sparkle.framework.extension.allSandBoxes
 import de.fruxz.sparkle.framework.extension.destroyAllSandBoxes
 import de.fruxz.sparkle.framework.extension.destroySandBox
 import de.fruxz.sparkle.framework.extension.getSandBox
-import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.visual.notification
-import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.SUCCESS
-import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.WRONG_USAGE
+import de.fruxz.sparkle.framework.infrastructure.command.completion.branchTemplateList
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.infrastructure.command.completion.ignoreCase
-import de.fruxz.sparkle.framework.infrastructure.command.completion.infiniteSubParameters
-import de.fruxz.sparkle.framework.infrastructure.command.completion.isNotRequired
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
-import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.APPLIED
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.stacked.extension.dyeGold
 import de.fruxz.stacked.extension.dyeGray
 import de.fruxz.stacked.extension.dyeGreen
 import de.fruxz.stacked.extension.dyeRed
 import de.fruxz.stacked.extension.dyeYellow
-import de.fruxz.stacked.extension.newlines
 import de.fruxz.stacked.plus
 import de.fruxz.stacked.text
 import net.kyori.adventure.text.Component.newline
@@ -97,64 +88,8 @@ internal class SandBoxInterchange : StructuredInterchange(
 
 		}
 
-		branch {
-
-			addContent("list")
-			ignoreCase()
-
-			fun displaySandBoxes(executor: InterchangeExecutor, page: Int) {
-				val pageValue = allSandBoxes.paged(page, SparkleData.systemConfig.entriesPerListPage)
-
-				if (pageValue.content.isNotEmpty()) {
-
-					text {
-						this + text("List of all registered SandBoxes: ").dyeGray()
-						this + text("(Page ${page + 1} of ${pageValue.availablePages.last})").dyeYellow()
-
-						pageValue.content.forEach { sandBox ->
-							this + newline() + text(sandBox.identity).dyeYellow() + text(" (from: ${sandBox.vendor.label})").dyeGray()
-						}
-
-						newlines(1)
-
-					}.notification(TransmissionAppearance.GENERAL, executor).display()
-
-				} else {
-
-					text {
-						this + text("There are currently ").dyeGray()
-						this + text("no sandboxes").dyeRed()
-						this + text(" registered!").dyeGray()
-					}.notification(TransmissionAppearance.FAIL, executor).display()
-
-				}
-			}
-
-			concludedExecution {
-
-				displaySandBoxes(executor, 0)
-
-				SUCCESS
-			}
-
-			branch {
-				addContent(CompletionAsset.pageCompletion { ceilToInt(allSandBoxes.size.toDouble() / SparkleData.systemConfig.entriesPerListPage) })
-
-				isNotRequired()
-
-				execution {
-					val page = (getInput(1).toIntOrNull() ?: 1) - 1
-
-					if (page >= 0) {
-						displaySandBoxes(executor, page)
-					} else
-						return@execution WRONG_USAGE
-
-					return@execution SUCCESS
-				}
-
-			}
-
+		branchTemplateList({ allSandBoxes }, "sandboxes") { sandBox ->
+			text(sandBox.identity).dyeYellow() + text(" (from: ${sandBox.vendor.label})").dyeGray()
 		}
 
 		branch {
@@ -180,7 +115,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 							this + text("Successfully").dyeGreen()
 							this + text(" dropped sandbox ").dyeGray()
 							this + text(sandBox.identity).dyeYellow()
-						}.notification(APPLIED, executor).display()
+						}.notification(TransmissionAppearance.APPLIED, executor).display()
 
 					}
 
