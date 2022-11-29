@@ -20,7 +20,6 @@ import de.fruxz.sparkle.framework.extension.internalCommandMap
 import de.fruxz.sparkle.framework.extension.internalSyncCommands
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.Hoster
-import de.fruxz.sparkle.framework.infrastructure.app.RunStatus.*
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.infrastructure.app.interchange.IssuedInterchange
 import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater
@@ -38,9 +37,9 @@ import io.ktor.client.plugins.cache.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.key.Key
@@ -59,7 +58,6 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
 import kotlin.reflect.jvm.isAccessible
-import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
@@ -476,13 +474,6 @@ abstract class App(
 		unregister(serializable.java)
 
 	// runtime
-
-	/**
-	 * The current status of app-runtime
-	 */
-	var runStatus: RunStatus = OFFLINE
-		private set
-
 	val coroutineScope: CoroutineScope
 		get() = companion.coroutineScope
 
@@ -543,39 +534,18 @@ abstract class App(
 	 */
 	open fun bye() = empty()
 
-	private suspend fun awaitState(waitFor: RunStatus, out: RunStatus, process: suspend () -> Unit) {
-
-		while (runStatus != out) {
-
-			if (runStatus != waitFor) {
-				delay(.1.seconds)
-				continue
-			}
-
-			process()
-
-		}
-
-	}
+	private lateinit var onLoadJob: Job
 
 	@OptIn(ExperimentalTime::class)
 	final override fun onLoad() {
 		tryToCatch {
+
 			activeSince = Calendar.now()
 
 			SparkleCache.registeredApps += this
 
-			coroutineScope.launch(context = systemOnLoadContext) {
-
-				runStatus = PRE_LOAD
-
-				measureTime { preHello() }
-					.let { requiredTime ->
-						log.info("Loading (::preHello) of '$identityKey' took $requiredTime!")
-					}
-
-				runStatus = LOAD
-
+			onLoadJob = coroutineScope.launch(context = systemOnLoadContext) {
+				log.info("Loading (::preHello) of '$identityKey' took ${measureTime { preHello() }}!")
 			}
 
 		}
@@ -585,20 +555,10 @@ abstract class App(
 	final override fun onEnable() {
 		tryToCatch {
 
-			coroutineScope.launch(context = systemOnEnableContext) {
+			onLoadJob.invokeOnCompletion {
 
-				awaitState(LOAD, ENABLE) {
-					runStatus = PRE_ENABLE
-
-					measureTime { hello() }
-						.let { requiredTime ->
-
-							runStatus = ENABLE
-
-							delay(1.seconds) // a bit of time, to be displayed at the bottom of the console
-							log.info("Enabling (::hello) of '$identityKey' took $requiredTime!")
-
-					}
+				coroutineScope.launch(context = systemOnEnableContext) {
+					log.info("Enabling (::hello) of '$identityKey' took ${measureTime { hello() }}!")
 				}
 
 			}
@@ -610,12 +570,7 @@ abstract class App(
 	final override fun onDisable() {
 		tryToCatch {
 
-			runStatus = SHUTDOWN
-
-			measureTime { bye() }
-				.let { requiredTime ->
-					log.info("Disabling (::bye) of '$identityKey' took $requiredTime!")
-				}
+			log.info("Disabling (::bye) of '$identityKey' took ${measureTime { bye() }}!")
 
 			with(coroutineScope) {
 				coroutineContext.cancelChildren()
@@ -660,8 +615,6 @@ abstract class App(
 
 				log.info("Command '$it' disabled")
 			}
-
-			runStatus = OFFLINE
 
 		}
 	}
