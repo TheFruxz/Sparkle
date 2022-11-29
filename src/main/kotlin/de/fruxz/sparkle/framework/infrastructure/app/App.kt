@@ -11,6 +11,7 @@ import de.fruxz.ascend.extension.tryToPrint
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.sparkle.framework.context.AppComposable
 import de.fruxz.sparkle.framework.exception.IllegalActionException
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
@@ -20,6 +21,7 @@ import de.fruxz.sparkle.framework.extension.internalCommandMap
 import de.fruxz.sparkle.framework.extension.internalSyncCommands
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.Hoster
+import de.fruxz.sparkle.framework.infrastructure.app.coroutine.AppConcurrency
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.infrastructure.app.interchange.IssuedInterchange
 import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater
@@ -44,6 +46,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.PluginCommand
 import org.bukkit.configuration.serialization.ConfigurationSerializable
@@ -55,7 +58,6 @@ import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Logger
 import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
 import kotlin.reflect.jvm.isAccessible
 import kotlin.time.ExperimentalTime
@@ -86,13 +88,17 @@ import kotlin.time.measureTime
  * - [Identifiable]<[App]>: Every app is identifiable through is unique
  * custom set [appIdentity] property. ([appIdentity] = [identity])
  *
+ * @param concurrency The default context-concurrency of the app.
+ * @param systemOnLoadContext The [CoroutineContext] of the [onLoad] process, default set by the [concurrency] property.
+ * @param systemOnEnableContext The [CoroutineContext] of the [onEnable] process, default set by the [concurrency] property.
  * @author Fruxz (@TheFruxz)
  * @since 1.0-BETA-2 (preview)
  * @constructor abstract
  */
 abstract class App(
-	private val systemOnLoadContext: CoroutineContext = EmptyCoroutineContext,
-	private val systemOnEnableContext: CoroutineContext = EmptyCoroutineContext,
+	private val concurrency: AppConcurrency = AppConcurrency.async,
+	private val systemOnLoadContext: AppComposable<CoroutineContext> = concurrency.onLoadContext,
+	private val systemOnEnableContext: AppComposable<CoroutineContext> = concurrency.onEnableContext,
 ) : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 	// parameters
@@ -544,8 +550,8 @@ abstract class App(
 
 			SparkleCache.registeredApps += this
 
-			onLoadJob = coroutineScope.launch(context = systemOnLoadContext) {
-				log.info("Loading (::preHello) of '$identityKey' took ${measureTime { preHello() }}!")
+			onLoadJob = coroutineScope.launch(context = systemOnLoadContext.compose(this@App)) {
+				log.info("Loading (::preHello) of '$identityKey' took ${measureTime { preHello() }}! (on primary-thread = ${Bukkit.isPrimaryThread()})")
 			}
 
 		}
@@ -557,8 +563,8 @@ abstract class App(
 
 			onLoadJob.invokeOnCompletion {
 
-				coroutineScope.launch(context = systemOnEnableContext) {
-					log.info("Enabling (::hello) of '$identityKey' took ${measureTime { hello() }}!")
+				coroutineScope.launch(context = systemOnEnableContext.compose(this@App)) {
+					log.info("Enabling (::hello) of '$identityKey' took ${measureTime { hello() }}! (on primary-thread = ${Bukkit.isPrimaryThread()})")
 				}
 
 			}
