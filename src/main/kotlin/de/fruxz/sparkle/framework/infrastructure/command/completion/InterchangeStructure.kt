@@ -336,8 +336,8 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	 */
 	fun branch(
 		userRestriction: InterchangeUserRestriction = this.userRestriction,
-		identity: String = (parent?.identity ?: "") + "/way-${parent?.subBranches?.size ?: 0}",
-		path: Address<InterchangeStructure<EXECUTOR>> = this.address / identity,
+		identity: String = "${(parent?.identity ?: "")}/${subBranches.size}",
+		path: Address<InterchangeStructure<EXECUTOR>> = this.address / "${subBranches.size}",
 		configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
 		process: InterchangeStructure<EXECUTOR>.() -> Unit,
 	) {
@@ -407,7 +407,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 }
 
 fun <EXECUTOR : InterchangeExecutor> buildInterchangeStructure(
-	path: Address<InterchangeStructure<EXECUTOR>> = Address.address("/"),
+	path: Address<InterchangeStructure<EXECUTOR>> = Address.address("root"),
 	subBranches: List<InterchangeStructure<EXECUTOR>> = emptyList(),
 	configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
 	content: List<CompletionComponent> = emptyList(),
