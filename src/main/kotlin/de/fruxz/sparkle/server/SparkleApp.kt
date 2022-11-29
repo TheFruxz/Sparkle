@@ -217,6 +217,9 @@ class SparkleApp : App() {
 		@JvmStatic
 		val SYSTEM_IDENTITY = "sparkle"
 
+		@JvmStatic
+		val SPARKLE_ICON = "\uD83D\uDD25"
+
 	}
 
 }

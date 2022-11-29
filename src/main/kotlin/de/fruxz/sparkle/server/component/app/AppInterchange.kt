@@ -421,7 +421,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                 newlines(2)
                                 this + text("CLICK").style(NamedTextColor.GREEN, BOLD) + text(" to toggle the state of the app").dyeGray()
                                 lastUpdateMessage?.let { message ->
-                                    newlines(2)
+                                    newline()
                                     this + message
                                 }
                             }
@@ -444,13 +444,13 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                 this + text("Server version: ").dyeGray()
                                 this + text(Bukkit.getMinecraftVersion()).dyeGreen()
                                 lastUpdateMessage?.let { message ->
-                                    newlines(2)
+                                    newline()
                                     this + message
                                 }
                             }
                         }
                     }
-                    this + text(" ⟳") {
+                    this + text(" ∞") {
 
                         when (updateStates[app]?.type) {
                             null -> {
@@ -467,7 +467,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                             this + text(" a working update solution!").dyeGray()
                                         }
                                         lastUpdateMessage?.let { message ->
-                                            newlines(2)
+                                            newline()
                                             this + message
                                         }
                                     }
@@ -487,7 +487,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                             text("!").dyeGray()
                                         }
                                         lastUpdateMessage?.let { message ->
-                                            newlines(2)
+                                            newline()
                                             this + message
                                         }
                                     }
@@ -507,7 +507,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                             text(" the current available updates!").dyeGray()
                                         }
                                         lastUpdateMessage?.let { message ->
-                                            newlines(2)
+                                            newline()
                                             this + message
                                         }
                                     }
@@ -565,7 +565,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                                 this + text("to update this app now!").dyeGray()
                                             }
                                             lastUpdateMessage?.let { message ->
-                                                newlines(2)
+                                                newline()
                                                 this + message
                                             }
                                         }
