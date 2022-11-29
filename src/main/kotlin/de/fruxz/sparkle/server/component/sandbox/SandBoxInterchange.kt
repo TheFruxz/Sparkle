@@ -10,6 +10,7 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.branchTempla
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.infrastructure.command.completion.ignoreCase
+import de.fruxz.sparkle.framework.infrastructure.command.completion.infiniteSubParameters
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.sparkle.server.SparkleCache
@@ -130,13 +131,15 @@ internal class SandBoxInterchange : StructuredInterchange(
 					concludedExecution {
 						val sandBox = getSandBox(getInput(1))!!
 
-						sandBox.execute(executor, parameters.drop(3))
+						sandBox.execute(executor, getInputAndBeyond(inputLength))
 
 					}
 
 				}
 
 				branch {
+
+					println("id: $this")
 
 					addContent("info")
 
