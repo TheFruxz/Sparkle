@@ -1,15 +1,15 @@
 package de.fruxz.sparkle.framework.data.file
 
-import de.fruxz.sparkle.framework.infrastructure.app.App
-import de.fruxz.sparkle.framework.infrastructure.component.Component
+import de.fruxz.ascend.extension.getHomePath
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
-import kotlin.io.path.Path
+import de.fruxz.sparkle.framework.infrastructure.app.App
+import de.fruxz.sparkle.framework.infrastructure.component.Component
 import kotlin.io.path.div
 
 object SparklePath {
 
-    private val homePath = Path("SparkleApps")
+    private val homePath = getHomePath() / "SparkleApps"
 
     fun appPath(app: KeyedIdentifiable<out App>) =
         homePath / "main@${app.key().value()}"

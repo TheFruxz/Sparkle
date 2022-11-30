@@ -1,111 +1,91 @@
 package de.fruxz.sparkle.framework.data.json.configuration
 
 import de.fruxz.ascend.extension.createFileAndDirectories
-import de.fruxz.ascend.extension.data.readJsonOrDefault
-import de.fruxz.ascend.extension.data.writeJson
+import de.fruxz.ascend.extension.data.fromJsonStringOrNull
+import de.fruxz.ascend.extension.data.jsonBase
+import de.fruxz.ascend.extension.data.toJsonElement
+import de.fruxz.ascend.extension.data.toJsonElementOrNull
+import de.fruxz.ascend.extension.data.toJsonString
 import de.fruxz.ascend.extension.div
 import de.fruxz.ascend.extension.forceCastOrNull
-import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.server.SparkleApp
-import org.bukkit.configuration.file.YamlConfiguration
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import java.nio.file.Path
+import kotlin.io.path.absolute
+import kotlin.io.path.notExists
+import kotlin.io.path.readText
+import kotlin.io.path.writeText
 import kotlin.reflect.KProperty
 
-class SmartConfigurable<T : Any>(
-	val file: Path,
-	val key: String,
-	val default: () -> T,
-	val preferenceFormat: PreferenceFormat,
-) {
+data class Configuration<T>(
+	val set: (T?) -> Unit,
+	val get: () -> T,
+)
+
+@JvmInline
+value class NewPreference<T>(val configuration: Configuration<T>) {
 
 	init {
-		tryOrNull { default() }?.let {
-			cache = it
-			set(it)
-		}
+		configuration.set(configuration.get())
 	}
 
-	private var cache: T? = null
+	operator fun getValue(thisRef: Any?, property: KProperty<*>): T = configuration.get()
 
-	fun isValueCached() = cache != null
-
-	fun get(): T = when {
-		cache != null -> cache!!
-		else -> {
-			(preferenceFormat.get(file, key) ?: default()).let {
-				cache = it
-				it
-			}
-		}
-	}
-
-	fun set(value: T?) {
-		cache = value
-		preferenceFormat.set(file, key, value)
-	}
-
-	operator fun getValue(element: Any, property: KProperty<*>): T = get()
-
-	operator fun setValue(element: Any, property: KProperty<*>, value: T) = set(value)
+	operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) = configuration.set(value)
 
 }
 
-interface PreferenceFormat {
+inline fun <reified T : Any> preference(
+	app: SparkleApp,
+	key: String,
+	file: Path = SparklePath.appPath(app) / "preferences.json",
+	crossinline defaultValue: () -> T
+) = preference(file, key, defaultValue)
 
-	val extension: String
+inline fun <reified T : Any> preference(
+	component: Component,
+	key: String,
+	file: Path = SparklePath.componentPath(component) / "preferences.json",
+	crossinline defaultValue: () -> T,
+) = preference(file, key, defaultValue)
 
-	fun set(file: Path, key: String, value: Any?)
+inline fun <reified T : Any> preference(
+	file: Path,
+	key: String,
+	crossinline defaultValue: () -> T,
+): NewPreference<T> = NewPreference(Configuration(
+	set = { value ->
+		file.absolute().let {
+			if (it.notExists()) it.createFileAndDirectories()
 
-	fun <T : Any> get(file: Path, key: String): T?
+			file.writeText(
+				((file.readText().toJsonElementOrNull()?.js ?: JsonObject(emptyMap())) + (key to value.toJsonElement())).toJsonString()
+			)
 
-	companion object {
-
-		val json = object : PreferenceFormat {
-
-			override val extension = "json"
-
-			override fun set(file: Path, key: String, value: Any?) {
-				file.createFileAndDirectories()
-				file.writeJson(file.readJsonOrDefault(mapOf<String, Any>(), true) + (key to value))
-			}
-
-			override fun <T : Any> get(file: Path, key: String): T? {
-				file.createFileAndDirectories()
-				return file.readJsonOrDefault(mapOf<String, Any>(), true)[key].forceCastOrNull()
-			}
-
-		}
-
-		val yaml = object : PreferenceFormat {
-
-			override val extension = "yml"
-
-			override fun <T : Any> get(file: Path, key: String): T? {
-				file.createFileAndDirectories()
-				YamlConfiguration.loadConfiguration(file.toFile()).let {
-					it.load(file.toFile())
-					return it.get(key)?.forceCastOrNull()
-				}
-			}
-
-			override fun set(file: Path, key: String, value: Any?) {
-				file.createFileAndDirectories()
-				YamlConfiguration.loadConfiguration(file.toFile()).let {
-					it.set(key, value)
-					it.save(file.toFile())
-				}
-			}
+			value?.let { it1 -> preferenceCache.put(file to key, it1) } ?: preferenceCache.remove(file to key)
 
 		}
+	},
+	get = {
+		  file.absolute().let {
+			  preferenceCache[file to key]?.forceCastOrNull<T>() ?: run {
+				  if (it.notExists()) it.createFileAndDirectories()
 
-	}
+				  file.readText().toJsonElement().jsonObject[key]?.jsonPrimitive?.content?.fromJsonStringOrNull<T>() ?: run {
+					  val value = defaultValue()
+					  preferenceCache[file to key] = value
+					  value
+				  }
 
-}
+			  }
 
-fun <T : Any> preference(app: SparkleApp, key: String, format: PreferenceFormat = app.defaultPreferenceFormat, file: Path = SparklePath.appPath(app) / "preferences.${format.extension}", defaultValue: () -> T): SmartConfigurable<T> = SmartConfigurable(file, key, defaultValue, format)
 
-fun <T : Any> preference(component: Component, key: String, format: PreferenceFormat = component.vendor.defaultPreferenceFormat, file: Path = SparklePath.componentPath(component) / "preferences.${format.extension}", defaultValue: () -> T): SmartConfigurable<T> = SmartConfigurable(file, key, defaultValue, format)
+		  }
+	},
+))
 
-fun <T : Any> preference(file: Path, key: String, format: PreferenceFormat = PreferenceFormat.json, defaultValue: () -> T): SmartConfigurable<T> = SmartConfigurable(file, key, defaultValue, format)
+val preferenceCache = mutableMapOf<Pair<Path, String>, Any>()

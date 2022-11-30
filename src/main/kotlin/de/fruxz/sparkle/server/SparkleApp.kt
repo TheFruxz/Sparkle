@@ -5,6 +5,7 @@ import de.fruxz.ascend.extension.data.addAscendJsonModuleModification
 import de.fruxz.ascend.extension.data.buildRandomTag
 import de.fruxz.ascend.extension.div
 import de.fruxz.ascend.extension.forceCast
+import de.fruxz.ascend.extension.getHomePath
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.data.json.JsonConfiguration
 import de.fruxz.sparkle.framework.data.json.JsonFileDataElement
@@ -61,7 +62,6 @@ import de.fruxz.sparkle.server.interchange.SparkleInterchange
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import net.kyori.adventure.key.Key
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -206,6 +206,7 @@ class SparkleApp : App() {
 
 		quickSandBox("roll") {
 			test = buildRandomTag()
+			test2 += 1
 		}
 
 	}
@@ -218,8 +219,14 @@ class SparkleApp : App() {
 		@JvmStatic
 		var debugMode: Boolean = true
 
-		var test: String by preference(Bukkit.getPluginsFolder().parentFile.toPath() / "test.json", "test") {
+		val configFile = getHomePath() / "test.json"
+
+		var test: String by preference(configFile, "test") {
 			"Hello World!"
+		}
+
+		var test2: Int by preference(configFile, "test2") {
+			2
 		}
 
 	}

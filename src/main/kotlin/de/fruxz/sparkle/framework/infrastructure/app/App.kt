@@ -11,7 +11,6 @@ import de.fruxz.ascend.extension.tryToPrint
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.framework.data.json.configuration.PreferenceFormat
 import de.fruxz.sparkle.framework.exception.IllegalActionException
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
@@ -96,7 +95,6 @@ import kotlin.time.measureTime
 abstract class App(
 	private val systemOnLoadContext: CoroutineContext = EmptyCoroutineContext,
 	private val systemOnEnableContext: CoroutineContext = EmptyCoroutineContext,
-	val defaultPreferenceFormat: PreferenceFormat = PreferenceFormat.json,
 ) : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 	// parameters
