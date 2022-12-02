@@ -69,6 +69,7 @@ fun <T, EXECUTOR : InterchangeExecutor> InterchangeStructure<EXECUTOR>.branchTem
 
 		branch {
 			addContent(CompletionAsset.pageCompletion { ceilToInt(contents.compose().count().toDouble() / entriesPerPage) })
+			isNotRequired()
 			concludedExecution {
 				pageView(executor, getInput().toInt())
 			}
