@@ -131,7 +131,7 @@ internal class SandBoxInterchange : StructuredInterchange(
 					concludedExecution {
 						val sandBox = getSandBox(getInput(1))!!
 
-						sandBox.execute(executor, getInputAndBeyond(inputLength))
+						sandBox.execute(executor, getInputAndBeyond(3))
 
 					}
 
