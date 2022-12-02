@@ -133,17 +133,10 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 
 	private fun computeLocalCompletion(context: CompletionContext) = content.flatMap { it.completion(context) }
 
-	private fun validInput(executor: InterchangeExecutor, input: String, inputQuery: List<String>) = // TODO seems sus! Validates mostly nothing!
-		(this.computeLocalCompletion(
-			CompletionContext(
-				executor,
-				inputQuery,
-				input,
-				this.configuration.ignoreCase,
-		)).any {
-			println("check if '$it' equals input '$input' from '$inputQuery'")
-			it.equals(input, configuration.ignoreCase)
-		}) && (!configuration.isRequired || input.isNotBlank())
+	private fun validInput(executor: InterchangeExecutor, input: String, inputQuery: List<String>) =
+		this.computeLocalCompletion(CompletionContext(executor, inputQuery, input, this.configuration.ignoreCase))
+			.any { it.equals(input, configuration.ignoreCase) }
+				&& (!configuration.isRequired || input.isNotBlank())
 
 	fun trace(executor: InterchangeExecutor, rawInput: List<String>): TraceResult<EXECUTOR, InterchangeStructure<EXECUTOR>> = TraceResult(
 		base = this,
@@ -162,15 +155,11 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 					return
 				}
 
-				println("inner ${currentBranch.address}")
-
 				debugLog("tracing branch ${currentBranch.identity}[${currentBranch.address}] with depth '$currentDepth' from parentStatus $parentStatus")
 
 				val localInput = rawInput.getOrNull(currentDepth - 1) ?: ""
 				val localInputAccepted = currentBranch.validInput(executor, localInput, rawInput)
 				val isLocalExecutableRoot = currentBranch.isRoot && (currentBranch.onExecution != null || currentBranch.configuration.isRequired)
-
-				println("raw '${rawInput.joinToString()}' and local '$localInput' at '$currentDepth'")
 
 				// Starting trace
 
@@ -181,9 +170,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 						when {
 							!currentBranch.userRestriction.match(executor) -> TraceStatus.FAILED
 							!currentBranch.requiredApprovals.all { executor.hasApproval(it) } -> TraceStatus.FAILED
-							isLocalExecutableRoot && rawInput.isEmpty() -> TraceStatus.MATCHING.also {
-								println("${currentBranch.address.addressString} did first")
-							}
+							isLocalExecutableRoot && rawInput.isEmpty() -> TraceStatus.MATCHING
 							!localInputAccepted -> {
 								when {
 									localInput.isBlank() -> TraceStatus.INCOMPLETE
@@ -192,9 +179,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 							}
 							(rawInput.size > currentDepth) && !currentBranch.configuration.infiniteSubParameters -> TraceStatus.TO_MUCH
 							(subBranches.isNotEmpty() && subBranches.any { it.configuration.isRequired }) || currentBranch.onExecution == null -> NO_DESTINATION
-							else -> TraceStatus.MATCHING.also {
-								println("${currentBranch.address.addressString} did second")
-							}
+							else -> TraceStatus.MATCHING
 						}
 
 					}
@@ -233,7 +218,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 			inner(this@InterchangeStructure, 0, TraceStatus.MATCHING)
 
 		}
-	).also { println("produced: ${it.traced.map { it.key to it.value.map { it.cachedCompletion }}}") }
+	)
 
 	data class TraceResult<EXECUTOR : InterchangeExecutor, BRANCH : TreeBranch<*, *>>(
 		val traced: Map<TraceStatus, Set<TraceWay<BRANCH>>>, // the ways, found by the trace
@@ -308,7 +293,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 		return trace(access.executor, access.parameters).let { trace ->
 
 			when (trace.traced[TraceStatus.MATCHING]!!.size.maxTo(2)) {
-				0, 2 -> WRONG_USAGE.also { println("wrong usage") }
+				0, 2 -> WRONG_USAGE
 				else -> {
 					val extrapolatedTrace = trace.traced[TraceStatus.MATCHING]!!.first()
 					val extrapolatedBranch = extrapolatedTrace.branch
