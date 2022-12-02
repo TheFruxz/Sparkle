@@ -56,6 +56,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
         branch {
 
             addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.registeredApps.size.toDouble() / SparkleData.systemConfig.entriesPerListPage) })
+            isNotRequired()
 
             concludedExecution {
                 val page = getInput(translationAsset = CompletionAsset.LONG).limitTo(Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()).toInt()

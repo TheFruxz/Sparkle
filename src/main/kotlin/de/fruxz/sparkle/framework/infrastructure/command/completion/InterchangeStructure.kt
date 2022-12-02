@@ -16,6 +16,7 @@ import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestrict
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction.*
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure.TraceResult.Conclusion.*
 import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure.TraceResult.TraceStatus
+import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeStructure.TraceResult.TraceStatus.NO_DESTINATION
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset.CompletionContext
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionComponent
@@ -132,14 +133,17 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 
 	private fun computeLocalCompletion(context: CompletionContext) = content.flatMap { it.completion(context) }
 
-	private fun validInput(executor: InterchangeExecutor, input: String, inputQuery: List<String>) =
+	private fun validInput(executor: InterchangeExecutor, input: String, inputQuery: List<String>) = // TODO seems sus! Validates mostly nothing!
 		(!configuration.mustMatchOutput || this.computeLocalCompletion(
 			CompletionContext(
 				executor,
 				inputQuery,
 				input,
 				this.configuration.ignoreCase,
-		)).any { it.equals(input, configuration.ignoreCase) }) && (!configuration.isRequired || input.isNotBlank())
+		)).any {
+			println("check if '$it' equals input '$input' from '$inputQuery'")
+			it.equals(input, configuration.ignoreCase)
+		}) && (!configuration.isRequired || input.isNotBlank())
 
 	fun trace(executor: InterchangeExecutor, rawInput: List<String>): TraceResult<EXECUTOR, InterchangeStructure<EXECUTOR>> = TraceResult(
 		base = this,
@@ -152,11 +156,13 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 			// Provide recursive trace function
 
 			fun inner(currentBranch: InterchangeStructure<EXECUTOR>, currentDepth: Int, parentStatus: TraceStatus) {
-				println("inner ${currentBranch.address}")
+				val subBranches = currentBranch.subBranches
 				if (currentDepth > MAX_TRACE_DEPTH) {
 					debugLog("Trace depth of $MAX_TRACE_DEPTH exceeded!")
 					return
 				}
+
+				println("inner ${currentBranch.address}")
 
 				debugLog("tracing branch ${currentBranch.identity}[${currentBranch.address}] with depth '$currentDepth' from parentStatus $parentStatus")
 
@@ -164,28 +170,27 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 				val localInputAccepted = currentBranch.validInput(executor, localInput, rawInput)
 				val isLocalExecutableRoot = currentBranch.isRoot && (currentBranch.onExecution != null || currentBranch.configuration.isRequired)
 
+				println("raw '${rawInput.joinToString()}' and local '$localInput' at '$currentDepth'")
+
 				// Starting trace
 
 				val localStatus: TraceStatus = when (parentStatus) {
-					TraceStatus.FAILED -> parentStatus.also { println("${currentBranch.address} parent is $it") }
-					TraceStatus.NO_DESTINATION, TraceStatus.MATCHING, TraceStatus.INCOMPLETE, TraceStatus.OVERFLOW -> {
+					TraceStatus.FAILED -> parentStatus
+					else -> {
 
 						when {
-							!currentBranch.userRestriction.match(executor) -> TraceStatus.FAILED.also { System.err.println(1) } // user restriction not met
-							!currentBranch.requiredApprovals.all { executor.hasApproval(it) } -> TraceStatus.FAILED.also { System.err.println(2) } // not enough of the required approvals!
-							isLocalExecutableRoot && rawInput.isEmpty() -> TraceStatus.MATCHING.also { System.err.println(3) } // root is executable and input is not accepted/existing
+							!currentBranch.userRestriction.match(executor) -> TraceStatus.FAILED
+							!currentBranch.requiredApprovals.all { executor.hasApproval(it) } -> TraceStatus.FAILED
+							isLocalExecutableRoot && rawInput.isEmpty() -> TraceStatus.MATCHING
 							!localInputAccepted -> {
 								when {
-									localInput.isBlank() -> TraceStatus.INCOMPLETE.also { System.err.println(4) }
-									currentBranch.parent?.isRoot == true && rawInput.isEmpty() -> TraceStatus.INCOMPLETE.also { System.err.println(5) }
-									else -> TraceStatus.FAILED.also { System.err.println(6) }
+									localInput.isBlank() -> TraceStatus.INCOMPLETE
+									else -> TraceStatus.FAILED
 								}
 							}
-
-							currentBranch.subBranches.any { it.configuration.isRequired } && rawInput.lastIndex < (currentDepth - 1) -> TraceStatus.INCOMPLETE.also { System.err.println(7) }
-							currentDepth < rawInput.lastIndex && !currentBranch.configuration.infiniteSubParameters -> TraceStatus.OVERFLOW.also { System.err.println(8) }
-							currentBranch.subBranches.isNotEmpty() && currentBranch.subBranches.all { it.configuration.isRequired } && currentBranch.onExecution == null -> TraceStatus.NO_DESTINATION.also { System.err.println(9) }
-							else -> TraceStatus.MATCHING.also { System.err.println(10) }
+							(rawInput.size > currentDepth) && !currentBranch.configuration.infiniteSubParameters -> TraceStatus.TO_MUCH
+							(subBranches.isNotEmpty() && subBranches.any { it.configuration.isRequired }) || currentBranch.onExecution == null -> NO_DESTINATION
+							else -> TraceStatus.MATCHING
 						}
 
 					}
@@ -224,7 +229,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 			inner(this@InterchangeStructure, 0, TraceStatus.MATCHING)
 
 		}
-	)
+	).also { println("produced: ${it.traced.map { it.key to it.value.map { it.cachedCompletion }}}") }
 
 	data class TraceResult<EXECUTOR : InterchangeExecutor, BRANCH : TreeBranch<*, *>>(
 		val traced: Map<TraceStatus, Set<TraceWay<BRANCH>>>, // the ways, found by the trace
@@ -238,7 +243,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 			}
 			traced[TraceStatus.MATCHING]!!.isEmpty() -> {
 				when {
-					traced[TraceStatus.INCOMPLETE]!!.isEmpty() && traced[TraceStatus.OVERFLOW]!!.isEmpty() && traced[TraceStatus.FAILED]!!.isEmpty() && traced[TraceStatus.NO_DESTINATION]!!.isEmpty() -> {
+					traced[TraceStatus.INCOMPLETE]!!.isEmpty() && traced[TraceStatus.TO_MUCH]!!.isEmpty() && traced[TraceStatus.FAILED]!!.isEmpty() && traced[TraceStatus.NO_DESTINATION]!!.isEmpty() -> {
 						EMPTY
 					}
 					else -> NO_RESULT
@@ -276,7 +281,8 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 
 		enum class TraceStatus {
 			FAILED,
-			OVERFLOW,
+			TO_MUCH,
+			TO_FEW,
 			INCOMPLETE,
 			MATCHING,
 			NO_DESTINATION;
@@ -296,6 +302,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 
 	suspend fun performExecution(access: InterchangeAccess<out InterchangeExecutor>): InterchangeResult {
 		return trace(access.executor, access.parameters).let { trace ->
+
 			when (trace.traced[TraceStatus.MATCHING]!!.size.maxTo(2)) {
 				0, 2 -> WRONG_USAGE.also { println("wrong usage") }
 				else -> {
@@ -327,7 +334,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 		val query = (parameters.lastOrNull() ?: "")
 		val traceBase = parameters.dropLast(1) // remove latest, to remove the 'uncompleted' string
 		val tracing = trace(executor, traceBase)
-		val tracingContent = tracing.let { return@let (it.traced[TraceStatus.INCOMPLETE]!! + it.traced[TraceStatus.MATCHING]!! + it.traced[TraceStatus.NO_DESTINATION]!!) }
+		val tracingContent = tracing.let { return@let (it.traced[TraceStatus.INCOMPLETE]!! +  it.traced[TraceStatus.MATCHING]!! + it.traced[TraceStatus.NO_DESTINATION]!!) }
 		val filteredContent = tracingContent.filter { it.depth == parameters.size }
 		val flattenedContentCompletion = filteredContent.flatMap { it.cachedCompletion }
 		val distinctCompletion = flattenedContentCompletion.distinct()
