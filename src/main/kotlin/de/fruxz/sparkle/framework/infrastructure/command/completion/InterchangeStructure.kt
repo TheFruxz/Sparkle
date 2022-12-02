@@ -134,7 +134,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 	private fun computeLocalCompletion(context: CompletionContext) = content.flatMap { it.completion(context) }
 
 	private fun validInput(executor: InterchangeExecutor, input: String, inputQuery: List<String>) = // TODO seems sus! Validates mostly nothing!
-		(!configuration.mustMatchOutput || this.computeLocalCompletion(
+		(this.computeLocalCompletion(
 			CompletionContext(
 				executor,
 				inputQuery,
@@ -181,7 +181,9 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 						when {
 							!currentBranch.userRestriction.match(executor) -> TraceStatus.FAILED
 							!currentBranch.requiredApprovals.all { executor.hasApproval(it) } -> TraceStatus.FAILED
-							isLocalExecutableRoot && rawInput.isEmpty() -> TraceStatus.MATCHING
+							isLocalExecutableRoot && rawInput.isEmpty() -> TraceStatus.MATCHING.also {
+								println("${currentBranch.address.addressString} did first")
+							}
 							!localInputAccepted -> {
 								when {
 									localInput.isBlank() -> TraceStatus.INCOMPLETE
@@ -190,7 +192,9 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 							}
 							(rawInput.size > currentDepth) && !currentBranch.configuration.infiniteSubParameters -> TraceStatus.TO_MUCH
 							(subBranches.isNotEmpty() && subBranches.any { it.configuration.isRequired }) || currentBranch.onExecution == null -> NO_DESTINATION
-							else -> TraceStatus.MATCHING
+							else -> TraceStatus.MATCHING.also {
+								println("${currentBranch.address.addressString} did second")
+							}
 						}
 
 					}
