@@ -24,7 +24,7 @@ repositories {
 }
 
 val ascendVersion = "11.0.0"
-val stackedVersion = "3.0.3"
+val stackedVersion = "3.1.2"
 
 dependencies {
 
