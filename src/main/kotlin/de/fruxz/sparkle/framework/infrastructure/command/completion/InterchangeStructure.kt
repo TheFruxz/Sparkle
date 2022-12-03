@@ -357,7 +357,7 @@ class InterchangeStructure<EXECUTOR : InterchangeExecutor>(
 		userRestriction: InterchangeUserRestriction = this.userRestriction,
 		identity: String = "${(parent?.identity ?: "")}/${subBranches.size}",
 		path: Address<InterchangeStructure<EXECUTOR>> = this.address / "${subBranches.size}",
-		configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(),
+		configuration: CompletionBranchConfiguration = CompletionBranchConfiguration(isRequired = onExecution == null),
 		process: InterchangeStructure<EXECUTOR>.() -> Unit,
 	) {
 
