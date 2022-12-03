@@ -4,10 +4,9 @@ import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.extension.data.jsonBase
 import de.fruxz.ascend.extension.empty
+import de.fruxz.ascend.extension.tryOrIgnore
 import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.extension.tryToCatch
-import de.fruxz.ascend.extension.tryToIgnore
-import de.fruxz.ascend.extension.tryToPrint
+import de.fruxz.ascend.extension.tryOrPrint
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
@@ -29,6 +28,7 @@ import de.fruxz.sparkle.framework.infrastructure.command.Interchange
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.service.Service
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.ERROR
+import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.SparkleData
@@ -300,7 +300,7 @@ abstract class App(
 
 				log.warning("Error during adding handler")
 
-				tryToPrint { catchException(e) }
+				tryOrPrint { catchException(e) }
 
 			}
 
@@ -342,7 +342,7 @@ abstract class App(
 	}
 
 	fun add(component: Component) {
-		tryToCatch {
+		tryOrPrint {
 
 			@OptIn(ExperimentalTime::class)
 			measureTime {
@@ -379,7 +379,7 @@ abstract class App(
 		}
 	}
 
-	fun start(componentIdentity: Identity<out Component>) = tryToCatch {
+	fun start(componentIdentity: Identity<out Component>) = tryOrPrint {
 		val component = SparkleCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 		if (component != null) {
@@ -409,7 +409,7 @@ abstract class App(
 
 	}
 
-	fun stop(componentIdentity: Identity<out Component>, unregisterComponent: Boolean = false) = tryToCatch {
+	fun stop(componentIdentity: Identity<out Component>, unregisterComponent: Boolean = false) = tryOrPrint {
 		val component = SparkleCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 		if (component != null) {
@@ -448,7 +448,7 @@ abstract class App(
 	}
 
 	fun unregister(componentIdentity: Identity<out Component>) {
-		tryToCatch {
+		tryOrPrint {
 			val component = SparkleCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 			if (component != null) {
@@ -464,7 +464,7 @@ abstract class App(
 		}
 	}
 
-	fun register(serializable: Class<out ConfigurationSerializable>) = tryToCatch {
+	fun register(serializable: Class<out ConfigurationSerializable>) = tryOrPrint {
 		ConfigurationSerialization.registerClass(serializable)
 		log.info("successfully registered '${serializable.simpleName}' as serializable!")
 	}
@@ -472,7 +472,7 @@ abstract class App(
 	fun register(serializable: KClass<out ConfigurationSerializable>) =
 		register(serializable.java)
 
-	fun unregister(serializable: Class<out ConfigurationSerializable>) = tryToCatch {
+	fun unregister(serializable: Class<out ConfigurationSerializable>) = tryOrPrint {
 		ConfigurationSerialization.unregisterClass(serializable)
 	}
 
@@ -544,7 +544,7 @@ abstract class App(
 
 	@OptIn(ExperimentalTime::class)
 	final override fun onLoad() {
-		tryToCatch {
+		tryOrPrint {
 
 			activeSince = Calendar.now()
 
@@ -559,7 +559,7 @@ abstract class App(
 
 	@OptIn(ExperimentalTime::class)
 	final override fun onEnable() {
-		tryToCatch {
+		tryOrPrint {
 
 			onLoadJob.invokeOnCompletion {
 
@@ -574,7 +574,7 @@ abstract class App(
 
 	@OptIn(ExperimentalTime::class)
 	final override fun onDisable() {
-		tryToCatch {
+		tryOrPrint {
 
 			log.info("Disabling (::bye) of '$identityKey' took ${measureTime { bye() }}!")
 
@@ -603,7 +603,7 @@ abstract class App(
 
 			SparkleCache.registeredComponents.toList().forEach {
 				if (key() == it.vendor.key()) {
-					tryToIgnore { runBlocking { it.stop() } }
+					tryOrIgnore({ SparkleApp.debugMode }) { runBlocking { it.stop() } }
 				}
 			}
 

@@ -1,5 +1,6 @@
 package de.fruxz.sparkle.framework.extension
 
+import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.framework.infrastructure.app.App
@@ -16,7 +17,7 @@ fun <T : Any?> T.debugLog(message: String, level: Level = Level.WARNING) = also 
 }
 
 fun <T : Any?> T.debugLog(level: Level = Level.WARNING, messageProcess: T.() -> String) {
-	if (SparkleApp.debugMode) { debugLog(messageProcess(), level) }
+	if (SparkleApp.debugMode) { debugLog(tryOrNull { messageProcess() } ?: ">> Error at getting this debugLog message!", level) }
 }
 
 fun mainLog(level: Level = Level.INFO, message: String) = SparkleApp.instance.log.log(level, message)

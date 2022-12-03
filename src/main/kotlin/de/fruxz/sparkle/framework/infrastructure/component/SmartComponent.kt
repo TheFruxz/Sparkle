@@ -1,8 +1,7 @@
 package de.fruxz.sparkle.framework.infrastructure.component
 
 import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.extension.tryToCatch
-import de.fruxz.ascend.extension.tryToIgnore
+import de.fruxz.ascend.extension.tryOrPrint
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.context.AppComposable
 import de.fruxz.sparkle.framework.extension.buildSandBox
@@ -81,7 +80,7 @@ abstract class SmartComponent(
 			selfRegister.invoke()
 
 			interchanges.forEach { interchange ->
-				tryToCatch {
+				tryOrPrint {
 
 					interchange.replaceVendor(vendor)
 
@@ -138,7 +137,7 @@ abstract class SmartComponent(
 			selfStart.invoke()
 
 			interchanges.forEach {
-				tryToCatch {
+				tryOrPrint {
 					vendor.replace(it.identityObject, it)
 					SparkleCache.registeredInterchanges += it
 					SparkleCache.disabledInterchanges -= it.identityObject
@@ -147,7 +146,7 @@ abstract class SmartComponent(
 			}
 
 			services.forEach {
-				tryToCatch {
+				tryOrPrint {
 					vendor.register(it)
 					debugLog("Service '${it.identity}' registered through '$identity'!")
 					vendor.start(it)
@@ -156,7 +155,7 @@ abstract class SmartComponent(
 			}
 
 			components.forEach {
-				tryToCatch {
+				tryOrPrint {
 					vendor.add(it)
 					SparkleCache.registeredComponents += it
 					debugLog("Component '${it.identity}' added through '$identity'!")
@@ -164,7 +163,7 @@ abstract class SmartComponent(
 			}
 
 			listeners.forEach {
-				tryToCatch {
+				tryOrPrint {
 					vendor.add(it)
 					SparkleCache.registeredListeners += it
 					debugLog("Listener '${it.identity}' added through '$identity'!")
@@ -172,7 +171,7 @@ abstract class SmartComponent(
 			}
 
 			sandboxes.forEach {
-				tryToCatch {
+				tryOrPrint {
 					buildSandBox(this@SmartComponent.vendor, it.key, it.process)
 				}
 			}
@@ -197,45 +196,45 @@ abstract class SmartComponent(
 			selfStop.invoke()
 
 			interchanges.forEach {
-				tryToCatch {
+				tryOrPrint {
 					vendor.replace(it.identityObject, disabledComponentInterchange(identityObject, tryOrNull { it.requiredApproval?.compose(vendor) }))
 					SparkleCache.registeredInterchanges -= it
 					SparkleCache.disabledInterchanges += it.identityObject
-					tryToIgnore { debugLog("Interchange '${it.identity}' registered through '$identity' with disabled-interchange!") }
+					debugLog { "Interchange '${it.identity}' registered through '$identity' with disabled-interchange!" }
 				}
 			}
 
 			services.forEach {
-				tryToCatch {
+				tryOrPrint {
 
 					if (it.isRunning) {
 						vendor.stop(it)
-						tryToIgnore { debugLog("Service '${it.identity}' stopped through '$identity'!") }
+						debugLog { "Service '${it.identity}' stopped through '$identity'!" }
 					}
 
 					vendor.unregister(it)
 
-					tryToIgnore { debugLog("Service '${it.identity}' unregistered through '$identity'!") }
+					debugLog { "Service '${it.identity}' unregistered through '$identity'!" }
 				}
 			}
 
 			components.forEach {
-				tryToCatch {
+				tryOrPrint {
 					vendor.stop(it.identityObject)
 					SparkleCache.registeredComponents -= it
-					tryToIgnore { debugLog("Component '${it.identity}' stopped through '$identity'!") }
+					debugLog { "Component '${it.identity}' stopped through '$identity'!" }
 				}
 			}
 
 			listeners.forEach {
-				tryToCatch {
+				tryOrPrint {
 					vendor.remove(it)
-					tryToIgnore { debugLog("Service '${it.identity}' removed through '$identity'") }
+					debugLog { "Service '${it.identity}' removed through '$identity'" }
 				}
 			}
 
 			sandboxes.forEach {
-				tryToCatch {
+				tryOrPrint {
 					destroySandBox(it.identity)
 				}
 			}
