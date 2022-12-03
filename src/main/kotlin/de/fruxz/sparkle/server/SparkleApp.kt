@@ -3,12 +3,12 @@ package de.fruxz.sparkle.server
 import com.destroystokyo.paper.ParticleBuilder
 import de.fruxz.ascend.extension.data.addAscendJsonModuleModification
 import de.fruxz.ascend.extension.data.buildRandomTag
+import de.fruxz.ascend.extension.data.randomInt
 import de.fruxz.ascend.extension.div
 import de.fruxz.ascend.extension.forceCast
 import de.fruxz.ascend.extension.getHomePath
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.data.json.JsonConfiguration
-import de.fruxz.sparkle.framework.data.json.JsonFileDataElement
 import de.fruxz.sparkle.framework.data.json.configuration.preference
 import de.fruxz.sparkle.framework.data.json.serializer.*
 import de.fruxz.sparkle.framework.effect.sound.SoundData
@@ -16,6 +16,7 @@ import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.effect.sound.SoundMelody
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.mainLog
+import de.fruxz.sparkle.framework.extension.quickSandBox
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.AppCompanion
 import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater
@@ -103,7 +104,6 @@ class SparkleApp : App() {
 				subclass(MojangProfileTextures::class)
 				subclass(MojangProfileUsernameHistoryEntry::class)
 				subclass(JsonConfiguration::class)
-				subclass(JsonFileDataElement::class)
 				subclass(Modification::class)
 				subclass(LazyLocation::class)
 				subclass(SoundData::class)
@@ -187,6 +187,11 @@ class SparkleApp : App() {
 		add(SparkleInterchange())
 		add(DebugModeInterchange())
 		add(PlaygroundInterchange())
+
+		quickSandBox {
+			test = buildRandomTag()
+			test2 = randomInt(0..100)
+		}
 
 	}
 
