@@ -5,7 +5,6 @@ import de.fruxz.ascend.extension.data.addAscendJsonModuleModification
 import de.fruxz.ascend.extension.forceCast
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.data.json.JsonConfiguration
-import de.fruxz.sparkle.framework.data.json.JsonFileDataElement
 import de.fruxz.sparkle.framework.data.json.serializer.*
 import de.fruxz.sparkle.framework.effect.sound.SoundData
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
@@ -99,7 +98,6 @@ class SparkleApp : App() {
 				subclass(MojangProfileTextures::class)
 				subclass(MojangProfileUsernameHistoryEntry::class)
 				subclass(JsonConfiguration::class)
-				subclass(JsonFileDataElement::class)
 				subclass(Modification::class)
 				subclass(LazyLocation::class)
 				subclass(SoundData::class)
