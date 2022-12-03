@@ -478,8 +478,7 @@ data class Item(
 		ignoreModifications: Boolean = false,
 		ignoreFlags: Boolean = false,
 		ignoreActionTags: Boolean = false,
-
-		): Boolean {
+	): Boolean {
 		var isOtherItem = false
 
 		if (!ignoreIdentity) {

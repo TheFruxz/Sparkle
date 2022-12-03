@@ -2,9 +2,10 @@ package de.fruxz.sparkle.framework.extension
 
 import de.fruxz.ascend.extension.forceCast
 import de.fruxz.ascend.extension.forceCastOrNull
+import de.fruxz.ascend.extension.tryOrIgnore
 import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.extension.tryToIgnore
 import de.fruxz.sparkle.framework.infrastructure.app.App
+import de.fruxz.sparkle.server.SparkleApp
 import net.kyori.adventure.key.Key
 import org.bukkit.NamespacedKey
 import org.bukkit.persistence.PersistentDataContainer
@@ -63,7 +64,7 @@ fun <T : Any> PersistentDataHolder.setPersistentData(name: String, value: T) =
 
 fun <T : Any> PersistentDataHolder.getPersistentData(key: Key): T? {
 	PersistentData.persistentDataTypes.forEach { type ->
-		tryToIgnore {
+		tryOrIgnore({ SparkleApp.debugMode }) {
 			persistentDataContainer.get(NamespacedKey.fromString(key.asString())!!, type)?.let {
 				return it.forceCastOrNull()
 			}

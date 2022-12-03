@@ -56,6 +56,7 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
         branch {
 
             addContent(CompletionAsset.pageCompletion { ceilToInt(SparkleCache.registeredApps.size.toDouble() / SparkleData.systemConfig.entriesPerListPage) })
+            isNotRequired()
 
             concludedExecution {
                 val page = getInput(translationAsset = CompletionAsset.LONG).limitTo(Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()).toInt()
@@ -386,6 +387,13 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
         fun displayList(executor: InterchangeExecutor, page: Int) {
 
             val paged = SparkleCache.registeredApps.paged(page - 1, SparkleData.systemConfig.entriesPerListPage)
+            val lastUpdateMessage = if (componentOrNull(UpdateComponent::class)?.updateConfiguration?.updateUpdateNotifications == true && SparkleComponent.isEnabled(UpdateComponent::class)) {
+                Component.newline() + text {
+                    this + text("ᴛʜᴇ ʟᴀsᴛ ᴜᴘᴅᴀᴛᴇ-ᴄʜᴇᴄᴋ ɪs ").dyeGray()
+                    this + text(UpdateService.lastUpdateCheck?.durationToNow()?.toString() ?: "ɴᴇᴠᴇʀ ᴄʜᴇᴄᴋᴇᴅ").dyeLightPurple()
+                    this + text(" ᴀɢᴏ!").dyeGray()
+                }
+            } else null
 
             buildComponent {
 
@@ -397,14 +405,6 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                     }
                 }
                 this + text(":").dyeGray()
-
-                if (componentOrNull(UpdateComponent::class)?.updateConfiguration?.updateUpdateNotifications == true && SparkleComponent.isEnabled(UpdateComponent::class)) {
-                    this + Component.newline() + text {
-                        this + text("The last update-check is ").dyeGray()
-                        this + text(UpdateService.lastUpdateCheck?.durationToNow()?.toString() ?: "never checked").dyeLightPurple()
-                        this + text(" ago.").dyeGray()
-                    }
-                }
 
                 this + Component.newline() + text("⏻ Power; ⏹ API-Compatible; ⏏ Updates").dyeGray()
 
@@ -421,6 +421,10 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                 this + text("Indicates, if the plugin is currently enabled & running").dyeYellow()
                                 newlines(2)
                                 this + text("CLICK").style(NamedTextColor.GREEN, BOLD) + text(" to toggle the state of the app").dyeGray()
+                                lastUpdateMessage?.let { message ->
+                                    newline()
+                                    this + message
+                                }
                             }
                         }
                         clickEvent(ClickEvent.runCommand(
@@ -440,11 +444,14 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                 newline()
                                 this + text("Server version: ").dyeGray()
                                 this + text(Bukkit.getMinecraftVersion()).dyeGreen()
-
+                                lastUpdateMessage?.let { message ->
+                                    newline()
+                                    this + message
+                                }
                             }
                         }
                     }
-                    this + text(" ⏏") {
+                    this + text(" ∞") {
 
                         when (updateStates[app]?.type) {
                             null -> {
@@ -459,6 +466,10 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                             this + text("' is currently ").dyeGray()
                                             this + text("not providing").dyeRed()
                                             this + text(" a working update solution!").dyeGray()
+                                        }
+                                        lastUpdateMessage?.let { message ->
+                                            newline()
+                                            this + message
                                         }
                                     }
                                 }
@@ -476,6 +487,10 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                             text("up-to-date").dyeGreen()
                                             text("!").dyeGray()
                                         }
+                                        lastUpdateMessage?.let { message ->
+                                            newline()
+                                            this + message
+                                        }
                                     }
                                 }
                             }
@@ -491,6 +506,10 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                             text("' is currently ").dyeGray()
                                             text("not properly reporting").dyeRed()
                                             text(" the current available updates!").dyeGray()
+                                        }
+                                        lastUpdateMessage?.let { message ->
+                                            newline()
+                                            this + message
                                         }
                                     }
                                 }
@@ -545,6 +564,10 @@ internal class AppInterchange : StructuredInterchange("app", buildInterchangeStr
                                             this + text {
                                                 this + text("CLICK ").style(NamedTextColor.GREEN, BOLD)
                                                 this + text("to update this app now!").dyeGray()
+                                            }
+                                            lastUpdateMessage?.let { message ->
+                                                newline()
+                                                this + message
                                             }
                                         }
                                     }

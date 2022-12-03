@@ -3,8 +3,8 @@ import org.gradle.api.JavaVersion.VERSION_17
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.7.21"
-    kotlin("plugin.serialization") version "1.7.21"
+    kotlin("jvm") version "1.7.22"
+    kotlin("plugin.serialization") version "1.7.22"
     id("org.jetbrains.dokka") version "1.7.20"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     `maven-publish`
@@ -23,7 +23,7 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
 }
 
-val ascendVersion = "9.0.0"
+val ascendVersion = "10.0.0"
 val stackedVersion = "3.0.3"
 
 dependencies {
@@ -45,7 +45,6 @@ dependencies {
 
     @Suppress("DependencyOnStdlib") implementation(kotlin("stdlib"))
 
-    implementation("org.slf4j:slf4j-api:2.0.4")
     implementation("com.mojang:brigadier:1.0.500")
     implementation("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT") // PaperMC
 
@@ -55,10 +54,10 @@ dependencies {
         "io.ktor:ktor-serialization-kotlinx-json:2.1.3",
         "io.ktor:ktor-client-content-negotiation:2.1.3",
 
-        "net.kyori:adventure-api:4.11.0",
-        "net.kyori:adventure-text-serializer-legacy:4.11.0",
-        "net.kyori:adventure-text-minimessage:4.11.0",
-        "net.kyori:adventure-text-serializer-gson:4.11.0",
+        "net.kyori:adventure-api:4.12.0",
+        "net.kyori:adventure-text-serializer-legacy:4.12.0",
+        "net.kyori:adventure-text-minimessage:4.12.0",
+        "net.kyori:adventure-text-serializer-gson:4.12.0",
     ).forEach {
         implementation(it)
         shadow(it)
@@ -79,8 +78,8 @@ dependencies {
     shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
     shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
-    shadow("org.slf4j:slf4j-api:2.0.3")
-    shadow("net.kyori:adventure-text-serializer-plain:4.11.0")
+    shadow("org.slf4j:slf4j-api:2.0.5")
+    shadow("net.kyori:adventure-text-serializer-plain:4.12.0")
 
     shadow("org.jetbrains.exposed:exposed-core:0.41.1")
     shadow("org.jetbrains.exposed:exposed-dao:0.41.1")

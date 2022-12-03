@@ -51,12 +51,21 @@ import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
 /**
- * @param label is the interchange name, used as /<name> and as the identifier, defined inside your plugin.yml
- * @param aliases are the supported interchange-aliases, which can be used, to access the interchange
- * @param requiresApproval defines, if the [InterchangeExecutor] requires to have the permission 'interchange.<label>' to execute this interchange
+ * This class helps to define commands in a more convenient way.
+ *
+ * @param label is the interchange name, used as /<name> and as the identifier
+ * @param requiredApproval is the permission, which is required to execute the interchange (composable, due to dynamic vendor)
  * @param requiredClient defines, which types of [InterchangeExecutor] are allowed, to execute the interchange
- * @param completion defines the completions, that the interchange will display, during a [InterchangeExecutor]s input into console/chat
+ * @param cooldown is the time, which has to pass, before the interchange can be executed again
  * @param ignoreInputValidation defines, if the input of the user should not be checked of correctness
+ * @param completion defines the completions, that the interchange will display, during a [InterchangeExecutor]s input into console/chat
+ * @param commandProperties defines the properties of the interchange, which are used to register the interchange as a command
+ * @param wrongUsageReaction defines the reaction, if the user inputs the interchange wrong
+ * @param wrongClientReaction defines the reaction, if the [InterchangeExecutor] is not the [requiredClient]
+ * @param wrongApprovalReaction defines the reaction, if the [InterchangeExecutor] does not have the [requiredApproval]
+ * @param unexpectedIssueReaction defines the reaction, if an unexpected issue occurs
+ * @param cooldownReaction defines the reaction, if the [InterchangeExecutor] is on cooldown
+ * @param executionContext defines the [CoroutineContext] in which the interchange is executed (composable, due to dynamic vendor)
  * @param preferredVendor if not null, this overrides the automatic extrapolated [vendor] [App] on registering
  * @author Fruxz
  * @since 1.0
@@ -268,6 +277,16 @@ abstract class Interchange(
 		return true
 	}
 
+	/**
+	 * This data class represents the basic preferences of an interchange.
+	 * It defines the values, which you would normally find inside the plugin.yml.
+	 * @param aliases The aliases of the interchange, on which you can also call it.
+	 * @param description A short description, what the interchange does.
+	 * @param permissionMessage The message, which is sent to the executor, if he does not have the permission to execute the interchange, or null, if the default message should be used.
+	 * @param permissionDefault The [PermissionDefault] of the interchange.
+	 * @author Fruxz
+	 * @since 1.0
+	 */
 	data class CommandProperties(
 		val aliases: Set<String> = emptySet(),
 		val description: String = "An command, built with sparkle!",

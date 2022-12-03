@@ -4,13 +4,13 @@ import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.fruxz.ascend.extension.catchException
 import de.fruxz.ascend.extension.data.jsonBase
 import de.fruxz.ascend.extension.empty
+import de.fruxz.ascend.extension.tryOrIgnore
 import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.extension.tryToCatch
-import de.fruxz.ascend.extension.tryToIgnore
-import de.fruxz.ascend.extension.tryToPrint
+import de.fruxz.ascend.extension.tryOrPrint
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.sparkle.framework.context.AppComposable
 import de.fruxz.sparkle.framework.exception.IllegalActionException
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.coroutines.pluginCoroutineDispatcher
@@ -20,7 +20,7 @@ import de.fruxz.sparkle.framework.extension.internalCommandMap
 import de.fruxz.sparkle.framework.extension.internalSyncCommands
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.Hoster
-import de.fruxz.sparkle.framework.infrastructure.app.RunStatus.*
+import de.fruxz.sparkle.framework.infrastructure.app.coroutine.AppConcurrency
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.infrastructure.app.interchange.IssuedInterchange
 import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater
@@ -28,6 +28,7 @@ import de.fruxz.sparkle.framework.infrastructure.command.Interchange
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.framework.infrastructure.service.Service
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.ERROR
+import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.SparkleData
@@ -38,13 +39,14 @@ import io.ktor.client.plugins.cache.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.PluginCommand
 import org.bukkit.configuration.serialization.ConfigurationSerializable
@@ -56,10 +58,8 @@ import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.logging.Logger
 import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
 import kotlin.reflect.jvm.isAccessible
-import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
@@ -88,13 +88,17 @@ import kotlin.time.measureTime
  * - [Identifiable]<[App]>: Every app is identifiable through is unique
  * custom set [appIdentity] property. ([appIdentity] = [identity])
  *
+ * @param concurrency The default context-concurrency of the app.
+ * @param systemOnLoadContext The [CoroutineContext] of the [onLoad] process, default set by the [concurrency] property.
+ * @param systemOnEnableContext The [CoroutineContext] of the [onEnable] process, default set by the [concurrency] property.
  * @author Fruxz (@TheFruxz)
  * @since 1.0-BETA-2 (preview)
  * @constructor abstract
  */
 abstract class App(
-	private val systemOnLoadContext: CoroutineContext = EmptyCoroutineContext,
-	private val systemOnEnableContext: CoroutineContext = EmptyCoroutineContext,
+	private val concurrency: AppConcurrency = AppConcurrency.async,
+	private val systemOnLoadContext: AppComposable<CoroutineContext> = concurrency.onLoadContext,
+	private val systemOnEnableContext: AppComposable<CoroutineContext> = concurrency.onEnableContext,
 ) : JavaPlugin(), Hoster<Unit, Unit, App> {
 
 	// parameters
@@ -296,7 +300,7 @@ abstract class App(
 
 				log.warning("Error during adding handler")
 
-				tryToPrint { catchException(e) }
+				tryOrPrint { catchException(e) }
 
 			}
 
@@ -338,7 +342,7 @@ abstract class App(
 	}
 
 	fun add(component: Component) {
-		tryToCatch {
+		tryOrPrint {
 
 			@OptIn(ExperimentalTime::class)
 			measureTime {
@@ -375,7 +379,7 @@ abstract class App(
 		}
 	}
 
-	fun start(componentIdentity: Identity<out Component>) = tryToCatch {
+	fun start(componentIdentity: Identity<out Component>) = tryOrPrint {
 		val component = SparkleCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 		if (component != null) {
@@ -405,7 +409,7 @@ abstract class App(
 
 	}
 
-	fun stop(componentIdentity: Identity<out Component>, unregisterComponent: Boolean = false) = tryToCatch {
+	fun stop(componentIdentity: Identity<out Component>, unregisterComponent: Boolean = false) = tryOrPrint {
 		val component = SparkleCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 		if (component != null) {
@@ -444,7 +448,7 @@ abstract class App(
 	}
 
 	fun unregister(componentIdentity: Identity<out Component>) {
-		tryToCatch {
+		tryOrPrint {
 			val component = SparkleCache.registeredComponents.firstOrNull { it.identityObject == componentIdentity }
 
 			if (component != null) {
@@ -460,7 +464,7 @@ abstract class App(
 		}
 	}
 
-	fun register(serializable: Class<out ConfigurationSerializable>) = tryToCatch {
+	fun register(serializable: Class<out ConfigurationSerializable>) = tryOrPrint {
 		ConfigurationSerialization.registerClass(serializable)
 		log.info("successfully registered '${serializable.simpleName}' as serializable!")
 	}
@@ -468,7 +472,7 @@ abstract class App(
 	fun register(serializable: KClass<out ConfigurationSerializable>) =
 		register(serializable.java)
 
-	fun unregister(serializable: Class<out ConfigurationSerializable>) = tryToCatch {
+	fun unregister(serializable: Class<out ConfigurationSerializable>) = tryOrPrint {
 		ConfigurationSerialization.unregisterClass(serializable)
 	}
 
@@ -476,13 +480,6 @@ abstract class App(
 		unregister(serializable.java)
 
 	// runtime
-
-	/**
-	 * The current status of app-runtime
-	 */
-	var runStatus: RunStatus = OFFLINE
-		private set
-
 	val coroutineScope: CoroutineScope
 		get() = companion.coroutineScope
 
@@ -543,39 +540,18 @@ abstract class App(
 	 */
 	open fun bye() = empty()
 
-	private suspend fun awaitState(waitFor: RunStatus, out: RunStatus, process: suspend () -> Unit) {
-
-		while (runStatus != out) {
-
-			if (runStatus != waitFor) {
-				delay(.1.seconds)
-				continue
-			}
-
-			process()
-
-		}
-
-	}
+	private lateinit var onLoadJob: Job
 
 	@OptIn(ExperimentalTime::class)
 	final override fun onLoad() {
-		tryToCatch {
+		tryOrPrint {
+
 			activeSince = Calendar.now()
 
 			SparkleCache.registeredApps += this
 
-			coroutineScope.launch(context = systemOnLoadContext) {
-
-				runStatus = PRE_LOAD
-
-				measureTime { preHello() }
-					.let { requiredTime ->
-						log.info("Loading (::preHello) of '$identityKey' took $requiredTime!")
-					}
-
-				runStatus = LOAD
-
+			onLoadJob = coroutineScope.launch(context = systemOnLoadContext.compose(this@App)) {
+				log.info("Loading (::preHello) of '$identityKey' took ${measureTime { preHello() }}! (on primary-thread = ${Bukkit.isPrimaryThread()})")
 			}
 
 		}
@@ -583,22 +559,12 @@ abstract class App(
 
 	@OptIn(ExperimentalTime::class)
 	final override fun onEnable() {
-		tryToCatch {
+		tryOrPrint {
 
-			coroutineScope.launch(context = systemOnEnableContext) {
+			onLoadJob.invokeOnCompletion {
 
-				awaitState(LOAD, ENABLE) {
-					runStatus = PRE_ENABLE
-
-					measureTime { hello() }
-						.let { requiredTime ->
-
-							runStatus = ENABLE
-
-							delay(1.seconds) // a bit of time, to be displayed at the bottom of the console
-							log.info("Enabling (::hello) of '$identityKey' took $requiredTime!")
-
-					}
+				coroutineScope.launch(context = systemOnEnableContext.compose(this@App)) {
+					log.info("Enabling (::hello) of '$identityKey' took ${measureTime { hello() }}! (on primary-thread = ${Bukkit.isPrimaryThread()})")
 				}
 
 			}
@@ -608,14 +574,9 @@ abstract class App(
 
 	@OptIn(ExperimentalTime::class)
 	final override fun onDisable() {
-		tryToCatch {
+		tryOrPrint {
 
-			runStatus = SHUTDOWN
-
-			measureTime { bye() }
-				.let { requiredTime ->
-					log.info("Disabling (::bye) of '$identityKey' took $requiredTime!")
-				}
+			log.info("Disabling (::bye) of '$identityKey' took ${measureTime { bye() }}!")
 
 			with(coroutineScope) {
 				coroutineContext.cancelChildren()
@@ -642,7 +603,7 @@ abstract class App(
 
 			SparkleCache.registeredComponents.toList().forEach {
 				if (key() == it.vendor.key()) {
-					tryToIgnore { runBlocking { it.stop() } }
+					tryOrIgnore({ SparkleApp.debugMode }) { runBlocking { it.stop() } }
 				}
 			}
 
@@ -660,8 +621,6 @@ abstract class App(
 
 				log.info("Command '$it' disabled")
 			}
-
-			runStatus = OFFLINE
 
 		}
 	}
