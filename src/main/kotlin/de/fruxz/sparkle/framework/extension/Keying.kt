@@ -16,6 +16,9 @@ infix operator fun NamespacedKey.div(value: String): NamespacedKey = subNamespac
 fun Key.subNamespacedKey(value: String, strategy: KeyingStrategy = KeyingStrategy.CONTINUE): NamespacedKey =
 	with(subKey(value, strategy)) { NamespacedKey(namespace(), value()) }
 
+val Key.namespacedKey: NamespacedKey
+	get() = NamespacedKey(namespace(), value())
+
 val Player.key: Key
 	get() = Key.key("$uniqueId")
 
