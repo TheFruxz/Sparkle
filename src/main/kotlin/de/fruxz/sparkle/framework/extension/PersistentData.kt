@@ -65,9 +65,11 @@ fun <T : Any> PersistentDataHolder.setPersistentData(name: String, value: T) =
 fun <T : Any> PersistentDataHolder.getPersistentData(key: Key): T? {
 	PersistentData.persistentDataTypes.forEach { type ->
 		tryOrIgnore({ SparkleApp.debugMode }) {
-			persistentDataContainer.get(NamespacedKey.fromString(key.asString())!!, type)?.let {
-				return it.forceCastOrNull()
-			}
+			try {
+				persistentDataContainer.get(key.namespacedKey, type)?.let {
+					return it.forceCastOrNull()
+				}
+			} catch (_: IllegalArgumentException) { } // If type is not correct, this gets thrown; No need to log or anything
 		}
 	}
 	return null
