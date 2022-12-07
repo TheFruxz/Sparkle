@@ -3,7 +3,6 @@ package de.fruxz.sparkle.server.component.marking
 import de.fruxz.ascend.extension.container.paged
 import de.fruxz.sparkle.framework.effect.particle.ParticleType
 import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
-import de.fruxz.sparkle.framework.extension.asPlayerOrNull
 import de.fruxz.sparkle.framework.extension.component
 import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
@@ -59,7 +58,7 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 
 			concludedExecution {
 
-				executor.asPlayerOrNull?.let {
+				executor.let {
 
 					it.inventory.mainHand = MarkerComponent.markingItem
 
@@ -89,7 +88,7 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 
 				concludedExecution {
 
-					executor.asPlayerOrNull?.let {
+					executor.let {
 						loadMarking(it, getInput()).invokeOnCompletion {
 							when (it) {
 								null -> text("Marking loaded successfully!").dyeLightPurple().notification(TransmissionAppearance.APPLIED, executor).display()
@@ -114,7 +113,7 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 				mustNotMatchOutput()
 
 				concludedExecution {
-					executor.asPlayerOrNull?.let {
+					executor.let {
 						saveMarking(it, getInput()).invokeOnCompletion {
 							when (it) {
 								null -> text("Marking saved successfully!").dyeLightPurple().notification(TransmissionAppearance.APPLIED, executor).display()
@@ -139,7 +138,7 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 				mustNotMatchOutput()
 
 				concludedExecution {
-					val marker = executor.asPlayerOrNull?.markerOrNull
+					val marker = executor.markerOrNull
 
 					if (marker != null) {
 
@@ -187,7 +186,7 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 
 			concludedExecution {
 
-				executor.asPlayerOrNull?.markerOrNull?.let {
+				executor.markerOrNull?.let {
 
 					doAsync { _ ->
 
@@ -232,9 +231,9 @@ internal class MarkerInterchange : StructuredPlayerInterchange(
 			addContent("visit")
 
 			concludedExecution {
-				executor.asPlayerOrNull?.markerOrNull?.let {
+				executor.markerOrNull?.let {
 
-					executor.asPlayerOrNull?.let { player ->
+					executor.let { player ->
 
 						doSync { _ ->
 

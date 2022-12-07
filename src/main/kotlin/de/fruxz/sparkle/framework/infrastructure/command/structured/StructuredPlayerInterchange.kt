@@ -9,12 +9,13 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeS
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeReaction
 import de.fruxz.sparkle.framework.permission.Approval
+import org.bukkit.entity.Player
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 
 abstract class StructuredPlayerInterchange(
 	label: String,
-	val structure: InterchangeStructure<InterchangeExecutor>,
+	val structure: InterchangeStructure<Player>,
 	requiredApproval: AppComposable<Approval?>? = defaultApproval(label),
 	cooldown: Duration = Duration.ZERO,
 	ignoreInputValidation: Boolean = false,

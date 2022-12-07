@@ -9,12 +9,13 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.InterchangeS
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeReaction
 import de.fruxz.sparkle.framework.permission.Approval
+import org.bukkit.command.ConsoleCommandSender
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 
 abstract class StructuredConsoleInterchange(
 	label: String,
-	val structure: InterchangeStructure<InterchangeExecutor>,
+	val structure: InterchangeStructure<ConsoleCommandSender>,
 	requiredApproval: AppComposable<Approval?>? = defaultApproval(label),
 	cooldown: Duration = Duration.ZERO,
 	ignoreInputValidation: Boolean = false,
