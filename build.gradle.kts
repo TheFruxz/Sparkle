@@ -49,7 +49,7 @@ dependencies {
     implementation("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT") // PaperMC
 
     setOf(
-        "io.ktor:ktor-client-cio:2.1.3",
+        "io.ktor:ktor-client-cio:2.2.1",
         "io.ktor:ktor-client-core-jvm:2.2.1",
         "io.ktor:ktor-serialization-kotlinx-json:2.1.3",
         "io.ktor:ktor-client-content-negotiation:2.2.1",
