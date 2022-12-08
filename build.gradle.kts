@@ -52,7 +52,7 @@ dependencies {
         "io.ktor:ktor-client-cio:2.1.3",
         "io.ktor:ktor-client-core-jvm:2.1.3",
         "io.ktor:ktor-serialization-kotlinx-json:2.1.3",
-        "io.ktor:ktor-client-content-negotiation:2.1.3",
+        "io.ktor:ktor-client-content-negotiation:2.2.1",
 
         "net.kyori:adventure-api:4.12.0",
         "net.kyori:adventure-text-serializer-legacy:4.12.0",
