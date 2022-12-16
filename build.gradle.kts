@@ -24,7 +24,7 @@ repositories {
 }
 
 val ascendVersion = "11.0.0"
-val stackedVersion = "3.0.3"
+val stackedVersion = "3.1.2"
 
 dependencies {
 
@@ -42,11 +42,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
     // External
-
-    @Suppress("DependencyOnStdlib") implementation(kotlin("stdlib"))
+    implementation(kotlin("stdlib"))
 
     implementation("com.mojang:brigadier:1.0.500")
-    implementation("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT") // PaperMC
+    implementation("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT") // PaperMC
 
     setOf(
         "io.ktor:ktor-client-cio:2.1.3",
@@ -72,7 +71,7 @@ dependencies {
         isTransitive = false
     }
 
-    @Suppress("DependencyOnStdlib") shadow(kotlin("stdlib"))
+    shadow(kotlin("stdlib"))
     shadow(kotlin("reflect"))
 
     shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
