@@ -124,7 +124,7 @@ fun skull(ownerName: String, httpRequest: Boolean = true, timeout: Duration = 5.
 				playerProfile!!.complete(true, true)
 			}
 		} else
-			this.ownerProfile = offlinePlayer(ownerName).playerProfile // todo replace with new api if papers #8543 gets merged
+			this.owningPlayer = offlinePlayer(ownerName)
 
 	}
 }
