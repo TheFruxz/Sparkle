@@ -1,12 +1,8 @@
 package de.fruxz.sparkle.framework.infrastructure.app
 
 import com.destroystokyo.paper.utils.PaperPluginLogger
-import de.fruxz.ascend.extension.catchException
+import de.fruxz.ascend.extension.*
 import de.fruxz.ascend.extension.data.jsonBase
-import de.fruxz.ascend.extension.empty
-import de.fruxz.ascend.extension.tryOrIgnore
-import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.extension.tryOrPrint
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
@@ -38,12 +34,7 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.cache.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
@@ -129,41 +120,12 @@ abstract class App(
 	 */
 	abstract val companion: AppCompanion<out App>
 
-
-	abstract val appIdentity: String
-
-	/**
-	 * # `App.label`
-	 * ## Info
-	 * This value defines the display-name of this app, which
-	 * will be displayed in app-lists and information with
-	 * the app included. Can be duplicated, but try to avoid
-	 * duplicated display names with other apps!
-	 *
-	 * ## Use
-	 * Use this value to tell your customers & visitors that
-	 * your app is running, there some possible ways to do that:
-	 *
-	 * - On Minecraft-Networks: Tell the players the name of your network
-	 * - On Publishing: Tell the players the name of your app (where they can find it)
-	 * - On private use: Tell yourself, that this app is this app
-	 *
-	 * But you can use this like you like!
-	 *
-	 * ## Relations
-	 * The label is not related to some crucial read/save system
-	 * or something else, in this cases [appIdentity] is used!
-	 *
-	 * @author Fruxz (@TheFruxz)
-	 * @since 1.0-BETA-2 (preview)
-	 * @constructor abstract
-	 */
-	abstract override val label: String
-
 	abstract val updater: AppUpdater?
 
 	override val identityKey: Key
 		get() = Key.key(Infrastructure.SYSTEM_IDENTITY, companion.predictedIdentity.lowercase())
+
+	override val label: String by lazy { companion.predictedIdentity }
 
 	/**
 	 * The cache of the application
@@ -501,7 +463,7 @@ abstract class App(
 		}
 	}
 
-	val log by lazy { createLog(appIdentity) }
+	val log by lazy { createLog(identity) }
 
 	internal fun getResourceFile(path: String) =
 		classLoader.getResourceAsStream(path)?.reader()?.readText()

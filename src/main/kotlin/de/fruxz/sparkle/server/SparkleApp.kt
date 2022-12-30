@@ -14,30 +14,13 @@ import de.fruxz.sparkle.framework.extension.mainLog
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.AppCompanion
 import de.fruxz.sparkle.framework.infrastructure.app.update.AppUpdater
-import de.fruxz.sparkle.framework.mojang.MojangProfile
-import de.fruxz.sparkle.framework.mojang.MojangProfileCape
-import de.fruxz.sparkle.framework.mojang.MojangProfileRaw
-import de.fruxz.sparkle.framework.mojang.MojangProfileSkin
-import de.fruxz.sparkle.framework.mojang.MojangProfileTextures
-import de.fruxz.sparkle.framework.mojang.MojangProfileUsernameHistoryEntry
+import de.fruxz.sparkle.framework.mojang.*
 import de.fruxz.sparkle.framework.permission.Approval
-import de.fruxz.sparkle.framework.positioning.dependent.DependentComplexShape
-import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
-import de.fruxz.sparkle.framework.positioning.dependent.DependentCylindricalShape
-import de.fruxz.sparkle.framework.positioning.dependent.DependentLinearShape
-import de.fruxz.sparkle.framework.positioning.dependent.DependentPyramidalShape
-import de.fruxz.sparkle.framework.positioning.dependent.DependentShape
-import de.fruxz.sparkle.framework.positioning.dependent.DependentSphericalShape
-import de.fruxz.sparkle.framework.positioning.relative.CubicalShape
-import de.fruxz.sparkle.framework.positioning.relative.CylindricalShape
-import de.fruxz.sparkle.framework.positioning.relative.LinearShape
-import de.fruxz.sparkle.framework.positioning.relative.PyramidalShape
-import de.fruxz.sparkle.framework.positioning.relative.Shape
-import de.fruxz.sparkle.framework.positioning.relative.SphereShape
+import de.fruxz.sparkle.framework.positioning.dependent.*
+import de.fruxz.sparkle.framework.positioning.relative.*
 import de.fruxz.sparkle.framework.positioning.world.LazyLocation
 import de.fruxz.sparkle.framework.visual.item.Item
 import de.fruxz.sparkle.framework.visual.item.Modification
-import de.fruxz.sparkle.server.SparkleApp.Infrastructure.SYSTEM_IDENTITY
 import de.fruxz.sparkle.server.component.app.AppComponent
 import de.fruxz.sparkle.server.component.component.ComponentComponent
 import de.fruxz.sparkle.server.component.events.EventsComponent
@@ -67,9 +50,6 @@ import de.fruxz.ascend.extension.data.addJsonContextualConfiguration as jsonCont
 class SparkleApp : App() {
 
 	override val companion: Companion = Companion
-
-	override val appIdentity: String = SYSTEM_IDENTITY
-	override val label = "Sparkle"
 	override val appCache: SparkleCache = SparkleCache
 	override val updater = AppUpdater.github("TheFruxz/Sparkle") { it.contains("Runnable", true) }
 
@@ -185,9 +165,6 @@ class SparkleApp : App() {
 	}
 
 	companion object : AppCompanion<SparkleApp>() {
-
-		@JvmStatic
-		override val predictedIdentity = SYSTEM_IDENTITY
 
 		@JvmStatic
 		var debugMode: Boolean = true

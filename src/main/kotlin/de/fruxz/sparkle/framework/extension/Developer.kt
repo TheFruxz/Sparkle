@@ -31,7 +31,7 @@ val apps: Set<App>
 	get() = SparkleCache.registeredApps
 
 @Throws(NoSuchElementException::class)
-fun app(appIdentity: String) = apps.first { it.appIdentity == appIdentity }
+fun app(appIdentity: String) = apps.first { it.label == appIdentity }
 
 @Throws(NoSuchElementException::class)
 fun app(vendor: KeyedIdentifiable<out App>) = apps.first { it.key() == vendor.key() }

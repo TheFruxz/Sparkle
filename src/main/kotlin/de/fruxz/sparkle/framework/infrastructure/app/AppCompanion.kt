@@ -8,6 +8,7 @@ import de.fruxz.sparkle.server.SparkleCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import net.kyori.adventure.key.Key
+import org.bukkit.Bukkit
 
 abstract class AppCompanion<T : App> : KeyedIdentifiable<T> {
 
@@ -47,17 +48,19 @@ abstract class AppCompanion<T : App> : KeyedIdentifiable<T> {
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	override val identityKey: Key
-		get() = Key.key(Infrastructure.SYSTEM_IDENTITY, predictedIdentity.lowercase())
+	override val identityKey: Key by lazy {
+		Key.key(Infrastructure.SYSTEM_IDENTITY, predictedIdentity.lowercase())
+	}
 
 	/**
-	 * This value represents the identity, which is expected
-	 * to be the identity of the [App].
-	 * This has to be the same identity, as the identity of
-	 * the real [App]!
+	 * This value represents the expected identity of this [App].
+	 * The identity is extracted from the plugins class and name.
 	 * @author Fruxz
 	 * @since 1.0
 	 */
-	abstract val predictedIdentity: String
+	val predictedIdentity: String by lazy {
+		Bukkit.getPluginManager().plugins.firstOrNull { it.javaClass == this::class.java.declaringClass }?.name
+			?: throw NoSuchElementException("Failed to retrieve the App instance of ${this::class.java.declaringClass.simpleName}!")
+	}
 
 }
