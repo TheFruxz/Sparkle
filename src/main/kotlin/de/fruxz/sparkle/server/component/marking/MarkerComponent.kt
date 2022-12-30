@@ -1,6 +1,5 @@
 package de.fruxz.sparkle.server.component.marking
 
-import de.fruxz.ascend.extension.div
 import de.fruxz.ascend.extension.math.round
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.sparkle.framework.data.file.SparklePath
@@ -39,10 +38,7 @@ import org.bukkit.FluidCollisionMode.ALWAYS
 import org.bukkit.Material
 import org.bukkit.Particle.DustTransition
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
-import kotlin.io.path.createDirectories
-import kotlin.io.path.extension
-import kotlin.io.path.walk
+import kotlin.io.path.*
 
 internal class MarkerComponent : SmartComponent(AUTOSTART_MUTABLE) {
 

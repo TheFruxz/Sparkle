@@ -1,7 +1,6 @@
 package de.fruxz.sparkle.server.component.update
 
 import de.fruxz.ascend.extension.createFileAndDirectories
-import de.fruxz.ascend.extension.div
 import de.fruxz.ascend.extension.network.downloadTo
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.extension.coroutines.asAsync
@@ -12,6 +11,7 @@ import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.component.update.UpdateManager.UpdateResult.FAILED
 import kotlinx.coroutines.Job
 import org.bukkit.Bukkit
+import kotlin.io.path.div
 
 object UpdateManager : Logging {
 

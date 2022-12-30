@@ -4,22 +4,14 @@ import de.fruxz.ascend.extension.container.firstOrNull
 import de.fruxz.ascend.extension.container.mapToString
 import de.fruxz.ascend.extension.container.withMap
 import de.fruxz.ascend.extension.container.withMapNotNull
-import de.fruxz.ascend.extension.div
 import de.fruxz.ascend.extension.math.isDouble
 import de.fruxz.ascend.extension.math.isLong
 import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
+import de.fruxz.sparkle.framework.extension.*
 import de.fruxz.sparkle.framework.extension.coroutines.key
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
-import de.fruxz.sparkle.framework.extension.offlinePlayer
-import de.fruxz.sparkle.framework.extension.offlinePlayers
-import de.fruxz.sparkle.framework.extension.onlinePlayers
-import de.fruxz.sparkle.framework.extension.playerOrNull
-import de.fruxz.sparkle.framework.extension.plugins
-import de.fruxz.sparkle.framework.extension.sparkle
-import de.fruxz.sparkle.framework.extension.structureManager
-import de.fruxz.sparkle.framework.extension.worlds
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.framework.infrastructure.app.cache.CacheDepthLevel
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAssetBuilder.Companion.buildAsset
@@ -38,10 +30,7 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import java.nio.file.Path
 import java.util.*
-import kotlin.io.path.exists
-import kotlin.io.path.listDirectoryEntries
-import kotlin.io.path.pathString
-import kotlin.io.path.relativeToOrSelf
+import kotlin.io.path.*
 
 data class CompletionAsset<T>(
 	override val identityKey: Key,

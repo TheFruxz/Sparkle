@@ -4,11 +4,11 @@ import de.fruxz.ascend.extension.container.edited
 import de.fruxz.ascend.extension.createFileAndDirectories
 import de.fruxz.ascend.extension.data.readJson
 import de.fruxz.ascend.extension.data.writeJson
-import de.fruxz.ascend.extension.div
 import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.infrastructure.component.Component
+import kotlin.io.path.div
 
 object ComponentManager {
 

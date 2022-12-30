@@ -2,12 +2,12 @@ package de.fruxz.sparkle.server.component.update
 
 import de.fruxz.ascend.extension.data.readJson
 import de.fruxz.ascend.extension.data.writeJsonIfNotExists
-import de.fruxz.ascend.extension.div
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.fruxz.sparkle.framework.infrastructure.component.SmartComponent
 import de.fruxz.sparkle.server.SparkleCache
 import kotlinx.serialization.Serializable
+import kotlin.io.path.div
 import kotlin.time.Duration.Companion.minutes
 
 class UpdateComponent : SmartComponent(AUTOSTART_MUTABLE) {
