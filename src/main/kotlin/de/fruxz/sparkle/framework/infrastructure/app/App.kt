@@ -6,6 +6,9 @@ import de.fruxz.ascend.extension.data.jsonBase
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.missingComponents
+import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.requiredComponents
+import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.requirementsMet
 import de.fruxz.sparkle.framework.context.AppComposable
 import de.fruxz.sparkle.framework.exception.IllegalActionException
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
@@ -190,54 +193,55 @@ abstract class App(
 			}
 
 			if (isEnabled) {
-
 				try {
+					if (interchange.requirementsMet()) {
+						doSync {
 
-					doSync {
+							val label = interchange.label
+							val command = getCommand(interchange.label) ?: createCommand(interchange)
 
-						val label = interchange.label
-						val command = getCommand(interchange.label) ?: createCommand(interchange)
+							interchange.replaceVendor(companion.instance)
 
-						interchange.replaceVendor(companion.instance)
+							command.name = label
+							command.tabCompleter = interchange.tabCompleter
+							command.usage = interchange.completion.buildSyntax(null)
 
-						command.name = label
-						command.tabCompleter = interchange.tabCompleter
-						command.usage = interchange.completion.buildSyntax(null)
-
-						with(interchange.commandProperties) {
-							command.aliases = aliases.toList()
-							command.description = description
-							permissionMessage?.let(command::permissionMessage)
-						}
-
-						command.setExecutor(interchange)
-						interchange.requiredApproval?.compose(this)
-							?.let { approval ->
-								command.permission = Permission(approval.identity, interchange.commandProperties.permissionDefault).name
-								debugLog("Interchange '${interchange.label}' permission set to '${approval.identity}'!")
+							with(interchange.commandProperties) {
+								command.aliases = aliases.toList()
+								command.description = description
+								permissionMessage?.let(command::permissionMessage)
 							}
 
-						debugLog("registering artificial command for '${interchange.label}'...")
+							command.setExecutor(interchange)
+							interchange.requiredApproval?.compose(this)
+								?.let { approval ->
+									command.permission = Permission(
+										approval.identity,
+										interchange.commandProperties.permissionDefault
+									).name
+									debugLog("Interchange '${interchange.label}' permission set to '${approval.identity}'!")
+								}
 
-						server.internalCommandMap.apply {
-							register(description.name, command)
+							debugLog("registering artificial command for '${interchange.label}'...")
+
+							server.internalCommandMap.apply {
+								register(description.name, command)
+							}
+
+							server.internalSyncCommands()
+
+							debugLog("successfully registered artificial command for '${interchange.label}'!")
+
+							SparkleCache.registeredInterchanges += interchange
+
+							log.info("register of interchange '$label' succeed!")
 						}
-
-						server.internalSyncCommands()
-
-						debugLog("successfully registered artificial command for '${interchange.label}'!")
-
-						SparkleCache.registeredInterchanges += interchange
-
-						log.info("register of interchange '$label' succeed!")
-
-					}
-
+					} else
+						log.warning("FAILED! required components ${interchange.requiredComponents().map { it.simpleName }} are not available!")
 				} catch (exception: Exception) {
 					catchException(exception)
 					failed()
 				}
-
 			} else
 				log.warning("skipped registering '$failFreeLabel' interchange, app disabled!")
 
@@ -252,11 +256,16 @@ abstract class App(
 
 			try {
 
-				eventListener.replaceVendor(this)
+				if (eventListener.requirementsMet()) {
 
-				pluginManager.registerEvents(eventListener as Listener, this)
-				SparkleCache.registeredListeners += eventListener
-				log.info("registered '${eventListener.listenerIdentity}' listener!")
+					eventListener.replaceVendor(this)
+
+					pluginManager.registerEvents(eventListener as Listener, this)
+					SparkleCache.registeredListeners += eventListener
+					log.info("registered '${eventListener.listenerIdentity}' listener!")
+
+				} else
+					log.warning("FAILED! required components ${eventListener.requiredComponents().map { it.simpleName }} are not available!")
 
 			} catch (e: Exception) {
 
@@ -306,37 +315,42 @@ abstract class App(
 	fun add(component: Component) {
 		tryOrPrint {
 
-			@OptIn(ExperimentalTime::class)
-			measureTime {
+			if (component.requirementsMet()) {
 
-				component.replaceVendor(this)
+				@OptIn(ExperimentalTime::class)
+				measureTime {
 
-				if (SparkleCache.registeredComponents.any { it.identity == component.identity })
-					throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
+					component.replaceVendor(this)
 
-				component.firstContactHandshake()
+					if (SparkleCache.registeredComponents.any { it.identity == component.identity })
+						throw IllegalStateException("Component '${component.identity}' (${component::class.simpleName}) cannot be saved, because the component id '${component.identity}' is already in use!")
 
-				SparkleCache.registeredComponents += component
+					component.firstContactHandshake()
 
-				coroutineScope.launch(context = component.vendor.asyncDispatcher) {
+					SparkleCache.registeredComponents += component
 
-					component.register()
+					coroutineScope.launch(context = component.vendor.asyncDispatcher) {
 
-					log.info("registered '${component.identity}' component!")
+						component.register()
 
-					if (component.isAutoStarting) {
+						log.info("registered '${component.identity}' component!")
 
-						log.info("### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
+						if (component.isAutoStarting) {
 
-						start(component.identityObject)
+							log.info("### [ AUTO-START ] ### '${component.identity}' is auto-starting ### ")
+
+							start(component.identityObject)
+
+						}
 
 					}
 
+				}.let { time ->
+					debugLog("registered '${component.identity}' component in ${time}!")
 				}
 
-			}.let { time ->
-				debugLog("registered '${component.identity}' component in ${time}!")
-			}
+			} else
+				log.warning("FAILED! required components ${component.missingComponents().map { it.simpleName }} are not available!")
 
 		}
 	}
@@ -346,25 +360,30 @@ abstract class App(
 
 		if (component != null) {
 
-			if (!component.isBlocked) {
+			if (component.requirementsMet()) {
 
-				if (!SparkleCache.runningComponents.contains(componentIdentity)) {
+				if (!component.isBlocked) {
 
-					SparkleCache.runningComponents += componentIdentity.change<Component>() to Calendar.now()
+					if (!SparkleCache.runningComponents.contains(componentIdentity)) {
 
-					coroutineScope.launch(context = component.vendor.asyncDispatcher) {
+						SparkleCache.runningComponents += componentIdentity.change<Component>() to Calendar.now()
 
-						component.start()
+						coroutineScope.launch(context = component.vendor.asyncDispatcher) {
 
-						log.info("started '${componentIdentity.identity}' component!")
+							component.start()
 
-					}
+							log.info("started '${componentIdentity.identity}' component!")
+
+						}
+
+					} else
+						throw IllegalStateException("The component '$componentIdentity' is already running!")
 
 				} else
-					throw IllegalStateException("The component '$componentIdentity' is already running!")
+					log.warning("Component '${componentIdentity.identity}' is blocked at components.json!")
 
 			} else
-				log.warning("Component '${componentIdentity.identity}' is blocked at components.json!")
+				log.warning("FAILED! required components ${component.missingComponents().map { it.simpleName }} are not available!")
 
 		} else
 			throw NoSuchElementException("The component '$componentIdentity' is currently not registered! ADD IT!")

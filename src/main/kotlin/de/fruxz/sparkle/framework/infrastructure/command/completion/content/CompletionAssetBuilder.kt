@@ -10,7 +10,7 @@ data class CompletionAssetBuilder<T>(
 	var validation: (CompletionContext.() -> Boolean)? = null,
 	var translation: (CompletionContext.() -> T?)? = null,
 	var completion: (CompletionContext.(CompletionAsset<T>) -> Collection<String>)? = null,
-) : Producible<CompletionAsset<T>>{
+) : Producible<CompletionAsset<T>> {
 
 	@AssetDsl fun dynamicAsset() = apply { dynamic = true }
 	@AssetDsl fun staticAsset() = apply { dynamic = false }

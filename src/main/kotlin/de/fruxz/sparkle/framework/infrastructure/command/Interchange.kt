@@ -17,6 +17,7 @@ import de.fruxz.sparkle.framework.extension.visual.BOLD
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.framework.identification.Labeled
+import de.fruxz.sparkle.framework.infrastructure.Attachable
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeResult.*
 import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestriction.*
@@ -26,13 +27,8 @@ import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeReaction
 import de.fruxz.sparkle.framework.permission.Approval
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
+import de.fruxz.stacked.extension.*
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
-import de.fruxz.stacked.extension.asComponent
-import de.fruxz.stacked.extension.dyeGray
-import de.fruxz.stacked.extension.dyeRed
-import de.fruxz.stacked.extension.dyeYellow
-import de.fruxz.stacked.extension.style
-import de.fruxz.stacked.extension.subKey
 import de.fruxz.stacked.hover
 import de.fruxz.stacked.plus
 import de.fruxz.stacked.text
@@ -85,7 +81,7 @@ abstract class Interchange(
 	val cooldownReaction: InterchangeReaction = Companion.cooldownReaction,
 	val executionContext: AppComposable<CoroutineContext> = AppComposable { it.asyncDispatcher },
 	final override val preferredVendor: App? = null,
-) : CommandExecutor, KeyedIdentifiable<Interchange>, VendorOnDemand, Logging, Labeled {
+) : Attachable, CommandExecutor, KeyedIdentifiable<Interchange>, VendorOnDemand, Logging, Labeled {
 
 	init {
 

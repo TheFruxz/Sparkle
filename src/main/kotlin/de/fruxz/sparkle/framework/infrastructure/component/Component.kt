@@ -3,10 +3,13 @@ package de.fruxz.sparkle.framework.infrastructure.component
 import de.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.ascend.extension.tryWithResult
 import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.missingComponents
+import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.requirementsMet
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.attachment.VendorOnDemand
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
+import de.fruxz.sparkle.framework.infrastructure.Attachable
 import de.fruxz.sparkle.framework.infrastructure.Hoster
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.component.Component.ComponentRequestAnswer
@@ -22,7 +25,7 @@ abstract class Component(
 	open val behaviour: RunType = DISABLED,
 	open val isExperimental: Boolean = false,
 	final override val preferredVendor: App? = null,
-) : KeyedIdentifiable<Component>, VendorOnDemand, Logging, Hoster<ComponentRequestAnswer, ComponentRequestAnswer, Component> {
+) : Attachable, KeyedIdentifiable<Component>, VendorOnDemand, Logging, Hoster<ComponentRequestAnswer, ComponentRequestAnswer, Component> {
 
 	init {
 
@@ -121,10 +124,13 @@ abstract class Component(
 		var hasChanged = false
 		return tryWithResult({ SparkleApp.debugMode }) {
 			if (!isRunning) {
+				if (requirementsMet()) {
 
-				vendor.start(identityObject)
-				hasChanged = true
+					vendor.start(identityObject)
+					hasChanged = true
 
+				} else
+					sectionLog.warning("Component $label cannot be started, becaused components ${missingComponents().map { it.simpleName }} are missing!")
 			}
 		}.let { return@let ComponentRequestAnswer(hasChanged, it.exceptionOrNull()) }
 	}

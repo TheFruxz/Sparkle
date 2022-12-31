@@ -3,23 +3,22 @@ package de.fruxz.sparkle.framework.infrastructure.service
 import de.fruxz.ascend.extension.container.firstOrNull
 import de.fruxz.ascend.extension.switchResult
 import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.missingComponents
+import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.requirementsMet
+import de.fruxz.sparkle.framework.infrastructure.Attachable
 import de.fruxz.sparkle.framework.infrastructure.Hoster
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceState
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
 import de.fruxz.stacked.extension.subKey
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import net.kyori.adventure.key.Key
 import java.util.logging.Logger
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 
-interface Service : Hoster<Unit, Unit, Service> {
+interface Service : Attachable, Hoster<Unit, Unit, Service> {
 
 	val vendor: App
 
@@ -72,6 +71,10 @@ interface Service : Hoster<Unit, Unit, Service> {
 
 	override fun requestStart() {
 		if (isRunning) return
+		if (!requirementsMet()) {
+			serviceLogger.warning("Service $label could not be started because components ${missingComponents().map { it.simpleName }} are missing.")
+			return
+		}
 
 		internalRegisteredScope().also { originScope ->
 			val time = Calendar.now()

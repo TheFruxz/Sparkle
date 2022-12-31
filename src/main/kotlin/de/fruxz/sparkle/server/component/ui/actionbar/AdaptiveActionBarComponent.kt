@@ -2,8 +2,10 @@ package de.fruxz.sparkle.server.component.ui.actionbar
 
 import de.fruxz.ascend.extension.container.edited
 import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.sparkle.framework.annotation.RequiresComponent
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.fruxz.sparkle.framework.infrastructure.component.SmartComponent
+import de.fruxz.sparkle.server.component.service.ServiceComponent
 import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.LayerPosition.BACKGROUND
 import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.LayerPosition.FOREGROUND
 import net.kyori.adventure.text.Component
@@ -15,6 +17,7 @@ import kotlin.time.Duration
  * or not.
  * If a layer is present, that is not outdated, then it will display the layer.
  */
+@RequiresComponent(ServiceComponent::class)
 class AdaptiveActionBarComponent : SmartComponent(AUTOSTART_MUTABLE, true) {
 
 	override val label = "AdaptiveActionBar"
