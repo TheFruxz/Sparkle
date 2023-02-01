@@ -72,6 +72,7 @@ abstract class Interchange(
 	val requiredClient: InterchangeUserRestriction = NOT_RESTRICTED,
 	val cooldown: Duration = Duration.ZERO,
 	val ignoreInputValidation: Boolean = false,
+	val advancedInput: Boolean = false,
 	val completion: InterchangeStructure<out InterchangeExecutor> = emptyInterchangeStructure(),
 	val commandProperties: CommandProperties = CommandProperties(),
 	val wrongUsageReaction: InterchangeReaction = Companion.wrongUsageReaction,

@@ -1,7 +1,6 @@
 package de.fruxz.sparkle.framework.data.json.serializer
 
 import com.destroystokyo.paper.ParticleBuilder
-import de.fruxz.ascend.annotation.NotPerfect
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
@@ -12,7 +11,6 @@ import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 import org.bukkit.Particle
 
-@NotPerfect
 object ParticleBuilderSerializer : KSerializer<ParticleBuilder> {
 
 	override val descriptor = buildClassSerialDescriptor("ParticleBuilder") {

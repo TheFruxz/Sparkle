@@ -1,14 +1,7 @@
 package de.fruxz.sparkle.framework.positioning.relative
 
-import de.fruxz.ascend.annotation.NotPerfect
 import de.fruxz.sparkle.framework.extension.world.add
-import de.fruxz.sparkle.framework.positioning.dependent.DependentComplexShape
-import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
-import de.fruxz.sparkle.framework.positioning.dependent.DependentCylindricalShape
-import de.fruxz.sparkle.framework.positioning.dependent.DependentLinearShape
-import de.fruxz.sparkle.framework.positioning.dependent.DependentPyramidalShape
-import de.fruxz.sparkle.framework.positioning.dependent.DependentShape
-import de.fruxz.sparkle.framework.positioning.dependent.DependentSphericalShape
+import de.fruxz.sparkle.framework.positioning.dependent.*
 import de.fruxz.sparkle.framework.positioning.relative.Shape.Direction.Y
 import org.bukkit.Axis
 import org.bukkit.Location
@@ -135,7 +128,6 @@ interface Shape {
          * @since 1.0
          */
         @JvmStatic
-        @NotPerfect
         fun pyramid(peak: Location, height: Double, groundWidth: Double, groundDepth: Double) = DependentPyramidalShape(peak, height, groundWidth, groundDepth)
 
         /**
@@ -149,7 +141,6 @@ interface Shape {
          * @since 1.0
          */
         @JvmStatic
-        @NotPerfect
         fun pyramid(peak: Location, height: Double, groundSize: Double) = pyramid(peak, height, groundSize, groundSize)
 
         /**
@@ -162,7 +153,6 @@ interface Shape {
          * @since 1.0
          */
         @JvmStatic
-        @NotPerfect
         fun pyramid(peak: Location, height: Double) = pyramid(peak, height, height)
 
         /**
@@ -176,7 +166,6 @@ interface Shape {
          * @since 1.0
          */
         @JvmStatic
-        @NotPerfect
         fun pyramidAutoHeight(peak: Location, groundWidth: Double, groundDepth: Double) = sqrt(groundWidth.pow(2.0) + groundDepth.pow(2.0)).let { height ->
             pyramid(peak.add(y = height), height, groundWidth, groundDepth)
         }
@@ -192,7 +181,6 @@ interface Shape {
          * @since 1.0
          */
         @JvmStatic
-        @NotPerfect
         fun independentPyramid(height: Double, groundWidth: Double, groundDepth: Double) =
 	        PyramidalShape.of(height, groundWidth, groundDepth)
 

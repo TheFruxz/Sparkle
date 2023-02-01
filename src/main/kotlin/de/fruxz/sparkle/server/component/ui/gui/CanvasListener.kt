@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.server.component.ui.gui
 
-import de.fruxz.ascend.extension.container.edited
+import de.fruxz.ascend.extension.container.modified
 import de.fruxz.ascend.extension.container.takeOrEmpty
 import de.fruxz.ascend.extension.empty
 import de.fruxz.ascend.extension.math.maxTo
@@ -78,7 +78,7 @@ internal class CanvasListener : EventListener() {
 				0 -> {
 					event.isCancelled = true
 					if (pageState > 0) {
-						canvas.update(player, data = session.parameters.edited {
+						canvas.update(player, data = session.parameters.modified {
 							when {
 								event.isShiftClick -> {
 									this[PaginationType.CANVAS_SCROLL_STATE] = 0

@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.server.component.ui.actionbar
 
-import de.fruxz.ascend.extension.container.edited
+import de.fruxz.ascend.extension.container.modified
 import de.fruxz.ascend.tool.timing.calendar.Calendar
 import de.fruxz.sparkle.framework.annotation.RequiresComponent
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.AUTOSTART_MUTABLE
@@ -48,7 +48,7 @@ class AdaptiveActionBarComponent : SmartComponent(AUTOSTART_MUTABLE, true) {
 
 		@JvmStatic
 		fun addGlobalLayer(positionIndex: Int, layer: ActionBarLayerSchematic) {
-			globalLayers = globalLayers.edited {
+			globalLayers = globalLayers.modified {
 				add(positionIndex, layer)
 			}
 		}
@@ -79,7 +79,7 @@ class AdaptiveActionBarComponent : SmartComponent(AUTOSTART_MUTABLE, true) {
 
 		@JvmStatic
 		fun addPlayerLayer(player: Player, positionIndex: Int, layer: ActionBarLayerSchematic) {
-			playerLayers += player to getPlayerLayers(player).edited {
+			playerLayers += player to getPlayerLayers(player).modified {
 				add(positionIndex, layer)
 			}
 		}

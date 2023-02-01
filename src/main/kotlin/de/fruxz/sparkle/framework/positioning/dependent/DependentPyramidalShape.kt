@@ -1,6 +1,5 @@
 package de.fruxz.sparkle.framework.positioning.dependent
 
-import de.fruxz.ascend.annotation.NotPerfect
 import de.fruxz.ascend.extension.math.ceilToInt
 import de.fruxz.ascend.extension.math.floorToInt
 import de.fruxz.sparkle.framework.extension.world.copy
@@ -12,7 +11,6 @@ import org.bukkit.World
 import org.bukkit.util.Vector
 
 @Serializable
-@NotPerfect
 data class DependentPyramidalShape(
 	@Contextual val peakLocation: Location,
 	override val height: Double,

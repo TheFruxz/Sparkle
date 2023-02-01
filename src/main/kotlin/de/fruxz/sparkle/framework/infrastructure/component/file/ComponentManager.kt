@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.infrastructure.component.file
 
-import de.fruxz.ascend.extension.container.edited
+import de.fruxz.ascend.extension.container.modified
 import de.fruxz.ascend.extension.createFileAndDirectories
 import de.fruxz.ascend.extension.data.readJson
 import de.fruxz.ascend.extension.data.writeJson
@@ -43,7 +43,7 @@ object ComponentManager {
 
 	fun editComponent(identity: Identity<out Component>, isAutoStart: Boolean = getComponent(identity)!!.isAutoStart, isBlocked: Boolean = getComponent(identity)!!.isBlocked) {
 		state = state.apply {
-			components = components.edited {
+			components = components.modified {
 				removeAll { it.identity == identity.identity }
 				add(ComponentConfigurationEntry(identity.identity, isAutoStart, isBlocked))
 			}

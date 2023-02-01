@@ -2,7 +2,6 @@
 
 package de.fruxz.sparkle.framework.visual.color
 
-import de.fruxz.ascend.annotation.NotPerfect
 import de.fruxz.sparkle.framework.extension.createKey
 import de.fruxz.sparkle.framework.extension.sparkle
 import net.kyori.adventure.bossbar.BossBar
@@ -60,7 +59,6 @@ enum class ColorType : RGBLike, Keyed {
 		}
 	}
 
-	@NotPerfect
 	val bukkitChatColor by lazy {
 		when (this) {
 			WHITE -> ChatColor.WHITE
@@ -82,7 +80,6 @@ enum class ColorType : RGBLike, Keyed {
 		}
 	}
 
-	@NotPerfect
 	val dyedChatColor: BungeeChatColor by lazy {
 		try {
 			BungeeChatColor.of(
@@ -97,7 +94,6 @@ enum class ColorType : RGBLike, Keyed {
 
 	val rawColor: Color by lazy { dyeColor.color }
 
-	@NotPerfect
 	val barColor: BarColor by lazy {
 		when (this) {
 			WHITE -> BarColor.WHITE
@@ -113,7 +109,6 @@ enum class ColorType : RGBLike, Keyed {
 		}
 	}
 
-	@NotPerfect
 	val adventureBarColor: BossBar.Color by lazy {
 		when (this) {
 			WHITE -> BossBar.Color.WHITE
