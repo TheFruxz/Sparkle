@@ -50,7 +50,7 @@ dependencies {
     setOf(
         "io.ktor:ktor-client-cio:2.2.3",
         "io.ktor:ktor-client-core-jvm:2.2.3",
-        "io.ktor:ktor-serialization-kotlinx-json:2.2.2",
+        "io.ktor:ktor-serialization-kotlinx-json:2.2.3",
         "io.ktor:ktor-client-content-negotiation:2.2.3",
 
         "net.kyori:adventure-api:4.12.0",
