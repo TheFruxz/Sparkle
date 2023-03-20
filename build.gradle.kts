@@ -30,11 +30,12 @@ dependencies {
 
     // Internal
 
-    implementation("com.github.TheFruxz:Ascend:$ascendVersion")
-    implementation("com.github.TheFruxz:Stacked:$stackedVersion")
+    api("com.github.TheFruxz:Ascend:$ascendVersion")
+    api("com.github.TheFruxz:Stacked:$stackedVersion")
 
     // Kotlin
 
+    implementation(kotlin("stdlib"))
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
 
@@ -42,10 +43,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
     // External
-    implementation(kotlin("stdlib"))
 
     implementation("com.mojang:brigadier:1.0.500")
-    implementation("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT") // PaperMC
+    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT") // PaperMC
 
     setOf(
         "io.ktor:ktor-client-cio:2.2.4",
