@@ -1,4 +1,4 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "DEPRECATION")
+@file:Suppress("MemberVisibilityCanBePrivate", "DEPRECATION", "UnstableApiUsage")
 
 package de.fruxz.sparkle.framework.effect.particle
 
@@ -11,6 +11,7 @@ import org.bukkit.Vibration
 import org.bukkit.block.data.BlockData
 import org.bukkit.inventory.ItemStack
 import org.bukkit.material.MaterialData
+import org.jetbrains.annotations.ApiStatus
 
 interface ParticleType<DATA : Any> : Keyed {
 
@@ -125,6 +126,9 @@ interface ParticleType<DATA : Any> : Keyed {
         val SCULK_CHARGE = particle<Float>(Particle.SCULK_CHARGE)
         val SCULK_CHARGE_POP = particle<Nothing>(Particle.SCULK_CHARGE_POP)
         val SHRIEK = particle<Int>(Particle.SHRIEK)
+        @ApiStatus.Experimental val DRIPPING_CHERRY_LEAVES = particle<Nothing>(Particle.DRIPPING_CHERRY_LEAVES)
+        @ApiStatus.Experimental val FALLING_CHERRY_LEAVES = particle<Nothing>(Particle.FALLING_CHERRY_LEAVES)
+        @ApiStatus.Experimental val LANDING_CHERRY_LEAVES = particle<Nothing>(Particle.LANDING_CHERRY_LEAVES)
 
         fun minecraft(particle: Particle): ParticleType<*> = when (particle) {
             Particle.EXPLOSION_NORMAL -> EXPLOSION_NORMAL
@@ -226,6 +230,9 @@ interface ParticleType<DATA : Any> : Keyed {
             Particle.SCULK_CHARGE -> SCULK_CHARGE
             Particle.SCULK_CHARGE_POP -> SCULK_CHARGE_POP
             Particle.SHRIEK -> SHRIEK
+            Particle.DRIPPING_CHERRY_LEAVES -> DRIPPING_CHERRY_LEAVES
+            Particle.FALLING_CHERRY_LEAVES -> FALLING_CHERRY_LEAVES
+            Particle.LANDING_CHERRY_LEAVES -> LANDING_CHERRY_LEAVES
         }
 
     }
