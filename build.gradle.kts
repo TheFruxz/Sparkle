@@ -45,7 +45,7 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     implementation("com.mojang:brigadier:1.0.500")
-    implementation("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT") // PaperMC
+    implementation("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT") // PaperMC
 
     setOf(
         "io.ktor:ktor-client-cio:2.2.4",
