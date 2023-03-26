@@ -1,9 +1,8 @@
+
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.gradle.api.JavaVersion.VERSION_17
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.8.10"
+    kotlin("jvm") version "1.8.20-RC2"
     kotlin("plugin.serialization") version "1.8.10"
     id("org.jetbrains.dokka") version "1.8.10"
     id("com.github.johnrengelman.shadow") version "8.1.1"
@@ -12,8 +11,8 @@ plugins {
 
 var host = "github.com/TheFruxz/Sparkle"
 
-version = "1.0.0-PRE-22"
-group = "de.fruxz"
+version = "2023.2-dev"
+group = "dev.fruxz"
 
 repositories {
     mavenCentral()
@@ -96,11 +95,6 @@ tasks {
         configurations = listOf(project.configurations.shadow.get())
     }
 
-    withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
-        kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-    }
-
     dokkaHtml.configure {
         outputDirectory.set(buildDir.resolve("../docs/"))
     }
@@ -158,14 +152,16 @@ publishing {
         artifact(source)
 
         artifactId = "sparkle"
-        version = version.toLowerCase()
+        version = version.lowercase()
 
     }
 }
 
 java {
-    sourceCompatibility = VERSION_17
-    targetCompatibility = VERSION_17
     withJavadocJar()
     withSourcesJar()
+}
+
+kotlin {
+    jvmToolchain(17)
 }
