@@ -3,7 +3,7 @@ prefix: ${name}
 website: ${website}
 version: ${version}
 api-version: '1.19'
-main: dev.fruxz.sparkle.server.SparklePlugin
+main: dev.fruxz.sparkle.server.LocalSparklePlugin
 loader: dev.fruxz.sparkle.server.LocalSparkleLoader
 authors:
   - Fruxz (TheFruxz)

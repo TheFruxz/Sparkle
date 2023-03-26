@@ -3,7 +3,7 @@ package dev.fruxz.sparkle.server
 import de.fruxz.ascend.extension.data.kotlinVersion
 import org.bukkit.plugin.java.JavaPlugin
 
-class SparklePlugin : JavaPlugin() {
+class LocalSparklePlugin : JavaPlugin() {
 
     @Suppress("UnstableApiUsage")
     override fun onEnable() {
