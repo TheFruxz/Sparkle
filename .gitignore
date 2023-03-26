@@ -9,6 +9,8 @@
 .classpath
 factoryConfiguration.json
 
+docs/
+
 .fleet/
 
 ### Intellij ###
