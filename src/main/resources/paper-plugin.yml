@@ -4,7 +4,7 @@ website: ${website}
 version: ${version}
 api-version: '1.19'
 main: dev.fruxz.sparkle.server.SparklePlugin
-load: STARTUP
+loader: dev.fruxz.sparkle.server.LocalSparkleLoader
 authors:
   - Fruxz (TheFruxz)
   - CoasterFreakDE
