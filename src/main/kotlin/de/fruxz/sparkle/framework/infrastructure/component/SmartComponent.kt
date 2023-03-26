@@ -4,15 +4,8 @@ import de.fruxz.ascend.extension.tryOrNull
 import de.fruxz.ascend.extension.tryOrPrint
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.context.AppComposable
-import de.fruxz.sparkle.framework.extension.buildSandBox
+import de.fruxz.sparkle.framework.extension.*
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
-import de.fruxz.sparkle.framework.extension.debugLog
-import de.fruxz.sparkle.framework.extension.destroySandBox
-import de.fruxz.sparkle.framework.extension.internalCommandMap
-import de.fruxz.sparkle.framework.extension.internalSyncCommands
-import de.fruxz.sparkle.framework.extension.onlinePlayers
-import de.fruxz.sparkle.framework.extension.server
-import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
@@ -106,7 +99,8 @@ abstract class SmartComponent(
 
 						server.internalSyncCommands()
 
-						if (!isAutoStarting) vendor.replace(interchange.identityObject, disabledComponentInterchange(identityObject, tryOrNull { interchange.requiredApproval?.compose(interchange.vendor) }))
+						// TODO problematic
+						// TODO if (!isAutoStarting) vendor.replace(interchange.identityObject, disabledComponentInterchange(identityObject, tryOrNull { interchange.requiredApproval?.compose(interchange.vendor) }))
 
 					}
 
