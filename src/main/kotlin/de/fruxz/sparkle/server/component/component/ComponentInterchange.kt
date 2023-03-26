@@ -2,7 +2,7 @@ package de.fruxz.sparkle.server.component.component
 
 import de.fruxz.ascend.extension.container.paged
 import de.fruxz.ascend.extension.math.ceilToInt
-import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure

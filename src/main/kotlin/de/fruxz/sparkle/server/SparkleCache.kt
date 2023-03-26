@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.server
 
 import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.ascend.tool.timing.cooldown.StaticCooldown
+import de.fruxz.ascend.tool.time.calendar.Calendar
+import de.fruxz.ascend.tool.time.cooldown.StaticCooldown
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.data.Preference.PreferenceIndex
 import de.fruxz.sparkle.framework.extension.debugLog

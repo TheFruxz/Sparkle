@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.server.component.update
 
-import de.fruxz.ascend.extension.data.readJson
-import de.fruxz.ascend.extension.data.writeJsonIfNotExists
+import de.fruxz.ascend.json.readJson
+import de.fruxz.ascend.json.writeJsonIfNotExists
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.fruxz.sparkle.framework.infrastructure.component.SmartComponent

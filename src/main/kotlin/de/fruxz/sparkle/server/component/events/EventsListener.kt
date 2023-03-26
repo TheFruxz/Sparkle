@@ -5,8 +5,8 @@ import de.fruxz.ascend.extension.forceCast
 import de.fruxz.sparkle.framework.event.PlayerDamageByPlayerEvent
 import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtBlockEvent
 import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtItemEvent
-import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import de.fruxz.sparkle.framework.extension.visual.ui.item
+import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority.HIGHEST
@@ -17,7 +17,7 @@ internal class EventsListener : EventListener() {
 
 	@EventHandler(priority = HIGHEST)
 	fun onEntityDamageByEntity(event: EntityDamageByEntityEvent) {
-		if (all(event.entity, event.damager) { this is Player }) {
+		if (all(event.entity, event.damager) { it is Player }) {
 			val internal = PlayerDamageByPlayerEvent(
 				attacked = event.entity.forceCast(),
 				attacker = event.damager.forceCast(),

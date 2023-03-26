@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.server
 
-import de.fruxz.ascend.extension.data.fromJsonFileOrNull
-import de.fruxz.ascend.extension.data.writeJson
+import de.fruxz.ascend.json.readJsonOrNull
+import de.fruxz.ascend.json.writeJson
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.extension.sparkle
 import kotlinx.serialization.Serializable
@@ -15,7 +15,7 @@ object SparkleData {
 	private val systemConfigPath = SparklePath.appPath(sparkle) / "settings.json"
 
 	var systemConfig: SparkleConfig
-		get() = _systemConfig ?: systemConfigPath.fromJsonFileOrNull<SparkleConfig>()?.also {
+		get() = _systemConfig ?: systemConfigPath.readJsonOrNull<SparkleConfig>()?.also {
 			systemConfig = it // Update saved file, if it is outdated
 		} ?: SparkleConfig().also {
 			systemConfig = it // Create new file, because it does not exist or is invalid

@@ -2,10 +2,10 @@ package de.fruxz.sparkle.framework.infrastructure.app
 
 import com.destroystokyo.paper.utils.PaperPluginLogger
 import de.fruxz.ascend.extension.*
-import de.fruxz.ascend.extension.data.jsonBase
+import de.fruxz.ascend.json.globalJson
 import de.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.missingComponents
 import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.requiredComponents
 import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.requirementsMet
@@ -50,6 +50,7 @@ import org.bukkit.event.Listener
 import org.bukkit.permissions.Permission
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
+import java.util.*
 import java.util.logging.Logger
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
@@ -366,7 +367,7 @@ abstract class App(
 
 					if (!SparkleCache.runningComponents.contains(componentIdentity)) {
 
-						SparkleCache.runningComponents += componentIdentity.change<Component>() to Calendar.now()
+						SparkleCache.runningComponents += componentIdentity.change<Component>() to de.fruxz.ascend.tool.time.calendar.Calendar.now()
 
 						coroutineScope.launch(context = component.vendor.asyncDispatcher) {
 
@@ -477,7 +478,7 @@ abstract class App(
 		HttpClient(CIO) {
 			if (SparkleData.systemConfig.httpClientCaching) install(HttpCache)
 			install(ContentNegotiation) {
-				json(jsonBase)
+				json(globalJson)
 			}
 		}
 	}
@@ -527,7 +528,7 @@ abstract class App(
 	final override fun onLoad() {
 		tryOrPrint {
 
-			activeSince = Calendar.now()
+			activeSince = de.fruxz.ascend.tool.time.calendar.Calendar.now()
 
 			SparkleCache.registeredApps += this
 

@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.sandbox
 
 import de.fruxz.ascend.extension.catchException
-import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.visual.notification

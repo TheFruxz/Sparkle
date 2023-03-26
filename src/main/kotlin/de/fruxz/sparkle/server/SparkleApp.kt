@@ -1,8 +1,9 @@
 package de.fruxz.sparkle.server
 
 import com.destroystokyo.paper.ParticleBuilder
-import de.fruxz.ascend.extension.data.addAscendJsonModuleModification
 import de.fruxz.ascend.extension.forceCast
+import de.fruxz.ascend.json.appendGlobalJsonContextual
+import de.fruxz.ascend.json.appendGlobalJsonModuleModification
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.data.json.JsonConfiguration
 import de.fruxz.sparkle.framework.data.json.serializer.*
@@ -45,7 +46,6 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import java.util.*
-import de.fruxz.ascend.extension.data.addJsonContextualConfiguration as jsonContextual
 
 class SparkleApp : App() {
 
@@ -55,19 +55,19 @@ class SparkleApp : App() {
 
 	override suspend fun preHello() {
 
-		jsonContextual(UUID::class, UUIDSerializer)
-		jsonContextual(Vector::class, VectorSerializer)
-		jsonContextual(Location::class, LocationSerializer)
-		jsonContextual(Particle::class, ParticleSerializer)
-		jsonContextual(ParticleBuilder::class, ParticleBuilderSerializer)
-		jsonContextual(ItemStack::class, ItemStackSerializer)
-		jsonContextual(Item::class, ItemSerializer)
-		jsonContextual(BoundingBox::class, BoundingBoxSerializer)
-		jsonContextual(World::class, WorldSerializer)
-		jsonContextual(NamespacedKey::class, NamespacedKeySerializer)
-		jsonContextual(Key::class, AdventureKeySerializer)
+		appendGlobalJsonContextual(UUID::class, UUIDSerializer)
+		appendGlobalJsonContextual(Vector::class, VectorSerializer)
+		appendGlobalJsonContextual(Location::class, LocationSerializer)
+		appendGlobalJsonContextual(Particle::class, ParticleSerializer)
+		appendGlobalJsonContextual(ParticleBuilder::class, ParticleBuilderSerializer)
+		appendGlobalJsonContextual(ItemStack::class, ItemStackSerializer)
+		appendGlobalJsonContextual(Item::class, ItemSerializer)
+		appendGlobalJsonContextual(BoundingBox::class, BoundingBoxSerializer)
+		appendGlobalJsonContextual(World::class, WorldSerializer)
+		appendGlobalJsonContextual(NamespacedKey::class, NamespacedKeySerializer)
+		appendGlobalJsonContextual(Key::class, AdventureKeySerializer)
 
-		addAscendJsonModuleModification {
+		appendGlobalJsonModuleModification {
 
 			polymorphic(Any::class) {
 

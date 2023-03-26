@@ -2,7 +2,7 @@ package de.fruxz.sparkle.framework.infrastructure.service
 
 import de.fruxz.ascend.extension.container.firstOrNull
 import de.fruxz.ascend.extension.switchResult
-import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.missingComponents
 import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.requirementsMet
 import de.fruxz.sparkle.framework.infrastructure.Attachable

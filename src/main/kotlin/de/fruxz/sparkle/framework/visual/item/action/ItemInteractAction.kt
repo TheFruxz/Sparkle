@@ -1,9 +1,9 @@
 package de.fruxz.sparkle.framework.visual.item.action
 
-import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtItemEvent
 import de.fruxz.sparkle.framework.visual.item.action.ItemActionType.INTERACT
+import de.fruxz.sparkle.server.SparkleCache
 
 class ItemInteractAction(
     override val identity: String,

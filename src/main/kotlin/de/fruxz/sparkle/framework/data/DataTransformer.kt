@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.framework.data
 
 import de.fruxz.ascend.extension.container.toArrayList
-import de.fruxz.ascend.extension.data.fromJsonString
-import de.fruxz.ascend.extension.data.toJsonString
+import de.fruxz.ascend.json.fromJsonString
+import de.fruxz.ascend.json.toJsonString
 
 data class DataTransformer<SHELL: Any, CORE: Any>(
 	val toCore: SHELL.() -> CORE,

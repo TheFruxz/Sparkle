@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.framework.extension.mojang
 
-import de.fruxz.ascend.extension.data.jsonBase
-import de.fruxz.sparkle.server.SparkleApp
+import de.fruxz.ascend.json.globalJson
 import de.fruxz.sparkle.framework.mojang.MojangProfile
+import de.fruxz.sparkle.server.SparkleApp
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -13,7 +13,7 @@ import java.util.*
  */
 @Throws(NullPointerException::class)
 suspend fun getMojangProfile(profileQuery: String) =
-	jsonBase.decodeFromJsonElement<MojangProfile>(
+	globalJson.decodeFromJsonElement<MojangProfile>(
 		SparkleApp.instance.httpClient.request("https://api.ashcon.app/mojang/v2/user/$profileQuery").body()
 	)
 

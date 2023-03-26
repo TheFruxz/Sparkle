@@ -2,7 +2,7 @@ package de.fruxz.sparkle.framework.extension
 
 import de.fruxz.ascend.extension.data.RandomTagType.ONLY_LOWERCASE
 import de.fruxz.ascend.extension.data.buildRandomTag
-import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.sandbox.SandBox
 import de.fruxz.sparkle.framework.sandbox.SandBoxInteraction

@@ -2,9 +2,9 @@ package de.fruxz.sparkle.framework.infrastructure.component.file
 
 import de.fruxz.ascend.extension.container.modified
 import de.fruxz.ascend.extension.createFileAndDirectories
-import de.fruxz.ascend.extension.data.readJson
-import de.fruxz.ascend.extension.data.writeJson
 import de.fruxz.ascend.extension.tryOrNull
+import de.fruxz.ascend.json.readJson
+import de.fruxz.ascend.json.writeJson
 import de.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.infrastructure.component.Component

@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.server.component.sandbox
 
-import de.fruxz.ascend.tool.timing.calendar.Calendar
+import de.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.extension.allSandBoxes
 import de.fruxz.sparkle.framework.extension.destroyAllSandBoxes
 import de.fruxz.sparkle.framework.extension.destroySandBox

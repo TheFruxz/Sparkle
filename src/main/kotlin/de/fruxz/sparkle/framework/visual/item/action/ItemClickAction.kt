@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.framework.visual.item.action
 
-import de.fruxz.ascend.tool.timing.calendar.Calendar
-import de.fruxz.sparkle.server.SparkleCache
+import de.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.visual.item.action.ItemActionType.CLICK
+import de.fruxz.sparkle.server.SparkleCache
 import org.bukkit.event.inventory.InventoryClickEvent
 
 class ItemClickAction(

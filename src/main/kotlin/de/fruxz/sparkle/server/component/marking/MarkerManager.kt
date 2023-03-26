@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.server.component.marking
 
 import de.fruxz.ascend.extension.createFileAndDirectories
-import de.fruxz.ascend.extension.data.readJson
-import de.fruxz.ascend.extension.data.writeJson
+import de.fruxz.ascend.json.readJson
+import de.fruxz.ascend.json.writeJson
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.entity.marker
 import de.fruxz.sparkle.framework.extension.entity.markerOrNull
