@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "1.8.10"
     kotlin("plugin.serialization") version "1.8.10"
     id("org.jetbrains.dokka") version "1.8.10"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
     `maven-publish`
 }
 
