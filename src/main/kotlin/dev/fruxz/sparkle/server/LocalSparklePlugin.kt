@@ -1,13 +1,15 @@
 package dev.fruxz.sparkle.server
 
 import de.fruxz.ascend.extension.data.kotlinVersion
-import org.bukkit.plugin.java.JavaPlugin
+import dev.fruxz.sparkle.framework.SparklePlugin
+import dev.fruxz.sparkle.framework.TestCommand
 
-class LocalSparklePlugin : JavaPlugin() {
+class LocalSparklePlugin : SparklePlugin({
 
-    @Suppress("UnstableApiUsage")
-    override fun onEnable() {
+    onEnable {
         println("Hey! Sparkle ${this.pluginMeta.version} is online! Running Kotlin $kotlinVersion")
     }
 
-}
+    command<TestCommand>()
+
+})
