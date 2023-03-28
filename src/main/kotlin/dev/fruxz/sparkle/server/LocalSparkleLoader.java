@@ -8,17 +8,28 @@ import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("unused")
+import java.util.List;
+
+/**
+ * This class represents the loader of this paper plugin, to enable
+ * the required dependencies.
+ */
 public class LocalSparkleLoader implements PluginLoader {
+
+    /**
+     * The list of dependencies, which this loader should load.
+     */
+    public static List<String> dependencies = List.of(
+            "org.jetbrains.kotlin:kotlin-stdlib:1.8.20-RC2",
+            "com.github.TheFruxz:Ascend:2023.1",
+            "com.github.TheFruxz:Stacked:2023.1"
+    );
 
     @Override
     public void classloader(@NotNull PluginClasspathBuilder classpathBuilder) {
         MavenLibraryResolver maven = new MavenLibraryResolver();
 
-        maven.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlin:kotlin-stdlib:1.8.20-RC2"), null));
-
-        maven.addDependency(new Dependency(new DefaultArtifact("com.github.TheFruxz:Ascend:2023.1"), null));
-        maven.addDependency(new Dependency(new DefaultArtifact("com.github.TheFruxz:Stacked:2023.1"), null));
+        dependencies.forEach(dependency -> maven.addDependency(new Dependency(new DefaultArtifact(dependency), null)));
 
         maven.addRepository(new RemoteRepository.Builder("central", "default", "https://repo.maven.apache.org/maven2/").build());
         maven.addRepository(new RemoteRepository.Builder("jitpack", "default", "https://jitpack.io/").build());
