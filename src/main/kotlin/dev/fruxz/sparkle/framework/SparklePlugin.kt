@@ -6,8 +6,10 @@ import dev.fruxz.sparkle.framework.annotation.command.properties.Aliases
 import dev.fruxz.sparkle.framework.annotation.command.properties.Description
 import dev.fruxz.sparkle.framework.annotation.command.properties.Label
 import dev.fruxz.sparkle.framework.annotation.command.properties.Usage
+import dev.fruxz.sparkle.framework.extension.coroutine.coroutineScope
 import dev.fruxz.sparkle.framework.extension.internalCommandMap
 import dev.fruxz.sparkle.framework.extension.internalSyncCommands
+import kotlinx.coroutines.cancel
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.PluginCommand
 import org.bukkit.plugin.java.JavaPlugin
@@ -109,6 +111,8 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
     }
     override fun onDisable() {
         onDisables.forEach { it.invoke(this) }
+
+        coroutineScope.cancel("Plugin disabled!") // Disables all coroutines
     }
 
     private fun artificialCommand(label: String): PluginCommand {
