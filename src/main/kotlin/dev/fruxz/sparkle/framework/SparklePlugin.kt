@@ -59,7 +59,7 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
 
         constructors.firstOrNull { it.hasAnnotation<CommandConstructor>() }?.let {
             command(it.call(*constructorArgs), T::class)
-            logger.info("Queued command register of ${T::class.simpleName} via class!")
+            logger.info("Queued command register of ${T::class.simpleName} via class!") // TODO both (this and the below) cannot be debug but should be .fine() to not clutter console
             return
         }
 

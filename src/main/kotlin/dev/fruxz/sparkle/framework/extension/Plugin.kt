@@ -9,10 +9,12 @@ import org.bukkit.plugin.java.JavaPlugin
 
 // Instance access
 
+val pluginManager by lazy { Bukkit.getPluginManager() }
+
 /**
  * This function accesses the plugin instance of the given plugin [T] or null if it doesn't exist.
  */
-@SparkleDSL inline fun <reified T : JavaPlugin> instanceOrNull() = Bukkit.getPluginManager().plugins.firstOrNull { it is T } as T?
+@SparkleDSL inline fun <reified T : JavaPlugin> instanceOrNull() = pluginManager.plugins.firstOrNull { it is T } as T?
 
 /**
  * This function accesses the plugin instance of the given plugin [T] or throws an exception if it doesn't exist.
