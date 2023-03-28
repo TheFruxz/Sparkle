@@ -1,14 +1,20 @@
 package dev.fruxz.sparkle.framework
 
 import dev.fruxz.sparkle.framework.annotation.SparkleDSL
-import dev.fruxz.sparkle.framework.annotation.command.CommandConstructor
-import dev.fruxz.sparkle.framework.annotation.command.CommandName
+import dev.fruxz.sparkle.framework.annotation.command.*
+import dev.fruxz.sparkle.framework.annotation.command.properties.Aliases
+import dev.fruxz.sparkle.framework.annotation.command.properties.Description
+import dev.fruxz.sparkle.framework.annotation.command.properties.Label
+import dev.fruxz.sparkle.framework.annotation.command.properties.Usage
+import dev.fruxz.sparkle.framework.extension.internalCommandMap
+import dev.fruxz.sparkle.framework.extension.internalSyncCommands
 import org.bukkit.command.CommandExecutor
+import org.bukkit.command.PluginCommand
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
-import kotlin.reflect.full.findAnnotations
 import kotlin.reflect.full.hasAnnotation
+import kotlin.reflect.jvm.isAccessible
 
 open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), ModuleContext {
 
@@ -75,21 +81,38 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
         onEnables.forEach { it.invoke(this) }
 
         paperCommands.forEach { command ->
-            val commandName = command.key.findAnnotation<CommandName>()?.name ?: command.key.simpleName
+            val commandName = command.key.findAnnotation<Label>()?.name
+            val commandDescription = command.key.findAnnotation<Description>()?.description
+            val commandUsage = command.key.findAnnotation<Usage>()?.usage
+            val commandAliases = command.key.findAnnotation<Aliases>()?.aliases?.distinct()
 
-            val ann = command.key.findAnnotations<CommandName>()?.also { println("got: ${it.joinToString { it.annotationClass.simpleName ?: "" }}") }
-            val sec = command.key.findAnnotation<CommandName>()?.also { println("other: ${it.annotationClass.simpleName}") }
+            commandName?.let { securedName ->
+                val securedCommand = (getCommand(securedName) ?: artificialCommand(securedName))
 
-            val name = sec!!.name.also { println("name: $it") }
+                securedCommand.setExecutor(command.value)
+                commandDescription?.let { securedCommand.description = it }
+                commandUsage?.let { securedCommand.usage = it }
+                commandAliases?.let { securedCommand.aliases = it }
 
-            commandName
-                ?.let { getCommand(it).also { println("command = ${it?.name}") }?.setExecutor(command.value) }
-                ?: logger.warning("No name found for command ${command.key.simpleName} @${command.key.simpleName} at ${command.key.annotations.joinToString { it.annotationClass.simpleName ?: "/" }}!")
+                server.internalCommandMap.register(securedName, pluginMeta.name, securedCommand) // TODO maybe not pluginMeta, due to the in-line creation of plugins
+                server.internalSyncCommands()
+
+            } ?: logger.warning("No name found for command ${command.key.simpleName} @${command.key.simpleName} at ${command.key.annotations.joinToString { it.annotationClass.simpleName ?: "/" }}!")
+
+
         }
 
     }
     override fun onDisable() {
         onDisables.forEach { it.invoke(this) }
+    }
+
+    private fun artificialCommand(label: String): PluginCommand {
+        val constructor = PluginCommand::class.constructors.first()
+
+        constructor.isAccessible = true
+
+        return constructor.call(label, this)
     }
 
 }
