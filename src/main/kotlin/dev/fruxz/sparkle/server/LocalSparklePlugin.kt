@@ -12,4 +12,8 @@ class LocalSparklePlugin : SparklePlugin({
 
     command<TestCommand>()
 
-})
+}) {
+
+    val test = "This is a transported variable!"
+
+}
