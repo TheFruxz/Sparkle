@@ -5,6 +5,7 @@ version: ${version}
 api-version: '1.19'
 main: dev.fruxz.sparkle.server.LocalSparklePlugin
 loader: dev.fruxz.sparkle.server.LocalSparkleLoader
+load: STARTUP
 authors:
   - Fruxz (TheFruxz)
   - CoasterFreakDE
