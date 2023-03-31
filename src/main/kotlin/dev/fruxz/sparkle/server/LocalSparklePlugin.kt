@@ -3,7 +3,7 @@ package dev.fruxz.sparkle.server
 import de.fruxz.ascend.extension.data.kotlinVersion
 import dev.fruxz.sparkle.framework.SparklePlugin
 import dev.fruxz.sparkle.framework.TestCommand
-import dev.fruxz.sparkle.framework.extension.coroutine.doAsync
+import dev.fruxz.sparkle.framework.coroutine.task.doAsync
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 

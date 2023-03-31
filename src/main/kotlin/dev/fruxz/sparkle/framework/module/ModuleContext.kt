@@ -1,4 +1,4 @@
-package dev.fruxz.sparkle.framework
+package dev.fruxz.sparkle.framework.module
 
 import org.bukkit.command.CommandExecutor
 

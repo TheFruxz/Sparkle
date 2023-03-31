@@ -1,9 +1,12 @@
-package dev.fruxz.sparkle.framework.extension.coroutine
+package dev.fruxz.sparkle.framework.coroutine.task
 
 import de.fruxz.ascend.extension.dump
 import de.fruxz.ascend.extension.switchResult
-import dev.fruxz.sparkle.framework.extension.debugLog
-import dev.fruxz.sparkle.framework.extension.sparkle
+import dev.fruxz.sparkle.framework.coroutine.scope.coroutineScope
+import dev.fruxz.sparkle.framework.coroutine.dispatcher.asyncDispatcher
+import dev.fruxz.sparkle.framework.coroutine.dispatcher.syncDispatcher
+import dev.fruxz.sparkle.framework.system.debugLog
+import dev.fruxz.sparkle.framework.sparkle
 import kotlinx.coroutines.*
 import kotlinx.coroutines.future.await
 import org.bukkit.plugin.Plugin

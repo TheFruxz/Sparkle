@@ -1,4 +1,4 @@
-package dev.fruxz.sparkle.framework.extension
+package dev.fruxz.sparkle.framework.system
 
 import org.bukkit.Bukkit
 import org.bukkit.Server

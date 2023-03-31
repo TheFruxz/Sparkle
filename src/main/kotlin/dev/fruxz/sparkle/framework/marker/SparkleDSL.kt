@@ -1,4 +1,4 @@
-package dev.fruxz.sparkle.framework.annotation
+package dev.fruxz.sparkle.framework.marker
 
 @DslMarker
 @MustBeDocumented

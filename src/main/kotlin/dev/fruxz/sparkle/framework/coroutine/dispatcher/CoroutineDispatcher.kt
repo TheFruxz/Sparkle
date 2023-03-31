@@ -1,6 +1,5 @@
-package dev.fruxz.sparkle.framework.extension.coroutine
+package dev.fruxz.sparkle.framework.coroutine.dispatcher
 
-import dev.fruxz.sparkle.framework.coroutine.PluginCoroutineDispatcher
 import org.bukkit.plugin.Plugin
 
 fun Plugin.pluginCoroutineDispatcher(isAsync: Boolean = true) = PluginCoroutineDispatcher(this, isAsync)

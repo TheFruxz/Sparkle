@@ -1,10 +1,10 @@
 package dev.fruxz.sparkle.framework
 
-import dev.fruxz.sparkle.framework.annotation.command.properties.Aliases
-import dev.fruxz.sparkle.framework.annotation.command.properties.Description
-import dev.fruxz.sparkle.framework.annotation.command.properties.Label
-import dev.fruxz.sparkle.framework.annotation.command.properties.Usage
-import dev.fruxz.sparkle.framework.extension.instance
+import dev.fruxz.sparkle.framework.plugin.instance
+import dev.fruxz.sparkle.framework.command.Aliases
+import dev.fruxz.sparkle.framework.command.Description
+import dev.fruxz.sparkle.framework.command.Label
+import dev.fruxz.sparkle.framework.command.Usage
 import dev.fruxz.sparkle.server.LocalSparklePlugin
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor

@@ -1,6 +1,6 @@
-package dev.fruxz.sparkle.framework.extension.coroutine
+package dev.fruxz.sparkle.framework.coroutine.scope
 
-import dev.fruxz.sparkle.framework.annotation.SparkleDSL
+import dev.fruxz.sparkle.framework.marker.SparkleDSL
 import dev.fruxz.sparkle.server.LocalSparklePlugin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
