@@ -1,6 +1,7 @@
 package dev.fruxz.sparkle.server
 
 import de.fruxz.ascend.extension.data.kotlinVersion
+import dev.fruxz.sparkle.framework.AnotherTestCommand
 import dev.fruxz.sparkle.framework.SparklePlugin
 import dev.fruxz.sparkle.framework.TestCommand
 import dev.fruxz.sparkle.framework.coroutine.task.doAsync
@@ -25,6 +26,7 @@ class LocalSparklePlugin : SparklePlugin({
     }
 
     command<TestCommand>()
+    command<AnotherTestCommand>()
 
 }) {
 
