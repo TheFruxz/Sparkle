@@ -11,11 +11,7 @@ abstract class Command : CommandBranch(), TabCommandExecutor {
     abstract fun configure()
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if (!isConfigured) {
-            this.configure()
-            this.lock()
-            isConfigured = true
-        }
+        runConfiguration()
 
         val trace = this.executeTrace(CommandExecutionContext(sender, command, label, args.toList()))
 
@@ -31,13 +27,17 @@ abstract class Command : CommandBranch(), TabCommandExecutor {
         label: String,
         args: Array<out String>
     ): List<String> {
+        runConfiguration()
+
+        return generateTabCompletion(CommandExecutionContext(sender, command, label, args.toList()))
+    }
+
+    private fun runConfiguration() {
         if (!isConfigured) {
             this.configure()
             this.lock()
             isConfigured = true
         }
-
-        return emptyList()
     }
 
 }

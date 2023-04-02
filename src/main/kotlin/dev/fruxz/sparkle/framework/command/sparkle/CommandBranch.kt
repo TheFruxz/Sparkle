@@ -4,6 +4,7 @@ import de.fruxz.ascend.annotation.ExperimentalAscendApi
 import de.fruxz.ascend.extension.container.splitArguments
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
 import dev.fruxz.sparkle.framework.command.context.CommandContext
+import dev.fruxz.sparkle.framework.command.context.CommandExecutionContext
 import dev.fruxz.sparkle.framework.marker.SparkleDSL
 import dev.fruxz.sparkle.framework.system.mainLogger
 
@@ -78,8 +79,11 @@ open class CommandBranch(val parent: CommandBranch? = null) {
 
     // internal processing
 
-    fun generateDisplayString(): String = buildString {
-        content.map { it.key } // TODO content should also have displayString in future
+    fun generateBranchDisplayString(): String = buildString {
+        if (parent != null) {
+            append(content.joinToString("|") { it.key.asString() }) // TODO content should also have displayString in future
+        } else
+            append("#root")
     }
 
     fun executeInputCheck(context: CommandContext, input: String): Boolean {
@@ -219,6 +223,46 @@ open class CommandBranch(val parent: CommandBranch? = null) {
         return TraceResult(currentBranch, null, currentBranch?.executePathTrace() ?: emptyList(), traceError)
     }
 
+    fun generateTabCompletion(context: CommandExecutionContext): List<String> {
+        @OptIn(ExperimentalAscendApi::class)
+        val processedInput = context.parameters.joinToString(" ").splitArguments()
+        val lastInput = processedInput.lastOrNull() ?: ""
+        val traceableInput = processedInput.dropLast(1)
+
+        val tracedBranch = executeTrace(object : CommandContext {
+            override val executor = context.executor
+            override val command = context.command
+            override val label: String = context.label
+            override val parameters: List<String> = traceableInput
+        }).destination ?: return emptyList<String>().also { println("no destination") }
+
+        println("tracedBranch: ${tracedBranch.generateBranchDisplayString()}")
+
+        return tracedBranch.branches.flatMap { branch ->
+            val ignoreCase = branch.configuration.matchMode == BranchConfiguration.MatchMode.IGNORE_CASE
+
+            branch.content.flatMap { branchContent ->
+                branchContent.tabGenerator.invoke(context.asBranchContext(tracedBranch, emptyList())).let { completions -> // TODO is emptyList() the right thing?
+                    completions.mapNotNull {
+                        var content = it
+
+                        if (branch.configuration.multiWord && content.contains(" ")) {
+                            content = "\"$content\""
+                        }
+
+                        if (
+                            content.equals(lastInput, ignoreCase = ignoreCase) ||
+                            content.startsWith(lastInput, ignoreCase = ignoreCase) ||
+                            (branch.configuration.matchMode == BranchConfiguration.MatchMode.IGNORE_CONTENT || content.contains(lastInput, ignoreCase = ignoreCase))
+                        ) {
+                            return@mapNotNull content
+                        } else return@mapNotNull null
+                    }
+                }
+            }
+        }
+    }
+
     internal fun lock() {
         isLocked = true
         branches.forEach { it.lock() }
@@ -226,7 +270,7 @@ open class CommandBranch(val parent: CommandBranch? = null) {
 
     private fun lockWarning(modification: String? = null) {
         if (isLocked) mainLogger.warning(
-            "CommandBranch ${executePathTrace().joinToString("/") { it.generateDisplayString() }} is locked but a modification ${
+            "CommandBranch ${executePathTrace().joinToString("/") { it.generateBranchDisplayString() }} is locked but a modification ${
                 modification.takeIf { it != null }?.let { "'$it' " } ?: ""
             }has been done anyway! Check your code!")
     }
