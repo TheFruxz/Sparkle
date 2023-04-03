@@ -87,7 +87,7 @@ open class CommandBranch(val parent: CommandBranch? = null) {
     }
 
     fun executeInputCheck(context: CommandContext, input: String): Boolean {
-        val tabCompletions = content.flatMap { it.tabGenerator.invoke(context.asBranchContext(this, input.split(" "))) }
+        val tabCompletions = content.flatMap { it.tabGenerator.invoke(context.asBranchContext(this, listOf(input))) }
         val distinctCompletions = tabCompletions.distinct()
         val duplicateAmount = tabCompletions.size - distinctCompletions.size
 
@@ -136,10 +136,10 @@ open class CommandBranch(val parent: CommandBranch? = null) {
 
                 if (lastDepth == depth && execution != null) {
                     return TraceResult(
-                        this,
-                        context.asBranchContext(this, processedInput),
-                        this.executePathTrace(),
-                        traceError
+                        destination = this,
+                        destinationContext = context.asBranchContext(this, processedInput), // TODO check whether or not this is even ever used!
+                        path = this.executePathTrace(),
+                        error = traceError
                     )
                 }
 
@@ -153,14 +153,14 @@ open class CommandBranch(val parent: CommandBranch? = null) {
                 val nextBranch = currentBranch?.branches?.firstOrNull {
                     val openEndBranch = it.configuration.openEnd
                     val nextBranchInput = when {
-                        openEndBranch -> processedInput.drop(depth).joinToString(" ")
-                        else -> processedInput[depth]
+                        openEndBranch -> processedInput.drop(depth)
+                        else -> listOf(element = processedInput[depth])
                     }
 
                     it.executeInputCheck(
                         context = context.asBranchContext(
                             branch = it,
-                            branchParameters = nextBranchInput.split(" ")
+                            branchInput = nextBranchInput
                         ), input = processedInput[depth] // TODO OpenEndMode.CHECK_FIRST, CHECK_NONE | edit: idee verworfen
                     ).also { inputCheckResult ->
                         if (inputCheckResult && openEndBranch) {
@@ -174,7 +174,7 @@ open class CommandBranch(val parent: CommandBranch? = null) {
                     currentBranch = nextBranch
                 } else {
                     if (!triggeredOpenEnd) {
-                        currentBranch = null // prevent the run of 'this' branch, even if traceError. Due to the default value of currentBranch, which is 'this'
+                        currentBranch = null // Prevent the run of 'this' branch, even if traceError. Due to the default value of currentBranch, which is 'this'
                         traceError = TraceError.NO_MATCH
                         System.err.println(3)
                     }
@@ -191,8 +191,8 @@ open class CommandBranch(val parent: CommandBranch? = null) {
                                 parameters = processedInput,
                                 branch = currentBranch,
                                 branchParameters = when {
-                                    triggeredOpenEnd -> processedInput.drop(depth)
-                                    else -> currentInput?.split(" ") ?: emptyList()
+                                    triggeredOpenEnd -> processedInput.drop(depth) // <- look! openEnd support :D
+                                    else -> listOf(element = currentInput.orEmpty())
                                 },
                             )
 
@@ -251,7 +251,7 @@ open class CommandBranch(val parent: CommandBranch? = null) {
             val ignoreCase = branch.configuration.matchMode == BranchConfiguration.MatchMode.IGNORE_CASE
 
             branch.content.flatMap { branchContent ->
-                branchContent.tabGenerator.invoke(context.asBranchContext(tracedBranch, emptyList())).let { completions -> // TODO is emptyList() the right thing?
+                branchContent.tabGenerator.invoke(context.asBranchContext(tracedBranch, listOf(""))).let { completions -> // TODO is emptyList() the right thing?
                     completions.mapNotNull {
                         var content = it
 

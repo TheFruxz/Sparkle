@@ -14,23 +14,23 @@ interface CommandContext {
 
     val parameters: List<String>
 
-    fun asBranchContext(branch: CommandBranch, branchParameters: List<String>): BranchExecutionContext { // TODO branch parameter should may be only a string, with the ' ' contained
+    fun asBranchContext(branch: CommandBranch, branchInput: List<String>): BranchExecutionContext {
         return BranchExecutionContext(
-            executor,
-            command,
-            label,
-            parameters,
-            branch,
-            branchParameters
+            executor = executor,
+            command = command,
+            label = label,
+            parameters = parameters,
+            branch = branch,
+            branchParameters = branchInput
         )
     }
 
     fun asCommandContext(): CommandExecutionContext {
         return CommandExecutionContext(
-            executor,
-            command,
-            label,
-            parameters
+            executor = executor,
+            command = command,
+            label = label,
+            parameters = parameters
         )
     }
 

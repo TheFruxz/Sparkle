@@ -40,7 +40,7 @@ class AnotherTestCommand : Command() {
             configureIgnoreCase()
             configureMultiWord()
             execution {
-                executor.sendMessage("Your input: ${this.branchParameters.joinToString()}")
+                executor.sendMessage("Your input: ${this.branchParameters}")
             }
             branch {
                 content("is", "was", "are")
@@ -49,7 +49,7 @@ class AnotherTestCommand : Command() {
                     content("a test", "a trap")
                     configureMultiWord()
                     execution {
-                            executor.sendMessage("Your advanced input: ${this.branchParameters.joinToString()}")
+                            executor.sendMessage("Your advanced input: ${this.branchParameters}")
                     }
                 }
             }
@@ -58,7 +58,7 @@ class AnotherTestCommand : Command() {
             content("infinite")
             configureOpenEnd()
             execution {
-                executor.sendMessage("Your infinite input: ${this.branchParameters.joinToString()}")
+                executor.sendMessage("Your infinite input: ${this.branchParameters}")
             }
         }
     }
