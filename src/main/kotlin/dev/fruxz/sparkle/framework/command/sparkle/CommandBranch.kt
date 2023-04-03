@@ -86,24 +86,24 @@ open class CommandBranch(val parent: CommandBranch? = null) {
             append("#root")
     }
 
-    fun executeInputCheck(context: CommandContext, input: String): Boolean {
-        val tabCompletions = content.flatMap { it.tabGenerator.invoke(context.asBranchContext(this, listOf(input))) }
-        val distinctCompletions = tabCompletions.distinct()
-        val duplicateAmount = tabCompletions.size - distinctCompletions.size
+    fun executeInputCheck(context: CommandContext, input: List<String>): Boolean {
+        val rawTabCompletions = content.flatMap { it.tabGenerator.invoke(context.asBranchContext(this, input)) }
+        val distinctCompletions = rawTabCompletions.distinct()
+        val duplicateAmount = rawTabCompletions.size - distinctCompletions.size
 
         if (duplicateAmount > 0) mainLogger.warning("Command ${context.command} has $duplicateAmount overlaying completions on the same level")
 
-        if (!configuration.multiWord && input.contains(" ")) return false
+        if (!configuration.multiWord && input.any { it.contains(" ") }) return false
         if (configuration.matchMode == BranchConfiguration.MatchMode.IGNORE_CONTENT) return true
 
         println("IC.input '$input'")
 
-        return tabCompletions.any {
+        return rawTabCompletions.any {
             println("IC.check '$input' against '$it'")
             it.equals(
-                input,
+                other = input.firstOrNull().also { if (it == null) println("empty first input") },
                 ignoreCase = this.configuration.matchMode == BranchConfiguration.MatchMode.IGNORE_CASE
-            ) // TODO if ignoreCase at the branches as configurations | edit: seems now fixed, but the ignore_content have to be added too!
+            )
         }
     }
 
@@ -161,7 +161,7 @@ open class CommandBranch(val parent: CommandBranch? = null) {
                         context = context.asBranchContext(
                             branch = it,
                             branchInput = nextBranchInput
-                        ), input = processedInput[depth] // TODO OpenEndMode.CHECK_FIRST, CHECK_NONE | edit: idee verworfen
+                        ), input = nextBranchInput // TODO OpenEndMode.CHECK_FIRST, CHECK_NONE | edit: idee verworfen | edit: vielleicht doch wichtig
                     ).also { inputCheckResult ->
                         if (inputCheckResult && openEndBranch) {
                             triggeredOpenEnd = true
@@ -251,7 +251,7 @@ open class CommandBranch(val parent: CommandBranch? = null) {
             val ignoreCase = branch.configuration.matchMode == BranchConfiguration.MatchMode.IGNORE_CASE
 
             branch.content.flatMap { branchContent ->
-                branchContent.tabGenerator.invoke(context.asBranchContext(tracedBranch, listOf(""))).let { completions -> // TODO is emptyList() the right thing?
+                branchContent.tabGenerator.invoke(context.asBranchContext(tracedBranch, listOf(""))).let { completions -> // TODO is emptyList() the right thing? | edit: replaced with listOf(""), solution?
                     completions.mapNotNull {
                         var content = it
 

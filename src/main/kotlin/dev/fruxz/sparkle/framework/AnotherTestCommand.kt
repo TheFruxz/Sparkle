@@ -57,6 +57,7 @@ class AnotherTestCommand : Command() {
         branch {
             content("infinite")
             configureOpenEnd()
+            configureMultiWord()
             execution {
                 executor.sendMessage("Your infinite input: ${this.branchParameters}")
             }
