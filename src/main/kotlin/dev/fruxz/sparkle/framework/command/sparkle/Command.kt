@@ -16,7 +16,8 @@ abstract class Command : CommandBranch(), TabCommandExecutor {
         val trace = this.executeTrace(CommandExecutionContext(sender, command, label, args.toList()))
 
         trace.destinationContext?.let { trace.destination?.execution?.invoke(it) }
-        sender.sendMessage("error: ${trace.error?.name}")
+
+        trace.error?.let { sender.sendMessage("§cerror: ${trace.error.name}") }
 
         return true
     }

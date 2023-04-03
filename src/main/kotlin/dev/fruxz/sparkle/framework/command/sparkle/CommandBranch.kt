@@ -1,7 +1,7 @@
 package dev.fruxz.sparkle.framework.command.sparkle
 
 import de.fruxz.ascend.annotation.ExperimentalAscendApi
-import de.fruxz.ascend.extension.container.splitArguments
+import de.fruxz.ascend.extension.container.joinedLast
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
 import dev.fruxz.sparkle.framework.command.context.CommandContext
 import dev.fruxz.sparkle.framework.command.context.CommandExecutionContext
@@ -115,9 +115,8 @@ open class CommandBranch(val parent: CommandBranch? = null) {
         }
     }
 
-    fun executeTrace(context: CommandContext): TraceResult {
-        @OptIn(ExperimentalAscendApi::class)
-        val processedInput = context.parameters.joinToString(" ").splitArguments().also {
+    fun executeTrace(context: CommandContext, split: Boolean = true): TraceResult {
+        val processedInput = (if (split) context.parameters.joinToString(" ").newSplitArguments() else context.parameters).also {
             println("input: ${context.parameters.joinToString { "'$it'" }} ")
             println("processed: ${it.joinToString { "'$it'" }}")
         }
@@ -189,7 +188,7 @@ open class CommandBranch(val parent: CommandBranch? = null) {
                                 executor = context.executor,
                                 command = context.command,
                                 label = context.label,
-                                parameters = context.parameters,
+                                parameters = processedInput,
                                 branch = currentBranch,
                                 branchParameters = when {
                                     triggeredOpenEnd -> processedInput.drop(depth)
@@ -212,7 +211,7 @@ open class CommandBranch(val parent: CommandBranch? = null) {
                         System.err.println(1)
                     }
                 } else {
-                    traceError = TraceError.TOO_MANY_POSSIBILITIES
+                    // TODO traceError = TraceError.TOO_MANY_POSSIBILITIES seems not to be needed / fit
                     System.err.println(0)
                 }
 
@@ -223,18 +222,28 @@ open class CommandBranch(val parent: CommandBranch? = null) {
         return TraceResult(currentBranch, null, currentBranch?.executePathTrace() ?: emptyList(), traceError)
     }
 
+    @OptIn(ExperimentalAscendApi::class)
+    fun String.newSplitArguments() = split("\"")
+        .let { it.takeIf { it.size % 2 != 0 } ?: it.joinedLast(1, "\"") }
+        .flatMapIndexed { index: Int, value: String ->
+            if (index % 2 == 0) value.split(" ") else listOf(value)
+        }
+        .withIndex().filterNot { it.value.isBlank() && it.index % 2 == 0 }.map { it.value }
+
     fun generateTabCompletion(context: CommandExecutionContext): List<String> {
-        @OptIn(ExperimentalAscendApi::class)
-        val processedInput = context.parameters.joinToString(" ").splitArguments()
+        val processedInput = context.parameters.joinToString(" ").newSplitArguments()
         val lastInput = processedInput.lastOrNull() ?: ""
         val traceableInput = processedInput.dropLast(1)
+
+        System.err.println("input: ${context.parameters.joinToString { "'$it'" }} ")
+        System.err.println("traceable: ${traceableInput.joinToString { "'$it'" }}")
 
         val tracedBranch = executeTrace(object : CommandContext {
             override val executor = context.executor
             override val command = context.command
             override val label: String = context.label
             override val parameters: List<String> = traceableInput
-        }).destination ?: return emptyList<String>().also { println("no destination") }
+        }, split = false).destination ?: return emptyList<String>().also { println("no destination") }
 
         println("tracedBranch: ${tracedBranch.generateBranchDisplayString()}")
 
