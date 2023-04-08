@@ -13,7 +13,7 @@ import org.bukkit.entity.Player
 
 data class BranchContent<T>(
     val key: Key,
-    val tabGenerator: BranchExecutionContext.() -> List<String>,
+    val tabGenerator: BranchExecutionContext.() -> List<String>, // TODO maybe set or collection is better?
     val contentGenerator: BranchExecutionContext.() -> T?,
 ) : Keyed {
 

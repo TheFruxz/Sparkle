@@ -5,7 +5,7 @@ import dev.fruxz.sparkle.framework.command.context.CommandExecutionContext
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 
-abstract class Command : CommandBranch(), TabCommandExecutor {
+abstract class Command : CommandBranch(branchDepth = -1), TabCommandExecutor {
     private var isConfigured = false
 
     abstract fun configure()

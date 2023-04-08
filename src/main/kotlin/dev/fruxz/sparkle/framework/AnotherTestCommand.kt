@@ -47,7 +47,7 @@ class AnotherTestCommand : Command() {
                 configureIgnoreCase()
                 branch {
                     content("a test", "a trap")
-                    configureMultiWord()
+                    configureMultiWord(false)
                     execution {
                             executor.sendMessage("Your advanced input: ${this.branchParameters}")
                     }
