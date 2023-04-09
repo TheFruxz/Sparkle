@@ -29,6 +29,8 @@ abstract class Command : CommandBranch(branchDepth = -1), TabCommandExecutor {
         })
         println("result------------------")
 
+        println("input -> '${new.processedInput.joinToString(" ")}'")
+
         if (new is SuccessfulCommandBranchTrace) {
             new.hit.destination.execution?.invoke(new.hit.context) ?: println("no execution")
         } else {
@@ -40,11 +42,20 @@ abstract class Command : CommandBranch(branchDepth = -1), TabCommandExecutor {
                     it
                 }
             }
-            val failedPart = new.processedInput.subList(failDepth, new.processedInput.size).joinToString(" ").let {
-                if (it.length > 25) {
-                    it.substring(0, 25) + "..."
-                } else {
-                    it
+            val failedPart = when {
+                (successfulPart != "/${label} ") -> new.processedInput.subList(failDepth, new.processedInput.size).joinToString(" ").let {
+                    if (it.length > 25) {
+                        it.substring(0, 25) + "..."
+                    } else {
+                        it
+                    }
+                }
+                else -> new.processedInput.joinToString(" ").let {
+                    if (it.length > 25) {
+                        "..." + it.takeLast(25)
+                    } else {
+                        it
+                    }
                 }
             }
 
@@ -57,7 +68,7 @@ abstract class Command : CommandBranch(branchDepth = -1), TabCommandExecutor {
                         !successfulPart.endsWith(" ") && !it.startsWith(" ") -> " $it"
                         else -> it
                     }
-                }).style(NamedTextColor.GRAY, TextDecoration.UNDERLINED)
+                }).style(NamedTextColor.RED, TextDecoration.UNDERLINED)
                 this + text("<red><i><--[HERE]") // TODO localization component here!
             }.let { sender.sendMessage(it) }
 

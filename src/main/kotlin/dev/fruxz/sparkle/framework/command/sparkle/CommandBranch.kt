@@ -1,11 +1,10 @@
 package dev.fruxz.sparkle.framework.command.sparkle
 
-import de.fruxz.ascend.annotation.ExperimentalAscendApi
-import de.fruxz.ascend.extension.container.joinedLast
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
 import dev.fruxz.sparkle.framework.command.context.CommandContext
 import dev.fruxz.sparkle.framework.command.context.CommandExecutionContext
 import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch.InputCheckResult.*
+import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch.SuccessfulCommandBranchTrace.TraceResult
 import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch.SuccessfulCommandBranchTrace.TraceResult.*
 import dev.fruxz.sparkle.framework.marker.SparkleDSL
 import dev.fruxz.sparkle.framework.system.debugLog
@@ -118,7 +117,9 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
 
         if (duplicateAmount > 0) mainLogger.warning("Command ${context.command} has $duplicateAmount overlaying completions on the same level")
 
-        if (!configuration.multiWord && branchInput.any { it.contains(" ") }) return ILLEGAL_MULTI_WORD // in most cases this should never happen due to the preprocessing of the input
+        if (!configuration.multiWord && branchInput.any { it.contains(" ") }) return ILLEGAL_MULTI_WORD.also {
+            System.err.println("!!! with '$branchInput'")
+        }
         if (configuration.matchMode == BranchConfiguration.MatchMode.IGNORE_CONTENT) return IGNORE_CONTENT
 
         println("IC.input '$branchInput'")
@@ -144,30 +145,37 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
     // The new trace
     fun trace(context: CommandContext, split: Boolean = true): CommandTrace {
         val processedInput = when {
-            split -> context.parameters.joinToString(" ").newSplitArguments()
+            split -> context.parameters.joinToString(" ").joinArgumentChunks()
             else -> context.parameters
         }.toMutableList()
 
-        val producedResults = mutableMapOf<SuccessfulCommandBranchTrace.TraceResult, List<CommandBranch>>()
+        val producedResults = mutableMapOf<TraceResult, List<CommandBranch>>()
         var currentBranch: CommandBranch? = this
         var currentDepth = -1
 
-        fun addResult(result: SuccessfulCommandBranchTrace.TraceResult, vararg branch: CommandBranch) {
+        fun addResult(result: TraceResult, vararg branch: CommandBranch) {
             if (branch.isEmpty()) return
             producedResults[result] = producedResults[result].orEmpty() + branch
         }
 
-        fun addResult(result: SuccessfulCommandBranchTrace.TraceResult, branches: List<CommandBranch>) {
+        fun addResult(result: TraceResult, branches: List<CommandBranch>) {
             if (branches.isEmpty()) return
             producedResults[result] = producedResults[result].orEmpty() + branches
         }
 
+        fun isAlreadyProcessed(branch: CommandBranch): Boolean {
+            return producedResults.values.any { it.contains(branch) }
+        }
+
         while (currentDepth <= processedInput.lastIndex) { // changed to while, because lastDepth will change!
             debugLog { "@ depth = $currentDepth" }
+            debugLog { "@ last = ${processedInput.lastIndex} due to '${processedInput.joinToString { "'$it'" }}'" }
+            debugLog { "@ execution = $execution" }
 
             when (currentDepth) {
                 -1 -> {
                     if (processedInput.lastIndex == currentDepth && execution != null) {
+                        debugLog { "execution hit" }
                         return SuccessfulCommandBranchTrace(
                             hit = SuccessfulCommandBranchTrace.TraceHit(
                                 destination = this,
@@ -178,7 +186,10 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
                                 path = this.executePathTrace(),
                             ),
                             processedInput = processedInput,
-                            result = mapOf(SuccessfulCommandBranchTrace.TraceResult.NOT_REACHED to flatMapBranches())
+                            result = mapOf(
+                                TraceResult.HIT to listOf(this),
+                                TraceResult.NOT_REACHED to flatMapBranches(),
+                            )
                         )
                     }
                 }
@@ -186,6 +197,8 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
                 else -> {
 
                     currentBranch?.branches?.forEach { tracedBranch ->
+                        if (isAlreadyProcessed(tracedBranch)) return@forEach
+
                         val multiWordBranch = tracedBranch.configuration.multiWord
                         val openEndBranch = tracedBranch.configuration.openEnd
                         val lastDepthOfRoute = tracedBranch.branches.isEmpty() // TODO this is not correct <-!-
@@ -201,6 +214,20 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
                                 "\"$currentInput\"".split(" ")
                             ) // replace the single multi-worded-input with multiple single-worded-inputs, to restore default behavior
                             currentInput = localInputCopy[currentDepth] // update the currentInput, because now it is only one word
+                        } else if (!multiWordBranch && openEndBranch) {
+                            var localInputDepth = 0
+
+                            while (localInputDepth <= localInputCopy.lastIndex) {
+                                val localInput = localInputCopy[localInputDepth]
+                                if (localInput.contains(" ")) {
+                                    localInputCopy.removeAt(localInputDepth)
+                                    localInputCopy.addAll(
+                                        localInputDepth,
+                                        "\"$localInput\"".split(" ")
+                                    ) // replace the single multi-worded-input with multiple single-worded-inputs, to restore default behavior
+                                }
+                                localInputDepth++
+                            }
                         }
 
                         // process openEndBranches
@@ -224,7 +251,7 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
                             if (lastDepthOfRoute) {
 
                                 addResult(
-                                    SuccessfulCommandBranchTrace.TraceResult.NOT_REACHED,
+                                    TraceResult.NOT_REACHED,
                                     tracedBranch.flatMapBranches()
                                 )
 
@@ -232,37 +259,45 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
 
                             when {
                                 inputCheckResult.failure || inputCheckResult.partialSuccess -> {
-                                    addResult(SuccessfulCommandBranchTrace.TraceResult.FAILED, tracedBranch)
+                                    addResult(TraceResult.FAILED, tracedBranch)
                                     addResult(
-                                        SuccessfulCommandBranchTrace.TraceResult.OUT_OF_VIEW,
+                                        TraceResult.OUT_OF_VIEW,
                                         tracedBranch.flatMapBranches()
                                     )
                                 }
                             }
 
                             when {
-                                inputCheckResult.success -> addResult(
-                                    when {
-                                        isLastDepth -> HIT
-                                        else -> {
-                                            currentBranch = tracedBranch // TODO in the right place?
-                                            SuccessfulCommandBranchTrace.TraceResult.MATCH
-                                        }
-                                    }, tracedBranch
-                                )
+                                inputCheckResult.success -> {
+
+                                    addResult(
+                                        when {
+                                            isLastDepth || (lastDepthOfRoute && openEndBranch) -> HIT
+                                            else -> {
+                                                currentBranch = tracedBranch // TODO in the right place?
+                                                TraceResult.MATCH
+                                            }
+                                        }, tracedBranch
+                                    )
+
+                                    // update processed input
+                                    processedInput.clear()
+                                    processedInput.addAll(localInputCopy)
+
+                                }
                             }
 
                             if (isLastDepth) {
 
-                                when {
-                                    tracedBranch.execution == null -> addResult(
-                                        SuccessfulCommandBranchTrace.TraceResult.NO_EXECUTION,
+                                when (tracedBranch.execution) {
+                                    null -> addResult(
+                                        TraceResult.NO_EXECUTION,
                                         tracedBranch,
                                     )
                                 }
 
                                 addResult(
-                                    SuccessfulCommandBranchTrace.TraceResult.NOT_REACHED,
+                                    TraceResult.NOT_REACHED,
                                     tracedBranch.flatMapBranches()
                                 ) // TODO check, if correct, just placed because it looks like it should be here
                             }
@@ -302,7 +337,7 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
     }
 
     fun generateTabCompletion(context: CommandExecutionContext): List<String> {
-        val processedInput = context.parameters.joinToString(" ").newSplitArguments()
+        val processedInput = context.parameters.joinToString(" ").joinArgumentChunks()
         val lastInput = processedInput.lastOrNull() ?: ""
         val traceableInput = processedInput.dropLast(1)
 
@@ -426,12 +461,12 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
     }
 
     sealed interface CommandTrace {
-        val result: Map<SuccessfulCommandBranchTrace.TraceResult, List<CommandBranch>>
+        val result: Map<TraceResult, List<CommandBranch>>
         val processedInput: List<String>
     }
 
     data class FailedCommandBranchTrace(
-        override val result: Map<SuccessfulCommandBranchTrace.TraceResult, List<CommandBranch>>,
+        override val result: Map<TraceResult, List<CommandBranch>>,
         override val processedInput: List<String>,
     ) : CommandTrace
 
@@ -468,12 +503,36 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
 
 }
 
-@OptIn(ExperimentalAscendApi::class)
-fun String.newSplitArguments() = split("\"") // TODO ascend api <- do not forget to push
-    .let { it.takeIf { it.size % 2 != 0 } ?: it.joinedLast(1, "\"") }
-    .flatMapIndexed { index: Int, value: String ->
-        if (index % 2 == 0) value.split(" ") else listOf(value)
-    }
-    .withIndex().filterNot { it.value.isBlank() && it.index % 2 == 0 }.map { it.value }
+fun String.joinArgumentChunks(spliterator: String = "\""): List<String> { // TODO replace the thing in ascend with this cool stuff!
+    val splitted = this.split(" ").takeIf { this.isNotBlank() } ?: emptyList()
+
+    System.err.println("splitted: [${splitted.joinToString("|")}] @ ${splitted.size}")
+
+    return buildList {
+        var isQuoted = false
+        val current = StringBuilder()
+
+        for (string in splitted) {
+            if (string.startsWith(spliterator)) {
+                isQuoted = true
+                current.append(string.removePrefix(spliterator))
+            } else if (string.endsWith(spliterator)) {
+                if (isQuoted) current.append(" ")
+
+                isQuoted = false
+                current.append(string.removeSuffix(spliterator))
+                add(current.toString())
+                current.clear()
+            } else if (isQuoted) {
+                current.append(" ").append(string)
+            } else {
+                add(string)
+            }
+        }
+
+        if (current.isNotEmpty()) addAll((spliterator + current).split(" "))
+
+    }.also { System.err.println("split size: ${it.size}") }
+}
 
 typealias BranchExecution = (BranchExecutionContext.() -> Unit)

@@ -62,7 +62,7 @@ class AnotherTestCommand : Command() {
         branch {
             content("infinite")
             configureOpenEnd()
-            configureMultiWord()
+            configureMultiWord(true)
             execution {
                 reply("Your infinite input: ${this.branchParameters}")
             }
