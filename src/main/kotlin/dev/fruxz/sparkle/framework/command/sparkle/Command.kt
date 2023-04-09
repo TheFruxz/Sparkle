@@ -13,11 +13,17 @@ abstract class Command : CommandBranch(branchDepth = -1), TabCommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         runConfiguration()
 
-        val trace = this.executeTrace(CommandExecutionContext(sender, command, label, args.toList()))
+        val new = this.trace(CommandExecutionContext(sender, command, label, args.toList()))
 
-        trace.destinationContext?.let { trace.destination?.execution?.invoke(it) }
+        println("result------------------")
+        println(new.result.toList().joinToString {
+            it.first.name + ": \n " + it.second.joinToString { "\t" + it.generateBranchDisplay() + "\n" }
+        })
+        println("result------------------")
 
-        trace.error?.let { sender.sendMessage("§cerror: ${trace.error.name}") }
+        if (new is SuccessfulCommandBranchTrace) {
+            new.hit.destination.execution?.invoke(new.hit.context) ?: println("no execution")
+        }
 
         return true
     }
