@@ -5,6 +5,7 @@ import dev.fruxz.sparkle.framework.marker.SparkleDSL
 import net.kyori.adventure.key.Key
 import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
+import org.bukkit.plugin.PluginManager
 
 @SparkleDSL
 fun SparklePlugin(plugin: SparklePlugin.() -> Unit) = object : SparklePlugin(plugin) { }
@@ -14,13 +15,15 @@ fun SparklePlugin(plugin: SparklePlugin.() -> Unit) = object : SparklePlugin(plu
 val pluginManager by lazy { Bukkit.getPluginManager() }
 
 /**
- * This function accesses the plugin instance of the given plugin [T] or null if it doesn't exist.
+ * This function accesses the plugin instance of the given plugin [T] or null if it is not loaded.
+ * @see PluginManager.getPlugins
  */
 @SparkleDSL
 inline fun <reified T : Plugin> instanceOrNull() = pluginManager.plugins.firstOrNull { it is T } as T?
 
 /**
- * This function accesses the plugin instance of the given plugin [T] or throws an exception if it doesn't exist.
+ * This function accesses the plugin instance of the given plugin [T] or throws an exception if it is not loaded.
+ * @see PluginManager.getPlugins
  */
 @Throws(NoSuchElementException::class)
 @SparkleDSL
