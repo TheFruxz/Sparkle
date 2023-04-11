@@ -1,5 +1,6 @@
 package dev.fruxz.sparkle.framework.command.sparkle
 
+import de.fruxz.ascend.extension.math.minTo
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
 import dev.fruxz.sparkle.framework.command.context.CommandContext
 import dev.fruxz.sparkle.framework.command.context.CommandExecutionContext
@@ -108,10 +109,10 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
     /**
      * Not containing this branch, only its [branches] and their [branches] and so on.
      */
-    fun flatMapBranches(): List<CommandBranch> = branches.flatMap { it.flatMapBranches() }
+    fun flatMapBranches(): List<CommandBranch> = branches.toList() + branches.flatMap { it.flatMapBranches() }
 
     fun branchInputCheck(context: CommandContext, branchInput: List<String>): InputCheckResult {
-        val rawCompletions = content.flatMap { it.generateTab(context.asBranchContext(this, branchInput)) }
+        val rawCompletions = content.flatMap { it.generateTab() }
         val distinctCompletions = rawCompletions.distinct()
         val duplicateAmount = rawCompletions.size - distinctCompletions.size
 
@@ -150,7 +151,7 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
         }.toMutableList()
 
         val producedResults = mutableMapOf<TraceResult, List<CommandBranch>>()
-        var currentBranch: CommandBranch? = this
+        var currentBranch: CommandBranch = this
         var currentDepth = -1
 
         fun addResult(result: TraceResult, vararg branch: CommandBranch) {
@@ -188,7 +189,7 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
                             processedInput = processedInput,
                             result = mapOf(
                                 TraceResult.HIT to listOf(this),
-                                TraceResult.NOT_REACHED to flatMapBranches(),
+                                // TODO TraceResult.NOT_REACHED to currentBranch.flatMapBranches(),
                             )
                         )
                     }
@@ -196,7 +197,7 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
 
                 else -> {
 
-                    currentBranch?.branches?.forEach { tracedBranch ->
+                    currentBranch.branches.forEach { tracedBranch ->
                         if (isAlreadyProcessed(tracedBranch)) return@forEach
 
                         val multiWordBranch = tracedBranch.configuration.multiWord
@@ -248,25 +249,6 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
                             ), branchInput = nextBranchInput
                         ).also { inputCheckResult ->
 
-                            if (lastDepthOfRoute) {
-
-                                addResult(
-                                    TraceResult.NOT_REACHED,
-                                    tracedBranch.flatMapBranches()
-                                )
-
-                            }
-
-                            when {
-                                inputCheckResult.failure || inputCheckResult.partialSuccess -> {
-                                    addResult(TraceResult.FAILED, tracedBranch)
-                                    addResult(
-                                        TraceResult.OUT_OF_VIEW,
-                                        tracedBranch.flatMapBranches()
-                                    )
-                                }
-                            }
-
                             when {
                                 inputCheckResult.success -> {
 
@@ -285,21 +267,14 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
                                     processedInput.addAll(localInputCopy)
 
                                 }
-                            }
-
-                            if (isLastDepth) {
-
-                                when (tracedBranch.execution) {
-                                    null -> addResult(
-                                        TraceResult.NO_EXECUTION,
-                                        tracedBranch,
-                                    )
+                                else -> {
+                                    if (currentDepth == localInputCopy.lastIndex) {
+                                        addResult(FAILED, tracedBranch)
+                                        addResult(NOT_REACHED, tracedBranch.flatMapBranches())
+                                    } else {
+                                        addResult(OVERFLOW, tracedBranch)
+                                    }
                                 }
-
-                                addResult(
-                                    TraceResult.NOT_REACHED,
-                                    tracedBranch.flatMapBranches()
-                                ) // TODO check, if correct, just placed because it looks like it should be here
                             }
 
                         }
@@ -339,7 +314,7 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
     fun generateTabCompletion(context: CommandExecutionContext): List<String> {
         val processedInput = context.parameters.joinToString(" ").joinArgumentChunks()
         val lastInput = processedInput.lastOrNull() ?: ""
-        val traceableInput = processedInput.dropLast(1)
+        val traceableInput = processedInput
 
         System.err.println("input: ${context.parameters.joinToString { "'$it'" }} ")
         System.err.println("traceable: ${traceableInput.joinToString { "'$it'" }}")
@@ -351,45 +326,28 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
             override val parameters: List<String> = traceableInput
         }, split = false)
 
-        println("traceResult: $traceResult")
+        println("capture------------------")
+        println(traceResult.result.toList().joinToString {
+            it.first.name + ": \n " + it.second.joinToString { "\t'" + it.generateBranchDisplay() + "'\n" }
+        })
+        println("capture------------------")
 
-        if (traceResult is FailedCommandBranchTrace) {
-            return emptyList<String>().also { println("no destination") }
-        }
-
-        traceResult as SuccessfulCommandBranchTrace // indicate that traceResult is indeed a SuccessfulCommandBranchTrace
-
-        val tracedBranch = traceResult.hit.destination
-
-        println("tracedBranch: ${tracedBranch.generateBranchDisplay()}")
-
-        return tracedBranch.branches.flatMap { branch ->
-            val ignoreCase = branch.configuration.matchMode == BranchConfiguration.MatchMode.IGNORE_CASE
-
-            branch.content.flatMap { branchContent ->
-                branchContent.generateTab(context.asBranchContext(tracedBranch, listOf("")))
-                    .let { completions -> // TODO is emptyList() the right thing? | edit: replaced with listOf(""), solution?
-                        completions.mapNotNull {
-                            var content = it
-
-                            if (branch.configuration.multiWord && content.contains(" ")) {
-                                content = "\"$content\""
-                            }
-
-                            if (
-                                content.equals(lastInput, ignoreCase = ignoreCase) ||
-                                content.startsWith(lastInput, ignoreCase = ignoreCase) ||
-                                (branch.configuration.matchMode == BranchConfiguration.MatchMode.IGNORE_CONTENT || content.contains(
-                                    lastInput,
-                                    ignoreCase = ignoreCase
-                                ))
-                            ) {
-                                return@mapNotNull content
-                            } else return@mapNotNull null
-                        }
+        return when (context.parameters.firstOrNull()?.isBlank()) {
+            true -> this.branches // if no input
+            else -> traceResult.result[FAILED].orEmpty()
+        }.filter { it.branchDepth == traceableInput.lastIndex.minTo(0) }
+            .flatMap { it.content.flatMap(BranchContent<*>::generateTab) }
+            .mapNotNull {
+                when {
+                    it.contains(" ") -> {
+                        "\"$it\""
                     }
+                    else -> it
+                }.let { output ->
+                    output.takeIf { output.contains(lastInput, true) }
+                }
             }
-        }
+
     }
 
     internal fun lock() {
@@ -483,20 +441,18 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
         )
 
         /**
+         * @property HIT the branch was hit and was the end-point
          * @property MATCH the branch was found
-         * @property OVERFLOW the branch was not hit because the input was too long
-         * @property NOT_REACHED the branch was not hit because the input was too short
-         * @property NO_EXECUTION the branch was not hit because it has no execution set
-         * @property OUT_OF_VIEW the branch was not hit because it is out of view (other branches, which was not successful)
+         * @property FAILED the check failed
+         * @property NOT_REACHED the branch was not reached at all (after a [FAILED])
          */
         enum class TraceResult {
             HIT,
             MATCH,
+
+            FAILED,
             OVERFLOW,
             NOT_REACHED,
-            NO_EXECUTION,
-            OUT_OF_VIEW,
-            FAILED;
         }
 
     }
@@ -505,8 +461,6 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
 
 fun String.joinArgumentChunks(spliterator: String = "\""): List<String> { // TODO replace the thing in ascend with this cool stuff!
     val splitted = this.split(" ").takeIf { this.isNotBlank() } ?: emptyList()
-
-    System.err.println("splitted: [${splitted.joinToString("|")}] @ ${splitted.size}")
 
     return buildList {
         var isQuoted = false
@@ -532,7 +486,7 @@ fun String.joinArgumentChunks(spliterator: String = "\""): List<String> { // TOD
 
         if (current.isNotEmpty()) addAll((spliterator + current).split(" "))
 
-    }.also { System.err.println("split size: ${it.size}") }
+    }
 }
 
 typealias BranchExecution = (BranchExecutionContext.() -> Unit)

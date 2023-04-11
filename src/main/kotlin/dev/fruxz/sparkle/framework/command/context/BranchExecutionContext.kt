@@ -1,5 +1,7 @@
 package dev.fruxz.sparkle.framework.command.context
 
+import de.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.sparkle.framework.command.sparkle.BranchContent
 import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch
 import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch.BranchConfiguration
 import org.bukkit.command.Command
@@ -16,4 +18,12 @@ data class BranchExecutionContext(
     override val parameters: List<String>,
     val branch: CommandBranch,
     val branchParameters: List<String>,
-) : CommandContext
+) : CommandContext {
+
+    val currentDepth = branch.branchDepth
+
+    fun <T> translateOrNull(type: BranchContent<T>, vararg content: String): T? = tryOrNull(silent = false) { type.generateContent(this, content.toList()) }
+
+    fun <T> translate(type: BranchContent<T>, vararg content: String): T = translateOrNull(type, *content) ?: throw IllegalArgumentException("Could not translate content: ${content.joinToString(" ")}")
+
+}

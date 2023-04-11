@@ -6,6 +6,7 @@ import dev.fruxz.sparkle.framework.command.Label
 import dev.fruxz.sparkle.framework.command.Usage
 import dev.fruxz.sparkle.framework.command.sparkle.BranchContent
 import dev.fruxz.sparkle.framework.command.sparkle.Command
+import org.bukkit.entity.Player
 
 @Label("anothertest")
 @Usage("anothertest")
@@ -15,6 +16,30 @@ class AnotherTestCommand : Command() {
     override fun configure() {
         execution {
             reply("Hello World!")
+        }
+        branch {
+            content("produce-message")
+            branch {
+                configureMultiWord()
+                configureIgnoreContent()
+                content("message")
+                branch {
+                    content("print")
+                    execution {
+                        reply(parameters[parameters.lastIndex-1])
+                    }
+                }
+            }
+        }
+        branch {
+            content("spawn")
+            branch {
+                content(BranchContent.entityType())
+                execution {
+                    reply("Entity type: ${parameters[currentDepth]}")
+                    (executor as? Player)?.world?.spawnEntity(executor.location, translate(BranchContent.entityType(), parameters[currentDepth]))
+                }
+            }
         }
         branch {
             content(BranchContent.int(1..10))

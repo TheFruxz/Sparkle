@@ -85,8 +85,7 @@ abstract class Command : CommandBranch(branchDepth = -1), TabCommandExecutor {
     ): List<String> {
         runConfiguration()
 
-// TODO out of order due to new trace        return generateTabCompletion(CommandExecutionContext(sender, command, label, args.toList()))
-        return listOf("input")
+        return generateTabCompletion(CommandExecutionContext(sender, command, label, args.toList()))
     }
 
     private fun runConfiguration() {
