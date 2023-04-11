@@ -42,6 +42,12 @@ class AnotherTestCommand : Command() {
             }
         }
         branch {
+            content("error")
+            execution {
+                error("This is an error!")
+            }
+        }
+        branch {
             content(BranchContent.int(1..10))
             execution {
                 reply("Hello World! ${parameters[0]}")

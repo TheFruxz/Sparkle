@@ -489,4 +489,4 @@ fun String.joinArgumentChunks(spliterator: String = "\""): List<String> { // TOD
     }
 }
 
-typealias BranchExecution = (BranchExecutionContext.() -> Unit)
+typealias BranchExecution = (suspend BranchExecutionContext.() -> Unit)
