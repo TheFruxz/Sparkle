@@ -1,7 +1,6 @@
 package dev.fruxz.sparkle.framework.system
 
 import de.fruxz.ascend.extension.tryOrNull
-import dev.fruxz.sparkle.framework.sparkle
 import java.util.logging.Level
 
 val mainLogger = sparkle.logger

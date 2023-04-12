@@ -118,12 +118,8 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
 
         if (duplicateAmount > 0) mainLogger.warning("Command ${context.command} has $duplicateAmount overlaying completions on the same level")
 
-        if (!configuration.multiWord && branchInput.any { it.contains(" ") }) return ILLEGAL_MULTI_WORD.also {
-            System.err.println("!!! with '$branchInput'")
-        }
+        if (!configuration.multiWord && branchInput.any { it.contains(" ") }) return ILLEGAL_MULTI_WORD
         if (configuration.matchMode == BranchConfiguration.MatchMode.IGNORE_CONTENT) return IGNORE_CONTENT
-
-        println("IC.input '$branchInput'")
 
         val other = branchInput.firstOrNull() ?: throw IllegalArgumentException("Branch input must not be empty")
         val ignoreCase = this.configuration.matchMode == BranchConfiguration.MatchMode.IGNORE_CASE
@@ -234,13 +230,13 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
                         // process openEndBranches
 
                         val nextBranchInput = when {
-                            openEndBranch -> localInputCopy.drop(currentDepth).also { println("open: $it") }
-                            else -> listOf(currentInput).also { println("closed: $it") }
+                            openEndBranch -> localInputCopy.drop(currentDepth)
+                            else -> listOf(currentInput)
                         }
 
                         val isLastDepth = currentDepth == processedInput.lastIndex
 
-                        println("trace@depth=$currentDepth, branch=${tracedBranch.generateBranchDisplay()}, input=$nextBranchInput, lastDepth=$isLastDepth")
+                        debugLog { "trace@depth=$currentDepth, branch=${tracedBranch.generateBranchDisplay()}, input=$nextBranchInput, lastDepth=$isLastDepth" }
 
                         tracedBranch.branchInputCheck(
                             context = context.asBranchContext(
@@ -314,28 +310,27 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
     fun generateTabCompletion(context: CommandExecutionContext): List<String> {
         val processedInput = context.parameters.joinToString(" ").joinArgumentChunks()
         val lastInput = processedInput.lastOrNull() ?: ""
-        val traceableInput = processedInput
-
-        System.err.println("input: ${context.parameters.joinToString { "'$it'" }} ")
-        System.err.println("traceable: ${traceableInput.joinToString { "'$it'" }}")
-
         val traceResult = trace(object : CommandContext {
             override val executor = context.executor
             override val command = context.command
             override val label: String = context.label
-            override val parameters: List<String> = traceableInput
+            override val parameters: List<String> = processedInput
         }, split = false)
 
-        println("capture------------------")
-        println(traceResult.result.toList().joinToString {
-            it.first.name + ": \n " + it.second.joinToString { "\t'" + it.generateBranchDisplay() + "'\n" }
-        })
-        println("capture------------------")
+        debugLog {
+            """
+                capture------------------
+                ${traceResult.result.toList().joinToString { 
+                    it.first.name + ": \n " + it.second.joinToString { "\t'" + it.generateBranchDisplay() + "'\n" }
+                }}
+                capture------------------    
+            """.trimIndent()
+        }
 
         return when (context.parameters.firstOrNull()?.isBlank()) {
             true -> this.branches // if no input
             else -> traceResult.result[FAILED].orEmpty()
-        }.filter { it.branchDepth == traceableInput.lastIndex.minTo(0) }
+        }.filter { it.branchDepth == processedInput.lastIndex.minTo(0) }
             .flatMap { it.content.flatMap(BranchContent<*>::generateTab) }
             .mapNotNull {
                 when {

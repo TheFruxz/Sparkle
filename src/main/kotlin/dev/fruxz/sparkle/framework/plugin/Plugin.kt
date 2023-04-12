@@ -19,7 +19,7 @@ val pluginManager by lazy { Bukkit.getPluginManager() }
  * @see PluginManager.getPlugins
  */
 @SparkleDSL
-inline fun <reified T : Plugin> instanceOrNull() = pluginManager.plugins.firstOrNull { it is T } as T?
+inline fun <reified T : Plugin> instanceOrNull(): T? = pluginManager.plugins.firstOrNull { it is T } as T?
 
 /**
  * This function accesses the plugin instance of the given plugin [T] or throws an exception if it is not loaded.
@@ -27,7 +27,7 @@ inline fun <reified T : Plugin> instanceOrNull() = pluginManager.plugins.firstOr
  */
 @Throws(NoSuchElementException::class)
 @SparkleDSL
-inline fun <reified T : Plugin> instance() = instanceOrNull<T>() ?: throw NoSuchElementException("Plugin ${T::class.simpleName} not found!")
+inline fun <reified T : Plugin> instance(): T = instanceOrNull<T>() ?: throw NoSuchElementException("Plugin ${T::class.simpleName} not found!")
 
 // Key
 

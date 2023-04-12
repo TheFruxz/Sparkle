@@ -4,9 +4,6 @@ import de.fruxz.ascend.extension.data.kotlinVersion
 import dev.fruxz.sparkle.framework.AnotherTestCommand
 import dev.fruxz.sparkle.framework.SparklePlugin
 import dev.fruxz.sparkle.framework.TestCommand
-import dev.fruxz.sparkle.framework.coroutine.task.doAsync
-import kotlinx.coroutines.delay
-import kotlin.time.Duration.Companion.seconds
 
 class LocalSparklePlugin : SparklePlugin({
 
@@ -16,13 +13,6 @@ class LocalSparklePlugin : SparklePlugin({
 
     onEnable {
         println("Hey! Sparkle ${this.pluginMeta.version} is online! Running Kotlin $kotlinVersion")
-        doAsync {
-            println("This is async!")
-            println("Waiting 5 seconds...")
-            delay(5.seconds)
-            println("Got it!")
-        }
-
     }
 
     command<TestCommand>()
@@ -30,12 +20,8 @@ class LocalSparklePlugin : SparklePlugin({
 
 }) {
 
-    val test = "This is a transported variable!"
-
     companion object {
-
         const val SYSTEM_IDENTITY = "Sparkle"
-
     }
 
 }

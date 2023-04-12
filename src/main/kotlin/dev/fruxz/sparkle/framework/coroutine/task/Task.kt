@@ -6,7 +6,7 @@ import dev.fruxz.sparkle.framework.coroutine.scope.coroutineScope
 import dev.fruxz.sparkle.framework.coroutine.dispatcher.asyncDispatcher
 import dev.fruxz.sparkle.framework.coroutine.dispatcher.syncDispatcher
 import dev.fruxz.sparkle.framework.system.debugLog
-import dev.fruxz.sparkle.framework.sparkle
+import dev.fruxz.sparkle.framework.system.sparkle
 import kotlinx.coroutines.*
 import kotlinx.coroutines.future.await
 import org.bukkit.plugin.Plugin
