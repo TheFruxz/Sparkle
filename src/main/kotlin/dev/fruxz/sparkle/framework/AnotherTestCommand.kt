@@ -1,9 +1,11 @@
 package dev.fruxz.sparkle.framework
 
-import dev.fruxz.sparkle.framework.command.Aliases
-import dev.fruxz.sparkle.framework.command.Description
-import dev.fruxz.sparkle.framework.command.Label
-import dev.fruxz.sparkle.framework.command.Usage
+import dev.fruxz.sparkle.framework.command.annotations.Aliases
+import dev.fruxz.sparkle.framework.command.annotations.Description
+import dev.fruxz.sparkle.framework.command.annotations.Label
+import dev.fruxz.sparkle.framework.command.annotations.Usage
+import dev.fruxz.sparkle.framework.command.annotations.permission.Private
+import dev.fruxz.sparkle.framework.command.annotations.permission.Public
 import dev.fruxz.sparkle.framework.command.sparkle.BranchContent
 import dev.fruxz.sparkle.framework.command.sparkle.Command
 import org.bukkit.entity.Player
@@ -12,6 +14,8 @@ import org.bukkit.entity.Player
 @Usage("anothertest")
 @Description("Another Test Command")
 @Aliases(["atc"])
+@Public
+@Private("sparkle.command.another")
 class AnotherTestCommand : Command() {
     override fun configure() {
         execution {

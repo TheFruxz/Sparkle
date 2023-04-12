@@ -1,6 +1,9 @@
 package dev.fruxz.sparkle.framework
 
 import dev.fruxz.sparkle.framework.command.*
+import dev.fruxz.sparkle.framework.command.annotations.*
+import dev.fruxz.sparkle.framework.command.annotations.permission.Private
+import dev.fruxz.sparkle.framework.command.annotations.permission.Public
 import dev.fruxz.sparkle.framework.coroutine.scope.coroutineScope
 import dev.fruxz.sparkle.framework.marker.SparkleDSL
 import dev.fruxz.sparkle.framework.module.ModuleContext
@@ -104,6 +107,8 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
             val commandDescription = command.key.findAnnotation<Description>()?.description
             val commandUsage = command.key.findAnnotation<Usage>()?.usage
             val commandAliases = command.key.findAnnotation<Aliases>()?.aliases?.distinct()
+            val commandPermission = command.key.findAnnotation<Private>()?.permission
+            val commandIsPublic = command.key.hasAnnotation<Public>()
 
             commandName?.let { securedName ->
                 val securedCommand = (getCommand(securedName) ?: artificialCommand(securedName))
@@ -112,6 +117,7 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
                 commandDescription?.let { securedCommand.description = it }
                 commandUsage?.let { securedCommand.usage = it }
                 commandAliases?.let { securedCommand.aliases = it }
+                if (!commandIsPublic) securedCommand.permission = commandPermission ?: "${this.name}.command.${securedName}"
 
                 server.internalCommandMap.register(securedName, pluginMeta.name, securedCommand) // TODO maybe not pluginMeta, due to the in-line creation of plugins
                 server.internalSyncCommands()

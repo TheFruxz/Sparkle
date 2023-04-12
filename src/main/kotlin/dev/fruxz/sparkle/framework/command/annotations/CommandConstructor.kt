@@ -1,4 +1,4 @@
-package dev.fruxz.sparkle.framework.command
+package dev.fruxz.sparkle.framework.command.annotations
 
 /**
  * This annotation marks a constructor of a command to be used
