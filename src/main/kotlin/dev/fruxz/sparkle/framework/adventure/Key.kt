@@ -18,7 +18,10 @@ fun Key.subNamespacedKey(value: String, strategy: KeyingStrategy = KeyingStrateg
     with(subKey(value, strategy)) { NamespacedKey(namespace(), value()) }
 
 val Key.namespacedKey: NamespacedKey
-    get() = NamespacedKey(namespace(), value())
+    get() = when (this) {
+        is NamespacedKey -> this
+        else -> NamespacedKey(namespace(), value())
+    }
 
 val Entity.key: Key
     get() = Key.key("entity_$uniqueId")
