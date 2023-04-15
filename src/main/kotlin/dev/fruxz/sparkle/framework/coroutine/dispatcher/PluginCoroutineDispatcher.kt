@@ -1,6 +1,6 @@
 package dev.fruxz.sparkle.framework.coroutine.dispatcher
 
-import de.fruxz.ascend.extension.time.inWholeMinecraftTicks
+import dev.fruxz.ascend.extension.time.inWholeMinecraftTicks
 import dev.fruxz.sparkle.framework.system.debugLog
 import kotlinx.coroutines.*
 import org.bukkit.Bukkit

@@ -1,7 +1,7 @@
 package dev.fruxz.sparkle.framework.coroutine.task
 
-import de.fruxz.ascend.extension.dump
-import de.fruxz.ascend.extension.switchResult
+import dev.fruxz.ascend.extension.dump
+import dev.fruxz.ascend.extension.switchResult
 import dev.fruxz.sparkle.framework.coroutine.scope.coroutineScope
 import dev.fruxz.sparkle.framework.coroutine.dispatcher.asyncDispatcher
 import dev.fruxz.sparkle.framework.coroutine.dispatcher.syncDispatcher

@@ -1,6 +1,6 @@
 package dev.fruxz.sparkle.framework.command.sparkle
 
-import de.fruxz.stacked.extension.subKey
+import dev.fruxz.stacked.extension.subKey
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
 import dev.fruxz.sparkle.framework.system.sparkle
 import net.kyori.adventure.key.Key

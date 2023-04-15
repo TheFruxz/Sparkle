@@ -1,6 +1,6 @@
 package dev.fruxz.sparkle.framework.command.context
 
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.text
 import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor

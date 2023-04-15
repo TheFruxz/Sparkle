@@ -1,6 +1,6 @@
 package dev.fruxz.sparkle.framework.command.context
 
-import de.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.extension.tryOrNull
 import dev.fruxz.sparkle.framework.command.sparkle.BranchContent
 import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch
 import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch.BranchConfiguration

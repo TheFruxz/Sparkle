@@ -1,7 +1,8 @@
 package dev.fruxz.sparkle.framework.system
 
-import de.fruxz.stacked.extension.asStyledComponent
 import dev.fruxz.sparkle.framework.adventure.namespacedKey
+import dev.fruxz.stacked.extension.api.StyledString
+import dev.fruxz.stacked.extension.asStyledComponent
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.ComponentLike
 import org.bukkit.Bukkit

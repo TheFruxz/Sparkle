@@ -1,11 +1,11 @@
 package dev.fruxz.sparkle.framework.command.sparkle
 
-import de.fruxz.stacked.extension.dyeGray
-import de.fruxz.stacked.extension.dyeRed
-import de.fruxz.stacked.extension.newline
-import de.fruxz.stacked.extension.style
-import de.fruxz.stacked.plus
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.extension.dyeGray
+import dev.fruxz.stacked.extension.dyeRed
+import dev.fruxz.stacked.extension.newline
+import dev.fruxz.stacked.extension.style
+import dev.fruxz.stacked.plus
+import dev.fruxz.stacked.text
 import dev.fruxz.sparkle.framework.command.bukkit.TabCommandExecutor
 import dev.fruxz.sparkle.framework.command.context.CommandExecutionContext
 import dev.fruxz.sparkle.framework.coroutine.task.doAsync

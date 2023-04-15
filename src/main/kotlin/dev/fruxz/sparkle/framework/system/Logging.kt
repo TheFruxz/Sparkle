@@ -1,6 +1,6 @@
 package dev.fruxz.sparkle.framework.system
 
-import de.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.extension.tryOrNull
 import dev.fruxz.sparkle.server.LocalSparklePlugin
 import java.util.logging.Level
 import java.util.logging.Logger

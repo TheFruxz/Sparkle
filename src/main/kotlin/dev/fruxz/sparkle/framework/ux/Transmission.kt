@@ -1,10 +1,10 @@
 package dev.fruxz.sparkle.framework.ux
 
-import de.fruxz.stacked.extension.asStyledComponent
-import de.fruxz.stacked.extension.asStyledString
-import de.fruxz.stacked.extension.joinToComponent
-import de.fruxz.stacked.extension.style
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.extension.asStyledComponent
+import dev.fruxz.stacked.extension.asStyledString
+import dev.fruxz.stacked.extension.joinToComponent
+import dev.fruxz.stacked.extension.style
+import dev.fruxz.stacked.text
 import dev.fruxz.sparkle.framework.system.consoleSender
 import dev.fruxz.sparkle.framework.system.onlinePlayers
 import net.kyori.adventure.text.Component

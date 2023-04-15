@@ -1,8 +1,8 @@
 package dev.fruxz.sparkle.server
 
-import de.fruxz.ascend.extension.createFileAndDirectories
-import de.fruxz.ascend.extension.data.kotlinVersion
-import de.fruxz.ascend.json.property
+import dev.fruxz.ascend.extension.createFileAndDirectories
+import dev.fruxz.ascend.extension.data.kotlinVersion
+import dev.fruxz.ascend.json.property
 import dev.fruxz.sparkle.framework.SparklePlugin
 import dev.fruxz.sparkle.server.command.SparkleCommand
 import org.bukkit.Bukkit

@@ -1,6 +1,6 @@
 package dev.fruxz.sparkle.framework.command.sparkle
 
-import de.fruxz.ascend.extension.math.minTo
+import dev.fruxz.ascend.extension.math.minTo
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
 import dev.fruxz.sparkle.framework.command.context.CommandContext
 import dev.fruxz.sparkle.framework.command.context.CommandExecutionContext
