@@ -5,10 +5,11 @@ import de.fruxz.stacked.extension.asStyledString
 import de.fruxz.stacked.extension.joinToComponent
 import de.fruxz.stacked.extension.style
 import de.fruxz.stacked.text
+import dev.fruxz.sparkle.framework.system.consoleSender
+import dev.fruxz.sparkle.framework.system.onlinePlayers
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.text.format.TextColor
-import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Entity
 
@@ -47,7 +48,7 @@ data class Transmission(
     }
 
     fun broadcast() = this
-        .copy(participants = Bukkit.getOnlinePlayers().toSet() + Bukkit.getConsoleSender()) // TODO bukkit extension values for both
+        .copy(participants = onlinePlayers + consoleSender) // TODO bukkit extension values for both
         .display()
 
     override fun toString() = content.joinToString("\n", transform = Component::asStyledString)
