@@ -1,12 +1,10 @@
 package dev.fruxz.sparkle.framework
 
-import dev.fruxz.stacked.extension.asStyledComponent
 import dev.fruxz.sparkle.framework.command.*
 import dev.fruxz.sparkle.framework.command.annotations.*
 import dev.fruxz.sparkle.framework.command.annotations.permission.Private
 import dev.fruxz.sparkle.framework.command.annotations.permission.Public
 import dev.fruxz.sparkle.framework.coroutine.scope.coroutineScope
-import dev.fruxz.sparkle.framework.event.listen
 import dev.fruxz.sparkle.framework.marker.SparkleDSL
 import dev.fruxz.sparkle.framework.module.ModuleContext
 import dev.fruxz.sparkle.framework.system.internalCommandMap
@@ -17,7 +15,6 @@ import net.kyori.adventure.key.Key
 import net.kyori.adventure.key.Keyed
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.PluginCommand
-import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
@@ -31,7 +28,6 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
     private val onDisables = mutableListOf<JavaPlugin.() -> Unit>()
 
     private val paperCommands = mutableMapOf<KClass<out CommandExecutor>, CommandExecutor>()
-    private val sparkleCommands = mutableListOf<Any>()
 
     private val key: Key by lazy {
        Key.key(LocalSparklePlugin.SYSTEM_IDENTITY.lowercase(), this.name.lowercase())
@@ -127,13 +123,6 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
 
             } ?: logger.warning("No name found for command ${command.key.simpleName} @${command.key.simpleName} at ${command.key.annotations.joinToString { it.annotationClass.simpleName ?: "/" }}!")
 
-
-        }
-
-        listen<PlayerJoinEvent>(this) { event ->
-
-            event.player.sendMessage("Hello, ${event.player.name}!")
-            event.joinMessage("Hello, ${event.player.name}!".asStyledComponent)
 
         }
 
