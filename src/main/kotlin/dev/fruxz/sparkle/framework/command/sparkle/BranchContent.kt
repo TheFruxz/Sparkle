@@ -1,8 +1,10 @@
 package dev.fruxz.sparkle.framework.command.sparkle
 
-import dev.fruxz.stacked.extension.subKey
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
 import dev.fruxz.sparkle.framework.system.sparkle
+import dev.fruxz.sparkle.framework.ux.effect.sound.SoundEffect
+import dev.fruxz.sparkle.framework.ux.effect.sound.SoundLibrary
+import dev.fruxz.stacked.extension.subKey
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.key.Keyed
 import org.bukkit.Bukkit
@@ -34,6 +36,8 @@ data class BranchContent<T>(
             contentGenerator: BranchExecutionContext.(List<String>) -> T?,
             displayGenerator: () -> String = { "<${key.value()}>" },
         ): BranchContent<T> = BranchContent(key, tabGenerator, contentGenerator, displayGenerator)
+
+        // JVM
 
         fun static(vararg options: String): BranchContent<String> = of(
             key = sparkle.key().subKey("static"),
@@ -85,6 +89,8 @@ data class BranchContent<T>(
             displayGenerator = { "${examples.start}..${examples.endInclusive}" },
         )
 
+        // Bukkit
+
         fun onlinePlayer(): BranchContent<Player> = of(
             key = Key.key("player"),
             tabGenerator = { Bukkit.getOnlinePlayers().map { it.name } },
@@ -92,7 +98,7 @@ data class BranchContent<T>(
         )
 
         fun offlinePlayer(onlyCached: Boolean = false): BranchContent<OfflinePlayer> = of(
-            key = sparkle.key().subKey("offlinePlayer"),
+            key = Key.key("offline_player"),
             tabGenerator = { Bukkit.getOnlinePlayers().map { player -> player.name } },
             contentGenerator = {
                 when (onlyCached) {
@@ -117,6 +123,14 @@ data class BranchContent<T>(
             key = Key.key("entity"),
             tabGenerator = { EntityType.values().map { it.name } },
             contentGenerator = { EntityType.valueOf(it.joinToString(" ").uppercase()) }
+        )
+
+        // Sparkle
+
+        fun librarySound(): BranchContent<SoundEffect> = of(
+            key = sparkle.key().subKey("librarySound"),
+            tabGenerator = { SoundLibrary.values().map { it.name } },
+            contentGenerator = { SoundLibrary.valueOf(it.joinToString(" ").uppercase()).sound }
         )
 
     }

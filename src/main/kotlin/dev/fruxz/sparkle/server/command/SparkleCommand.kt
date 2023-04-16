@@ -3,8 +3,10 @@ package dev.fruxz.sparkle.server.command
 import dev.fruxz.sparkle.framework.command.annotations.Description
 import dev.fruxz.sparkle.framework.command.annotations.Label
 import dev.fruxz.sparkle.framework.command.annotations.Usage
+import dev.fruxz.sparkle.framework.command.sparkle.BranchContent
 import dev.fruxz.sparkle.framework.command.sparkle.Command
 import dev.fruxz.sparkle.server.LocalSparklePlugin
+import org.bukkit.entity.Entity
 
 @Label("sparkle")
 @Description("A command for everything sparkle")
@@ -34,6 +36,27 @@ internal class SparkleCommand : Command() {
                 execution {
                     LocalSparklePlugin.debugMode = false
                     reply("Debug mode is now off!")
+                }
+
+            }
+
+        }
+
+        branch {
+
+            content("playLibrarySound")
+
+            branch {
+
+                content(BranchContent.librarySound())
+
+                execution {
+                    val sound = translate(BranchContent.librarySound(), branchParameters.joinToString(" "))
+
+                    (executor as? Entity)?.let { entity ->
+                        sound.play(entity)
+                    }
+
                 }
 
             }

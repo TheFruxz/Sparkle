@@ -22,6 +22,8 @@ data class BranchExecutionContext(
 
     val currentDepth = branch.branchDepth
 
+    // TODO fix: make it like before! (parameters have to be the transformed ones)
+
     fun <T> translateOrNull(type: BranchContent<T>, vararg content: String): T? = tryOrNull(silent = false) { type.generateContent(this, content.toList()) }
 
     fun <T> translate(type: BranchContent<T>, vararg content: String): T = translateOrNull(type, *content) ?: throw IllegalArgumentException("Could not translate content: ${content.joinToString(" ")}")
