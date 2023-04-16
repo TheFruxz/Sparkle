@@ -3,6 +3,7 @@ package dev.fruxz.sparkle.framework.ux.messaging
 import dev.fruxz.sparkle.framework.system.consoleSender
 import dev.fruxz.sparkle.framework.system.onlinePlayers
 import dev.fruxz.sparkle.framework.ux.effect.sound.SoundEffect
+import dev.fruxz.sparkle.framework.ux.effect.sound.SoundLibrary
 import dev.fruxz.stacked.extension.asStyledComponent
 import dev.fruxz.stacked.extension.asStyledString
 import dev.fruxz.stacked.extension.joinToComponent
@@ -21,7 +22,7 @@ data class Transmission(
     var participants: Set<CommandSender> = emptySet(),
     var hidePrefix: Boolean = false,
     var displayType: DisplayType = DisplayType.CHAT,
-    var soundEffect: Any? = null, // TODO Sound Effect
+    var soundEffect: SoundEffect? = null,
     var theme: Theme = Theme.Template.GENERAL,
 ) {
 
@@ -32,6 +33,7 @@ data class Transmission(
 
     fun display(receivers: Set<CommandSender> = participants): Transmission = apply {
         val computedPrefix = this.prefix ?: theme.prefix
+        val computedSound = this.soundEffect ?: theme.sound
         val displayObject = content.map { computedPrefix.append(it) }
 
         receivers.forEach { receiver ->
@@ -42,7 +44,7 @@ data class Transmission(
             }
 
             if (receiver is Entity) {
-                // TODO play sound effect
+                computedSound?.play(receiver, sticky = true)
             }
 
         }
@@ -50,7 +52,7 @@ data class Transmission(
     }
 
     fun broadcast() = this
-        .copy(participants = onlinePlayers + consoleSender) // TODO bukkit extension values for both
+        .copy(participants = onlinePlayers + consoleSender)
         .display()
 
     override fun toString() = content.joinToString("\n", transform = Component::asStyledString)
@@ -77,15 +79,31 @@ data class Transmission(
                 text("\uD83D\uDD25 ").style(when (this) {
                     GENERAL -> TextColor.color(204, 204, 204)
                     SUCCESS -> TextColor.color(0, 232, 70)
+                    APPLIED -> TextColor.color(30, 227, 82)
                     INFO -> TextColor.color(0, 154, 219)
-                    WARNING -> TextColor.color(255, 153, 0) // 2 times minecraft:block.note_block.pling 2 .6
+                    WARNING -> TextColor.color(255, 153, 0)
                     ERROR -> TextColor.color(222, 4, 41)
-                    else -> TextColor.color(204, 204, 204) // TODO not real
+                    PROCESS -> TextColor.color(8, 115, 255)
+                    LEVEL -> TextColor.color(157, 0, 255)
+                    PAYMENT -> TextColor.color(255, 200, 0)
+                    ATTENTION -> TextColor.color(255, 0, 0)
                 }) + text("» ").style(TextColor.color(74, 74, 74))
             }
 
-            override val sound: SoundEffect?
-                get() = TODO("Not yet implemented")
+            override val sound: SoundEffect? by lazy {
+                when (this) {
+                    GENERAL -> SoundLibrary.NOTIFICATION_GENERAL
+                    SUCCESS -> SoundLibrary.NOTIFICATION_GENERAL
+                    APPLIED -> SoundLibrary.NOTIFICATION_APPLIED
+                    INFO -> SoundLibrary.NOTIFICATION_GENERAL
+                    WARNING -> SoundLibrary.NOTIFICATION_WARNING
+                    ERROR -> SoundLibrary.NOTIFICATION_ERROR
+                    PROCESS -> SoundLibrary.NOTIFICATION_PROCESS
+                    LEVEL -> SoundLibrary.NOTIFICATION_LEVEL
+                    PAYMENT -> SoundLibrary.NOTIFICATION_PAYMENT
+                    ATTENTION -> SoundLibrary.NOTIFICATION_ATTENTION
+                }.sound
+            }
 
         }
 
