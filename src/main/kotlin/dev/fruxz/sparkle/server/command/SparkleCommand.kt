@@ -5,6 +5,7 @@ import dev.fruxz.sparkle.framework.command.annotations.Label
 import dev.fruxz.sparkle.framework.command.annotations.Usage
 import dev.fruxz.sparkle.framework.command.sparkle.BranchContent
 import dev.fruxz.sparkle.framework.command.sparkle.Command
+import dev.fruxz.sparkle.framework.ux.messaging.transmission
 import dev.fruxz.sparkle.server.LocalSparklePlugin
 import org.bukkit.entity.Entity
 
@@ -56,6 +57,24 @@ internal class SparkleCommand : Command() {
                     (executor as? Entity)?.let { entity ->
                         sound.play(entity)
                     }
+
+                }
+
+            }
+
+        }
+
+        branch {
+            content("sendTransmission")
+
+            branch {
+                content("none")
+                content(BranchContent.transmissionTheme())
+
+                execution {
+                    val theme = if (parameters.last() == "none") null else translate(BranchContent.transmissionTheme(), branchParameters.joinToString(" "))
+
+                    "This is a Transmission Test".transmission(executor, theme = theme).display()
 
                 }
 

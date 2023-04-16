@@ -23,7 +23,7 @@ data class Transmission(
     var hidePrefix: Boolean = false,
     var displayType: DisplayType = DisplayType.CHAT,
     var soundEffect: SoundEffect? = null,
-    var theme: Theme = Theme.Template.GENERAL,
+    var theme: Theme? = null,
 ) {
 
     constructor(message: String) : this(content = listOf(message.asStyledComponent))
@@ -31,10 +31,12 @@ data class Transmission(
     constructor(vararg messages: String) : this(content = messages.map { it.asStyledComponent })
     constructor(vararg components: ComponentLike) : this(content = components.map { it.asComponent() })
 
+    private val defaultPrefix = (text("\uD83D\uDD25 ").style(TextColor.color(255, 0, 64)) + text("» ").style(TextColor.color(74, 74, 74)))
+
     fun display(receivers: Set<CommandSender> = participants): Transmission = apply {
-        val computedPrefix = this.prefix ?: theme.prefix
-        val computedSound = this.soundEffect ?: theme.sound
-        val displayObject = content.map { computedPrefix.append(it) }
+        val computedPrefix = this.prefix ?: theme?.prefix ?: defaultPrefix
+        val computedSound = this.soundEffect ?: theme?.sound
+        val displayObject = content.map { computedPrefix.append(it.colorIfAbsent(TextColor.color(158, 158, 158))) }
 
         receivers.forEach { receiver ->
 
@@ -62,7 +64,40 @@ data class Transmission(
         val prefix: Component
         val sound: SoundEffect?
 
-        enum class Template : Theme {
+        enum class Default : Theme {
+
+            GENERAL,
+            SUCCESS,
+            APPLIED,
+            INFO,
+            WARNING,
+            ERROR,
+            PROCESS,
+            LEVEL,
+            PAYMENT,
+            ATTENTION;
+
+            override val prefix: Component =
+                (text("\uD83D\uDD25 ").style(TextColor.color(255, 0, 64)) + text("» ").style(TextColor.color(74, 74, 74)))
+
+            override val sound: SoundEffect? by lazy {
+                when (this) {
+                    GENERAL -> SoundLibrary.NOTIFICATION_GENERAL
+                    SUCCESS -> SoundLibrary.NOTIFICATION_GENERAL
+                    APPLIED -> SoundLibrary.NOTIFICATION_APPLIED
+                    INFO -> SoundLibrary.NOTIFICATION_GENERAL
+                    WARNING -> SoundLibrary.NOTIFICATION_WARNING
+                    ERROR -> SoundLibrary.NOTIFICATION_ERROR
+                    PROCESS -> SoundLibrary.NOTIFICATION_PROCESS
+                    LEVEL -> SoundLibrary.NOTIFICATION_LEVEL
+                    PAYMENT -> SoundLibrary.NOTIFICATION_PAYMENT
+                    ATTENTION -> SoundLibrary.NOTIFICATION_ATTENTION
+                }.sound
+            }
+
+        }
+
+        enum class Color : Theme {
 
             GENERAL,
             SUCCESS,
@@ -77,13 +112,13 @@ data class Transmission(
 
             override val prefix: Component by lazy {
                 text("\uD83D\uDD25 ").style(when (this) {
-                    GENERAL -> TextColor.color(204, 204, 204)
-                    SUCCESS -> TextColor.color(0, 232, 70)
-                    APPLIED -> TextColor.color(30, 227, 82)
-                    INFO -> TextColor.color(0, 154, 219)
+                    GENERAL -> TextColor.color(255, 0, 64)
+                    SUCCESS -> TextColor.color(0, 247, 107)
+                    APPLIED -> TextColor.color(110, 255, 48)
+                    INFO -> TextColor.color(0, 191, 255)
                     WARNING -> TextColor.color(255, 153, 0)
                     ERROR -> TextColor.color(222, 4, 41)
-                    PROCESS -> TextColor.color(8, 115, 255)
+                    PROCESS -> TextColor.color(78, 129, 217)
                     LEVEL -> TextColor.color(157, 0, 255)
                     PAYMENT -> TextColor.color(255, 200, 0)
                     ATTENTION -> TextColor.color(255, 0, 0)

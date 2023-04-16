@@ -4,6 +4,7 @@ import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
 import dev.fruxz.sparkle.framework.system.sparkle
 import dev.fruxz.sparkle.framework.ux.effect.sound.SoundEffect
 import dev.fruxz.sparkle.framework.ux.effect.sound.SoundLibrary
+import dev.fruxz.sparkle.framework.ux.messaging.Transmission
 import dev.fruxz.stacked.extension.subKey
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.key.Keyed
@@ -131,6 +132,12 @@ data class BranchContent<T>(
             key = sparkle.key().subKey("librarySound"),
             tabGenerator = { SoundLibrary.values().map { it.name } },
             contentGenerator = { SoundLibrary.valueOf(it.joinToString(" ").uppercase()).sound }
+        )
+
+        fun transmissionTheme(): BranchContent<Transmission.Theme> = of(
+            key = sparkle.key().subKey("transmissionTheme"),
+            tabGenerator = { Transmission.Theme.Default.values().map { it.name } },
+            contentGenerator = { Transmission.Theme.Default.valueOf(it.joinToString(" ").uppercase()) }
         )
 
     }
