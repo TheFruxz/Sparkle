@@ -20,6 +20,10 @@ val consoleSender by lazy { Bukkit.getConsoleSender() }
 
 val structureManager by lazy { Bukkit.getStructureManager() }
 
+// path
+
+val pluginsFolder by lazy { Bukkit.getPluginsFolder().toPath() }
+
 // player properties
 
 val onlinePlayers: Set<Player>
