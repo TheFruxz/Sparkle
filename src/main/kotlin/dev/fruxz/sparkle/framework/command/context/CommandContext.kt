@@ -1,6 +1,7 @@
 package dev.fruxz.sparkle.framework.command.context
 
 import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch
+import dev.fruxz.stacked.extension.api.StyledString
 import dev.fruxz.stacked.text
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -18,7 +19,7 @@ interface CommandContext {
     val parameters: List<String>
 
     // interaction
-    fun reply(text: String) = executor.sendMessage(text(text).colorIfAbsent(NamedTextColor.GRAY))
+    fun reply(@StyledString text: String) = executor.sendMessage(text(text).colorIfAbsent(NamedTextColor.GRAY))
 
     fun reply(message: Component) = executor.sendMessage(message.colorIfAbsent(NamedTextColor.GRAY))
 
