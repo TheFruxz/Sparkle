@@ -1,7 +1,7 @@
 package dev.fruxz.sparkle.framework.command.context
 
-import dev.fruxz.stacked.text
 import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch
+import dev.fruxz.stacked.text
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.CommandSender
@@ -23,12 +23,12 @@ interface CommandContext {
     fun reply(message: Component) = executor.sendMessage(message.colorIfAbsent(NamedTextColor.GRAY))
 
     // transformation
-    fun asBranchContext(branch: CommandBranch, branchInput: List<String>): BranchExecutionContext {
+    fun asBranchContext(branch: CommandBranch, processedInput: List<String>, branchInput: List<String>): BranchExecutionContext {
         return BranchExecutionContext(
             executor = executor,
             command = command,
             label = label,
-            parameters = parameters,
+            parameters = processedInput,
             branch = branch,
             branchParameters = branchInput
         )

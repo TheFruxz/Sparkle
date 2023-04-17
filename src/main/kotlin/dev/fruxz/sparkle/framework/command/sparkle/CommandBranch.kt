@@ -177,15 +177,16 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
                             hit = SuccessfulCommandBranchTrace.TraceHit(
                                 destination = this,
                                 context = context.asBranchContext(
-                                    this,
-                                    processedInput
-                                ), // TODO check if this is even used!
+                                    branch = this,
+                                    processedInput = processedInput, // <- does not have to, because its empty, but it is more consistent
+                                    branchInput = processedInput, // <- this too
+                                ),
                                 path = this.executePathTrace(),
                             ),
                             processedInput = processedInput,
                             result = mapOf(
                                 TraceResult.HIT to listOf(this),
-                                // TODO TraceResult.NOT_REACHED to currentBranch.flatMapBranches(),
+                                TraceResult.NOT_REACHED to currentBranch.flatMapBranches(), // TODO was commented out, check if this still works
                             )
                         )
                     }
@@ -198,7 +199,7 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
 
                         val multiWordBranch = tracedBranch.configuration.multiWord
                         val openEndBranch = tracedBranch.configuration.openEnd
-                        val lastDepthOfRoute = tracedBranch.branches.isEmpty() // TODO this is not correct <-!-
+                        val lastDepthOfRoute = tracedBranch.branches.isEmpty()
                         val localInputCopy = processedInput.toMutableList()
                         var currentInput = localInputCopy[currentDepth]
 
@@ -241,8 +242,10 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
                         tracedBranch.branchInputCheck(
                             context = context.asBranchContext(
                                 branch = tracedBranch,
-                                branchInput = nextBranchInput
-                            ), branchInput = nextBranchInput
+                                processedInput = processedInput,
+                                branchInput = nextBranchInput,
+                            ),
+                            branchInput = nextBranchInput,
                         ).also { inputCheckResult ->
 
                             when {
@@ -252,7 +255,7 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
                                         when {
                                             isLastDepth || (lastDepthOfRoute && openEndBranch) -> HIT
                                             else -> {
-                                                currentBranch = tracedBranch // TODO in the right place?
+                                                currentBranch = tracedBranch
                                                 TraceResult.MATCH
                                             }
                                         }, tracedBranch
@@ -295,8 +298,9 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
                 hit = SuccessfulCommandBranchTrace.TraceHit(
                     destination = successfulBranch,
                     context = context.asBranchContext(
-                        successfulBranch,
-                        processedInput.drop(successfulBranch.branchDepth)
+                        branch = successfulBranch,
+                        processedInput = processedInput,
+                        branchInput = processedInput.drop(successfulBranch.branchDepth)
                     ).copy(parameters = processedInput),
                     path = successfulBranch.executePathTrace(),
                 ),
@@ -318,13 +322,13 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
         }, split = false)
 
         debugLog {
-            """
-                capture------------------
-                ${traceResult.result.toList().joinToString { 
-                    it.first.name + ": \n " + it.second.joinToString { "\t'" + it.generateBranchDisplay() + "'\n" }
-                }}
-                capture------------------    
-            """.trimIndent()
+            buildString {
+                appendLine("--- capture ---------------")
+                traceResult.result.forEach { (key, value) ->
+                    appendLine("$key: \n ${value.joinToString { "\t'" + it.generateBranchDisplay() + "'\n" }}")
+                }
+                appendLine("--- capture ---------------")
+            }
         }
 
         return when (context.parameters.firstOrNull()?.isBlank()) {
@@ -447,7 +451,12 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
 
             FAILED,
             OVERFLOW,
-            NOT_REACHED,
+            NOT_REACHED;
+
+            val hit by lazy { this == HIT }
+            val match by lazy { this == HIT || this == MATCH }
+            val failed by lazy { this == FAILED || this == OVERFLOW || this == NOT_REACHED }
+
         }
 
     }
