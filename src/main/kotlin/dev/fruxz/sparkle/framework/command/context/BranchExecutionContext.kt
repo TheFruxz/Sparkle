@@ -4,8 +4,10 @@ import dev.fruxz.ascend.extension.tryOrNull
 import dev.fruxz.sparkle.framework.command.sparkle.BranchContent
 import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch
 import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch.BranchConfiguration
+import dev.fruxz.sparkle.framework.marker.SparkleDSL
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.jetbrains.annotations.ApiStatus
 
 /**
  * @param branchParameters The parameters that are passed to the branch, by default only one string contained, due to only one input per branch.
@@ -20,12 +22,50 @@ data class BranchExecutionContext(
     val branchParameters: List<String>,
 ) : CommandContext {
 
-    val currentDepth = branch.branchDepth
+    val executionDepth = branch.branchDepth
 
-    // TODO fix: make it like before! (parameters have to be the transformed ones)
+    private val reversedParameters by lazy { parameters.asReversed() }
 
-    fun <T> translateOrNull(type: BranchContent<T>, vararg content: String): T? = tryOrNull(silent = false) { type.generateContent(this, content.toList()) }
+    operator fun get(index: Int = executionDepth): String = parameters[index]
 
-    fun <T> translate(type: BranchContent<T>, vararg content: String): T = translateOrNull(type, *content) ?: throw IllegalArgumentException("Could not translate content: ${content.joinToString(" ")}")
+    fun getOrNull(index: Int = executionDepth): String? = parameters.getOrNull(index)
+
+    fun getReversed(reversedIndex: Int): String = reversedParameters[reversedIndex]
+
+    fun getReversedOrNull(reversedIndex: Int): String? = reversedParameters.getOrNull(reversedIndex)
+
+    // translated
+
+    @ApiStatus.Internal
+    @SparkleDSL
+    fun <T> processContentOrNull(type: BranchContent<T>, vararg content: String): T? = tryOrNull(silent = false) { type.generateContent(this, content.toList()) }
+
+    @ApiStatus.Internal
+    @SparkleDSL
+    fun <T> processContent(type: BranchContent<T>, vararg content: String): T = processContentOrNull(type, *content) ?: throw IllegalArgumentException("Could not translate content: ${content.joinToString(" ")}")
+
+    @SparkleDSL
+    fun <T> getOrNull(type: BranchContent<T>, index: Int): T? =
+        processContentOrNull(type, parameters[index])
+
+    @SparkleDSL
+    operator fun <T> get(type: BranchContent<T>, index: Int): T =
+        processContent(type, parameters[index])
+
+    @SparkleDSL
+    fun <T> getOrNull(type: BranchContent<T>): T? =
+        processContentOrNull(type, parameters[executionDepth])
+
+    @SparkleDSL
+    operator fun <T> get(type: BranchContent<T>): T =
+        processContent(type, parameters[executionDepth])
+
+    @SparkleDSL
+    fun <T> getReversedOrNull(type: BranchContent<T>, reversedIndex: Int): T? =
+        processContentOrNull(type, reversedParameters[reversedIndex])
+
+    @SparkleDSL
+    fun <T> getReversed(type: BranchContent<T>, reversedIndex: Int): T =
+        processContent(type, reversedParameters[reversedIndex])
 
 }

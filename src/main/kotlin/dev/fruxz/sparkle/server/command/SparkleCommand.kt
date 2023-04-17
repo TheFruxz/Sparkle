@@ -19,61 +19,47 @@ internal class SparkleCommand : Command() {
         branch {
 
             content("debug")
-
             branch {
-
                 content("on")
-
                 execution {
                     LocalSparklePlugin.debugMode = true
                     reply("Debug mode is now on!")
                 }
-
             }
 
             branch {
-
                 content("off")
-
                 execution {
                     LocalSparklePlugin.debugMode = false
                     reply("Debug mode is now off!")
                 }
-
             }
 
         }
 
         branch {
-
             content("playLibrarySound")
-
             branch {
-
                 content(BranchContent.librarySound())
-
                 execution {
-                    val sound = translate(BranchContent.librarySound(), branchParameters.joinToString(" "))
-
+                    val sound = get(BranchContent.librarySound())
                     (executor as? Entity)?.let { entity ->
                         sound.play(entity)
                     }
-
                 }
-
             }
-
         }
 
         branch {
             content("sendTransmission")
-
             branch {
                 content("none")
                 content(BranchContent.transmissionTheme())
-
                 execution {
-                    val theme = if (parameters.last() == "none") null else translate(BranchContent.transmissionTheme(), branchParameters.joinToString(" "))
+                    val theme = when {
+                        get(0) == "none" -> null
+                        else -> get(BranchContent.transmissionTheme())
+                    }
 
                     "This is a Transmission Test"
                         .transmission(executor, theme = theme)
@@ -81,7 +67,6 @@ internal class SparkleCommand : Command() {
                         .display()
 
                 }
-
             }
 
         }

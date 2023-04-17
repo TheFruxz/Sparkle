@@ -11,7 +11,7 @@ import dev.fruxz.sparkle.framework.marker.SparkleDSL
 import dev.fruxz.sparkle.framework.system.debugLog
 import dev.fruxz.sparkle.framework.system.mainLogger
 
-open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int = 0) {
+open class CommandBranch(private val parent: CommandBranch? = null, internal val branchDepth: Int = 0) {
 
     val branches: MutableSet<CommandBranch> =
         mutableSetOf()
@@ -21,7 +21,7 @@ open class CommandBranch(val parent: CommandBranch? = null, val branchDepth: Int
 
     var execution: BranchExecution? = null
 
-    var isLocked = false
+    private var isLocked = false
 
     var configuration: BranchConfiguration = BranchConfiguration()
 
