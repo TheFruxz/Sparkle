@@ -2,6 +2,8 @@ package dev.fruxz.sparkle.framework.command.sparkle
 
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
 import dev.fruxz.sparkle.framework.system.sparkle
+import dev.fruxz.sparkle.framework.util.cache.CachedProperty
+import dev.fruxz.sparkle.framework.util.cache.cached
 import dev.fruxz.sparkle.framework.ux.effect.sound.SoundEffect
 import dev.fruxz.sparkle.framework.ux.effect.sound.SoundLibrary
 import dev.fruxz.sparkle.framework.ux.messaging.Transmission
@@ -14,21 +16,22 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.jetbrains.annotations.ApiStatus
+import kotlin.time.Duration
 
 data class BranchContent<T>(
     val key: Key,
-    val cachedTabGenerator: Boolean,
+    val cacheDuration: Duration,
     private val tabGenerator: () -> List<String>, // TODO maybe set or collection is better?
     private val contentGenerator: BranchExecutionContext.(List<String>) -> T?,
     private val displayGenerator: () -> String = { key.value() },
 ) : Keyed {
 
-    private var cachedTab: List<String>? = null
+    private var cachedTab: List<String>? by cached(keep = cacheDuration) { null }
 
     override fun key() = this.key
 
     fun generateTab(): List<String> = when {
-        cachedTabGenerator -> cachedTab ?: tabGenerator().also { cachedTab = it }
+        cacheDuration.isPositive() -> cachedTab ?: tabGenerator().also { cachedTab = it }
         else -> tabGenerator()
     }
 
@@ -41,17 +44,26 @@ data class BranchContent<T>(
         @ApiStatus.Internal
         fun <T> of(
             key: Key,
-            cachedTabGenerator: Boolean,
             tabGenerator: () -> List<String>,
             contentGenerator: BranchExecutionContext.(List<String>) -> T?,
             displayGenerator: () -> String = { "<${key.value()}>" },
-        ): BranchContent<T> = BranchContent(key, cachedTabGenerator, tabGenerator, contentGenerator, displayGenerator)
+            cacheDuration: Duration = Duration.ZERO,
+        ): BranchContent<T> = BranchContent(key, cacheDuration, tabGenerator, contentGenerator, displayGenerator)
+
+        @ApiStatus.Internal
+        fun <T> of(
+            key: Key,
+            tabGenerator: () -> List<String>,
+            contentGenerator: BranchExecutionContext.(List<String>) -> T?,
+            displayGenerator: () -> String = { "<${key.value()}>" },
+            cacheDuration: CachedProperty.CacheDuration,
+        ): BranchContent<T> = BranchContent(key, cacheDuration.duration, tabGenerator, contentGenerator, displayGenerator)
 
         // JVM
 
         fun static(vararg options: String): BranchContent<String> = of(
             key = sparkle.key().subKey("static"),
-            cachedTabGenerator = true,
+            cacheDuration = Duration.INFINITE,
             tabGenerator = { options.toList() },
             contentGenerator = { it.joinToString(" ").takeIf { it in options } },
             displayGenerator = { options.joinToString("|") },
@@ -59,7 +71,7 @@ data class BranchContent<T>(
 
         fun string(examples: List<String> = emptyList()): BranchContent<String> = of(
             key = sparkle.key().subKey("string"),
-            cachedTabGenerator = true,
+            cacheDuration = Duration.INFINITE,
             tabGenerator = { examples },
             contentGenerator = { it.joinToString(" ") },
             displayGenerator = { examples.joinToString("|") },
@@ -67,7 +79,7 @@ data class BranchContent<T>(
 
         fun int(examples: Iterable<Int> = 0..99): BranchContent<Int> = of(
             key = sparkle.key().subKey("int"),
-            cachedTabGenerator = true,
+            cacheDuration = Duration.INFINITE,
             tabGenerator = { examples.map(Int::toString) },
             contentGenerator = { it.joinToString(" ").toIntOrNull() },
             displayGenerator = { when {
@@ -79,7 +91,7 @@ data class BranchContent<T>(
 
         fun long(examples: Iterable<Long> = 0L..99L): BranchContent<Long> = of(
             key = sparkle.key().subKey("long"),
-            cachedTabGenerator = true,
+            cacheDuration = Duration.INFINITE,
             tabGenerator = { examples.map(Long::toString) },
             contentGenerator = { it.joinToString(" ").toLongOrNull() },
             displayGenerator = { when {
@@ -91,7 +103,7 @@ data class BranchContent<T>(
 
         fun double(examples: ClosedRange<Double> = 0.0..1.0): BranchContent<Double> = of(
             key = sparkle.key().subKey("double"),
-            cachedTabGenerator = true,
+            cacheDuration = Duration.INFINITE,
             tabGenerator = { listOf(examples.start, examples.endInclusive).map(Double::toString) },
             contentGenerator = { it.joinToString(" ").toDoubleOrNull() },
             displayGenerator = { "${examples.start}..${examples.endInclusive}" },
@@ -99,7 +111,7 @@ data class BranchContent<T>(
 
         fun float(examples: ClosedRange<Float> = 0F..1F): BranchContent<Float> = of(
             key = sparkle.key().subKey("float"),
-            cachedTabGenerator = true,
+            cacheDuration = Duration.INFINITE,
             tabGenerator = { listOf(examples.start, examples.endInclusive).map(Float::toString) },
             contentGenerator = { it.joinToString(" ").toFloatOrNull() },
             displayGenerator = { "${examples.start}..${examples.endInclusive}" },
@@ -109,14 +121,14 @@ data class BranchContent<T>(
 
         fun onlinePlayer(): BranchContent<Player> = of(
             key = Key.key("player"),
-            cachedTabGenerator = false,
+            cacheDuration = Duration.ZERO,
             tabGenerator = { Bukkit.getOnlinePlayers().map { it.name } },
             contentGenerator = { executor.server.getPlayer(it.joinToString(" ")) }
         )
 
         fun offlinePlayer(onlyCached: Boolean = false): BranchContent<OfflinePlayer> = of(
             key = Key.key("offline_player"),
-            cachedTabGenerator = false,
+            cacheDuration = Duration.ZERO,
             tabGenerator = { Bukkit.getOnlinePlayers().map { player -> player.name } },
             contentGenerator = {
                 when (onlyCached) {
@@ -128,7 +140,7 @@ data class BranchContent<T>(
 
         fun material(filter: ((Material) -> Boolean)? = null): BranchContent<Material> = of(
             key = Key.key("material"),
-            cachedTabGenerator = true,
+            cacheDuration = Duration.INFINITE,
             tabGenerator = {
                 when (filter) {
                     null -> Material.values().map { it.name }
@@ -140,7 +152,7 @@ data class BranchContent<T>(
 
         fun entityType(): BranchContent<EntityType> = of(
             key = Key.key("entity"),
-            cachedTabGenerator = true,
+            cacheDuration = Duration.INFINITE,
             tabGenerator = { EntityType.values().map { it.name } },
             contentGenerator = { EntityType.valueOf(it.joinToString(" ").uppercase()) }
         )
@@ -149,14 +161,14 @@ data class BranchContent<T>(
 
         fun librarySound(): BranchContent<SoundEffect> = of(
             key = sparkle.key().subKey("librarySound"),
-            cachedTabGenerator = true,
+            cacheDuration = Duration.INFINITE,
             tabGenerator = { SoundLibrary.values().map { it.name } },
             contentGenerator = { SoundLibrary.valueOf(it.joinToString(" ").uppercase()).sound }
         )
 
         fun transmissionTheme(): BranchContent<Transmission.Theme> = of(
             key = sparkle.key().subKey("transmissionTheme"),
-            cachedTabGenerator = true,
+            cacheDuration = Duration.INFINITE,
             tabGenerator = { Transmission.Theme.Default.values().map { it.name } },
             contentGenerator = { Transmission.Theme.Default.valueOf(it.joinToString(" ").uppercase()) }
         )
