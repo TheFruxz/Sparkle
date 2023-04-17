@@ -5,6 +5,7 @@ import dev.fruxz.sparkle.framework.command.annotations.Label
 import dev.fruxz.sparkle.framework.command.annotations.Usage
 import dev.fruxz.sparkle.framework.command.sparkle.BranchContent
 import dev.fruxz.sparkle.framework.command.sparkle.Command
+import dev.fruxz.sparkle.framework.system.sparklePrefix
 import dev.fruxz.sparkle.framework.ux.messaging.transmission
 import dev.fruxz.sparkle.server.LocalSparklePlugin
 import org.bukkit.entity.Entity
@@ -74,7 +75,10 @@ internal class SparkleCommand : Command() {
                 execution {
                     val theme = if (parameters.last() == "none") null else translate(BranchContent.transmissionTheme(), branchParameters.joinToString(" "))
 
-                    "This is a Transmission Test".transmission(executor, theme = theme).display()
+                    "This is a Transmission Test"
+                        .transmission(executor, theme = theme)
+                        .sparklePrefix()
+                        .display()
 
                 }
 

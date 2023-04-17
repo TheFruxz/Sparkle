@@ -8,7 +8,6 @@ import dev.fruxz.stacked.extension.asStyledComponent
 import dev.fruxz.stacked.extension.asStyledString
 import dev.fruxz.stacked.extension.joinToComponent
 import dev.fruxz.stacked.extension.style
-import dev.fruxz.stacked.plus
 import dev.fruxz.stacked.text
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
@@ -31,10 +30,22 @@ data class Transmission(
     constructor(vararg messages: String) : this(content = messages.map { it.asStyledComponent })
     constructor(vararg components: ComponentLike) : this(content = components.map { it.asComponent() })
 
-    private val defaultPrefix = (text("\uD83D\uDD25 ").style(TextColor.color(255, 0, 64)) + text("» ").style(TextColor.color(74, 74, 74)))
+    fun prefix(prefix: Component?) = apply { this.prefix = prefix }
+    fun content(vararg messages: String) = apply { this.content = messages.map { it.asStyledComponent } }
+    fun content(vararg components: ComponentLike) = apply { this.content = components.map { it.asComponent() } }
+    fun content(vararg components: Component) = apply { this.content = components.toList() }
+    fun content(components: List<Component>) = apply { this.content = components }
+    fun participants(vararg participants: CommandSender) = apply { this.participants = participants.toSet() }
+    fun participants(participants: Set<CommandSender>) = apply { this.participants = participants }
+    fun hidePrefix(hidePrefix: Boolean) = apply { this.hidePrefix = hidePrefix }
+    fun displayType(displayType: DisplayType) = apply { this.displayType = displayType }
+    fun soundEffect(soundEffect: SoundEffect?) = apply { this.soundEffect = soundEffect }
+    fun theme(theme: Theme?) = apply { this.theme = theme }
+
+    private val defaultPrefix = text("» ").style(TextColor.color(74, 74, 74))
 
     fun display(receivers: Set<CommandSender> = participants): Transmission = apply {
-        val computedPrefix = this.prefix ?: theme?.prefix ?: defaultPrefix
+        val computedPrefix = this.prefix ?: defaultPrefix
         val computedSound = this.soundEffect ?: theme?.sound
         val displayObject = content.map { computedPrefix.append(it.colorIfAbsent(TextColor.color(158, 158, 158))) }
 
@@ -45,8 +56,8 @@ data class Transmission(
                 DisplayType.ACTION_BAR -> receiver.sendActionBar(displayObject.joinToComponent())
             }
 
-            if (receiver is Entity) {
-                computedSound?.play(receiver, sticky = true)
+            when (receiver) {
+                is Entity -> computedSound?.play(receiver, sticky = true)
             }
 
         }
@@ -61,7 +72,6 @@ data class Transmission(
 
     interface Theme {
 
-        val prefix: Component
         val sound: SoundEffect?
 
         enum class Default : Theme {
@@ -76,54 +86,6 @@ data class Transmission(
             LEVEL,
             PAYMENT,
             ATTENTION;
-
-            override val prefix: Component =
-                (text("\uD83D\uDD25 ").style(TextColor.color(255, 0, 64)) + text("» ").style(TextColor.color(74, 74, 74)))
-
-            override val sound: SoundEffect? by lazy {
-                when (this) {
-                    GENERAL -> SoundLibrary.NOTIFICATION_GENERAL
-                    SUCCESS -> SoundLibrary.NOTIFICATION_GENERAL
-                    APPLIED -> SoundLibrary.NOTIFICATION_APPLIED
-                    INFO -> SoundLibrary.NOTIFICATION_GENERAL
-                    WARNING -> SoundLibrary.NOTIFICATION_WARNING
-                    ERROR -> SoundLibrary.NOTIFICATION_ERROR
-                    PROCESS -> SoundLibrary.NOTIFICATION_PROCESS
-                    LEVEL -> SoundLibrary.NOTIFICATION_LEVEL
-                    PAYMENT -> SoundLibrary.NOTIFICATION_PAYMENT
-                    ATTENTION -> SoundLibrary.NOTIFICATION_ATTENTION
-                }.sound
-            }
-
-        }
-
-        enum class Color : Theme {
-
-            GENERAL,
-            SUCCESS,
-            APPLIED,
-            INFO,
-            WARNING,
-            ERROR,
-            PROCESS,
-            LEVEL,
-            PAYMENT,
-            ATTENTION;
-
-            override val prefix: Component by lazy {
-                text("\uD83D\uDD25 ").style(when (this) {
-                    GENERAL -> TextColor.color(255, 0, 64)
-                    SUCCESS -> TextColor.color(0, 247, 107)
-                    APPLIED -> TextColor.color(110, 255, 48)
-                    INFO -> TextColor.color(0, 191, 255)
-                    WARNING -> TextColor.color(255, 153, 0)
-                    ERROR -> TextColor.color(222, 4, 41)
-                    PROCESS -> TextColor.color(78, 129, 217)
-                    LEVEL -> TextColor.color(157, 0, 255)
-                    PAYMENT -> TextColor.color(255, 200, 0)
-                    ATTENTION -> TextColor.color(255, 0, 0)
-                }) + text("» ").style(TextColor.color(74, 74, 74))
-            }
 
             override val sound: SoundEffect? by lazy {
                 when (this) {
