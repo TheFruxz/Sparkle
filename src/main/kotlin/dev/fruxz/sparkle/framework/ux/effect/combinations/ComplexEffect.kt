@@ -13,11 +13,11 @@ data class ComplexEffect(
 
     constructor(builder: ComplexEffect.() -> Unit) : this(ComplexEffect(mutableListOf()).apply(builder)._effects)
 
-    override fun play(locationSet: Set<Location>, entitySet: Set<Entity>) = effects.forEach { it.play(locationSet, entitySet) }
+    override fun play(locationSet: Set<Location>, entitySet: Set<Entity>) = _effects.forEach { it.play(locationSet, entitySet) }
 
-    override fun play(vararg entities: Entity?) = effects.forEach { it.play(*entities) }
+    override fun play(vararg entities: Entity?) = _effects.forEach { it.play(*entities) }
 
-    override fun play(vararg locations: Location?) = effects.forEach { it.play(*locations) }
+    override fun play(vararg locations: Location?) = _effects.forEach { it.play(*locations) }
 
     @EffectDsl
     fun effect(effect: CrossBasedEffect) = _effects.add(effect)
