@@ -15,10 +15,12 @@ fun Server.internalSyncCommands() {
 
 val Server.internalCommandMap: CommandMap
     get() {
-        this::class.declaredFunctions.firstOrNull { it.name.contains("commandMap", true) }?.let {
-            it.isAccessible = true
-            return it.call(Bukkit.getServer()) as CommandMap
-        }
+        this::class.declaredFunctions
+            .firstOrNull { it.name.contains("commandMap", true) }
+            ?.let {
+                it.isAccessible = true
+                return it.call(Bukkit.getServer()) as CommandMap
+            }
 
         throw IllegalStateException("Could not find commandMap!")
     }

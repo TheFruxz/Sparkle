@@ -13,16 +13,15 @@ import kotlin.reflect.KClass
 private val pluginScopes = mutableMapOf<KClass<out JavaPlugin>, CoroutineScope>()
 
 fun pluginCoroutineScope(plugin: KClass<out Plugin>): CoroutineScope {
-    val current = pluginScopes[plugin]
 
-    return if (current == null) {
-
-        if ((plugin == LocalSparklePlugin::class) || Bukkit.getPluginManager().getPlugin(LocalSparklePlugin.SYSTEM_IDENTITY) == null) {
-            CoroutineScope(SupervisorJob() + Dispatchers.Default) // If this is the main-plugin OR sparkle is not enabled
-        } else
-            CoroutineScope(SupervisorJob() + pluginCoroutineScope<LocalSparklePlugin>().coroutineContext) // If this is a sub-plugin
-
-    } else current
+    return pluginScopes[plugin]
+        ?: when {
+            plugin == LocalSparklePlugin::class || Bukkit.getPluginManager()
+                .getPlugin(LocalSparklePlugin.SYSTEM_IDENTITY) == null -> {
+                CoroutineScope(SupervisorJob() + Dispatchers.Default) // If this is the main-plugin OR sparkle is not enabled
+            }
+            else -> CoroutineScope(SupervisorJob() + pluginCoroutineScope<LocalSparklePlugin>().coroutineContext)
+        } // If this is a sub-plugin
 }
 
 @SparkleDSL
