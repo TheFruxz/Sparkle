@@ -6,6 +6,7 @@ import dev.fruxz.stacked.text
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import org.bukkit.command.Command as BukkitCommand
 
 interface CommandContext {
@@ -22,6 +23,14 @@ interface CommandContext {
     fun reply(@StyledString text: String) = executor.sendMessage(text(text).colorIfAbsent(NamedTextColor.GRAY))
 
     fun reply(message: Component) = executor.sendMessage(message.colorIfAbsent(NamedTextColor.GRAY))
+
+    // player access
+    
+    val player: Player
+        get() = executor as Player
+
+    val playerOrNull: Player?
+        get() = executor as? Player
 
     // transformation
     fun asBranchContext(branch: CommandBranch, processedInput: List<String>, branchInput: List<String>): BranchExecutionContext {
