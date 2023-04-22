@@ -20,6 +20,8 @@ val consoleSender by lazy { Bukkit.getConsoleSender() }
 
 val structureManager by lazy { Bukkit.getStructureManager() }
 
+val itemFactory by lazy { Bukkit.getItemFactory() }
+
 // path
 
 val pluginsFolder by lazy { Bukkit.getPluginsFolder().toPath() }
