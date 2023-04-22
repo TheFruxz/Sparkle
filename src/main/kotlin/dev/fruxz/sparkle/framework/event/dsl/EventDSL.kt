@@ -39,7 +39,7 @@ object CachedEventsManager {
 
 @SparkleDSL
 inline fun <reified T : Event> listen(
-    crossinline action: (T) -> Unit,
+    crossinline action: (event: T) -> Unit,
 ) {
 
     if (cachedEvents[T::class] == null) {
@@ -70,7 +70,7 @@ inline fun <reified T : Event> listen(
 
 @SparkleDSL
 inline fun <reified T : EntityEvent> Entity.listenOnEntity(
-    crossinline action: (T, Entity) -> Unit,
+    crossinline action: (event: T, entity: Entity) -> Unit,
 ) {
     if (cachedEntityEvents[T::class] == null) {
         listen<T> { event ->
@@ -94,7 +94,7 @@ inline fun <reified T : EntityEvent> Entity.listenOnEntity(
 @JvmName("listenOnPlayerEntity")
 inline fun <reified T : PlayerEvent> Player.listenOnPlayer(
     @Suppress("UNUSED_PARAMETER") removeOnQuit: Boolean = true, // TODO module, which will clean this up
-    crossinline action: (T, Player) -> Unit,
+    crossinline action: (event: T, player: Player) -> Unit,
 ) {
 
     if (cachedPlayerEvents[T::class] == null) {
