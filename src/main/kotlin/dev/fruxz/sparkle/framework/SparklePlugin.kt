@@ -77,7 +77,6 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
 
         constructors.forEach {
             command(it.call(*constructorArgs), clazz)
-            logger.warning("annotations: ${clazz.annotations.joinToString { it.annotationClass.simpleName ?: "/" }}")
             logger.info("Queued command register of ${clazz.simpleName} via class!")
             return
         }
