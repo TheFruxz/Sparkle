@@ -38,3 +38,9 @@ val ItemStack.itemMetaOrNull: ItemMeta?
 
 fun ItemStack.itemMetaOrNull(process: ItemMeta.() -> Unit) =
     itemMetaOrNull?.apply(process)
+
+val ItemStack.itemLike: ItemLike
+    get() = ItemLike.of(this)
+
+fun ItemStack.itemLike(process: ItemLike.() -> Unit) =
+    itemLike.apply(process)
