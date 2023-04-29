@@ -8,3 +8,9 @@ val Long.ticks: Duration
 
 val Int.ticks: Duration
     get() = toLong().ticks
+
+val Double.ticks: Duration
+    get() = (this * 50).milliseconds
+
+val Float.ticks: Duration
+    get() = toDouble().ticks
