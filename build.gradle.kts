@@ -115,10 +115,10 @@ val dokkaHtmlJar by tasks.register<Jar>("dokkaHtmlJar") {
     archiveClassifier.set("html-doc")
 }
 
-val source by tasks.register<Jar>("sourceJar") {
-    from(sourceSets.main.get().allSource)
-    archiveClassifier.set("sources")
-}
+//val source by tasks.register<Jar>("sourceJar") {
+//    from(sourceSets.main.get().allSource)
+//    archiveClassifier.set("sources")
+//}
 
 publishing {
     repositories {
@@ -136,10 +136,6 @@ publishing {
     publications.create("Sparkle", MavenPublication::class) {
 
         from(components["kotlin"])
-
-        artifact(dokkaJavadocJar)
-        artifact(dokkaHtmlJar)
-        artifact(source)
 
         artifactId = "sparkle"
         version = version.lowercase()
