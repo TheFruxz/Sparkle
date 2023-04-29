@@ -1,7 +1,12 @@
 package dev.fruxz.sparkle.framework.ux.effect.sound
 
+import dev.fruxz.sparkle.framework.ux.effect.EffectDsl
+import dev.fruxz.sparkle.framework.ux.effect.playEffect
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
+import org.bukkit.Location
+import org.bukkit.World
+import org.bukkit.entity.Entity
 
 // create single-sound
 
@@ -60,3 +65,22 @@ operator fun ComplexSoundEffect.plus(other: SoundEffect): ComplexSoundEffect {
         else -> this.copy(effects = this.effects + other)
     }
 }
+
+// play
+
+@EffectDsl
+fun Entity.playSound(
+    vararg soundEffects: SoundEffect,
+) = playEffect(*soundEffects)
+
+@EffectDsl
+fun World.playSound(
+    vararg soundEffects: SoundEffect,
+) = soundEffects.forEach { effect ->
+    effect.play(this)
+}
+
+@EffectDsl
+fun Location.playSound(
+    vararg soundEffects: SoundEffect,
+) = playEffect(*soundEffects)
