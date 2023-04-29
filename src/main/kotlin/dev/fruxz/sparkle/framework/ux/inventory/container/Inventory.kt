@@ -1,8 +1,7 @@
-package dev.fruxz.sparkle.framework.ux.inventory
+package dev.fruxz.sparkle.framework.ux.inventory.container
 
-import dev.fruxz.sparkle.framework.ux.inventory.item.Item
-import dev.fruxz.sparkle.framework.ux.inventory.item.ItemLike
-import dev.fruxz.sparkle.framework.ux.inventory.item.item
+import dev.fruxz.sparkle.framework.ux.inventory.item.*
+import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.Inventory
@@ -23,6 +22,10 @@ fun HumanEntity.giveItems(vararg itemLike: ItemLike) {
 
 fun Inventory.addItem(vararg itemLike: ItemLike) {
     addItem(*itemLike.map { it.asItemStack() }.toTypedArray())
+}
+
+fun Inventory.addItem(vararg material: Material) {
+    addItem(*material.map { it.itemStack }.toTypedArray())
 }
 
 // operator functions
@@ -71,3 +74,19 @@ operator fun PlayerInventory.set(slot: EquipmentSlot, itemStack: ItemStack) {
 operator fun PlayerInventory.set(slot: EquipmentSlot, itemLike: ItemLike) {
     setItem(slot, itemLike.asItemStack())
 }
+
+// properties
+
+var PlayerInventory.mainHand: ItemLike
+    get() = itemInMainHand.itemLike
+    set(value) = setItemInMainHand(value.asItemStack())
+
+var PlayerInventory.offHand: ItemLike
+    get() = itemInOffHand.itemLike
+    set(value) = setItemInOffHand(value.asItemStack())
+
+val Inventory.slots: IntRange
+    get() = 0 until size
+
+val Inventory.center: Int
+    get() = (size / 2) - 1

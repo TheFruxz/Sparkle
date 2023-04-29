@@ -1,0 +1,14 @@
+package dev.fruxz.sparkle.framework.ux.inventory.container
+
+import net.kyori.adventure.text.ComponentLike
+import org.bukkit.Bukkit
+import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.InventoryHolder
+
+fun buildInventory(size: Int, owner: InventoryHolder? = null, process: Inventory.() -> Unit = { }) =
+    Bukkit.createInventory(owner, size).apply(process)
+
+fun buildInventory(size: Int, label: ComponentLike, owner: InventoryHolder? = null, process: Inventory.() -> Unit = { }) =
+    Bukkit.createInventory(owner, size, label.asComponent()).apply(process)
+
+// TODO buildInventory with canvas base
