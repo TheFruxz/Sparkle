@@ -39,14 +39,17 @@ fun Item.size(amount: Int) = apply {
 
 // lore
 
+@JvmName("loreComponents")
 fun Item.lore(lore: List<Component>) = apply {
     this.lore = lore
 }
 
+@JvmName("loreStyledStrings")
 fun Item.lore(@StyledString stringList: List<String>) = apply {
     this.lore = stringList.asStyledComponents
 }
 
+@JvmName("loreStyledString")
 fun Item.lore(@StyledString string: String) = apply {
     this.lore = string.asStyledComponents
 }
