@@ -8,6 +8,7 @@ import org.jetbrains.annotations.ApiStatus
 var InventoryClickEvent.affectedItem: ItemStack?
 get() = currentItem ?: cursor
     set(value)  {
+        @Suppress("DEPRECATION")
         when {
             currentItem != null -> currentItem = value
             cursor != null -> cursor = value
