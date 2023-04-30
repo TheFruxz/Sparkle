@@ -20,7 +20,8 @@ public class LocalSparkleLoader implements PluginLoader {
      * The list of dependencies, which this loader should load.
      */
     public static List<String> dependencies = List.of(
-            "org.jetbrains.kotlin:kotlin-stdlib:1.8.20",
+            "org.jetbrains.kotlin:kotlin-stdlib:1.8.21",
+            "org.jetbrains.kotlin:kotlin-reflect:1.8.21",
             "com.github.TheFruxz:Ascend:ba6c401235",
             "com.github.TheFruxz:Stacked:74e454b253",
             "com.github.TheFruxz:Kojang:1.0-RC2"

@@ -1,9 +1,6 @@
-
-
 plugins {
-    kotlin("jvm") version "1.8.20"
-    kotlin("plugin.serialization") version "1.8.20"
-    id("org.jetbrains.dokka") version "1.8.10"
+    kotlin("jvm") version "1.8.21"
+    kotlin("plugin.serialization") version "1.8.21"
     `maven-publish`
 }
 
@@ -45,50 +42,19 @@ dependencies {
     implementation("com.mojang:brigadier:1.0.500")
     compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT") // PaperMC
 
-    // TODO -> Was shadowed
+    implementation("io.ktor:ktor-client-cio:2.3.0")
+    implementation("io.ktor:ktor-client-core-jvm:2.3.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
 
-    implementation("io.ktor:ktor-client-cio:2.2.4")
-    implementation("io.ktor:ktor-client-core-jvm:2.2.4")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.4")
-    implementation("io.ktor:ktor-client-content-negotiation:2.2.4")
-
-    implementation("net.kyori:adventure-api:4.12.0")
-    implementation("net.kyori:adventure-text-serializer-legacy:4.13.0")
-    implementation("net.kyori:adventure-text-minimessage:4.12.0")
-    implementation("net.kyori:adventure-text-serializer-gson:4.12.0")
-
-    // TODO end
-
-    // Shadow
-
-    // TODO implement in loader
-//    shadow("com.github.TheFruxz:Ascend:$ascendVersion") {
-//        isTransitive = false
-//    }
-//    shadow("com.github.TheFruxz:Stacked:$stackedVersion") {
-//        isTransitive = false
-//    }
-//
-//    shadow(kotlin("stdlib"))
-//    shadow(kotlin("reflect"))
-//
-//    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-//    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-//
-//    shadow("net.kyori:adventure-text-serializer-plain:4.13.0")
-//
-//    shadow("org.jetbrains.exposed:exposed-core:0.41.1")
-//    shadow("org.jetbrains.exposed:exposed-dao:0.41.1")
-//    shadow("org.jetbrains.exposed:exposed-jdbc:0.41.1")
+    implementation("net.kyori:adventure-api:4.13.1")
+    implementation("net.kyori:adventure-text-serializer-legacy:4.13.1")
+    implementation("net.kyori:adventure-text-minimessage:4.13.1")
+    implementation("net.kyori:adventure-text-serializer-gson:4.13.1")
 
 }
 
 tasks {
-
-
-    dokkaHtml.configure {
-        outputDirectory.set(buildDir.resolve("../docs/"))
-    }
 
     processResources {
         expand(
@@ -103,23 +69,6 @@ tasks {
     }
 
 }
-
-val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
-    dependsOn(tasks.dokkaJavadoc)
-    from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
-    archiveClassifier.set("javadoc")
-}
-
-val dokkaHtmlJar by tasks.register<Jar>("dokkaHtmlJar") {
-    dependsOn(tasks.dokkaHtml)
-    from(tasks.dokkaHtml.flatMap { it.outputDirectory })
-    archiveClassifier.set("html-doc")
-}
-
-//val source by tasks.register<Jar>("sourceJar") {
-//    from(sourceSets.main.get().allSource)
-//    archiveClassifier.set("sources")
-//}
 
 publishing {
     repositories {
@@ -147,12 +96,6 @@ publishing {
 java {
     withJavadocJar()
     withSourcesJar()
-}
-
-configure<SourceSetContainer> {
-    named("main") {
-        java.srcDir("src/main/kotlin")
-    }
 }
 
 kotlin {
