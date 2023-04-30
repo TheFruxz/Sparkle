@@ -13,13 +13,13 @@ import dev.fruxz.sparkle.framework.system.mainLogger
 
 open class CommandBranch(private val parent: CommandBranch? = null, internal val branchDepth: Int = 0) {
 
-    val branches: MutableSet<CommandBranch> =
+    private val branches: MutableSet<CommandBranch> =
         mutableSetOf()
 
-    val content: MutableList<BranchContent<*>> =
+    private val content: MutableList<BranchContent<*>> =
         mutableListOf()
 
-    var execution: BranchExecution? = null
+    internal var execution: BranchExecution? = null
 
     private var isLocked = false
 
@@ -98,7 +98,7 @@ open class CommandBranch(private val parent: CommandBranch? = null, internal val
         }
     }
 
-    fun executePathTrace() = buildList {
+    fun pathTrace() = buildList {
         var current: CommandBranch? = this@CommandBranch
         while (current != null) {
             add(0, current)
@@ -181,7 +181,7 @@ open class CommandBranch(private val parent: CommandBranch? = null, internal val
                                     processedInput = processedInput, // <- does not have to, because its empty, but it is more consistent
                                     branchInput = processedInput, // <- this too
                                 ),
-                                path = this.executePathTrace(),
+                                path = this.pathTrace(),
                             ),
                             processedInput = processedInput,
                             result = mapOf(
@@ -302,7 +302,7 @@ open class CommandBranch(private val parent: CommandBranch? = null, internal val
                         processedInput = processedInput,
                         branchInput = processedInput.drop(successfulBranch.branchDepth)
                     ).copy(parameters = processedInput),
-                    path = successfulBranch.executePathTrace(),
+                    path = successfulBranch.pathTrace(),
                 ),
                 processedInput = processedInput,
                 result = producedResults,
@@ -356,7 +356,7 @@ open class CommandBranch(private val parent: CommandBranch? = null, internal val
 
     private fun lockWarning(modification: String? = null) {
         if (isLocked) mainLogger.warning(
-            "CommandBranch ${executePathTrace().joinToString("/") { it.generateBranchDisplay() }} is locked but a modification ${
+            "CommandBranch ${pathTrace().joinToString("/") { it.generateBranchDisplay() }} is locked but a modification ${
                 modification.takeIf { it != null }?.let { "'$it' " } ?: ""
             }has been done anyway! Check your code!")
     }

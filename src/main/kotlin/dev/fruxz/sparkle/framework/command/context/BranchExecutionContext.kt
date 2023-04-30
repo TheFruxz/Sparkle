@@ -22,13 +22,13 @@ data class BranchExecutionContext(
     val branchParameters: List<String>,
 ) : CommandContext {
 
-    val executionDepth = branch.branchDepth
+    val branchDepth = branch.branchDepth
 
     private val reversedParameters by lazy { parameters.asReversed() }
 
-    operator fun get(index: Int = executionDepth): String = parameters[index]
+    operator fun get(index: Int = branchDepth): String = parameters[index]
 
-    fun getOrNull(index: Int = executionDepth): String? = parameters.getOrNull(index)
+    fun getOrNull(index: Int = branchDepth): String? = parameters.getOrNull(index)
 
     fun getReversed(reversedIndex: Int): String = reversedParameters[reversedIndex]
 
@@ -54,11 +54,11 @@ data class BranchExecutionContext(
 
     @SparkleDSL
     fun <T> getOrNull(type: BranchContent<T>): T? =
-        processContentOrNull(type, parameters[executionDepth])
+        processContentOrNull(type, parameters[branchDepth])
 
     @SparkleDSL
     operator fun <T> get(type: BranchContent<T>): T =
-        processContent(type, parameters[executionDepth])
+        processContent(type, parameters[branchDepth])
 
     @SparkleDSL
     fun <T> getReversedOrNull(type: BranchContent<T>, reversedIndex: Int): T? =
