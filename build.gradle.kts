@@ -29,6 +29,7 @@ dependencies {
 
     api("com.github.TheFruxz:Ascend:$ascendVersion")
     api("com.github.TheFruxz:Stacked:$stackedVersion")
+    api("com.github.TheFruxz:Kojang:1.0-RC2")
 
     // Kotlin
 
