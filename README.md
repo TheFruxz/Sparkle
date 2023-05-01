@@ -2,6 +2,8 @@
 
 <br>
 
+> Sparkle is currently being reworked. Check out the `rework/2023` branch for the latest dev-build.
+
 ## 👋 Welcome to Sparkle
 
 Sparkle is a framework, developed for the Kotlin programming language and Paper as the Minecraft-Server platform.
