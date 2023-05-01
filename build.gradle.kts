@@ -93,6 +93,12 @@ publishing {
     }
 }
 
+configure<SourceSetContainer> { // allowing java files appearing next to kotlin files
+    named("main") {
+        java.srcDir("src/main/kotlin")
+    }
+}
+
 java {
     withJavadocJar()
     withSourcesJar()
