@@ -11,7 +11,7 @@ import org.bukkit.command.Command as BukkitCommand
 
 interface CommandContext {
 
-    val executor: CommandSender
+    val performer: CommandSender
 
     val command: BukkitCommand
 
@@ -20,22 +20,22 @@ interface CommandContext {
     val parameters: List<String>
 
     // interaction
-    fun reply(@StyledString text: String) = executor.sendMessage(text(text).colorIfAbsent(NamedTextColor.GRAY))
+    fun reply(@StyledString text: String) = performer.sendMessage(text(text).colorIfAbsent(NamedTextColor.GRAY))
 
-    fun reply(message: Component) = executor.sendMessage(message.colorIfAbsent(NamedTextColor.GRAY))
+    fun reply(message: Component) = performer.sendMessage(message.colorIfAbsent(NamedTextColor.GRAY))
 
     // player access
     
     val player: Player
-        get() = executor as Player
+        get() = performer as Player
 
     val playerOrNull: Player?
-        get() = executor as? Player
+        get() = performer as? Player
 
     // transformation
     fun asBranchContext(branch: CommandBranch, processedInput: List<String>, branchInput: List<String>): BranchExecutionContext {
         return BranchExecutionContext(
-            executor = executor,
+            performer = performer,
             command = command,
             label = label,
             parameters = processedInput,
@@ -46,7 +46,7 @@ interface CommandContext {
 
     fun asCommandContext(): CommandExecutionContext {
         return CommandExecutionContext(
-            executor = executor,
+            performer = performer,
             command = command,
             label = label,
             parameters = parameters

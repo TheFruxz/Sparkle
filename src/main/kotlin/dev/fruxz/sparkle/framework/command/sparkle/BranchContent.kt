@@ -123,7 +123,7 @@ data class BranchContent<T>(
             key = Key.key("player"),
             cacheDuration = Duration.ZERO,
             tabGenerator = { Bukkit.getOnlinePlayers().map { it.name } },
-            contentGenerator = { executor.server.getPlayer(it.joinToString(" ")) }
+            contentGenerator = { performer.server.getPlayer(it.joinToString(" ")) }
         )
 
         fun offlinePlayer(onlyCached: Boolean = false): BranchContent<OfflinePlayer> = of(
@@ -132,7 +132,7 @@ data class BranchContent<T>(
             tabGenerator = { Bukkit.getOnlinePlayers().map { player -> player.name } },
             contentGenerator = {
                 when (onlyCached) {
-                    true -> executor.server.getOfflinePlayerIfCached(it.joinToString(" "))
+                    true -> performer.server.getOfflinePlayerIfCached(it.joinToString(" "))
                     else -> Bukkit.getOfflinePlayer(it.joinToString(" "))
                 }
             }

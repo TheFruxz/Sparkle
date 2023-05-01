@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.Command as BukkitCommand
 
 data class CommandExecutionContext(
-    override val executor: CommandSender,
+    override val performer: CommandSender,
     override val command: BukkitCommand,
     override val label: String,
     override val parameters: List<String>,

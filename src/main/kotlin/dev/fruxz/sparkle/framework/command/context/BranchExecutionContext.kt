@@ -14,7 +14,7 @@ import org.jetbrains.annotations.ApiStatus
  * BUT if you use the [BranchConfiguration.openEnd] then you can pass multiple parameters to the branch.
  */
 data class BranchExecutionContext(
-    override val executor: CommandSender,
+    override val performer: CommandSender,
     override val command: Command,
     override val label: String,
     override val parameters: List<String>,
