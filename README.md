@@ -2,86 +2,42 @@
 
 <br>
 
-## 👋 Welcome to Sparkle
+# 👋 Welcome to Sparkle!
+Sparkle is a full-fledged framework, developed for the development of Plugins on the Paper Minecraft-Server platform, using the Kotlin programming language.
 
-Sparkle is a framework, developed for the Kotlin programming language and Paper as the Minecraft-Server platform.
-This project provides a feature-rich architecture for Minecraft-Plugins, which is powerful and filled with rocket science.
+This framework combines simple and fast tools with under-the-hood rocket science, to enable a new feature-rich architecture, for plugins, to build on.
 
-## ⚙️ Setup
+# 📑 Version
+Many plugins do everything, to be supported on as many versions of Minecraft as possible. If you want to use this framework with this goal in mind, this may not be the right thing for you. This framework is specialized to make the most out of current and coming technology. This is the reason, why we always build on-top the newest (or current newest stable) version, available right now.
 
-### Repository
+# 🎯 Goal
+Our goal is to provide powerful tools and a great foundation, which helps to easily develop plugins, without blocking the way to get deeper.
 
-How can I use Sparkle in my own projects? For this you need to know what your project is based on, or should be based on.
-We ourselves recommend that you use `Gradle Kotlin` in all your projects, but you can also use other systems like `Gradle` and `Maven`!
+# 💻 Set up your Project
+Our current platform of trust for our builds is 'JitPack'. This allows us to easily provide you with the current version of Sparkle, without all the hustle of GitHub's own “solution”.
 
-#### Using JitPack
-##### Repository
+Firstly, add JitPack as a maven repository if it is not already added!
 ```kotlin
 maven("https://jitpack.io")
 ```
 
-##### Dependency
+Subsequently, the only thing missing is sparkle itself, add this to your dependencies:
 ```kotlin
 implementation("com.github.TheFruxz:sparkle:$sparkleVersion")
 ```
 
-#### Using GitHub Packages
-##### Repository 
-```kotlin
-maven("https://maven.pkg.github.com/TheFruxz/Sparkle") {
-        credentials {
-            credentials {
-                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
-            }
-        }
-    }
-```
+And done.
 
-##### Dependency
-```kotlin
-implementation("de.fruxz:sparkle:$sparkleVersion")
-```
+# 🌋 Running Sparkle
+Currently, due to some features and actively running code, it is required, that the Sparkle plugin is running on the server.
+The running plugin not only allows automatic services, but also loading the required dependencies.
+Things like the Kotlin-Libraries and Ascend + Stacked are all loaded via the Paper-Plugin dependency feature, so the Sparkle-Plugin file is lightweight and your Paper-Server provides you with the stuff, you need.
 
-#### 🔐 Auth
-
-You need to have set the system variables `USERNAME` and `TOKEN` to your GitHub-Username and GitHub-Personal-Access-Token,
-to access the packages via the GitHub-Packages Feature. You can also use the project variables `gpr.user` and `gpr.key`, but
-don't publish them to the web!
-
-## 🗞 Version
-
-Since we always try to use the latest versions as soon as possible, as already described in the point 'Version Policy', current versions quickly become obsolete, so we will soon release a list of versions, where it will be shown exactly how long a certain version is still being supported.
-
-## 👥 Contribution
+# 🧑‍💻 Contribution
 
 Of course, you can also participate in Sparkle and contribute to the development. However, please follow all community and general guidelines of GitHub and the repositories. You also have to respect the licenses set in this repository as well as in other repositories.
 
-If you have any questions, suggestions or other items you would like to contribute to Sparkle or just discuss, check out the Discussions' section of this repository, where you will find the respective areas where you can create your own questions or join in discussions on other things. 
-
-## 🗒 Sidenotes
-
-The Sparkle-Runnable jar includes (/ shadowed) these small amount of dependencies, so you don't have to provide them:
-
-  - [Ascend](https://www.github.com/TheFruxz/Ascend)
-  - [Stacked](https://www.github.com/TheFruxz/Stacked)
-  - [Sparkle](https://www.github.com/TheFruxz/Sparkle)
-  - Kotlin Standard Library
-  - Kotlin Standard Library JDK8
-  - Kotlin Reflect
-  - KotlinX Serialization JSON
-  - KotlinX Coroutines Core
-  - SLF4J-API
-  - JetBrains Exposed Core
-  - JetBrains Exposed DAO
-  - JetBrains Exposed JDBC
-  - Ktor Client Core JVM
-  - Ktor Serialization KotlinX JSON
-  - Ktor Client CIO
-  - Ktor Client Content Negotiation
-  - Adventure API
-  - Adventure text Serializer Legacy
-  - Adventure text MiniMessage
+If you require any further assistance, suggestions or other items you would like to contribute to Sparkle or just discuss, take a look at the Discussions' section of this repository. There you will find the respective areas where you can create your own questions or join in discussions on other things.
 
 ###### We build & use Sparkle on Java 17 - [Eclipse Temurin](https://adoptium.net/).
 ###### Also build & run Sparkle with [Eclipse Temurin](https://adoptium.net/) to get the best possible experience!
