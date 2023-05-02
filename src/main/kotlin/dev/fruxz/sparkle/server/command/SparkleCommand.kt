@@ -43,7 +43,7 @@ internal class SparkleCommand : Command() {
                 content(BranchContent.librarySound())
                 execution {
                     val sound = get(BranchContent.librarySound())
-                    (executor as? Entity)?.let { entity ->
+                    (performer as? Entity)?.let { entity ->
                         sound.play(entity)
                     }
                 }
@@ -62,7 +62,7 @@ internal class SparkleCommand : Command() {
                     }
 
                     "This is a Transmission Test"
-                        .transmission(executor, theme = theme)
+                        .transmission(performer, theme = theme)
                         .sparklePrefix()
                         .display()
 
