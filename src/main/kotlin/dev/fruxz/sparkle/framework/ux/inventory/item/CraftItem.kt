@@ -25,6 +25,8 @@ val Material.itemMeta: ItemMeta?
 fun Material.itemMeta(process: ItemMeta.() -> Unit) =
     itemMeta?.apply(process)
 
+fun item(material: Material) = material.item
+
 // ItemStack -> ?
 
 val ItemStack.item: Item
@@ -44,3 +46,5 @@ val ItemStack.itemLike: ItemLike
 
 fun ItemStack.itemLike(process: ItemLike.() -> Unit) =
     itemLike.apply(process)
+
+fun item(itemStack: ItemStack) = itemStack.item
