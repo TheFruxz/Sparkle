@@ -22,6 +22,9 @@ data class BranchExecutionContext(
     val branchParameters: List<String>,
 ) : CommandContext {
 
+    @Deprecated("Use performer instead", ReplaceWith("performer"))
+    val sender: CommandSender = performer
+
     val branchDepth = branch.branchDepth
 
     private val reversedParameters by lazy { parameters.asReversed() }
