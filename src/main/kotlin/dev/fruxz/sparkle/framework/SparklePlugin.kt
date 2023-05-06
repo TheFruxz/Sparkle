@@ -6,7 +6,7 @@ import dev.fruxz.sparkle.framework.command.annotations.permission.Private
 import dev.fruxz.sparkle.framework.command.annotations.permission.Public
 import dev.fruxz.sparkle.framework.coroutine.scope.coroutineScope
 import dev.fruxz.sparkle.framework.marker.SparkleDSL
-import dev.fruxz.sparkle.framework.module.ModuleContext
+import dev.fruxz.sparkle.framework.component.ModuleContext
 import dev.fruxz.sparkle.framework.system.internalCommandMap
 import dev.fruxz.sparkle.framework.system.internalSyncCommands
 import dev.fruxz.sparkle.server.LocalSparklePlugin
