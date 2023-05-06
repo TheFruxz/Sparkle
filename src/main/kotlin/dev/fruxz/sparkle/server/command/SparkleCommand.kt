@@ -3,11 +3,17 @@ package dev.fruxz.sparkle.server.command
 import dev.fruxz.sparkle.framework.command.annotations.Description
 import dev.fruxz.sparkle.framework.command.annotations.Label
 import dev.fruxz.sparkle.framework.command.annotations.Usage
+import dev.fruxz.sparkle.framework.command.bukkit.asPlayerOrNull
 import dev.fruxz.sparkle.framework.command.sparkle.BranchContent
 import dev.fruxz.sparkle.framework.command.sparkle.Command
+import dev.fruxz.sparkle.framework.coroutine.task.doSync
 import dev.fruxz.sparkle.framework.system.sparklePrefix
+import dev.fruxz.sparkle.framework.ux.canvas.Canvas
+import dev.fruxz.sparkle.framework.ux.canvas.format.Pagination
+import dev.fruxz.sparkle.framework.ux.inventory.container.buildInventory
 import dev.fruxz.sparkle.framework.ux.messaging.transmission
 import dev.fruxz.sparkle.server.LocalSparklePlugin
+import dev.fruxz.stacked.text
 import org.bukkit.entity.Entity
 
 @Label("sparkle")
@@ -15,6 +21,20 @@ import org.bukkit.entity.Entity
 @Usage("/sparkle debug <on|off>")
 internal class SparkleCommand : Command() {
     override fun configure() {
+
+        branch {
+            content("test")
+            execution {
+                performer.sendMessage("test")
+
+                doSync {
+                    performer.asPlayerOrNull?.openInventory(
+                        Pagination.scroll(9).preRenderInventory(Canvas(), buildInventory(9*6, text("Demo")), 0)
+                    )
+                }
+
+            }
+        }
 
         branch {
 
