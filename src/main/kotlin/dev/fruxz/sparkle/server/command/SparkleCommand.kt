@@ -12,6 +12,7 @@ import dev.fruxz.sparkle.framework.ux.canvas.Canvas
 import dev.fruxz.sparkle.framework.ux.canvas.format.Pagination
 import dev.fruxz.sparkle.framework.ux.inventory.container.buildInventory
 import dev.fruxz.sparkle.framework.ux.messaging.transmission
+import dev.fruxz.sparkle.framework.world.asDisplayable
 import dev.fruxz.sparkle.server.LocalSparklePlugin
 import dev.fruxz.stacked.text
 import org.bukkit.entity.Entity
@@ -25,11 +26,13 @@ internal class SparkleCommand : Command() {
         branch {
             content("test")
             execution {
-                performer.sendMessage("test")
+                reply("test")
+
+                reply(performer.asPlayerOrNull?.location?.asDisplayable() ?: text("no location"))
 
                 doSync {
                     performer.asPlayerOrNull?.openInventory(
-                        Pagination.scroll(9).preRenderInventory(Canvas(), buildInventory(9*6, text("Demo")), 0)
+                        Pagination.scroll(9).preRenderInventory(Canvas(), buildInventory(9*6, text("Demo")), 0).inventory
                     )
                 }
 
