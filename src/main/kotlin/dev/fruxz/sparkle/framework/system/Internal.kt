@@ -13,6 +13,7 @@ fun Server.internalSyncCommands() {
     }
 }
 
+@Deprecated("user commandMap global extension instead!", ReplaceWith("commandMap"))
 val Server.internalCommandMap: CommandMap
     get() {
         this::class.declaredFunctions

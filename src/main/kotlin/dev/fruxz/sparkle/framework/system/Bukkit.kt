@@ -22,6 +22,8 @@ val structureManager by lazy { Bukkit.getStructureManager() }
 
 val itemFactory by lazy { Bukkit.getItemFactory() }
 
+val commandMap by lazy { Bukkit.getCommandMap() }
+
 // path
 
 val pluginsFolder by lazy { Bukkit.getPluginsFolder().toPath() }
