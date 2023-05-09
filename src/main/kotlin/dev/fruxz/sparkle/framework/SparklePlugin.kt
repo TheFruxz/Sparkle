@@ -109,7 +109,7 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
             val commandIsPublic = command.key.hasAnnotation<Public>()
 
             commandName?.let { securedName ->
-                val securedCommand = (getCommand(securedName) ?: artificialCommand(securedName))
+                val securedCommand = (getCommand(securedName) ?: artificialCommand(this, securedName))
 
                 securedCommand.setExecutor(command.value)
                 commandDescription?.let { securedCommand.description = it }
@@ -126,18 +126,23 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
         }
 
     }
+
+    companion object {
+
+        fun artificialCommand(plugin: JavaPlugin, label: String): PluginCommand {
+            val constructor = PluginCommand::class.constructors.first()
+
+            constructor.isAccessible = true
+
+            return constructor.call(label, plugin)
+        }
+
+    }
+
     override fun onDisable() {
         onDisables.forEach { it.invoke(this) }
 
         coroutineScope.cancel("Plugin disabled!") // Disables all coroutines
-    }
-
-    private fun artificialCommand(label: String): PluginCommand {
-        val constructor = PluginCommand::class.constructors.first()
-
-        constructor.isAccessible = true
-
-        return constructor.call(label, this)
     }
 
     /**
