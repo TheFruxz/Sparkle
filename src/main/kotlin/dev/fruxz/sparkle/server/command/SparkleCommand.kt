@@ -3,19 +3,18 @@ package dev.fruxz.sparkle.server.command
 import dev.fruxz.sparkle.framework.command.annotations.Description
 import dev.fruxz.sparkle.framework.command.annotations.Label
 import dev.fruxz.sparkle.framework.command.annotations.Usage
-import dev.fruxz.sparkle.framework.command.bukkit.asPlayerOrNull
+import dev.fruxz.sparkle.framework.command.registerCommand
 import dev.fruxz.sparkle.framework.command.sparkle.BranchContent
 import dev.fruxz.sparkle.framework.command.sparkle.Command
+import dev.fruxz.sparkle.framework.command.unregisterCommand
+import dev.fruxz.sparkle.framework.coroutine.task.delayed
 import dev.fruxz.sparkle.framework.coroutine.task.doSync
+import dev.fruxz.sparkle.framework.plugin.plugin
 import dev.fruxz.sparkle.framework.system.sparklePrefix
-import dev.fruxz.sparkle.framework.ux.canvas.Canvas
-import dev.fruxz.sparkle.framework.ux.canvas.format.Pagination
-import dev.fruxz.sparkle.framework.ux.inventory.container.buildInventory
 import dev.fruxz.sparkle.framework.ux.messaging.transmission
-import dev.fruxz.sparkle.framework.world.asDisplayable
 import dev.fruxz.sparkle.server.LocalSparklePlugin
-import dev.fruxz.stacked.text
 import org.bukkit.entity.Entity
+import kotlin.time.Duration.Companion.seconds
 
 @Label("sparkle")
 @Description("A command for everything sparkle")
@@ -26,15 +25,23 @@ internal class SparkleCommand : Command() {
         branch {
             content("test")
             execution {
-                reply("test")
 
-                reply(performer.asPlayerOrNull?.location?.asDisplayable() ?: text("no location"))
+                reply("<gold>action!")
 
-                doSync {
-                    performer.asPlayerOrNull?.openInventory(
-                        Pagination.scroll(9).preRenderInventory(Canvas(), buildInventory(9*6, text("Demo")), 0).inventory
-                    )
-                }
+                plugin<LocalSparklePlugin>().getCommand("sparkle")?.let {
+                    println("removed")
+                    it.let {
+                        plugin<LocalSparklePlugin>().unregisterCommand(it)
+                        delayed(10.seconds) {
+                            doSync {
+                                println("re-registered")
+                                plugin<LocalSparklePlugin>().registerCommand(SparkleCommand(), SparkleCommand::class)
+                            }
+                        }
+                    }
+                } ?: println("not found")
+
+                reply("<green>test")
 
             }
         }

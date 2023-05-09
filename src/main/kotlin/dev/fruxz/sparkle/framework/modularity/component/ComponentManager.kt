@@ -15,7 +15,7 @@ import kotlin.io.path.div
 object ComponentManager {
 
     private val registered = mutableSetOf<Component>()
-    private val running = mutableSetOf<Component>()
+    private val running = mutableSetOf<Key>()
 
     private val configurationPath = (LocalSparklePlugin.sparkleFolder / "components.json").also(Path::createFileAndDirectories)
 
