@@ -40,7 +40,9 @@ Of course, you can also participate in Sparkle and contribute to the development
 If you require any further assistance, suggestions or other items you would like to contribute to Sparkle or just discuss, take a look at the Discussions' section of this repository. There you will find the respective areas where you can create your own questions or join in discussions on other things.
 
 ###### We build & use Sparkle on Java 17 - [Eclipse Temurin](https://adoptium.net/).
-###### Also build & run Sparkle with [Eclipse Temurin](https://adoptium.net/) to get the best possible experience!
+###### Also build & run Sparkle with [Eclipse Temurin](https://adoptium.net/) on to get the best possible experience!
+###### We use [macOS 13](https://www.apple.com/de/macos) as our main development platform.
+###### We use [Gradle](https://gradle.org/) as our build system.
 
 [![Open Source](https://forthebadge.com/images/badges/open-source.svg)](https://github.com/TheFruxz/Sparkle/blob/main/LICENSE)
 [![Built by developers](https://forthebadge.com/images/badges/built-by-developers.svg)](https://github.com/TheFruxz/Sparkle/graphs/contributors)

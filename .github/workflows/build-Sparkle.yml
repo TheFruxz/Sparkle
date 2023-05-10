@@ -2,7 +2,7 @@ name: Build Sparkle
 on: [push]
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 17
