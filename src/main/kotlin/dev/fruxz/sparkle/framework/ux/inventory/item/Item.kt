@@ -73,7 +73,7 @@ data class Item(
         composeProperties = postProperties,
         identity = UUID.fromString(sourceItemStack.itemMeta.persistentDataContainer.get<String>(itemIdentityKey)),
         data = sourceItemStack.itemMeta?.persistentDataContainer?.persistentData.orEmpty(),
-        itemMeta = sourceItemStack.itemMeta ?: itemFactory.getItemMeta(sourceItemStack.type), // TODO make this as a extension value
+        itemMeta = sourceItemStack.itemMeta ?: sourceItemStack.type.itemMeta,
         composeAddons = addons,
         composeContext = composeContext,
     )
