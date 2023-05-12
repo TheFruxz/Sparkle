@@ -2,7 +2,7 @@
 
 <br>
 
-> Sparkle is currently being reworked. Check out the `rework/2023` branch for the latest dev-build.
+> Sparkle is currently being reworked. Check out the `rework/2023` branch for the latest dev-build!
 
 ## 👋 Welcome to Sparkle
 
