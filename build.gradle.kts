@@ -17,7 +17,7 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
 }
 
-val ascendVersion = "032496850b"
+val ascendVersion = "119069b785"
 val stackedVersion = "74e454b253"
 
 dependencies {
