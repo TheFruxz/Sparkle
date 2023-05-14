@@ -1,5 +1,6 @@
 package dev.fruxz.sparkle.framework.command.sparkle
 
+import dev.fruxz.ascend.extension.container.mapToString
 import dev.fruxz.ascend.extension.math.minTo
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
 import dev.fruxz.sparkle.framework.command.context.CommandContext
@@ -10,6 +11,7 @@ import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch.SuccessfulComma
 import dev.fruxz.sparkle.framework.marker.SparkleDSL
 import dev.fruxz.sparkle.framework.system.debugLog
 import dev.fruxz.sparkle.framework.system.mainLogger
+import net.kyori.adventure.key.Key
 
 open class CommandBranch(private val parent: CommandBranch? = null, internal val branchDepth: Int = 0) {
 
@@ -42,6 +44,22 @@ open class CommandBranch(private val parent: CommandBranch? = null, internal val
     }
 
     @SparkleDSL
+    fun branch(vararg content: BranchContent<*>, builder: CommandBranch.() -> Unit) {
+        branch {
+            apply(builder)
+            this.content(*content)
+        }
+    }
+
+    @SparkleDSL
+    fun branch(vararg static: String, builder: CommandBranch.() -> Unit) {
+        branch {
+            apply(builder)
+            this.content(*static)
+        }
+    }
+
+    @SparkleDSL
     fun content(vararg content: BranchContent<*>) {
         lockWarning("add content")
         this.content.addAll(content)
@@ -52,6 +70,14 @@ open class CommandBranch(private val parent: CommandBranch? = null, internal val
         lockWarning("add content")
         this.content.addAll(static.map { BranchContent.static(it) })
     }
+
+    @SparkleDSL
+    fun content(name: String, completions: () -> Iterable<Any>) =
+        content(BranchContent.of(
+            key = Key.key(name.lowercase()),
+            tabGenerator = { completions.invoke().mapToString() },
+            contentGenerator = { it.joinToString(" ") }
+        ))
 
     @SparkleDSL
     fun execution(execution: BranchExecution) {
