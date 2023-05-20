@@ -41,4 +41,7 @@ enum class StartupBehavior {
     val defaultIsAutoStart: Boolean
         get() = this != DEFAULT_OFF
 
+    val forcedAutoStart: Boolean
+        get() = this == ALWAYS_AUTOSTART || this == ALWAYS_ON
+
 }

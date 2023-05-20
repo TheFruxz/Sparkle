@@ -1,6 +1,9 @@
 package dev.fruxz.sparkle.framework.command.sparkle
 
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
+import dev.fruxz.sparkle.framework.modularity.component.Component
+import dev.fruxz.sparkle.framework.modularity.component.ComponentManager.registered
+import dev.fruxz.sparkle.framework.modularity.component.ComponentManager.running
 import dev.fruxz.sparkle.framework.system.sparkle
 import dev.fruxz.sparkle.framework.util.cache.CachedProperty
 import dev.fruxz.sparkle.framework.util.cache.cached
@@ -15,7 +18,6 @@ import org.bukkit.Material
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
-import org.jetbrains.annotations.ApiStatus
 import kotlin.time.Duration
 
 data class BranchContent<T>(
@@ -41,7 +43,6 @@ data class BranchContent<T>(
 
     companion object {
 
-        @ApiStatus.Internal
         fun <T> of(
             key: Key,
             tabGenerator: () -> List<String>,
@@ -50,7 +51,6 @@ data class BranchContent<T>(
             cacheDuration: Duration = Duration.ZERO,
         ): BranchContent<T> = BranchContent(key, cacheDuration, tabGenerator, contentGenerator, displayGenerator)
 
-        @ApiStatus.Internal
         fun <T> of(
             key: Key,
             tabGenerator: () -> List<String>,
@@ -171,6 +171,27 @@ data class BranchContent<T>(
             cacheDuration = Duration.INFINITE,
             tabGenerator = { Transmission.Theme.Default.values().map { it.name } },
             contentGenerator = { Transmission.Theme.Default.valueOf(it.joinToString(" ").uppercase()) }
+        )
+
+        fun registeredComponent(): BranchContent<Component> = of(
+            key = sparkle.key().subKey("component"),
+            cacheDuration = Duration.ZERO,
+            tabGenerator = { registered.map { it.identity.asString() } },
+            contentGenerator = { registered.find { element -> element.identity.asString() == it.joinToString(" ") } }
+        )
+
+        fun runningComponent(): BranchContent<Component> = of(
+            key = sparkle.key().subKey("runningComponent"),
+            cacheDuration = Duration.ZERO,
+            tabGenerator = { registered.mapNotNull { component -> component.identity.takeIf { it in running }?.asString() } },
+            contentGenerator = { registered.find { element -> element.identity in running && element.identity.asString() == it.joinToString(" ") } }
+        )
+
+        fun offlineComponent(): BranchContent<Component> = of(
+            key = sparkle.key().subKey("offlineComponent"),
+            cacheDuration = Duration.ZERO,
+            tabGenerator = { registered.mapNotNull { component -> component.identity.takeIf { it !in running }?.asString() } },
+            contentGenerator = { registered.find { element -> element.identity !in running && element.identity.asString() == it.joinToString(" ") } }
         )
 
     }
