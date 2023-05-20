@@ -39,7 +39,7 @@ fun <T : CommandExecutor> JavaPlugin.registerCommand(command: T, clazz: KClass<o
         server.internalSyncCommands()
 
         return securedCommand
-    } ?: logger.warning("No name found for command ${clazz.simpleName} @${clazz.simpleName} at ${clazz.annotations.joinToString { it.annotationClass.simpleName ?: "/" }}!")
+    } ?: logger.warning("No name (@Label(name: String)) found for command ${clazz.simpleName} @${clazz.simpleName} at ${clazz.annotations.joinToString { it.annotationClass.simpleName ?: "/" }}!")
 
     return null
 }

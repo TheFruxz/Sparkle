@@ -1,64 +1,90 @@
 package dev.fruxz.sparkle.framework.modularity.component
 
 import dev.fruxz.ascend.extension.createFileAndDirectories
-import dev.fruxz.ascend.json.readJsonOrDefault
-import dev.fruxz.ascend.json.writeJson
-import dev.fruxz.sparkle.framework.coroutine.task.asSync
-import dev.fruxz.sparkle.framework.coroutine.task.doSync
+import dev.fruxz.ascend.json.property
+import dev.fruxz.sparkle.framework.coroutine.task.doAsync
 import dev.fruxz.sparkle.server.LocalSparklePlugin
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.key.Key
 import java.nio.file.Path
 import kotlin.io.path.div
+import kotlin.reflect.KClass
 
 object ComponentManager {
 
-    private val registered = mutableSetOf<Component>()
-    private val running = mutableSetOf<Key>()
+    private val configPath = (LocalSparklePlugin.sparkleFolder / "components.json").also(Path::createFileAndDirectories)
+    var configuration by property(configPath, "components") { emptyMap<Key, ComponentConfiguration>() }
 
-    private val configurationPath = (LocalSparklePlugin.sparkleFolder / "components.json").also(Path::createFileAndDirectories)
+    val registered = mutableMapOf<Component, ComponentStatus>()
 
-    private var _configuration: Map<Key, ComponentConfiguration>? = null
+    // get
 
-    var configuration: Map<Key, ComponentConfiguration>
-        get() {
+    fun getOrNull(key: Key) = registered.keys.firstOrNull { it.identity == key }
 
-            return when (val cachedConfiguration = _configuration) {
-                null -> {
-                    runBlocking {
-                        asSync {
-                            configurationPath
-                                .readJsonOrDefault<Map<String, ComponentConfiguration>>(emptyMap(), true)
-                                .mapKeys { Key.key(it.key) }
-                                .also { _configuration = it }
-                        }
-                    }
-                }
+    inline fun <reified T : Component> getOrNull() = registered.keys.firstOrNull { it is T } as? T
 
-                else -> cachedConfiguration
-            }
+    operator fun get(key: Key) = getOrNull(key) ?: throw NoSuchElementException("Component $key is not registered")
 
-        }
-        set(value) {
-            _configuration = value
+    inline fun <reified T : Component> get() = getOrNull<T>() ?: throw NoSuchElementException("Component ${T::class.simpleName} is not registered")
 
-            doSync {
-                configurationPath.writeJson(
-                    value.mapKeys { it.key.asString() }
-                )
-            }
+    // register
 
+    fun register(component: Component, clazz: KClass<out Component>) {
+        val componentConfiguration = configuration.getOrElse(component.identity) {
+            ComponentConfiguration(
+                isAutoStart = component.startup.defaultIsAutoStart,
+                isBlocked = false,
+            )
         }
 
-    fun register(
-        component: Component,
-        isAutoStart: Boolean = component.startup.defaultIsAutoStart,
-        isBlocked: Boolean = false,
-    ) {
-        registered += component
-        configuration = configuration + (component.identity to ComponentConfiguration(isAutoStart, isBlocked))
+        registered[component] = ComponentStatus(
+            key = component.identity,
+            isRunning = false,
+            clazz = clazz,
+        )
+
+        configuration = configuration + (component.identity to componentConfiguration)
+
+        if (!componentConfiguration.isBlocked && (componentConfiguration.isAutoStart || component.startup.forcedAutoStart)) {
+            doAsync { component.start() }
+        }
+
     }
+
+    inline fun <reified T : Component> register(component: T) = register(component, T::class)
+
+    // unregister
+
+    fun unregister(identity: Key, deleteConfiguration: Boolean = false): Boolean {
+        val component = getOrNull(identity) ?: return false
+
+        doAsync { component.stop() }
+        registered.remove(component)
+
+        if (deleteConfiguration) { configuration = configuration - component.identity }
+
+        return true
+    }
+
+    inline fun <reified T : Component> unregister(deleteConfiguration: Boolean = false) = unregister(get<T>().identity, deleteConfiguration)
+
+    // state
+
+    fun updateState(identity: Key, process: (ComponentStatus) -> ComponentStatus): Boolean {
+        val component = getOrNull(identity) ?: return false
+
+        registered[component] = process(registered[component] ?: return false)
+
+        return true
+    }
+
+    // classes
+
+    data class ComponentStatus(
+        val key: Key,
+        val isRunning: Boolean,
+        val clazz: KClass<out Component>,
+    )
 
     @Serializable
     data class ComponentConfiguration(

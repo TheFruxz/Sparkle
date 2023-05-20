@@ -6,13 +6,12 @@ import dev.fruxz.ascend.extension.data.kotlinVersion
 import dev.fruxz.ascend.json.appendGlobalJsonContextual
 import dev.fruxz.ascend.json.property
 import dev.fruxz.sparkle.framework.SparklePlugin
-import dev.fruxz.sparkle.framework.modularity.component.Component
-import dev.fruxz.sparkle.framework.modularity.component.ComponentManager
-import dev.fruxz.sparkle.framework.modularity.component.StartupBehavior
 import dev.fruxz.sparkle.framework.system.pluginsFolder
 import dev.fruxz.sparkle.framework.util.json.serializer.*
 import dev.fruxz.sparkle.framework.ux.inventory.item.Item
+import dev.fruxz.sparkle.server.command.ComponentCommand
 import dev.fruxz.sparkle.server.command.SparkleCommand
+import dev.fruxz.sparkle.server.component.TestComponent
 import net.kyori.adventure.key.Key
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
@@ -48,23 +47,12 @@ class LocalSparklePlugin : SparklePlugin({
 
     onEnable {
         println("Hey! Sparkle ${this.pluginMeta.version} is online! Running Kotlin $kotlinVersion")
-
-        ComponentManager.register(
-            component = object : Component(StartupBehavior.DEFAULT_AUTOSTART) {
-                override var identity: Key = Key.key(SYSTEM_IDENTITY.lowercase(), "Demo".lowercase())
-
-                override suspend fun start() { }
-
-                override suspend fun stop() { }
-
-                override suspend fun restart() { }
-
-            }
-        )
-
     }
 
     command<SparkleCommand>()
+    command<ComponentCommand>()
+    component<TestComponent>()
+
 
 }) {
 

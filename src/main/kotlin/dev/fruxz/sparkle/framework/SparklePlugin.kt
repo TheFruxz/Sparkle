@@ -1,5 +1,6 @@
 package dev.fruxz.sparkle.framework
 
+import dev.fruxz.ascend.tool.smart.composition.Composable
 import dev.fruxz.sparkle.framework.command.*
 import dev.fruxz.sparkle.framework.command.annotations.*
 import dev.fruxz.sparkle.framework.command.annotations.permission.Private
@@ -7,7 +8,9 @@ import dev.fruxz.sparkle.framework.command.annotations.permission.Public
 import dev.fruxz.sparkle.framework.coroutine.scope.coroutineScope
 import dev.fruxz.sparkle.framework.marker.SparkleDSL
 import dev.fruxz.sparkle.framework.modularity.ModuleContext
-import dev.fruxz.sparkle.framework.system.internalCommandMap
+import dev.fruxz.sparkle.framework.modularity.component.Component
+import dev.fruxz.sparkle.framework.modularity.component.ComponentManager
+import dev.fruxz.sparkle.framework.system.commandMap
 import dev.fruxz.sparkle.framework.system.internalSyncCommands
 import dev.fruxz.sparkle.server.LocalSparklePlugin
 import kotlinx.coroutines.cancel
@@ -19,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.hasAnnotation
+import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.isAccessible
 
 open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), ModuleContext, Keyed {
@@ -28,6 +32,7 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
     private val onDisables = mutableListOf<JavaPlugin.() -> Unit>()
 
     private val paperCommands = mutableMapOf<KClass<out CommandExecutor>, CommandExecutor>()
+    private val components = mutableMapOf<KClass<out Component>, Component>()
 
     private val key: Key by lazy {
        Key.key(LocalSparklePlugin.SYSTEM_IDENTITY.lowercase(), this.name.lowercase())
@@ -88,6 +93,14 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
     @SparkleDSL
     inline fun <reified T : CommandExecutor> command(vararg constructorArgs: Any?) = command(T::class, *constructorArgs)
 
+    // // Components
+
+    @SparkleDSL
+    fun <T : Component> component(component: T) = components.put(component::class, component)
+
+    @SparkleDSL
+    inline fun <reified T : Component> component() = component(T::class.primaryConstructor?.call() ?: throw IllegalArgumentException("No primary constructor found for ${T::class.simpleName}!"))
+
     // // Coroutines
 
 
@@ -117,11 +130,19 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
                 commandAliases?.let { securedCommand.aliases = it }
                 if (!commandIsPublic) securedCommand.permission = commandPermission ?: "${this.name}.command.${securedName}"
 
-                server.internalCommandMap.register(securedName, pluginMeta.name, securedCommand) // TODO maybe not pluginMeta, due to the in-line creation of plugins
+                commandMap.register(securedName, pluginMeta.name, securedCommand) // TODO maybe not pluginMeta, due to the in-line creation of plugins
                 server.internalSyncCommands()
 
-            } ?: logger.warning("No name found for command ${command.key.simpleName} @${command.key.simpleName} at ${command.key.annotations.joinToString { it.annotationClass.simpleName ?: "/" }}!")
+            } ?: logger.warning("No name (@Label(name: String)) found for command ${command.key.simpleName} @${command.key.simpleName} at ${command.key.annotations.joinToString { it.annotationClass.simpleName ?: "/" }}!")
 
+
+        }
+
+        components.forEach { (clazz, component) ->
+
+            if (component.vendor == null) component.vendor = Composable { this }
+
+            ComponentManager.register(component, clazz)
 
         }
 

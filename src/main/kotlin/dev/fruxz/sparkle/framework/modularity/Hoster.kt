@@ -1,13 +1,15 @@
 package dev.fruxz.sparkle.framework.modularity
 
 import dev.fruxz.sparkle.framework.util.Logging
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Job
 
 interface Hoster : Logging {
 
-    suspend fun start()
+    fun start(): Deferred<Boolean>
 
-    suspend fun stop()
+    fun stop(): Deferred<Boolean>
 
-    suspend fun restart()
+    fun restart(): Job
 
 }
