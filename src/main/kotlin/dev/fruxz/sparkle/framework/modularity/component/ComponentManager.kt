@@ -1,13 +1,9 @@
 package dev.fruxz.sparkle.framework.modularity.component
 
 import dev.fruxz.ascend.extension.createFileAndDirectories
-import dev.fruxz.ascend.json.readJsonOrDefault
-import dev.fruxz.ascend.json.writeJson
-import dev.fruxz.sparkle.framework.coroutine.task.asSync
+import dev.fruxz.ascend.json.property
 import dev.fruxz.sparkle.framework.coroutine.task.doAsync
-import dev.fruxz.sparkle.framework.coroutine.task.doSync
 import dev.fruxz.sparkle.server.LocalSparklePlugin
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.key.Key
 import java.nio.file.Path
@@ -16,165 +12,79 @@ import kotlin.reflect.KClass
 
 object ComponentManager {
 
-    val registered = mutableSetOf<Component>()
-    val running = mutableSetOf<Key>()
-    val associations = mutableMapOf<KClass<out Component>, Key>()
+    private val configPath = (LocalSparklePlugin.sparkleFolder / "components.json").also(Path::createFileAndDirectories)
+    var configuration by property(configPath, "components") { emptyMap<Key, ComponentConfiguration>() }
 
-    private val configurationPath = (LocalSparklePlugin.sparkleFolder / "components.json").also(Path::createFileAndDirectories)
+    val registered = mutableMapOf<Component, ComponentStatus>()
 
-    private var _configuration: Map<Key, ComponentConfiguration>? = null
+    // get
 
-    var configuration: Map<Key, ComponentConfiguration>
-        get() {
+    fun getOrNull(key: Key) = registered.keys.firstOrNull { it.identity == key }
 
-            return when (val cachedConfiguration = _configuration) {
-                null -> {
-                    runBlocking {
-                        asSync {
-                            configurationPath
-                                .readJsonOrDefault<Map<String, ComponentConfiguration>>(emptyMap(), true)
-                                .mapKeys { Key.key(it.key) }
-                                .also { _configuration = it }
-                        }
-                    }
-                }
+    inline fun <reified T : Component> getOrNull() = registered.keys.firstOrNull { it is T } as? T
 
-                else -> cachedConfiguration
-            }
+    operator fun get(key: Key) = getOrNull(key) ?: throw NoSuchElementException("Component $key is not registered")
 
-        }
-        set(value) {
-            _configuration = value
+    inline fun <reified T : Component> get() = getOrNull<T>() ?: throw NoSuchElementException("Component ${T::class.simpleName} is not registered")
 
-            doSync {
-                configurationPath.writeJson(
-                    value.mapKeys { it.key.asString() }
-                )
-            }
+    // register
 
+    fun register(component: Component, clazz: KClass<out Component>) {
+        val componentConfiguration = configuration.getOrElse(component.identity) {
+            ComponentConfiguration(
+                isAutoStart = component.startup.defaultIsAutoStart,
+                isBlocked = false,
+            )
         }
 
-    fun register(
-        component: Component,
-        clazz: KClass<out Component>,
-        isAutoStart: Boolean = component.startup.defaultIsAutoStart,
-        isBlocked: Boolean = false,
-    ) {
-        println("Registering component ${component.identity} with class ${clazz.simpleName} and autoStart=$isAutoStart")
+        registered[component] = ComponentStatus(
+            key = component.identity,
+            isRunning = false,
+            clazz = clazz,
+        )
 
-        val componentSetup = configuration.getOrElse(component.identity) {
-            ComponentConfiguration(isAutoStart, isBlocked)
-        }
+        configuration = configuration + (component.identity to componentConfiguration)
 
-        registered += component
-        associations.putIfAbsent(clazz, component.identity)
-
-        configuration = configuration + (component.identity to componentSetup)
-        if (!componentSetup.isBlocked && (componentSetup.isAutoStart || component.startup.forcedAutoStart)) {
+        if (!componentConfiguration.isBlocked && (componentConfiguration.isAutoStart || component.startup.forcedAutoStart)) {
             doAsync { component.start() }
         }
 
     }
 
-    fun <T : Component> register(
-        component: T,
-        isAutoStart: Boolean = component.startup.defaultIsAutoStart,
-        isBlocked: Boolean = false,
-    ) = register(component, component::class, isAutoStart, isBlocked)
-
-    // running
-
-    fun isRunning(componentKey: Key): Boolean = componentKey in running
-
-    inline fun <reified T : Component> isRunning(): Boolean = associations[T::class]?.let { isRunning(it) } == true
-
-    // registered
-
-    fun isRegistered(componentKey: Key): Boolean = registered.any { it.identity == componentKey }
-
-    inline fun <reified T : Component> isRegistered(): Boolean = associations[T::class]?.let { isRegistered(it) } == true
-
-    // autoStart
-
-    fun isAutoStart(componentKey: Key): Boolean = configuration[componentKey]?.isAutoStart ?: false
-
-    inline fun <reified T : Component> isAutoStart(): Boolean = associations[T::class]?.let { isAutoStart(it) } == true
-
-    fun isAutoStart(componentKey: Key, isAutoStart: Boolean): Boolean {
-        val component = registered.firstOrNull { it.identity == componentKey } ?: return false
-
-        if (isAutoStart(componentKey) == isAutoStart) return false
-
-        configuration = configuration + (componentKey to configuration[componentKey]!!.copy(isAutoStart = isAutoStart))
-
-        return true
-    }
-
-    inline fun <reified T : Component> isAutoStart(isAutoStart: Boolean) = associations[T::class]?.let { isAutoStart(it, isAutoStart) } ?: false
-
-    // blocked
-
-    fun isBlocked(componentKey: Key): Boolean = configuration[componentKey]?.isBlocked ?: false
-
-    inline fun <reified T : Component> isBlocked(): Boolean = associations[T::class]?.let { isBlocked(it) } == true
-
-    // start
-
-    fun registerStart(componentKey: Key) = running.add(componentKey)
-
-    inline fun <reified T : Component> registerStart() = associations[T::class]?.let { registerStart(it) }
-
-    // stop
-
-    fun registerStop(componentKey: Key) = running.remove(componentKey)
-
-    inline fun <reified T : Component> registerStop() = associations[T::class]?.let { registerStop(it) }
+    inline fun <reified T : Component> register(component: T) = register(component, T::class)
 
     // unregister
 
-    fun unregister(componentKey: Key): Boolean {
-        val component = registered.firstOrNull { it.identity == componentKey } ?: return false
+    fun unregister(identity: Key, deleteConfiguration: Boolean = false): Boolean {
+        val component = getOrNull(identity) ?: return false
 
         doAsync { component.stop() }
-        registered -= component
+        registered.remove(component)
+
+        if (deleteConfiguration) { configuration = configuration - component.identity }
 
         return true
     }
 
-    inline fun <reified T : Component> unregister(): Boolean = associations[T::class]?.let { unregister(it) } == true
+    inline fun <reified T : Component> unregister(deleteConfiguration: Boolean = false) = unregister(get<T>().identity, deleteConfiguration)
 
-    // power options
+    // state
 
-    fun enable(componentKey: Key): Boolean {
-        if (isRunning(componentKey)) return false
-        val component = registered.firstOrNull { it.identity == componentKey } ?: return false
+    fun updateState(identity: Key, process: (ComponentStatus) -> ComponentStatus): Boolean {
+        val component = getOrNull(identity) ?: return false
 
-        doAsync { component.start() }
-
-        return true
-    }
-
-    inline fun <reified T : Component> enable() = associations[T::class]?.let { enable(it) }
-
-    fun disable(componentKey: Key): Boolean {
-        if (!isRunning(componentKey)) return false
-        val component = registered.firstOrNull { it.identity == componentKey } ?: return false
-
-        doAsync { component.stop() }
+        registered[component] = process(registered[component] ?: return false)
 
         return true
     }
 
-    inline fun <reified T : Component> disable() = associations[T::class]?.let { disable(it) } ?: false
+    // classes
 
-    fun restart(componentKey: Key) {
-        val component = registered.firstOrNull { it.identity == componentKey } ?: return
-
-        doAsync { component.stop() }
-        doAsync { component.start() }
-    }
-
-    inline fun <reified T : Component> restart() = associations[T::class]?.let { restart(it) }
+    data class ComponentStatus(
+        val key: Key,
+        val isRunning: Boolean,
+        val clazz: KClass<out Component>,
+    )
 
     @Serializable
     data class ComponentConfiguration(

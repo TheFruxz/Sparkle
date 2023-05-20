@@ -3,7 +3,6 @@ package dev.fruxz.sparkle.framework.command.sparkle
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
 import dev.fruxz.sparkle.framework.modularity.component.Component
 import dev.fruxz.sparkle.framework.modularity.component.ComponentManager.registered
-import dev.fruxz.sparkle.framework.modularity.component.ComponentManager.running
 import dev.fruxz.sparkle.framework.system.sparkle
 import dev.fruxz.sparkle.framework.util.cache.CachedProperty
 import dev.fruxz.sparkle.framework.util.cache.cached
@@ -176,22 +175,22 @@ data class BranchContent<T>(
         fun registeredComponent(): BranchContent<Component> = of(
             key = sparkle.key().subKey("component"),
             cacheDuration = Duration.ZERO,
-            tabGenerator = { registered.map { it.identity.asString() } },
-            contentGenerator = { registered.find { element -> element.identity.asString() == it.joinToString(" ") } }
+            tabGenerator = { registered.keys.map { it.identity.asString() } },
+            contentGenerator = { registered.keys.find { element -> element.identity.asString() == it.joinToString(" ") } }
         )
 
         fun runningComponent(): BranchContent<Component> = of(
             key = sparkle.key().subKey("runningComponent"),
             cacheDuration = Duration.ZERO,
-            tabGenerator = { registered.mapNotNull { component -> component.identity.takeIf { it in running }?.asString() } },
-            contentGenerator = { registered.find { element -> element.identity in running && element.identity.asString() == it.joinToString(" ") } }
+            tabGenerator = { registered.keys.mapNotNull { component -> component.takeIf { !it.isRunning }?.identity?.asString() } },
+            contentGenerator = { registered.keys.find { element -> element.isRunning && element.identity.asString() == it.joinToString(" ") } }
         )
 
         fun offlineComponent(): BranchContent<Component> = of(
             key = sparkle.key().subKey("offlineComponent"),
             cacheDuration = Duration.ZERO,
-            tabGenerator = { registered.mapNotNull { component -> component.identity.takeIf { it !in running }?.asString() } },
-            contentGenerator = { registered.find { element -> element.identity !in running && element.identity.asString() == it.joinToString(" ") } }
+            tabGenerator = { registered.keys.mapNotNull { component -> component.takeIf { !it.isRunning }?.identity?.asString() } },
+            contentGenerator = { registered.keys.find { element -> !element.isRunning && element.identity.asString() == it.joinToString(" ") } }
         )
 
     }

@@ -9,7 +9,9 @@ import dev.fruxz.sparkle.framework.command.sparkle.Command
 import dev.fruxz.sparkle.framework.modularity.component.ComponentManager
 import dev.fruxz.sparkle.framework.ux.messaging.transmission
 import dev.fruxz.stacked.extension.dye
+import dev.fruxz.stacked.extension.dyeGray
 import dev.fruxz.stacked.extension.newlines
+import dev.fruxz.stacked.hover
 import dev.fruxz.stacked.plus
 import dev.fruxz.stacked.text
 import net.kyori.adventure.text.event.ClickEvent
@@ -43,30 +45,30 @@ class ComponentCommand : Command() {
                     components.getPage(index).forEach {
 
                         val enabled = text("⏻")
-                            .color(if (isRunning(it.identity)) NamedTextColor.GREEN else NamedTextColor.GRAY)
+                            .color(if (it.first.isRunning) NamedTextColor.GREEN else NamedTextColor.GRAY)
                             .clickEvent(ClickEvent.runCommand("/component %s %s".format(
-                                if (isRunning(it.identity)) "disable" else "enable", // enable or disable
-                                it.identity, // component identity
+                                if (it.first.isRunning) "disable" else "enable", // enable or disable
+                                it.first.identity, // component identity
                             )))
                             .hoverEvent(text("Click to %s this component".format(
-                                if (isRunning(it.identity)) "disable" else "enable")) // action: enable or disable
+                                if (it.first.isRunning) "disable" else "enable")) // action: enable or disable
                             )
 
                         val autostart = text("⚡")
-                            .color(if (isAutoStart(it.identity)) NamedTextColor.GREEN else NamedTextColor.GRAY)
+                            .color(if (it.first.isRunning) NamedTextColor.GREEN else NamedTextColor.GRAY)
                             .clickEvent(ClickEvent.runCommand("/component autostart %s %s".format(
-                                it.identity.asString(), // component identity
-                                if (isAutoStart(it.identity)) "disable" else "enable", // enable or disable
+                                it.first.identity.asString(), // component identity
+                                if (it.first.isRunning) "disable" else "enable", // enable or disable
                             )))
                             .hoverEvent(text("Click to %s autostart for this component".format(
-                                if (isAutoStart(it.identity)) "disable" else "enable" // action: enable or disable
+                                if (it.first.isRunning) "disable" else "enable" // action: enable or disable
                             )))
 
                         val experimental = text("☄")
-                            .color(if (it.isExperimental) NamedTextColor.YELLOW else NamedTextColor.GRAY)
+                            .color(if (it.first.isExperimental) NamedTextColor.YELLOW else NamedTextColor.GRAY)
                             .hoverEvent(text("This component is experimental and may not work as expected"))
 
-                        this@text + enabled + " " + autostart + " " + experimental + " <gray>•</gray> " + text(it.identity.asString()) dye NamedTextColor.YELLOW
+                        this@text + enabled + " " + autostart + " " + experimental + " <gray>•</gray> " + text(it.first.identity.asString()) dye NamedTextColor.YELLOW
 
                     }
                 }
@@ -95,8 +97,15 @@ class ComponentCommand : Command() {
                 content(BranchContent.offlineComponent())
                 execution {
                     val component = get(BranchContent.offlineComponent())
+                    val task = component.start()
 
-                    if (ComponentManager.enable(component.identity)) {
+                    text {
+                        this + text("Enabling component ").dyeGray()
+                        this + text(component.identity.asString()).dye(NamedTextColor.YELLOW).hover { component }
+                        this + text("...").dyeGray()
+                    }.transmission(performer).display()
+
+                    if (task.await()) {
                         text("Component %s has been enabled".format(component.identity.asString()))
                             .dye(NamedTextColor.GREEN)
                             .transmission(performer)
@@ -117,8 +126,15 @@ class ComponentCommand : Command() {
                 content(BranchContent.runningComponent())
                 execution {
                     val component = get(BranchContent.runningComponent())
+                    val task = component.stop()
 
-                    if (ComponentManager.disable(component.identity)) {
+                    text {
+                        this + text("Disabling component ").dyeGray()
+                        this + text(component.identity.asString()).dye(NamedTextColor.YELLOW).hover { component }
+                        this + text("...").dyeGray()
+                    }.transmission(performer).display()
+
+                    if (task.await()) {
                         text("Component %s has been disabled".format(component.identity.asString()))
                             .dye(NamedTextColor.GREEN)
                             .transmission(performer)
@@ -139,8 +155,16 @@ class ComponentCommand : Command() {
                 content(BranchContent.runningComponent())
                 execution {
                     val component = get(BranchContent.runningComponent())
+                    val task = component.stop()
 
-                    ComponentManager.restart(component.identity)
+                    text {
+                        this + text("Restarting component ").dyeGray()
+                        this + text(component.identity.asString()).dye(NamedTextColor.YELLOW).hover { component }
+                        this + text("...").dyeGray()
+                    }.transmission(performer).display()
+
+                    task.await()
+
                     text("Component %s has been restarted".format(component.identity.asString()))
                         .dye(NamedTextColor.GREEN)
                         .transmission(performer)
@@ -158,7 +182,7 @@ class ComponentCommand : Command() {
 
                     text("Component %s is %s".format(
                         component.identity.asString(),
-                        if (ComponentManager.isRunning(component.identity)) "enabled" else "disabled"
+                        if (component.isRunning) "enabled" else "disabled"
                     ))
                         .dye(NamedTextColor.GREEN)
                         .transmission(performer)
@@ -175,17 +199,12 @@ class ComponentCommand : Command() {
                     execution {
                         val component = getReversed(BranchContent.registeredComponent(), 1)
 
-                        if (ComponentManager.isAutoStart(component.identity, true)) {
-                            text("Component %s has been enabled for autostart".format(component.identity.asString()))
-                                .dye(NamedTextColor.GREEN)
-                                .transmission(performer)
-                                .display()
-                        } else {
-                            text("Component %s is already enabled for autostart".format(component.identity.asString()))
-                                .dye(NamedTextColor.YELLOW)
-                                .transmission(performer)
-                                .display()
-                        }
+                        component.isAutoStarting = true
+
+                        text("Component %s has been enabled for autostart".format(component.identity.asString()))
+                            .dye(NamedTextColor.GREEN)
+                            .transmission(performer)
+                            .display()
 
                     }
                 }
@@ -193,17 +212,12 @@ class ComponentCommand : Command() {
                     execution {
                         val component = getReversed(BranchContent.registeredComponent(), 1)
 
-                        if (ComponentManager.isAutoStart(component.identity, false)) {
-                            text("Component %s has been disabled for autostart".format(component.identity.asString()))
-                                .dye(NamedTextColor.GREEN)
-                                .transmission(performer)
-                                .display()
-                        } else {
-                            text("Component %s is already disabled for autostart".format(component.identity.asString()))
-                                .dye(NamedTextColor.YELLOW)
-                                .transmission(performer)
-                                .display()
-                        }
+                        component.isAutoStarting = false
+
+                        text("Component %s has been disabled for autostart".format(component.identity.asString()))
+                            .dye(NamedTextColor.GREEN)
+                            .transmission(performer)
+                            .display()
 
                     }
                 }

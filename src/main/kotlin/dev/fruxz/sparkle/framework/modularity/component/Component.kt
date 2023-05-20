@@ -6,23 +6,35 @@ import dev.fruxz.ascend.extension.objects.takeIfInstance
 import dev.fruxz.ascend.tool.smart.composition.Composable
 import dev.fruxz.sparkle.framework.command.registerCommand
 import dev.fruxz.sparkle.framework.command.unregisterCommand
+import dev.fruxz.sparkle.framework.coroutine.task.asAsync
+import dev.fruxz.sparkle.framework.coroutine.task.doAsync
 import dev.fruxz.sparkle.framework.event.unregisterEvents
 import dev.fruxz.sparkle.framework.modularity.Expandable
 import dev.fruxz.sparkle.framework.modularity.Hoster
+import dev.fruxz.stacked.extension.dyeGray
+import dev.fruxz.stacked.extension.dyeYellow
+import dev.fruxz.stacked.extension.newline
+import dev.fruxz.stacked.plus
+import dev.fruxz.stacked.text
+import kotlinx.coroutines.Deferred
 import net.kyori.adventure.key.Key
+import net.kyori.adventure.text.event.HoverEvent
+import net.kyori.adventure.text.event.HoverEventSource
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.PluginCommand
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
+import java.util.function.UnaryOperator
 import java.util.logging.Logger
 import kotlin.reflect.KClass
+import net.kyori.adventure.text.Component as AdventureComponent
 
 abstract class Component(
     val startup: StartupBehavior = StartupBehavior.DEFAULT_AUTOSTART,
     val isExperimental: Boolean = false,
     var vendor: Composable<Plugin>? = null,
-) : Expandable, Hoster {
+) : Expandable, Hoster, HoverEventSource<AdventureComponent> {
 
     private val commands = mutableListOf<Pair<KClass<out CommandExecutor>, CommandExecutor>>()
     private val runningCommands = mutableSetOf<PluginCommand>()
@@ -60,45 +72,80 @@ abstract class Component(
 
     inline fun <reified T : CommandExecutor> add(command: T) = add(command, T::class)
 
-    override suspend fun start() {
-        if (!ComponentManager.isRunning(this.identity)) {
-            logger.info("Starting component ${identity.asString()}")
+    // state
 
-            val plugin = vendor?.compose()?.takeIfInstance<JavaPlugin>()
+    val isRunning: Boolean
+        get() = ComponentManager.registered[this]?.isRunning ?: false
 
-            components.forEach { it.start() }
-            listeners.forEach { plugin?.server?.pluginManager?.registerEvents(it, plugin) }
-            commands.forEach { (clazz, command) ->
-                plugin?.registerCommand(command, clazz)?.let { runningCommands.add(it) }
+    var isAutoStarting: Boolean
+        get() = ComponentManager.configuration[identity]?.isAutoStart ?: startup.defaultIsAutoStart
+        set(value) {
+            ComponentManager.configuration += identity to (ComponentManager.configuration[identity]?.copy(isAutoStart = value) ?: ComponentManager.ComponentConfiguration(value, false))
+        }
+
+    override fun start(): Deferred<Boolean> = asAsync {
+        if (ComponentManager.registered.containsKey(this)) {
+            if (!isRunning) {
+                logger.info("Starting component ${identity.asString()}")
+
+                val plugin = vendor?.compose()?.takeIfInstance<JavaPlugin>()
+
+                listeners.forEach { plugin?.server?.pluginManager?.registerEvents(it, plugin) }
+                commands.forEach { (clazz, command) ->
+                    plugin?.registerCommand(command, clazz)?.let { runningCommands.add(it) }
+                }
+                components.map { it.start() }.forEach { it.await() }
+
+                ComponentManager.updateState(identity) { it.copy(isRunning = true) }
+
+                logger.info("Started component ${identity.asString()}")
+                return@asAsync true
+            } else {
+                logger.warning("Requested start, but component ${identity.asString()} is already running")
+                return@asAsync false
             }
-
-            ComponentManager.registerStart(this.identity)
-
-            logger.info("Started component ${identity.asString()}")
         } else
-            logger.warning("Requested start, but component ${identity.asString()} is already running")
+            throw IllegalStateException("Component ${identity.asString()} is not registered")
     }
 
-    override suspend fun stop() {
-        if (ComponentManager.isRunning(this.identity)) {
-            logger.info("Stopping component ${identity.asString()}")
+    override fun stop(): Deferred<Boolean> = asAsync {
+        if (ComponentManager.registered.containsKey(this)) {
+            if (isRunning) {
+                logger.info("Stopping component ${identity.asString()}")
 
-            val plugin = vendor?.compose()?.takeIfInstance<JavaPlugin>()
+                val plugin = vendor?.compose()?.takeIfInstance<JavaPlugin>()
 
-            components.forEach { it.stop() }
-            listeners.forEach { plugin?.server?.pluginManager?.unregisterEvents(it) }
-            runningCommands.sweep { plugin?.unregisterCommand(it) }
+                listeners.forEach { plugin?.server?.pluginManager?.unregisterEvents(it) }
+                runningCommands.sweep { plugin?.unregisterCommand(it) }
+                components.map { it.stop() }.forEach { it.await() }
 
-            ComponentManager.registerStop(this.identity)
+                ComponentManager.updateState(identity) { it.copy(isRunning = false) }
 
-            logger.info("Stopped component ${identity.asString()}")
+                logger.info("Stopped component ${identity.asString()}")
+                return@asAsync true
+            } else {
+                logger.warning("Requested stop, but component ${identity.asString()} is not running")
+                return@asAsync false
+            }
         } else
-            logger.warning("Requested stop, but component ${identity.asString()} is not running")
+            throw IllegalStateException("Component ${identity.asString()} is not registered")
     }
 
-    override suspend fun restart() {
-        stop()
-        start()
+    override fun restart() = doAsync {
+        stop().await()
+        start().await()
     }
+
+    override fun asHoverEvent(op: UnaryOperator<net.kyori.adventure.text.Component>): HoverEvent<net.kyori.adventure.text.Component> =
+        HoverEvent.showText(op.apply(text {
+            this + text("Identity: ").dyeGray()
+            this + text(identity.asString()).dyeYellow()
+            newline()
+            this + text("Vendor: ").dyeGray()
+            this + text(vendor?.compose()?.name ?: "Unknown").dyeYellow()
+            newline()
+            this + text("Experimental: ").dyeGray()
+            this + text(isExperimental.toString()).dyeYellow()
+        }))
 
 }
