@@ -30,7 +30,6 @@ class LocalSparklePlugin : SparklePlugin({
     onLoad {
         logger.info("Loaded ${LocalSparkleLoader.dependencies.size} dependencies!")
 
-        // Key, BoundingBox, Item, ItemStack, Location, NamespacedKey, ParticleBuilder, Particle, UUID, Vector, World
         appendGlobalJsonContextual(Key::class, AdventureKeySerializer)
         appendGlobalJsonContextual(NamespacedKey::class, NamespacedKeySerializer)
         appendGlobalJsonContextual(BoundingBox::class, BoundingBoxSerializer)
