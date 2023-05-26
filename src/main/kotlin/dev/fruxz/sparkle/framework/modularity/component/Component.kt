@@ -9,6 +9,7 @@ import dev.fruxz.sparkle.framework.command.unregisterCommand
 import dev.fruxz.sparkle.framework.coroutine.task.asAsync
 import dev.fruxz.sparkle.framework.coroutine.task.doAsync
 import dev.fruxz.sparkle.framework.event.unregisterEvents
+import dev.fruxz.sparkle.framework.marker.SparkleDSL
 import dev.fruxz.sparkle.framework.modularity.Expandable
 import dev.fruxz.sparkle.framework.modularity.Hoster
 import dev.fruxz.stacked.extension.dyeGray
@@ -41,8 +42,21 @@ abstract class Component(
     private val components = mutableListOf<Component>()
     private val listeners = mutableListOf<Listener>()
 
+    private var onDisable: (suspend () -> Unit)? = null
+    private var onEnable: (suspend () -> Unit)? = null
+
     abstract val identity: Key
     abstract fun setup()
+
+    @SparkleDSL
+    fun onDisable(action: suspend () -> Unit) {
+        onDisable = action
+    }
+
+    @SparkleDSL
+    fun onEnable(action: suspend () -> Unit) {
+        onEnable = action
+    }
 
     init {
         this.setup()
@@ -98,6 +112,8 @@ abstract class Component(
 
                 ComponentManager.updateState(identity) { it.copy(isRunning = true) }
 
+                onEnable?.invoke() // onEnable is called after all components are started
+
                 logger.info("Started component ${identity.asString()}")
                 return@asAsync true
             } else {
@@ -120,6 +136,8 @@ abstract class Component(
                 components.map { it.stop() }.forEach { it.await() }
 
                 ComponentManager.updateState(identity) { it.copy(isRunning = false) }
+
+                onDisable?.invoke() // onDisable is called after all components are stopped
 
                 logger.info("Stopped component ${identity.asString()}")
                 return@asAsync true
