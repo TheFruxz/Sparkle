@@ -9,9 +9,8 @@ import dev.fruxz.sparkle.framework.SparklePlugin
 import dev.fruxz.sparkle.framework.system.pluginsFolder
 import dev.fruxz.sparkle.framework.util.json.serializer.*
 import dev.fruxz.sparkle.framework.ux.inventory.item.Item
-import dev.fruxz.sparkle.server.command.ComponentCommand
 import dev.fruxz.sparkle.server.command.SparkleCommand
-import dev.fruxz.sparkle.server.component.TestComponent
+import dev.fruxz.sparkle.server.component.ComponentComponent
 import net.kyori.adventure.key.Key
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
@@ -49,8 +48,7 @@ class LocalSparklePlugin : SparklePlugin({
     }
 
     command<SparkleCommand>()
-    command<ComponentCommand>()
-    component<TestComponent>()
+    component<ComponentComponent>()
 
 
 }) {
