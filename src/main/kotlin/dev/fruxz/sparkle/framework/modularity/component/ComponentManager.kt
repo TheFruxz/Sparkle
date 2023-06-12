@@ -13,7 +13,7 @@ import kotlin.reflect.KClass
 object ComponentManager {
 
     private val configPath = (LocalSparklePlugin.sparkleFolder / "components.json").also(Path::createFileAndDirectories)
-    var configuration by property(configPath, "components") { emptyMap<Key, ComponentConfiguration>() }
+    var configuration by property(configPath, "components") { emptyMap<String, ComponentConfiguration>() }
 
     val registered = mutableMapOf<Component, ComponentStatus>()
 
@@ -30,7 +30,7 @@ object ComponentManager {
     // register
 
     fun register(component: Component, clazz: KClass<out Component>) {
-        val componentConfiguration = configuration.getOrElse(component.identity) {
+        val componentConfiguration = configuration.getOrElse(component.identity.asString()) {
             ComponentConfiguration(
                 isAutoStart = component.startup.defaultIsAutoStart,
                 isBlocked = false,
@@ -43,10 +43,10 @@ object ComponentManager {
             clazz = clazz,
         )
 
-        configuration = configuration + (component.identity to componentConfiguration)
+        configuration = configuration + (component.identity.asString() to componentConfiguration)
 
         if (!componentConfiguration.isBlocked && (componentConfiguration.isAutoStart || component.startup.forcedAutoStart)) {
-            doAsync { component.start() }
+            doAsync { component.start().await() }
         }
 
     }
@@ -58,10 +58,10 @@ object ComponentManager {
     fun unregister(identity: Key, deleteConfiguration: Boolean = false): Boolean {
         val component = getOrNull(identity) ?: return false
 
-        doAsync { component.stop() }
+        doAsync { component.stop().await() }
         registered.remove(component)
 
-        if (deleteConfiguration) { configuration = configuration - component.identity }
+        if (deleteConfiguration) { configuration = configuration - component.identity.asString() }
 
         return true
     }

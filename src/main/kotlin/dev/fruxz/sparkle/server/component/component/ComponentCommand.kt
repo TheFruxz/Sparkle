@@ -1,4 +1,4 @@
-package dev.fruxz.sparkle.server.command
+package dev.fruxz.sparkle.server.component.component
 
 import dev.fruxz.ascend.extension.container.paged
 import dev.fruxz.ascend.extension.math.ceilToInt
@@ -10,6 +10,7 @@ import dev.fruxz.sparkle.framework.modularity.component.ComponentManager
 import dev.fruxz.sparkle.framework.ux.messaging.transmission
 import dev.fruxz.stacked.extension.dye
 import dev.fruxz.stacked.extension.dyeGray
+import dev.fruxz.stacked.extension.newline
 import dev.fruxz.stacked.extension.newlines
 import dev.fruxz.stacked.hover
 import dev.fruxz.stacked.plus
@@ -37,43 +38,43 @@ class ComponentCommand : Command() {
 
             text {
 
-                this + text("<gray>The following components are registered: <yellow>(Page ${index+1} / ${components.pages})")
+                this + text("<gray>The following components are registered: <yellow>(Page ${index+1}/${components.pages})")
 
                 newlines(2)
 
-                with(ComponentManager) {
-                    components.getPage(index).forEach {
+                components.getPage(index).forEach {
 
-                        val enabled = text("⏻")
-                            .color(if (it.first.isRunning) NamedTextColor.GREEN else NamedTextColor.GRAY)
-                            .clickEvent(ClickEvent.runCommand("/component %s %s".format(
-                                if (it.first.isRunning) "disable" else "enable", // enable or disable
-                                it.first.identity, // component identity
-                            )))
-                            .hoverEvent(text("Click to %s this component".format(
-                                if (it.first.isRunning) "disable" else "enable")) // action: enable or disable
-                            )
+                    val enabled = text("⏻")
+                        .color(if (it.first.isRunning) NamedTextColor.GREEN else NamedTextColor.GRAY)
+                        .clickEvent(ClickEvent.runCommand("/component %s %s".format(
+                            if (it.first.isRunning) "disable" else "enable", // enable or disable
+                            it.first.identity, // component identity
+                        )))
+                        .hoverEvent(text("Click to %s this component".format(
+                            if (it.first.isRunning) "disable" else "enable")) // action: enable or disable
+                        )
 
-                        val autostart = text("⚡")
-                            .color(if (it.first.isRunning) NamedTextColor.GREEN else NamedTextColor.GRAY)
-                            .clickEvent(ClickEvent.runCommand("/component autostart %s %s".format(
-                                it.first.identity.asString(), // component identity
-                                if (it.first.isRunning) "disable" else "enable", // enable or disable
-                            )))
-                            .hoverEvent(text("Click to %s autostart for this component".format(
-                                if (it.first.isRunning) "disable" else "enable" // action: enable or disable
-                            )))
+                    val autostart = text("⚡")
+                        .color(if (it.first.isRunning) NamedTextColor.GREEN else NamedTextColor.GRAY)
+                        .clickEvent(ClickEvent.runCommand("/component autostart %s %s".format(
+                            it.first.identity.asString(), // component identity
+                            if (it.first.isRunning) "disable" else "enable", // enable or disable
+                        )))
+                        .hoverEvent(text("Click to %s autostart for this component".format(
+                            if (it.first.isRunning) "disable" else "enable" // action: enable or disable
+                        )))
 
-                        val experimental = text("☄")
-                            .color(if (it.first.isExperimental) NamedTextColor.YELLOW else NamedTextColor.GRAY)
-                            .hoverEvent(text("This component is experimental and may not work as expected"))
+                    val experimental = text("☄")
+                        .color(if (it.first.isExperimental) NamedTextColor.YELLOW else NamedTextColor.GRAY)
+                        .hoverEvent(text("This component is experimental and may not work as expected"))
 
-                        this@text + enabled + " " + autostart + " " + experimental + " <gray>•</gray> " + text(it.first.identity.asString()) dye NamedTextColor.YELLOW
+                    this@text + enabled + " " + autostart + " " + experimental + " <gray>•</gray> " + text(it.first.identity.asString()) dye NamedTextColor.YELLOW
 
-                    }
+                    newline()
+
                 }
 
-                newlines(2)
+                newline()
 
             }.transmission(performer).display()
         }

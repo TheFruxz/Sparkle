@@ -92,9 +92,9 @@ abstract class Component(
         get() = ComponentManager.registered[this]?.isRunning ?: false
 
     var isAutoStarting: Boolean
-        get() = ComponentManager.configuration[identity]?.isAutoStart ?: startup.defaultIsAutoStart
+        get() = ComponentManager.configuration[identity.asString()]?.isAutoStart ?: startup.defaultIsAutoStart
         set(value) {
-            ComponentManager.configuration += identity to (ComponentManager.configuration[identity]?.copy(isAutoStart = value) ?: ComponentManager.ComponentConfiguration(value, false))
+            ComponentManager.configuration += identity.asString() to (ComponentManager.configuration[identity.asString()]?.copy(isAutoStart = value) ?: ComponentManager.ComponentConfiguration(value, false))
         }
 
     override fun start(): Deferred<Boolean> = asAsync {

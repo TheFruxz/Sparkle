@@ -13,14 +13,14 @@ import org.jetbrains.annotations.ApiStatus
 @ApiStatus.Experimental // TODO implementation in module
 data class PlayerInteractAtItemEvent(
     val whoInteract: Player,
-    val item: ItemStack, // TODO sparkle items
+    val item: ItemStack,
     val material: Material,
-    val action: Action,
-    private var isCancelled: Boolean = false,
+    @get:JvmName("kIsCancelled") @set:JvmName("kIsCancelled") var isCancelled: Boolean = false,
+    override val action: Action,
     override val origin: PlayerInteractEvent,
     override var blockInteraction: Result = Result.DEFAULT,
     override var itemInteraction: Result = Result.DEFAULT,
-) : SparkleInteractEvent, PlayerEvent(whoInteract, false), Cancellable {
+) : SparkleInteractEvent<PlayerInteractEvent>, PlayerEvent(whoInteract, false), Cancellable {
 
     override fun isCancelled() = isCancelled
 
@@ -29,6 +29,10 @@ data class PlayerInteractAtItemEvent(
     }
 
     override fun getHandlers() = handlerList
+
+    fun denyItemInteraction() {
+        this.itemInteraction = Result.DENY
+    }
 
     companion object {
 

@@ -10,8 +10,9 @@ import dev.fruxz.sparkle.framework.system.pluginsFolder
 import dev.fruxz.sparkle.framework.util.json.serializer.*
 import dev.fruxz.sparkle.framework.ux.inventory.item.Item
 import dev.fruxz.sparkle.server.command.SparkleCommand
-import dev.fruxz.sparkle.server.component.ComponentComponent
-import net.kyori.adventure.key.Key
+import dev.fruxz.sparkle.server.component.component.ComponentComponent
+import dev.fruxz.sparkle.server.component.demo.DemoComponent
+import dev.fruxz.sparkle.server.component.events.EventsComponent
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
@@ -29,7 +30,6 @@ class LocalSparklePlugin : SparklePlugin({
     onLoad {
         logger.info("Loaded ${LocalSparkleLoader.dependencies.size} dependencies!")
 
-        appendGlobalJsonContextual(Key::class, AdventureKeySerializer)
         appendGlobalJsonContextual(NamespacedKey::class, NamespacedKeySerializer)
         appendGlobalJsonContextual(BoundingBox::class, BoundingBoxSerializer)
         appendGlobalJsonContextual(Item::class, ItemSerializer)
@@ -48,8 +48,10 @@ class LocalSparklePlugin : SparklePlugin({
     }
 
     command<SparkleCommand>()
-    component<ComponentComponent>()
 
+    component<ComponentComponent>()
+    component<DemoComponent>()
+    component<EventsComponent>()
 
 }) {
 
