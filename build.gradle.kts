@@ -45,7 +45,7 @@ dependencies {
     // External
 
     implementation("com.mojang:brigadier:1.0.500")
-    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT") // PaperMC
+    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT") // PaperMC
 
     setOf(
         "io.ktor:ktor-client-cio:2.3.1",
