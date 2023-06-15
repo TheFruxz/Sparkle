@@ -1,4 +1,4 @@
-# ![Sparkle Banner](https://user-images.githubusercontent.com/28064149/193403722-69ddfc53-95b7-4123-b974-308d9360cdb3.jpg)
+![Sparkle Banner](https://github.com/TheFruxz/Sparkle/assets/28064149/afc38217-fd82-4901-ae60-4d3c7c195753)
 
 <br>
 
