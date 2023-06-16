@@ -23,7 +23,7 @@ val Material.itemMeta: ItemMeta
     get() = itemFactory.getItemMeta(this)
 
 fun Material.itemMeta(process: ItemMeta.() -> Unit) =
-    itemMeta?.apply(process)
+    itemMeta.apply(process)
 
 fun item(material: Material) = material.item
 
