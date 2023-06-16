@@ -45,7 +45,7 @@ dependencies {
 
     // External
 
-    implementation("com.mojang:brigadier:1$brigadierVersion")
+    implementation("com.mojang:brigadier:$brigadierVersion")
     compileOnly("io.papermc.paper:paper-api:$paperVersion") // PaperMC
 
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
