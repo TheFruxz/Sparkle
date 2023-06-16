@@ -38,9 +38,7 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
        Key.key(LocalSparklePlugin.SYSTEM_IDENTITY.lowercase(), this.name.lowercase())
     }
 
-    init {
-        setup()
-    }
+    init { apply(setup) } // changed from setup() to apply(setup)
 
     // api stuff
 
