@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.8.21"
+    kotlin("jvm") version "1.8.22"
     kotlin("plugin.serialization") version "1.8.21"
     `maven-publish`
 }
@@ -19,6 +19,12 @@ repositories {
 
 val ascendVersion = "119069b785"
 val stackedVersion = "74e454b253"
+val kojangVersion = "1.0-RC2"
+val serializationVersion = "1.5.1"
+val coroutinesVersion = "1.7.1"
+val brigadierVersion = "1.0.500"
+val paperVersion = "1.20.1-R0.1-SNAPSHOT"
+val ktorVersion = "2.3.1"
 
 dependencies {
 
@@ -26,7 +32,7 @@ dependencies {
 
     api("com.github.TheFruxz:Ascend:$ascendVersion")
     api("com.github.TheFruxz:Stacked:$stackedVersion")
-    api("com.github.TheFruxz:Kojang:1.0-RC2")
+    api("com.github.TheFruxz:Kojang:$kojangVersion")
 
     // Kotlin
 
@@ -34,18 +40,18 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
     // External
 
-    implementation("com.mojang:brigadier:1.0.500")
-    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT") // PaperMC
+    implementation("com.mojang:brigadier:1$brigadierVersion")
+    compileOnly("io.papermc.paper:paper-api:$paperVersion") // PaperMC
 
-    implementation("io.ktor:ktor-client-cio:2.3.0")
-    implementation("io.ktor:ktor-client-core-jvm:2.3.0")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
 
 }
 
