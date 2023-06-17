@@ -13,6 +13,7 @@ import dev.fruxz.sparkle.server.command.SparkleCommand
 import dev.fruxz.sparkle.server.component.component.ComponentComponent
 import dev.fruxz.sparkle.server.component.demo.DemoComponent
 import dev.fruxz.sparkle.server.component.events.EventsComponent
+import dev.fruxz.sparkle.server.component.sandox.SandBoxComponent
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
@@ -52,6 +53,7 @@ class LocalSparklePlugin : SparklePlugin({
     component<ComponentComponent>()
     component<DemoComponent>()
     component<EventsComponent>()
+    component<SandBoxComponent>()
 
 }) {
 

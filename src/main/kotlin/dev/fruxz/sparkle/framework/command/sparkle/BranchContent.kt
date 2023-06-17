@@ -2,13 +2,14 @@ package dev.fruxz.sparkle.framework.command.sparkle
 
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
 import dev.fruxz.sparkle.framework.modularity.component.Component
-import dev.fruxz.sparkle.framework.modularity.component.ComponentManager.registered
+import dev.fruxz.sparkle.framework.modularity.component.ComponentManager
 import dev.fruxz.sparkle.framework.system.sparkle
 import dev.fruxz.sparkle.framework.util.cache.CachedProperty
 import dev.fruxz.sparkle.framework.util.cache.cached
 import dev.fruxz.sparkle.framework.ux.effect.sound.SoundEffect
 import dev.fruxz.sparkle.framework.ux.effect.sound.SoundLibrary
 import dev.fruxz.sparkle.framework.ux.messaging.Transmission
+import dev.fruxz.sparkle.server.component.sandox.SandBoxManager
 import dev.fruxz.stacked.extension.subKey
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.key.Keyed
@@ -175,22 +176,29 @@ data class BranchContent<T>(
         fun registeredComponent(): BranchContent<Component> = of(
             key = sparkle.key().subKey("component"),
             cacheDuration = Duration.ZERO,
-            tabGenerator = { registered.keys.map { it.identity.asString() } },
-            contentGenerator = { registered.keys.find { element -> element.identity.asString() == it.joinToString(" ") } }
+            tabGenerator = { ComponentManager.registered.keys.map { it.identity.asString() } },
+            contentGenerator = { ComponentManager.registered.keys.find { element -> element.identity.asString() == it.joinToString(" ") } }
         )
 
         fun runningComponent(): BranchContent<Component> = of(
             key = sparkle.key().subKey("runningComponent"),
             cacheDuration = Duration.ZERO,
-            tabGenerator = { registered.keys.mapNotNull { component -> component.takeIf { !it.isRunning }?.identity?.asString() } },
-            contentGenerator = { registered.keys.find { element -> element.isRunning && element.identity.asString() == it.joinToString(" ") } }
+            tabGenerator = { ComponentManager.registered.keys.mapNotNull { component -> component.takeIf { !it.isRunning }?.identity?.asString() } },
+            contentGenerator = { ComponentManager.registered.keys.find { element -> element.isRunning && element.identity.asString() == it.joinToString(" ") } }
         )
 
         fun offlineComponent(): BranchContent<Component> = of(
             key = sparkle.key().subKey("offlineComponent"),
             cacheDuration = Duration.ZERO,
-            tabGenerator = { registered.keys.mapNotNull { component -> component.takeIf { !it.isRunning }?.identity?.asString() } },
-            contentGenerator = { registered.keys.find { element -> !element.isRunning && element.identity.asString() == it.joinToString(" ") } }
+            tabGenerator = { ComponentManager.registered.keys.mapNotNull { component -> component.takeIf { !it.isRunning }?.identity?.asString() } },
+            contentGenerator = { ComponentManager.registered.keys.find { element -> !element.isRunning && element.identity.asString() == it.joinToString(" ") } }
+        )
+
+        fun sandbox(): BranchContent<SandBoxManager.SandBox> = of(
+            key = sparkle.key().subKey("sandbox"),
+            cacheDuration = Duration.ZERO,
+            tabGenerator = { SandBoxManager.sandboxes.keys.toList() }, // TODO also set support
+            contentGenerator = { SandBoxManager.sandboxes[it.joinToString(" ")] }
         )
 
     }
