@@ -3,9 +3,9 @@
 <br>
 
 # 👋 Welcome to Sparkle!
-Sparkle is a full-fledged framework, developed for the development of Plugins on the Paper Minecraft-Server platform, using the Kotlin programming language.
+Sparkle is a full-fledged framework, developed for the development of Server-Plugins on the Paper Minecraft-Server platform, using the Kotlin programming language.
 
-This framework combines simple and fast tools with under-the-hood rocket science, to enable a new feature-rich architecture, for plugins, to build on.
+This framework combines simple and feature-rich tools with under-the-hood rocket science, to enable a new feature-rich architecture, for plugins, to build on.
 
 # 📑 Version
 Many plugins do everything, to be supported on as many versions of Minecraft as possible. If you want to use this framework with this goal in mind, this may not be the right thing for you. This framework is specialized to make the most out of current and coming technology. This is the reason, why we always build on-top the newest (or current newest stable) version, available right now.
