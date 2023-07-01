@@ -1,10 +1,10 @@
 package dev.fruxz.sparkle.framework.coroutine.task
 
 import dev.fruxz.ascend.extension.dump
-import dev.fruxz.ascend.extension.switchResult
-import dev.fruxz.sparkle.framework.coroutine.scope.coroutineScope
+import dev.fruxz.ascend.extension.switch
 import dev.fruxz.sparkle.framework.coroutine.dispatcher.asyncDispatcher
 import dev.fruxz.sparkle.framework.coroutine.dispatcher.syncDispatcher
+import dev.fruxz.sparkle.framework.coroutine.scope.coroutineScope
 import dev.fruxz.sparkle.framework.system.debugLog
 import dev.fruxz.sparkle.framework.system.sparkle
 import kotlinx.coroutines.*
@@ -177,7 +177,10 @@ fun doAsync(
 fun launch(
     vendor: Plugin = sparkle,
     isAsync: Boolean = true,
-    context: CoroutineContext = isAsync.switchResult(vendor.asyncDispatcher, vendor.syncDispatcher),
+    context: CoroutineContext = isAsync.switch(
+        match = vendor.asyncDispatcher,
+        mismatch = vendor.syncDispatcher
+    ),
     process: suspend (CoroutineScope) -> Unit,
 ) = vendor.coroutineScope.launch(context = context, block = {
     try {

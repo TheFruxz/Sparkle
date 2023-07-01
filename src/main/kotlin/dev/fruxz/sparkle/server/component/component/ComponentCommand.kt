@@ -1,6 +1,6 @@
 package dev.fruxz.sparkle.server.component.component
 
-import dev.fruxz.ascend.extension.container.paged
+import dev.fruxz.ascend.extension.container.partitionByPage
 import dev.fruxz.ascend.extension.math.ceilToInt
 import dev.fruxz.sparkle.framework.command.annotations.Label
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
@@ -33,7 +33,7 @@ class ComponentCommand : Command() {
     override fun configure() {
 
         fun BranchExecutionContext.viewPage(index: Int) {
-            val components = ComponentManager.registered.toList().paged(10)
+            val components = ComponentManager.registered.toList().partitionByPage(10)
 
 
             text {
