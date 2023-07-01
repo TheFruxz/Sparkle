@@ -2,11 +2,11 @@ name: Sparkle
 prefix: ${name}
 website: ${website}
 version: ${version}
-api-version: '1.19'
+api-version: '1.20'
+load: STARTUP
+has-open-classloader: true
 main: dev.fruxz.sparkle.server.LocalSparklePlugin
 loader: dev.fruxz.sparkle.server.LocalSparkleLoader
-load: STARTUP
 authors:
   - Fruxz (TheFruxz)
-  - CoasterFreakDE
   - GitHub Contributors
