@@ -36,7 +36,7 @@ enum class ColorableMaterial(
     companion object {
 
         fun fromMaterial(material: Material) = tryOrNull {
-            values().firstOrNull { material.name.endsWith(it.name) }
+            entries.firstOrNull { material.name.endsWith(it.name) }
         }
 
     }

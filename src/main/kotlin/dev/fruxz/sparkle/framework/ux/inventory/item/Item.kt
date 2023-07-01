@@ -155,7 +155,7 @@ data class Item(
         }
 
         if (ComposeProperty.BLANK_DATA in composeProperties) {
-            itemStack.addItemFlags(*ItemFlag.values())
+            itemStack.addItemFlags(*ItemFlag.entries.toTypedArray())
         }
 
         itemStack = itemStack.apply { quirk.applyOnItemStack(this) }

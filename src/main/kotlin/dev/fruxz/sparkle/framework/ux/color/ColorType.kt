@@ -140,7 +140,7 @@ enum class ColorType : RGBLike, Keyed {
     companion object {
 
         fun fromMaterial(material: Material): ColorType? = tryOrNull {
-            values().firstOrNull { color -> material.name.startsWith(color.name) }
+            entries.firstOrNull { color -> material.name.startsWith(color.name) }
         }
 
         val rainbow: List<ColorType> by lazy { listOf(RED, ORANGE, YELLOW, LIME, GREEN, CYAN, LIGHT_BLUE, BLUE, PURPLE, MAGENTA, PINK) }

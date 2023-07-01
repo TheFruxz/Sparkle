@@ -143,8 +143,8 @@ data class BranchContent<T>(
             cacheDuration = Duration.INFINITE,
             tabGenerator = {
                 when (filter) {
-                    null -> Material.values().map { it.name }
-                    else -> Material.values().mapNotNull { it.name.takeIf { _ -> filter(it) } }
+                    null -> Material.entries.map { it.name }
+                    else -> Material.entries.mapNotNull { it.name.takeIf { _ -> filter(it) } }
                 }
             },
             contentGenerator = { Material.getMaterial(it.joinToString(" ").uppercase()) }
@@ -153,7 +153,7 @@ data class BranchContent<T>(
         fun entityType(): BranchContent<EntityType> = of(
             key = Key.key("entity"),
             cacheDuration = Duration.INFINITE,
-            tabGenerator = { EntityType.values().map { it.name } },
+            tabGenerator = { EntityType.entries.map { it.name } },
             contentGenerator = { EntityType.valueOf(it.joinToString(" ").uppercase()) }
         )
 
@@ -162,14 +162,14 @@ data class BranchContent<T>(
         fun librarySound(): BranchContent<SoundEffect> = of(
             key = sparkle.key().subKey("librarySound"),
             cacheDuration = Duration.INFINITE,
-            tabGenerator = { SoundLibrary.values().map { it.name } },
+            tabGenerator = { SoundLibrary.entries.map { it.name } },
             contentGenerator = { SoundLibrary.valueOf(it.joinToString(" ").uppercase()).sound }
         )
 
         fun transmissionTheme(): BranchContent<Transmission.Theme> = of(
             key = sparkle.key().subKey("transmissionTheme"),
             cacheDuration = Duration.INFINITE,
-            tabGenerator = { Transmission.Theme.Default.values().map { it.name } },
+            tabGenerator = { Transmission.Theme.Default.entries.map { it.name } },
             contentGenerator = { Transmission.Theme.Default.valueOf(it.joinToString(" ").uppercase()) }
         )
 
