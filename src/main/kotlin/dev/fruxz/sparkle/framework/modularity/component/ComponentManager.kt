@@ -70,11 +70,22 @@ object ComponentManager {
 
     // state
 
+    /**
+     * Updates the state of a component identified by the given [identity], using the given [process] function.
+     *
+     * @param identity The key used to identify the component to update.
+     * @param process The function used to update the state of the component. This function takes the current
+     *                [ComponentStatus] of the component as a parameter, and should return a new [ComponentStatus]
+     *                based on this current status.
+     *
+     * @return `true` if the state of the component was successfully updated, `false` otherwise. Returns `false`
+     *         if no component was found for the given [identity], or if there was an error while updating its state.
+     */
     fun updateState(identity: Key, process: (ComponentStatus) -> ComponentStatus): Boolean {
         val component = getOrNull(identity) ?: return false
+        val currentStatus = registered[component] ?: return false
 
-        registered[component] = process(registered[component] ?: return false)
-
+        registered[component] = process(currentStatus)
         return true
     }
 
