@@ -19,7 +19,7 @@ repositories {
 
 val ascendVersion = "2023.2"
 val stackedVersion = "2023.2b"
-val kojangVersion = "1.0-RC2"
+val kojangVersion = "1.0"
 val serializationVersion = "1.5.1"
 val coroutinesVersion = "1.7.1"
 val brigadierVersion = "1.0.500"
