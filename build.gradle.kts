@@ -6,18 +6,28 @@ plugins {
 
 var host = "github.com/TheFruxz/Sparkle"
 
-version = "2023.2-dev"
+version = "2023.3-dev"
 group = "dev.fruxz"
 
 repositories {
+
     mavenCentral()
-    maven("https://jitpack.io")
-    maven("https://papermc.io/repo/repository/maven-public/") // PaperMC
-    maven("https://libraries.minecraft.net") // Minecraft (Brigadier)
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
+
+    maven("https://jitpack.io") {
+        name = "JitPack"
+    }
+
+    maven("https://papermc.io/repo/repository/maven-public/") {
+        name = "PaperMC"
+    }
+
+    maven("https://libraries.minecraft.net") {
+        name = "Minecraft Libraries"
+    }
+
 }
 
-val ascendVersion = "2023.2"
+val ascendVersion = "2023.2-alpha"
 val stackedVersion = "2023.2b"
 val kojangVersion = "1.0"
 val serializationVersion = "1.5.1"
