@@ -27,8 +27,8 @@ repositories {
 
 }
 
-val ascendVersion = "2023.3-alpha"
-val stackedVersion = "2023.2b"
+val ascendVersion = "2023.3"
+val stackedVersion = "2023.3"
 val kojangVersion = "1.0"
 val serializationVersion = "1.5.1"
 val coroutinesVersion = "1.7.1"
