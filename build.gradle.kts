@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.9.0"
     kotlin("plugin.serialization") version "1.9.0"
+    id("io.papermc.paperweight.userdev") version "1.5.5"
     `maven-publish`
 }
 
@@ -17,23 +18,19 @@ repositories {
         name = "JitPack"
     }
 
-    maven("https://papermc.io/repo/repository/maven-public/") {
-        name = "PaperMC"
-    }
-
     maven("https://libraries.minecraft.net") {
         name = "Minecraft Libraries"
     }
 
 }
 
-val ascendVersion = "2023.3"
+val ascendVersion = "2023.3.1"
 val stackedVersion = "2023.3"
+val minecraftVersion = "1.20.1"
 val kojangVersion = "1.0"
 val serializationVersion = "1.5.1"
 val coroutinesVersion = "1.7.1"
 val brigadierVersion = "1.0.500"
-val paperVersion = "1.20.1-R0.1-SNAPSHOT"
 val ktorVersion = "2.3.1"
 
 dependencies {
@@ -55,8 +52,8 @@ dependencies {
 
     // External
 
+    paperweight.paperDevBundle("$minecraftVersion-R0.1-SNAPSHOT")
     implementation("com.mojang:brigadier:$brigadierVersion")
-    compileOnly("io.papermc.paper:paper-api:$paperVersion") // PaperMC
 
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
