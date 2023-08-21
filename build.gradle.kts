@@ -24,28 +24,35 @@ repositories {
 
 }
 
-val ascendVersion = "2023.3.1"
-val stackedVersion = "2023.3"
-val minecraftVersion = "1.20.1"
-val kojangVersion = "1.0"
-val serializationVersion = "1.5.1"
-val coroutinesVersion = "1.7.1"
-val brigadierVersion = "1.0.500"
-val ktorVersion = "2.3.1"
+val ascendVersion: String by project
+val stackedVersion: String by project
+val minecraftVersion: String by project
+val kojangVersion: String by project
+val serializationVersion: String by project
+val coroutinesVersion: String by project
+val brigadierVersion: String by project
+val ktorVersion: String by project
+
+val includedDependencies = mutableListOf<String>()
+
+fun Dependency?.deliver() = this?.apply {
+    val computedVersion = version ?: kotlin.coreLibrariesVersion
+    includedDependencies += "${group}:${name}:${computedVersion}"
+}
 
 dependencies {
 
     // Internal
 
-    api("com.github.TheFruxz:Ascend:$ascendVersion")
-    api("com.github.TheFruxz:Stacked:$stackedVersion")
-    api("com.github.TheFruxz:Kojang:$kojangVersion")
+    api("com.github.TheFruxz:Ascend:$ascendVersion").deliver()
+    api("com.github.TheFruxz:Stacked:$stackedVersion").deliver()
+    api("com.github.TheFruxz:Kojang:$kojangVersion").deliver()
 
     // Kotlin
 
-    implementation(kotlin("stdlib"))
+    implementation(kotlin("stdlib")).deliver()
+    implementation(kotlin("reflect")).deliver()
     testImplementation(kotlin("test"))
-    implementation(kotlin("reflect"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
@@ -55,10 +62,10 @@ dependencies {
     paperweight.paperDevBundle("$minecraftVersion-R0.1-SNAPSHOT")
     implementation("com.mojang:brigadier:$brigadierVersion")
 
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
-    implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion").deliver()
+    implementation("io.ktor:ktor-client-core-jvm:$ktorVersion").deliver()
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion").deliver()
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion").deliver()
 
 }
 
@@ -68,7 +75,8 @@ tasks {
         expand(
             "version" to project.version,
             "name" to project.name,
-            "website" to "https://$host"
+            "website" to "https://$host",
+            "delivery" to includedDependencies.joinToString("\n"),
         )
     }
 
@@ -92,6 +100,7 @@ publishing {
         version = version.lowercase()
 
     }
+
 }
 
 configure<SourceSetContainer> { // allowing java files appearing next to kotlin files

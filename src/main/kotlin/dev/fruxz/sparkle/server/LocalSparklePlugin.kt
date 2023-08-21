@@ -29,7 +29,7 @@ import kotlin.io.path.div
 class LocalSparklePlugin : SparklePlugin({
 
     onLoad {
-        logger.info("Loaded ${LocalSparkleLoader.dependencies.size} dependencies!")
+        logger.info("Sparkle successfully loaded ${getResource("delivered.dependencies")?.reader()?.readLines().orEmpty().size} external dependencies via paper!")
 
         JsonManager.apply {
             addContextual(NamespacedKey::class, NamespacedKeySerializer)
