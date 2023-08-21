@@ -3,8 +3,8 @@ package dev.fruxz.sparkle.server
 import com.destroystokyo.paper.ParticleBuilder
 import dev.fruxz.ascend.extension.createFileAndDirectories
 import dev.fruxz.ascend.extension.data.kotlinVersion
-import dev.fruxz.ascend.json.appendGlobalJsonContextual
 import dev.fruxz.ascend.json.property
+import dev.fruxz.ascend.tool.JsonManager
 import dev.fruxz.sparkle.framework.SparklePlugin
 import dev.fruxz.sparkle.framework.system.pluginsFolder
 import dev.fruxz.sparkle.framework.util.json.serializer.*
@@ -31,16 +31,18 @@ class LocalSparklePlugin : SparklePlugin({
     onLoad {
         logger.info("Loaded ${LocalSparkleLoader.dependencies.size} dependencies!")
 
-        appendGlobalJsonContextual(NamespacedKey::class, NamespacedKeySerializer)
-        appendGlobalJsonContextual(BoundingBox::class, BoundingBoxSerializer)
-        appendGlobalJsonContextual(Item::class, ItemSerializer)
-        appendGlobalJsonContextual(ItemStack::class, ItemStackSerializer)
-        appendGlobalJsonContextual(Location::class, LocationSerializer)
-        appendGlobalJsonContextual(ParticleBuilder::class, ParticleBuilderSerializer)
-        appendGlobalJsonContextual(Particle::class, ParticleSerializer)
-        appendGlobalJsonContextual(UUID::class, UUIDSerializer)
-        appendGlobalJsonContextual(Vector::class, VectorSerializer)
-        appendGlobalJsonContextual(World::class, WorldSerializer)
+        JsonManager.apply {
+            addContextual(NamespacedKey::class, NamespacedKeySerializer)
+            addContextual(BoundingBox::class, BoundingBoxSerializer)
+            addContextual(Item::class, ItemSerializer)
+            addContextual(ItemStack::class, ItemStackSerializer)
+            addContextual(Location::class, LocationSerializer)
+            addContextual(ParticleBuilder::class, ParticleBuilderSerializer)
+            addContextual(Particle::class, ParticleSerializer)
+            addContextual(UUID::class, UUIDSerializer)
+            addContextual(Vector::class, VectorSerializer)
+            addContextual(World::class, WorldSerializer)
+        }
 
     }
 
