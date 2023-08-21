@@ -79,16 +79,9 @@ tasks {
 }
 
 publishing {
+
     repositories {
         mavenLocal()
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.$host")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
     }
 
     publications.create("Sparkle", MavenPublication::class) {
