@@ -16,6 +16,7 @@ import java.util.Objects;
  * This class represents the loader of this paper plugin, to enable
  * the required dependencies.
  */
+@SuppressWarnings("UnstableApiUsage") // We keep an eye on that.
 public class LocalSparkleLoader implements PluginLoader {
 
     @Override
