@@ -44,6 +44,6 @@ If you require any further assistance, suggestions or other items you would like
 ###### We use [macOS 13](https://www.apple.com/de/macos) as our main development platform.
 ###### We use [Gradle](https://gradle.org/) as our build system.
 
-[![Open Source](https://forthebadge.com/images/badges/open-source.svg)](https://github.com/TheFruxz/Sparkle/blob/main/LICENSE)
-[![Built by developers](https://forthebadge.com/images/badges/built-by-developers.svg)](https://github.com/TheFruxz/Sparkle/graphs/contributors)
-[![Written in Kotlin](https://forthebadge.com/images/badges/makes-people-smile.svg)](https://github.com/JetBrains/kotlin)
+[![Open Source](https://raw.githubusercontent.com/BraveUX/for-the-badge/master/src/images/badges/open-source.svg)](https://github.com/TheFruxz/Sparkle/blob/main/LICENSE)
+[![Built by developers](https://raw.githubusercontent.com/BraveUX/for-the-badge/master/src/images/badges/built-by-developers.svg)](https://github.com/TheFruxz/Sparkle/graphs/contributors)
+[![Written in Kotlin](https://raw.githubusercontent.com/BraveUX/for-the-badge/master/src/images/badges/makes-people-smile.svg)](https://github.com/JetBrains/kotlin)
