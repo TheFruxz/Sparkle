@@ -1,15 +1,11 @@
 package dev.fruxz.sparkle.framework
 
-import dev.fruxz.ascend.tool.smart.composition.Composable
 import dev.fruxz.sparkle.framework.command.*
 import dev.fruxz.sparkle.framework.command.annotations.*
 import dev.fruxz.sparkle.framework.command.annotations.permission.Private
 import dev.fruxz.sparkle.framework.command.annotations.permission.Public
 import dev.fruxz.sparkle.framework.coroutine.scope.coroutineScope
 import dev.fruxz.sparkle.framework.marker.SparkleDSL
-import dev.fruxz.sparkle.framework.modularity.ModuleContext
-import dev.fruxz.sparkle.framework.modularity.component.Component
-import dev.fruxz.sparkle.framework.modularity.component.ComponentManager
 import dev.fruxz.sparkle.framework.system.commandMap
 import dev.fruxz.sparkle.framework.system.internalSyncCommands
 import dev.fruxz.sparkle.server.LocalSparklePlugin
@@ -18,21 +14,21 @@ import net.kyori.adventure.key.Key
 import net.kyori.adventure.key.Keyed
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.PluginCommand
+import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.hasAnnotation
-import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.isAccessible
 
-open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), ModuleContext, Keyed {
+open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Keyed {
 
     private val onLoads = mutableListOf<JavaPlugin.() -> Unit>()
     private val onEnables = mutableListOf<JavaPlugin.() -> Unit>()
     private val onDisables = mutableListOf<JavaPlugin.() -> Unit>()
 
     private val paperCommands = mutableMapOf<KClass<out CommandExecutor>, CommandExecutor>()
-    private val components = mutableMapOf<KClass<out Component>, Component>()
+    private val listener = mutableSetOf<Listener>()
 
     private val key: Key by lazy {
        Key.key(LocalSparklePlugin.SYSTEM_IDENTITY.lowercase(), this.name.lowercase())
@@ -60,6 +56,13 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
      */
     @SparkleDSL
     fun onDisable(process: JavaPlugin.() -> Unit) = onDisables.add(process)
+
+    // // Listeners
+
+    @SparkleDSL
+    fun listener(listener: Listener) {
+        this.listener += listener
+    }
 
     // // Commands
 
@@ -91,17 +94,9 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
     @SparkleDSL
     inline fun <reified T : CommandExecutor> command(vararg constructorArgs: Any?) = command(T::class, *constructorArgs)
 
-    // // Components
-
-    @SparkleDSL
-    fun <T : Component> component(component: T) = components.put(component::class, component)
-
-    @SparkleDSL
-    inline fun <reified T : Component> component() = component(T::class.primaryConstructor?.call() ?: throw IllegalArgumentException("No primary constructor found for ${T::class.simpleName}!"))
-
     // // Coroutines
 
-
+    // TODO
 
     // backend stuff
 
@@ -109,6 +104,8 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
         onLoads.forEach { it.invoke(this) }
     }
     override fun onEnable() {
+        val pluginManager = server.pluginManager
+
         onEnables.forEach { it.invoke(this) }
 
         paperCommands.forEach { command ->
@@ -133,16 +130,9 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Module
 
             } ?: logger.warning("No name (@Label(name: String)) found for command ${command.key.simpleName} @${command.key.simpleName} at ${command.key.annotations.joinToString { it.annotationClass.simpleName ?: "/" }}!")
 
-
         }
 
-        components.forEach { (clazz, component) ->
-
-            if (component.vendor == null) component.vendor = Composable { this }
-
-            ComponentManager.register(component, clazz)
-
-        }
+        listener.forEach { pluginManager.registerEvents(it, this) }
 
     }
 

@@ -10,10 +10,9 @@ import dev.fruxz.sparkle.framework.system.pluginsFolder
 import dev.fruxz.sparkle.framework.util.json.serializer.*
 import dev.fruxz.sparkle.framework.ux.inventory.item.Item
 import dev.fruxz.sparkle.server.command.SparkleCommand
-import dev.fruxz.sparkle.server.component.component.ComponentComponent
-import dev.fruxz.sparkle.server.component.demo.DemoComponent
-import dev.fruxz.sparkle.server.component.events.EventsComponent
-import dev.fruxz.sparkle.server.component.sandox.SandBoxComponent
+import dev.fruxz.sparkle.server.component.demo.DemoListener
+import dev.fruxz.sparkle.server.component.events.DamageListener
+import dev.fruxz.sparkle.server.component.events.InteractionListener
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.Particle
@@ -52,10 +51,9 @@ class LocalSparklePlugin : SparklePlugin({
 
     command<SparkleCommand>()
 
-    component<ComponentComponent>()
-    component<DemoComponent>()
-    component<EventsComponent>()
-    component<SandBoxComponent>()
+    listener(DemoListener())
+    listener(DamageListener())
+    listener(InteractionListener())
 
 }) {
 
@@ -63,9 +61,9 @@ class LocalSparklePlugin : SparklePlugin({
 
         const val SYSTEM_IDENTITY = "Sparkle"
 
-        internal val sparkleFolder = (pluginsFolder / "Sparkle").also(Path::createDirectories)
+        private val sparkleFolder = (pluginsFolder / "Sparkle").also(Path::createDirectories)
 
-        private val configFile = (sparkleFolder / "config.json").also(Path::createFileAndDirectories)
+        private val configFile: Path = (sparkleFolder / "config.json").also(Path::createFileAndDirectories)
 
         var debugMode by property(configFile, "debugMode") { false }
             internal set
