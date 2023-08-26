@@ -1,8 +1,6 @@
 package dev.fruxz.sparkle.framework.command.sparkle
 
 import dev.fruxz.sparkle.framework.command.context.BranchExecutionContext
-import dev.fruxz.sparkle.framework.modularity.component.Component
-import dev.fruxz.sparkle.framework.modularity.component.ComponentManager
 import dev.fruxz.sparkle.framework.system.sparkle
 import dev.fruxz.sparkle.framework.util.cache.CachedProperty
 import dev.fruxz.sparkle.framework.util.cache.cached
@@ -171,27 +169,6 @@ data class BranchContent<T>(
             cacheDuration = Duration.INFINITE,
             tabGenerator = { Transmission.Theme.Default.entries.map { it.name } },
             contentGenerator = { Transmission.Theme.Default.valueOf(it.joinToString(" ").uppercase()) }
-        )
-
-        fun registeredComponent(): BranchContent<Component> = of(
-            key = sparkle.key().subKey("component"),
-            cacheDuration = Duration.ZERO,
-            tabGenerator = { ComponentManager.registered.keys.map { it.identity.asString() } },
-            contentGenerator = { ComponentManager.registered.keys.find { element -> element.identity.asString() == it.joinToString(" ") } }
-        )
-
-        fun runningComponent(): BranchContent<Component> = of(
-            key = sparkle.key().subKey("runningComponent"),
-            cacheDuration = Duration.ZERO,
-            tabGenerator = { ComponentManager.registered.keys.mapNotNull { component -> component.takeIf { !it.isRunning }?.identity?.asString() } },
-            contentGenerator = { ComponentManager.registered.keys.find { element -> element.isRunning && element.identity.asString() == it.joinToString(" ") } }
-        )
-
-        fun offlineComponent(): BranchContent<Component> = of(
-            key = sparkle.key().subKey("offlineComponent"),
-            cacheDuration = Duration.ZERO,
-            tabGenerator = { ComponentManager.registered.keys.mapNotNull { component -> component.takeIf { !it.isRunning }?.identity?.asString() } },
-            contentGenerator = { ComponentManager.registered.keys.find { element -> !element.isRunning && element.identity.asString() == it.joinToString(" ") } }
         )
 
         fun sandbox(): BranchContent<SandBoxManager.SandBox> = of(
