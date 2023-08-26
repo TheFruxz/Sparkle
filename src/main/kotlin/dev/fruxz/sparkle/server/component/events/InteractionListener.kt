@@ -3,12 +3,13 @@ package dev.fruxz.sparkle.server.component.events
 import dev.fruxz.sparkle.framework.event.interaction.PlayerInteractAtBlockEvent
 import dev.fruxz.sparkle.framework.event.interaction.PlayerInteractAtItemEvent
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 
 class InteractionListener : Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     fun playerInteract(event: PlayerInteractEvent) {
 
         if (event.hasBlock()) {
