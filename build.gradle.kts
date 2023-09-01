@@ -13,6 +13,7 @@ group = "dev.fruxz"
 repositories {
 
     mavenCentral()
+    mavenLocal()
 
     maven("https://jitpack.io") {
         name = "JitPack"
@@ -24,10 +25,11 @@ repositories {
 
 }
 
+val minecraftVersion: String by project
 val ascendVersion: String by project
 val stackedVersion: String by project
-val minecraftVersion: String by project
 val kojangVersion: String by project
+val brigadiktVersion: String by project
 val serializationVersion: String by project
 val coroutinesVersion: String by project
 val brigadierVersion: String by project
@@ -47,6 +49,7 @@ dependencies {
     api("com.github.TheFruxz:Ascend:$ascendVersion").deliver()
     api("com.github.TheFruxz:Stacked:$stackedVersion").deliver()
     api("com.github.TheFruxz:Kojang:$kojangVersion").deliver()
+    api("com.github.TheFruxz:BrigadiKt:$brigadiktVersion").deliver()
 
     // Kotlin
 
