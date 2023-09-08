@@ -41,7 +41,7 @@ If you require any further assistance, suggestions or other items you would like
 
 ###### We build & use Sparkle on Java 17 - [Eclipse Temurin](https://adoptium.net/).
 ###### Also build & run Sparkle with [Eclipse Temurin](https://adoptium.net/) on to get the best possible experience!
-###### We use [macOS 13](https://www.apple.com/de/macos) as our main development platform.
+###### We use [macOS](https://www.apple.com/de/macos) as our main development platform.
 ###### We use [Gradle](https://gradle.org/) as our build system.
 
 [![Open Source](https://raw.githubusercontent.com/BraveUX/for-the-badge/master/src/images/badges/open-source.svg)](https://github.com/TheFruxz/Sparkle/blob/main/LICENSE)
