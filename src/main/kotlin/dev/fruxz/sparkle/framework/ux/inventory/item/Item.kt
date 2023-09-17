@@ -1,7 +1,7 @@
 package dev.fruxz.sparkle.framework.ux.inventory.item
 
 import dev.fruxz.ascend.extension.objects.takeIfInstance
-import dev.fruxz.ascend.tool.smart.composition.Composable
+import dev.fruxz.ascend.tool.smart.generate.composable.Composable
 import dev.fruxz.sparkle.framework.coroutine.dispatcher.asyncDispatcher
 import dev.fruxz.sparkle.framework.coroutine.scope.coroutineScope
 import dev.fruxz.sparkle.framework.nbt.get

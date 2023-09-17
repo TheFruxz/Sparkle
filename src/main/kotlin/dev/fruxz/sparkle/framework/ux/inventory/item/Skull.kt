@@ -1,6 +1,6 @@
 package dev.fruxz.sparkle.framework.ux.inventory.item
 
-import de.fruxz.kojang.Kojang
+import dev.fruxz.kojang.Kojang
 import dev.fruxz.ascend.extension.data.url
 import dev.fruxz.ascend.json.globalJson
 import dev.fruxz.sparkle.framework.coroutine.task.asAsync

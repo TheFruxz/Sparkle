@@ -1,6 +1,6 @@
 package dev.fruxz.sparkle.framework.ux.inventory.item
 
-import dev.fruxz.ascend.tool.smart.composition.Producible
+import dev.fruxz.ascend.tool.smart.generate.producible.Producible
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 

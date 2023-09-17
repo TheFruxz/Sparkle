@@ -38,6 +38,8 @@ interface Pagination<C> {
             override fun preRenderInventory(canvas: Canvas, base: Inventory, offset: Int): InventoryRenderResult {
                 val inventoryLines = base.size / inventoryWidth
 
+                // TODO finish renderer
+
                 val contentWidth = inventoryWidth - 1
                 val contentSlots = computeDisplaySlots(base.slots)
                 val scrollBarSlots = base.slots - contentSlots.toSet()

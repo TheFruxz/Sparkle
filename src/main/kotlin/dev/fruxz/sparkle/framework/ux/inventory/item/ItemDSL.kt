@@ -3,7 +3,7 @@
 package dev.fruxz.sparkle.framework.ux.inventory.item
 
 import dev.fruxz.ascend.extension.forceCast
-import dev.fruxz.ascend.tool.smart.composition.Composable
+import dev.fruxz.ascend.tool.smart.generate.composable.Composable
 import dev.fruxz.sparkle.framework.ux.inventory.item.compose.ComposeAddon
 import dev.fruxz.sparkle.framework.ux.inventory.item.compose.ComposeProperty
 import dev.fruxz.stacked.extension.api.StyledString
