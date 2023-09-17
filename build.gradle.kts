@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.0"
+    kotlin("jvm") version "1.9.20-Beta"
     kotlin("plugin.serialization") version "1.9.0"
     id("io.papermc.paperweight.userdev") version "1.5.5"
     `maven-publish`
