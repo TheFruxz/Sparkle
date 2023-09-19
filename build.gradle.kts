@@ -77,7 +77,7 @@ dependencies {
     shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
     shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 
-    shadow("net.kyori:adventure-text-serializer-plain:4.13.0")
+    shadow("net.kyori:adventure-text-serializer-plain:4.14.0")
 
     shadow("org.jetbrains.exposed:exposed-core:0.41.1")
     shadow("org.jetbrains.exposed:exposed-dao:0.41.1")
