@@ -27,8 +27,9 @@ public class LocalSparkleLoader implements PluginLoader {
                 .lines()
                 .forEach(dependency -> maven.addDependency(new Dependency(new DefaultArtifact(dependency), null)));
 
-        maven.addRepository(new RemoteRepository.Builder("central", "default", "https://repo.maven.apache.org/maven2/").build());
         maven.addRepository(new RemoteRepository.Builder("jitpack", "default", "https://jitpack.io/").build());
+        maven.addRepository(new RemoteRepository.Builder("central", "default", "https://repo.maven.apache.org/maven2/").build());
+        maven.addRepository(new RemoteRepository.Builder("minecraft", "default", "https://libraries.minecraft.net").build());
 
         classpathBuilder.addLibrary(maven);
     }
