@@ -39,7 +39,7 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 
     // External
@@ -74,7 +74,7 @@ dependencies {
     shadow(kotlin("stdlib"))
     shadow(kotlin("reflect"))
 
-    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 
     shadow("net.kyori:adventure-text-serializer-plain:4.14.0")
