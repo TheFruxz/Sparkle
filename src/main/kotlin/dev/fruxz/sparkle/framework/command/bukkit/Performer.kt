@@ -4,26 +4,24 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 
-typealias CommandPerformer = CommandSender
-
 // player
 
-val CommandPerformer.asPlayerOrNull: Player?
+val CommandSender.asPlayerOrNull: Player?
     get() = this as? Player
 
-val CommandPerformer.asPlayer: Player
+val CommandSender.asPlayer: Player
     get() = this as Player
 
-val CommandPerformer.isPlayer: Boolean
+val CommandSender.isPlayer: Boolean
     get() = this is Player
 
 // console
 
-val CommandPerformer.asConsoleOrNull: ConsoleCommandSender?
+val CommandSender.asConsoleOrNull: ConsoleCommandSender?
     get() = this as? ConsoleCommandSender
 
-val CommandPerformer.asConsole: ConsoleCommandSender
+val CommandSender.asConsole: ConsoleCommandSender
     get() = this as ConsoleCommandSender
 
-val CommandPerformer.isConsole: Boolean
+val CommandSender.isConsole: Boolean
     get() = this is ConsoleCommandSender
