@@ -27,7 +27,7 @@ fun <T : CommandExecutor> JavaPlugin.registerCommand(command: T, clazz: KClass<o
     val commandIsPublic = clazz.hasAnnotation<Public>()
 
     commandName?.let { securedName ->
-        val securedCommand = (getCommand(securedName) ?: SparklePlugin.artificialCommand(this, securedName))
+        val securedCommand = (getCommand(securedName) ?: dev.fruxz.sparkle.framework.SparklePlugin.artificialCommand(this, securedName))
 
         securedCommand.setExecutor(command)
         commandDescription?.let { securedCommand.description = it }

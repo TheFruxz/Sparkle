@@ -8,7 +8,7 @@ import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.PluginManager
 
 @SparkleDSL
-fun SparklePlugin(plugin: SparklePlugin.() -> Unit) = object : SparklePlugin(plugin) { }
+fun SparklePlugin(plugin: dev.fruxz.sparkle.framework.SparklePlugin.() -> Unit) = object : dev.fruxz.sparkle.framework.SparklePlugin(plugin) { }
 
 val plugins: Set<Plugin>
     get() = pluginManager.plugins.toSet()

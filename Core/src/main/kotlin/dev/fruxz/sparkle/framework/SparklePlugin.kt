@@ -21,7 +21,7 @@ import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.hasAnnotation
 import kotlin.reflect.jvm.isAccessible
 
-open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Keyed {
+open class SparklePlugin(setup: dev.fruxz.sparkle.framework.SparklePlugin.() -> Unit) : JavaPlugin(), Keyed {
 
     private val onLoads = mutableListOf<JavaPlugin.() -> Unit>()
     private val onEnables = mutableListOf<JavaPlugin.() -> Unit>()
@@ -117,7 +117,10 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Keyed 
             val commandIsPublic = command.key.hasAnnotation<Public>()
 
             commandName?.let { securedName ->
-                val securedCommand = (getCommand(securedName) ?: artificialCommand(this, securedName))
+                val securedCommand = (getCommand(securedName) ?: dev.fruxz.sparkle.framework.SparklePlugin.Companion.artificialCommand(
+                    this,
+                    securedName
+                ))
 
                 securedCommand.setExecutor(command.value)
                 commandDescription?.let { securedCommand.description = it }
