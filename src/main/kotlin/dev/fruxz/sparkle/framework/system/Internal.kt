@@ -15,7 +15,7 @@ import kotlin.reflect.jvm.isAccessible
  * @since 2023.1
  */
 @ApiStatus.Internal
-fun Server.internalSyncCommands() {
+fun Server.internalSyncCommands() { // TODO "This will be removed in the future, after the paper brigadier api got released."
     {
         this::class.declaredFunctions.firstOrNull { it.name == "syncCommands" }?.let {
             it.isAccessible = true
