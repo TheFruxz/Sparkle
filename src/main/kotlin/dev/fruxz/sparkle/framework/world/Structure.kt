@@ -1,7 +1,5 @@
 package dev.fruxz.sparkle.framework.world
 
-import dev.fruxz.ascend.tool.math.decimal.Percentage
-import dev.fruxz.ascend.tool.math.decimal.Percentage.Companion.percent
 import org.bukkit.Location
 import org.bukkit.RegionAccessor
 import org.bukkit.World
@@ -66,9 +64,9 @@ fun Structure.place(
     structureRotation: StructureRotation = StructureRotation.NONE,
     mirror: Mirror = Mirror.NONE,
     palette: Int = -1,
-    integrity: Percentage = 100.percent,
+    integrity: Float = 1F,
     random: Random = Random,
-) = apply { place(regionAccessor, location, includeEntities, structureRotation, mirror, palette, integrity.decimal.toFloat(), random.asJavaRandom()) }
+) = apply { place(regionAccessor, location, includeEntities, structureRotation, mirror, palette, integrity, random.asJavaRandom()) }
 
 fun Structure.getSecondCorner(firstCorner: Location, rotationOfThisStructure: StructureRotation, mirror: Mirror): Location {
     val secondCorner = firstCorner.copy(
