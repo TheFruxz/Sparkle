@@ -168,7 +168,7 @@ val Block.snapshotInventory: Inventory
  */
 fun Block.toFallingBlock() = blockData.clone().let { data ->
     type = Material.AIR
-    return@let world.spawnFallingBlock(location.toCenterLocation(), data)
+    return@let world.spawn(location.toCenterLocation(), FallingBlock::class.java) { it.blockData = data }
 }
 
 /**
