@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "gradle"
-    target-branch: "develop"
+    target-branch: "rework/2023"
     directory: "/"
     labels:
       - "Type: dependencies"
