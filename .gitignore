@@ -2,6 +2,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,intellij+iml,intellij+all,jetbrains,jetbrains+iml,jetbrains+all,visualstudio,visualstudiocode,kotlin,java,code-java,gradle,maven,macos,windows,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,intellij+iml,intellij+all,jetbrains,jetbrains+iml,jetbrains+all,visualstudio,visualstudiocode,kotlin,java,code-java,gradle,maven,macos,windows,linux
 
+run/
+
 ### Code-Java ###
 # Language Support for Java(TM) by Red Hat extension for Visual Studio Code - https://marketplace.visualstudio.com/items?itemName=redhat.java
 
