@@ -1,5 +1,6 @@
 package dev.fruxz.sparkle.framework.event
 
+import dev.fruxz.sparkle.framework.world.plus
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
@@ -17,7 +18,7 @@ val PlayerInteractEvent.possibleFutureBlock: Location?
     get() = clickedBlock?.let {
         when {
             it.isReplaceable -> it.location
-            else -> it.location.toBlockLocation().add(blockFace.direction)
+            else -> it.location.toBlockLocation() + blockFace.direction
         }
     }
 

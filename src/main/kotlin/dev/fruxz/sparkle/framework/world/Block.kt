@@ -17,7 +17,7 @@ import org.bukkit.util.Vector
  * @since 1.0
  */
 val Block.safeBoundingBox: BoundingBox
-    get() = BoundingBox.of(location, location.clone().add(Vector(1.0, 1.0, 1.0)))
+    get() = BoundingBox.of(location, location + Vector(1.0, 1.0, 1.0))
 
 /**
  * This computational value uses this block and returns the state
