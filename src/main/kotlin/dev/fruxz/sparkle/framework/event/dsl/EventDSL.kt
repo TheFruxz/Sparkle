@@ -1,7 +1,6 @@
 package dev.fruxz.sparkle.framework.event.dsl
 
 import dev.fruxz.sparkle.framework.event.dsl.CachedEventsManager.addCachedClassifiedEvent
-import dev.fruxz.sparkle.framework.event.dsl.CachedEventsManager.addCachedEvent
 import dev.fruxz.sparkle.framework.event.dsl.CachedEventsManager.cachedEntityEvents
 import dev.fruxz.sparkle.framework.event.dsl.CachedEventsManager.cachedEvents
 import dev.fruxz.sparkle.framework.event.dsl.CachedEventsManager.cachedPlayerEvents
@@ -23,9 +22,29 @@ import kotlin.reflect.KClass
 
 object CachedEventsManager {
 
-    val cachedEvents = mutableMapOf<KClass<out Event>, List<(Event) -> Unit>>()
-    val cachedPlayerEvents = mutableMapOf<KClass<out Event>, MutableMap<UUID, List<(Event, Player) -> Unit>>>()
-    val cachedEntityEvents = mutableMapOf<KClass<out Event>, MutableMap<UUID, List<(Event, Entity) -> Unit>>>()
+    val cachedEvents = mutableMapOf<KClass<out Event>, List<CachedGenericEvent<*>>>()
+    val cachedPlayerEvents = mutableMapOf<KClass<out Event>, Map<UUID, List<CachedPlayerEvent<*>>>>()
+    val cachedEntityEvents = mutableMapOf<KClass<out Event>, Map<UUID, List<CachedEntityEvent<*>>>>()
+
+    fun <T : Event> append(
+        cachedEvent: CachedEvent<T, *>,
+    ) {
+        val clazz = cachedEvent.eventClass
+
+        when (cachedEvent) {
+            is CachedGenericEvent<T> -> { cachedEvents[clazz] = (cachedEvents[clazz].orEmpty() + cachedEvent).distinct() }
+            is CachedPlayerEvent<T> -> {
+                cachedPlayerEvents[clazz] = cachedPlayerEvents[clazz].orEmpty().toMutableMap().also { map ->
+                    map[cachedEvent.affectedPlayer] = map[cachedEvent.affectedPlayer].orEmpty() + cachedEvent
+                }
+            }
+            is CachedEntityEvent<T> -> {
+                cachedEntityEvents[clazz] = cachedEntityEvents[clazz].orEmpty().toMutableMap().also { map ->
+                    map[cachedEvent.affectedEntity] = map[cachedEvent.affectedEntity].orEmpty() + cachedEvent
+                }
+            }
+        }
+    }
 
     fun <T : Event> addCachedEvent(
         data: MutableMap<KClass<out T>, List<(T) -> Unit>>,
@@ -48,9 +67,11 @@ object CachedEventsManager {
 
 }
 
+
+
 inline fun <reified T : Event> registerEventListener(
-    clazz: KClass<out T>,
-    crossinline action: (event: T) -> Unit,
+    clazz: KClass<T>,
+    noinline action: (event: T) -> Unit,
     plugin: Plugin,
     listener: Listener,
     priority: EventPriority = EventPriority.NORMAL,
@@ -61,7 +82,8 @@ inline fun <reified T : Event> registerEventListener(
             else -> error("Event of type ${event::class.qualifiedName} is not of type ${T::class.qualifiedName}!")
         }
     },
-) {
+): CachedEvent<T, *> {
+
     pluginManager.registerEvent(
         /* event = */ clazz.java,
         /* listener = */ listener,
@@ -70,19 +92,25 @@ inline fun <reified T : Event> registerEventListener(
         /* plugin = */ plugin,
         /* ignoreCancelled = */ ignoreCancelled,
     )
+
+    return CachedGenericEvent(
+        eventClass = clazz,
+        action = action,
+        executor = executor,
+    )
 }
 
 @SparkleDSL
 @Deprecated(message = "Use event extension function instead!", replaceWith = ReplaceWith("event<T>(action = action)"))
 inline fun <reified T : Event> listen(
-    crossinline action: (event: T) -> Unit,
+    noinline action: (event: T) -> Unit,
 ) = event<T>(action = action)
 
 inline fun <reified T : Event> event(
     priority: EventPriority = EventPriority.NORMAL,
     ignoreCancelled: Boolean = false,
     plugin: Plugin = sparkle,
-    crossinline action: (event: T) -> Unit,
+    noinline action: (event: T) -> Unit,
 ) {
 
     if (!cachedEvents.containsKey(T::class)) {
@@ -100,12 +128,44 @@ inline fun <reified T : Event> event(
 
     }
 
-    addCachedEvent(cachedEvents, T::class) { event ->
+    CachedEventsManager.append(CachedGenericEvent(T::class, action) { _, event ->
         when (event) {
             is T -> action(event)
-            else -> error("Event type mismatch!")
+            else -> error("Event of type ${event::class.qualifiedName} is not of type ${T::class.qualifiedName}!")
         }
+    })
+
+}
+
+@SparkleDSL
+inline fun <reified T : EntityEvent> Entity.entityEvent(
+    priority: EventPriority = EventPriority.NORMAL,
+    ignoreCancelled: Boolean = false,
+    plugin: Plugin = sparkle,
+    noinline action: (event: T, entity: Entity) -> Unit,
+) {
+
+    if (!cachedEntityEvents.containsKey(T::class)) {
+
+        registerEventListener(
+            clazz = T::class,
+            action = action,
+            plugin = plugin,
+            listener = object : Listener {},
+            priority = priority,
+            ignoreCancelled = ignoreCancelled
+        )
+
+        debugLog { "Registered event listener for ${T::class.simpleName}!" }
+
     }
+
+    CachedEventsManager.append(CachedGenericEvent(T::class, action) { _, event ->
+        when (event) {
+            is T -> action(event)
+            else -> error("Event of type ${event::class.qualifiedName} is not of type ${T::class.qualifiedName}!")
+        }
+    })
 
 }
 
