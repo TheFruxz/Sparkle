@@ -1,13 +1,9 @@
 package dev.fruxz.sparkle.framework.event.dsl
 
-import dev.fruxz.sparkle.framework.event.dsl.CachedEventsManager.addCachedClassifiedEvent
-import dev.fruxz.sparkle.framework.event.dsl.CachedEventsManager.cachedEntityEvents
-import dev.fruxz.sparkle.framework.event.dsl.CachedEventsManager.cachedEvents
-import dev.fruxz.sparkle.framework.event.dsl.CachedEventsManager.cachedPlayerEvents
 import dev.fruxz.sparkle.framework.marker.SparkleDSL
-import dev.fruxz.sparkle.framework.system.debugLog
 import dev.fruxz.sparkle.framework.system.pluginManager
 import dev.fruxz.sparkle.framework.system.sparkle
+import dev.fruxz.sparkle.framework.system.worlds
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
@@ -15,205 +11,175 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityEvent
 import org.bukkit.event.player.PlayerEvent
-import org.bukkit.plugin.EventExecutor
 import org.bukkit.plugin.Plugin
 import java.util.*
 import kotlin.reflect.KClass
 
-object CachedEventsManager {
+object JITEventManager {
+    private val events = mutableMapOf<KClass<out Event>, List<JITEvent<out Event>>>()
+    private val playerEvents = mutableMapOf<UUID, List<JITPlayerEvent<out PlayerEvent>>>()
+    private val entityEvents = mutableMapOf<UUID, List<JITEntityEvent<out EntityEvent>>>()
 
-    val cachedEvents = mutableMapOf<KClass<out Event>, List<CachedGenericEvent<*>>>()
-    val cachedPlayerEvents = mutableMapOf<KClass<out Event>, Map<UUID, List<CachedPlayerEvent<*>>>>()
-    val cachedEntityEvents = mutableMapOf<KClass<out Event>, Map<UUID, List<CachedEntityEvent<*>>>>()
+    private fun <T : Event> addEvent(clazz: KClass<T>, action: JITEvent<T>) {
+        events[clazz] = (events[clazz].orEmpty() + action).distinct()
+    }
 
-    fun <T : Event> append(
-        cachedEvent: CachedEvent<T, *>,
+    private fun <T : Event> initializeListenerIfNotPresent(
+        clazz: KClass<T>,
+        priority: EventPriority = EventPriority.NORMAL,
+        ignoreCancelled: Boolean = false,
+        plugin: Plugin = sparkle,
     ) {
-        val clazz = cachedEvent.eventClass
+        if (events[clazz].orEmpty().none { it.priority == priority && it.ignoreCancelled == ignoreCancelled && it.plugin == plugin }) {
+            pluginManager.registerEvent(
+                /* event = */ clazz.java,
+                /* listener = */ object : Listener {},
+                /* priority = */ priority,
+                /* executor = */ { _, event ->
 
-        when (cachedEvent) {
-            is CachedGenericEvent<T> -> { cachedEvents[clazz] = (cachedEvents[clazz].orEmpty() + cachedEvent).distinct() }
-            is CachedPlayerEvent<T> -> {
-                cachedPlayerEvents[clazz] = cachedPlayerEvents[clazz].orEmpty().toMutableMap().also { map ->
-                    map[cachedEvent.affectedPlayer] = map[cachedEvent.affectedPlayer].orEmpty() + cachedEvent
-                }
-            }
-            is CachedEntityEvent<T> -> {
-                cachedEntityEvents[clazz] = cachedEntityEvents[clazz].orEmpty().toMutableMap().also { map ->
-                    map[cachedEvent.affectedEntity] = map[cachedEvent.affectedEntity].orEmpty() + cachedEvent
-                }
-            }
+                    fun checkedInvoke(jitEvent: JITEvent<*>) {
+                        if (jitEvent.ignoreCancelled != ignoreCancelled) return
+                        if (jitEvent.priority != priority) return
+                        if (jitEvent.plugin != plugin) return
+
+                        jitEvent.blindInvoke(event)
+                    }
+
+                    events[clazz].orEmpty().forEach(::checkedInvoke)
+
+                    if (event is PlayerEvent) playerEvents[event.player.uniqueId].orEmpty().forEach(::checkedInvoke)
+                    if (event is EntityEvent) entityEvents[event.entity.uniqueId].orEmpty().forEach(::checkedInvoke)
+
+                },
+                /* plugin = */ plugin,
+                /* ignoreCancelled = */ ignoreCancelled,
+            )
         }
     }
 
-    fun <T : Event> addCachedEvent(
-        data: MutableMap<KClass<out T>, List<(T) -> Unit>>,
-        clazz: KClass<out T>,
-        action: (T) -> Unit
+    fun <T : Event> addGenericEvent(
+        clazz: KClass<T>,
+        action: JITEvent<T>
     ) {
-        data[clazz] = (data[clazz].orEmpty() + action).distinct()
+        addEvent(clazz, action)
+        initializeListenerIfNotPresent(
+            clazz = clazz,
+            priority = action.priority,
+            ignoreCancelled = action.ignoreCancelled,
+            plugin = action.plugin,
+        )
     }
 
-    fun <T : Event, E> addCachedClassifiedEvent(
-        data: MutableMap<KClass<out Event>, MutableMap<UUID, List<(T, E) -> Unit>>>,
-        clazz: KClass<out T>,
+    fun <T : PlayerEvent> addPlayerEvent(
+        clazz: KClass<T>,
         uuid: UUID,
-        action: (T, E) -> Unit
+        action: JITPlayerEvent<T>
     ) {
-        data[clazz] = data[clazz].orEmpty().toMutableMap().also { map ->
-            map[uuid] = map[uuid].orEmpty() + action
+        playerEvents[uuid] = (playerEvents[uuid].orEmpty() + action).distinct()
+        addEvent(clazz, action)
+        initializeListenerIfNotPresent(
+            clazz = clazz,
+            priority = action.priority,
+            ignoreCancelled = action.ignoreCancelled,
+            plugin = action.plugin,
+        )
+    }
+
+    fun <T : EntityEvent> addEntityEvent(
+        clazz: KClass<T>,
+        uuid: UUID,
+        action: JITEntityEvent<T>
+    ) {
+        entityEvents[uuid] = (entityEvents[uuid].orEmpty() + action).distinct()
+        addEvent(clazz, action)
+        initializeListenerIfNotPresent(
+            clazz = clazz,
+            priority = action.priority,
+            ignoreCancelled = action.ignoreCancelled,
+            plugin = action.plugin,
+        )
+    }
+
+    fun performCleanup() {
+        val entities = worlds.flatMap { it.entities.map(Entity::getUniqueId) }
+
+        playerEvents.keys.filterNot(entities::contains).forEach {
+            playerEvents[it] = playerEvents[it].orEmpty().filterNot(JITPlayerEvent<*>::autoRemoval)
+
+            if (playerEvents[it].isNullOrEmpty()) playerEvents.remove(it)
         }
+
+        entityEvents.keys.filterNot(entities::contains).forEach {
+            entityEvents[it] = entityEvents[it].orEmpty().filterNot(JITEntityEvent<*>::autoRemoval)
+
+            if (entityEvents[it].isNullOrEmpty()) entityEvents.remove(it)
+        }
+
+    }
+
+    fun performRemoval(uuid: UUID, requiresAutoRemoval: Boolean = true) {
+
+        playerEvents[uuid] = playerEvents[uuid].orEmpty().filterNot { it.autoRemoval == requiresAutoRemoval }
+        entityEvents[uuid] = entityEvents[uuid].orEmpty().filterNot { it.autoRemoval == requiresAutoRemoval }
+
+        if (playerEvents[uuid].isNullOrEmpty()) playerEvents.remove(uuid)
+        if (entityEvents[uuid].isNullOrEmpty()) entityEvents.remove(uuid)
     }
 
 }
 
-
-
-inline fun <reified T : Event> registerEventListener(
-    clazz: KClass<T>,
-    noinline action: (event: T) -> Unit,
-    plugin: Plugin,
-    listener: Listener,
-    priority: EventPriority = EventPriority.NORMAL,
-    ignoreCancelled: Boolean = false,
-    executor: EventExecutor = EventExecutor { _, event ->
-        when (event) {
-            is T -> action(event)
-            else -> error("Event of type ${event::class.qualifiedName} is not of type ${T::class.qualifiedName}!")
-        }
-    },
-): CachedEvent<T, *> {
-
-    pluginManager.registerEvent(
-        /* event = */ clazz.java,
-        /* listener = */ listener,
-        /* priority = */ priority,
-        /* executor = */ executor,
-        /* plugin = */ plugin,
-        /* ignoreCancelled = */ ignoreCancelled,
-    )
-
-    return CachedGenericEvent(
-        eventClass = clazz,
-        action = action,
-        executor = executor,
-    )
-}
-
-@SparkleDSL
-@Deprecated(message = "Use event extension function instead!", replaceWith = ReplaceWith("event<T>(action = action)"))
 inline fun <reified T : Event> listen(
-    noinline action: (event: T) -> Unit,
-) = event<T>(action = action)
-
-inline fun <reified T : Event> event(
     priority: EventPriority = EventPriority.NORMAL,
     ignoreCancelled: Boolean = false,
     plugin: Plugin = sparkle,
     noinline action: (event: T) -> Unit,
-) {
-
-    if (!cachedEvents.containsKey(T::class)) {
-
-        registerEventListener(
-            clazz = T::class,
-            action = action,
-            plugin = plugin,
-            listener = object : Listener {},
-            priority = priority,
-            ignoreCancelled = ignoreCancelled
-        )
-
-        debugLog { "Registered event listener for ${T::class.simpleName}!" }
-
+) = JITEventManager.addGenericEvent(
+    clazz = T::class,
+    action = object : JITEvent<T>(
+        priority = priority,
+        ignoreCancelled = ignoreCancelled,
+        plugin = plugin,
+    ) {
+        override fun invoke(event: T) = action(event)
     }
-
-    CachedEventsManager.append(CachedGenericEvent(T::class, action) { _, event ->
-        when (event) {
-            is T -> action(event)
-            else -> error("Event of type ${event::class.qualifiedName} is not of type ${T::class.qualifiedName}!")
-        }
-    })
-
-}
-
-@SparkleDSL
-inline fun <reified T : EntityEvent> Entity.entityEvent(
-    priority: EventPriority = EventPriority.NORMAL,
-    ignoreCancelled: Boolean = false,
-    plugin: Plugin = sparkle,
-    noinline action: (event: T, entity: Entity) -> Unit,
-) {
-
-    if (!cachedEntityEvents.containsKey(T::class)) {
-
-        registerEventListener(
-            clazz = T::class,
-            action = action,
-            plugin = plugin,
-            listener = object : Listener {},
-            priority = priority,
-            ignoreCancelled = ignoreCancelled
-        )
-
-        debugLog { "Registered event listener for ${T::class.simpleName}!" }
-
-    }
-
-    CachedEventsManager.append(CachedGenericEvent(T::class, action) { _, event ->
-        when (event) {
-            is T -> action(event)
-            else -> error("Event of type ${event::class.qualifiedName} is not of type ${T::class.qualifiedName}!")
-        }
-    })
-
-}
+)
 
 @SparkleDSL
 inline fun <reified T : EntityEvent> Entity.listenOnEntity(
-    crossinline action: (event: T, entity: Entity) -> Unit,
-) {
-    if (!cachedEntityEvents.containsKey(T::class)) {
-        event<T> { event ->
-            cachedEntityEvents[T::class].orEmpty().forEach { (key, value) ->
-                if (event.entity.uniqueId == key) {
-                    value.forEach { it(event, event.entity) }
-                }
-            }
-        }
+    priority: EventPriority = EventPriority.NORMAL,
+    ignoreCancelled: Boolean = false,
+    autoRemoval: Boolean = true,
+    plugin: Plugin = sparkle,
+    noinline action: (event: T, entity: Entity) -> Unit,
+) = JITEventManager.addEntityEvent(
+    clazz = T::class,
+    uuid = uniqueId,
+    action = object : JITEntityEvent<T>(
+        priority = priority,
+        ignoreCancelled = ignoreCancelled,
+        autoRemoval = autoRemoval,
+        plugin = plugin,
+    ) {
+        override fun invoke(event: T, entity: Entity) = action(event, entity)
     }
-
-    addCachedClassifiedEvent(cachedEntityEvents, T::class, uniqueId) { event, entity ->
-        when (event) {
-            is T -> action(event, entity)
-            else -> error("Event type mismatch!")
-        }
-    }
-
-}
+)
 
 @SparkleDSL
-@JvmName("listenOnPlayerEntity")
 inline fun <reified T : PlayerEvent> Player.listenOnPlayer(
-    @Suppress("UNUSED_PARAMETER") removeOnQuit: Boolean = true, // TODO module, which will clean this up
-    crossinline action: (event: T, player: Player) -> Unit,
-) {
-
-    if (!cachedPlayerEvents.containsKey(T::class)) {
-        event<T> { event ->
-            cachedPlayerEvents[T::class].orEmpty().forEach { (key, value) ->
-                if (event.player.uniqueId == key) {
-                    value.forEach { it(event, event.player) }
-                }
-            }
-        }
+    priority: EventPriority = EventPriority.NORMAL,
+    ignoreCancelled: Boolean = false,
+    autoRemoval: Boolean = true,
+    plugin: Plugin = sparkle,
+    noinline action: (event: T, player: Player) -> Unit,
+) = JITEventManager.addPlayerEvent(
+    clazz = T::class,
+    uuid = uniqueId,
+    action = object : JITPlayerEvent<T>(
+        priority = priority,
+        ignoreCancelled = ignoreCancelled,
+        autoRemoval = autoRemoval,
+        plugin = plugin,
+    ) {
+        override fun invoke(event: T, player: Player) = action(event, player)
     }
-
-    addCachedClassifiedEvent(cachedPlayerEvents, T::class, uniqueId) { event, player ->
-        when (event) {
-            is T -> action(event, player)
-            else -> error("Event type mismatch!")
-        }
-    }
-
-}
+)
