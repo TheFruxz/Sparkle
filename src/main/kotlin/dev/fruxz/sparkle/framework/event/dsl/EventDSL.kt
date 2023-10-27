@@ -30,6 +30,7 @@ object JITEventManager {
         ignoreCancelled: Boolean = false,
         plugin: Plugin = sparkle,
     ) {
+
         if (events[clazz].orEmpty().none { it.priority == priority && it.ignoreCancelled == ignoreCancelled && it.plugin == plugin }) {
             pluginManager.registerEvent(
                 /* event = */ clazz.java,
@@ -38,6 +39,7 @@ object JITEventManager {
                 /* executor = */ { _, event ->
 
                     fun checkedInvoke(jitEvent: JITEvent<*>) {
+                        if (jitEvent.eventClazz != clazz) return
                         if (jitEvent.ignoreCancelled != ignoreCancelled) return
                         if (jitEvent.priority != priority) return
                         if (jitEvent.plugin != plugin) return
@@ -61,13 +63,13 @@ object JITEventManager {
         clazz: KClass<T>,
         action: JITEvent<T>
     ) {
-        addEvent(clazz, action)
         initializeListenerIfNotPresent(
             clazz = clazz,
             priority = action.priority,
             ignoreCancelled = action.ignoreCancelled,
             plugin = action.plugin,
         )
+        addEvent(clazz, action)
     }
 
     fun <T : PlayerEvent> addPlayerEvent(
@@ -75,14 +77,13 @@ object JITEventManager {
         uuid: UUID,
         action: JITPlayerEvent<T>
     ) {
-        playerEvents[uuid] = (playerEvents[uuid].orEmpty() + action).distinct()
-        addEvent(clazz, action)
         initializeListenerIfNotPresent(
             clazz = clazz,
             priority = action.priority,
             ignoreCancelled = action.ignoreCancelled,
             plugin = action.plugin,
         )
+        playerEvents[uuid] = (playerEvents[uuid].orEmpty() + action).distinct()
     }
 
     fun <T : EntityEvent> addEntityEvent(
@@ -90,14 +91,13 @@ object JITEventManager {
         uuid: UUID,
         action: JITEntityEvent<T>
     ) {
-        entityEvents[uuid] = (entityEvents[uuid].orEmpty() + action).distinct()
-        addEvent(clazz, action)
         initializeListenerIfNotPresent(
             clazz = clazz,
             priority = action.priority,
             ignoreCancelled = action.ignoreCancelled,
             plugin = action.plugin,
         )
+        entityEvents[uuid] = (entityEvents[uuid].orEmpty() + action).distinct()
     }
 
     fun performCleanup() {
@@ -129,13 +129,14 @@ object JITEventManager {
 }
 
 inline fun <reified T : Event> listen(
-    priority: EventPriority = EventPriority.NORMAL,
+    prority: EventPriority = EventPriority.NORMAL,
     ignoreCancelled: Boolean = false,
     plugin: Plugin = sparkle,
     noinline action: (event: T) -> Unit,
 ) = JITEventManager.addGenericEvent(
     clazz = T::class,
     action = object : JITEvent<T>(
+        eventClazz = T::class,
         priority = priority,
         ignoreCancelled = ignoreCancelled,
         plugin = plugin,
@@ -155,6 +156,7 @@ inline fun <reified T : EntityEvent> Entity.listenOnEntity(
     clazz = T::class,
     uuid = uniqueId,
     action = object : JITEntityEvent<T>(
+        eventClazz = T::class,
         priority = priority,
         ignoreCancelled = ignoreCancelled,
         autoRemoval = autoRemoval,
@@ -175,6 +177,7 @@ inline fun <reified T : PlayerEvent> Player.listenOnPlayer(
     clazz = T::class,
     uuid = uniqueId,
     action = object : JITPlayerEvent<T>(
+        eventClazz = T::class,
         priority = priority,
         ignoreCancelled = ignoreCancelled,
         autoRemoval = autoRemoval,
