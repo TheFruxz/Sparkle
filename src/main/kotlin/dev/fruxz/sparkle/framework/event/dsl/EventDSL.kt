@@ -129,7 +129,7 @@ object JITEventManager {
 }
 
 inline fun <reified T : Event> listen(
-    prority: EventPriority = EventPriority.NORMAL,
+    priority: EventPriority = EventPriority.NORMAL,
     ignoreCancelled: Boolean = false,
     plugin: Plugin = sparkle,
     noinline action: (event: T) -> Unit,
