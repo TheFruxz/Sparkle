@@ -14,6 +14,8 @@ import java.util.concurrent.CompletableFuture
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 
+// SYNC
+
 /**
  * This function executes the code defined in [process] synchronously.
  * Internally a [CompletableFuture] is used to create the delayed result.
@@ -104,6 +106,8 @@ fun doSync(
 
 }
 
+// ASYNC
+
 /**
  * This function creates an async context using the KotlinX Coroutines Library.
  * Returns the result as a [Deferred] object, for multiple-line executions.
@@ -191,6 +195,8 @@ fun launch(
     }
 })
 
+// DELAY
+
 /**
  * This function executes the code provided in [code] asynchronously,
  * with a delay of [duration]. The code waits for its execution to be
@@ -207,3 +213,38 @@ suspend inline fun <O> wait(duration: Duration, crossinline code: suspend () -> 
  * @since 1.0
  */
 fun delayed(duration: Duration, code: suspend (CoroutineScope) -> Unit): Unit = doAsync(delay = duration, process = code).dump()
+
+// REPEATING
+
+fun repeating(
+    interval: Duration,
+    isAsync: Boolean,
+    delay: Duration = Duration.ZERO,
+    context: CoroutineContext = isAsync.switch(
+        match = sparkle.asyncDispatcher,
+        mismatch = sparkle.syncDispatcher
+    ),
+    process: suspend (CoroutineScope) -> Unit,
+) = launch(isAsync = isAsync, context = context) { scope ->
+    if (delay.isPositive()) delay(delay)
+
+    while (scope.isActive) {
+        process.invoke(scope)
+        delay(interval)
+    }
+
+}
+
+fun repeatingSync(
+    interval: Duration,
+    delay: Duration = Duration.ZERO,
+    context: CoroutineContext = sparkle.syncDispatcher,
+    process: suspend (CoroutineScope) -> Unit,
+) = repeating(interval, false, delay, context, process)
+
+fun repeatingAsync(
+    interval: Duration,
+    delay: Duration = Duration.ZERO,
+    context: CoroutineContext = sparkle.asyncDispatcher,
+    process: suspend (CoroutineScope) -> Unit,
+) = repeating(interval, true, delay, context, process)
