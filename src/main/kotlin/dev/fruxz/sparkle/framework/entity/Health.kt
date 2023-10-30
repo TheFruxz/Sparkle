@@ -18,10 +18,6 @@ fun LivingEntity.fillHealth() {
 }
 
 fun HumanEntity.fillFoodLevel(withSaturation: Boolean = true) {
+    if (withSaturation) saturation = 20F
     foodLevel = 20
-
-    when {
-        withSaturation -> saturation = 20F
-    }
-
 }
