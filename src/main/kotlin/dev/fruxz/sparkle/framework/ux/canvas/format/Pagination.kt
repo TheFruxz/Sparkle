@@ -1,7 +1,6 @@
 package dev.fruxz.sparkle.framework.ux.canvas.format
 
 import dev.fruxz.ascend.extension.math.ceilToInt
-import dev.fruxz.ascend.extension.math.decimalAsPercent
 import dev.fruxz.ascend.extension.math.limitTo
 import dev.fruxz.sparkle.framework.ux.canvas.Canvas
 import dev.fruxz.sparkle.framework.ux.inventory.container.set
@@ -58,7 +57,6 @@ interface Pagination<C> {
                 base[scrollBarSlots] = Material.RED_STAINED_GLASS_PANE.itemStack
 
                 println("scrollProgress: $scrollProgress")
-                println("Percentage in view: ${viewUsage.decimalAsPercent.percentageString()}")
 
                 return InventoryRenderResult(
                     base,
