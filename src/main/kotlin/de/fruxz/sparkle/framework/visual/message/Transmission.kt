@@ -1,17 +1,17 @@
 package de.fruxz.sparkle.framework.visual.message
 
-import de.fruxz.ascend.extension.dump
-import de.fruxz.ascend.extension.objects.takeIfInstance
+import dev.fruxz.ascend.extension.dump
+import dev.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.sparkle.framework.effect.EntityBasedEffect
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.extension.consoleSender
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.onlinePlayers
 import de.fruxz.sparkle.framework.visual.message.DisplayType.*
-import de.fruxz.stacked.extension.asComponent
-import de.fruxz.stacked.extension.asStyledComponent
-import de.fruxz.stacked.extension.asStyledString
-import de.fruxz.stacked.extension.joinToComponent
+import dev.fruxz.stacked.extension.asComponent
+import dev.fruxz.stacked.extension.asStyledComponent
+import dev.fruxz.stacked.extension.asStyledString
+import dev.fruxz.stacked.extension.joinToComponent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.title.Title

@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.server.component.events
 
-import de.fruxz.ascend.extension.all
-import de.fruxz.ascend.extension.forceCast
+import dev.fruxz.ascend.extension.all
+import dev.fruxz.ascend.extension.forceCast
 import de.fruxz.sparkle.framework.event.PlayerDamageByPlayerEvent
 import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtBlockEvent
 import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtItemEvent

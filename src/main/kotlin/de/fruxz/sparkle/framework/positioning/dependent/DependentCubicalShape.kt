@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.framework.positioning.dependent
 
-import de.fruxz.ascend.extension.math.floor
-import de.fruxz.ascend.extension.math.floorToInt
-import de.fruxz.ascend.tool.smart.composition.Producible
+import dev.fruxz.ascend.extension.math.floor
+import dev.fruxz.ascend.extension.math.floorToInt
+import dev.fruxz.ascend.tool.smart.composition.Producible
 import de.fruxz.sparkle.framework.extension.structureManager
 import de.fruxz.sparkle.framework.extension.world.copy
 import de.fruxz.sparkle.framework.extension.world.velocityTo

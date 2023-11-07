@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.visual.color
 
-import de.fruxz.ascend.extension.container.replace
+import dev.fruxz.ascend.extension.container.replace
 import de.fruxz.sparkle.framework.extension.createKey
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.visual.color.ColorType.WHITE

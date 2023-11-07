@@ -1,11 +1,11 @@
 package de.fruxz.sparkle.framework.infrastructure.app
 
 import com.destroystokyo.paper.utils.PaperPluginLogger
-import de.fruxz.ascend.extension.*
-import de.fruxz.ascend.json.globalJson
-import de.fruxz.ascend.tool.smart.identification.Identifiable
-import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.ascend.tool.time.calendar.Calendar
+import dev.fruxz.ascend.extension.*
+import dev.fruxz.ascend.json.globalJson
+import dev.fruxz.ascend.tool.smart.identification.Identifiable
+import dev.fruxz.ascend.tool.smart.identification.Identity
+import dev.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.missingComponents
 import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.requiredComponents
 import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.requirementsMet
@@ -31,7 +31,7 @@ import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.server.SparkleData
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.text
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.cache.*
@@ -367,7 +367,7 @@ abstract class App(
 
 					if (!SparkleCache.runningComponents.contains(componentIdentity)) {
 
-						SparkleCache.runningComponents += componentIdentity.change<Component>() to de.fruxz.ascend.tool.time.calendar.Calendar.now()
+						SparkleCache.runningComponents += componentIdentity.change<Component>() to dev.fruxz.ascend.tool.time.calendar.Calendar.now()
 
 						coroutineScope.launch(context = component.vendor.asyncDispatcher) {
 
@@ -528,7 +528,7 @@ abstract class App(
 	final override fun onLoad() {
 		tryOrPrint {
 
-			activeSince = de.fruxz.ascend.tool.time.calendar.Calendar.now()
+			activeSince = dev.fruxz.ascend.tool.time.calendar.Calendar.now()
 
 			SparkleCache.registeredApps += this
 

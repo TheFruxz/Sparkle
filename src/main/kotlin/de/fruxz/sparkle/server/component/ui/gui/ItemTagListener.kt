@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.server.component.ui.gui
 
-import de.fruxz.ascend.extension.container.mapCast
+import dev.fruxz.ascend.extension.container.mapCast
 import de.fruxz.sparkle.server.SparkleCache
 import de.fruxz.sparkle.framework.event.interact.PlayerInteractAtItemEvent
 import de.fruxz.sparkle.framework.infrastructure.app.event.EventListener

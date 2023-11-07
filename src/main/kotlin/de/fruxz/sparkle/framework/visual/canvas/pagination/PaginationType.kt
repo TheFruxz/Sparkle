@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.framework.visual.canvas.pagination
 
-import de.fruxz.ascend.extension.math.ceilToInt
-import de.fruxz.ascend.extension.math.floorToInt
-import de.fruxz.ascend.extension.math.limitTo
+import dev.fruxz.ascend.extension.math.ceilToInt
+import dev.fruxz.ascend.extension.math.floorToInt
+import dev.fruxz.ascend.extension.math.limitTo
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.subNamespacedKey
 import de.fruxz.sparkle.framework.extension.visual.ui.item
@@ -13,9 +13,9 @@ import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Compan
 import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Companion.PaginationBase.SCROLL
 import de.fruxz.sparkle.framework.visual.item.Item
 import de.fruxz.sparkle.framework.visual.item.ItemLike
-import de.fruxz.stacked.extension.dyeDarkGray
-import de.fruxz.stacked.extension.subKey
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.extension.dyeDarkGray
+import dev.fruxz.stacked.extension.subKey
+import dev.fruxz.stacked.text
 import org.bukkit.Material
 
 

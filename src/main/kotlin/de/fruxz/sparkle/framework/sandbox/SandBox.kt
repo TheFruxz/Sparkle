@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.sandbox
 
-import de.fruxz.ascend.extension.catchException
-import de.fruxz.ascend.tool.time.calendar.Calendar
+import dev.fruxz.ascend.extension.catchException
+import dev.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.extension.visual.notification
@@ -10,10 +10,10 @@ import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.stacked.extension.dyeGray
-import de.fruxz.stacked.extension.dyeYellow
-import de.fruxz.stacked.plus
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.extension.dyeGray
+import dev.fruxz.stacked.extension.dyeYellow
+import dev.fruxz.stacked.plus
+import dev.fruxz.stacked.text
 import kotlinx.coroutines.launch
 import net.kyori.adventure.key.Key
 import java.util.logging.Level

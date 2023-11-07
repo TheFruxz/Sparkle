@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.server
 
-import de.fruxz.ascend.json.readJsonOrNull
-import de.fruxz.ascend.json.writeJson
+import dev.fruxz.ascend.json.readJsonOrNull
+import dev.fruxz.ascend.json.writeJson
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.extension.sparkle
 import kotlinx.serialization.Serializable

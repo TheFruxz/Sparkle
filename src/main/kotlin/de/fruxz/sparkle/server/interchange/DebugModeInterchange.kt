@@ -6,8 +6,8 @@ import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredIn
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.APPLIED
 import de.fruxz.sparkle.server.SparkleApp
-import de.fruxz.stacked.plus
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.plus
+import dev.fruxz.stacked.text
 import net.kyori.adventure.text.format.NamedTextColor
 
 internal class DebugModeInterchange : StructuredInterchange("debugmode", buildInterchangeStructure {

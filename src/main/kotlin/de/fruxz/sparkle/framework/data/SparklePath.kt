@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.data
 
-import de.fruxz.ascend.tool.smart.identification.Identifiable
+import dev.fruxz.ascend.tool.smart.identification.Identifiable
 
 /**
  * The path used inside yaml files

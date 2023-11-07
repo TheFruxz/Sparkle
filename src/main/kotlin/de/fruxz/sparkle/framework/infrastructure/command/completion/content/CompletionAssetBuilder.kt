@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.infrastructure.command.completion.content
 
-import de.fruxz.ascend.tool.smart.composition.Producible
+import dev.fruxz.ascend.tool.smart.composition.Producible
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset.CompletionContext
 import net.kyori.adventure.key.Key
 

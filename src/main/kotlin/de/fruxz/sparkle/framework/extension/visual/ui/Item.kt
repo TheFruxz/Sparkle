@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.extension.visual.ui
 
-import de.fruxz.ascend.extension.data.url
-import de.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.extension.data.url
+import dev.fruxz.ascend.extension.tryOrNull
 import de.fruxz.sparkle.framework.extension.mojang.getMojangProfile
 import de.fruxz.sparkle.framework.extension.offlinePlayer
 import de.fruxz.sparkle.framework.visual.color.ColorType

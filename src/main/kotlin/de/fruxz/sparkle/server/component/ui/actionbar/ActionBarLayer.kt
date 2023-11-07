@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.server.component.ui.actionbar
 
-import de.fruxz.ascend.tool.time.TimeState
+import dev.fruxz.ascend.tool.time.TimeState
 import de.fruxz.sparkle.server.component.ui.actionbar.AdaptiveActionBarComponent.LayerPosition
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player

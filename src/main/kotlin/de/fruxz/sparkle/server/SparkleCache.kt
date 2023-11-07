@@ -1,8 +1,5 @@
 package de.fruxz.sparkle.server
 
-import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.ascend.tool.time.calendar.Calendar
-import de.fruxz.ascend.tool.time.cooldown.StaticCooldown
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.data.Preference.PreferenceIndex
 import de.fruxz.sparkle.framework.extension.debugLog
@@ -19,6 +16,9 @@ import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import de.fruxz.sparkle.framework.sandbox.SandBox
 import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager.CanvasSession
 import de.fruxz.sparkle.framework.visual.item.action.ItemAction
+import dev.fruxz.ascend.tool.smart.identity.RelatedIdentity
+import dev.fruxz.ascend.tool.time.calendar.Calendar
+import dev.fruxz.ascend.tool.time.cooldown.StaticCooldown
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import net.kyori.adventure.key.Key
@@ -33,7 +33,7 @@ object SparkleCache : AppCache {
 
 	var registeredSandBoxes = setOf<SandBox>()
 
-	var registeredSandBoxCalls = mapOf<Identity<SandBox>, Int>()
+	var registeredSandBoxCalls = mapOf<RelatedIdentity<SandBox, Key>, Int>()
 
 	var registeredCompletionAssetStateCache = mapOf<String, SortedSet<String>>()
 
@@ -41,17 +41,17 @@ object SparkleCache : AppCache {
 
 	var registeredInterchanges = setOf<Interchange>()
 
-	var disabledInterchanges = setOf<Identity<out Interchange>>()
+	var disabledInterchanges = setOf<RelatedIdentity<out Interchange, String>>()
 
 	var registeredComponents = setOf<Component>()
 
 	var registeredListeners = setOf<EventListener>()
 
-	var runningComponents = mapOf<Identity<out Component>, Calendar>()
+	var runningComponents = mapOf<RelatedIdentity<out Component, Key>, Calendar>()
 
-	var registeredPreferences = mapOf<Identity<out Preference<*>>, Preference<*>>()
+	var registeredPreferences = mapOf<RelatedIdentity<out Preference<*>, String>, Preference<*>>()
 
-	var playerMarkerBoxes = mapOf<Identity<out OfflinePlayer>, DependentCubicalShape>()
+	var playerMarkerBoxes = mapOf<RelatedIdentity<out OfflinePlayer, UUID>, DependentCubicalShape>()
 
 	var tmp_initSetupPreferences = setOf<Preference<*>>()
 
@@ -70,7 +70,7 @@ object SparkleCache : AppCache {
 	override fun dropEntityData(entityIdentity: UUID, dropDepth: CacheDepthLevel) {
 		when {
 			dropDepth.isDeeperThanOrEquals(CLEAR) -> {
-				playerMarkerBoxes = playerMarkerBoxes.filter { it.key.identity != "" + entityIdentity }
+				playerMarkerBoxes = playerMarkerBoxes.filter { it.key.value != entityIdentity }
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.data.file
 
-import de.fruxz.ascend.extension.getHomePath
+import dev.fruxz.ascend.extension.getHomePath
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.framework.infrastructure.app.App

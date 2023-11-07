@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.server.component.sandbox
 
-import de.fruxz.ascend.tool.time.calendar.Calendar
+import dev.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.extension.allSandBoxes
 import de.fruxz.sparkle.framework.extension.destroyAllSandBoxes
 import de.fruxz.sparkle.framework.extension.destroySandBox
@@ -14,13 +14,13 @@ import de.fruxz.sparkle.framework.infrastructure.command.completion.infiniteSubP
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.stacked.extension.dyeGold
-import de.fruxz.stacked.extension.dyeGray
-import de.fruxz.stacked.extension.dyeGreen
-import de.fruxz.stacked.extension.dyeRed
-import de.fruxz.stacked.extension.dyeYellow
-import de.fruxz.stacked.plus
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.extension.dyeGold
+import dev.fruxz.stacked.extension.dyeGray
+import dev.fruxz.stacked.extension.dyeGreen
+import dev.fruxz.stacked.extension.dyeRed
+import dev.fruxz.stacked.extension.dyeYellow
+import dev.fruxz.stacked.plus
+import dev.fruxz.stacked.text
 import net.kyori.adventure.text.Component.newline
 
 internal class SandBoxInterchange : StructuredInterchange(

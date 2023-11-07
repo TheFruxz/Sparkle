@@ -1,9 +1,9 @@
 package de.fruxz.sparkle.framework.extension
 
-import de.fruxz.ascend.extension.forceCast
-import de.fruxz.ascend.extension.forceCastOrNull
-import de.fruxz.ascend.extension.tryOrIgnore
-import de.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.extension.forceCast
+import dev.fruxz.ascend.extension.forceCastOrNull
+import dev.fruxz.ascend.extension.tryOrIgnore
+import dev.fruxz.ascend.extension.tryOrNull
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.server.SparkleApp
 import net.kyori.adventure.key.Key

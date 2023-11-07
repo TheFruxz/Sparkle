@@ -2,12 +2,12 @@
 
 package de.fruxz.sparkle.framework.extension
 
-import de.fruxz.ascend.tool.smart.identification.Identifiable
+import dev.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.infrastructure.app.App
-import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
-import de.fruxz.stacked.extension.asStyledComponent
-import de.fruxz.stacked.extension.subKey
+import dev.fruxz.stacked.extension.KeyingStrategy.CONTINUE
+import dev.fruxz.stacked.extension.asStyledComponent
+import dev.fruxz.stacked.extension.subKey
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.ComponentLike
 import org.bukkit.Bukkit

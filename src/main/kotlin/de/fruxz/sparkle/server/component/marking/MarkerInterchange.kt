@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.server.component.marking
 
-import de.fruxz.ascend.extension.container.paged
+import dev.fruxz.ascend.extension.container.paged
 import de.fruxz.sparkle.framework.effect.particle.ParticleType
 import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
 import de.fruxz.sparkle.framework.extension.component
@@ -25,17 +25,17 @@ import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companio
 import de.fruxz.sparkle.server.SparkleData
 import de.fruxz.sparkle.server.component.marking.MarkerManager.loadMarking
 import de.fruxz.sparkle.server.component.marking.MarkerManager.saveMarking
-import de.fruxz.stacked.extension.dyeGray
-import de.fruxz.stacked.extension.dyeGreen
-import de.fruxz.stacked.extension.dyeLightPurple
-import de.fruxz.stacked.extension.dyeRed
-import de.fruxz.stacked.extension.dyeYellow
-import de.fruxz.stacked.extension.newline
-import de.fruxz.stacked.extension.newlines
-import de.fruxz.stacked.extension.style
-import de.fruxz.stacked.hover
-import de.fruxz.stacked.plus
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.extension.dyeGray
+import dev.fruxz.stacked.extension.dyeGreen
+import dev.fruxz.stacked.extension.dyeLightPurple
+import dev.fruxz.stacked.extension.dyeRed
+import dev.fruxz.stacked.extension.dyeYellow
+import dev.fruxz.stacked.extension.newline
+import dev.fruxz.stacked.extension.newlines
+import dev.fruxz.stacked.extension.style
+import dev.fruxz.stacked.hover
+import dev.fruxz.stacked.plus
+import dev.fruxz.stacked.text
 import kotlinx.coroutines.delay
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor

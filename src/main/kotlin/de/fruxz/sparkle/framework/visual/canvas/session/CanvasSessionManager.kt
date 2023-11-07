@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.visual.canvas.session
 
-import de.fruxz.ascend.tool.smart.identification.Identity
-import de.fruxz.ascend.tool.time.calendar.Calendar
+import dev.fruxz.ascend.tool.smart.identification.Identity
+import dev.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.visual.canvas.Canvas
 import de.fruxz.sparkle.server.SparkleCache
 import net.kyori.adventure.key.Key

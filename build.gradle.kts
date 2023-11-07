@@ -3,8 +3,8 @@ import org.gradle.api.JavaVersion.VERSION_17
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.8.22"
-    kotlin("plugin.serialization") version "1.8.22"
+    kotlin("jvm") version "1.9.20"
+    kotlin("plugin.serialization") version "1.9.20"
     id("org.jetbrains.dokka") version "1.8.10"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     `maven-publish`
@@ -23,8 +23,8 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
 }
 
-val ascendVersion = "2023.1"
-val stackedVersion = "2023.1"
+val ascendVersion = "2023.5-RC3"
+val stackedVersion = "2023.4"
 
 dependencies {
 
@@ -39,8 +39,8 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
     // External
 
@@ -48,10 +48,10 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT") // PaperMC
 
     setOf(
-        "io.ktor:ktor-client-cio:2.3.1",
-        "io.ktor:ktor-client-core-jvm:2.3.2",
-        "io.ktor:ktor-serialization-kotlinx-json:2.3.2",
-        "io.ktor:ktor-client-content-negotiation:2.3.2",
+        "io.ktor:ktor-client-cio:2.3.5",
+        "io.ktor:ktor-client-core-jvm:2.3.5",
+        "io.ktor:ktor-serialization-kotlinx-json:2.3.5",
+        "io.ktor:ktor-client-content-negotiation:2.3.5",
 
         "net.kyori:adventure-api:4.14.0",
         "net.kyori:adventure-text-serializer-legacy:4.14.0",

@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.server.component.app
 
-import de.fruxz.ascend.extension.container.paged
-import de.fruxz.ascend.extension.math.ceilToInt
-import de.fruxz.ascend.extension.math.limitTo
+import dev.fruxz.ascend.extension.container.paged
+import dev.fruxz.ascend.extension.math.ceilToInt
+import dev.fruxz.ascend.extension.math.limitTo
 import de.fruxz.sparkle.framework.extension.componentOrNull
 import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.extension.debugLog
@@ -28,11 +28,11 @@ import de.fruxz.sparkle.server.component.update.UpdateManager
 import de.fruxz.sparkle.server.component.update.UpdateManager.UpdateResult
 import de.fruxz.sparkle.server.component.update.UpdateManager.UpdateResult.SUCCESSFUL
 import de.fruxz.sparkle.server.component.update.UpdateService
-import de.fruxz.stacked.buildComponent
-import de.fruxz.stacked.extension.*
-import de.fruxz.stacked.hover
-import de.fruxz.stacked.plus
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.buildComponent
+import dev.fruxz.stacked.extension.*
+import dev.fruxz.stacked.hover
+import dev.fruxz.stacked.plus
+import dev.fruxz.stacked.text
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor

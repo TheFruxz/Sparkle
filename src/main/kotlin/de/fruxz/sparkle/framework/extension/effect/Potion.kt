@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.extension.effect
 
-import de.fruxz.ascend.extension.time.inWholeMinecraftTicks
+import dev.fruxz.ascend.extension.time.inWholeMinecraftTicks
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import kotlin.time.Duration

@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.infrastructure.app
 
-import de.fruxz.ascend.extension.forceCast
+import dev.fruxz.ascend.extension.forceCast
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.server.SparkleApp.Infrastructure

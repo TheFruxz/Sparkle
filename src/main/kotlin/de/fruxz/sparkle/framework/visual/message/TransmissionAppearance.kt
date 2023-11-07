@@ -3,7 +3,7 @@ package de.fruxz.sparkle.framework.visual.message
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
 import de.fruxz.sparkle.server.SparkleData
-import de.fruxz.stacked.extension.asStyledComponent
+import dev.fruxz.stacked.extension.asStyledComponent
 import net.kyori.adventure.text.ComponentLike
 
 interface TransmissionAppearance {

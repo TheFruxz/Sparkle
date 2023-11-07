@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.extension
 
-import de.fruxz.stacked.extension.KeyingStrategy
-import de.fruxz.stacked.extension.subKey
+import dev.fruxz.stacked.extension.KeyingStrategy
+import dev.fruxz.stacked.extension.subKey
 import net.kyori.adventure.key.Key
 import org.bukkit.Location
 import org.bukkit.NamespacedKey

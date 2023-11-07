@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.effect.sound
 
-import de.fruxz.ascend.tool.smart.identification.Identifiable
+import dev.fruxz.ascend.tool.smart.identification.Identifiable
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound

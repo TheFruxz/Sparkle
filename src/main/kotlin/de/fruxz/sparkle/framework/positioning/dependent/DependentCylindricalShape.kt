@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.positioning.dependent
 
-import de.fruxz.ascend.extension.math.ceilToInt
-import de.fruxz.ascend.extension.math.floorToInt
+import dev.fruxz.ascend.extension.math.ceilToInt
+import dev.fruxz.ascend.extension.math.floorToInt
 import de.fruxz.sparkle.framework.extension.world.copy
 import de.fruxz.sparkle.framework.positioning.relative.CylindricalShape
 import de.fruxz.sparkle.framework.positioning.relative.Shape

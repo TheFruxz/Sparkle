@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.extension.time
 
-import de.fruxz.ascend.tool.time.calendar.Calendar
-import de.fruxz.ascend.tool.time.cooldown.StaticCooldown
+import dev.fruxz.ascend.tool.time.calendar.Calendar
+import dev.fruxz.ascend.tool.time.cooldown.StaticCooldown
 import de.fruxz.sparkle.framework.extension.key
 import org.bukkit.Location
 import org.bukkit.block.Block

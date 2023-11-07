@@ -1,10 +1,10 @@
 package de.fruxz.sparkle.server.component.ui.gui
 
-import de.fruxz.ascend.extension.container.modified
-import de.fruxz.ascend.extension.container.takeOrEmpty
-import de.fruxz.ascend.extension.empty
-import de.fruxz.ascend.extension.math.maxTo
-import de.fruxz.ascend.extension.math.minTo
+import dev.fruxz.ascend.extension.container.modified
+import dev.fruxz.ascend.extension.container.takeOrEmpty
+import dev.fruxz.ascend.extension.empty
+import dev.fruxz.ascend.extension.math.maxTo
+import dev.fruxz.ascend.extension.math.minTo
 import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
 import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent

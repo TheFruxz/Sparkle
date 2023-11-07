@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.server.component.update
 
-import de.fruxz.ascend.extension.empty
-import de.fruxz.ascend.tool.time.calendar.Calendar
+import dev.fruxz.ascend.extension.empty
+import dev.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.extension.*
 import de.fruxz.sparkle.framework.extension.visual.notification
 import de.fruxz.sparkle.framework.infrastructure.app.App
@@ -11,10 +11,10 @@ import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceActions
 import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceTimes
 import de.fruxz.sparkle.framework.infrastructure.service.ServiceIteration
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
-import de.fruxz.stacked.extension.dyeGray
-import de.fruxz.stacked.extension.dyeYellow
-import de.fruxz.stacked.plus
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.extension.dyeGray
+import dev.fruxz.stacked.extension.dyeYellow
+import dev.fruxz.stacked.plus
+import dev.fruxz.stacked.text
 import kotlin.time.Duration.Companion.seconds
 
 class UpdateService(private val component: UpdateComponent = component(UpdateComponent::class), override val vendor: App = sparkle) : Service {

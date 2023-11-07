@@ -1,13 +1,13 @@
 package de.fruxz.sparkle.framework.infrastructure.command.completion.content
 
-import de.fruxz.ascend.extension.container.firstOrNull
-import de.fruxz.ascend.extension.container.mapToString
-import de.fruxz.ascend.extension.container.withMap
-import de.fruxz.ascend.extension.container.withMapNotNull
-import de.fruxz.ascend.extension.math.isDouble
-import de.fruxz.ascend.extension.math.isLong
-import de.fruxz.ascend.extension.objects.takeIfInstance
-import de.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.extension.container.firstOrNull
+import dev.fruxz.ascend.extension.container.mapToString
+import dev.fruxz.ascend.extension.container.withMap
+import dev.fruxz.ascend.extension.container.withMapNotNull
+import dev.fruxz.ascend.extension.math.isDouble
+import dev.fruxz.ascend.extension.math.isLong
+import dev.fruxz.ascend.extension.objects.takeIfInstance
+import dev.fruxz.ascend.extension.tryOrNull
 import de.fruxz.sparkle.framework.effect.sound.SoundLibrary
 import de.fruxz.sparkle.framework.extension.*
 import de.fruxz.sparkle.framework.extension.coroutines.key
@@ -19,7 +19,7 @@ import de.fruxz.sparkle.framework.visual.color.ColorType
 import de.fruxz.sparkle.framework.visual.color.DyeableMaterial
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.stacked.extension.subKey
+import dev.fruxz.stacked.extension.subKey
 import net.kyori.adventure.key.Key
 import org.bukkit.Bukkit
 import org.bukkit.GameMode

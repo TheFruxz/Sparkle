@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.infrastructure.command
 
-import de.fruxz.ascend.extension.catchException
-import de.fruxz.ascend.extension.empty
+import dev.fruxz.ascend.extension.catchException
+import dev.fruxz.ascend.extension.empty
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.attachment.VendorOnDemand
 import de.fruxz.sparkle.framework.context.AppComposable
@@ -27,11 +27,11 @@ import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeAccess
 import de.fruxz.sparkle.framework.infrastructure.command.live.InterchangeReaction
 import de.fruxz.sparkle.framework.permission.Approval
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
-import de.fruxz.stacked.extension.*
-import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
-import de.fruxz.stacked.hover
-import de.fruxz.stacked.plus
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.extension.*
+import dev.fruxz.stacked.extension.KeyingStrategy.CONTINUE
+import dev.fruxz.stacked.hover
+import dev.fruxz.stacked.plus
+import dev.fruxz.stacked.text
 import kotlinx.coroutines.launch
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor

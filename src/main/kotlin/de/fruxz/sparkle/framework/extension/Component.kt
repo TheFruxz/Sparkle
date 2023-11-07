@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.extension
 
-import de.fruxz.ascend.extension.objects.takeIfInstance
+import dev.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import de.fruxz.sparkle.server.SparkleCache
 import net.kyori.adventure.key.Key

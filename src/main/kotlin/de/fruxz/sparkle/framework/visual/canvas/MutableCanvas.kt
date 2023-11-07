@@ -1,9 +1,6 @@
 package de.fruxz.sparkle.framework.visual.canvas
 
-import de.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
-import de.fruxz.ascend.extension.data.buildRandomTag
-import de.fruxz.ascend.tool.smart.composition.Producible
-import de.fruxz.ascend.tool.smart.composition.SuspendComposable
+import dev.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
@@ -19,7 +16,9 @@ import de.fruxz.sparkle.framework.visual.canvas.CanvasFlag.*
 import de.fruxz.sparkle.framework.visual.canvas.design.AdaptiveCanvasCompose
 import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType
 import de.fruxz.sparkle.framework.visual.item.ItemLike
-import de.fruxz.stacked.extension.asStyledComponent
+import dev.fruxz.ascend.tool.smart.generate.composable.SuspendComposable
+import dev.fruxz.ascend.tool.smart.generate.producible.Producible
+import dev.fruxz.stacked.extension.asStyledComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async

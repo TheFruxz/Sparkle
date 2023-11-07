@@ -1,10 +1,10 @@
 package de.fruxz.sparkle.framework.infrastructure.command.completion
 
-import de.fruxz.ascend.extension.forceCast
-import de.fruxz.ascend.extension.logging.getLogger
-import de.fruxz.ascend.extension.math.maxTo
-import de.fruxz.ascend.tool.smart.positioning.Address
-import de.fruxz.ascend.tree.TreeBranch
+import dev.fruxz.ascend.extension.forceCast
+import dev.fruxz.ascend.extension.logging.getLogger
+import dev.fruxz.ascend.extension.math.maxTo
+import dev.fruxz.ascend.tool.smart.positioning.Address
+import dev.fruxz.ascend.tree.TreeBranch
 import de.fruxz.sparkle.framework.extension.asPlayerOrNull
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor

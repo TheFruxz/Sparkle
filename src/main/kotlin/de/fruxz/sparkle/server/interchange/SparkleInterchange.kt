@@ -8,10 +8,10 @@ import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestrict
 import de.fruxz.sparkle.framework.infrastructure.command.completion.buildInterchangeStructure
 import de.fruxz.sparkle.framework.infrastructure.command.structured.StructuredInterchange
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
-import de.fruxz.stacked.extension.style
-import de.fruxz.stacked.hover
-import de.fruxz.stacked.plus
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.extension.style
+import dev.fruxz.stacked.hover
+import dev.fruxz.stacked.plus
+import dev.fruxz.stacked.text
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor

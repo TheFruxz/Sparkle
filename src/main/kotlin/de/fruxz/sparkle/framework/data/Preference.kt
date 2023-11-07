@@ -1,10 +1,10 @@
 
 package de.fruxz.sparkle.framework.data
 
-import de.fruxz.ascend.extension.forceCast
-import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.tool.smart.identification.Identifiable
-import de.fruxz.ascend.tool.smart.identification.Identity
+import dev.fruxz.ascend.extension.forceCast
+import dev.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.tool.smart.identification.Identifiable
+import dev.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.data.Preference.InputType.*
 import de.fruxz.sparkle.framework.extension.coroutines.doAsync
 import de.fruxz.sparkle.framework.extension.debugLog

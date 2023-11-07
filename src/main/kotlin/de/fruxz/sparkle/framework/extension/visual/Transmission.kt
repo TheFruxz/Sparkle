@@ -3,8 +3,8 @@ package de.fruxz.sparkle.framework.extension.visual
 import de.fruxz.sparkle.framework.extension.interchange.InterchangeExecutor
 import de.fruxz.sparkle.framework.visual.message.Transmission
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
-import de.fruxz.stacked.extension.asStyledComponent
-import de.fruxz.stacked.extension.lines
+import dev.fruxz.stacked.extension.asStyledComponent
+import dev.fruxz.stacked.extension.lines
 import net.kyori.adventure.text.ComponentLike
 
 fun Iterable<ComponentLike>.message(vararg participant: InterchangeExecutor) =

@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.context
 
-import de.fruxz.ascend.tool.smart.composition.ParameterizedComposable
+import dev.fruxz.ascend.tool.smart.composition.ParameterizedComposable
 import de.fruxz.sparkle.framework.infrastructure.app.App
 
 /**

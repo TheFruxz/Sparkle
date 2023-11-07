@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.extension.world
 
-import de.fruxz.ascend.tool.math.Percentage
-import de.fruxz.ascend.tool.math.Percentage.Companion.percent
+import dev.fruxz.ascend.tool.math.Percentage
+import dev.fruxz.ascend.tool.math.Percentage.Companion.percent
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import de.fruxz.sparkle.framework.positioning.relative.Shape
 import org.bukkit.Location

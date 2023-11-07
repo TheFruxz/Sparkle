@@ -3,8 +3,8 @@ package de.fruxz.sparkle.framework.extension
 import de.fruxz.sparkle.framework.extension.data.ticks
 import de.fruxz.sparkle.framework.extension.KeyFramesAlignment.*
 import de.fruxz.sparkle.server.SparkleApp
-import de.fruxz.stacked.extension.Times
-import de.fruxz.stacked.extension.Title
+import dev.fruxz.stacked.extension.Times
+import dev.fruxz.stacked.extension.Title
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.kyori.adventure.text.Component

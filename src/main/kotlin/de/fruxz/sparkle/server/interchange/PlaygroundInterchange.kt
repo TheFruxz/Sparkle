@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.server.interchange
 
-import de.fruxz.ascend.tool.smart.composition.SuspendComposable
+import dev.fruxz.ascend.tool.smart.generate.composable.SuspendComposable
 import de.fruxz.sparkle.framework.extension.asPlayerOrNull
 import de.fruxz.sparkle.framework.extension.effect.playSoundEffect
 import de.fruxz.sparkle.framework.extension.effect.soundOf

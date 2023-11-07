@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.extension.entity
 
-import de.fruxz.ascend.tool.smart.identification.Identity
+import dev.fruxz.ascend.tool.smart.identification.Identity
 import org.bukkit.block.Biome
 import org.bukkit.entity.Entity
 

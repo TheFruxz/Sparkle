@@ -1,11 +1,11 @@
 package de.fruxz.sparkle.framework.infrastructure.component.file
 
-import de.fruxz.ascend.extension.container.modified
-import de.fruxz.ascend.extension.createFileAndDirectories
-import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.json.readJson
-import de.fruxz.ascend.json.writeJson
-import de.fruxz.ascend.tool.smart.identification.Identity
+import dev.fruxz.ascend.extension.container.modified
+import dev.fruxz.ascend.extension.createFileAndDirectories
+import dev.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.json.readJson
+import dev.fruxz.ascend.json.writeJson
+import dev.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.infrastructure.component.Component
 import kotlin.io.path.div

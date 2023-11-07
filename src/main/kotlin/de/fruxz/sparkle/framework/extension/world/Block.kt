@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.extension.world
 
-import de.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.extension.tryOrNull
 import org.bukkit.Material
 import org.bukkit.Material.AIR
 import org.bukkit.block.Block

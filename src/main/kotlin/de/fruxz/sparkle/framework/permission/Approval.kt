@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.permission
 
-import de.fruxz.ascend.tool.smart.identification.Identifiable
+import dev.fruxz.ascend.tool.smart.identification.Identifiable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import net.kyori.adventure.key.Keyed

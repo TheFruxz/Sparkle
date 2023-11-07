@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.visual.item.action
 
-import de.fruxz.ascend.tool.smart.identification.Identifiable
-import de.fruxz.ascend.tool.time.calendar.Calendar
+import dev.fruxz.ascend.tool.smart.identification.Identifiable
+import dev.fruxz.ascend.tool.time.calendar.Calendar
 import org.bukkit.event.Event
 
 sealed interface ItemAction<T : Event> : Identifiable<ItemAction<T>> {

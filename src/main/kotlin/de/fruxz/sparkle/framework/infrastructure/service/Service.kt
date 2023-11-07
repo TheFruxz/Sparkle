@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.framework.infrastructure.service
 
-import de.fruxz.ascend.extension.container.firstOrNull
-import de.fruxz.ascend.extension.switchResult
-import de.fruxz.ascend.tool.time.calendar.Calendar
+import dev.fruxz.ascend.extension.container.firstOrNull
+import dev.fruxz.ascend.extension.switchResult
+import dev.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.missingComponents
 import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.requirementsMet
 import de.fruxz.sparkle.framework.infrastructure.Attachable
@@ -10,8 +10,9 @@ import de.fruxz.sparkle.framework.infrastructure.Hoster
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.framework.infrastructure.service.Service.ServiceState
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
-import de.fruxz.stacked.extension.subKey
+import dev.fruxz.stacked.extension.KeyingStrategy.CONTINUE
+import dev.fruxz.stacked.extension.subKey
+import dev.fruxz.stacked.extension.subKey
 import kotlinx.coroutines.*
 import net.kyori.adventure.key.Key
 import java.util.logging.Logger

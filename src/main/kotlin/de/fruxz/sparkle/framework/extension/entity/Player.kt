@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.extension.entity
 
-import de.fruxz.ascend.tool.smart.identification.Identity
+import dev.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.extension.world.fill
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import de.fruxz.sparkle.server.SparkleCache

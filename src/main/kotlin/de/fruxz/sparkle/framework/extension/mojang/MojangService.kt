@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.extension.mojang
 
-import de.fruxz.ascend.json.globalJson
+import dev.fruxz.ascend.json.globalJson
 import de.fruxz.sparkle.framework.mojang.MojangProfile
 import de.fruxz.sparkle.server.SparkleApp
 import io.ktor.client.call.*

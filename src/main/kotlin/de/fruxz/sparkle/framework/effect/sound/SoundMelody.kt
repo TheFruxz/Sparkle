@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.effect.sound
 
-import de.fruxz.ascend.extension.dump
-import de.fruxz.ascend.extension.time.inWholeMinecraftTicks
+import dev.fruxz.ascend.extension.dump
+import dev.fruxz.ascend.extension.time.inWholeMinecraftTicks
 import de.fruxz.sparkle.framework.effect.EffectDsl
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.extension.time.minecraftTicks

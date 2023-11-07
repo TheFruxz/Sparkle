@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.extension
 
-import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.tool.smart.identification.Identity
+import dev.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.identification.KeyedIdentifiable
 import de.fruxz.sparkle.framework.infrastructure.app.App
 import de.fruxz.sparkle.server.SparkleApp

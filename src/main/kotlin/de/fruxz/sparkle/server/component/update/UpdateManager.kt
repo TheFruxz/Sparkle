@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.server.component.update
 
-import de.fruxz.ascend.extension.createFileAndDirectories
-import de.fruxz.ascend.extension.network.downloadTo
+import dev.fruxz.ascend.extension.createFileAndDirectories
+import dev.fruxz.ascend.extension.network.downloadTo
 import de.fruxz.sparkle.framework.attachment.Logging
 import de.fruxz.sparkle.framework.extension.coroutines.asAsync
 import de.fruxz.sparkle.framework.extension.sparkle

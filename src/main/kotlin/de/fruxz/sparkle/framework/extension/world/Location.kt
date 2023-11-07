@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.extension.world
 
 import com.destroystokyo.paper.ParticleBuilder
-import de.fruxz.ascend.extension.dump
+import dev.fruxz.ascend.extension.dump
 import de.fruxz.sparkle.framework.extension.world
 import de.fruxz.sparkle.framework.extension.worldOrNull
 import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape

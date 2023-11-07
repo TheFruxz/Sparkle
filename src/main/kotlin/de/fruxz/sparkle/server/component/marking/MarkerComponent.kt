@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.server.component.marking
 
-import de.fruxz.ascend.extension.math.round
-import de.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.extension.math.round
+import dev.fruxz.ascend.extension.tryOrNull
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.effect.particle.ParticleType
 import de.fruxz.sparkle.framework.event.interact.SparklePlayerInteractEvent.Companion.denyInteraction
@@ -20,14 +20,15 @@ import de.fruxz.sparkle.framework.positioning.dependent.DependentCubicalShape
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance.Companion.APPLIED
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.stacked.extension.asComponent
-import de.fruxz.stacked.extension.asStyledComponents
-import de.fruxz.stacked.extension.dyeGray
-import de.fruxz.stacked.extension.dyeLightPurple
-import de.fruxz.stacked.extension.dyeRed
-import de.fruxz.stacked.hover
-import de.fruxz.stacked.plus
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.extension.asComponent
+import dev.fruxz.stacked.extension.asStyledComponents
+import dev.fruxz.stacked.extension.dyeGray
+import dev.fruxz.stacked.extension.dyeLightPurple
+import dev.fruxz.stacked.extension.dyeRed
+import dev.fruxz.stacked.hover
+import dev.fruxz.stacked.plus
+import dev.fruxz.stacked.text
+import dev.fruxz.stacked.extension.asComponent
 import net.kyori.adventure.text.Component.newline
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.NamedTextColor.YELLOW

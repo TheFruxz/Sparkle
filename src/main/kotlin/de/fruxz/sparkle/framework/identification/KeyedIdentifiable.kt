@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.identification
 
-import de.fruxz.ascend.tool.smart.identification.Identifiable
+import dev.fruxz.ascend.tool.smart.identification.Identifiable
 import net.kyori.adventure.key.Key
 import org.bukkit.Keyed
 import org.bukkit.NamespacedKey

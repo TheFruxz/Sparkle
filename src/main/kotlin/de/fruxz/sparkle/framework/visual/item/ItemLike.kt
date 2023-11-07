@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.visual.item
 
-import de.fruxz.ascend.tool.smart.composition.Producible
+import dev.fruxz.ascend.tool.smart.composition.Producible
 import de.fruxz.sparkle.framework.extension.visual.ui.item
 import de.fruxz.sparkle.framework.extension.visual.ui.itemStack
 import org.bukkit.Material

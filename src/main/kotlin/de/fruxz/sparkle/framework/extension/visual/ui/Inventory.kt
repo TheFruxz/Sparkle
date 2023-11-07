@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.extension.visual.ui
 
-import de.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.extension.tryOrNull
 import de.fruxz.sparkle.framework.visual.canvas.CanvasBase
 import de.fruxz.sparkle.framework.visual.item.ItemLike
 import net.kyori.adventure.text.TextComponent

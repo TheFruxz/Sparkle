@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.scheduler
 
-import de.fruxz.ascend.extension.time.inWholeMinecraftTicks
+import dev.fruxz.ascend.extension.time.inWholeMinecraftTicks
 import de.fruxz.sparkle.framework.extension.debugLog
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.CoroutineDispatcher

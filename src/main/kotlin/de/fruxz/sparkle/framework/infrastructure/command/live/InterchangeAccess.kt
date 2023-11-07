@@ -10,8 +10,8 @@ import de.fruxz.sparkle.framework.infrastructure.command.InterchangeUserRestrict
 import de.fruxz.sparkle.framework.infrastructure.command.completion.content.CompletionAsset
 import de.fruxz.sparkle.framework.visual.message.Transmission
 import de.fruxz.sparkle.framework.visual.message.TransmissionAppearance
-import de.fruxz.stacked.extension.asStyledComponent
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.extension.asStyledComponent
+import dev.fruxz.stacked.text
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
 import java.util.logging.Level

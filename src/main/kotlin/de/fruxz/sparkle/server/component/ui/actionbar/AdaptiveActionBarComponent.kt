@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.server.component.ui.actionbar
 
-import de.fruxz.ascend.extension.container.modified
-import de.fruxz.ascend.tool.time.calendar.Calendar
+import dev.fruxz.ascend.extension.container.modified
+import dev.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.annotation.RequiresComponent
 import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.AUTOSTART_MUTABLE
 import de.fruxz.sparkle.framework.infrastructure.component.SmartComponent

@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.framework.infrastructure.component
 
-import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.extension.tryOrPrint
-import de.fruxz.ascend.tool.smart.identification.Identity
+import dev.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.extension.tryOrPrint
+import dev.fruxz.ascend.tool.smart.identification.Identity
 import de.fruxz.sparkle.framework.context.AppComposable
 import de.fruxz.sparkle.framework.extension.*
 import de.fruxz.sparkle.framework.extension.coroutines.doSync

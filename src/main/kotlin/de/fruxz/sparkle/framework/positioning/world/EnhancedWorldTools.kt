@@ -1,12 +1,12 @@
 package de.fruxz.sparkle.framework.positioning.world
 
-import de.fruxz.ascend.extension.container.span
-import de.fruxz.ascend.extension.data.buildRandomTag
-import de.fruxz.ascend.extension.math.outOf
-import de.fruxz.ascend.extension.math.round
-import de.fruxz.ascend.extension.tryOrNull
-import de.fruxz.ascend.tool.math.Percentage.Companion.percent
-import de.fruxz.ascend.tool.time.calendar.Calendar
+import dev.fruxz.ascend.extension.container.span
+import dev.fruxz.ascend.extension.data.buildRandomTag
+import dev.fruxz.ascend.extension.math.outOf
+import dev.fruxz.ascend.extension.math.round
+import dev.fruxz.ascend.extension.tryOrNull
+import dev.fruxz.ascend.tool.math.Percentage.Companion.percent
+import dev.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.effect.particle.ParticleType
 import de.fruxz.sparkle.framework.extension.coroutines.doSync
 import de.fruxz.sparkle.framework.extension.coroutines.launch
@@ -19,7 +19,7 @@ import de.fruxz.sparkle.framework.extension.world.location
 import de.fruxz.sparkle.framework.extension.world.positionX
 import de.fruxz.sparkle.framework.extension.world.positionY
 import de.fruxz.sparkle.framework.extension.world.positionZ
-import de.fruxz.stacked.text
+import dev.fruxz.stacked.text
 import io.ktor.util.*
 import kotlinx.coroutines.delay
 import net.kyori.adventure.bossbar.BossBar.Color.PURPLE

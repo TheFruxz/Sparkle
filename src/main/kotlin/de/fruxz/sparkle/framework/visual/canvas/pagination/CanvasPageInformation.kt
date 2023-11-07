@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.visual.canvas.pagination
 
-import de.fruxz.ascend.extension.math.ceilToInt
-import de.fruxz.ascend.extension.objects.takeIfInstance
+import dev.fruxz.ascend.extension.math.ceilToInt
+import dev.fruxz.ascend.extension.objects.takeIfInstance
 import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Companion.PaginationBase
 import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Companion.PaginationBase.PAGED
 import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Companion.PaginationBase.SCROLL

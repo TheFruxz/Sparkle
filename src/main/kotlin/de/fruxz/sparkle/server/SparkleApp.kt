@@ -1,9 +1,9 @@
 package de.fruxz.sparkle.server
 
 import com.destroystokyo.paper.ParticleBuilder
-import de.fruxz.ascend.extension.forceCast
-import de.fruxz.ascend.json.appendGlobalJsonContextual
-import de.fruxz.ascend.json.appendGlobalJsonModuleModification
+import dev.fruxz.ascend.extension.forceCast
+import dev.fruxz.ascend.json.appendGlobalJsonContextual
+import dev.fruxz.ascend.json.appendGlobalJsonModuleModification
 import de.fruxz.sparkle.framework.data.Preference
 import de.fruxz.sparkle.framework.data.json.JsonConfiguration
 import de.fruxz.sparkle.framework.data.json.serializer.*

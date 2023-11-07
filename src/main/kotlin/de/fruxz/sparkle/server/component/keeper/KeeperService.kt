@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.server.component.keeper
 
-import de.fruxz.ascend.extension.catchException
-import de.fruxz.ascend.extension.container.withForEach
+import dev.fruxz.ascend.extension.catchException
+import dev.fruxz.ascend.extension.container.withForEach
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.infrastructure.app.App

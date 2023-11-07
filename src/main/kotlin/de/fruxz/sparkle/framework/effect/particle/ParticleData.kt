@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.effect.particle
 
 import com.destroystokyo.paper.ParticleBuilder
-import de.fruxz.ascend.extension.dump
+import dev.fruxz.ascend.extension.dump
 import de.fruxz.sparkle.framework.effect.EffectDsl
 import de.fruxz.sparkle.framework.positioning.relative.CubicalShape
 import org.bukkit.Location

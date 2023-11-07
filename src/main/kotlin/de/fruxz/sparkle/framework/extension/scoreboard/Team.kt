@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.extension.scoreboard
 
-import de.fruxz.ascend.extension.container.takeOrEmpty
+import dev.fruxz.ascend.extension.container.takeOrEmpty
 import de.fruxz.sparkle.framework.extension.offlinePlayer
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player

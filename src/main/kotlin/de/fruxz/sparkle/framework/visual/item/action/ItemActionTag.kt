@@ -1,6 +1,6 @@
 package de.fruxz.sparkle.framework.visual.item.action
 
-import de.fruxz.ascend.tool.smart.identification.Identifiable
+import dev.fruxz.ascend.tool.smart.identification.Identifiable
 import kotlinx.serialization.Serializable
 
 @Serializable

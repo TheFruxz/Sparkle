@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.framework.infrastructure.component
 
-import de.fruxz.ascend.extension.objects.takeIfInstance
-import de.fruxz.ascend.extension.tryWithResult
-import de.fruxz.ascend.tool.time.calendar.Calendar
+import dev.fruxz.ascend.extension.objects.takeIfInstance
+import dev.fruxz.ascend.extension.tryWithResult
+import dev.fruxz.ascend.tool.time.calendar.Calendar
 import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.missingComponents
 import de.fruxz.sparkle.framework.annotation.RequiresComponent.Companion.requirementsMet
 import de.fruxz.sparkle.framework.attachment.Logging
@@ -17,8 +17,8 @@ import de.fruxz.sparkle.framework.infrastructure.component.Component.RunType.*
 import de.fruxz.sparkle.framework.infrastructure.component.file.ComponentManager
 import de.fruxz.sparkle.server.SparkleApp
 import de.fruxz.sparkle.server.SparkleCache
-import de.fruxz.stacked.extension.KeyingStrategy.CONTINUE
-import de.fruxz.stacked.extension.subKey
+import dev.fruxz.stacked.extension.KeyingStrategy.CONTINUE
+import dev.fruxz.stacked.extension.subKey
 import kotlin.reflect.KClass
 
 abstract class Component(

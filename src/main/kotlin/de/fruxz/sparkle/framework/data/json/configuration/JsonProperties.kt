@@ -1,8 +1,8 @@
 package de.fruxz.sparkle.framework.data.json.configuration
 
-import de.fruxz.ascend.annotation.LanguageFeature
-import de.fruxz.ascend.json.JsonProperty
-import de.fruxz.ascend.json.property
+import dev.fruxz.ascend.annotation.LanguageFeature
+import dev.fruxz.ascend.json.JsonProperty
+import dev.fruxz.ascend.json.property
 
 import de.fruxz.sparkle.framework.data.file.SparklePath
 import de.fruxz.sparkle.framework.infrastructure.component.Component

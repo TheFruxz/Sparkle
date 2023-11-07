@@ -1,7 +1,7 @@
 package de.fruxz.sparkle.framework.extension.coroutines
 
-import de.fruxz.ascend.extension.dump
-import de.fruxz.ascend.extension.switchResult
+import dev.fruxz.ascend.extension.dump
+import dev.fruxz.ascend.extension.switchResult
 import de.fruxz.sparkle.framework.extension.debugLog
 import de.fruxz.sparkle.framework.extension.sparkle
 import de.fruxz.sparkle.framework.infrastructure.app.App

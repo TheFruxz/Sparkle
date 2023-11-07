@@ -1,13 +1,13 @@
 package de.fruxz.sparkle.framework.visual.canvas
 
-import de.fruxz.ascend.extension.container.distinctSetBy
-import de.fruxz.ascend.extension.container.forEachNotNull
-import de.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
-import de.fruxz.ascend.extension.data.buildRandomTag
-import de.fruxz.ascend.extension.math.ceilToInt
-import de.fruxz.ascend.extension.math.minTo
-import de.fruxz.ascend.extension.objects.takeIfInstance
-import de.fruxz.ascend.tool.smart.identification.Identifiable
+import dev.fruxz.ascend.extension.container.distinctSetBy
+import dev.fruxz.ascend.extension.container.forEachNotNull
+import dev.fruxz.ascend.extension.data.RandomTagType.MIXED_CASE
+import dev.fruxz.ascend.extension.data.buildRandomTag
+import dev.fruxz.ascend.extension.math.ceilToInt
+import dev.fruxz.ascend.extension.math.minTo
+import dev.fruxz.ascend.extension.objects.takeIfInstance
+import dev.fruxz.ascend.tool.smart.identification.Identifiable
 import de.fruxz.sparkle.framework.effect.sound.SoundEffect
 import de.fruxz.sparkle.framework.event.canvas.CanvasClickEvent
 import de.fruxz.sparkle.framework.event.canvas.CanvasCloseEvent
@@ -35,6 +35,11 @@ import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Compan
 import de.fruxz.sparkle.framework.visual.canvas.pagination.PaginationType.Companion.PaginationBase.SCROLL
 import de.fruxz.sparkle.framework.visual.canvas.session.CanvasSessionManager
 import de.fruxz.sparkle.framework.visual.item.ItemLike
+import dev.fruxz.ascend.extension.data.TagSize
+import dev.fruxz.ascend.extension.data.generateRandomTag
+import dev.fruxz.ascend.tool.smart.identity.RelatedIdentity
+import dev.fruxz.ascend.tool.smart.identity.RelatedUniq
+import dev.fruxz.ascend.tool.smart.identity.Uniq
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -73,7 +78,7 @@ open class Canvas(
 	open val vendor: App = sparkle,
 	open val displayContext: CoroutineContext = vendor.coroutineScope.coroutineContext,
 	open val updateContext: CoroutineContext = displayContext,
-) : Identifiable<Canvas> {
+) : RelatedUniq<Canvas, String> {
 
 	open val onRender: CanvasRender = CanvasRender { }
 	open val onOpen: CanvasOpenEvent.() -> Unit = { }
@@ -83,7 +88,8 @@ open class Canvas(
 	open val onFinishedDeferred: suspend Set<Deferred<ItemStack>>.() -> Unit = { }
 	open val onUpdateNonClearableSlots: Set<Int> = emptySet()
 
-	override val identity = buildRandomTag(10, tagType = MIXED_CASE)
+	override val identity: RelatedIdentity<Canvas, String> =
+		RelatedIdentity(generateRandomTag(size = TagSize(10), case = MIXED_CASE))
 
 	/**
 	 * This computational value computes a list of slots, on which
@@ -181,7 +187,7 @@ open class Canvas(
 	 * @since 1.0
 	 */
 	val viewers: Set<Player>
-		get() = CanvasSessionManager.getSessions(identityObject).map { it.key }.distinctSetBy { it.uniqueId }
+		get() = CanvasSessionManager.getSessions(identity).map { it.key }.distinctSetBy { it.uniqueId }
 
 	fun display(
 		vararg receivers: HumanEntity?,
@@ -432,7 +438,7 @@ open class Canvas(
 		onClicks: Map<Int?, List<CanvasClickEvent.() -> Unit>> = this.onClicks,
 		onUpdateNonClearableSlots: Set<Int> = emptySet(),
 		asyncItems: Map<Int, Deferred<ItemLike>> = this.lazyItems,
-		identity: String = this.identity
+		identity: RelatedIdentity<Canvas, String> = this.identity,
 	): MutableCanvas = MutableCanvas(label, canvasBase, pagination, content, panelFlags, openSoundEffect, asyncItems).apply {
 		this.identity = identity
 		this.onRender = onRender
