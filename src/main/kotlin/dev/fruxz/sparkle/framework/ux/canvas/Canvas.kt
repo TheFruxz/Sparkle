@@ -10,6 +10,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
 import kotlin.coroutines.CoroutineContext
 
+// TODO complete rework with inventory holders
 open class Canvas(
     val label: ComponentLike = Component.empty(),
     val format: CanvasFormat = CanvasFormat.ofLines(3),
