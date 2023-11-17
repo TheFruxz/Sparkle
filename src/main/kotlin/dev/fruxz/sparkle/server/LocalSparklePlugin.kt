@@ -15,6 +15,7 @@ import dev.fruxz.sparkle.framework.ux.inventory.item.Item
 import dev.fruxz.sparkle.framework.ux.inventory.item.item
 import dev.fruxz.sparkle.framework.ux.panel.MutablePanel
 import dev.fruxz.sparkle.framework.ux.panel.Panel
+import dev.fruxz.sparkle.framework.ux.panel.PanelFlag
 import dev.fruxz.sparkle.framework.ux.panel.PanelListener
 import dev.fruxz.sparkle.server.command.SparkleCommand
 import dev.fruxz.sparkle.server.component.demo.DemoListener
@@ -68,6 +69,7 @@ class LocalSparklePlugin : SparklePlugin({
                 repeat(2_000) { 1.0 / 2 }
                 e.player.sendMessage("Clicked!")
             })
+            flags += PanelFlag.NO_CLOSE
 
         }
 

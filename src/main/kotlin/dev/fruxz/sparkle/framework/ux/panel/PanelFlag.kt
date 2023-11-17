@@ -2,13 +2,10 @@ package dev.fruxz.sparkle.framework.ux.panel
 
 enum class PanelFlag {
 
-    NO_GRAB,
-    NO_DRAG,
     NO_MOVE,
-    NO_SWAP,
-    NO_OPEN,
+    NO_CLICK,
     NO_REFRESH,
-    NO_CLOSE,
+    NO_OPEN,
 
     /**
      * Instead of processing each panel action one by one, process them all at once in an async context.
@@ -16,13 +13,18 @@ enum class PanelFlag {
     PARALLEL_ACTION_PROCESSING,
 
     /**
-     * If actions should be possible to track, even if not in the inventory provided by the panel. (e.g. player inventory)
+     * If actions should be possible to track, even if not in the inventory provided by the panel (e.g., player inventory)
      */
-    DETECT_OUTSIDE_CLICKS;
+    DETECT_OUTSIDE_CLICKS,
+
+    /**
+     * If a slot is clicked with an action, it will not automatically cancel the event, to perform the action.
+     */
+    ACTION_NO_CANCEL;
 
     companion object {
 
-        val defaultProtection = setOf(NO_GRAB, NO_DRAG, NO_MOVE, NO_SWAP)
+        val defaultProtection = setOf(NO_MOVE, NO_CLICK)
 
     }
 
