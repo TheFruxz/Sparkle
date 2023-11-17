@@ -45,7 +45,7 @@ class PanelListener : Listener {
         when {
             !clicks.isNullOrEmpty() -> {
 
-                event.isCancelled = !event.isCancelled && PanelFlag.ACTION_NO_CANCEL !in panel.flags
+                event.isCancelled = event.isCancelled || PanelFlag.ACTION_NO_CANCEL !in panel.flags
 
                 measureTime {
                     runBlocking {
