@@ -1,5 +1,6 @@
 package dev.fruxz.sparkle.framework.system
 
+import dev.fruxz.ascend.extension.tryOrNull
 import dev.fruxz.sparkle.framework.plugin.plugin
 import dev.fruxz.sparkle.framework.ux.messaging.Transmission
 import dev.fruxz.sparkle.server.LocalSparklePlugin
@@ -9,7 +10,7 @@ import dev.fruxz.stacked.text
 import net.kyori.adventure.text.format.TextColor
 
 val sparkle by lazy {
-    plugin<LocalSparklePlugin>()
+    tryOrNull { plugin<LocalSparklePlugin>() } ?: throw IllegalStateException("Sparkle is not loaded, maybe access outside/before onLoad?")
 }
 
 internal val sparklePrefix =
