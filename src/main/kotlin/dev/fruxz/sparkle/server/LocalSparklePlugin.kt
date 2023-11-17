@@ -6,6 +6,7 @@ import dev.fruxz.ascend.extension.data.kotlinVersion
 import dev.fruxz.ascend.json.property
 import dev.fruxz.ascend.tool.JsonManager
 import dev.fruxz.sparkle.framework.SparklePlugin
+import dev.fruxz.sparkle.framework.coroutine.task.doSync
 import dev.fruxz.sparkle.framework.event.dsl.listen
 import dev.fruxz.sparkle.framework.event.dsl.listenOnPlayer
 import dev.fruxz.sparkle.framework.event.player
@@ -21,6 +22,7 @@ import dev.fruxz.sparkle.server.component.demo.DemoListener
 import dev.fruxz.sparkle.server.component.events.DamageListener
 import dev.fruxz.sparkle.server.component.events.InteractionListener
 import dev.fruxz.stacked.extension.asStyledComponent
+import kotlinx.coroutines.delay
 import org.bukkit.*
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
@@ -31,6 +33,7 @@ import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.createDirectories
 import kotlin.io.path.div
+import kotlin.time.Duration.Companion.seconds
 
 class LocalSparklePlugin : SparklePlugin({
 
@@ -65,11 +68,22 @@ class LocalSparklePlugin : SparklePlugin({
                 e.player.sendMessage("Clicked!")
             })
 
+            this[2] = {
+                delay(15.seconds)
+                Material.ACACIA_BUTTON.item
+            }
+
         }
 
         listen<PlayerJoinEvent> {
             it.player.listenOnPlayer<PlayerToggleSneakEvent> { event, player ->
-                if (event.isSneaking) panel.display(player)
+                if (event.isSneaking) {
+                    doSync {
+                        panel.display(player)
+                        delay(2.seconds)
+                        panel.triggerRefresh(player)
+                    }
+                }
             }
         }
 

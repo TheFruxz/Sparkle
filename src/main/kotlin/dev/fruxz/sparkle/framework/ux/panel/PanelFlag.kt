@@ -8,6 +8,11 @@ enum class PanelFlag {
     NO_OPEN,
 
     /**
+     * During a refresh, instead of merging the changes into the current inventory, it will open a newly generated one
+     */
+    HARD_REFRESH,
+
+    /**
      * Instead of processing each panel action one by one, process them all at once in an async context.
      */
     PARALLEL_ACTION_PROCESSING,

@@ -1,21 +1,24 @@
 package dev.fruxz.sparkle.framework.ux.panel
 
 import dev.fruxz.ascend.extension.forceCast
+import dev.fruxz.ascend.extension.objects.takeIfInstance
 import dev.fruxz.ascend.tool.map.list.MutableListMap
 import dev.fruxz.ascend.tool.smart.identity.RelatedIdentity
 import dev.fruxz.ascend.tool.smart.identity.RelatedUniq
 import dev.fruxz.sparkle.framework.coroutine.dispatcher.asyncDispatcher
+import dev.fruxz.sparkle.framework.system.onlinePlayers
 import dev.fruxz.sparkle.framework.system.sparkle
 import dev.fruxz.sparkle.framework.ux.inventory.container.buildInventory
 import dev.fruxz.sparkle.framework.ux.inventory.container.set
 import dev.fruxz.sparkle.framework.ux.inventory.item.ItemLike
 import dev.fruxz.stacked.extension.asPlainString
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.key.Keyed
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
-import net.minecraft.world.inventory.ClickAction
+import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import java.util.*
@@ -49,6 +52,7 @@ open class Panel(
         RelatedIdentity(uuid)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun produce(): Inventory {
         val holder = PanelHolder(this)
         val inventory = when (format) {
@@ -57,9 +61,27 @@ open class Panel(
             is PanelFormat.TypePanelFormat -> buildInventory(format.forceCast<PanelFormat.TypePanelFormat>().type, label, holder)
         }
 
+        holder.inventoryState = inventory
+
         content.forEach(inventory::set)
+        lazyContent.forEach { (slot, item) ->
+            item.invokeOnCompletion { inventory[slot] = item.getCompleted() }
+        }
 
         return inventory
+    }
+
+    fun triggerRefresh(target: Player): Boolean {
+        val open = target.openInventory
+        val holder = open.topInventory.holder?.takeIfInstance<PanelHolder>() ?: return false
+
+        holder.refresh()
+
+        return true
+    }
+
+    fun triggerRefresh(targets: Iterable<Player> = onlinePlayers): Boolean {
+        return targets.count(::triggerRefresh) > 0
     }
 
     fun toMutablePanel() = MutablePanel(
