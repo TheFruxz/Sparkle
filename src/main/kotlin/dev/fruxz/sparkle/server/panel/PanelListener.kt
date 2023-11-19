@@ -1,9 +1,11 @@
-package dev.fruxz.sparkle.framework.ux.panel
+package dev.fruxz.sparkle.server.panel
 
 import dev.fruxz.ascend.extension.future.awaitAll
 import dev.fruxz.ascend.extension.objects.takeIfInstance
 import dev.fruxz.sparkle.framework.coroutine.task.doAsync
 import dev.fruxz.sparkle.framework.system.debugLog
+import dev.fruxz.sparkle.framework.ux.panel.PanelFlag
+import dev.fruxz.sparkle.framework.ux.panel.PanelHolder
 import io.papermc.paper.event.inventory.PaperInventoryMoveItemEvent
 import kotlinx.coroutines.runBlocking
 import org.bukkit.event.EventHandler

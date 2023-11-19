@@ -8,6 +8,7 @@ import dev.fruxz.ascend.tool.smart.identity.RelatedUniq
 import dev.fruxz.sparkle.framework.coroutine.dispatcher.asyncDispatcher
 import dev.fruxz.sparkle.framework.system.onlinePlayers
 import dev.fruxz.sparkle.framework.system.sparkle
+import dev.fruxz.sparkle.framework.ux.inventory.container.InventoryUI
 import dev.fruxz.sparkle.framework.ux.inventory.container.buildInventory
 import dev.fruxz.sparkle.framework.ux.inventory.container.set
 import dev.fruxz.sparkle.framework.ux.inventory.item.ItemLike

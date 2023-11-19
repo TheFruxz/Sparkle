@@ -14,7 +14,7 @@ import dev.fruxz.sparkle.framework.system.pluginsFolder
 import dev.fruxz.sparkle.framework.util.json.serializer.*
 import dev.fruxz.sparkle.framework.ux.inventory.item.Item
 import dev.fruxz.sparkle.framework.ux.inventory.item.item
-import dev.fruxz.sparkle.framework.ux.panel.PanelListener
+import dev.fruxz.sparkle.server.panel.PanelListener
 import dev.fruxz.sparkle.framework.ux.panel.buildPanel
 import dev.fruxz.sparkle.server.command.SparkleCommand
 import dev.fruxz.sparkle.server.component.demo.DemoListener

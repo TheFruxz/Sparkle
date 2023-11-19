@@ -1,4 +1,4 @@
-package dev.fruxz.sparkle.framework.ux.panel
+package dev.fruxz.sparkle.framework.ux.inventory.container
 
 import dev.fruxz.ascend.tool.smart.generate.producible.Producible
 import org.bukkit.entity.Player
