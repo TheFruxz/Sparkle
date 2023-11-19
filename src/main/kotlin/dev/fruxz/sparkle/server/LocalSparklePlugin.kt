@@ -14,9 +14,8 @@ import dev.fruxz.sparkle.framework.system.pluginsFolder
 import dev.fruxz.sparkle.framework.util.json.serializer.*
 import dev.fruxz.sparkle.framework.ux.inventory.item.Item
 import dev.fruxz.sparkle.framework.ux.inventory.item.item
-import dev.fruxz.sparkle.framework.ux.panel.MutablePanel
-import dev.fruxz.sparkle.framework.ux.panel.Panel
 import dev.fruxz.sparkle.framework.ux.panel.PanelListener
+import dev.fruxz.sparkle.framework.ux.panel.buildPanel
 import dev.fruxz.sparkle.server.command.SparkleCommand
 import dev.fruxz.sparkle.server.component.demo.DemoListener
 import dev.fruxz.sparkle.server.component.events.DamageListener
@@ -58,15 +57,19 @@ class LocalSparklePlugin : SparklePlugin({
     onEnable {
         println("Hey! Sparkle ${this.pluginMeta.version} is online! Running Kotlin $kotlinVersion")
 
-        val panel = MutablePanel().apply {
+        val panel = buildPanel {
             label = "Test-Panel".asStyledComponent
 
             content += 4 to Material.STONE_BUTTON.item
 
-            onClick(4, Panel.ClickAction { e ->
+            onClick(4) { e ->
                 repeat(2_000) { 1.0 / 2 }
                 e.player.sendMessage("Clicked!")
-            })
+            }
+
+            deferred(2) {
+              Material.ACACIA_BUTTON.item
+            }
 
             this[2] = {
                 delay(15.seconds)

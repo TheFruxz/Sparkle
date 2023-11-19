@@ -10,6 +10,7 @@ import dev.fruxz.sparkle.framework.ux.inventory.item.itemLike
 import kotlinx.coroutines.Deferred
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import java.util.*
 import kotlin.coroutines.CoroutineContext
@@ -37,23 +38,37 @@ data class MutablePanel(
 
     public override val clickActions = MutableListMap<Int, ClickAction>()
 
+    // set
+
     operator fun set(slot: Int, item: ItemLike) =
         content.set(slot, item)
 
     operator fun set(slot: Int, itemStack: ItemStack) =
         this.set(slot = slot, item = itemStack.itemLike)
 
-    operator fun set(slot: Int, item: Deferred<ItemLike>) =
+    // set deferred
+
+    fun deferred(slot: Int, item: Deferred<ItemLike>) =
         lazyContent.set(slot, item)
 
-    operator fun set(slot: Int, builder: suspend () -> ItemLike) =
+    fun deferred(slot: Int, builder: suspend () -> ItemLike) =
         lazyContent.set(slot, asAsync { builder() })
 
-    // actions
+    operator fun set(slot: Int, item: Deferred<ItemLike>) =
+        deferred(slot, item)
+
+    operator fun set(slot: Int, builder: suspend () -> ItemLike) =
+        deferred(slot, asAsync { builder() })
+
+    // click actions
 
     @SparkleDSL
     fun onClick(slot: Int, action: ClickAction) =
         clickActions.addEntry(slot, action)
+
+    @SparkleDSL
+    fun onClick(slot: Int, process: suspend (InventoryClickEvent) -> Unit) =
+        onClick(slot, ClickAction(process))
 
     @SparkleDSL
     operator fun set(slot: Int, action: ClickAction) =

@@ -14,7 +14,6 @@ group = "dev.fruxz"
 repositories {
 
     mavenCentral()
-    mavenLocal()
 
     maven("https://jitpack.io") {
         name = "JitPack"
