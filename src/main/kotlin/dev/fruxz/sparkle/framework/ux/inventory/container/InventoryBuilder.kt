@@ -17,5 +17,3 @@ fun buildInventory(type: InventoryType, owner: InventoryHolder? = null, process:
 
 fun buildInventory(type: InventoryType, label: ComponentLike, owner: InventoryHolder? = null, process: Inventory.() -> Unit = { }) =
     Bukkit.createInventory(owner, type, label.asComponent()).apply(process)
-
-// TODO buildInventory with canvas base
