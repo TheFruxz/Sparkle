@@ -53,6 +53,8 @@ open class Panel(
         RelatedIdentity(uuid)
     }
 
+    internal open val compileAddIns = MutableListMap<CompilePhase, (Inventory, Panel) -> Unit>()
+
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun produce(): Inventory {
         val holder = PanelHolder(this)
@@ -62,12 +64,19 @@ open class Panel(
             is PanelFormat.TypePanelFormat -> buildInventory(format.forceCast<PanelFormat.TypePanelFormat>().type, label, holder)
         }
 
+        // bootstrap
         holder.inventoryState = inventory
+        compileAddIns[CompilePhase.BOOTSTRAP]?.forEach { it(inventory, this) }
 
+        // decorate
         content.forEach(inventory::set)
+        compileAddIns[CompilePhase.DECORATED]?.forEach { it(inventory, this) }
+
+        // prepare
         lazyContent.forEach { (slot, item) ->
             item.invokeOnCompletion { inventory[slot] = item.getCompleted() }
         }
+        compileAddIns[CompilePhase.PREPARED]?.forEach { it(inventory, this) }
 
         return inventory
     }
@@ -94,6 +103,28 @@ open class Panel(
         lazyContent = lazyContent.toMutableMap(),
         displayContext = displayContext,
         updateContext = updateContext,
-    )
+    ).apply {
+        this.clickActions.putAll(this@Panel.clickActions)
+        this.compileAddIns.putAll(this@Panel.compileAddIns)
+    }
+
+    enum class CompilePhase {
+
+        /**
+         * After the inventory of the panel is created.
+         */
+        BOOTSTRAP,
+
+        /**
+         * After the static content is placed inside the inventory
+         */
+        DECORATED,
+
+        /**
+         * After the lazy content is scheduled to be placed inside the inventory
+         */
+        PREPARED;
+
+    }
 
 }

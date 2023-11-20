@@ -11,6 +11,7 @@ import kotlinx.coroutines.Deferred
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.ComponentLike
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import java.util.*
 import kotlin.coroutines.CoroutineContext
@@ -37,6 +38,7 @@ data class MutablePanel(
 ) {
 
     public override val clickActions = MutableListMap<Int, ClickAction>()
+    override val compileAddIns = MutableListMap<CompilePhase, (Inventory, Panel) -> Unit>()
 
     // set
 
@@ -74,15 +76,24 @@ data class MutablePanel(
     operator fun set(slot: Int, action: ClickAction) =
         onClick(slot, action)
 
-    fun toPanel() = Panel(
+    // compile add-ins
+
+    fun onCompile(phase: CompilePhase, action: (Inventory, Panel) -> Unit) =
+        compileAddIns.addEntry(phase, action)
+
+    fun toPanel(): Panel = Panel(
         label = label,
         format = format,
-        flags = flags.toSet(),
+        flags = flags.toMutableSet(),
         sound = sound,
-        content = content.toMap(),
-        lazyContent = lazyContent.toMap(),
+        content = content.toMutableMap(),
+        lazyContent = lazyContent.toMutableMap(),
         displayContext = displayContext,
         updateContext = updateContext,
-    )
+        uuid = uuid,
+    ).apply {
+        this.clickActions.putAll(this@MutablePanel.clickActions)
+        this.compileAddIns.putAll(this@MutablePanel.compileAddIns)
+    }
 
 }
