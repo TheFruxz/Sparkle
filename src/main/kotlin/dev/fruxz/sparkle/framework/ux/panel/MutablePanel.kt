@@ -48,6 +48,12 @@ data class MutablePanel(
     operator fun set(slot: Int, itemStack: ItemStack) =
         this.set(slot = slot, item = itemStack.itemLike)
 
+    operator fun set(slots: Iterable<Int>, item: ItemLike) =
+        slots.forEach { this[it] = item }
+
+    operator fun set(slots: Iterable<Int>, itemStack: ItemStack) =
+        slots.forEach { this[it] = itemStack.itemLike }
+
     // set deferred
 
     fun deferred(slot: Int, item: Deferred<ItemLike>) =
@@ -56,11 +62,23 @@ data class MutablePanel(
     fun deferred(slot: Int, builder: suspend () -> ItemLike) =
         lazyContent.set(slot, asAsync { builder() })
 
+    fun deferred(slots: Iterable<Int>, item: Deferred<ItemLike>) =
+        slots.forEach { deferred(it, item) }
+
+    fun deferred(slots: Iterable<Int>, builder: suspend () -> ItemLike) =
+        slots.forEach { deferred(it, builder) }
+
     operator fun set(slot: Int, item: Deferred<ItemLike>) =
         deferred(slot, item)
 
     operator fun set(slot: Int, builder: suspend () -> ItemLike) =
         deferred(slot, asAsync { builder() })
+
+    operator fun set(slots: Iterable<Int>, item: Deferred<ItemLike>) =
+        deferred(slots, item)
+
+    operator fun set(slots: Iterable<Int>, builder: suspend () -> ItemLike) =
+        deferred(slots, builder)
 
     // click actions
 
@@ -75,6 +93,18 @@ data class MutablePanel(
     @SparkleDSL
     operator fun set(slot: Int, action: ClickAction) =
         onClick(slot, action)
+
+    @SparkleDSL
+    fun onClick(slots: Iterable<Int>, action: ClickAction) =
+        slots.forEach { onClick(it, action) }
+
+    @SparkleDSL
+    fun onClick(slots: Iterable<Int>, process: suspend (InventoryClickEvent) -> Unit) =
+        slots.forEach { onClick(it, process) }
+
+    @SparkleDSL
+    operator fun set(slots: Iterable<Int>, action: ClickAction) =
+        onClick(slots, action)
 
     // compile add-ins
 
