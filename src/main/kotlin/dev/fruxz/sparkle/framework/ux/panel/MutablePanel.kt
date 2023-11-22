@@ -23,8 +23,7 @@ data class MutablePanel(
     override var sound: PanelSound = PanelSound(onOpen = null, onClose = null),
     override val content: MutableMap<Int, ItemLike> = mutableMapOf(),
     override val lazyContent: MutableMap<Int, Deferred<ItemLike>> = mutableMapOf(),
-    override var displayContext: CoroutineContext = sparkle.asyncDispatcher,
-    override var updateContext: CoroutineContext = sparkle.asyncDispatcher,
+    override val lazyContext: CoroutineContext = sparkle.asyncDispatcher,
     override var uuid: UUID = UUID.randomUUID(),
 ) : Panel(
     label = label,
@@ -33,8 +32,6 @@ data class MutablePanel(
     sound = sound,
     content = content,
     lazyContent = lazyContent,
-    displayContext = displayContext,
-    updateContext = updateContext,
 ) {
 
     public override val clickActions = MutableListMap<Int, ClickAction>()
@@ -60,7 +57,7 @@ data class MutablePanel(
         lazyContent.set(slot, item)
 
     fun deferred(slot: Int, builder: suspend () -> ItemLike) =
-        lazyContent.set(slot, asAsync { builder() })
+        lazyContent.set(slot, asAsync(context = lazyContext) { builder() })
 
     fun deferred(slots: Iterable<Int>, item: Deferred<ItemLike>) =
         slots.forEach { deferred(it, item) }
@@ -72,7 +69,7 @@ data class MutablePanel(
         deferred(slot, item)
 
     operator fun set(slot: Int, builder: suspend () -> ItemLike) =
-        deferred(slot, asAsync { builder() })
+        deferred(slot, asAsync(context = lazyContext) { builder() })
 
     operator fun set(slots: Iterable<Int>, item: Deferred<ItemLike>) =
         deferred(slots, item)
@@ -118,8 +115,7 @@ data class MutablePanel(
         sound = sound,
         content = content.toMutableMap(),
         lazyContent = lazyContent.toMutableMap(),
-        displayContext = displayContext,
-        updateContext = updateContext,
+        lazyContext = lazyContext,
         uuid = uuid,
     ).apply {
         this.clickActions.putAll(this@MutablePanel.clickActions)

@@ -32,8 +32,7 @@ open class Panel(
     open val sound: PanelSound = PanelSound(onOpen = null, onClose = null),
     open val content: Map<Int, ItemLike> = emptyMap(),
     open val lazyContent: Map<Int, Deferred<ItemLike>> = emptyMap(),
-    open val displayContext: CoroutineContext = sparkle.asyncDispatcher,
-    open val updateContext: CoroutineContext = sparkle.asyncDispatcher,
+    open val lazyContext: CoroutineContext = sparkle.asyncDispatcher,
     open val uuid: UUID = UUID.randomUUID(),
 ) : InventoryUI, RelatedUniq<Panel, UUID>, Keyed {
 
@@ -101,8 +100,8 @@ open class Panel(
         sound = sound,
         content = content.toMutableMap(),
         lazyContent = lazyContent.toMutableMap(),
-        displayContext = displayContext,
-        updateContext = updateContext,
+        lazyContext = lazyContext,
+        uuid = uuid,
     ).apply {
         this.clickActions.putAll(this@Panel.clickActions)
         this.compileAddIns.putAll(this@Panel.compileAddIns)
