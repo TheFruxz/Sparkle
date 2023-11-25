@@ -1,7 +1,6 @@
 package dev.fruxz.sparkle.framework.command
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException
-import dev.fruxz.stacked.extension.asStyledComponent
 import dev.fruxz.stacked.extension.newline
 import dev.fruxz.stacked.extension.style
 import dev.fruxz.stacked.plus
@@ -20,7 +19,8 @@ fun CommandSyntaxException.contextComponent() = text {
         this + text("...").colorIfAbsent(NamedTextColor.GRAY)
     }
 
-    this + exception.input.substring(max(0, cursor - CommandSyntaxException.CONTEXT_AMOUNT), cursor).asStyledComponent.colorIfAbsent(NamedTextColor.GRAY)
+    this + text(exception.input.substring(max(0, cursor - CommandSyntaxException.CONTEXT_AMOUNT), cursor)).color(NamedTextColor.GRAY)
+    this + text(exception.input.substring(cursor)).style(NamedTextColor.RED, TextDecoration.UNDERLINED)
     this + Component.translatable("command.context.here").style(NamedTextColor.RED, TextDecoration.ITALIC)
 }
 
