@@ -120,9 +120,10 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Keyed 
             val commandPermission = command.key.findAnnotation<Private>()?.permission
             val commandIsPublic = command.key.hasAnnotation<Public>()
 
-            if (command.value is SparkleCommand) {
-                (command.value as SparkleCommand).plugin = this
-                commandDispatcher.register((command.value as SparkleCommand).command) // TODO Registers the current brigadier workaround
+            // TODO Registers the current brigadier workaround
+            (command.value as? SparkleCommand)?.let { sparkleCommand ->
+                sparkleCommand.plugin = this
+                commandDispatcher.register(sparkleCommand.command)
             }
 
             commandName?.let { securedName ->
