@@ -36,6 +36,8 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Keyed 
        Key.key(LocalSparklePlugin.SYSTEM_IDENTITY.lowercase(), this.name.lowercase())
     }
 
+    val commandDispatcher = CommandDispatcher<CommandSender>()
+
     init { apply(setup) } // changed from setup() to apply(setup)
 
     // api stuff
@@ -119,8 +121,8 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Keyed 
             val commandIsPublic = command.key.hasAnnotation<Public>()
 
             if (command.value is SparkleCommand) {
+                (command.value as SparkleCommand).plugin = this
                 commandDispatcher.register((command.value as SparkleCommand).command) // TODO Registers the current brigadier workaround
-                // TODO on register of command, take plugin, (the sparkle plugin), and register it to its local instance of dispatcher, rather than global framework thing, because of multiple commands with the same name :(
             }
 
             commandName?.let { securedName ->
@@ -152,8 +154,6 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Keyed 
 
             return constructor.call(label, plugin)
         }
-
-        val commandDispatcher = CommandDispatcher<CommandSender>()
 
     }
 

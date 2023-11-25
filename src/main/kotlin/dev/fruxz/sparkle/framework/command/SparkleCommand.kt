@@ -9,11 +9,13 @@ import org.bukkit.command.CommandSender
 
 abstract class SparkleCommand : TabCommandExecutor {
 
+    lateinit var plugin: SparklePlugin
+
     abstract val command: LiteralArgumentBuilder<CommandSender>
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, arguments: Array<out String>): Boolean {
         try {
-            SparklePlugin.commandDispatcher.execute((arrayOf(label) + arguments).joinToString(" "), sender)
+            plugin.commandDispatcher.execute((arrayOf(label) + arguments).joinToString(" "), sender)
         } catch (e: CommandSyntaxException) {
             sender.sendMessage(e.displayMessageComponent())
         }
@@ -26,8 +28,8 @@ abstract class SparkleCommand : TabCommandExecutor {
         label: String,
         arguments: Array<out String>,
     ): List<String> {
-        return SparklePlugin.commandDispatcher.getCompletionSuggestions(
-            SparklePlugin.commandDispatcher.parse((arrayOf(label) + arguments).joinToString(" "), sender)
+        return plugin.commandDispatcher.getCompletionSuggestions(
+            plugin.commandDispatcher.parse((arrayOf(label) + arguments).joinToString(" "), sender)
         ).join().list.map { it.text }
     }
 
