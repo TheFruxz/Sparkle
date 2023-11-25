@@ -16,8 +16,7 @@ fun buildPanel(
     sound: PanelSound = PanelSound(onOpen = null, onClose = null),
     content: MutableMap<Int, ItemLike> = mutableMapOf(),
     lazyContent: MutableMap<Int, Deferred<ItemLike>> = mutableMapOf(),
-    displayContext: CoroutineContext = sparkle.asyncDispatcher,
-    updateContext: CoroutineContext = sparkle.asyncDispatcher,
+    lazyContext: CoroutineContext = sparkle.asyncDispatcher,
     uuid: UUID = UUID.randomUUID(),
     process: MutablePanel.() -> Unit,
 ) : Panel =
@@ -28,7 +27,6 @@ fun buildPanel(
         sound = sound,
         content = content,
         lazyContent = lazyContent,
-        displayContext = displayContext,
-        updateContext = updateContext,
+        lazyContext = lazyContext,
         uuid = uuid,
     ).apply(process).toPanel()
