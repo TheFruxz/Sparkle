@@ -1,5 +1,6 @@
 package dev.fruxz.sparkle.framework
 
+import com.mojang.brigadier.CommandDispatcher
 import dev.fruxz.sparkle.framework.command.*
 import dev.fruxz.sparkle.framework.command.annotations.*
 import dev.fruxz.sparkle.framework.command.annotations.permission.Private
@@ -13,6 +14,7 @@ import kotlinx.coroutines.cancel
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.key.Keyed
 import org.bukkit.command.CommandExecutor
+import org.bukkit.command.CommandSender
 import org.bukkit.command.PluginCommand
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
@@ -116,6 +118,11 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Keyed 
             val commandPermission = command.key.findAnnotation<Private>()?.permission
             val commandIsPublic = command.key.hasAnnotation<Public>()
 
+            if (command.value is SparkleCommand) {
+                commandDispatcher.register((command.value as SparkleCommand).command) // TODO Registers the current brigadier workaround
+                // TODO on register of command, take plugin, (the sparkle plugin), and register it to its local instance of dispatcher, rather than global framework thing, because of multiple commands with the same name :(
+            }
+
             commandName?.let { securedName ->
                 val securedCommand = (getCommand(securedName) ?: artificialCommand(this, securedName))
 
@@ -145,6 +152,8 @@ open class SparklePlugin(setup: SparklePlugin.() -> Unit) : JavaPlugin(), Keyed 
 
             return constructor.call(label, plugin)
         }
+
+        val commandDispatcher = CommandDispatcher<CommandSender>()
 
     }
 

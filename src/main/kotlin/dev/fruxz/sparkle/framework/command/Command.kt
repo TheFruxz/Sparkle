@@ -1,5 +1,7 @@
 package dev.fruxz.sparkle.framework.command
 
+import dev.fruxz.brigadikt.domain.FrontArgumentBuilder
+import dev.fruxz.brigadikt.tree.buildUniversalCommand
 import dev.fruxz.sparkle.framework.SparklePlugin
 import dev.fruxz.sparkle.framework.command.annotations.Aliases
 import dev.fruxz.sparkle.framework.command.annotations.Description
@@ -11,11 +13,20 @@ import dev.fruxz.sparkle.framework.system.commandMap
 import dev.fruxz.sparkle.framework.system.debugLog
 import dev.fruxz.sparkle.framework.system.internalSyncCommands
 import org.bukkit.command.CommandExecutor
+import org.bukkit.command.CommandSender
 import org.bukkit.command.PluginCommand
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.hasAnnotation
+
+fun buildCommand(
+    name: String,
+    builder: FrontArgumentBuilder<CommandSender>.() -> Unit,
+) = buildUniversalCommand(
+    name = name,
+    builder = builder,
+)
 
 fun <T : CommandExecutor> JavaPlugin.registerCommand(command: T, clazz: KClass<out T>): PluginCommand? {
 

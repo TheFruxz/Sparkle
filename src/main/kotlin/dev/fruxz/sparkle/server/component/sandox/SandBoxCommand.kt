@@ -1,14 +1,14 @@
 package dev.fruxz.sparkle.server.component.sandox
 
+import dev.fruxz.brigadikt.tree.argumentWord
+import dev.fruxz.brigadikt.tree.route
 import dev.fruxz.sparkle.framework.command.annotations.Label
-import dev.fruxz.sparkle.framework.command.context.CommandExecutionContext
-import dev.fruxz.sparkle.framework.command.sparkle.BranchContent
-import dev.fruxz.sparkle.framework.command.sparkle.Command
+import dev.fruxz.sparkle.framework.command.buildCommand
 
 @Label("sandbox")
-class SandBoxCommand : Command() {
+class SandBoxCommand {
 
-    override fun configure() {
+    /*override fun configure() {
 
         branch(BranchContent.sandbox()) {
             // TODO val input by argument("input", "The input to echo")?
@@ -25,6 +25,21 @@ class SandBoxCommand : Command() {
             }
         }
 
+    }*/
+
+    fun build() = buildCommand("test") {
+        this.executes {
+            source.sendMessage("Hello!")
+        }
+
+        route {
+            val input = argumentWord("input")
+
+            this.executes {
+                source.sendMessage("Hello ${input()}!")
+            }
+
+        }
     }
 
 }

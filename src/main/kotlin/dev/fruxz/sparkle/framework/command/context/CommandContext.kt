@@ -1,6 +1,5 @@
 package dev.fruxz.sparkle.framework.command.context
 
-import dev.fruxz.sparkle.framework.command.sparkle.CommandBranch
 import dev.fruxz.stacked.extension.api.StyledString
 import dev.fruxz.stacked.text
 import net.kyori.adventure.text.Component
@@ -33,16 +32,6 @@ interface CommandContext {
         get() = performer as? Player
 
     // transformation
-    fun asBranchContext(branch: CommandBranch, processedInput: List<String>, branchInput: List<String>): BranchExecutionContext {
-        return BranchExecutionContext(
-            performer = performer,
-            command = command,
-            label = label,
-            parameters = processedInput,
-            branch = branch,
-            branchParameters = branchInput
-        )
-    }
 
     fun asCommandContext(): CommandExecutionContext {
         return CommandExecutionContext(

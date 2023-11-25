@@ -15,7 +15,7 @@ import dev.fruxz.sparkle.framework.util.json.serializer.*
 import dev.fruxz.sparkle.framework.ux.inventory.item.Item
 import dev.fruxz.sparkle.framework.ux.inventory.item.item
 import dev.fruxz.sparkle.framework.ux.panel.buildPanel
-import dev.fruxz.sparkle.server.command.SparkleCommand
+import dev.fruxz.sparkle.server.command.DemoCommand
 import dev.fruxz.sparkle.server.component.demo.DemoListener
 import dev.fruxz.sparkle.server.component.events.DamageListener
 import dev.fruxz.sparkle.server.component.events.InteractionListener
@@ -92,7 +92,7 @@ class LocalSparklePlugin : SparklePlugin({
 
     }
 
-    command<SparkleCommand>()
+    command<DemoCommand>()
 
     listener(DemoListener())
     listener(DamageListener())
