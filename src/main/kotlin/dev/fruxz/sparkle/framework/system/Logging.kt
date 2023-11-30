@@ -19,10 +19,6 @@ fun <T : Any?> T.debugLog(message: String, level: Level = Level.WARNING) = also 
     }
 }
 
-fun <T : Any?> T.debugLog(level: Level = Level.WARNING, messageProcess: T.() -> String) {
-    if (LocalSparklePlugin.debugMode) { debugLog(tryOrNull { messageProcess() } ?: ">> Error at getting this debugLog message!", level) }
-}
-
 fun debugLog(level: Level = Level.WARNING, messageProcess: () -> String) {
     if (LocalSparklePlugin.debugMode) { Unit.debugLog(message = tryOrNull { messageProcess() } ?: ">> Error at getting this debugLog message!", level) }
 }
