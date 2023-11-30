@@ -1,5 +1,8 @@
 package dev.fruxz.sparkle.framework.event.dsl
 
+import dev.fruxz.ascend.extension.container.copy
+import dev.fruxz.ascend.extension.container.removeAll
+import dev.fruxz.sparkle.framework.system.debugLog
 import dev.fruxz.sparkle.framework.system.pluginManager
 import dev.fruxz.sparkle.framework.system.sparkle
 import dev.fruxz.sparkle.framework.system.worlds
@@ -126,5 +129,27 @@ object JITEventManager {
         if (playerEvents[uuid].isNullOrEmpty()) playerEvents.remove(uuid)
         if (entityEvents[uuid].isNullOrEmpty()) entityEvents.remove(uuid)
     }
+
+    fun removeEvent(uuid: UUID, postClean: Boolean = true) {
+
+        // Remove the event from the maps
+        events.copy().forEach { (clazz, actions) ->
+            events[clazz] = actions.filterNot { it.uuid == uuid }
+        }
+        playerEvents.copy().forEach { (playerUUID, actions) ->
+            playerEvents[playerUUID] = actions.filterNot { it.uuid == uuid }
+        }
+        entityEvents.copy().forEach { (entityUUID, actions) ->
+            entityEvents[entityUUID] = actions.filterNot { it.uuid == uuid }
+        }
+
+        // perform cleanup if requested
+        if (postClean) performCleanup()
+
+        debugLog { "Removed event with uuid $uuid" }
+    }
+
+    fun removeEvent(jitEvent: JITEvent<*>, postClean: Boolean = true) =
+        removeEvent(uuid = jitEvent.uuid, postClean = postClean)
 
 }

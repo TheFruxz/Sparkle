@@ -7,6 +7,7 @@ import dev.fruxz.ascend.json.property
 import dev.fruxz.ascend.tool.JsonManager
 import dev.fruxz.sparkle.framework.SparklePlugin
 import dev.fruxz.sparkle.framework.coroutine.task.doSync
+import dev.fruxz.sparkle.framework.event.dsl.ActiveJITEvent
 import dev.fruxz.sparkle.framework.event.dsl.listen
 import dev.fruxz.sparkle.framework.event.dsl.listenOnPlayer
 import dev.fruxz.sparkle.framework.event.player
@@ -79,13 +80,17 @@ class LocalSparklePlugin : SparklePlugin({
         }
 
         listen<PlayerJoinEvent> {
-            it.player.listenOnPlayer<PlayerToggleSneakEvent> { event, player ->
+            var test: ActiveJITEvent<*, *>? = null
+
+            test = it.player.listenOnPlayer<PlayerToggleSneakEvent> { event, player ->
                 if (event.isSneaking) {
                     doSync {
                         panel.display(player)
                         delay(2.seconds)
                         panel.triggerRefresh(player)
                     }
+                } else {
+                    test?.unregister()
                 }
             }
         }

@@ -17,9 +17,8 @@ fun <T : Event> listen(
     ignoreCancelled: Boolean = false,
     plugin: Plugin = sparkle,
     action: (event: T) -> Unit,
-) = JITEventManager.addGenericEvent(
-    clazz = eventClazz,
-    action = object : JITEvent<T>(
+): ActiveJITEvent<JITEvent<T>, T> {
+    val jitEvent = object : JITEvent<T>(
         eventClazz = eventClazz,
         priority = priority,
         ignoreCancelled = ignoreCancelled,
@@ -27,7 +26,15 @@ fun <T : Event> listen(
     ) {
         override fun invoke(event: T) = action(event)
     }
-)
+
+
+    JITEventManager.addGenericEvent(
+        clazz = eventClazz,
+        action = jitEvent,
+    )
+
+    return ActiveJITEvent(jitEvent = jitEvent)
+}
 
 @SparkleEventDSL
 inline fun <reified T : Event> listen(
@@ -35,7 +42,7 @@ inline fun <reified T : Event> listen(
     ignoreCancelled: Boolean = false,
     plugin: Plugin = sparkle,
     noinline action: (event: T) -> Unit,
-) = listen(
+): ActiveJITEvent<JITEvent<T>, T> = listen(
     eventClazz = T::class,
     priority = priority,
     ignoreCancelled = ignoreCancelled,
@@ -51,10 +58,8 @@ fun <T : EntityEvent> Entity.listenOnEntity(
     autoRemoval: Boolean = true,
     plugin: Plugin = sparkle,
     action: (event: T, entity: Entity) -> Unit,
-) = JITEventManager.addEntityEvent(
-    clazz = eventClazz,
-    uuid = uniqueId,
-    action = object : JITEntityEvent<T>(
+): ActiveJITEvent<JITEntityEvent<T>, T> {
+    val jitEvent = object : JITEntityEvent<T>(
         eventClazz = eventClazz,
         priority = priority,
         ignoreCancelled = ignoreCancelled,
@@ -63,7 +68,15 @@ fun <T : EntityEvent> Entity.listenOnEntity(
     ) {
         override fun invoke(event: T, entity: Entity) = action(event, entity)
     }
-)
+
+    JITEventManager.addEntityEvent(
+        clazz = eventClazz,
+        uuid = uniqueId,
+        action = jitEvent,
+    )
+
+    return ActiveJITEvent(jitEvent = jitEvent)
+}
 
 @SparkleEventDSL
 inline fun <reified T : EntityEvent> Entity.listenOnEntity(
@@ -72,7 +85,7 @@ inline fun <reified T : EntityEvent> Entity.listenOnEntity(
     autoRemoval: Boolean = true,
     plugin: Plugin = sparkle,
     noinline action: (event: T, entity: Entity) -> Unit,
-) = listenOnEntity(
+): ActiveJITEvent<JITEntityEvent<T>, T> = listenOnEntity(
     eventClazz = T::class,
     priority = priority,
     ignoreCancelled = ignoreCancelled,
@@ -89,10 +102,8 @@ fun <T : PlayerEvent> Player.listenOnPlayer(
     autoRemoval: Boolean = true,
     plugin: Plugin = sparkle,
     action: (event: T, player: Player) -> Unit,
-) = JITEventManager.addPlayerEvent(
-    clazz = eventClazz,
-    uuid = uniqueId,
-    action = object : JITPlayerEvent<T>(
+): ActiveJITEvent<JITPlayerEvent<T>, T> {
+    val jitEvent = object : JITPlayerEvent<T>(
         eventClazz = eventClazz,
         priority = priority,
         ignoreCancelled = ignoreCancelled,
@@ -101,7 +112,15 @@ fun <T : PlayerEvent> Player.listenOnPlayer(
     ) {
         override fun invoke(event: T, player: Player) = action(event, player)
     }
-)
+
+    JITEventManager.addPlayerEvent(
+        clazz = eventClazz,
+        uuid = uniqueId,
+        action = jitEvent,
+    )
+
+    return ActiveJITEvent(jitEvent = jitEvent)
+}
 
 @SparkleEventDSL
 inline fun <reified T : PlayerEvent> Player.listenOnPlayer(
@@ -110,7 +129,7 @@ inline fun <reified T : PlayerEvent> Player.listenOnPlayer(
     autoRemoval: Boolean = true,
     plugin: Plugin = sparkle,
     noinline action: (event: T, player: Player) -> Unit,
-) = listenOnPlayer(
+): ActiveJITEvent<JITPlayerEvent<T>, T> = listenOnPlayer(
     eventClazz = T::class,
     priority = priority,
     ignoreCancelled = ignoreCancelled,
