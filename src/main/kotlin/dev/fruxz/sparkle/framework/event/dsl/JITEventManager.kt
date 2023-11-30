@@ -101,6 +101,9 @@ object JITEventManager {
     fun performCleanup() {
         val entities = worlds.flatMap { it.entities.map(Entity::getUniqueId) }
 
+        playerEvents.removeAll { _, value -> value.isEmpty() }
+        entityEvents.removeAll { _, value -> value.isEmpty() }
+
         playerEvents.keys.filterNot(entities::contains).forEach {
             playerEvents[it] = playerEvents[it].orEmpty().filterNot(JITPlayerEvent<*>::autoRemoval)
 
