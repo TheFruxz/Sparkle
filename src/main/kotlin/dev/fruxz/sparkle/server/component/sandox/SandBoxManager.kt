@@ -1,7 +1,8 @@
 package dev.fruxz.sparkle.server.component.sandox
 
-import dev.fruxz.sparkle.framework.command.context.CommandExecutionContext
+import dev.fruxz.brigadikt.activity.BrigadiktCommandContext
 import dev.fruxz.sparkle.framework.system.debugLog
+import org.bukkit.command.CommandSender
 
 object SandBoxManager {
 
@@ -11,7 +12,7 @@ object SandBoxManager {
 
     operator fun get(label: String): SandBox? = sandboxes[label]
 
-    operator fun set(label: String, block: suspend (CommandExecutionContext) -> Unit) {
+    operator fun set(label: String, block: suspend (BrigadiktCommandContext<CommandSender>) -> Unit) {
         if (sandboxes.containsKey(label)) throw IllegalArgumentException("SandBox with label $label already exists")
 
         this += SandBox(label, block)
@@ -34,10 +35,10 @@ object SandBoxManager {
 
     data class SandBox(
         val label: String,
-        val process: suspend (CommandExecutionContext) -> Unit,
+        val process: suspend (BrigadiktCommandContext<CommandSender>) -> Unit,
     ) {
 
-        suspend operator fun invoke(context: CommandExecutionContext) {
+        suspend operator fun invoke(context: BrigadiktCommandContext<CommandSender>) {
             debugLog("Invoking code of sandbox '$label'")
             process.invoke(context)
         }
