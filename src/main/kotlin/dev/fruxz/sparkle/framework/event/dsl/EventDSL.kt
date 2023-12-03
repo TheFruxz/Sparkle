@@ -27,7 +27,6 @@ fun <T : Event> listen(
         override fun invoke(event: T) = action(event)
     }
 
-
     JITEventManager.addGenericEvent(
         clazz = eventClazz,
         action = jitEvent,

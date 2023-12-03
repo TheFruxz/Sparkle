@@ -20,6 +20,8 @@ import dev.fruxz.sparkle.server.command.DemoCommand
 import dev.fruxz.sparkle.server.component.demo.DemoListener
 import dev.fruxz.sparkle.server.component.events.DamageListener
 import dev.fruxz.sparkle.server.component.events.InteractionListener
+import dev.fruxz.sparkle.server.component.sandox.SandBoxCommand
+import dev.fruxz.sparkle.server.component.sandox.SandBoxManager
 import dev.fruxz.sparkle.server.panel.PanelListener
 import dev.fruxz.stacked.extension.asStyledComponent
 import kotlinx.coroutines.delay
@@ -97,7 +99,12 @@ class LocalSparklePlugin : SparklePlugin({
 
     }
 
+    SandBoxManager += SandBoxManager.SandBox("hello") {
+        it.source.sendMessage("Hello World!")
+    }
+
     command<DemoCommand>()
+    command<SandBoxCommand>()
 
     listener(DemoListener())
     listener(DamageListener())

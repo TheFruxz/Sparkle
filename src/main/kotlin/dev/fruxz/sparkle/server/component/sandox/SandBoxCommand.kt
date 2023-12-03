@@ -1,12 +1,17 @@
 package dev.fruxz.sparkle.server.component.sandox
 
-import dev.fruxz.brigadikt.tree.argumentWord
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import dev.fruxz.brigadikt.tree.argument
 import dev.fruxz.brigadikt.tree.route
+import dev.fruxz.sparkle.framework.command.SparkleCommand
 import dev.fruxz.sparkle.framework.command.annotations.Label
+import dev.fruxz.sparkle.framework.command.argument.ArgumentStore
 import dev.fruxz.sparkle.framework.command.buildCommand
+import dev.fruxz.sparkle.framework.coroutine.task.doSync
+import org.bukkit.command.CommandSender
 
 @Label("sandbox")
-class SandBoxCommand {
+class SandBoxCommand : SparkleCommand() {
 
     /*override fun configure() {
 
@@ -26,20 +31,20 @@ class SandBoxCommand {
         }
 
     }*/
-
-    fun build() = buildCommand("test") {
-        this.executes {
-            source.sendMessage("Hello!")
-        }
-
+    override val command: LiteralArgumentBuilder<CommandSender> = buildCommand("sandbox") {
         route {
-            val input = argumentWord("input")
+            val sandbox = argument("sandbox", ArgumentStore.SANDBOX)
 
-            this.executes {
-                source.sendMessage("Hello ${input()}!")
+            executes {
+
+                doSync {
+                    sandbox().invoke(this) // TODO retrieve argument and /<> run in next release
+                }
+
             }
 
         }
     }
+
 
 }
