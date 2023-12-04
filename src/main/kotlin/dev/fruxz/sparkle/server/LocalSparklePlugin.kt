@@ -100,7 +100,7 @@ class LocalSparklePlugin : SparklePlugin({
     }
 
     SandBoxManager += SandBoxManager.SandBox("hello") {
-        it.source.sendMessage("Hello World!")
+        it.source.sendMessage("Hello World! Received '${it.input.asParameters()}'")
     }
 
     command<DemoCommand>()
