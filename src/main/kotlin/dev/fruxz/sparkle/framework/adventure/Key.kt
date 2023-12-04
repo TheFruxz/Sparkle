@@ -24,13 +24,13 @@ val Key.namespacedKey: NamespacedKey
     }
 
 val Entity.key: Key
-    get() = Key.key("entity_$uniqueId")
+    get() = Key.key("entity", "$uniqueId")
 
 val OfflinePlayer.key: Key
-    get() = Key.key("player_$uniqueId")
+    get() = Key.key("player","$uniqueId")
 
 val Location.key: Key
-    get() = Key.key("location_${world.uid}.$x.$y.$z")
+    get() = Key.key("location", "${world.uid}.$x.$y.$z")
 
 val Block.key: Key
-    get() = Key.key("block_${world.uid}.$x.$y.$z")
+    get() = Key.key("block", "${world.uid}.$x.$y.$z")
