@@ -15,6 +15,10 @@ repositories {
 
     mavenCentral()
 
+    maven("https://repo.fruxz.dev/releases") {
+        name = "fruxz.dev"
+    }
+
     maven("https://jitpack.io") {
         name = "JitPack"
     }
@@ -49,7 +53,7 @@ dependencies {
     api("com.github.TheFruxz:Ascend:$ascendVersion").deliver()
     api("com.github.TheFruxz:Stacked:$stackedVersion").deliver()
     api("com.github.TheFruxz:Kojang:$kojangVersion").deliver()
-    api("com.github.TheFruxz:BrigadiKt:$brigadiktVersion").deliver()
+    api("dev.fruxz:brigadikt:2023.3-rc5").deliver()
 
     // Kotlin
 
