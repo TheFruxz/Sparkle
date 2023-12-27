@@ -1,9 +1,7 @@
 package dev.fruxz.sparkle.server.component.sandox
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
-import dev.fruxz.brigadikt.tree.argument
-import dev.fruxz.brigadikt.tree.argumentGreedyString
-import dev.fruxz.brigadikt.tree.route
+import dev.fruxz.brigadikt.tree.*
 import dev.fruxz.sparkle.framework.command.SparkleCommand
 import dev.fruxz.sparkle.framework.command.annotations.Label
 import dev.fruxz.sparkle.framework.command.argument.ArgumentStore
@@ -38,8 +36,23 @@ class SandBoxCommand : SparkleCommand() {
 
     }*/
     override val command: LiteralArgumentBuilder<CommandSender> = buildCommand("sandbox") {
+//        val amogus = argumentFloat("amogus")
+
         route {
             val sandbox = argument("sandbox", ArgumentStore.SANDBOX)
+
+            route("sven") {
+                val numberUno = argumentInteger("numberUno", 0, 4)
+                val numberDos = argumentInteger("numberDos", 0, 4)
+                val superString = argumentString("superString")
+                val numberDres = argumentInteger("numberDres", 0, 4)
+
+                executes {
+//                    source.sendMessage("amogus is " + amogus())
+                    source.sendMessage("You have selected sandbox ${sandbox().label} with numbers ${numberUno()}, ${numberDos()}, ${numberDres()} and '${superString()}'")
+                }
+
+            }
 
             route("run") {
 

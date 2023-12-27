@@ -14,7 +14,7 @@ object ArgumentStore {
 
     // Bukkit
 
-    val ONLINE_PLAYER = buildArgument {
+    val ONLINE_PLAYER = buildArgumentType {
         parse {
             val name = it.readString()
 
@@ -28,7 +28,7 @@ object ArgumentStore {
         }
     }
 
-    val OFFLINE_PLAYER = buildArgument {
+    val OFFLINE_PLAYER = buildArgumentType {
         parse {
             val name = it.readString()
 
@@ -42,7 +42,7 @@ object ArgumentStore {
         }
     }
 
-    val MATERIAL = buildArgument {
+    val MATERIAL = buildArgumentType {
         parse {
             val name = it.readString()
 
@@ -56,7 +56,7 @@ object ArgumentStore {
         }
     }
 
-    val ENTITY_TYPE = buildArgument {
+    val ENTITY_TYPE = buildArgumentType {
         parse {
             val name = it.readString()
 
@@ -70,7 +70,7 @@ object ArgumentStore {
         }
     }
 
-    val LIBRARY_SOUND = buildArgument {
+    val LIBRARY_SOUND = buildArgumentType {
         parse {
             val name = it.readString()
 
@@ -84,7 +84,7 @@ object ArgumentStore {
         }
     }
 
-    val TRANSMISSION_THEME = buildArgument {
+    val TRANSMISSION_THEME = buildArgumentType {
         parse {
             val name = it.readString()
 
@@ -98,7 +98,7 @@ object ArgumentStore {
         }
     }
 
-    val SANDBOX = buildArgument {
+    val SANDBOX = buildArgumentType {
         parse {
             val name = it.readString()
 
