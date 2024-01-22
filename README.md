@@ -15,6 +15,9 @@ Many plugins do everything, to be supported on as many versions of Minecraft as 
 Our goal is to provide powerful tools and a great foundation, which helps to easily develop plugins, without blocking the way to get deeper.
 
 # 💻 Set up your Project
+
+> The repository will be soon switched to my repo.fruxz.dev server instead of jitpack.io
+
 Our current platform of trust for our builds is 'JitPack'. This allows us to easily provide you with the current version of Sparkle, without all the hustle of GitHub's own “solution”.
 
 Firstly, add JitPack as a maven repository if it is not already added!
