@@ -46,8 +46,3 @@ If you require any further assistance, suggestions or other items you would like
 ###### We build & use Sparkle on Java 17.
 ###### Also build & run Sparkle with [Eclipse Temurin](https://adoptium.net/) on to get the best possible experience!
 ###### Currently a bit slow in updating, but speed will increase again in the near future (with TheFruxz/Sparkle#132 in mind)
-
-
-[![Open Source](https://raw.githubusercontent.com/BraveUX/for-the-badge/master/src/images/badges/open-source.svg)](https://github.com/TheFruxz/Sparkle/blob/main/LICENSE)
-[![Built by developers](https://raw.githubusercontent.com/BraveUX/for-the-badge/master/src/images/badges/built-by-developers.svg)](https://github.com/TheFruxz/Sparkle/graphs/contributors)
-[![Written in Kotlin](https://raw.githubusercontent.com/BraveUX/for-the-badge/master/src/images/badges/makes-people-smile.svg)](https://github.com/JetBrains/kotlin)
