@@ -8,9 +8,5 @@ updates:
   - package-ecosystem: "gradle"
     target-branch: "rework/2023"
     directory: "/"
-    labels:
-      - "Type: dependencies"
-      - "From: bot"
-      - "State: verified"
     schedule:
       interval: "daily"
