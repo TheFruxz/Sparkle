@@ -50,10 +50,10 @@ dependencies {
 
     // Internal
 
-    api("com.github.TheFruxz:Ascend:$ascendVersion").deliver()
-    api("com.github.TheFruxz:Stacked:$stackedVersion").deliver()
-    api("com.github.TheFruxz:Kojang:$kojangVersion").deliver()
-    api("dev.fruxz:brigadikt:2023.3-rc5").deliver()
+    api("dev.fruxz:ascend:$ascendVersion").deliver()
+    api("dev.fruxz:stacked:$stackedVersion").deliver()
+    api("dev.fruxz:kojang:$kojangVersion").deliver()
+    api("dev.fruxz:brigadikt:$brigadiktVersion").deliver()
 
     // Kotlin
 
