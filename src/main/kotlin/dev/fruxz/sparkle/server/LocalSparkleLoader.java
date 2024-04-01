@@ -30,6 +30,7 @@ public class LocalSparkleLoader implements PluginLoader {
         maven.addRepository(new RemoteRepository.Builder("jitpack", "default", "https://jitpack.io/").build());
         maven.addRepository(new RemoteRepository.Builder("central", "default", "https://repo.maven.apache.org/maven2/").build());
         maven.addRepository(new RemoteRepository.Builder("minecraft", "default", "https://libraries.minecraft.net").build());
+        maven.addRepository(new RemoteRepository.Builder("fruxz", "default", "https://repo.fruxz.dev/releases").build());
 
         classpathBuilder.addLibrary(maven);
     }
