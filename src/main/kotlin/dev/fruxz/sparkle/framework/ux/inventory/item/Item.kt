@@ -35,6 +35,10 @@ import java.util.*
 import java.util.function.UnaryOperator
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * ***NOTE: With the new Item components feature, which drastically changes nbt- and custom data,
+ * this class may also get overhauled to accommodate the required changes.***
+ */
 data class Item(
     var material: Material = Material.STONE,
     var label: ComponentLike = Component.translatable(material.translationKey()),
