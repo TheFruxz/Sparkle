@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 package dev.fruxz.sparkle.framework.command
 
 import dev.fruxz.brigadikt.domain.FrontArgumentBuilder
