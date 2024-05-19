@@ -15,7 +15,7 @@ abstract class SparkleCommand : TabCommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, arguments: Array<out String>): Boolean {
         try {
-            plugin.commandDispatcher.execute((arrayOf(label) + arguments).joinToString(" "), sender)
+            plugin.commandDispatcher.execute((arrayOf(command.label) + arguments).joinToString(" "), sender)
         } catch (e: CommandSyntaxException) {
             sender.sendMessage(e.displayMessageComponent())
         }
@@ -29,7 +29,7 @@ abstract class SparkleCommand : TabCommandExecutor {
         arguments: Array<out String>,
     ): List<String> {
         return plugin.commandDispatcher.getCompletionSuggestions(
-            plugin.commandDispatcher.parse((arrayOf(label) + arguments).joinToString(" "), sender)
+            plugin.commandDispatcher.parse((arrayOf(command.label) + arguments).joinToString(" "), sender)
         ).join().list.map { it.text }
     }
 
