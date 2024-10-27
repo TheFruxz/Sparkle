@@ -40,7 +40,7 @@ dependencies {
 
     // Internal
 
-    api("dev.fruxz:ascend:2024.1.1").deliver()
+    api("dev.fruxz:ascend:2024.2.2").deliver()
     api("dev.fruxz:stacked:2024.1.1").deliver()
     api("dev.fruxz:kojang:1.1.2").deliver()
     api("dev.fruxz:brigadikt:2024-indev-1").deliver()
