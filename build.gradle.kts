@@ -8,7 +8,7 @@ plugins {
 
 var host = "github.com/TheFruxz/Sparkle"
 
-version = "2023.4-dev"
+version = "2024.4-dev"
 group = "dev.fruxz"
 
 repositories {
