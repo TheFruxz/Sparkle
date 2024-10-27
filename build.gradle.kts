@@ -29,16 +29,6 @@ repositories {
 
 }
 
-val minecraftVersion: String by project
-val ascendVersion: String by project
-val stackedVersion: String by project
-val kojangVersion: String by project
-val brigadiktVersion: String by project
-val serializationVersion: String by project
-val coroutinesVersion: String by project
-val brigadierVersion: String by project
-val ktorVersion: String by project
-
 val includedDependencies = mutableListOf<String>()
 
 fun Dependency?.deliver() = this?.apply {
@@ -50,10 +40,10 @@ dependencies {
 
     // Internal
 
-    api("dev.fruxz:ascend:$ascendVersion").deliver()
-    api("dev.fruxz:stacked:$stackedVersion").deliver()
-    api("dev.fruxz:kojang:$kojangVersion").deliver()
-    api("dev.fruxz:brigadikt:$brigadiktVersion").deliver()
+    api("dev.fruxz:ascend:2024.1.1").deliver()
+    api("dev.fruxz:stacked:2024.1.1").deliver()
+    api("dev.fruxz:kojang:1.1.2").deliver()
+    api("dev.fruxz:brigadikt:2024-indev-1").deliver()
 
     // Kotlin
 
@@ -61,18 +51,18 @@ dependencies {
     implementation(kotlin("reflect")).deliver()
     testImplementation(kotlin("test"))
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
 
     // External
 
-    paperweight.paperDevBundle("$minecraftVersion-R0.1-SNAPSHOT")
-    implementation("com.mojang:brigadier:$brigadierVersion")
+    paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
+    implementation("com.mojang:brigadier:1.0.18")
 
-    implementation("io.ktor:ktor-client-cio:$ktorVersion").deliver()
-    implementation("io.ktor:ktor-client-core-jvm:$ktorVersion").deliver()
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion").deliver()
-    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion").deliver()
+    implementation("io.ktor:ktor-client-cio:2.3.9").deliver()
+    implementation("io.ktor:ktor-client-core-jvm:2.3.9").deliver()
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.9").deliver()
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.9").deliver()
 
 }
 
@@ -92,7 +82,7 @@ tasks {
     }
 
     runServer {
-        this.minecraftVersion(minecraftVersion)
+        this.minecraftVersion("1.20.4")
     }
 
 }
