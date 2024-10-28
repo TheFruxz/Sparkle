@@ -59,7 +59,7 @@ dependencies {
     paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
     implementation("com.mojang:brigadier:1.0.18")
 
-    implementation("io.ktor:ktor-client-cio:2.3.9").deliver()
+    implementation("io.ktor:ktor-client-cio:3.0.0").deliver()
     implementation("io.ktor:ktor-client-core-jvm:2.3.9").deliver()
     implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.0").deliver()
     implementation("io.ktor:ktor-client-content-negotiation:3.0.0").deliver()
