@@ -16,11 +16,9 @@ import dev.fruxz.sparkle.framework.util.json.serializer.*
 import dev.fruxz.sparkle.framework.ux.inventory.item.Item
 import dev.fruxz.sparkle.framework.ux.inventory.item.item
 import dev.fruxz.sparkle.framework.ux.panel.buildPanel
-import dev.fruxz.sparkle.server.command.DemoCommand
 import dev.fruxz.sparkle.server.component.demo.DemoListener
 import dev.fruxz.sparkle.server.component.events.DamageListener
 import dev.fruxz.sparkle.server.component.events.InteractionListener
-import dev.fruxz.sparkle.server.component.sandox.SandBoxCommand
 import dev.fruxz.sparkle.server.component.sandox.SandBoxManager
 import dev.fruxz.sparkle.server.panel.PanelListener
 import dev.fruxz.stacked.extension.asStyledComponent
@@ -103,8 +101,8 @@ class LocalSparklePlugin : SparklePlugin({
         it.source.sendMessage("Hello World! Received '${it.input.asParameters()}'")
     }
 
-    command<DemoCommand>()
-    command<SandBoxCommand>()
+//    TODO command<DemoCommand>()
+//    command<SandBoxCommand>()
 
     listener(DemoListener())
     listener(DamageListener())

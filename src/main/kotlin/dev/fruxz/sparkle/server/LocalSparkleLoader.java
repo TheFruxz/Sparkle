@@ -19,6 +19,13 @@ import java.util.Objects;
 @SuppressWarnings("UnstableApiUsage") // We keep an eye on that.
 public class LocalSparkleLoader implements PluginLoader {
 
+    /**
+     * Creates a new instance of the LocalSparkleLoader.
+     */
+    public LocalSparkleLoader() {
+
+    }
+
     @Override
     public void classloader(@NotNull PluginClasspathBuilder classpathBuilder) {
         MavenLibraryResolver maven = new MavenLibraryResolver();

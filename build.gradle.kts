@@ -1,26 +1,24 @@
+import io.papermc.paperweight.util.path
+
 plugins {
-    kotlin("jvm") version "2.1.10"
-    kotlin("plugin.serialization") version "2.1.10"
-    id("io.papermc.paperweight.userdev") version "1.7.7"
+    kotlin("jvm") version "2.2.0"
+    kotlin("plugin.serialization") version "2.2.0"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.18"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     `maven-publish`
 }
 
 var host = "github.com/TheFruxz/Sparkle"
 
-version = "2024.4-dev"
+version = "2025.7-dev"
 group = "dev.fruxz"
 
 repositories {
 
     mavenCentral()
 
-    maven("https://repo.fruxz.dev/releases") {
+    maven("https://nexus.fruxz.dev/repository/public/") {
         name = "fruxz.dev"
-    }
-
-    maven("https://jitpack.io") {
-        name = "JitPack"
     }
 
     maven("https://libraries.minecraft.net") {
@@ -40,10 +38,10 @@ dependencies {
 
     // Internal
 
-    api("dev.fruxz:ascend:2024.2.2").deliver()
-    api("dev.fruxz:stacked:2024.1.1").deliver()
+    api("dev.fruxz:ascend:2025.7-8af65e5").deliver()
+    api("dev.fruxz:stacked:2025.5-3733615").deliver()
+    api("dev.fruxz:brigadikt:2025.4-48276a1-preview").deliver()
     api("dev.fruxz:kojang:1.1.2").deliver()
-    api("dev.fruxz:brigadikt:2024-indev-1").deliver()
 
     // Kotlin
 
@@ -56,7 +54,7 @@ dependencies {
 
     // External
 
-    paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.7-R0.1-SNAPSHOT")
     implementation("com.mojang:brigadier:1.0.18")
 
     implementation("io.ktor:ktor-client-cio:3.1.1").deliver()
@@ -68,12 +66,19 @@ dependencies {
 
 tasks {
 
+    val generateDependenciesFile = register("generateDependenciesFile") {
+        doLast {
+            val outputFile = file("src/main/resources/dependencies.txt")
+            outputFile.writeText(includedDependencies.joinToString("\n"))
+        }
+    }
+
     processResources {
+        dependsOn(generateDependenciesFile)
         expand(
             "version" to project.version,
             "name" to project.name,
             "website" to "https://$host",
-            "delivery" to includedDependencies.joinToString("\n"),
         )
     }
 
@@ -82,7 +87,7 @@ tasks {
     }
 
     runServer {
-        this.minecraftVersion("1.20.4")
+        this.minecraftVersion("1.21.7")
     }
 
 }

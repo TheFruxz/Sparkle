@@ -182,5 +182,5 @@ fun Block.toFallingBlock() = blockData.clone().let { data ->
  */
 fun Block.ignite(): TNTPrimed {
     type = Material.AIR
-    return world.spawnEntity(location.toCenterLocation(), EntityType.PRIMED_TNT) as TNTPrimed
+    return world.spawnEntity(location.toCenterLocation(), EntityType.TNT) as TNTPrimed
 }
