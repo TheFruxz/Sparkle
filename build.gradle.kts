@@ -41,7 +41,7 @@ dependencies {
 
     api("dev.fruxz:ascend:2025.7-8af65e5").include()
     api("dev.fruxz:stacked:2025.5-3733615").include()
-    api("dev.fruxz:brigadikt:2025.4-48276a1-preview").include()
+    api("dev.fruxz:brigadikt:2025.10-57a529b-preview").include()
     api("dev.fruxz:kojang:1.1.2").include()
 
     // Kotlin
