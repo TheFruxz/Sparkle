@@ -56,7 +56,7 @@ dependencies {
     // External
 
     paperweight.paperDevBundle("1.21.7-R0.1-SNAPSHOT")
-    implementation("com.mojang:brigadier:1.0.18")
+    implementation("com.mojang:brigadier:1.0.500")
 
     implementation("io.ktor:ktor-client-cio:3.1.1").include()
     implementation("io.ktor:ktor-client-core-jvm:3.1.1").include()
